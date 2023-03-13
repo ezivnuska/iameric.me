@@ -1,26 +1,11 @@
 import React from 'react'
-import {
-    StyleSheet,
-    View,
-} from 'react-native'
-import { Screen } from './'
-import { EntryDisplay } from '../components'
+import { SecureScreen } from './'
+import { Settings } from '../components'
 
 const SettingsScreen = props => (
-    <Screen { ...props }>
-        <View style={styles.container}>
-            <EntryDisplay />
-        </View>
-    </Screen>
+    <SecureScreen { ...props }>
+        <Settings />
+    </SecureScreen>
 )
 
 export default SettingsScreen
-
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-})

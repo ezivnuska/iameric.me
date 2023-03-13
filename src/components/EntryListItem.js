@@ -23,7 +23,7 @@ const EntryListItem = ({ entry, deleteEntry }) => {
     const { _id, userId, username, text } = entry
     const { user } = state
 
-    return (
+    return user ? (
         <View style={styles.container}>
             <View style={styles.flexContainer}>
                 <View style={styles.title}>
@@ -35,7 +35,6 @@ const EntryListItem = ({ entry, deleteEntry }) => {
                             style={styles.iconDelete}
                             onPress={() => deleteEntry(_id)}
                         >
-                            <Text>Close</Text>
                             <CloseCircleOutlined />
                         </TouchableOpacity>
                     </View>
@@ -45,7 +44,7 @@ const EntryListItem = ({ entry, deleteEntry }) => {
                 <Text style={[defaultStyles.text, styles.text]}>{text}</Text>
             </View>
         </View>
-    )
+    ) : null
 }
 
 export default EntryListItem

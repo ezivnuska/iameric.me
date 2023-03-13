@@ -26,7 +26,7 @@ const Screen = ({ children, route }) => {
     }, [])
     
     return (
-        <View style={styles.screenContainer}>
+        <View style={styles.container}>
             {children}
         </View>
     )
@@ -35,12 +35,12 @@ const Screen = ({ children, route }) => {
 export default Screen
 
 const styles = StyleSheet.create({
-    screenContainer: {
+    container: {
         paddingVertical: 20,
-        display: 'flex',
-        flexDirection: 'column',
+        // display: 'flex',
+        // flexDirection: 'column',
         // justifyContent: ,
-        alignContent: 'center',
+        // alignContent: 'center',
         height: height - 50,
         // width: '100%',
         // backgroundColor: '#fff',

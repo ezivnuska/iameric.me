@@ -88,10 +88,21 @@ app.post('/api/signup', (req, res) => {
                                 if (!newUser) throw new Error()
                                 // req.cookies.user = newUser
                                 const token = createToken(newUser)
-                                res.status(200).json({
-                                    success: true,
-                                    user: newUser,
-                                })
+
+                                User
+                                    .findOneAndUpdate({ _id: newUser._id }, { $set: { token } }, { new: true } )
+                                    .then(updatedUser => {
+                                        const { _id, email, username, profileImage } = updatedUser
+                                        const user = { _id, email, username, profileImage }
+                                        res.status(200).json({ user })
+                                    })
+                                    .catch(err => {
+                                        console.log('Error setting user token on sign up.', err)
+                                        res.json({
+                                            success: false,
+                                            err,
+                                        })
+                                    })
                             })
                             .catch(err => console.log('Error creating new user.', err))
                     }
@@ -119,11 +130,11 @@ app.post('/api/signin', (req, res) => {
                     User
                         .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
                         .then(newUser => {
-                            const { _id, email, username, dataURI } = newUser
+                            const { _id, email, username, profileImage } = newUser
                             // req.cookies.user = newUser
                             res.json({
                                 success: true,
-                                user: { _id, email, username, token, dataURI },  
+                                user: { _id, email, username, token, profileImage },  
                             })
                             
                         })
@@ -247,84 +258,6 @@ app.get('/api/users/:id', async (req, res, next) => {
         })
 })
 
-// const storage = multer.diskStorage({
-//     destination: async (req, file, callback) => {
-//         callback(null, `${filepath}`)
-//     },
-//     filename: (req, file, callback) => {
-//         let ext = path.extname(file.originalname).length ? path.ext(file.originalname) : '.png'
-//         callback(null, `avatar${ext}`)
-//     }
-// })
-
-const upload = username => {
-    console.log('multering')
-    const dest = path.join(__dirname, `./src/assets/images/users/${username}`)
-    console.log('dest', dest)
-
-    const storage = multer.diskStorage({
-        destination: async (req, file, callback) => {
-            callback(null, `${dest}`)
-        },
-        filename: (req, file, callback) => {
-            let ext = path.extname(file.originalname).length ? path.ext(file.originalname) : '.png'
-            callback(null, `avatar${ext}`)
-        }
-    })
-    return multer({
-        storage,
-        limits: {
-            fileSize: 2000000,
-        },
-        onFileSizeLimit: file => {
-            res.json({
-                message: 'Upload failed. File size too large.',
-                status: MARankings.Enums.Status.FILE_TOO_LARGE,
-            })
-        },
-    }).single('file')
-}
-
-const pathExists = pathname => fs.existsSync([pathname])
-
-const makePath = async pathname => {
-    console.log('making pathname', pathname)
-    return mkdirp(pathname).then(made => made)
-}
-
-const getPath = username => path.join(__dirname, `./src/assets/images/users/${username}`)
-// {
-//     console.log('getting path for username', username)
-//     const pathname = path.join(__dirname, `./src/assets/images/users/${username}`)
-//     console.log('path for username', pathname)
-//     return fs.access(pathname, async err => {
-//         if (err) {
-//             console.log('Error making directory', err)
-//             return null
-//         }
-//         console.log('pathname created?', pathname)
-//         if (!pathname) {
-//             await mkdirp(pathname)
-//                 .then(made => {
-//                     console.log('made', made)
-//                     return made
-//                 })
-//         }
-//         console.log('pathname already exists', pathname)
-//         return pathname
-//     })
-    // console.log('checking for user image directory:', pathname)
-    // let existingPath = pathExists(pathname)
-    // console.log('path exists', existingPath)
-    // if (!existingPath) {
-    //     let made = await makePath(pathname)
-    //     console.log('made', made)
-    // }
-    // existingPath = pathExists(pathname)
-    // console.log('exists', existingPath)
-    // return pathname
-// }
-
 const writeFileToPath = async (file, pathname) => {
     const regex = /^data:.+\/(.+);base64,(.*)$/
     const matches = file.match(regex)
@@ -335,15 +268,12 @@ const writeFileToPath = async (file, pathname) => {
     let dirExists = fs.existsSync(pathname)
     if (!dirExists) mkdirp.sync(pathname)
     dirExists = fs.existsSync(pathname)
-    console.log('dirExists', dirExists)
     const filename = `${username}-${Date.now()}.${ext}`
     const filepath = `${pathname}/${filename}`
-    console.log('filepath to write', filepath)
     let returnValue = filename
     try {
         fs.writeFile(filepath, buffer, err => {
             if (err) console.log('Error writing file:', err)
-            console.log('file written', returnValue)
         })
     } catch {
         console.log('Error writing file (catch)')
@@ -354,16 +284,14 @@ const writeFileToPath = async (file, pathname) => {
 
 app.post(
     '/api/upload/avatar',
-    // upload,
     async (req, res) => {
         const { dataurl, username } = req.body
-        const pathname = getPath(username)
+        const pathname = path.join(__dirname, `./src/assets/images/users/${username}`)
         const filename = await writeFileToPath(dataurl, pathname)
         if (!filename) {
             console.log('Error: Cannot write file to path.')
             return res.status(400).json({ error: 'Error writing file to path.' })
         } else {
-            console.log('image saved', filename)
             return User
                 .findOne({ username })
                 .then(({ _id }) => {
@@ -373,7 +301,6 @@ app.post(
                             filename,
                         })
                         .then(image => {
-                            console.log('new image created and saved', image)
                             User
                                 .findOneAndUpdate({ _id }, { $set: { profileImage: filename } }, { new: true })
                                 .then(updatedUser => res.status(200).json({ user: updatedUser }))
@@ -400,6 +327,19 @@ app.post('/api/delete', (req, res) => {
             deletedFile: filepath,
         })
     })
+})
+
+app.get('/api/user/images/:id', (req, res) => {
+    const userId = req.params.id
+    UserImage
+        .find({ userId })
+        .then(images => {
+            res.status(200).json({ images })
+        })
+        .catch(err => {
+            console.log('Error getting images', err)
+            res.status(400).json({ error: err })
+        })
 })
 
 mongoose.Promise = global.Promise

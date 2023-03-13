@@ -12,7 +12,7 @@ import { AppContext } from '../AppContext'
 import { Link } from '@react-navigation/native'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
-const API_PATH = process.env.API_PATH || '/api'
+const API_PATH = '/api'
 
 const SignInForm = props => {
     const {
@@ -39,14 +39,6 @@ const SignInForm = props => {
 	}, [])
 
     const setUser = newUser => {
-		// AsyncStorage
-		// 	.setItem('user', JSON.stringify(newUser))
-		// 	.then(result => {
-		// 		console.log('***', result)
-		// 	})
-		// 	.catch(err => alert('Error storing user locally.', err))
-		
-		// console.log('setting userToken in local storage', newUser)
 		AsyncStorage
 			.setItem('userToken', newUser.token)
 			.then(() => {
@@ -56,21 +48,19 @@ const SignInForm = props => {
 				.catch(err => alert('Signin Error:', err))
 	}
 
-	const sendData = user => {
-		AsyncStorage
+	const sendData = async user => {
+		await AsyncStorage
 			.setItem('email', user.email)
 			.then(() => {
 				setEmail(user.email)
-				// console.log('email saved to local storage', user.email)
 			})
-		console.log('process.env.API_PATH', process.env.API_PATH)
+
 		axios
 			.post(`${API_PATH}/signin`, user)
 			.then(({ data }) => {
-				if (data.success) {
-					const user = Object.assign({}, data.user)
-					// console.log('user signed in', user)
-					setUser(user)
+				const { user } = data
+				if (user) {
+					setUser(Object.assign({}, user))
 				} else {
 					alert('Signin failed.')
 				}    

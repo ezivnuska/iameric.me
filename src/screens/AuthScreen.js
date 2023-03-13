@@ -125,9 +125,8 @@ const AuthScreen = props => {
                             AsyncStorage
                                 .getItem('route')
                                 .then(route => {
-                                    if (route !== props.route.name) {
-                                        navigate(route)
-                                    }
+                                    if (!route) navigate('Private')
+                                    else if (route !== props.route.name) navigate(route)
                                 })
                                 .catch(err => console.log(err))
                         } else {

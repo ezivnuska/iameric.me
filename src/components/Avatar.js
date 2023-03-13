@@ -7,20 +7,25 @@ import {
 import defaultAvatar from '../assets/images/avatar-default.png'
 
 const Avatar = ({ user, size = 100, ...props }) => {
-    
+
     const [ avatar, setAvatar ] = useState(defaultAvatar)
     const [ updated, setUpdated ] = useState(false)
 
     const getAvatar = async () => {
         const { profileImage, username } = user
-        try {
-            const image = await import(`../assets/images/users/${username}/${profileImage}`)
-            console.log('user has profile image', image)
-            setAvatar(image)
-        } catch {
-            console.log(`no avatar found for ${username}`)
+        if (profileImage) {
+            try {
+                const image = await import(`../assets/images/users/${username}/${profileImage}`)
+                setAvatar(image)
+            } catch {
+                console.log(`cannot retrieve profile image for ${username}`)
+            }
         }
     }
+
+    useEffect(() => {
+        getAvatar(user.username)
+    }, [])
 
     useEffect(() => {
         if (user) {
@@ -31,8 +36,8 @@ const Avatar = ({ user, size = 100, ...props }) => {
 
     useEffect(() => {
         if (updated) {
-            setAvatar(avatar)
             setUpdated(false)
+            if (avatar) setAvatar(avatar)
         }
     }, [avatar])
 

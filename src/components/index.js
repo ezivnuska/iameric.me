@@ -6,7 +6,10 @@ import EntryDisplay from './EntryDisplay'
 import EntryList from './EntryList'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
-// import ImageHandler from './ImageHandler'
+import ImageDisplay from './ImageDisplay'
+import ImageList from './ImageList'
+import Sandbox from './Sandbox'
+import Settings from './Settings'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import UserList from './UserList'
@@ -23,7 +26,10 @@ export {
     EntryList,
     EntryListItem,
     FeedbackForm,
-    // ImageHandler,
+    ImageDisplay,
+    ImageList,
+    Sandbox,
+    Settings,
     SignInForm,
     SignUpForm,
     UserList,

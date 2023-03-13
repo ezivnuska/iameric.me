@@ -2,6 +2,7 @@ import AuthScreen from './AuthScreen'
 // import CheckInScreen from './CheckInScreen'
 import FallbackScreen from './FallbackScreen'
 import LoadingScreen from './LoadingScreen'
+import PrivateScreen from './PrivateScreen'
 import Screen from './Screen'
 import SecureScreen from './SecureScreen'
 import SettingsScreen from './SettingsScreen'
@@ -14,6 +15,7 @@ export {
     // CheckInScreen,
     FallbackScreen,
     LoadingScreen,
+    PrivateScreen,
     Screen,
     SecureScreen,
     SettingsScreen,

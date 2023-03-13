@@ -17,4 +17,6 @@ const UserImageSchema = new Schema({
     },
 })
 
-module.exports = mongoose.model('UserImage', UserImageSchema)
+const UserImageModel = mongoose.model('UserImage', UserImageSchema)
+
+module.exports = UserImageModel

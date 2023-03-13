@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     AuthScreen,
     FallbackScreen,
-    SecureScreen,
+    PrivateScreen,
     SettingsScreen,
 } from '../screens'
 
@@ -25,7 +25,7 @@ const MainStackScreen = ({ navigation, route }) => (
         />
         <MainStack.Screen
             name='Private'
-            component={SecureScreen}
+            component={PrivateScreen}
         />
         <MainStack.Screen
             name='Settings'

@@ -4,15 +4,10 @@ import {
     View,
 } from 'react-native'
 import { Screen } from './'
-import {
-    AvatarModule,
-    // ImageHandler,
-    UserDisplay,
-} from '../components'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 
-const SecureScreen = props => {
+const SecureScreen = ({ children, ...props }) => {
 
     const { route } = props
     
@@ -23,16 +18,16 @@ const SecureScreen = props => {
     const { user } = state
 
     useEffect(() => {
-        if (!user && route.name !== 'CheckIn')
-            navigate('CheckIn')
+        if (!user && route.name !== 'CheckIn') navigate('CheckIn')
     }, [user])
 
     return (
         <Screen { ...props }>
-            <View style={styles.container}>
-                <AvatarModule />
-                <UserDisplay />
-            </View>
+            {user ? (
+                <View style={styles.container}>
+                    {children}
+                </View>
+            ) : null}
         </Screen>
     )
 }
