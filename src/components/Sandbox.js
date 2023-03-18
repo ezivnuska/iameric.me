@@ -3,9 +3,9 @@ import {
     View,
 } from 'react-native-web'
 import {
-    Avatar,
     AvatarModule,
     ImageList,
+    Profile,
 } from '../components'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
@@ -53,7 +53,7 @@ const Sandbox = () => {
 
     return (
         <View>
-            <Avatar user={user} size={100} />
+            <Profile user={user} />
             <AvatarModule />
             <ImageList
                 deleteImage={(_id, filename) => deleteImage(_id, filename)}

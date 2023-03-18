@@ -8,6 +8,7 @@ import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
 import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
+import Profile from './Profile'
 import Sandbox from './Sandbox'
 import Settings from './Settings'
 import SignInForm from './SignInForm'
@@ -28,6 +29,7 @@ export {
     FeedbackForm,
     ImageDisplay,
     ImageList,
+    Profile,
     Sandbox,
     Settings,
     SignInForm,

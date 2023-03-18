@@ -40,14 +40,12 @@ const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
             <TouchableOpacity
                 style={styles.setAvatarButton}
                 onPress={() => {
-                    console.log('setAvatar button pressed')
                     setAvatar()
                 }}
             />
             <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => {
-                    console.log('delete button pressed')
                     deleteImage()
                 }}
             >

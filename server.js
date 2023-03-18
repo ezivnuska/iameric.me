@@ -342,7 +342,6 @@ app.post('/api/images/delete', (req, res) => {
 
 app.post('/api/user/avatar/', (req, res) => {
     const { _id, filename } = req.body
-    console.log('body', req.body)
     User
         .findOneAndUpdate({ _id }, { $set: { profileImage: filename } }, { new: true })
         .then(updatedUser => {
