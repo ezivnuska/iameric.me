@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import {
     AuthScreen,
-    FallbackScreen,
+    // FallbackScreen,
     PrivateScreen,
     SettingsScreen,
 } from '../screens'
@@ -17,10 +17,11 @@ const MainStackScreen = ({ navigation, route }) => (
     <MainStack.Navigator
         screenOptions={{
             headerShown: false,
+            initialRouteName: 'Home',
         }}
     >
         <MainStack.Screen
-            name='CheckIn'
+            name='Home'
             component={AuthScreen}
         />
         <MainStack.Screen
@@ -32,24 +33,24 @@ const MainStackScreen = ({ navigation, route }) => (
             component={SettingsScreen}
         />
         <MainStack.Screen
-            name='Fallback'
-            component={FallbackScreen}
+            name='NotFound'
+            component={AuthScreen}
         />
     </MainStack.Navigator>
 )
 
 
 const linking = {
-    prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:19006'],
+    // prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:19006'],
     config: {
-        initialRouteName: 'CheckIn',
+        initialRouteName: 'Home',
         screens: {
-            CheckIn: '/',
+            Home: '/',
             SignIn: 'signin',
             SignUp: 'signup',
             Private: 'private',
             Settings: 'settings',
-            Fallback: '*',
+            NotFound: '*',
         },
     },
 }

@@ -86,7 +86,7 @@ const AuthScreen = props => {
                 const { user } = data
                 
                 if (user) {
-                    console.log('authenticated user returned', user)
+                    console.log('authenticated user returned', user.username)
                     return user
                 }
 

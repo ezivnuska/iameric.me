@@ -46,7 +46,11 @@ const Sandbox = () => {
     const deleteImage = (_id, filename) => {
         axios
             .post(`${API_PATH}/images/delete`, { _id, filename, userId: user._id, username: user.username })
-            .then(() => images.filter(image => image._id !== _id))
+            .then(({ error, success, user }) => {
+                if (error) console.log('Error deleting image', error)
+                if (user) dispatch({ type: 'SET_USER', user })
+                return images.filter(image => image._id !== _id)}
+            )
             .catch(err => console.log(`Catch: Error deleting filename: ${filename}`, err))
     }
 

@@ -294,25 +294,26 @@ app.post(
             console.log('Error: Cannot write file to path.')
             return res.status(400).json({ error: 'Error writing file to path.' })
         } else {
-            return User
+            User
                 .findOne({ username })
                 .then(({ _id }) => {
                     UserImage
-                        .create({
-                            userId: _id,
-                            filename,
-                        })
+                        .create({ userId: _id, filename })
                         .then(image => {
                             User
-                                .findOneAndUpdate({ _id }, { $set: { profileImage: filename } }, { new: true })
+                                .findOneAndUpdate({ _id }, { $set: { profileImage: image.filename } }, { new: true })
                                 .then(updatedUser => {
                                     const { _id, email, username, profileImage } = updatedUser
                                     res.status(200).json({ user: { _id, email, username, profileImage } })
                                 })
                                 .catch(err => {
                                     console.log('Error updating user profile image', err)
-                                    return res.status(400).json({ error: 'Error updating user profile image' })
+                                    res.status(400).json({ error: 'Error updating user profile image' })
                                 })
+                        })
+                        .catch(err => {
+                            console.log('Error updating user profile image', err)
+                            res.status(400).json({ error: 'Error updating user profile image' })
                         })
                 })
                 .catch(err => {
@@ -326,18 +327,42 @@ app.post('/api/images/delete', (req, res) => {
     const { _id, filename, userId, username } = req.body
     const filepath = `./src/assets/images/users/${username}/${filename}`
     console.log('filepath to remove:', filepath)
-    UserImage
-        .findOneAndRemove({ _id })
-        .then(result => {
-            console.log('UserImage removed', result)
-            fs.rm(filepath, () => {
-                console.log('removed file at path', filepath)
+    User
+        .findOne({ _id: userId })
+        .then(user => {
+            if (user.profileImage === filename) {
+                console.log(`Image to delete is currently used as avatar. Updating user.profileImage before deleting file: ${filename}`)
+                User
+                    .findOneAndUpdate({ _id: userId }, { $set: { profileImage: null } }, { new: true })
+                    .then(user => {
+                        console.log('User profileImage updated', user.profileImage)
+                        UserImage
+                            .findOneAndRemove({ _id })
+                            .then(result => {
+                                console.log('image entry removed from db', result.filename)
+                                fs.rm(filepath, () => {
+                                    console.log('and also removed file at path', filepath)
+                                    console.log('returning user')
+                                    res.status(200).json({ user })
+                                })
+                            })
+                    })
+                    .catch(err => console.log('err', err))
+            } else {
+                UserImage
+                    .findOneAndRemove({ _id })
+                    .then(result => {
+                        console.log('image entry removed from db', result.filename)
+                        fs.rm(filepath, () => {
+                            console.log('and also removed file at path', filepath)
+                            console.log('returning success')
+                            res.status(200).json({ success: true })
+                        })
+                    })
+            }
 
-                res.status(200).json({
-                    deletedFile: filepath,
-                })
-            })
         })
+        .catch(err => console.log('error', err))
 })
 
 app.post('/api/user/avatar/', (req, res) => {

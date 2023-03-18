@@ -9,7 +9,7 @@ const Screen = ({ children, route }) => {
     // console.log('Screen:route:', route)
     useEffect(() => {
         const saveRoute = async () => {
-            const routeName = (route && route.name) ? route.name : 'CheckIn'
+            const routeName = (route && route.name) ? route.name : 'Home'
             // const { pathname } = window.location
             // console.log('path', pathname)
             // console.log('screen route:', route)
@@ -37,6 +37,7 @@ export default Screen
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 20,
+        paddingHorizontal: 10,
         // display: 'flex',
         // flexDirection: 'column',
         // justifyContent: ,

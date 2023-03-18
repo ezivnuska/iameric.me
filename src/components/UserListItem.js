@@ -4,7 +4,7 @@ import {
     Text,
     TouchableOpacity,
 } from 'react-native'
-import { Avatar } from './'
+import { Profile } from './'
 import { RightOutlined } from '@ant-design/icons'
 
 const UserListItem = ({ setUser, user }) => (
@@ -12,12 +12,10 @@ const UserListItem = ({ setUser, user }) => (
     style={styles.rowContainer}
     onPress={() => setUser(user._id)}
 >
-    <Avatar
+    <Profile
       user={user}
-      size={22}
-      style={styles.avatar}
+      style={styles.profile}
     />
-    <Text style={[styles.userDetails, styles.username]}>{user.username}</Text>
     <RightOutlined />
   </TouchableOpacity>
 )
@@ -46,18 +44,11 @@ const styles = StyleSheet.create({
   username: {
     lineHeight: 22,
   },
-  avatar: {
+  profile: {
     flex: 1,
     flexGrow: 0,
     flexShrink: 0,
     flexBasis: 'auto',
     marginRight: 10,
-  },
-  right: {
-    flex: 1,
-    flexGrow: 0,
-    width: 'auto',
-    flexDirection: 'column',
-    justifyContent: 'center',
   },
 })

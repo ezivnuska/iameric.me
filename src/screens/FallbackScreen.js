@@ -7,7 +7,7 @@ const FallbackScreen = ({ route, ...props }) => {
 
     useEffect(() => {
         console.log('FallbackScreen: navigating to CheckIn')
-        navigate('CheckIn')
+        navigate('Home')
     }, [])
 
     return (

@@ -18,7 +18,7 @@ const SecureScreen = ({ children, ...props }) => {
     const { user } = state
 
     useEffect(() => {
-        if (!user && route.name !== 'CheckIn') navigate('CheckIn')
+        if (!user && route.name !== 'Home') navigate('Home')
     }, [user])
 
     return (
