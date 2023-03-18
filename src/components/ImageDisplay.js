@@ -6,6 +6,9 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
+import {
+    HoverableView,
+} from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
 const size = 100
 
@@ -37,12 +40,17 @@ const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
 
     return source ? (
         <View style={styles.container}>
-            <TouchableOpacity
-                style={styles.setAvatarButton}
-                onPress={() => {
-                    setAvatar()
-                }}
-            />
+            <HoverableView
+                style={styles.mouseOffStyles}
+                onHover={[styles.mouseOffStyles, styles.mouseOnStyles]}
+            >
+                <TouchableOpacity
+                    style={styles.setAvatarButton}
+                    onPress={() => {
+                        setAvatar()
+                    }}
+                />
+            </HoverableView>
             <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => {
@@ -77,14 +85,16 @@ const styles = StyleSheet.create({
         height: size,
     },
     setAvatarButton: {
-        position: 'absolute',
-        zIndex: 5,
         width: size,
         height: size,
+    },
+    mouseOffStyles: {
+        position: 'absolute',
+        zIndex: 5,
         // borderWidth: 1,
         // borderColor: 'red',
     },
-    highlighted: {
+    mouseOnStyles: {
         backgroundColor: '#fff',
         opacity: 0.3,
     },

@@ -37,7 +37,6 @@ const Sandbox = () => {
     }
 
     const setAvatar = (_id, filename) => {
-        console.log('setting avatar with', _id, filename)
         axios
             .post(`${API_PATH}/user/avatar`, { _id, filename })
             .then(({ data }) => dispatch({ type: 'SET_USER', user: data.user }))
