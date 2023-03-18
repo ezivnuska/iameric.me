@@ -270,13 +270,14 @@ const writeFileToPath = async (file, pathname) => {
     dirExists = fs.existsSync(pathname)
     const filename = `${username}-${Date.now()}.${ext}`
     const filepath = `${pathname}/${filename}`
+    console.log('filename to write...', filename)
     let returnValue = filename
     try {
         fs.writeFile(filepath, buffer, err => {
             if (err) console.log('Error writing file:', err)
         })
     } catch {
-        console.log('Error writing file (catch)')
+        console.log('CATCH: Error writing file.')
         returnValue = null
     }
     return returnValue
@@ -288,6 +289,7 @@ app.post(
         const { dataurl, username } = req.body
         const pathname = path.join(__dirname, `./src/assets/images/users/${username}`)
         const filename = await writeFileToPath(dataurl, pathname)
+        console.log('file written', filename)
         if (!filename) {
             console.log('Error: Cannot write file to path.')
             return res.status(400).json({ error: 'Error writing file to path.' })
@@ -303,7 +305,10 @@ app.post(
                         .then(image => {
                             User
                                 .findOneAndUpdate({ _id }, { $set: { profileImage: filename } }, { new: true })
-                                .then(updatedUser => res.status(200).json({ user: updatedUser }))
+                                .then(updatedUser => {
+                                    const { _id, email, username, profileImage } = updatedUser
+                                    res.status(200).json({ user: { _id, email, username, profileImage } })
+                                })
                                 .catch(err => {
                                     console.log('Error updating user profile image', err)
                                     return res.status(400).json({ error: 'Error updating user profile image' })
@@ -317,16 +322,37 @@ app.post(
         }    
 })
 
-app.post('/api/delete', (req, res) => {
-    const { fileToRemove, username } = req.body
-    const filepath = `./src/assets/images/users/${username}/${fileToRemove}`
-    console.log('filepathToRemoveFromServer:', filepath)
-    fs.rm(filepath, () => {
-        console.log('removed file at path', filepath)
-        res.status(200).json({
-            deletedFile: filepath,
+app.post('/api/images/delete', (req, res) => {
+    const { _id, filename, userId, username } = req.body
+    const filepath = `./src/assets/images/users/${username}/${filename}`
+    console.log('filepath to remove:', filepath)
+    UserImage
+        .findOneAndRemove({ _id })
+        .then(result => {
+            console.log('UserImage removed', result)
+            fs.rm(filepath, () => {
+                console.log('removed file at path', filepath)
+
+                res.status(200).json({
+                    deletedFile: filepath,
+                })
+            })
         })
-    })
+})
+
+app.post('/api/user/avatar/', (req, res) => {
+    const { _id, filename } = req.body
+    console.log('body', req.body)
+    User
+        .findOneAndUpdate({ _id }, { $set: { profileImage: filename } }, { new: true })
+        .then(updatedUser => {
+            const { _id, email, username, profileImage } = updatedUser
+            res.status(200).json({ user: { _id, email, username, profileImage } })
+        })
+        .catch(err => {
+            console.log('Error setting avatar', err)
+            res.status(400).json({ error: err })
+        })
 })
 
 app.get('/api/user/images/:id', (req, res) => {

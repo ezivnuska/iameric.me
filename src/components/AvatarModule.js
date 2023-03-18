@@ -9,7 +9,6 @@ import {
 import axios from 'axios'
 import ReactAvatarEditor from 'react-avatar-editor'
 import {
-    Avatar,
     Dropzone,
 } from './'
 import EXIF from 'exif-js'
@@ -192,7 +191,6 @@ const AvatarModule = props => {
             id='avatar-dropzone-wrapper'
             style={styles.avatarDropzoneWrapper}
         >
-            <Avatar user={user} size={100} />
             <View
                 style={styles.wrapper}
                 id='avatar-editor-wrapper'
