@@ -21,7 +21,7 @@ const Disconnect = props => {
         const { user } = state
         console.log('signing out user')
         axios
-            .post(`${API_PATH}/signout`, { user })
+            .post(`${API_PATH}/signout`, { _id: user._id })
             .then(({ data }) => {
                 if (!data.success) throw new Error('Error signing out')
                 
@@ -44,7 +44,7 @@ const Disconnect = props => {
             onPress={signout}
             style={styles.container}
         >
-            <CloseCircleOutlined />
+            <CloseCircleOutlined style={styles.icon} />
         </TouchableOpacity>
     )
 }
@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
     },
     icon: {
         flex: 1,
-        lineHeight: 45,
+        // lineHeight: 45,
+        color: '#fff',
         paddingTop: 1,
     }
 })

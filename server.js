@@ -182,11 +182,11 @@ app.post('/api/authenticate', (req, res) => {
 app.post('/api/signout', (req, res) => {
     const { body } = req
     // console.log('body', body)
-    const { token } = body.user
+    const { _id } = body
     // const user = getDecodedUser(token)
     // req.cookies.user = null
     User
-        .findOneAndUpdate({ token }, { $set: { token: null, } }, { new: true, })
+        .findOneAndUpdate({ _id }, { $set: { token: null, } }, { new: true, })
         .then(result => {
             
             res.json({

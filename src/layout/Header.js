@@ -107,6 +107,6 @@ const styles = StyleSheet.create({
     },
     text: {
         paddingHorizontal: 10,
-        lineHeight: 45,
+        // lineHeight: 45,
     },
 })
