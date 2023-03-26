@@ -8,7 +8,8 @@ import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { CloseCircleOutlined } from '@ant-design/icons'
-const API_PATH = process.env.API_PATH || '/api'
+const API_PATH = '/api'
+// const API_PATH = process.env.API_PATH || '/api'
 import { navigate } from '../navigators/RootNavigation'
 const Disconnect = props => {
 

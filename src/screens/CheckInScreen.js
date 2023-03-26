@@ -9,7 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
-const API_PATH = process.env.API_PATH || '/api'
+// const API_PATH = process.env.API_PATH || '/api'
+const API_PATH = '/api'
 
 const CheckInScreen = props => {
     

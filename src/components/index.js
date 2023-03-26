@@ -6,6 +6,7 @@ import EntryDisplay from './EntryDisplay'
 import EntryList from './EntryList'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
+import FileSelector from './FileSelector'
 import HoverableView from './HoverableView'
 import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
@@ -27,6 +28,7 @@ export {
     EntryDisplay,
     EntryList,
     EntryListItem,
+    FileSelector,
     FeedbackForm,
     HoverableView,
     ImageDisplay,

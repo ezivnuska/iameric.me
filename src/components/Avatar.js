@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     Image,
     StyleSheet,
@@ -8,39 +8,8 @@ import defaultAvatar from '../assets/images/avatar-default.png'
 
 const Avatar = ({ user, size = 100, ...props }) => {
 
-    const [ avatar, setAvatar ] = useState(defaultAvatar)
-    const [ updated, setUpdated ] = useState(false)
-
-    const getAvatar = async () => {
-        const { profileImage, username } = user
-        if (profileImage) {
-            try {
-                const image = await import(`../assets/images/users/${username}/${profileImage}`)
-                setAvatar(image)
-            } catch {
-                console.log(`cannot retrieve profile image for ${username}`)
-            }
-        }
-    }
-
-    useEffect(() => {
-        getAvatar(user.username)
-    }, [])
-
-    useEffect(() => {
-        if (user) {
-            getAvatar(user.username)
-            setUpdated(true)
-        }
-    }, [user])
-
-    useEffect(() => {
-        if (updated) {
-            setUpdated(false)
-            if (avatar) setAvatar(avatar)
-        }
-    }, [avatar])
-
+    const { profileImage, username } = user
+    // const pathToAvatar = (process ? process.env.IMAGE_PATH : 'assets/images')
     return user ? (
         <View style={styles.container} {...props}>
             <Image
@@ -53,9 +22,11 @@ const Avatar = ({ user, size = 100, ...props }) => {
                         height: size,
                     }
                 ]}
-                source={avatar.default ? ({
-                    uri: avatar.default,
-                }) : defaultAvatar}
+                source={
+                    profileImage
+                        ? `assets/images/${username}/${profileImage}`
+                        : defaultAvatar
+                }
             />
         </View>
     ) : null

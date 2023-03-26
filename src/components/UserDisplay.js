@@ -7,7 +7,8 @@ import {
 import axios from 'axios'
 import { UserDetails, UserList } from './'
 import { AppContext } from '../AppContext'
-const API_PATH = process.env.API_PATH || '/api'
+// const API_PATH = process.env.API_PATH || '/api'
+const API_PATH = '/api'
 
 const UserDisplay = () => {
 

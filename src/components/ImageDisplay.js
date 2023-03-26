@@ -12,69 +12,39 @@ import {
 import { CloseCircleOutlined } from '@ant-design/icons'
 const size = 100
 
-const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
-
-    const [ source, setSource ] = useState(null)
-    const [ updated, setUpdated ] = useState(null)
-
-    const loadSource = async () => {
-        setUpdated(true)
-        try {
-            const image = await import(`../assets/images/users/${path}`)
-            setSource(image.default)
-        } catch {
-            console.log('could not import image')
-            setUpdated(false)
-        }
-    }
-
-    useEffect(() => {
-        loadSource()
-    }, [])
-
-    useEffect(() => {
-        if (updated) {
-            setUpdated(false)
-        }
-    }, [source])
-
-    return source ? (
-        <View style={styles.container}>
-            <HoverableView
-                style={styles.mouseOffStyles}
-                onHover={[styles.mouseOffStyles, styles.mouseOnStyles]}
-            >
-                <TouchableOpacity
-                    style={styles.setAvatarButton}
-                    onPress={() => {
-                        setAvatar()
-                    }}
-                />
-            </HoverableView>
+const ImageDisplay = ({ deleteImage, path, setAvatar }) => (
+    <View style={styles.container}>
+        <HoverableView
+            style={styles.mouseOffStyles}
+            onHover={[styles.mouseOffStyles, styles.mouseOnStyles]}
+        >
             <TouchableOpacity
-                style={styles.deleteButton}
+                style={styles.setAvatarButton}
                 onPress={() => {
-                    deleteImage()
+                    setAvatar()
                 }}
-            >
-                <CloseCircleOutlined style={styles.deleteIcon} />
-            </TouchableOpacity>
-            <Image
-                style={[
-                    styles.image,
-                    {
-                        width: size,
-                        height: size,  
-                    },
-                ]}
-                source={{
-                    uri: source
-                }}
-                // source={async () => await import(path)}
             />
-        </View>
-    ) : null
-}
+        </HoverableView>
+        <TouchableOpacity
+            style={styles.deleteButton}
+            onPress={() => {
+                deleteImage()
+            }}
+        >
+            <CloseCircleOutlined style={styles.deleteIcon} />
+        </TouchableOpacity>
+        <Image
+            style={[
+                styles.image,
+                {
+                    width: size,
+                    height: size,  
+                },
+            ]}
+            source={`/assets/images/${path}`}
+        />
+    </View>
+)
 
 export default ImageDisplay
 

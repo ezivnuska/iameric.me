@@ -3,7 +3,8 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
-const API_PATH = process.env.API_PATH || '/api'
+// const API_PATH = process.env.API_PATH || '/api'
+const API_PATH = '/api'
 
 const FeedbackForm = () => {
 

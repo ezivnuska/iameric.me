@@ -5,7 +5,7 @@ import {
     Text,
     TouchableOpacity,
     View,
-} from 'react-native-web'
+} from 'react-native'
 import axios from 'axios'
 import ReactAvatarEditor from 'react-avatar-editor'
 import {
@@ -16,11 +16,12 @@ import { AppContext } from '../AppContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import defaultStyles from '../styles'
 
-const API_PATH = process.env.API_PATH || '/api'
+const API_PATH = '/api'
+// const API_PATH = process.env.API_PATH || '/api'
 const windowDimensions = Dimensions.get('window')
 const screenDimensions = Dimensions.get('screen')
 
-const AvatarModule = props => {
+const AvatarModule = () => {
 
     const {
         state,

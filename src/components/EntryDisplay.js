@@ -8,7 +8,8 @@ import axios from 'axios'
 
 import { EntryList, FeedbackForm } from './'
 import { AppContext } from '../AppContext'
-const API_PATH = process.env.API_PATH || '/api'
+// const API_PATH = process.env.API_PATH || '/api'
+const API_PATH = '/api'
 
 const EntryDisplay = ({ navigation }) => {
 

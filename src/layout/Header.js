@@ -35,10 +35,10 @@ const Header = () => {
                 {user ? (
                     <View style={styles.aside}>
                         <TouchableOpacity
-                            style={styles.username}
+                            style={styles.usernameButton}
                             onPress={() => navigate('Settings')}
                         >
-                            <Text style={[styles.text, styles.username]}>{user.username}</Text>
+                            <Text style={styles.username}>{user.username}</Text>
                         </TouchableOpacity>
                         <Disconnect />
                     </View>
@@ -98,15 +98,14 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
         paddingRight: 10,
     },
-    username: {
+    usernameButton: {
         flex: 1,
         flexShrink: 0,
         flexBasis: 'auto',
-        color: '#ffffff',
-        fontWeight: 700,
     },
-    text: {
+    username: {
         paddingHorizontal: 10,
-        // lineHeight: 45,
+        color: '#fff',
+        fontWeight: 700,
     },
 })

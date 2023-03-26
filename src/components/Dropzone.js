@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react'
+import React, { createRef, useCallback, useState } from 'react'
 import {
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native'
 import { useDropzone } from 'react-dropzone'
@@ -10,21 +11,26 @@ const Dropzone = ({ children, handleDrop, noClick, preview = null, ...props }) =
 
   const [ size, setSize ] = useState(300)
   const [ avatar, setAvatar ] = useState(preview)
-  
+  const dropzoneRef = createRef()
   const onDrop = useCallback(accepted => {
 
-    const reader = new FileReader()
+    console.log('preview', preview)
+    console.log('onDrop', accepted)
+    accepted.forEach(file => {
+      console.log('file', file)
+      const reader = new FileReader()
     
-    reader.onabort = () => console.log('file reading was aborted')
-    reader.onerror = () => console.log('file reading failed')
-    reader.onload = e => {
-      e.preventDefault()
-      const result = e.target.result
-      // console.log('result', result)
-      handleDrop(result)
-    }
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading failed')
+      reader.onload = e => {
+        e.preventDefault()
+        const result = e.target.result
+        handleDrop(result)
+      }
 
-    reader.readAsDataURL(accepted[0])
+      reader.readAsDataURL(accepted[0])  
+    })
+    
   }, [])
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -37,10 +43,12 @@ const Dropzone = ({ children, handleDrop, noClick, preview = null, ...props }) =
   })
   
   return (
-    <View {...getRootProps()} {...props}>
-      <TextInput {...getInputProps()} />
+    <View ref={dropzoneRef} {...props} {...getRootProps()}>
+      <TextInput {...getInputProps({ id: 'inputId', files: [] })} />
       
-      <Text style={{
+      <Text
+        htmlFor='inputId'
+        style={{
           width: size + 'px',
           height: size + 'px',
           lineHeight: size + 'px',

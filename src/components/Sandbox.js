@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native-web'
 import {
-    AvatarModule,
+    FileSelector,
     ImageList,
     Profile,
 } from '../components'
@@ -21,7 +21,7 @@ const Sandbox = () => {
     const [ images, setImages ] = useState(null)
 
     useEffect(() => {
-        // getImages()
+        getImages()
     }, [])
 
     useEffect(() => {
@@ -48,16 +48,19 @@ const Sandbox = () => {
             .post(`${API_PATH}/images/delete`, { _id, filename, userId: user._id, username: user.username })
             .then(({ error, success, user }) => {
                 if (error) console.log('Error deleting image', error)
-                if (user) dispatch({ type: 'SET_USER', user })
-                return images.filter(image => image._id !== _id)}
-            )
+                if (user) {
+                    console.log('user returned from delete', user)
+                    dispatch({ type: 'SET_USER', user })
+                }
+                return setImages(images.filter(image => image._id !== _id))
+            })
             .catch(err => console.log(`Catch: Error deleting filename: ${filename}`, err))
     }
 
     return (
         <View>
             <Profile user={user} />
-            <AvatarModule />
+            <FileSelector />
             <ImageList
                 deleteImage={(_id, filename) => deleteImage(_id, filename)}
                 setAvatar={(_id, filename) => setAvatar(_id, filename)}

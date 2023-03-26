@@ -16,6 +16,7 @@ const { mkdirp } = require('mkdirp')
 const im = gm.subClass({ imageMagick: true })
 const path = require('path')
 const PORT = process.env.PORT
+const IMAGE_PATH = process.env.IMAGE_PATH || 'assets/images'
 
 const Entry = require('./models/Entry')
 const UserImage = require('./models/UserImage')
@@ -28,7 +29,8 @@ const server = createServer(app)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors({ origin: true, credentials: true }))
-// app.use(express.static('web-build'))
+app.use(express.static('dist'))
+app.use('/assets', express.static('./assets'))
 // app.use(cookieParser())
 
 app.use(session({
@@ -270,7 +272,7 @@ const writeFileToPath = async (file, pathname) => {
     dirExists = fs.existsSync(pathname)
     const filename = `${username}-${Date.now()}.${ext}`
     const filepath = `${pathname}/${filename}`
-    console.log('filename to write...', filename)
+    console.log('filepath to write...', filepath)
     let returnValue = filename
     try {
         fs.writeFile(filepath, buffer, err => {
@@ -287,7 +289,8 @@ app.post(
     '/api/upload/avatar',
     async (req, res) => {
         const { dataurl, username } = req.body
-        const pathname = path.join(__dirname, `./src/assets/images/users/${username}`)
+        const pathname = process ? `${process.env.IMAGE_PATH}/${username}` : `./assets/images/${username}`
+        console.log('writing to pathname', pathname)
         const filename = await writeFileToPath(dataurl, pathname)
         console.log('file written', filename)
         if (!filename) {
@@ -325,7 +328,8 @@ app.post(
 
 app.post('/api/images/delete', (req, res) => {
     const { _id, filename, userId, username } = req.body
-    const filepath = `./src/assets/images/users/${username}/${filename}`
+    const imagePath = process.env.IMAGE_PATH ? process.env.IMAGE_PATH : './assets/images'
+    const filepath = `${imagePath}/${username}/${filename}`
     console.log('filepath to remove:', filepath)
     User
         .findOne({ _id: userId })

@@ -2,6 +2,7 @@ const path = require('path');
 
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 const appDirectory = path.resolve(__dirname);
 const {presets} = require(`${appDirectory}/babel.config.js`);
@@ -46,9 +47,21 @@ const imageLoaderConfiguration = {
     options: {
       name: '[name].[ext]',
       esModule: false,
+      // exclude: [path.resolve(__dirname, './assets/images/')],
     },
   },
-};
+}
+
+const fileLoaderConfiguration = {
+  test: /\.(gif|svg|jpe?g|png)$/,
+  use: {
+    loader: 'file-loader',
+    options: {
+      name: '[name].[ext]',
+      esModule: false,
+    },
+  },
+}
 
 module.exports = {
   entry: {
@@ -76,12 +89,13 @@ module.exports = {
       navigators: path.resolve(__dirname, './src/navigators'),
       layout: path.resolve(__dirname, './src/layout'),
       styles: path.resolve(__dirname, './src/styles'),
-      images: path.resolve(__dirname, './src/assets/images'),
+      images: path.resolve(__dirname, './assets/images'),
     },
   },
   module: {
     rules: [
       babelLoaderConfiguration,
+      fileLoaderConfiguration,
       imageLoaderConfiguration,
       svgLoaderConfiguration,
     ],
@@ -98,8 +112,20 @@ module.exports = {
       'process.env.API_PATH': JSON.stringify(process.env.API_PATH),
       'process.env.PORT': JSON.stringify(process.env.PORT),
     }),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './src/assets',
+          to: './assets',
+        }
+      ],
+    }),
   ],
   devServer: {
+    static: {
+      directory: path.join(__dirname, 'assets'),
+      publicPath: '/assets',
+    },
     proxy: {
       '/api': 'http://localhost:4321',
     }

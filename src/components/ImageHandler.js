@@ -16,7 +16,8 @@ import {
 } from 'react-native-image-picker'
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
-const API_PATH = process.env.API_PATH || '/api'
+// const API_PATH = process.env.API_PATH || '/api'
+const API_PATH = '/api'
 
 
 const ImageHandler = () => {
@@ -69,7 +70,7 @@ const ImageHandler = () => {
     const removePreview = key => setFiles(files.filter((file, index) => index !== key))
 
     const renderImages = () => {
-        return files.length ? (
+        return (files && files.length) ? (
             <View style={styles.showcase}>
                 {files.map((file, key) => (
                     <TouchableOpacity
@@ -208,8 +209,8 @@ const ImageHandler = () => {
             >
                 <Text>Select Image</Text>
             </TouchableOpacity>
-            {files.length ? renderImages() : null}
-            {files[0] ? (
+            {(files && files.length) ? renderImages() : null}
+            {(files && files.length) ? (
                 <View>
                     {/*<ReactAvatarEditor
                         image={files[0].uri}
