@@ -23,7 +23,7 @@ const FileSelector = () => {
     }
 
     console.log('Platform.OS', Platform.OS)
-    alert('Platform.OS', Platform.OS)
+    alert(`Platform.OS: ${Platform.OS}`)
 
     if (Platform.OS === 'ios' || Platform.OS === 'android') {
         // launchImageLibrary()
@@ -52,19 +52,22 @@ const FileSelector = () => {
       style={[
         STYLES.flex,
         STYLES.centerContainer,
-        { backgroundColor: '#0f0' }
+        // { backgroundColor: '#0f0' }
       ]}
     >
-      <Text style={[STYLES.title, { color: '#f00' }]}>
-        Simple Image Picker
-      </Text>
-      <TouchableOpacity
-        onPress={selectImage}
-        style={[
-          STYLES.selectButtonContainer,
-          { backgroundColor: '#00f' }
-        ]}
-      >
+        <Text style={[
+            STYLES.title,
+            // { color: '#f00' }
+        ]}>
+            Simple Image Picker
+        </Text>
+        <TouchableOpacity
+            onPress={selectImage}
+            style={[
+                STYLES.selectButtonContainer,
+                // { backgroundColor: '#00f' }
+            ]}
+        >
         <Text style={STYLES.selectButtonTitle}>Pick an image</Text>
       </TouchableOpacity>
     </View>
