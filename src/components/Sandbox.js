@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native-web'
 import {
-    FileSelector,
+    AvatarModule,
     ImageList,
     Profile,
 } from '../components'
@@ -60,7 +60,7 @@ const Sandbox = () => {
     return (
         <View>
             <Profile user={user} />
-            <FileSelector />
+            <AvatarModule />
             <ImageList
                 deleteImage={(_id, filename) => deleteImage(_id, filename)}
                 setAvatar={(_id, filename) => setAvatar(_id, filename)}

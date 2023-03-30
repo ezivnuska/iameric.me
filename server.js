@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const SESSION_SECRET = process.env.JWT_SECRET// || require('./config').JWT_SECRET
 const db = process.env.DB_CONNECTION_STRING// || require('./config').DB_CONNECTION_STRING
-const multer = require('multer')
+// const multer = require('multer')
 // const formidable = require('formidable')
 const fs = require('fs')
 const gm = require('gm')
@@ -289,7 +289,8 @@ app.post(
     '/api/upload/avatar',
     async (req, res) => {
         const { dataurl, username } = req.body
-        const pathname = process ? `${process.env.IMAGE_PATH}/${username}` : `./assets/images/${username}`
+        const imagePath = process.env.IMAGE_PATH || './assets/images'
+        const pathname = `${imagePath}/${username}`
         console.log('writing to pathname', pathname)
         const filename = await writeFileToPath(dataurl, pathname)
         console.log('file written', filename)

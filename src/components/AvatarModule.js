@@ -10,6 +10,7 @@ import axios from 'axios'
 import ReactAvatarEditor from 'react-avatar-editor'
 import {
     Dropzone,
+    FileSelector,
 } from './'
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
@@ -119,6 +120,7 @@ const AvatarModule = () => {
     
 
     const saveDataURI = dataURI => {
+        console.log('saving data URI', user.username)
         setUpdated(true)
         axios
             .post(`${API_PATH}/upload/avatar`, { dataurl: dataURI, username: user.username }, { new: true })
@@ -134,6 +136,7 @@ const AvatarModule = () => {
         reader.onload = e => {
             const image = e.target.result
             const exif = EXIF.readFromBinaryFile(image)
+            alert(`exif, ${exif}`)
             resetOrientation(dataUrl, exif ? exif.Orientation : null)
         }
         const blob = await dataURItoBlob(dataUrl)
@@ -149,6 +152,7 @@ const AvatarModule = () => {
     }
 
     const resetOrientation = (srcBase64, srcOrientation) => {
+        alert(`srcOrientation: ${srcOrientation}`)
         const image = new Image()
 
         image.onload = () => {
@@ -158,7 +162,7 @@ const AvatarModule = () => {
                 ctx = canvas.getContext('2d')
             
             // set proper canvas dimensions before transform & export
-            if (4 < srcOrientation && srcOrientation < 9) {
+            if (srcOrientation > 4 && srcOrientation < 9) {
                 canvas.width = height;
                 canvas.height = width;
             } else {
@@ -172,8 +176,11 @@ const AvatarModule = () => {
                 case 3: ctx.transform(-1, 0, 0, -1, width, height ); break
                 case 4: ctx.transform(1, 0, 0, -1, 0, height ); break
                 case 5: ctx.transform(0, 1, 1, 0, 0, 0); break
-                case 6: ctx.transform(0, 1, -1, 0, height , 0); break
-                case 7: ctx.transform(0, -1, -1, 0, height , width); break
+                case 6:
+                    alert('rotating')
+                    ctx.transform(0, 1, -1, 0, height, 0)
+                    break
+                case 7: ctx.transform(0, -1, -1, 0, height, width); break
                 case 8: ctx.transform(0, -1, 1, 0, 0, width); break
                 default: break
             }
@@ -197,16 +204,20 @@ const AvatarModule = () => {
                 id='avatar-editor-wrapper'
             >
                 {!preview ? (
-                    <Dropzone
-                        id='dropzone'
-                        handleDrop={dataUrl => handleDrop(dataUrl)}
-                        noClick={preview !== null}
-                        style={{
-                            width: size + 'px',
-                            height: size + 'px',
-                            marginTop: 20 + 'px',
-                        }}
+                    <FileSelector
+                        handleDrop={uri => handleDrop(uri)}
                     />
+
+                    // <Dropzone
+                    //     id='dropzone'
+                    //     handleDrop={dataUrl => handleDrop(dataUrl)}
+                    //     noClick={preview !== null}
+                    //     style={{
+                    //         width: size + 'px',
+                    //         height: size + 'px',
+                    //         marginTop: 20 + 'px',
+                    //     }}
+                    // />
                 ) : (
                     <ReactAvatarEditor
                         image={preview}

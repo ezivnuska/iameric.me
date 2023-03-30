@@ -7,68 +7,77 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-// import ImagePicker, { launchCamera, launchImageLibrary } from 'react-native-image-picker'
+import * as ImagePicker from 'expo-image-picker'
+import * as FileSystem from 'expo-file-system'
+const API_PATH = '/api'
 
-const FileSelector = () => {
-  const [imageSource, setImageSource] = useState(null)
+const FileSelector = ({ handleDrop }) => {
 
-  const selectImage = () => {
-    let options = {
-      title: 'You can choose one image',
-      maxWidth: 256,
-      maxHeight: 256,
-      storageOptions: {
-        skipBackup: true
+  const openImagePickerAsync = async () => {
+    console.log('opening image picker')
+    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+      if (permissionResult.granted === false) {
+          alert('Permission to access camera roll is required!')
+          return
       }
-    }
+      let pickerResult = await ImagePicker.launchImageLibraryAsync()
+      if (!pickerResult.cancelled) {
+          const uploadResult = await FileSystem.uploadAsync(`${API_PATH}/upload/avatar`, pickerResult.uri, {
+              httpMethod: 'POST',
+              // uploadType: FileSystemUploadType.MULTIPART,
+              fieldName: 'file'
+          })
 
-    console.log('Platform.OS', Platform.OS)
-    alert(`Platform.OS: ${Platform.OS}`)
+          console.log('uploadResult', uploadResult)
+          handleDrop(uploadResult.assets[0].uri)
+      }
+  }
 
-    if (Platform.OS === 'ios' || Platform.OS === 'android') {
-        // launchImageLibrary()
-    } else {
-        // ImagePicker.showImagePicker(options, response => {
-        //     console.log({ response })
-      
-            // if (response.didCancel) {
-            //   console.log('User cancelled photo picker')
-            //   Alert.alert('You did not select any image')
-            // } else if (response.error) {
-            //   console.log('ImagePicker Error: ', response.error)
-            // } else if (response.customButton) {
-            //   console.log('User tapped custom button: ', response.customButton)
-            // } else {
-            //   let source = { uri: response.uri }
-            //   console.log({ source })
-            // }
-        // })
-    }
+  const handlePress = () => {
+    console.log('handlePress', Platform.OS)
+    if (Platform.OS === 'web') selectImage()
+    else openImagePickerAsync()
+  }
+
+  const selectImage = async () => {
+    console.log('selectImage')
+    // let options = {
+    //   title: 'You can choose one image',
+    //   maxWidth: 256,
+    //   maxHeight: 256,
+    //   storageOptions: {
+    //     skipBackup: true
+    //   }
+    // }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: false,
+        quality: 1,
+    })
+
+    if (result.canceled) return
+    
+    console.log('web result', result, handleDrop)
+    handleDrop(result.assets[0].uri)
     
   }
 
   return (
     <View
       style={[
-        STYLES.flex,
-        STYLES.centerContainer,
+        styles.flex,
+        styles.centerContainer,
         // { backgroundColor: '#0f0' }
       ]}
     >
-        <Text style={[
-            STYLES.title,
-            // { color: '#f00' }
-        ]}>
-            Simple Image Picker
-        </Text>
         <TouchableOpacity
-            onPress={selectImage}
+            onPress={handlePress}
             style={[
-                STYLES.selectButtonContainer,
+              styles.selectButtonContainer,
                 // { backgroundColor: '#00f' }
             ]}
         >
-        <Text style={STYLES.selectButtonTitle}>Pick an image</Text>
+        <Text style={styles.selectButtonTitle}>Pick an image</Text>
       </TouchableOpacity>
     </View>
   )
@@ -76,7 +85,7 @@ const FileSelector = () => {
 
 export default FileSelector
 
-const STYLES = StyleSheet.create({
+const styles = StyleSheet.create({
   flex: {
     flex: 1
   },

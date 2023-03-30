@@ -10,10 +10,10 @@ import {
 import { Avatar } from './'
 import axios from 'axios'
 // import ReactAvatarEditor from 'react-avatar-editor'
-import {
-    // launchCamera,
-    launchImageLibrary,
-} from 'react-native-image-picker'
+// import {
+//     // launchCamera,
+//     launchImageLibrary,
+// } from 'react-native-image-picker'
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
 // const API_PATH = process.env.API_PATH || '/api'
@@ -51,13 +51,13 @@ const ImageHandler = () => {
 
     const initSelector = async () => {
         return
-        const libraryInput = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 })
-        if (libraryInput.errorCode) setError(libraryInput.errorMessage)
-        const dataURI = libraryInput.assets[0].uri
-        if (libraryInput.assets) {
-            setFiles([...files, ...libraryInput.assets])
-            // setPreview(dataURI)
-        }
+        // const libraryInput = await launchImageLibrary({ mediaType: 'photo', selectionLimit: 1 })
+        // if (libraryInput.errorCode) setError(libraryInput.errorMessage)
+        // const dataURI = libraryInput.assets[0].uri
+        // if (libraryInput.assets) {
+        //     setFiles([...files, ...libraryInput.assets])
+        //     // setPreview(dataURI)
+        // }
     }
 
     const handlePress = e => {
