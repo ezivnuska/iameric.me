@@ -340,14 +340,12 @@ app.post('/api/images/delete', (req, res) => {
                 User
                     .findOneAndUpdate({ _id: userId }, { $set: { profileImage: null } }, { new: true })
                     .then(user => {
-                        console.log('User profileImage updated', user.profileImage)
                         UserImage
                             .findOneAndRemove({ _id })
                             .then(result => {
                                 console.log('image entry removed from db', result.filename)
                                 fs.rm(filepath, () => {
                                     console.log('and also removed file at path', filepath)
-                                    console.log('returning user')
                                     res.status(200).json({ user })
                                 })
                             })
@@ -405,7 +403,7 @@ mongoose
         useUnifiedTopology: true,
         keepAlive: true,
     })
-    .then(() => console.log(`MongoDB connected to\n${db}\n\n`))
+    .then(() => console.log(`MongoDB connected to\n${db}\n\nHello World`))
     .catch(err => console.log('Error connecting to database', err))
 
 server.listen(PORT, () => console.log(`\n\n\nserver listen on ${PORT}\n`))

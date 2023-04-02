@@ -4,7 +4,7 @@ import {
     StyleSheet,
     View,
 } from 'react-native'
-import defaultAvatar from '../assets/images/avatar-default.png'
+// import defaultAvatar from '../images/avatar-default.png'
 
 const Avatar = ({ user, size = 100, ...props }) => {
 
@@ -25,7 +25,7 @@ const Avatar = ({ user, size = 100, ...props }) => {
                 source={
                     profileImage
                         ? `assets/images/${username}/${profileImage}`
-                        : defaultAvatar
+                        : '../images/avatar-default.png'
                 }
             />
         </View>
