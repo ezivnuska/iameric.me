@@ -5,10 +5,11 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native-web'
-import {
-    EntryDisplay,
-} from '.'
 import { navigate } from '../navigators/RootNavigation'
+import {
+    Sandbox,
+    UserDisplay,
+} from '../components'
 import { LeftOutlined } from '@ant-design/icons'
 
 const Settings = () => {
@@ -24,7 +25,8 @@ const Settings = () => {
     
                 <Text style={styles.headingCol}>Settings</Text>
             </View>
-            <EntryDisplay />
+            <Sandbox />
+            <UserDisplay />
         </View>
     )
 }
@@ -37,8 +39,8 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        borderWidth: 1,
-        borderColor: 'black',
+        // borderWidth: 1,
+        // borderColor: 'black',
     },
     header: {
         flex: 1,
@@ -49,16 +51,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         flexBasis: 'auto',
-        borderWidth: 1,
-        borderColor: 'pink',
+        // borderWidth: 1,
+        // borderColor: 'pink',
     },
     iconCol: {
         flex: 1,
         flexShrink: 0,
         flexGrow: 0,
         flexBasis: 'auto',
-        borderWidth: 1,
-        borderColor: 'blue',
+        // borderWidth: 1,
+        // borderColor: 'blue',
     },
     headingCol: {
         flex: 1,
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         fontSize: 18,
         fontWeight: 600,
-        borderWidth: 1,
-        borderColor: 'yellow',
+        // borderWidth: 1,
+        // borderColor: 'yellow',
     },
 })

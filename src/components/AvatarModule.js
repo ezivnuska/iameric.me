@@ -136,7 +136,7 @@ const AvatarModule = () => {
         reader.onload = e => {
             const image = e.target.result
             const exif = EXIF.readFromBinaryFile(image)
-            alert(`exif, ${exif}`)
+            // alert(`exif, ${exif}`)
             resetOrientation(dataUrl, exif ? exif.Orientation : null)
         }
         const blob = await dataURItoBlob(dataUrl)
@@ -152,7 +152,7 @@ const AvatarModule = () => {
     }
 
     const resetOrientation = (srcBase64, srcOrientation) => {
-        alert(`srcOrientation: ${srcOrientation}`)
+        // alert(`srcOrientation: ${srcOrientation}`)
         const image = new Image()
 
         image.onload = () => {

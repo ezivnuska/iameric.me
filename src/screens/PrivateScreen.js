@@ -1,18 +1,16 @@
 import React from 'react'
 import {
     View
-} from 'react-native-web'
+} from 'react-native'
 import { SecureScreen } from '.'
 import {
-    Sandbox,
-    UserDisplay,
+    EntryDisplay,
 } from '../components'
 
 const PrivateScreen = props => (
     <SecureScreen { ...props }>
         <View>
-            <Sandbox />
-            <UserDisplay />
+            <EntryDisplay />
         </View>
     </SecureScreen>
 )
