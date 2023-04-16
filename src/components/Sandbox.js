@@ -18,12 +18,10 @@ const Sandbox = () => {
 
     const { user } = state
     const [ images, setImages ] = useState(null)
+    const [ loaded, setLoaded ] = useState(false)
 
     useEffect(() => {
-        getImages()
-    }, [])
-
-    useEffect(() => {
+        dispatch({ type: 'ADD_ACTIVITY', activity: 'loading user images...'})
         getImages()
     }, [user])
 
@@ -31,7 +29,11 @@ const Sandbox = () => {
         const userId = user._id
         axios
             .get(`/api/user/images/${userId}`)
-            .then(({ data }) => setImages(data.images))
+            .then(({ data }) => {
+                setLoaded(true)
+                dispatch({ type: 'ADD_ACTIVITY', activity: 'images loaded.'})
+                setImages(data.images)
+            })
             .catch(err => console.log('Error getting images', err))
     }
 

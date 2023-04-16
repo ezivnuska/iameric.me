@@ -1,3 +1,6 @@
+import ActivityDisplay from './ActivityDisplay'
+import ActivityList from './ActivityList'
+import ActivityListItem from './ActivityListItem'
 import Avatar from './Avatar'
 import AvatarModule from './AvatarModule'
 import Disconnect from './Disconnect'
@@ -21,6 +24,9 @@ import UserDetails from './UserDetails'
 import UserDisplay from './UserDisplay'
 
 export {
+    ActivityDisplay,
+    ActivityList,
+    ActivityListItem,
     Avatar,
     AvatarModule,
     Disconnect,

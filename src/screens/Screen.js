@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
+import { ActivityDisplay } from '../components'
 // const window = Dimensions.get('window')
 const { height } = window
 
 const Screen = ({ children, route }) => {
-    // console.log('Screen:route:', route)
+
     useEffect(() => {
         const saveRoute = async () => {
             const routeName = (route && route.name) ? route.name : 'auth'
@@ -27,7 +28,10 @@ const Screen = ({ children, route }) => {
     
     return (
         <View style={styles.container}>
-            {children}
+            <ActivityDisplay />
+            <View>
+                {children}
+            </View>
         </View>
     )
 }

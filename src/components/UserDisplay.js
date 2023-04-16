@@ -3,7 +3,7 @@ import {
     StyleSheet,
     Text,
     View,
-} from 'react-native-web'
+} from 'react-native'
 import axios from 'axios'
 import { UserDetails, UserList } from './'
 import { AppContext } from '../AppContext'
@@ -30,11 +30,15 @@ const UserDisplay = () => {
 
     useEffect(() => {
         setLoading(true)
+        dispatch({ type: 'ADD_ACTIVITY', activity: 'loading users...' })
         getUsers()
     }, [])
 
     useEffect(() => {
-        if (loading) setLoading(false)
+        if (loading) {
+            setLoading(false)
+            dispatch({ type: 'ADD_ACTIVITY', activity: 'users loaded.' })
+        }
     }, [users])
 
     const setUser = id => setProfileId(id)

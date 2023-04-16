@@ -12,7 +12,6 @@ import { AppContext } from '../AppContext'
 import { Link } from '@react-navigation/native'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
-const API_PATH = '/api'
 
 const SignInForm = props => {
     const {
