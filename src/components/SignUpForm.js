@@ -35,7 +35,7 @@ const SignUpForm = props => {
   const onChangeConfirmPassword = value => setConfirmPassword(value)
 
   useEffect(() => {
-    if (user) navigate('Private')
+    if (user) navigate('private')
   }, [user])
 
   const setUser = user => {

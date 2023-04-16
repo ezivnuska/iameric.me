@@ -73,16 +73,16 @@ const CheckInScreen = props => {
                     .getItem('route')
                     .then(route => {
                         // console.log('found last route', route)
-                        navigate(route || 'Private')
+                        navigate(route || 'private')
                     })
                     .catch(err => console.log(err))
             } else {
-                navigate('SignIn')
+                navigate('auth')
             }
         } else {
             // dispatch({ type: 'SET_LOADING', loading: false })
             // const route = await AsyncStorage.getItem('route') || 'Public'
-            navigate('Public')
+            navigate('auth')// TODO: add public home screen
         }
         return () => console.log('AuthLoadingScreen unmounting...')
     }, [])

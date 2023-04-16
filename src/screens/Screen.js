@@ -9,7 +9,7 @@ const Screen = ({ children, route }) => {
     // console.log('Screen:route:', route)
     useEffect(() => {
         const saveRoute = async () => {
-            const routeName = (route && route.name) ? route.name : 'Home'
+            const routeName = (route && route.name) ? route.name : 'auth'
             // const { pathname } = window.location
             // console.log('path', pathname)
             // console.log('screen route:', route)

@@ -18,7 +18,7 @@ const Settings = () => {
             <View style={styles.header}>
                 <TouchableOpacity
                     style={styles.iconCol}
-                    onPress={() => navigate('Private')}
+                    onPress={() => navigate('private')}
                 >
                     <LeftOutlined />
                 </TouchableOpacity>

@@ -36,7 +36,7 @@ const Header = () => {
                     <View style={styles.aside}>
                         <TouchableOpacity
                             style={styles.usernameButton}
-                            onPress={() => navigate('Settings')}
+                            onPress={() => navigate('settings')}
                         >
                             <Text style={styles.username}>{user.username}</Text>
                         </TouchableOpacity>

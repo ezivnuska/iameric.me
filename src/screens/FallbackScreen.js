@@ -6,8 +6,8 @@ import { navigate } from '../navigators/RootNavigation'
 const FallbackScreen = ({ route, ...props }) => {
 
     useEffect(() => {
-        console.log('FallbackScreen: navigating to CheckIn')
-        navigate('Home')
+        console.log('FallbackScreen: navigating to auth')
+        navigate('auth')
     }, [])
 
     return (

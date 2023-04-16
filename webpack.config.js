@@ -109,8 +109,8 @@ module.exports = {
       // See: https://github.com/necolas/react-native-web/issues/349
       __DEV__: JSON.stringify(true),
       // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.API_PATH': JSON.stringify(process.env.API_PATH),
-      'process.env.PORT': JSON.stringify(process.env.PORT),
+      // 'process.env.API_PATH': JSON.stringify(process.env.API_PATH),
+      // 'process.env.PORT': JSON.stringify(process.env.PORT),
     }),
     new CopyPlugin({
       patterns: [
@@ -121,13 +121,19 @@ module.exports = {
       ],
     }),
   ],
+  devtool: 'source-map',
   devServer: {
     static: {
       directory: path.join(__dirname, 'assets'),
       publicPath: '/assets',
     },
+    port: 8081,
+    historyApiFallback: true,
     proxy: {
-      '/api': 'http://localhost:4321',
-    }
-  }
-};
+      '/api': {
+        target: 'http://127.0.0.1:4321',
+        pathRewrite: { '^/api': '' },
+      },
+    },
+  },
+}

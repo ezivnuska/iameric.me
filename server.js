@@ -66,7 +66,7 @@ const getDecodedUser = token => jwt.decode(token, SESSION_SECRET)
 //     next()
 // })
 
-app.post('/api/signup', (req, res) => {
+app.post('/signup', (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hashedPW) => {
         if (err) {
             res.status(422).json({'error': err});
@@ -114,7 +114,7 @@ app.post('/api/signup', (req, res) => {
     })
 })
 
-app.post('/api/signin', (req, res) => {
+app.post('/signin', (req, res) => {
     const { email, password } = req.body
     User
         .findOne({ email })
@@ -153,10 +153,9 @@ app.post('/api/signin', (req, res) => {
         .catch(err => res.json({msg: 'Failed to find the user'}))
 })
 
-app.post('/api/authenticate', (req, res) => {
+app.post('/authenticate', (req, res) => {
     console.log('authenticating token...')
-    const { body } = req
-    const { token } = body
+    const { token } = req.body
     if (token) {
         const user = getDecodedUser(token)
         const expired = (new Date(user.exp) - Date.now() > 0)
@@ -174,14 +173,16 @@ app.post('/api/authenticate', (req, res) => {
                         user: refreshedUser,
                     })
                 })
-                .catch(err => console.log('Error refreshing user token', newToken, err))
+                .catch(err => {
+                    console.log('Error refreshing user token. newToken, error:', newToken, err)
+                })
         }
     } else {
         res.status(200).json({ user: null, error: 'auth token required'})
     }
 })
 
-app.post('/api/signout', (req, res) => {
+app.post('/signout', (req, res) => {
     const { body } = req
     // console.log('body', body)
     const { _id } = body
@@ -205,7 +206,7 @@ app.post('/api/signout', (req, res) => {
         })
 })
 
-app.get('/api/users', (req, res) => {
+app.get('/users', (req, res) => {
     User
         .find({})
         .then(result => {
@@ -215,7 +216,7 @@ app.get('/api/users', (req, res) => {
         })
 })
 
-app.post('/api/entry', (req, res) => {
+app.post('/entry', (req, res) => {
     const { body } = req
     const { username, userId, text } = body
     const newEntry = { username, userId, text }
@@ -228,7 +229,7 @@ app.post('/api/entry', (req, res) => {
         })
 })
 
-app.get('/api/entries', (req, res) => {
+app.get('/entries', (req, res) => {
     Entry
         .find({})
         .then(result => {
@@ -238,7 +239,7 @@ app.get('/api/entries', (req, res) => {
         })
 })
 
-app.post('/api/entry/delete', (req, res) => {
+app.post('/entry/delete', (req, res) => {
     const { id } = req.body
     Entry
         .findOneAndDelete(id)
@@ -249,7 +250,7 @@ app.post('/api/entry/delete', (req, res) => {
         })
 })
 
-app.get('/api/users/:id', async (req, res, next) => {
+app.get('/users/:id', async (req, res, next) => {
     const { id } = req.params
     User
         .findOne({ _id: id})
@@ -286,7 +287,7 @@ const writeFileToPath = async (file, pathname) => {
 }
 
 app.post(
-    '/api/upload/avatar',
+    '/upload/avatar',
     async (req, res) => {
         const { dataurl, username } = req.body
         const imagePath = process.env.IMAGE_PATH || './assets/images'
@@ -327,7 +328,7 @@ app.post(
         }    
 })
 
-app.post('/api/images/delete', (req, res) => {
+app.post('/images/delete', (req, res) => {
     const { _id, filename, userId, username } = req.body
     const imagePath = process.env.IMAGE_PATH ? process.env.IMAGE_PATH : './assets/images'
     const filepath = `${imagePath}/${username}/${filename}`
@@ -368,7 +369,7 @@ app.post('/api/images/delete', (req, res) => {
         .catch(err => console.log('error', err))
 })
 
-app.post('/api/user/avatar/', (req, res) => {
+app.post('/user/avatar/', (req, res) => {
     const { _id, filename } = req.body
     User
         .findOneAndUpdate({ _id }, { $set: { profileImage: filename } }, { new: true })
@@ -382,7 +383,7 @@ app.post('/api/user/avatar/', (req, res) => {
         })
 })
 
-app.get('/api/user/images/:id', (req, res) => {
+app.get('/user/images/:id', (req, res) => {
     const userId = req.params.id
     UserImage
         .find({ userId })

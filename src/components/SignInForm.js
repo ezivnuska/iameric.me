@@ -43,7 +43,7 @@ const SignInForm = props => {
 			.setItem('userToken', newUser.token)
 			.then(() => {
 					dispatch({ type: 'SET_USER', user: newUser })
-					navigate('Private')
+					navigate('private')
 				})
 				.catch(err => alert('Signin Error:', err))
 	}
@@ -66,7 +66,7 @@ const SignInForm = props => {
 				}    
 			})
 			.catch(err => {
-				alert('Error signing in')
+				// alert('Error signing in')
 				console.log('Failed sign in.', err)
 			})
 	}

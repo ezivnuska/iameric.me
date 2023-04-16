@@ -18,7 +18,7 @@ import defaultStyles from '../styles'
 const API_PATH = '/api'
 // const API_PATH = process.env.API_PATH || '/api'
 
-const AuthScreen = props => {
+const AuthScreen = ({ navigation, ...props }) => {
     
     const {
         state,
@@ -80,28 +80,43 @@ const AuthScreen = props => {
 	}
 
     const authenticateUser = async token => {
-        // console.log('Token found. authenticating...')
-        return await axios
+        console.log('Authenticating token...')
+        const authenticatedUser = await axios
             .post(`${API_PATH}/authenticate`, { token })
             .then(async ({ data }) => {
-                const { user } = data
+                const { error, user } = data
+
+                if (error) {
+                    console.log('Error authenticating token', error)
+                    await AsyncStorage.removeItem('userToken')
+                    return null
+                }
                 
                 if (user) {
-                    console.log('authenticated user returned', user.username)
+                    console.log('authenticated user found', user.username)
                     return user
                 }
 
                 // else
                 console.log('no user found. clearing local storage.')
                     
-                await AsyncStorage.removeItem('userToken')
-                await AsyncStorage.removeItem('route')
+                await AsyncStorage.multiRemove(['userToken', 'route'])
+
+                setFormVisible(true)
                 
                 return null
             })
             .catch(err => {
                 console.log('Error getting user', err)
+                return null
             })
+        
+        if (!authenticatedUser) {
+            console.log('no authenticated user found')
+            return null
+        }
+        console.log('returning authenticatedUser', authenticatedUser)
+        return authenticatedUser
     }
 
     useEffect(() => {
@@ -126,7 +141,7 @@ const AuthScreen = props => {
                             AsyncStorage
                                 .getItem('route')
                                 .then(route => {
-                                    if (!route) navigate('Private')
+                                    if (!route) navigate('private')
                                     else if (route !== props.route.name) navigate(route)
                                 })
                                 .catch(err => console.log(err))

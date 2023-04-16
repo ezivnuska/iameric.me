@@ -1,68 +1,84 @@
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
+import React, { useContext, useEffect, useState } from 'react'
+import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import {
     AuthScreen,
-    // FallbackScreen,
+    FallbackScreen,
     PrivateScreen,
     SettingsScreen,
 } from '../screens'
-
 import { navigationRef } from './RootNavigation'
+import { AppContext } from '../AppContext'
 
-const MainStack = createNativeStackNavigator()
-
-const MainStackScreen = ({ navigation, route }) => (
-    <MainStack.Navigator
+const AppStack = createNativeStackNavigator()
+const AppStackScreen = ({ navigation, route }) => (
+    <AppStack.Navigator
         screenOptions={{
             headerShown: false,
-            initialRouteName: 'Home',
+            initialRouteName: 'auth',
         }}
     >
-        <MainStack.Screen
-            name='Home'
+        <AppStack.Screen
+            name='auth'
             component={AuthScreen}
         />
-        <MainStack.Screen
-            name='Private'
+        <AppStack.Screen
+            name='private'
             component={PrivateScreen}
         />
-        <MainStack.Screen
-            name='Settings'
+        <AppStack.Screen
+            name='settings'
             component={SettingsScreen}
         />
-        <MainStack.Screen
-            name='NotFound'
-            component={AuthScreen}
-        />
-    </MainStack.Navigator>
+    </AppStack.Navigator>
 )
 
 
-const linking = {
-    // prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:19006'],
-    config: {
-        initialRouteName: 'Home',
+
+
+
+
+const Navigation = () => {
+
+    const { state } = useContext(AppContext)
+    const { user } = state
+
+    useEffect(() => {
+        console.log('user changed', user)
+    }, [user])
+
+    const config = {
         screens: {
-            Home: '/',
-            SignIn: 'signin',
-            SignUp: 'signup',
-            Private: 'private',
-            Settings: 'settings',
-            NotFound: '*',
+            app: {
+                initialRouteName: 'auth',
+                screens: {
+                    auth: '/',
+                    private: 'private',
+                    settings: 'settings',
+                },
+            },
+            fallback: '*',
         },
-    },
-}
+    }
 
-const Navigation = props => (
-    <NavigationContainer
-        ref={navigationRef}
-        linking={linking}
-        // fallback={<FallbackScreen />}
-    >
-        <MainStackScreen />
-    </NavigationContainer>
-)
+    const linking = {
+        prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:19006'],
+        config,
+    }
+
+    return (
+        <SafeAreaProvider>
+            <NavigationContainer
+                ref={navigationRef}
+                linking={linking}
+                fallback={<FallbackScreen />}
+            >
+                <AppStackScreen />
+            </NavigationContainer>
+        </SafeAreaProvider>
+        
+    )
+}
 
 export default Navigation
