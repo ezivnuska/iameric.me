@@ -45,7 +45,7 @@ const Navigation = () => {
     const { user } = state
 
     useEffect(() => {
-        console.log('user changed', user)
+        if (user) console.log('user changed', user.username)
     }, [user])
 
     const config = {

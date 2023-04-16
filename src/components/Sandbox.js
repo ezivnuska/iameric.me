@@ -9,7 +9,6 @@ import {
 } from '../components'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-const API_PATH = '/api'
 
 const Sandbox = () => {
     const {
@@ -31,21 +30,21 @@ const Sandbox = () => {
     const getImages = () => {
         const userId = user._id
         axios
-            .get(`${API_PATH}/user/images/${userId}`)
+            .get(`/api/user/images/${userId}`)
             .then(({ data }) => setImages(data.images))
             .catch(err => console.log('Error getting images', err))
     }
 
     const setAvatar = (_id, filename) => {
         axios
-            .post(`${API_PATH}/user/avatar`, { _id, filename })
+            .post('/api/user/avatar', { _id, filename })
             .then(({ data }) => dispatch({ type: 'SET_USER', user: data.user }))
             .catch(err => console.log(`Catch: Error setting avatar with filename ${filename}`, err))
     }
 
     const deleteImage = (_id, filename) => {
         axios
-            .post(`${API_PATH}/images/delete`, { _id, filename, userId: user._id, username: user.username })
+            .post('/api/images/delete', { _id, filename, userId: user._id, username: user.username })
             .then(({ data }) => {
                 const { error, success, user } = data
                 if (error) console.log('Error deleting image', error)

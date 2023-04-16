@@ -38,7 +38,7 @@ const CheckInScreen = props => {
     const authenticateUser = async token => {
         // console.log('Token found. authenticating...')
         return await axios
-            .post(`${API_PATH}/authenticate`, { token })
+            .post('/api/authenticate', { token })
             .then(async ({ data }) => {
                 const { user } = data
                 

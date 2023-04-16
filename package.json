@@ -10,7 +10,8 @@
     "test": "jest",
     "build": "rm -rf dist/ && webpack --mode=production --config webpack.config.js",
     "web": "webpack serve --mode=development --config webpack.config.js",
-    "deploy": "scp -r /Users/home/Projects/web/dist eric@143.244.182.101:/var/www/iameric.me && scp /Users/home/Projects/web/server.js eric@143.244.182.101:/var/www/iameric.me"
+    "deploy": "scp -r /Users/home/Projects/web/dist eric@143.244.182.101:/var/www/iameric.me && scp /Users/home/Projects/web/server.js eric@143.244.182.101:/var/www/iameric.me",
+    "deploy:server": "scp /Users/home/Projects/web/server.js eric@143.244.182.101:/var/www/iameric.me"
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",

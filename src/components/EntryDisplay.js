@@ -8,8 +8,6 @@ import axios from 'axios'
 
 import { EntryList, FeedbackForm } from './'
 import { AppContext } from '../AppContext'
-// const API_PATH = process.env.API_PATH || '/api'
-const API_PATH = '/api'
 
 const EntryDisplay = ({ navigation }) => {
 
@@ -24,7 +22,7 @@ const EntryDisplay = ({ navigation }) => {
     
     const getEntries = () => {
         axios
-            .get(`${API_PATH}/entries`)
+            .get('/api/entries')
             .then(({ data }) => {
                 dispatch({ type: 'SET_ENTRIES', entries: data.entries })
             })
@@ -36,7 +34,7 @@ const EntryDisplay = ({ navigation }) => {
 
     const deleteEntry = id => {
         axios
-            .post(`${API_PATH}/entry/delete`, { id })
+            .post('/api/entry/delete', { id })
             .then(result => dispatch({ type: 'ENTRY_DELETE', entryId: id }))
             .catch(err => console.log('Error deleting entry', err))
     }

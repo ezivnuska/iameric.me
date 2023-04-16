@@ -7,8 +7,6 @@ import {
 import axios from 'axios'
 import { UserDetails, UserList } from './'
 import { AppContext } from '../AppContext'
-// const API_PATH = process.env.API_PATH || '/api'
-const API_PATH = '/api'
 
 const UserDisplay = () => {
 
@@ -20,22 +18,30 @@ const UserDisplay = () => {
     const { user, users } = state
 
     const [ profileId, setProfileId ] = useState(null)
+    const [ loading, setLoading ] = useState(false)
 
     const clearUser = () => setProfileId(null)
     const getProfile = () => profileId ? users.filter(usr => usr._id === profileId)[0] : null
 
     const getUsers = () => axios
-        .get(`${API_PATH}/users`)
+        .get('/api/users')
         .then(({ data }) => dispatch({ type: 'SET_USERS', users: data.users }))
         .catch(err => console.log('Error getting users', err))
 
     useEffect(() => {
+        setLoading(true)
         getUsers()
     }, [])
 
+    useEffect(() => {
+        if (loading) setLoading(false)
+    }, [users])
+
     const setUser = id => setProfileId(id)
 
-    return (users && users.length) ? (
+    return loading ? (
+        <Text>Loading users...</Text>
+    ) : (users && users.length) ? (
         <View style={styles.container}>
 
             {
@@ -51,7 +57,7 @@ const UserDisplay = () => {
             }
             
         </View>
-    ) : null
+    ) : <Text>No users found</Text>
 }
 
 export default UserDisplay

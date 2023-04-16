@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image as NativeImage,
-    Platform,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -9,16 +8,8 @@ import {
 } from 'react-native'
 import { Avatar } from './'
 import axios from 'axios'
-// import ReactAvatarEditor from 'react-avatar-editor'
-// import {
-//     // launchCamera,
-//     launchImageLibrary,
-// } from 'react-native-image-picker'
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
-// const API_PATH = process.env.API_PATH || '/api'
-const API_PATH = '/api'
-
 
 const ImageHandler = () => {
 
@@ -30,12 +21,9 @@ const ImageHandler = () => {
     const { user } = state
     const [files, setFiles] = useState([])
     const [error, setError] = useState(null)
-    // const [preview, setPreview] = useState(null)
     const [editor, setEditor] = useState(null)
-    const [ size, setSize ] = useState(300)
 
     useEffect(() => {
-        console.log('files...', files)
     }, [files])
 
     useEffect(() => {
@@ -139,7 +127,7 @@ const ImageHandler = () => {
     const uploadImage = async uri => {
         const { username } = user
         axios
-            .post(`${API_PATH}/upload/avatar`, { uri, username }, { new: true })
+            .post('/api/upload/avatar', { uri, username }, { new: true })
             .then(({ data }) => console.log('uploaded', data))//dispatch({ type: 'SET_USER', user: data.user }))
             .catch(err => console.log('Error saving dataURI', err))
     }

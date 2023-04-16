@@ -56,7 +56,7 @@ const SignInForm = props => {
 			})
 
 		axios
-			.post(`${API_PATH}/signin`, user)
+			.post('/api/signin', user)
 			.then(({ data }) => {
 				const { user } = data
 				if (user) {

@@ -15,8 +15,6 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
-const API_PATH = '/api'
-// const API_PATH = process.env.API_PATH || '/api'
 
 const AuthScreen = ({ navigation, ...props }) => {
     
@@ -82,7 +80,7 @@ const AuthScreen = ({ navigation, ...props }) => {
     const authenticateUser = async token => {
         console.log('Authenticating token...')
         const authenticatedUser = await axios
-            .post(`${API_PATH}/authenticate`, { token })
+            .post('/api/authenticate', { token })
             .then(async ({ data }) => {
                 const { error, user } = data
 
@@ -115,7 +113,7 @@ const AuthScreen = ({ navigation, ...props }) => {
             console.log('no authenticated user found')
             return null
         }
-        console.log('returning authenticatedUser', authenticatedUser)
+        console.log(`${authenticatedUser.username} authenticated`)
         return authenticatedUser
     }
 

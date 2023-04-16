@@ -17,8 +17,6 @@ import { AppContext } from '../AppContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import defaultStyles from '../styles'
 
-const API_PATH = '/api'
-// const API_PATH = process.env.API_PATH || '/api'
 const windowDimensions = Dimensions.get('window')
 const screenDimensions = Dimensions.get('screen')
 
@@ -123,7 +121,7 @@ const AvatarModule = () => {
         console.log('saving data URI', user.username)
         setUpdated(true)
         axios
-            .post(`${API_PATH}/upload/avatar`, { dataurl: dataURI, username: user.username }, { new: true })
+            .post('/api/upload/avatar', { dataurl: dataURI, username: user.username }, { new: true })
             .then(({ data }) => {
                 dispatch({ type: 'SET_USER', user: data.user })
             })

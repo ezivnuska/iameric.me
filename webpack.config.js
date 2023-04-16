@@ -106,11 +106,7 @@ module.exports = {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      // See: https://github.com/necolas/react-native-web/issues/349
       __DEV__: JSON.stringify(true),
-      // 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      // 'process.env.API_PATH': JSON.stringify(process.env.API_PATH),
-      // 'process.env.PORT': JSON.stringify(process.env.PORT),
     }),
     new CopyPlugin({
       patterns: [

@@ -25,13 +25,14 @@ const User = require('./models/User')
 const { createServer } = require('http')
 const app = express()
 const server = createServer(app)
+const { createProxyMiddleware } = require('http-proxy-middleware')
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors({ origin: true, credentials: true }))
 app.use(express.static('dist'))
 app.use('/assets', express.static('./assets'))
-// app.use(cookieParser())
+// app.use('/api', createProxyMiddleware({ target: 'https://iameric.me:4321', pathRewrite: { '^/api': '' } }));
 
 app.use(session({
     secret: SESSION_SECRET,
@@ -50,21 +51,6 @@ const createToken = user => {
 }
 
 const getDecodedUser = token => jwt.decode(token, SESSION_SECRET)
-
-// JWT Middleware
-// app.use(async (req, res, next) => {
-//     const token = req.cookies.token ? req.cookies.token : null
-//     console.log('token', token)
-//     if (token !== null) {
-//         try {
-//             const currentUser = await jwt.verify(token, process.env.JWT_SECRET)
-//             req.currentUser = currentUser
-//         } catch (err) {
-//             res.clearCookie('token')
-//         }
-//     }
-//     next()
-// })
 
 app.post('/signup', (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hashedPW) => {

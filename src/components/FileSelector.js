@@ -9,7 +9,6 @@ import {
 } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
-const API_PATH = '/api'
 
 const FileSelector = ({ handleDrop }) => {
 
@@ -22,7 +21,7 @@ const FileSelector = ({ handleDrop }) => {
       }
       let pickerResult = await ImagePicker.launchImageLibraryAsync()
       if (!pickerResult.cancelled) {
-          const uploadResult = await FileSystem.uploadAsync(`${API_PATH}/upload/avatar`, pickerResult.uri, {
+          const uploadResult = await FileSystem.uploadAsync('/api/upload/avatar', pickerResult.uri, {
               httpMethod: 'POST',
               // uploadType: FileSystemUploadType.MULTIPART,
               fieldName: 'file'

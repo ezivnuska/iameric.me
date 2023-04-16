@@ -51,7 +51,7 @@ const SignUpForm = props => {
 
   const sendData = user => {
     axios
-      .post(`${API_PATH}/signup`, user)
+      .post('/api/signup', user)
       .then(result => {
         console.log('result from signup request', result)
         setUser(result)
