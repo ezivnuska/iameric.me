@@ -8,25 +8,13 @@ import {
 import { navigate } from '../navigators/RootNavigation'
 import {
     Sandbox,
-    UserDisplay,
 } from '../components'
 import { LeftOutlined } from '@ant-design/icons'
 
 const Settings = () => {
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity
-                    style={styles.iconCol}
-                    onPress={() => navigate('private')}
-                >
-                    <LeftOutlined />
-                </TouchableOpacity>
-    
-                <Text style={styles.headingCol}>Settings</Text>
-            </View>
             <Sandbox />
-            <UserDisplay />
         </View>
     )
 }

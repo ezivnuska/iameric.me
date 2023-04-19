@@ -6,11 +6,10 @@ const initialState = {
     profileId: null,
     isLoading: false,
     entries: [],
-    activities: [],
 }
 
 const reducer = (state = initialState, action) => {
-    let { activities, entries, isLoading, profileId, user, users } = state
+    let { entries, isLoading, profileId, user, users } = state
 
     switch(action.type) {
         case 'SET_LOADING':
@@ -41,14 +40,11 @@ const reducer = (state = initialState, action) => {
             profileId = null
             isLoading = false
             break
-        case 'ADD_ACTIVITY':
-            activities = [action.activity, ...activities]
-            break
         default:
             throw new Error('Not valid action type')
     }
 
-    return { activities, entries, isLoading, profileId, user, users }
+    return { entries, isLoading, profileId, user, users }
 }
 
 export const AppContext = createContext({

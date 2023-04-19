@@ -28,11 +28,8 @@ export default StyleSheet.create({
 		flexShrink: 0,
         flexGrow: 1,
 		justifyContent: 'flex-start',
-        width: '100%',
+		width: 375,
 		alignSelf: 'center',
-		// borderWidth: 1,
-		// borderStyle: 'solid',
-		// borderColor: 'red',
 		margin: 15,
 	},
 	label: {
@@ -64,11 +61,17 @@ export default StyleSheet.create({
 		borderRadius: 10,
 		marginVertical: 10,
 	},
+	buttonDisabled: {
+		backgroundColor: '#aaa',
+	},
 	buttonLabel: {
 		color: '#fff',
 		fontSize: 20,
 		marginTop: 7,
 		textAlign: 'center',
+	},
+	buttonLabelDisabled: {
+		color: '#333',
 	},
 	linkText: {
 		paddingVertical: 5,

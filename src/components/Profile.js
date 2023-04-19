@@ -30,6 +30,11 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'center',
+        width: 400,
+        minWidth: 375,
+        maxWidth: 400,
+        marginHorizontal: 'auto',
     },
     leftColumn: {
         display: 'flex',

@@ -7,6 +7,7 @@ import {
     FallbackScreen,
     PrivateScreen,
     SettingsScreen,
+    UserListScreen,
 } from '../screens'
 import { navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
@@ -31,13 +32,12 @@ const AppStackScreen = ({ navigation, route }) => (
             name='settings'
             component={SettingsScreen}
         />
+        <AppStack.Screen
+            name='users'
+            component={UserListScreen}
+        />
     </AppStack.Navigator>
 )
-
-
-
-
-
 
 const Navigation = () => {
 
@@ -56,6 +56,7 @@ const Navigation = () => {
                     auth: '/',
                     private: 'private',
                     settings: 'settings',
+                    users: 'users',
                 },
             },
             fallback: '*',
@@ -63,7 +64,7 @@ const Navigation = () => {
     }
 
     const linking = {
-        prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:19006'],
+        prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:8080'],
         config,
     }
 

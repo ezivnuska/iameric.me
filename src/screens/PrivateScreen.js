@@ -7,7 +7,7 @@ import {
     EntryDisplay,
 } from '../components'
 
-const PrivateScreen = props => (
+const PrivateScreen = ({ navigation, ...props }) => (
     <SecureScreen { ...props }>
         <View>
             <EntryDisplay />

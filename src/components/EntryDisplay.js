@@ -1,12 +1,15 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import {
     StyleSheet,
-    Text,
     View,
-} from 'react-native-web'
+} from 'react-native'
 import axios from 'axios'
 
-import { EntryList, FeedbackForm } from './'
+import {
+    EntryList,
+    FeedbackForm,
+    StatusDisplay,
+} from './'
 import { AppContext } from '../AppContext'
 
 const EntryDisplay = ({ navigation }) => {
@@ -17,14 +20,18 @@ const EntryDisplay = ({ navigation }) => {
     } = useContext(AppContext)
 
     const { entries } = state
-    const mounted = useRef(false)
-
+    const [status, setStatus] = useState(null)
     
     const getEntries = () => {
+        setStatus('Loading entries...')
         axios
             .get('/api/entries')
             .then(({ data }) => {
+                setStatus('Entries loaded.')
                 dispatch({ type: 'SET_ENTRIES', entries: data.entries })
+            })
+            .catch(err => {
+                setStatus('Error loading entries.')
             })
     }
 
@@ -33,18 +40,26 @@ const EntryDisplay = ({ navigation }) => {
     }, [])
 
     const deleteEntry = id => {
+        setStatus('Deleting entry...')
         axios
             .post('/api/entry/delete', { id })
-            .then(result => dispatch({ type: 'ENTRY_DELETE', entryId: id }))
-            .catch(err => console.log('Error deleting entry', err))
+            .then(result => {
+                setStatus('Entry deleted.')
+                dispatch({ type: 'ENTRY_DELETE', entryId: id })
+            })
+            .catch(err => {
+                setStatus('Error deleting entry.')
+                console.log('Error deleting entry', err)
+            })
     }
 
     return entries ? (
         <View style={styles.container}>
-            <FeedbackForm />
+            {status ? <StatusDisplay status={status} /> : null}
+            <FeedbackForm updateStatus={text => setStatus(text)} />
             <EntryList entries={entries} deleteEntry={deleteEntry} />
         </View>
-    ) : <Text>Loading...</Text>
+    ) : null
 }
 
 export default EntryDisplay

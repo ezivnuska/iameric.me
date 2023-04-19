@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         minWidth: 375,
         maxWidth: 400,
         paddingBottom: 10,
-        paddingLeft: 15,
+        paddingLeft: 0,
     },
     flexContainer: {
         display: 'flex',
@@ -87,6 +87,6 @@ const styles = StyleSheet.create({
     },
     iconDelete: {
         paddingTop: 5,
-        paddingHorizontal: 10,
+        // paddingHorizontal: 10,
     },
 })

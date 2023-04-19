@@ -22,5 +22,6 @@ const styles = StyleSheet.create({
   text: {
     paddingHorizontal: '0.75rem',
     lineHeight: 30,
+    color: 'red',
   },
 })

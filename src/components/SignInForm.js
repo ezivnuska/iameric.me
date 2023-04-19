@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    StyleSheet,
 	Text,
 	TextInput,
 	TouchableOpacity,
@@ -9,11 +8,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-import { Link } from '@react-navigation/native'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 
-const SignInForm = props => {
+const SignInForm = ({ updateStatus }) => {
+
     const {
         state,
         dispatch,
@@ -21,6 +20,7 @@ const SignInForm = props => {
 
     const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
+	const [loading, setLoading] = useState(false)
 
     const onChangeEmail = value => setEmail(value)
 	const onChangePassword = value => setPassword(value)
@@ -38,9 +38,11 @@ const SignInForm = props => {
 	}, [])
 
     const setUser = newUser => {
+		updateStatus('Storing user in cookie...')
 		AsyncStorage
 			.setItem('userToken', newUser.token)
 			.then(() => {
+					updateStatus('User stored.')
 					dispatch({ type: 'SET_USER', user: newUser })
 					navigate('private')
 				})
@@ -48,33 +50,39 @@ const SignInForm = props => {
 	}
 
 	const sendData = async user => {
+		updateStatus('Storing email...')
 		await AsyncStorage
 			.setItem('email', user.email)
 			.then(() => {
+				updateStatus('Email stored.')
 				setEmail(user.email)
 			})
-
+		
+		updateStatus('Attempting sign in...')
 		axios
 			.post('/api/signin', user)
 			.then(({ data }) => {
 				const { user } = data
 				if (user) {
-					setUser(Object.assign({}, user))
-				} else {
-					alert('Signin failed.')
-				}    
+					updateStatus('Sign in successful.')
+					setUser(user)
+				}
+				updateStatus('No user found.')
+				setLoading(false)
 			})
 			.catch(err => {
-				// alert('Error signing in')
+				updateStatus('Error signing in.')
+				setLoading(false)
 				console.log('Failed sign in.', err)
 			})
 	}
-
+	
 	const onSubmit = () => {
 		
 		if (!email.length || !password.length)
-			return alert('Email and password are required')
+			updateStatus('Email and password are required')
 		
+		setLoading(true)
 		sendData({ email, password })
 	}
 
@@ -105,14 +113,15 @@ const SignInForm = props => {
             />
 
             <TouchableOpacity
-                style={defaultStyles.button}
+                style={[defaultStyles.button, (loading ? defaultStyles.buttonDisabled : null)]}
                 onPress={onSubmit}
+				disabled={loading}
             >
                 <Text
-                    style={defaultStyles.buttonLabel}
+                    style={[defaultStyles.buttonLabel, (loading ? defaultStyles.buttonLabelDisabled : null)]}
                     accessibilityLabel='Connect'
                 >
-                    Connect
+                    {loading ? 'Connect' : 'Connecting'}
                 </Text>
             </TouchableOpacity>
 

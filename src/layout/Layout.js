@@ -25,7 +25,7 @@ const Layout = () => {
             }
         )
         return () => subscription.remove()
-    })
+    }, [])
 
     return (
         <View style={[styles.layoutContainer, { width: dimensions.window.width }]}>

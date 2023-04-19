@@ -1,24 +1,12 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import {
     FlatList,
     StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import { EntryListItem } from '../components'
-import { AppContext } from '../AppContext'
 
-const EntryList = ({ entries, deleteEntry }) => {
-
-    const {
-        state,
-        dispatch,
-    } = useContext(AppContext)
-    
-    // useEffect(async () => {
-
-    // }, [])
+const EntryList = ({ entries, deleteEntry, updateStatus }) => {
 
     return entries ? (
         <View style={styles.container}>

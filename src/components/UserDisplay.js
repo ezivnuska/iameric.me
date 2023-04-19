@@ -5,7 +5,11 @@ import {
     View,
 } from 'react-native'
 import axios from 'axios'
-import { UserDetails, UserList } from './'
+import {
+    StatusDisplay,
+    UserDetails,
+    UserList,
+} from './'
 import { AppContext } from '../AppContext'
 
 const UserDisplay = () => {
@@ -19,49 +23,58 @@ const UserDisplay = () => {
 
     const [ profileId, setProfileId ] = useState(null)
     const [ loading, setLoading ] = useState(false)
+    const [status, setStatus] = useState(null)
 
     const clearUser = () => setProfileId(null)
     const getProfile = () => profileId ? users.filter(usr => usr._id === profileId)[0] : null
 
     const getUsers = () => axios
         .get('/api/users')
-        .then(({ data }) => dispatch({ type: 'SET_USERS', users: data.users }))
-        .catch(err => console.log('Error getting users', err))
+        .then(({ data }) => {
+            setLoading(false)
+            setStatus('Users loaded.')
+            dispatch({ type: 'SET_USERS', users: data.users })
+        })
+        .catch(err => {
+            setStatus('Error loading users.')
+            console.log('Error getting users', err)
+        })
 
     useEffect(() => {
+        setStatus('Loading users...')
         setLoading(true)
-        dispatch({ type: 'ADD_ACTIVITY', activity: 'loading users...' })
         getUsers()
     }, [])
 
     useEffect(() => {
         if (loading) {
-            setLoading(false)
-            dispatch({ type: 'ADD_ACTIVITY', activity: 'users loaded.' })
         }
     }, [users])
 
     const setUser = id => setProfileId(id)
 
-    return loading ? (
-        <Text>Loading users...</Text>
-    ) : (users && users.length) ? (
+    return (
         <View style={styles.container}>
-
-            {
-                profileId
-                ? <UserDetails
-                    user={getProfile()}
-                    clearUser={clearUser}
-                />
-                : <UserList
-                    users={users.filter(usr => user && usr._id !== user._id)}
-                    setUser={setUser}
-                />
-            }
-            
+            {status ? <StatusDisplay status={status} /> : null}
+            {(users && users.length) ? (
+                <View>
+                    {profileId ? (
+                        <UserDetails
+                            user={getProfile()}
+                            clearUser={clearUser}
+                        />
+                    ) : (
+                        <UserList
+                            users={users.filter(usr => user && usr._id !== user._id)}
+                            setUser={setUser}
+                        />
+                    )}
+                </View>
+            ) : (
+                <Text>No users found</Text>
+            )}
         </View>
-    ) : <Text>No users found</Text>
+    )
 }
 
 export default UserDisplay
@@ -72,7 +85,6 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        // justifyContent: 'center',
         width: 375,
         minWidth: 375,
         maxWidth: 400,

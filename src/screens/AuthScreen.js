@@ -1,20 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
-import { Screen } from '.'
 import {
     SignInForm,
     SignUpForm,
+    SimpleLink,
+    StatusDisplay,
 } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
-import defaultStyles from '../styles'
 
 const AuthScreen = ({ navigation, ...props }) => {
     
@@ -27,39 +25,29 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     const [formVisible, setFormVisible] = useState(false)
     const [signupVisible, setSignupVisible] = useState(false)
+    const [status, setStatus] = useState(null)
 
     const renderNav = () => signupVisible ? (
-        <TouchableOpacity
-            style={defaultStyles.linkContainer}
+        <SimpleLink
+            labelText='Sign In'
             onPress={() => setSignupVisible(false)}
-        >
-            <Text
-                style={defaultStyles.linkText}
-                accessibilityLabel='Sign In'
-            >
-                Sign In
-            </Text>
-        </TouchableOpacity>
+        />
     ) : (
-        <TouchableOpacity
-            style={defaultStyles.linkContainer}
+        <SimpleLink
+            labelText='Sign Up'
             onPress={() => setSignupVisible(true)}
-        >
-            <Text
-                style={defaultStyles.linkText}
-                accessibilityLabel='Sign Up'
-            >
-                Sign Up
-            </Text>
-        </TouchableOpacity>
+        />
     )
 
-    const renderForm = () => (
-        <View>
-            {signupVisible ? <SignUpForm /> : <SignInForm />}
-            {renderNav()}
-        </View>
-    )
+    const updateStatus = text => setStatus(text)
+
+    const renderForm = () => {
+        if (status) setStatus(null)
+
+        return signupVisible
+            ? <SignUpForm updateStatus={updateStatus} />
+            : <SignInForm updateStatus={updateStatus} />
+    }
 
     const setUser = async user => {
         // console.log('Setting user', user)
@@ -158,14 +146,15 @@ const AuthScreen = ({ navigation, ...props }) => {
         }
         checkin()
         
-        
         return () => console.log('AuthLoadingScreen unmounting...')
     }, [])
 
     return (
         <View { ...props }>
             <View style={styles.container}>
-                {formVisible ? renderForm() : <Text style={styles.loadingText}>Verifying user...</Text>}
+                {status ? <StatusDisplay status={status} /> : null}
+                {formVisible ? renderForm() : null}
+                {renderNav()}
             </View>
         </View>
     )
@@ -175,11 +164,8 @@ export default AuthScreen
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20,
-        // flex: 1,
-    //   backgroundColor: 'black',
-    //   alignItems: 'center', 
-    //   justifyContent: 'center',
+        marginHorizontal: 'auto',
+        width: 375,
     },
     loadingText: {
         fontSize: 18,

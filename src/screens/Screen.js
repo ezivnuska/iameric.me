@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
-import { ActivityDisplay } from '../components'
 // const window = Dimensions.get('window')
 const { height } = window
 
@@ -28,7 +27,6 @@ const Screen = ({ children, route }) => {
     
     return (
         <View style={styles.container}>
-            <ActivityDisplay />
             <View>
                 {children}
             </View>

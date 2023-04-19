@@ -21,7 +21,6 @@ const Sandbox = () => {
     const [ loaded, setLoaded ] = useState(false)
 
     useEffect(() => {
-        dispatch({ type: 'ADD_ACTIVITY', activity: 'loading user images...'})
         getImages()
     }, [user])
 
@@ -31,7 +30,6 @@ const Sandbox = () => {
             .get(`/api/user/images/${userId}`)
             .then(({ data }) => {
                 setLoaded(true)
-                dispatch({ type: 'ADD_ACTIVITY', activity: 'images loaded.'})
                 setImages(data.images)
             })
             .catch(err => console.log('Error getting images', err))
