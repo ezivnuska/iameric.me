@@ -9,8 +9,8 @@ import {
 import axios from 'axios'
 import ReactAvatarEditor from 'react-avatar-editor'
 import {
-    Dropzone,
     FileSelector,
+    StatusDisplay,
 } from './'
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
@@ -34,6 +34,7 @@ const AvatarModule = () => {
     const [ optimizing, setOptimizing ] = useState(false)
     const [ optimized, setOptimized ] = useState(false)
     const [ updated, setUpdated ] = useState(false)
+    const [ status, setStatus ] = useState(null)
 
     const [dimensions, setDimensions] = useState({
         window: windowDimensions,
@@ -72,6 +73,7 @@ const AvatarModule = () => {
     }
 
     const handleSubmit = () => {
+        setStatus('Submitting image.')
         if (editor) {
             const canvas = editor.getImage()
             const dataURL = canvas.toDataURL('image/png;base64;')
@@ -107,6 +109,7 @@ const AvatarModule = () => {
         
             const dataURL = canvas.toDataURL('image/png;base64;')
             
+            setStatus('Image optimized.')
             setOptimizing(false)
             setOptimized(true)
             saveDataURI(dataURL)
@@ -123,6 +126,7 @@ const AvatarModule = () => {
         axios
             .post('/api/upload/avatar', { dataurl: dataURI, username: user.username }, { new: true })
             .then(({ data }) => {
+                setStatus('Image URI saved.')
                 dispatch({ type: 'SET_USER', user: data.user })
             })
             .catch(err => console.log('Error saving dataURI', err))
@@ -194,6 +198,7 @@ const AvatarModule = () => {
             id='avatar-dropzone-wrapper'
             style={styles.avatarDropzoneWrapper}
         >
+            {status ? <StatusDisplay status={status} /> : null}
             <View
                 style={styles.wrapper}
                 id='avatar-editor-wrapper'

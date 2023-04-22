@@ -28,9 +28,9 @@ export default StyleSheet.create({
 		flexShrink: 0,
         flexGrow: 1,
 		justifyContent: 'flex-start',
-		width: 375,
+		width: '100%',
 		alignSelf: 'center',
-		margin: 15,
+		paddingBottom: 15,
 	},
 	label: {
 		fontSize: 20,
@@ -59,7 +59,7 @@ export default StyleSheet.create({
 		height: 40,
 		backgroundColor: '#555',
 		borderRadius: 10,
-		marginVertical: 10,
+		marginTop: 10,
 	},
 	buttonDisabled: {
 		backgroundColor: '#aaa',

@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     bodyContainer: {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap: 'nowrap',
         justifyContent: 'center',
         flexGrow: 0,
         flexShrink: 0,

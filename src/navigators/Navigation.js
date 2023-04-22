@@ -44,9 +44,9 @@ const Navigation = () => {
     const { state } = useContext(AppContext)
     const { user } = state
 
-    useEffect(() => {
-        if (user) console.log('user changed', user.username)
-    }, [user])
+    // useEffect(() => {
+    //     if (user) console.log('user changed', user.username)
+    // }, [user])
 
     const config = {
         screens: {
@@ -64,7 +64,7 @@ const Navigation = () => {
     }
 
     const linking = {
-        prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:8080'],
+        prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:8081'],
         config,
     }
 

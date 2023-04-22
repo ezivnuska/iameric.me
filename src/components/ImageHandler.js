@@ -33,9 +33,9 @@ const ImageHandler = () => {
         }
     }, [error])
 
-    useEffect(() => {
-        if (user) console.log('user', user)
-    }, [user])
+    // useEffect(() => {
+    //     if (user) console.log('user', user)
+    // }, [user])
 
     const initSelector = async () => {
         return
@@ -190,7 +190,7 @@ const ImageHandler = () => {
 
     return (
         <View style={styles.container}>
-            <Avatar user={user} />
+            <Avatar user={{ username: user.username, profileImage: user.profileImage }} />
             
             <TouchableOpacity
                 onPress={handlePress}

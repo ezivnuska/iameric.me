@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import { EntryListItem } from '../components'
 
-const EntryList = ({ entries, deleteEntry, updateStatus }) => {
+const EntryList = ({ entries, deleteEntry }) => {
 
     return entries ? (
         <View style={styles.container}>

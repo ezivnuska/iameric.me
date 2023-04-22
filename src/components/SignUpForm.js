@@ -12,7 +12,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 
-const SignUpForm = props => {
+const SignUpForm = ({ updateStatus }) => {
 
 	const {
         state,
@@ -25,6 +25,7 @@ const SignUpForm = props => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const onChangeEmail = value => setEmail(value)
   const onChangeUsername = value => setUsername(value)
@@ -35,40 +36,70 @@ const SignUpForm = props => {
     if (user) navigate('private')
   }, [user])
 
+  useEffect(() => {
+	const getEmail = async () => {
+	  await AsyncStorage
+		.getItem('email')
+		.then(result => {
+		  if (!result) return console.log('no email found in local storage')
+		  setEmail(result)
+	  })
+	}
+    getEmail()
+  }, [])
+
   const setUser = user => {
+	updateStatus('Storing user in cookie...')
     AsyncStorage
       .setItem('userToken', user.token)
       .then(() => {
-        console.log('userToken saved in local storage')
-        // setState(state => ({ ...state, user }))
+        updateStatus('User saved.')
 		dispatch({ type: 'SET_USER', user })
+		navigate('private')
       })
-      .catch(err => alert('Signin Error:', err))
+      .catch(err => {
+		updateStatus('Error storing user.')
+		console.log('Erro saving user to local storage:', err)
+	})
   }
 
-  const sendData = user => {
+  const sendData = async user => {
+	updateStatus('Storing email...')
+	await AsyncStorage
+	  .setItem('email', user.email)
+	  .then(() => {
+		updateStatus('Email stored.')
+		setEmail(user.email)
+	  })
+	
+	updateStatus('Attempting sign up...')
     axios
       .post('/api/signup', user)
       .then(result => {
-        console.log('result from signup request', result)
-        setUser(result)
+		if (result) {
+			updateStatus('Sign up successful.')
+			setUser(result)
+		} else {
+
+		}
+		setLoading(false)
       })
       .catch(err => {
-        alert('Failed to sign you up! If you already have an account, log in directly!');
-        console.log('Error getting user.', err)
+        updateStatus('Error signing up.')
+		setLoading(false)
+        console.log('Error signing up new user.', err)
       })
   }
 
   const onSubmit = () => {
     
-    if (!email.length || !password.length || !confirmPassword.length) {
-      return alert('Email and password are required')
-    }
+    if (!email.length || !password.length || !confirmPassword.length)
+      return updateStatus('Email and password required.')
 
-    if (password !== confirmPassword) {
-      return alert(`Passwords don't match` )
-    }
+    if (password !== confirmPassword)
+      return updateStatus('Passwords do not match')
     
+	setLoading(true)
     sendData({ email, username, password })
   }
 
@@ -120,14 +151,15 @@ const SignUpForm = props => {
 			/>
 
 			<TouchableOpacity
-				style={defaultStyles.button}
+				style={[defaultStyles.button, (loading ? defaultStyles.buttonDisabled : null)]}
+				disabled={loading}
 				onPress={onSubmit}
 			>
 				<Text
-					style={defaultStyles.buttonLabel}
+					style={[defaultStyles.buttonLabel, (loading ? defaultStyles.buttonLabelDisabled : null)]}
 					accessibilityLabel='Sign Up'
 				>
-					Sign Up
+					{loading ? 'Signing Up' : 'Sign Up'}
 				</Text>
 			</TouchableOpacity>
 

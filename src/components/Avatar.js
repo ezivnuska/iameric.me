@@ -5,11 +5,12 @@ import {
     View,
 } from 'react-native'
 // import defaultAvatar from '../images/avatar-default.png'
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 
 const Avatar = ({ user, size = 100, ...props }) => {
 
     const { profileImage, username } = user
-    // const pathToAvatar = (process ? process.env.IMAGE_PATH : 'assets/images')
+    
     return user ? (
         <View style={styles.container} {...props}>
             <Image
@@ -24,8 +25,8 @@ const Avatar = ({ user, size = 100, ...props }) => {
                 ]}
                 source={
                     profileImage
-                        ? `assets/images/${username}/${profileImage}`
-                        : '../images/avatar-default.png'
+                        ? `${IMAGE_PATH}/${username}/${profileImage}`
+                        : `${IMAGE_PATH}/avatar-default.png`
                 }
             />
         </View>

@@ -1,40 +1,46 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     StyleSheet,
     Text,
     View,
 } from 'react-native'
-import { Avatar } from './'
+import { Avatar } from '.'
 import defaultStyles from '../styles'
 
-const Profile = ({ user }) => (
-    <View style={styles.container}>
-        <View style={styles.leftColumn}>
-            <Avatar user={{ username: user.username, profileImage: user.profileImage }} size={50} />
-        </View>
-        <View style={styles.main}>
-            <View style={styles.header}>
-                <Text style={styles.heading}>{user.username}</Text>
+const UserHeading = ({ user, styleProps, ...props }) => {
+    
+    // useEffect(() => {
+    //     console.log('user', user)
+    // }, [])
+    
+    return (
+        <View style={[styles.container, styleProps]}>
+            <View style={styles.leftColumn}>
+                <Avatar user={user}
+                size={24}
+            />
             </View>
-            <View style={styles.content}>
-                <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
+            <View style={styles.main}>
+                <View style={styles.header}>
+                    <Text style={styles.heading}>{user.username}</Text>
+                </View>
             </View>
         </View>
-    </View>
-)
+    )
+}
 
-export default Profile
+export default UserHeading
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 12,
+        // paddingVertical: 12,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        width: 400,
-        minWidth: 375,
+        width: 350,
+        minWidth: 300,
         maxWidth: 400,
-        marginHorizontal: 'auto',
+        // marginHorizontal: 'auto',
     },
     leftColumn: {
         display: 'flex',
@@ -44,6 +50,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexBasis: 'auto',
         flexGrow: 0,
+        flexShrink: 0,
         paddingRight: 10,
     },
     main: {
@@ -58,7 +65,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignContent: 'flex-start',
-        marginBottom: 15,
+        // marginBottom: 15,
     },
     heading: {
         flex: 2,

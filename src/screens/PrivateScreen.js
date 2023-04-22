@@ -1,17 +1,15 @@
 import React from 'react'
-import {
-    View
-} from 'react-native'
 import { SecureScreen } from '.'
 import {
     EntryDisplay,
+    ScreenContent,
 } from '../components'
 
 const PrivateScreen = ({ navigation, ...props }) => (
     <SecureScreen { ...props }>
-        <View>
+        <ScreenContent>
             <EntryDisplay />
-        </View>
+        </ScreenContent>
     </SecureScreen>
 )
 

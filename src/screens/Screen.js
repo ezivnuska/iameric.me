@@ -6,30 +6,25 @@ import { navigate } from '../navigators/RootNavigation'
 const { height } = window
 
 const Screen = ({ children, route }) => {
+    
+    const saveRoute = async () => {
+        await AsyncStorage
+            .setItem('route', route.name)
+            .then(() => {
+                console.log('path saved in local storage:', route.name)
+            })
+            .catch(err => alert('could not save path:', err))
+    }
 
     useEffect(() => {
-        const saveRoute = async () => {
-            const routeName = (route && route.name) ? route.name : 'auth'
-            // const { pathname } = window.location
-            // console.log('path', pathname)
-            // console.log('screen route:', route)
-            
-            await AsyncStorage
-                .setItem('route', routeName)
-                .then(() => {
-                    // console.log('path updated', route.name)
-                })
-                .catch(err => alert('could not save path:', err))
+        if (route && route.name && route.name !== 'auth') {
+            saveRoute()
         }
-        saveRoute()
-        
     }, [])
     
     return (
         <View style={styles.container}>
-            <View>
-                {children}
-            </View>
+            {children}
         </View>
     )
 }
@@ -40,15 +35,6 @@ const styles = StyleSheet.create({
     container: {
         paddingVertical: 20,
         paddingHorizontal: 10,
-        // display: 'flex',
-        // flexDirection: 'column',
-        // justifyContent: ,
-        // alignContent: 'center',
         height: height - 50,
-        // width: '100%',
-        // backgroundColor: '#fff',
-        // borderWidth: 1,
-        // borderStyle: 'dotted',
-        // borderColor: 'red',
     },
 })

@@ -14,12 +14,13 @@ import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
 import Menu from './Menu'
 import Profile from './Profile'
-import Sandbox from './Sandbox'
 import Settings from './Settings'
+import ScreenContent from './ScreenContent'
 import SimpleLink from './SimpleLink'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import StatusDisplay from './StatusDisplay'
+import UserHeading from './UserHeading'
 import UserList from './UserList'
 import UserListItem from './UserListItem'
 import UserDetails from './UserDetails'
@@ -42,12 +43,13 @@ export {
     ImageList,
     Menu,
     Profile,
-    Sandbox,
+    ScreenContent,
     Settings,
     SimpleLink,
     SignInForm,
     SignUpForm,
     StatusDisplay,
+    UserHeading,
     UserList,
     UserListItem,
     UserDetails,

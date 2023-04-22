@@ -1,63 +1,77 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
 } from 'react-native-web'
-import { navigate } from '../navigators/RootNavigation'
 import {
-    Sandbox,
-} from '../components'
-import { LeftOutlined } from '@ant-design/icons'
+    AvatarModule,
+    ImageList,
+    Profile,
+} from '.'
+import axios from 'axios'
+import { AppContext } from '../AppContext'
 
 const Settings = () => {
+    const {
+        dispatch,
+        state,
+    } = useContext(AppContext)
+
+    const { user } = state
+    const [ images, setImages ] = useState(null)
+    const [ loading, setLoading ] = useState(false)
+
+    useEffect(() => {
+        if (user) getImages()
+    }, [user])
+    
+    const getImages = () => {
+        setLoading(true)
+        const userId = user._id
+        axios
+            .get(`/api/user/images/${userId}`)
+            .then(({ data }) => {
+                setLoading(false)
+                setImages(data.images)
+            })
+            .catch(err => {
+                setLoading(false)
+                console.log('Error getting images', err)
+            })
+    }
+
+    const setAvatar = (_id, filename) => {
+        axios
+            .post('/api/user/avatar', { _id, filename })
+            .then(({ data }) => {
+                dispatch({ type: 'SET_USER', user: data.user })
+            })
+            .catch(err => console.log(`Catch: Error setting avatar with filename ${filename}`, err))
+    }
+
+    const deleteImage = (_id, filename) => {
+        axios
+            .post('/api/images/delete', { _id, filename, userId: user._id, username: user.username })
+            .then(({ data }) => {
+                const { error, success, user } = data
+                if (error) console.log('Error deleting image', error)
+                if (user) dispatch({ type: 'SET_USER', user })
+                setImages(images.filter(image => image._id !== _id))
+            })
+            .catch(err => console.log(`Catch: Error deleting filename: ${filename}`, err))
+    }
+
     return (
-        <View style={styles.container}>
-            <Sandbox />
+        <View>
+            <Profile user={user} />
+            <AvatarModule />
+            <ImageList
+                deleteImage={(_id, filename) => deleteImage(_id, filename)}
+                setAvatar={(_id, filename) => setAvatar(_id, filename)}
+                images={images}
+                user={user}
+            />
         </View>
     )
 }
 
 export default Settings
-
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        // borderWidth: 1,
-        // borderColor: 'black',
-    },
-    header: {
-        flex: 1,
-        flexGrow: 1,
-        paddingTop: 10,
-        paddingBottom: 20,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        flexBasis: 'auto',
-        // borderWidth: 1,
-        // borderColor: 'pink',
-    },
-    iconCol: {
-        flex: 1,
-        flexShrink: 0,
-        flexGrow: 0,
-        flexBasis: 'auto',
-        // borderWidth: 1,
-        // borderColor: 'blue',
-    },
-    headingCol: {
-        flex: 1,
-        flexBasis: 'auto',
-        flexShrink: 0,
-        flexGrow: 1,
-        fontSize: 18,
-        fontWeight: 600,
-        // borderWidth: 1,
-        // borderColor: 'yellow',
-    },
-})

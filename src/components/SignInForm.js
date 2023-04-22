@@ -66,14 +66,15 @@ const SignInForm = ({ updateStatus }) => {
 				if (user) {
 					updateStatus('Sign in successful.')
 					setUser(user)
+				} else {
+					updateStatus('No user found.')
 				}
-				updateStatus('No user found.')
 				setLoading(false)
 			})
 			.catch(err => {
 				updateStatus('Error signing in.')
 				setLoading(false)
-				console.log('Failed sign in.', err)
+				console.log('Error signing in.', err)
 			})
 	}
 	
@@ -121,7 +122,7 @@ const SignInForm = ({ updateStatus }) => {
                     style={[defaultStyles.buttonLabel, (loading ? defaultStyles.buttonLabelDisabled : null)]}
                     accessibilityLabel='Connect'
                 >
-                    {loading ? 'Connect' : 'Connecting'}
+                    {loading ? 'Connecting' : 'Connect'}
                 </Text>
             </TouchableOpacity>
 

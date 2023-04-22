@@ -1,10 +1,15 @@
 import React from 'react'
 import { SecureScreen } from './'
-import { Settings } from '../components'
+import {
+    Settings,
+    ScreenContent,
+} from '../components'
 
 const SettingsScreen = props => (
     <SecureScreen { ...props }>
-        <Settings />
+        <ScreenContent>
+            <Settings />
+        </ScreenContent>
     </SecureScreen>
 )
 

@@ -11,6 +11,7 @@ import {
 } from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
 const size = 100
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 
 const ImageDisplay = ({ deleteImage, path, setAvatar }) => (
     <View style={styles.container}>
@@ -20,9 +21,7 @@ const ImageDisplay = ({ deleteImage, path, setAvatar }) => (
         >
             <TouchableOpacity
                 style={styles.setAvatarButton}
-                onPress={() => {
-                    setAvatar()
-                }}
+                onPress={() => setAvatar()}
             />
         </HoverableView>
         <TouchableOpacity
@@ -41,7 +40,7 @@ const ImageDisplay = ({ deleteImage, path, setAvatar }) => (
                     height: size,  
                 },
             ]}
-            source={`/assets/images/${path}`}
+            source={`${IMAGE_PATH}/${path}`}
         />
     </View>
 )

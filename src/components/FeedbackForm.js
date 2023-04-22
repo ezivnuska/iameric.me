@@ -1,5 +1,11 @@
 import React, { useContext, useState } from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import {
+    // StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View
+} from 'react-native'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
@@ -39,8 +45,6 @@ const FeedbackForm = ({ updateStatus }) => {
 
     return (
         <View style={defaultStyles.form}>
-
-            <Text style={defaultStyles.title}>Give Feedback</Text>
             
             <TextInput
                 style={defaultStyles.input}
@@ -51,8 +55,10 @@ const FeedbackForm = ({ updateStatus }) => {
                 autoCapitalize='sentences'
                 keyboardType='default'
             />
+
             <TouchableOpacity
                 style={[defaultStyles.button, (loading ? defaultStyles.buttonDisabled : null)]}
+                disabled={loading}
                 onPress={onSubmit}
             >
                 <Text
@@ -61,11 +67,13 @@ const FeedbackForm = ({ updateStatus }) => {
                     {loading ? 'Sending...' : 'Say it'}
                 </Text>
             </TouchableOpacity>
+
         </View>
     )
 }
 
 export default FeedbackForm
 
-const styles = StyleSheet.create({
-})
+// const styles = StyleSheet.create({
+
+// })

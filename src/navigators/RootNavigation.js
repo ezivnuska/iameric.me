@@ -7,11 +7,7 @@ export const navigate = async (name, params) => {
     if (navigationRef.isReady()) {
         await AsyncStorage
             .setItem('route', name)
-            .then(() => {
-                navigationRef.navigate(name)
-            })
+            .then(() => navigationRef.navigate(name))
             .catch(err => alert('Error saving route name while navigating:', err))
     }
 }
-
-// add other navigation functions that you need and export them

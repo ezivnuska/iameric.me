@@ -140,8 +140,8 @@ app.post('/signin', (req, res) => {
 })
 
 app.post('/authenticate', (req, res) => {
-    console.log('authenticating token...')
     const { token } = req.body
+    console.log('authenticating token...')
     if (token) {
         const user = getDecodedUser(token)
         const expired = (new Date(user.exp) - Date.now() > 0)
@@ -218,11 +218,7 @@ app.post('/entry', (req, res) => {
 app.get('/entries', (req, res) => {
     Entry
         .find({})
-        .then(result => {
-            return res.json({
-                entries: result,
-            })
-        })
+        .then(entries => res.json({ entries }))
 })
 
 app.post('/entry/delete', (req, res) => {

@@ -18,7 +18,14 @@ const SecureScreen = ({ children, ...props }) => {
     const { user } = state
 
     useEffect(() => {
-        if (!user && route.name !== 'auth') navigate('auth')
+        // console.log('Secure Screen user changed', user)
+        if (!user) {
+            // console.log('no user....')
+            if (!route) {
+                // console.log('route name not auth. navigating to auth')
+                navigate('auth')
+            }
+        }
     }, [user])
 
     return (

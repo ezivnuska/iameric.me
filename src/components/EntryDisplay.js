@@ -27,8 +27,9 @@ const EntryDisplay = ({ navigation }) => {
         axios
             .get('/api/entries')
             .then(({ data }) => {
-                setStatus('Entries loaded.')
-                dispatch({ type: 'SET_ENTRIES', entries: data.entries })
+                const { entries } = data
+                setStatus('Entries loaded.', entries)
+                dispatch({ type: 'SET_ENTRIES', entries })
             })
             .catch(err => {
                 setStatus('Error loading entries.')

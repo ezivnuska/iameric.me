@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import {
     Dimensions,
     StyleSheet,
@@ -9,9 +9,13 @@ import {
 import { CloseCircleOutlined } from '@ant-design/icons'
 import defaultStyles from '../styles'
 import { AppContext } from '../AppContext'
+import UserHeading from './UserHeading'
+import axios from 'axios'
 
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
+
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 
 const EntryListItem = ({ entry, deleteEntry }) => {
     
@@ -22,18 +26,39 @@ const EntryListItem = ({ entry, deleteEntry }) => {
     
     const { _id, userId, username, text } = entry
     const { user } = state
+    const [deleting, setDeleting] = useState(false)
+    const [author, setAuthor] = useState(null)
 
-    return user ? (
+    const getAuthor = () => {
+        axios
+            .get(`/api/users/${userId}`)
+            .then(({ data }) => {
+                setAuthor(data.user)
+            })
+            .catch(err => console.log('Error getting author', err))
+    }
+
+    useEffect(() => {
+        getAuthor()
+    }, [])
+
+    return author ? (
         <View style={styles.container}>
-            <View style={styles.flexContainer}>
-                <View style={styles.title}>
-                    <Text style={styles.username}>{username}</Text>
-                </View>
+            <View style={[styles.flexContainer, (deleting ? styles.setForDeletion : null)]}>
+                
+                <UserHeading
+                    user={author}
+                    styleProps={styles.userHeading}
+                />
+
                 {userId === user._id ? (
                     <View style={styles.aside}>
                         <TouchableOpacity
                             style={styles.iconDelete}
-                            onPress={() => deleteEntry(_id)}
+                            onPress={() => {
+                                setDeleting(true)
+                                deleteEntry(_id)
+                            }}
                         >
                             <CloseCircleOutlined />
                         </TouchableOpacity>
@@ -51,16 +76,22 @@ export default EntryListItem
 
 const styles = StyleSheet.create({
     container: {
-        minWidth: 375,
-        maxWidth: 400,
+        width: '100%',
         paddingBottom: 10,
-        paddingLeft: 0,
+        // borderWidth: 1,
+        // borderColor: 'red',
     },
     flexContainer: {
         display: 'flex',
         flexDirection: 'row',
+        paddingHorizontal: 5,
+        // borderWidth: 1,
+        // borderColor: 'blue',
     },
-    title: {
+    setForDeletion: {
+        opacity: .3,
+    },
+    userHeading: {
         flex: 1,
         flexBasis: '90%',
         flexGrow: 1,
@@ -73,7 +104,7 @@ const styles = StyleSheet.create({
         color: '#999',
     },
     textContainer: {
-        padding: 2,
+        padding: 5,
     },
     text: {
         width: '90%',

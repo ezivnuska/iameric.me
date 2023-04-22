@@ -3,7 +3,7 @@ import {
     FlatList,
     StyleSheet,
     View,
-} from 'react-native-web'
+} from 'react-native'
 import {
     ImageDisplay,
 } from './'
@@ -14,6 +14,7 @@ const ImageList = ({ deleteImage, setAvatar, images, user }) => (
             contentContainerStyle={styles.list}
             data={images}
             keyExtractor={(filename, index) => `${filename}${index}`}
+            numColumns={3}
             renderItem={({ item }) => (
                 <View style={styles.item}>
                     <ImageDisplay
@@ -35,8 +36,7 @@ const styles = StyleSheet.create({
     },
     list: {
         display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexDirection: 'column',
         flexGrow: 0,
         justifyContent: 'flex-start',
     },

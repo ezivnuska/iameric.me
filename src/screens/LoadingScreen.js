@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { Screen } from 'screens'
+import { Screen } from './'
 import { navigate } from 'navigators'
 
 const LoadingScreen = props => (

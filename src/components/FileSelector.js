@@ -33,13 +33,13 @@ const FileSelector = ({ handleDrop }) => {
   }
 
   const handlePress = () => {
-    console.log('handlePress', Platform.OS)
+    console.log('platform:', Platform.OS)
     if (Platform.OS === 'web') selectImage()
     else openImagePickerAsync()
   }
 
   const selectImage = async () => {
-    console.log('selectImage')
+    // console.log('selectImage')
     // let options = {
     //   title: 'You can choose one image',
     //   maxWidth: 256,
@@ -56,7 +56,6 @@ const FileSelector = ({ handleDrop }) => {
 
     if (result.canceled) return
     
-    console.log('web result', result, handleDrop)
     handleDrop(result.assets[0].uri)
     
   }
