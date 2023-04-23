@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { Dimensions, StyleSheet, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
+import defaultStyles from '../styles'
 // const window = Dimensions.get('window')
 const { height } = window
 
@@ -36,5 +37,6 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 10,
         height: height - 50,
+
     },
 })

@@ -42,6 +42,10 @@ const EntryListItem = ({ entry, deleteEntry }) => {
         getAuthor()
     }, [])
 
+    useEffect(() => {
+        setDeleting(false)
+    }, [entry])
+
     return author ? (
         <View style={styles.container}>
             <View style={[styles.flexContainer, (deleting ? styles.setForDeletion : null)]}>

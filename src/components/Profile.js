@@ -10,15 +10,11 @@ import defaultStyles from '../styles'
 const Profile = ({ user }) => (
     <View style={styles.container}>
         <View style={styles.leftColumn}>
-            <Avatar user={{ username: user.username, profileImage: user.profileImage }} size={50} />
+            <Avatar user={{ username: user.username, profileImage: user.profileImage }} size={48} />
         </View>
         <View style={styles.main}>
-            <View style={styles.header}>
-                <Text style={styles.heading}>{user.username}</Text>
-            </View>
-            <View style={styles.content}>
-                <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
-            </View>
+            <Text style={styles.heading}>{user.username}</Text>
+            <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
         </View>
     </View>
 )
@@ -52,21 +48,18 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
     },
-    header: {
+    heading: {
         display: 'flex',
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignContent: 'flex-start',
-        marginBottom: 15,
-    },
-    heading: {
-        flex: 2,
         fontSize: 18,
         fontWeight: 600,
         lineHeight: 24,
     },
     content: {
         flex: 2,
+        lineHeight: 24,
     },
 })

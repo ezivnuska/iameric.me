@@ -174,19 +174,19 @@ const ImageHandler = () => {
         image.src = srcBase64
     }
 
-    const onChange = async () => {
-        const canvas = editor.getImage()
-        const dataURL = canvas.toDataURL('image/png;base64;')
+    // const onChange = async () => {
+    //     const canvas = editor.getImage()
+    //     const dataURL = canvas.toDataURL('image/png;base64;')
 
-        const reader = new FileReader()
-        reader.onload = e => {
-            const image = e.target.result
-            const exif = EXIF.readFromBinaryFile(image)
-            resetOrientation(dataURL, exif ? exif.Orientation : null)
-        }
-        const blob = await dataURItoBlob(dataURL)
-        reader.readAsArrayBuffer(blob)
-    }
+    //     const reader = new FileReader()
+    //     reader.onload = e => {
+    //         const image = e.target.result
+    //         const exif = EXIF.readFromBinaryFile(image)
+    //         resetOrientation(dataURL, exif ? exif.Orientation : null)
+    //     }
+    //     const blob = await dataURItoBlob(dataURL)
+    //     reader.readAsArrayBuffer(blob)
+    // }
 
     return (
         <View style={styles.container}>

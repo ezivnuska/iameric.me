@@ -4,10 +4,12 @@ import {
     StyleSheet,
     View,
 } from 'react-native'
+import defaultStyles from '../styles'
+
 const { height, width } = Dimensions.get('window')
 
 const Body = ({ children, ...props }) => (
-    <View style={styles.bodyContainer}>
+    <View style={[styles.bodyContainer, defaultStyles.backgroundColor]}>
         <View style={styles.body}>
             {children}
         </View>
@@ -26,7 +28,7 @@ const styles = StyleSheet.create({
         flexBasis: height - 50,
         // paddingHorizontal: 20,
         paddingVertical: 0,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
     },
     body: {
         flex: 1,

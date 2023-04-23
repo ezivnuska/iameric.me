@@ -8,6 +8,7 @@ const windowWidth = Dimensions.get('window').width
 export default StyleSheet.create({
     text: {
         fontHeight: 20,
+		lineHeight: 24,
     },
     heading: {
         fontHeight: 25,

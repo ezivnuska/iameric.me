@@ -32,7 +32,7 @@ export default ImageList
 
 const styles = StyleSheet.create({
     container: {
-
+        marginHorizontal: 'auto',
     },
     list: {
         display: 'flex',
@@ -45,5 +45,7 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
         flexShrink: 0,
         flexGrow: 0,
+        marginRight: 5,
+        marginBottom: 5,
     }
 })
