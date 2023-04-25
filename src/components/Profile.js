@@ -10,7 +10,7 @@ import defaultStyles from '../styles'
 const Profile = ({ user }) => (
     <View style={styles.container}>
         <View style={styles.leftColumn}>
-            <Avatar user={{ username: user.username, profileImage: user.profileImage }} size={48} />
+            <Avatar user={user} size={48} />
         </View>
         <View style={styles.main}>
             <Text style={styles.heading}>{user.username}</Text>
@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        width: 400,
-        minWidth: 375,
-        maxWidth: 400,
+        width: 350,
+        minWidth: 350,
+        maxWidth: 350,
         marginHorizontal: 'auto',
     },
     leftColumn: {

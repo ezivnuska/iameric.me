@@ -3,6 +3,7 @@ import { Dimensions, StyleSheet, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
+import { Container } from '../components'
 // const window = Dimensions.get('window')
 const { height } = window
 
@@ -25,7 +26,9 @@ const Screen = ({ children, route }) => {
     
     return (
         <View style={styles.container}>
-            {children}
+            <Container>
+                {children}
+            </Container>
         </View>
     )
 }
@@ -34,8 +37,6 @@ export default Screen
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 20,
-        paddingHorizontal: 10,
         height: height - 50,
 
     },

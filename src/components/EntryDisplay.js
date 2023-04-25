@@ -37,6 +37,7 @@ const EntryDisplay = ({ navigation }) => {
     }
 
     useEffect(() => {
+        console.log('Entries loaded')
         getEntries()
     }, [])
 
@@ -67,10 +68,7 @@ export default EntryDisplay
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexBasis: 'auto',
-        alignContent: 'center',
-        display: 'flex',
-        flexDirection: 'column',
+        // borderWidth: 1,
+        // borderColor: 'blue',
     },
 })

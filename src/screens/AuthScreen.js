@@ -4,7 +4,6 @@ import {
     View,
 } from 'react-native'
 import {
-    ScreenContent,
     SignInForm,
     SignUpForm,
     SimpleLink,
@@ -93,19 +92,24 @@ const AuthScreen = ({ navigation, ...props }) => {
     }
 
     useEffect(() => {
+        checkIn()
+        return () => console.log('AuthLoadingScreen unmounting...')
+    }, [])
+
+    useEffect(() => {
         if (!user) {
             setFormVisible(true)
             setSignupVisible(false)
         } else {
             setStatus(`${user.username} verified.`)
             // console.log('User verified.', user)
-            if (route) navigate(route)
+            getRoute()
         }
     }, [user])
 
     useEffect(() => {
         console.log('route changed', route)
-        checkin()
+        // checkin()
     }, [route])
 
     const getRoute = async () => {
@@ -131,13 +135,7 @@ const AuthScreen = ({ navigation, ...props }) => {
             })
     }
 
-    useEffect(() => {
-        getRoute()
-        
-        return () => console.log('AuthLoadingScreen unmounting...')
-    }, [])
-
-    const checkin = async () => {
+    const checkIn = async () => {
         console.log('Checking in...')
         await AsyncStorage
             .getItem('userToken')
@@ -151,27 +149,28 @@ const AuthScreen = ({ navigation, ...props }) => {
                         console.log(`${authenticatedUser.username} authenticated`)
                         setStatus('Storing token.')
                         await AsyncStorage
-                        .setItem('userToken', authenticatedUser.token)
-                        .then(() => {
-                            // console.log('userToken saved in local storage')
-                            dispatch({ type: 'SET_USER', user: authenticatedUser })
-                            setStatus('Ttoken stored.')
-                        })
-                        .catch(err => alert('Signin Error:', err))
+                            .setItem('userToken', authenticatedUser.token)
+                            .then(() => {
+                                // console.log('userToken saved in local storage')
+                                dispatch({ type: 'SET_USER', user: authenticatedUser })
+                                setStatus('Token stored.')
+                            })
+                            .catch(err => alert('Signin Error:', err))
                         
                         setStatus('Token verified.')
                     } else {
                         setStatus('Clearing token...')
-                        AsyncStorage
+                        await AsyncStorage
                             .removeItem('userToken')
                             .then(() => {
                                 setStatus('Token cleared.')
-                                setFormVisible(true)
                             })
                             .catch(err => {
                                 setStatus('Error clearing token.')
                                 console.log('Error clearing token', err)
                             })
+                        
+                        setFormVisible(true)
                     }
                 } else {
                     setStatus('No token found.')
@@ -183,13 +182,11 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     return (
         <Screen { ...props }>
-            <ScreenContent>
-                <View style={styles.container}>
-                    {status ? <StatusDisplay status={status} /> : null}
-                    {formVisible ? renderForm() : null}
-                    {renderNav()}
-                </View>
-            </ScreenContent>
+            <View style={styles.container}>
+                {status ? <StatusDisplay status={status} /> : null}
+                {formVisible ? renderForm() : null}
+                {renderNav()}
+            </View>
         </Screen>
     )
 }

@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection:'row',
         alignItems: 'center',
-        minWidth: 375,
-        maxWidth: 900,
         width: '80%',
+        minWidth: 350,
+        maxWidth: 900,
     },
     header: {
         flex: 1,

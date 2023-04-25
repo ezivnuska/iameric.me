@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     StyleSheet,
     Text,
@@ -16,6 +16,13 @@ const Disconnect = props => {
         dispatch,
     } = useContext(AppContext)
 
+    // const { user } = state
+
+    // useEffect(() => {
+    //     console.log('USER_CHANGE', user)
+    //     if (!user) 
+    // }, user)
+
     const signout = () => {
         const { user } = state
         axios
@@ -32,8 +39,9 @@ const Disconnect = props => {
                         dispatch({ type: 'SIGNOUT' })
                         navigate('auth')
                     })
+                    .catch(err => console.log('Error cleaning storage.', err))
             })
-            .catch(err => console.log('logout failed:', err))
+            .catch(err => console.log('Signout failed.', err))
     }
 
     return (

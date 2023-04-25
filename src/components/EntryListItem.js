@@ -44,6 +44,7 @@ const EntryListItem = ({ entry, deleteEntry }) => {
 
     useEffect(() => {
         setDeleting(false)
+        getAuthor()
     }, [entry])
 
     return author ? (
@@ -80,15 +81,14 @@ export default EntryListItem
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
-        paddingBottom: 10,
+        display: 'flex',
         // borderWidth: 1,
         // borderColor: 'red',
     },
     flexContainer: {
         display: 'flex',
         flexDirection: 'row',
-        paddingHorizontal: 5,
+        justifyContent: 'space-between',
         // borderWidth: 1,
         // borderColor: 'blue',
     },
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     userHeading: {
         flex: 1,
-        flexBasis: '90%',
+        flexBasis: 'auto',
         flexGrow: 1,
     },
     username: {
@@ -121,6 +121,8 @@ const styles = StyleSheet.create({
         alignContent: 'center',
     },
     iconDelete: {
+        marginLeft: 5,
+        marginRight: 2,
         paddingTop: 5,
         // paddingHorizontal: 10,
     },

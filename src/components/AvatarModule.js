@@ -9,9 +9,14 @@ import {
 import axios from 'axios'
 import ReactAvatarEditor from 'react-avatar-editor'
 import {
+    CircleButton,
     FileSelector,
     StatusDisplay,
 } from './'
+import {
+    CloseCircleOutlined,
+    UpCircleOutlined,
+} from '@ant-design/icons'
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -35,6 +40,7 @@ const AvatarModule = () => {
     const [ optimized, setOptimized ] = useState(false)
     const [ updated, setUpdated ] = useState(false)
     const [ status, setStatus ] = useState(null)
+    const [ uploading, setUploading ] = useState(false)
 
     const [dimensions, setDimensions] = useState({
         window: windowDimensions,
@@ -44,6 +50,7 @@ const AvatarModule = () => {
     const [ editor, setEditor ] = useState(null)
 
     useEffect(() => {
+        console.log('dimensions', dimensions)
         const subscription = Dimensions.addEventListener(
             'change',
             ({ window, screen }) => {
@@ -51,7 +58,7 @@ const AvatarModule = () => {
 
                 const dropzone = document.getElementById('avatar-dropzone-wrapper')
                 if (dropzone) {
-                    const maxWidth = size || 375
+                    const maxWidth = size || 350
                     const actualWidth = dropzone.offsetWidth
                     setSize(actualWidth > maxWidth ? maxWidth : actualWidth)
                 }
@@ -123,10 +130,12 @@ const AvatarModule = () => {
     const saveDataURI = dataURI => {
         console.log('saving data URI', user.username)
         setUpdated(true)
+        setUploading(true)
         axios
             .post('/api/upload/avatar', { dataurl: dataURI, username: user.username }, { new: true })
             .then(({ data }) => {
                 setStatus('Image URI saved.')
+                setUploading(false)
                 dispatch({ type: 'SET_USER', user: data.user })
             })
             .catch(err => console.log('Error saving dataURI', err))
@@ -233,20 +242,20 @@ const AvatarModule = () => {
             </View>
 
             <View style={styles.controls}>
-                <TouchableOpacity
-                    onPress={resetEditor}
+                <CircleButton
                     disabled={!preview}
-                    style={defaultStyles.button}
+                    onPress={resetEditor}
+                    style={styles.control}
                 >
-                    <Text style={defaultStyles.buttonLabel}>Reset Form</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
+                    <CloseCircleOutlined style={{ fontSize: 42, color: '#fff' }} />
+                </CircleButton>
+                <CircleButton
+                    disabled={uploading || !preview || validateForm()}
                     onPress={handleSubmit}
-                    disabled={!preview || validateForm()}
-                    style={defaultStyles.button}
+                    style={styles.control}
                 >
-                    <Text style={defaultStyles.buttonLabel}>Submit Form</Text>
-                </TouchableOpacity>
+                    <UpCircleOutlined style={{ fontSize: 42, color: '#fff' }} />
+                </CircleButton>
             </View>
         </View>
     )
@@ -261,17 +270,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: 'auto',
-		minWidth: 375,
-		maxWidth: 400,
+        // borderWidth: 1,
+        // borderColor: 'green',
+        backgroundColor: '#eee',
+        width: '100%',
+        borderRadius: 10,
+        paddingTop: 15,
+        marginBottom: 15,
     },
     wrapper: {
         flex: 1,
         marginHorizontal: 'auto',
-        borderWidth: 3,
-        borderStyle: 'dashed',
-        borderColor: '#ccc',
     },
     controls: {
         marginVertical: 10,
+        paddingTOp: 10,
+        width: '100%',
+        // minWidth: 300,
+        // maxWidth: 300,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        // borderWidth: 1,
+        // borderColor: 'red',
+    },
+    control: {
+        flex: 1,
+        padding: 10,
     },
 })

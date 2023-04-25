@@ -96,11 +96,17 @@ const styles = StyleSheet.create({
   },
   // add below
   selectButtonContainer: {
-    margin: 20,
-    borderRadius: 5
+    // marginVertical: 20,
+    marginHorizontal: 'auto',
+    width: 300,
+    borderRadius: 20,
+    borderWidth: 3,
+    borderStyle: 'dashed',
+    borderColor: '#ccc',
   },
   selectButtonTitle: {
     padding: 10,
-    fontSize: 18
+    fontSize: 18,
+    marginHorizontal: 'auto',
   }
 })

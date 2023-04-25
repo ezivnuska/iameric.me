@@ -85,9 +85,9 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        width: 375,
-        minWidth: 375,
-        maxWidth: 400,
+        width: 350,
+        minWidth: 350,
+        maxWidth: 350,
         marginHorizontal: 'auto',
     },
 })

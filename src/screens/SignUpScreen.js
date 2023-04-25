@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		marginHorizontal: 'auto',
-		minWidth: 375,
-		maxWidth: 400,
-		width: '100%',
+		minWidth: 350,
+		maxWidth: 350,
+		width: 350,
 	},
 })

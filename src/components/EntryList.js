@@ -29,9 +29,13 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        // borderWidth: 2,
+        // borderStyle: 'dashed',
+        // borderColor: 'orange',
     },
     list: {
         flex: 1,
         alignSelf: 'center',
+        width: '100%',
     },
 })

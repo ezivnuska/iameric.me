@@ -17,12 +17,11 @@ export default StatusDisplay
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
         marginBottom: 20,
         paddingHorizontal: 20,
         paddingVertical: 10,
-        // borderWidth: 1,
-        // borderColor: '#f00',
+        borderWidth: 1,
+        borderColor: '#f00',
         backgroundColor: '#faa',
         borderRadius: 10,
     },
