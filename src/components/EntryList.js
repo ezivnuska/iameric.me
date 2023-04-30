@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+    ActivityIndicator,
     FlatList,
     StyleSheet,
     View,
@@ -8,18 +9,24 @@ import { EntryListItem } from '../components'
 
 const EntryList = ({ entries, deleteEntry }) => {
 
-    return entries ? (
+    return (
         <View style={styles.container}>
-            <FlatList
-                style={styles.list}
-                data={entries}
-                keyExtractor={(item, index) => 'key' + index}
-                renderItem={({ item }) => (
-                    <EntryListItem entry={item} deleteEntry={deleteEntry} />
-                )} 
-            />
+            {
+                entries ? (
+                    <FlatList
+                        style={styles.list}
+                        data={entries}
+                        keyExtractor={(item, index) => 'key' + index}
+                        renderItem={({ item }) => (
+                            <EntryListItem entry={item} deleteEntry={deleteEntry} />
+                        )} 
+                    />
+                ) : (
+                    <ActivityIndicator size='small' />
+                )
+            }
         </View>
-    ) : null
+    )
 }
 
 export default EntryList
@@ -29,9 +36,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        // borderWidth: 2,
-        // borderStyle: 'dashed',
-        // borderColor: 'orange',
+        padding: 10,
+        borderWidth: 1,
+        borderColor: '#aaa',
+        borderRadius: 10,
     },
     list: {
         flex: 1,

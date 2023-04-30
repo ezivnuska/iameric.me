@@ -17,6 +17,7 @@ import ImageList from './ImageList'
 import Menu from './Menu'
 import Profile from './Profile'
 import Settings from './Settings'
+import SimpleButton from './SimpleButton'
 import SimpleLink from './SimpleLink'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
@@ -47,6 +48,7 @@ export {
     Menu,
     Profile,
     Settings,
+    SimpleButton,
     SimpleLink,
     SignInForm,
     SignUpForm,

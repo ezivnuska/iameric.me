@@ -57,7 +57,14 @@ const EntryDisplay = ({ navigation }) => {
 
     return entries ? (
         <View style={styles.container}>
-            {status ? <StatusDisplay status={status} /> : null}
+            
+            {status ? (
+                <StatusDisplay
+                    close={() => setStatus(null)}
+                    status={status}
+                />
+            ) : null}
+
             <FeedbackForm updateStatus={text => setStatus(text)} />
             <EntryList entries={entries} deleteEntry={deleteEntry} />
         </View>
