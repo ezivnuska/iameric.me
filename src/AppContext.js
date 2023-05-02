@@ -4,12 +4,13 @@ const initialState = {
     user: null,
     users: null,
     profileId: null,
+    status: null,
     isLoading: false,
     entries: [],
 }
 
 const reducer = (state = initialState, action) => {
-    let { entries, isLoading, profileId, user, users } = state
+    let { entries, isLoading, profileId, status, user, users } = state
 
     switch(action.type) {
         case 'SET_LOADING':
@@ -33,18 +34,22 @@ const reducer = (state = initialState, action) => {
         case 'SET_ENTRIES':
             entries = action.entries
             break
+        case 'SET_STATUS':
+            status = action.status
+            break
         case 'SIGNOUT':
             user = null
             users = null
             entries = []
             profileId = null
             isLoading = false
+            console.log('signout')
             break
         default:
             throw new Error('Not valid action type')
     }
 
-    return { entries, isLoading, profileId, user, users }
+    return { entries, isLoading, profileId, status, user, users }
 }
 
 export const AppContext = createContext({

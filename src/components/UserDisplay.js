@@ -6,7 +6,6 @@ import {
 } from 'react-native'
 import axios from 'axios'
 import {
-    StatusDisplay,
     UserDetails,
     UserList,
 } from './'
@@ -23,7 +22,6 @@ const UserDisplay = () => {
 
     const [ profileId, setProfileId ] = useState(null)
     const [ loading, setLoading ] = useState(false)
-    const [status, setStatus] = useState(null)
 
     const clearUser = () => setProfileId(null)
     const getProfile = () => profileId ? users.filter(usr => usr._id === profileId)[0] : null
@@ -32,16 +30,16 @@ const UserDisplay = () => {
         .get('/api/users')
         .then(({ data }) => {
             setLoading(false)
-            setStatus('Users loaded.')
+            dispatch({ type: 'SET_STATUS', status: 'Users loaded.' })
             dispatch({ type: 'SET_USERS', users: data.users })
         })
         .catch(err => {
-            setStatus('Error loading users.')
+            dispatch({ type: 'SET_STATUS', status: 'Error loading users.' })
             console.log('Error getting users', err)
         })
 
     useEffect(() => {
-        setStatus('Loading users...')
+        dispatch({ type: 'SET_STATUS', status: 'Loading users...' })
         setLoading(true)
         getUsers()
     }, [])
@@ -55,7 +53,6 @@ const UserDisplay = () => {
 
     return (
         <View style={styles.container}>
-            {status ? <StatusDisplay status={status} /> : null}
             {(users && users.length) ? (
                 <View>
                     {profileId ? (

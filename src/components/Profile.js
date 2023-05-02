@@ -10,7 +10,7 @@ import defaultStyles from '../styles'
 const Profile = ({ user }) => (
     <View style={styles.container}>
         <View style={styles.leftColumn}>
-            <Avatar user={user} size={48} />
+            <Avatar userId={user._id} size={48} />
         </View>
         <View style={styles.main}>
             <Text style={styles.heading}>{user.username}</Text>

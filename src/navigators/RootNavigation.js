@@ -5,9 +5,13 @@ export const navigationRef = createNavigationContainerRef()
 
 export const navigate = async (name, params) => {
     if (navigationRef.isReady()) {
-        await AsyncStorage
-            .setItem('route', name)
-            .then(() => navigationRef.navigate(name))
-            .catch(err => alert('Error saving route name while navigating:', err))
+        if (name !== 'auth') {
+            await AsyncStorage
+                .setItem('route', name)
+                .then(() => navigationRef.navigate(name))
+                .catch(err => alert('Error saving route name while navigating:', err))
+        } else {
+            navigationRef.navigate(name)
+        }
     }
 }

@@ -190,7 +190,7 @@ const ImageHandler = () => {
 
     return (
         <View style={styles.container}>
-            <Avatar user={{ username: user.username, profileImage: user.profileImage }} />
+            <Avatar userId={user._id} />
             
             <TouchableOpacity
                 onPress={handlePress}

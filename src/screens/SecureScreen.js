@@ -6,25 +6,46 @@ import {
 import { Screen } from './'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const SecureScreen = ({ children, ...props }) => {
 
     const { route } = props
     
     const {
+        dispatch,
         state,
     } = useContext(AppContext)
     
     const { user } = state
 
+    const resetToAuthScreen = async () => {
+        dispatch({ type: 'SET_STATUS', status: 'Clearing local storage...' })
+        await AsyncStorage
+            .multiRemove(['route', 'userToken'], err => {
+                if (err) {
+                    console.log('Error clearing local storage', err)
+                    dispatch({ type: 'SET_STATUS', status: 'Error clearing local storage.' })
+                }
+            })
+            .then(() => {
+                console.log('Local storage cleared.')
+                dispatch({ type: 'SET_STATUS', status: 'Local storage cleared.' })
+            })
+            .catch(err => {
+                console.log('Error clearing local storage.', err)
+                dispatch({ type: 'SET_STATUS', status: 'Error clearing local storage.' })
+            })
+            
+            console.log('Navigating to auth screen.')
+            dispatch({ type: 'SET_STATUS', status: null })
+            if (route !== 'auth') navigate('auth')
+    }
+        
     useEffect(() => {
-        // console.log('Secure Screen user changed', user)
         if (!user) {
-            // console.log('no user....')
-            if (!route) {
-                // console.log('route name not auth. navigating to auth')
-                navigate('auth')
-            }
+            console.log('No verified user found. Resetting....')
+            resetToAuthScreen()
         }
     }, [user])
 

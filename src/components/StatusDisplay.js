@@ -8,9 +8,9 @@ import { SimpleButton } from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
 
 const StatusDisplay = ({ close, status }) => (
-    <View style={styles.container}>
+    <View style={[styles.container, !status ? styles.hidden : null]}>
         <Text style={styles.text}>
-            {status}
+            {status ? status : ''}
         </Text>
         <SimpleButton
             onPress={close}
@@ -27,13 +27,16 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 20,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderWidth: 1,
-        borderColor: '#0a0',
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 7,
+        // borderWidth: 1,
+        // borderColor: '#0a0',
         backgroundColor: '#cfc',
-        borderRadius: 10,
+        // borderRadius: 10,
+    },
+    hidden: {
+        visibility: 'hidden',
     },
     text: {
         flex: 1,

@@ -3,11 +3,19 @@ import { Dimensions, StyleSheet, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
-import { Container } from '../components'
+import { Container, StatusDisplay } from '../components'
+import { AppContext } from '../AppContext'
 // const window = Dimensions.get('window')
 const { height } = window
 
 const Screen = ({ children, route }) => {
+
+    const {
+        state,
+        dispatch,
+    } = useContext(AppContext)
+
+    const { status } = state
     
     const saveRoute = async () => {
         await AsyncStorage
@@ -19,13 +27,16 @@ const Screen = ({ children, route }) => {
     }
 
     useEffect(() => {
-        if (route && route.name && route.name !== 'auth') {
+        if (route && route.name !== 'auth') {
             saveRoute()
         }
-    }, [])
+    }, [route])
+
+    const hideStatus = () => dispatch({ type: 'SET_STATUS', status: null })
     
     return (
         <View style={styles.container}>
+            <StatusDisplay status={status} close={hideStatus} />
             <Container>
                 {children}
             </Container>

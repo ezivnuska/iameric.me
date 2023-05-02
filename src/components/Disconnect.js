@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import {
+    ActivityIndicator,
     StyleSheet,
-    Text,
+    // Text,
     TouchableOpacity,
 } from 'react-native'
 import axios from 'axios'
@@ -16,35 +17,37 @@ const Disconnect = props => {
         dispatch,
     } = useContext(AppContext)
 
-    // const { user } = state
+    const { user } = state
 
     // useEffect(() => {
-    //     console.log('USER_CHANGE', user)
-    //     if (!user) 
-    // }, user)
+    //     console.log('User change:', user)
+    //     if (!user) {
+    //         console.log(`${user.username} signed out`)
+    //         navigate('auth')
+    //     }
+    // }, [user])
 
     const signout = () => {
-        const { user } = state
         axios
             .post('/api/signout', { _id: user._id })
-            .then(({ data }) => {
+            .then(async ({ data }) => {
                 if (!data.success) throw new Error('Error signing out')
+
+                // await AsyncStorage
+                //     .multiRemove(['route', 'userToken'], err => {
+                //         if (err) console.log('Error cleaning local storage', err)
+                //     })
+                //     .then(() => {
+                //         console.log('Local storage cleared.')
+                //     })
+                //     .catch(err => console.log('Error cleaning storage.', err))
                 
-                AsyncStorage
-                    .multiRemove(['route', 'userToken'], err => {
-                        if (err) console.log('Error cleaning local storage', err)
-                    })
-                    .then(() => {
-                        console.log(`${user.username} signed out`)
-                        dispatch({ type: 'SIGNOUT' })
-                        navigate('auth')
-                    })
-                    .catch(err => console.log('Error cleaning storage.', err))
+                dispatch({ type: 'SIGNOUT' })
             })
             .catch(err => console.log('Signout failed.', err))
     }
 
-    return (
+    return user ? (
         <TouchableOpacity
             {...props}
             onPress={signout}
@@ -52,7 +55,7 @@ const Disconnect = props => {
         >
             <CloseCircleOutlined style={styles.icon} />
         </TouchableOpacity>
-    )
+    ) : <ActivityIndicator size='small' />
 }
 
 export default Disconnect

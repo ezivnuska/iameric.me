@@ -16,9 +16,9 @@ const UserHeading = ({ user, styleProps, ...props }) => {
     return (
         <View style={[styles.container, styleProps]}>
             <View style={styles.leftColumn}>
-                <Avatar user={user}
-                size={24}
-            />
+                <Avatar userId={user._id}
+                    size={24}
+                />
             </View>
             <View style={styles.main}>
                 <View style={styles.header}>

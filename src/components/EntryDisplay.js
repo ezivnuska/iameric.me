@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import {
+    ActivityIndicator,
     StyleSheet,
     View,
 } from 'react-native'
@@ -8,7 +9,6 @@ import axios from 'axios'
 import {
     EntryList,
     FeedbackForm,
-    StatusDisplay,
 } from './'
 import { AppContext } from '../AppContext'
 
@@ -20,53 +20,63 @@ const EntryDisplay = ({ navigation }) => {
     } = useContext(AppContext)
 
     const { entries } = state
-    const [status, setStatus] = useState(null)
+    const [items, setItems] = useState(entries)
+    const [loaded, setLoaded] = useState(false)
     
     const getEntries = () => {
-        setStatus('Loading entries...')
+        // dispatch({ type: 'SET_STATUS', status: 'Loading entries...' })
         axios
             .get('/api/entries')
             .then(({ data }) => {
-                const { entries } = data
-                setStatus('Entries loaded.', entries)
-                dispatch({ type: 'SET_ENTRIES', entries })
+                // dispatch({ type: 'SET_STATUS', status: 'Entries loaded.' })
+                setItems(data.entries)
+                setLoaded(true)
+                dispatch({ type: 'SET_ENTRIES', entries: data.entries })
             })
             .catch(err => {
-                setStatus('Error loading entries.')
+                dispatch({ type: 'SET_STATUS', status: 'Error loading entries.' })
             })
     }
 
     useEffect(() => {
+        setLoaded(false)
         console.log('Entries loaded')
         getEntries()
     }, [])
 
+    useEffect(() => {
+        setItems(entries)
+    }, [entries])
+
+    const removeItemById = id => {
+        setItems(items.filter((item, index) => item._id !== id))
+    }
+
     const deleteEntry = id => {
-        setStatus('Deleting entry...')
+        dispatch({ type: 'SET_STATUS', status: 'Deleting entry...' })
+        removeItemById(id)
         axios
             .post('/api/entry/delete', { id })
             .then(result => {
-                setStatus('Entry deleted.')
+                dispatch({ type: 'SET_STATUS', status: 'Entry deleted.' })
                 dispatch({ type: 'ENTRY_DELETE', entryId: id })
             })
             .catch(err => {
-                setStatus('Error deleting entry.')
+                dispatch({ type: 'SET_STATUS', status: 'Error deleting entry.' })
                 console.log('Error deleting entry', err)
             })
     }
 
-    return entries ? (
-        <View style={styles.container}>
-            
-            {status ? (
-                <StatusDisplay
-                    close={() => setStatus(null)}
-                    status={status}
-                />
-            ) : null}
+    const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
 
-            <FeedbackForm updateStatus={text => setStatus(text)} />
-            <EntryList entries={entries} deleteEntry={deleteEntry} />
+    return items ? (
+        <View style={styles.container}>
+            <FeedbackForm updateStatus={updateStatus} />
+            {loaded ? (
+                <EntryList entries={items} deleteEntry={deleteEntry} />
+            ) : (
+                <ActivityIndicator size='small' />
+            )}
         </View>
     ) : null
 }

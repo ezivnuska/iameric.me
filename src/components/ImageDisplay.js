@@ -11,7 +11,7 @@ import {
 } from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
 const size = 100
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
+const IMAGE_PATH = __DEV__ ? '../../assets/images' : '/assets/images'
 
 const ImageDisplay = ({ deleteImage, path, setAvatar }) => (
     <View style={styles.container}>

@@ -39,7 +39,6 @@ const AvatarModule = () => {
     const [ optimizing, setOptimizing ] = useState(false)
     const [ optimized, setOptimized ] = useState(false)
     const [ updated, setUpdated ] = useState(false)
-    const [ status, setStatus ] = useState(null)
     const [ uploading, setUploading ] = useState(false)
 
     const [dimensions, setDimensions] = useState({
@@ -50,7 +49,7 @@ const AvatarModule = () => {
     const [ editor, setEditor ] = useState(null)
 
     useEffect(() => {
-        console.log('dimensions', dimensions)
+        // console.log('dimensions', dimensions)
         const subscription = Dimensions.addEventListener(
             'change',
             ({ window, screen }) => {
@@ -80,7 +79,7 @@ const AvatarModule = () => {
     }
 
     const handleSubmit = () => {
-        setStatus('Submitting image.')
+        dispatch({ type: 'SET_STATUS', status: 'Submitting image.' })
         if (editor) {
             const canvas = editor.getImage()
             const dataURL = canvas.toDataURL('image/png;base64;')
@@ -116,7 +115,7 @@ const AvatarModule = () => {
         
             const dataURL = canvas.toDataURL('image/png;base64;')
             
-            setStatus('Image optimized.')
+            dispatch({ type: 'SET_STATUS', status: 'Image optimized.' })
             setOptimizing(false)
             setOptimized(true)
             saveDataURI(dataURL)
@@ -134,7 +133,7 @@ const AvatarModule = () => {
         axios
             .post('/api/upload/avatar', { dataurl: dataURI, username: user.username }, { new: true })
             .then(({ data }) => {
-                setStatus('Image URI saved.')
+                dispatch({ type: 'SET_STATUS', status: 'Image URI saved.' })
                 setUploading(false)
                 dispatch({ type: 'SET_USER', user: data.user })
             })
@@ -207,7 +206,6 @@ const AvatarModule = () => {
             id='avatar-dropzone-wrapper'
             style={styles.avatarDropzoneWrapper}
         >
-            {status ? <StatusDisplay status={status} /> : null}
             <View
                 style={styles.wrapper}
                 id='avatar-editor-wrapper'
@@ -216,17 +214,6 @@ const AvatarModule = () => {
                     <FileSelector
                         handleDrop={uri => handleDrop(uri)}
                     />
-
-                    // <Dropzone
-                    //     id='dropzone'
-                    //     handleDrop={dataUrl => handleDrop(dataUrl)}
-                    //     noClick={preview !== null}
-                    //     style={{
-                    //         width: size + 'px',
-                    //         height: size + 'px',
-                    //         marginTop: 20 + 'px',
-                    //     }}
-                    // />
                 ) : (
                     <ReactAvatarEditor
                         image={preview}

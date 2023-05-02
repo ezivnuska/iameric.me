@@ -15,7 +15,7 @@ export default Container
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 'auto',
-        paddingVertical: 20,
+        paddingBottom: 20,
         paddingHorizontal: 10,
         width: 300,
         minWidth: 350,

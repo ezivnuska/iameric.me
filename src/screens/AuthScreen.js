@@ -7,7 +7,6 @@ import {
     SignInForm,
     SignUpForm,
     SimpleLink,
-    StatusDisplay,
 } from '../components'
 import { Screen } from './'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -22,11 +21,10 @@ const AuthScreen = ({ navigation, ...props }) => {
         dispatch,
     } = useContext(AppContext)
 
-    const { user } = state
+    const { status, user } = state
 
     const [formVisible, setFormVisible] = useState(false)
     const [signupVisible, setSignupVisible] = useState(false)
-    const [status, setStatus] = useState(null)
     const [route, setRoute] = useState(null)
 
     const renderNav = () => signupVisible ? (
@@ -41,10 +39,11 @@ const AuthScreen = ({ navigation, ...props }) => {
         />
     )
 
-    const updateStatus = text => setStatus(text)
+    const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
 
     const renderForm = () => {
-        if (status) setStatus(null)
+        // console.log('status', status)
+        // if (status !== null) dispatch({ type: 'SET_STATUS', status: null })
 
         return signupVisible
             ? <SignUpForm updateStatus={updateStatus} />
@@ -101,38 +100,38 @@ const AuthScreen = ({ navigation, ...props }) => {
             setFormVisible(true)
             setSignupVisible(false)
         } else {
-            setStatus(`${user.username} verified.`)
-            // console.log('User verified.', user)
-            getRoute()
+            dispatch({ type: 'SET_STATUS', status: `${user.username} verified.` })
+            advanceToScreen()
         }
     }, [user])
 
-    useEffect(() => {
-        console.log('route changed', route)
-        // checkin()
-    }, [route])
+    // useEffect(() => {
+    //     if (route) console.log('route changed', route)
+    //     // checkin()
+    // }, [route])
 
-    const getRoute = async () => {
-        setStatus('Checking for last route...')
-        await AsyncStorage
+    const advanceToScreen = async () => {
+        console.log('Checking for saved location...')
+        const lastRoute = await AsyncStorage
             .getItem('route')
             .then(route => {
                 if (!route) {
-                    setStatus('no route found.')
-                    console.log('no route found.')
-                    console.log('navigating to auth.')
-                    navigate('auth')
+                    console.log('No previous location saved.')
+                    return null
+                } else {
+                    // dispatch({ type: 'SET_STATUS', status: null })
+                    return route
                 }
-                else {
-                    console.log('navigating to', route)
-                    navigate(route)
-                }
-                // console.log('props.route.name', props.route.name)
             })
             .catch(err => {
-                setStatus('Error finding last route.')
-                console.log(err)
+                console.log('Error checking for previously saved location.', err)
+                return null
             })
+            
+        if (lastRoute) {
+            console.log('navigating to', lastRoute)
+            navigate(lastRoute)
+        }
     }
 
     const checkIn = async () => {
@@ -142,39 +141,29 @@ const AuthScreen = ({ navigation, ...props }) => {
             .then(async userToken => {
                 if (userToken) {
                     console.log('userToken found')
-                    setStatus('Verifying token...')
+                    dispatch({ type: 'SET_STATUS', status: 'Verifying token...' })
                     const authenticatedUser = await authenticateUser(userToken)
                     // console.log(`authenticatedUser: ${authenticatedUser}`)
                     if (authenticatedUser) {
                         console.log(`${authenticatedUser.username} authenticated`)
-                        setStatus('Storing token.')
+                        dispatch({ type: 'SET_STATUS', status: `${authenticatedUser.username} authenticated` })
                         await AsyncStorage
                             .setItem('userToken', authenticatedUser.token)
                             .then(() => {
                                 // console.log('userToken saved in local storage')
                                 dispatch({ type: 'SET_USER', user: authenticatedUser })
-                                setStatus('Token stored.')
+                                dispatch({ type: 'SET_STATUS', status: 'Token stored.' })
                             })
                             .catch(err => alert('Signin Error:', err))
                         
-                        setStatus('Token verified.')
+                        dispatch({ type: 'SET_STATUS', status: 'Token verified.' })
                     } else {
-                        setStatus('Clearing token...')
-                        await AsyncStorage
-                            .removeItem('userToken')
-                            .then(() => {
-                                setStatus('Token cleared.')
-                            })
-                            .catch(err => {
-                                setStatus('Error clearing token.')
-                                console.log('Error clearing token', err)
-                            })
-                        
+                        dispatch({ type: 'SET_STATUS', status: 'Authentication failed. Please sign in.' })
                         setFormVisible(true)
                     }
                 } else {
-                    setStatus('No token found.')
-                    console.log('no userToken found')
+                    dispatch({ type: 'SET_STATUS', status: null })
+                    console.log('no user token found')
                     setFormVisible(true)
                 }
             })
@@ -183,7 +172,6 @@ const AuthScreen = ({ navigation, ...props }) => {
     return (
         <Screen { ...props }>
             <View style={styles.container}>
-                {status ? <StatusDisplay status={status} /> : null}
                 {formVisible ? renderForm() : null}
                 {renderNav()}
             </View>
