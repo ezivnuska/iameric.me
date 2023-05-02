@@ -11,39 +11,42 @@ import {
 } from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
 const size = 100
-const IMAGE_PATH = __DEV__ ? '../../assets/images' : '/assets/images'
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 
-const ImageDisplay = ({ deleteImage, path, setAvatar }) => (
-    <View style={styles.container}>
-        <HoverableView
-            style={styles.mouseOffStyles}
-            onHover={[styles.mouseOffStyles, styles.mouseOnStyles]}
-        >
+const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
+    console.log(`ImageDisplay path: ${IMAGE_PATH}/${path}`)
+    return (
+        <View style={styles.container}>
+            <HoverableView
+                style={styles.mouseOffStyles}
+                onHover={[styles.mouseOffStyles, styles.mouseOnStyles]}
+            >
+                <TouchableOpacity
+                    style={styles.setAvatarButton}
+                    onPress={() => setAvatar()}
+                />
+            </HoverableView>
             <TouchableOpacity
-                style={styles.setAvatarButton}
-                onPress={() => setAvatar()}
+                style={styles.deleteButton}
+                onPress={() => {
+                    deleteImage()
+                }}
+            >
+                <CloseCircleOutlined style={styles.deleteIcon} />
+            </TouchableOpacity>
+            <Image
+                style={[
+                    styles.image,
+                    {
+                        width: size,
+                        height: size,  
+                    },
+                ]}
+                source={`${IMAGE_PATH}/${path}`}
             />
-        </HoverableView>
-        <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => {
-                deleteImage()
-            }}
-        >
-            <CloseCircleOutlined style={styles.deleteIcon} />
-        </TouchableOpacity>
-        <Image
-            style={[
-                styles.image,
-                {
-                    width: size,
-                    height: size,  
-                },
-            ]}
-            source={`${IMAGE_PATH}/${path}`}
-        />
-    </View>
-)
+        </View>
+    )
+}
 
 export default ImageDisplay
 
