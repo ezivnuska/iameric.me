@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     ActivityIndicator,
     StyleSheet,
@@ -18,7 +18,7 @@ const Disconnect = props => {
     } = useContext(AppContext)
 
     const { user } = state
-
+    const [working, setWorking] = useState(false)
     // useEffect(() => {
     //     console.log('User change:', user)
     //     if (!user) {
@@ -28,11 +28,12 @@ const Disconnect = props => {
     // }, [user])
 
     const signout = () => {
+        setWorking(true)
         axios
             .post('/api/signout', { _id: user._id })
             .then(async ({ data }) => {
                 if (!data.success) throw new Error('Error signing out')
-
+                setWorking(false)
                 // await AsyncStorage
                 //     .multiRemove(['route', 'userToken'], err => {
                 //         if (err) console.log('Error cleaning local storage', err)
@@ -47,7 +48,7 @@ const Disconnect = props => {
             .catch(err => console.log('Signout failed.', err))
     }
 
-    return user ? (
+    return (user && !working) ? (
         <TouchableOpacity
             {...props}
             onPress={signout}

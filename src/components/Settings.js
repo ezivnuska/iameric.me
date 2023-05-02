@@ -54,6 +54,7 @@ const Settings = () => {
             .then(({ data }) => {
                 const { error, success, user } = data
                 if (error) console.log('Error deleting image', error)
+                console.log('delete:user:', user)
                 dispatch({ type: 'SET_USER', user })
                 setImages(images.filter(image => image._id !== _id))
             })

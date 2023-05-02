@@ -82,8 +82,7 @@ export default EntryListItem
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        // borderWidth: 1,
-        // borderColor: 'red',
+        marginBottom: 5,
     },
     flexContainer: {
         display: 'flex',

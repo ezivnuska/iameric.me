@@ -17,13 +17,13 @@ const Screen = ({ children, route }) => {
 
     const { status } = state
     
-    const saveRoute = async () => {
-        await AsyncStorage
+    const saveRoute = () => {
+        AsyncStorage
             .setItem('route', route.name)
             .then(() => {
-                console.log('path saved in local storage:', route.name)
+                // console.log('path saved in local storage:', route.name)
             })
-            .catch(err => alert('could not save path:', err))
+            .catch(err => console.log('could not save path:', err))
     }
 
     useEffect(() => {
