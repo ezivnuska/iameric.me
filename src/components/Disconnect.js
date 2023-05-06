@@ -19,13 +19,6 @@ const Disconnect = props => {
 
     const { user } = state
     const [working, setWorking] = useState(false)
-    // useEffect(() => {
-    //     console.log('User change:', user)
-    //     if (!user) {
-    //         console.log(`${user.username} signed out`)
-    //         navigate('auth')
-    //     }
-    // }, [user])
 
     const signout = () => {
         setWorking(true)
@@ -34,15 +27,6 @@ const Disconnect = props => {
             .then(async ({ data }) => {
                 if (!data.success) throw new Error('Error signing out')
                 setWorking(false)
-                // await AsyncStorage
-                //     .multiRemove(['route', 'userToken'], err => {
-                //         if (err) console.log('Error cleaning local storage', err)
-                //     })
-                //     .then(() => {
-                //         console.log('Local storage cleared.')
-                //     })
-                //     .catch(err => console.log('Error cleaning storage.', err))
-                
                 dispatch({ type: 'SIGNOUT' })
             })
             .catch(err => console.log('Signout failed.', err))

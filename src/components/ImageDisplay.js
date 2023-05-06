@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+    ActivityIndicator,
     Image,
     StyleSheet,
     Text,
@@ -15,35 +16,63 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/image
 
 const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
     console.log(`ImageDisplay path: ${IMAGE_PATH}/${path}`)
+
+    const [loading, setLoading] = useState(false)
     return (
         <View style={styles.container}>
             <HoverableView
-                style={styles.mouseOffStyles}
-                onHover={[styles.mouseOffStyles, styles.mouseOnStyles]}
+                style={[
+                    styles.mouseOffStyles,
+                    {
+                        visibility: loading ? 'hidden' : 'visible',
+                        height: loading ? 0 : size,
+                    },
+                ]}
+                onHover={[styles.mouseOffStyles, (!loading ? styles.mouseOnStyles : null)]}
             >
                 <TouchableOpacity
-                    style={styles.setAvatarButton}
+                    style={[
+                        styles.setAvatarButton,
+                    ]}
                     onPress={() => setAvatar()}
-                />
+                    disabled={loading}
+                >
+                    <Image
+                        style={[
+                            styles.image,
+                            {
+                                width: size,
+                                height: size,
+                            },
+                        ]}
+                        onLoadStart={() => setLoading(true)}
+                        onLoadEnd={() => setLoading(false)}
+                        source={`${IMAGE_PATH}/${path}`}
+                    />
+                </TouchableOpacity>
             </HoverableView>
+            
+            {loading && (
+                <ActivityIndicator
+                    size='small'
+                    style={styles.indicator}
+                />
+            )}
+            
             <TouchableOpacity
-                style={styles.deleteButton}
+                style={[
+                    styles.deleteButton,
+                    {
+                        display: loading ? 'none' : 'block',
+                    },
+                ]}
                 onPress={() => {
                     deleteImage()
                 }}
+                disabled={loading}
             >
                 <CloseCircleOutlined style={styles.deleteIcon} />
             </TouchableOpacity>
-            <Image
-                style={[
-                    styles.image,
-                    {
-                        width: size,
-                        height: size,  
-                    },
-                ]}
-                source={`${IMAGE_PATH}/${path}`}
-            />
         </View>
     )
 }
@@ -64,7 +93,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 5,
         // borderWidth: 1,
-        // borderColor: 'red',
+        // borderColor: '#ccc',
     },
     mouseOnStyles: {
         backgroundColor: '#fff',
@@ -83,6 +112,5 @@ const styles = StyleSheet.create({
     },
     image: {
         resizeMode: 'stretch',
-        zindex: 1,
     },
 })
