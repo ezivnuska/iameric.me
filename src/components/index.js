@@ -13,6 +13,7 @@ import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import HoverableView from './HoverableView'
 import ImageDisplay from './ImageDisplay'
+import ImageLoader from './ImageLoader'
 import ImageList from './ImageList'
 import Menu from './Menu'
 import Profile from './Profile'
@@ -44,6 +45,7 @@ export {
     FeedbackForm,
     HoverableView,
     ImageDisplay,
+    ImageLoader,
     ImageList,
     Menu,
     Profile,

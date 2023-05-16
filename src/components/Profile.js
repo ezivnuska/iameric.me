@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     StyleSheet,
     Text,
@@ -6,18 +6,30 @@ import {
 } from 'react-native'
 import { Avatar } from './'
 import defaultStyles from '../styles'
+import { AppContext } from '../AppContext'
 
-const Profile = ({ user }) => (
-    <View style={styles.container}>
-        <View style={styles.leftColumn}>
-            <Avatar userId={user._id} size={48} />
+const Profile = () => {
+    const { state } = useContext(AppContext)
+    const { user } = state
+    return user ? (
+        <View style={styles.container}>
+            <View style={styles.leftColumn}>
+                <Avatar
+                    path={
+                        user.profileImage
+                        ? `${user.username}/${user.profileImage}`
+                        : null
+                    }
+                    size={48}
+                />
+            </View>
+            <View style={styles.main}>
+                <Text style={styles.heading}>{user.username}</Text>
+                <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
+            </View>
         </View>
-        <View style={styles.main}>
-            <Text style={styles.heading}>{user.username}</Text>
-            <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
-        </View>
-    </View>
-)
+    ) : null
+}
 
 export default Profile
 

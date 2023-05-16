@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import {
-    ActivityIndicator,
-    Image,
     StyleSheet,
-    Text,
     TouchableOpacity,
     View,
 } from 'react-native'
 import {
     HoverableView,
+    ImageLoader,
 } from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
 const size = 100
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 
-const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
-    console.log(`ImageDisplay path: ${IMAGE_PATH}/${path}`)
+const ImageDisplay = ({ deleteImage, filename, username, setAvatar }) => {
+    // console.log(`ImageDisplay path: ${IMAGE_PATH}/${path}`)
+    //WARNING: This log command causes infinite loop.
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
+    const [loaded, setLoaded] = useState(false)
+
+    // useEffect(() => {
+    //     setLoading(true)
+    // }, [])
+    
     return (
         <View style={styles.container}>
             <HoverableView
                 style={[
                     styles.mouseOffStyles,
                     {
-                        visibility: loading ? 'hidden' : 'visible',
-                        height: loading ? 0 : size,
+                        // visibility: loading ? 'hidden' : 'visible',
+                        // height: loading ? 0 : size,
                     },
                 ]}
-                onHover={[styles.mouseOffStyles, (!loading ? styles.mouseOnStyles : null)]}
+                onHover={[styles.mouseOffStyles, styles.mouseOnStyles]}
             >
                 <TouchableOpacity
                     style={[
@@ -37,33 +41,21 @@ const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
                     onPress={() => setAvatar()}
                     disabled={loading}
                 >
-                    <Image
-                        style={[
-                            styles.image,
-                            {
-                                width: size,
-                                height: size,
-                            },
-                        ]}
-                        onLoadStart={() => setLoading(true)}
-                        onLoadEnd={() => setLoading(false)}
-                        source={`${IMAGE_PATH}/${path}`}
+                    <ImageLoader
+                        path={`${username}/${filename}`}
+                        whenLoaded={() => {
+                            setLoading(false)
+                            setLoaded(true)
+                        }}
                     />
                 </TouchableOpacity>
             </HoverableView>
-            
-            {loading && (
-                <ActivityIndicator
-                    size='small'
-                    style={styles.indicator}
-                />
-            )}
             
             <TouchableOpacity
                 style={[
                     styles.deleteButton,
                     {
-                        display: loading ? 'none' : 'block',
+                        // display: loading ? 'none' : 'block',
                     },
                 ]}
                 onPress={() => {

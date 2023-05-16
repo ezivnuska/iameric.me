@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import {
+    ActivityIndicator,
     Dimensions,
     StyleSheet,
     Text,
@@ -17,7 +18,7 @@ const windowHeight = Dimensions.get('window').height
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 
-const EntryListItem = ({ entry, deleteEntry }) => {
+const EntryListItem = ({ entry, deleteEntry, styleProps = null }) => {
     
     const {
         state,
@@ -30,10 +31,11 @@ const EntryListItem = ({ entry, deleteEntry }) => {
     const [author, setAuthor] = useState(null)
 
     const getAuthor = () => {
+        console.log('userId', userId)
         axios
             .get(`/api/users/${userId}`)
             .then(({ data }) => {
-                setAuthor(data.user)
+                if (data.user) setAuthor(data.user)
             })
             .catch(err => console.log('Error getting author', err))
     }
@@ -43,38 +45,41 @@ const EntryListItem = ({ entry, deleteEntry }) => {
     }, [])
 
     useEffect(() => {
-        setDeleting(false)
-        getAuthor()
+        if (deleting) setDeleting(false)
     }, [entry])
 
-    return author ? (
+    return (
         <View style={styles.container}>
-            <View style={[styles.flexContainer, (deleting ? styles.setForDeletion : null)]}>
-                
-                <UserHeading
-                    user={author}
-                    styleProps={styles.userHeading}
-                />
+            {author ? (
+                <View>
+                    <View style={[styles.flexContainer, styleProps]}>
+                        
+                        <UserHeading
+                            user={author}
+                            styleProps={styles.userHeading}
+                        />
 
-                {userId === user._id ? (
-                    <View style={styles.aside}>
-                        <TouchableOpacity
-                            style={styles.iconDelete}
-                            onPress={() => {
-                                setDeleting(true)
-                                deleteEntry(_id)
-                            }}
-                        >
-                            <CloseCircleOutlined />
-                        </TouchableOpacity>
+                        {userId === user._id ? (
+                            <View style={styles.aside}>
+                                <TouchableOpacity
+                                    style={styles.iconDelete}
+                                    onPress={() => {
+                                        setDeleting(true)
+                                        deleteEntry()
+                                    }}
+                                >
+                                    <CloseCircleOutlined />
+                                </TouchableOpacity>
+                            </View>
+                        ) : null}
                     </View>
-                ) : null}
-            </View>
-            <View style={styles.textContainer}>
-                <Text style={[defaultStyles.text, styles.text]}>{text}</Text>
-            </View>
+                    <View style={styles.textContainer}>
+                        <Text style={[defaultStyles.text, styles.text]}>{text}</Text>
+                    </View>
+                </View>
+            ) : <ActivityIndicator size='small' />}
         </View>
-    ) : null
+    )
 }
 
 export default EntryListItem

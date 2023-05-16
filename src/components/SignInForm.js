@@ -11,7 +11,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 
-const SignInForm = ({ updateStatus }) => {
+const SignInForm = ({ updateStatus, setUser }) => {
 
     const {
         state,
@@ -36,18 +36,6 @@ const SignInForm = ({ updateStatus }) => {
 		}
 		getEmail()
 	}, [])
-
-    const setUser = newUser => {
-		updateStatus('Storing user in cookie...')
-		AsyncStorage
-			.setItem('userToken', newUser.token)
-			.then(() => {
-					updateStatus('User stored.')
-					dispatch({ type: 'SET_USER', user: newUser })
-					navigate('private')
-				})
-				.catch(err => alert('Signin Error:', err))
-	}
 
 	const sendData = async user => {
 		updateStatus('Storing email...')

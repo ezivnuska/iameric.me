@@ -12,7 +12,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 
-const SignUpForm = ({ updateStatus }) => {
+const SignUpForm = ({ updateStatus, setUser }) => {
 
 	const {
         state,
@@ -47,21 +47,6 @@ const SignUpForm = ({ updateStatus }) => {
 	}
     getEmail()
   }, [])
-
-  const setUser = user => {
-	updateStatus('Storing user in cookie...')
-    AsyncStorage
-      .setItem('userToken', user.token)
-      .then(() => {
-        updateStatus('User saved.')
-		dispatch({ type: 'SET_USER', user })
-		navigate('private')
-      })
-      .catch(err => {
-		updateStatus('Error storing user.')
-		console.log('Erro saving user to local storage:', err)
-	})
-  }
 
   const sendData = async user => {
 	updateStatus('Storing email...')

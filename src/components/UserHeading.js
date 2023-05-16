@@ -9,14 +9,15 @@ import defaultStyles from '../styles'
 
 const UserHeading = ({ user, styleProps, ...props }) => {
     
-    // useEffect(() => {
-    //     console.log('user', user)
-    // }, [])
-    
     return (
         <View style={[styles.container, styleProps]}>
             <View style={styles.leftColumn}>
-                <Avatar userId={user._id}
+                <Avatar
+                    path={
+                        user.profileImage
+                        ? `${user.username}/${user.profileImage}`
+                        : null
+                    }
                     size={24}
                 />
             </View>

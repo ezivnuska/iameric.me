@@ -216,9 +216,13 @@ app.post('/entry', (req, res) => {
 })
 
 app.get('/entries', (req, res) => {
+    console.log('loading all entries...')
     Entry
         .find({})
-        .then(entries => res.json({ entries }))
+        .then(entries => {
+            console.log('returning loaded entries.')
+            res.json({ entries })
+        })
 })
 
 app.post('/entry/delete', (req, res) => {
