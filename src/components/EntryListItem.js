@@ -13,48 +13,50 @@ import { AppContext } from '../AppContext'
 import UserHeading from './UserHeading'
 import axios from 'axios'
 
-const windowWidth = Dimensions.get('window').width
-const windowHeight = Dimensions.get('window').height
-
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
-
-const EntryListItem = ({ entry, deleteEntry, styleProps = null }) => {
+const EntryListItem = ({ entry, deleteItem, ...props }) => {
     
     const {
         state,
         dispatch,
     } = useContext(AppContext)
     
-    const { _id, userId, username, text } = entry
     const { user } = state
-    const [deleting, setDeleting] = useState(false)
-    const [author, setAuthor] = useState(null)
+    const { userId, username, text } = entry
+    const [author, setAuthor] = useState({ userId, username })
 
-    const getAuthor = () => {
-        console.log('userId', userId)
+    const getSelf = () => {
+        console.log('getting profileImage by id:', userId)
         axios
-            .get(`/api/users/${userId}`)
+            .get(`/api/users/self/${userId}`)
             .then(({ data }) => {
-                if (data.user) setAuthor(data.user)
+                console.log('got:', data)
+                if (data.profileImage) setAuthor({
+                    ...author,
+                    profileImage: data.profileImage,
+                })
             })
             .catch(err => console.log('Error getting author', err))
     }
 
+    // useEffect(() => {
+    // }, [])
+    
     useEffect(() => {
-        getAuthor()
-    }, [])
-
-    useEffect(() => {
-        if (deleting) setDeleting(false)
-    }, [entry])
+        if (userId && !author.profileImage) {
+            console.log('getting profileImage')
+            getSelf()
+        }
+    }, [userId, user])
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} {...props}>
             {author ? (
                 <View>
-                    <View style={[styles.flexContainer, styleProps]}>
+                    <View style={styles.flexContainer}>
                         
                         <UserHeading
+                            userId={userId}
+                            username={username}
                             user={author}
                             styleProps={styles.userHeading}
                         />
@@ -63,10 +65,7 @@ const EntryListItem = ({ entry, deleteEntry, styleProps = null }) => {
                             <View style={styles.aside}>
                                 <TouchableOpacity
                                     style={styles.iconDelete}
-                                    onPress={() => {
-                                        setDeleting(true)
-                                        deleteEntry()
-                                    }}
+                                    onPress={() => deleteItem(entry._id)}
                                 >
                                     <CloseCircleOutlined />
                                 </TouchableOpacity>
@@ -81,20 +80,18 @@ const EntryListItem = ({ entry, deleteEntry, styleProps = null }) => {
         </View>
     )
 }
-
 export default EntryListItem
 
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
         marginBottom: 5,
+        paddingBottom: 10,
     },
     flexContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // borderWidth: 1,
-        // borderColor: 'blue',
     },
     setForDeletion: {
         opacity: .3,
@@ -112,7 +109,9 @@ const styles = StyleSheet.create({
         color: '#999',
     },
     textContainer: {
-        padding: 5,
+        paddingVertical: 5,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
     },
     text: {
         width: '90%',
@@ -128,6 +127,5 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 2,
         paddingTop: 5,
-        // paddingHorizontal: 10,
     },
 })

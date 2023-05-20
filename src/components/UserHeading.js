@@ -7,23 +7,21 @@ import {
 import { Avatar } from '.'
 import defaultStyles from '../styles'
 
-const UserHeading = ({ user, styleProps, ...props }) => {
+const UserHeading = ({ user, userId, username, styleProps, ...props }) => {
     
     return (
         <View style={[styles.container, styleProps]}>
-            <View style={styles.leftColumn}>
-                <Avatar
-                    path={
-                        user.profileImage
-                        ? `${user.username}/${user.profileImage}`
-                        : null
-                    }
-                    size={24}
-                />
-            </View>
+            {user.profileImage ? (
+                <View style={styles.leftColumn}>
+                    <Avatar
+                        path={`${username}/${user.profileImage}`}
+                        size={24}
+                    />
+                </View>
+            ) : null}
             <View style={styles.main}>
                 <View style={styles.header}>
-                    <Text style={styles.heading}>{user.username}</Text>
+                    <Text style={styles.heading}>{username}</Text>
                 </View>
             </View>
         </View>

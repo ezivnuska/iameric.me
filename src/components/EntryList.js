@@ -1,98 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {
+    // useEffect,
+} from 'react'
 import {
-    ActivityIndicator,
     FlatList,
     StyleSheet,
     View,
 } from 'react-native'
 import { EntryListItem } from '../components'
-import axios from 'axios'
-import { AppContext } from '../AppContext'
 
-const EntryList = () => {
-    
-    const {
-        state,
-        dispatch,
-    } = useContext(AppContext)
-
-    const { entries } = state
-
-    const [items, setItems] = useState(entries)
-    const [loaded, setLoaded] = useState(false)
-    
-    const updateEntries = loadedEntries => {
-        if (!loaded) setLoaded(true)
-        dispatch({ type: 'SET_ENTRIES', entries: loadedEntries })
-    }
-
-    const getEntries = () => {
-        axios
-            .get('/api/entries')
-            .then(({ data }) => updateEntries(data.entries))
-            .catch(err => {
-                console.log('Error loading entries', err)
-                dispatch({ type: 'SET_STATUS', status: 'Error loading entries.' })
-            })
-    }
-
-    useEffect(() => {
-        console.log('Entries loading...')
-        getEntries()
-    }, [])
-
-    useEffect(() => {
-        if (entries) setItems(entries)
-    }, [entries])
-
-    const removeItemById = id => {
-        setItems(items.filter((item, index) => item._id !== id))
-    }
-
-    const setItemForDeletion = id => {
-        setItems(
-            items.map(item => {
-                return item._id === id ? ({
-                    ...item,
-                    setForDeletion: true,
-                }) : item
-        }))
-    }
-
-    const deleteEntry = id => {
-        dispatch({ type: 'SET_STATUS', status: 'Deleting entry...', id })
-        setItemForDeletion(id)
-        axios
-            .post('/api/entry/delete', { id })
-            .then(result => {
-                dispatch({ type: 'SET_STATUS', status: 'Entry deleted.', result })
-                dispatch({ type: 'ENTRY_DELETE', entryId: id })
-                removeItemById(id)
-            })
-            .catch(err => {
-                dispatch({ type: 'SET_STATUS', status: 'Error deleting entry.' })
-                console.log('Error deleting entry', err)
-            })
-    }
-
-    return (items && items.length) ? (
+const EntryList = ({ deleteItem, items }) => {
+    // useEffect(() => {
+    //     console.log('EntryList:items:', items)
+    // }, [])
+    return (
         <View style={styles.container}>
-            {loaded ? (
-                <FlatList
-                    style={styles.list}
-                    data={items}
-                    keyExtractor={(item, index) => item._id}
-                    renderItem={({ item }) => (
-                        <EntryListItem
-                            entry={item}
-                            deleteEntry={() => deleteEntry(item._id)}
-                            styleProps={[item.setForDeletion ? styles.deleted : null]}
-                        />
-                    )} 
-                />
-            ) : <ActivityIndicator size='small' />}
+            <FlatList
+                style={styles.list}
+                data={items}
+                keyExtractor={(item, index) => index}
+                renderItem={({ item }) => (
+                    <EntryListItem
+                        entry={item}
+                        deleteItem={deleteItem}
+                    />
+                )} 
+            />
         </View>
-    ) : null
+    )
 }
 
 export default EntryList

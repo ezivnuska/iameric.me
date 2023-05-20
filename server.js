@@ -225,15 +225,9 @@ app.get('/entries', (req, res) => {
         })
 })
 
-app.post('/entry/delete', (req, res) => {
-    const { id } = req.body
-    Entry
-        .findOneAndDelete(id)
-        .then(entry => {
-            return res.json({
-                entry,
-            })
-        })
+app.delete('/entry/delete', async (req, res) => {
+    const entry = await Entry.findByIdAndDelete(req.body.id)
+    return res.json({ entry })
 })
 
 app.get('/users/:id', async (req, res, next) => {
@@ -245,6 +239,13 @@ app.get('/users/:id', async (req, res, next) => {
                 user: result,
             })
         })
+})
+
+app.get('/users/self/:id', async (req, res, next) => {
+    const _id = req.params.id
+    User
+        .findOne({ _id })
+        .then(({ profileImage }) => res.json({ profileImage }))
 })
 
 const writeFileToPath = async (file, pathname) => {

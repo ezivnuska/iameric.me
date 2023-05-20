@@ -36,9 +36,9 @@ const reducer = (state = initialState, action) => {
         case 'NEW_ENTRY':
             entries = [...entries, action.entry]
             break
-        case 'ENTRY_DELETE':
-            entries = entries.filter(entry => entry._id !== action.entryId)
-            break
+        // case 'ENTRY_DELETE':
+        //     entries = entries.filter(entry => entry._id !== action.entryId)
+        //     break
         case 'SET_ENTRIES':
             entries = action.entries
             break

@@ -10,7 +10,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 
-const FeedbackForm = ({ updateStatus }) => {
+const FeedbackForm = ({ addEntry, updateStatus }) => {
 
     const {
         state,
@@ -19,25 +19,22 @@ const FeedbackForm = ({ updateStatus }) => {
 
     const { user } = state
     const [ entry, setEntry ] = useState('')
-    const [loading, setLoading] = useState(false)
 
     const onChangeEntry = value => setEntry(value)
 
     const onSubmit = () => {
         const { username, _id } = user
         const newEntry = { username, userId: _id, text: entry }
-        setLoading(true)
-        updateStatus('Sending...')
+        addEntry(newEntry)
+        if (updateStatus) updateStatus('Sending...')
         axios
             .post('/api/entry', newEntry)
             .then(({ data }) => {
-                setLoading(false)
                 updateStatus('Sent!')
-                dispatch({ type: 'NEW_ENTRY', entry: data.entry })
+                // dispatch({ type: 'NEW_ENTRY', entry: data.entry })
                 setEntry('')
             })
             .catch(err => {
-                setLoading(false)
                 updateStatus('Error saving entry.')
                 console.log('Error saving entry', err)
             })
@@ -57,14 +54,14 @@ const FeedbackForm = ({ updateStatus }) => {
             />
 
             <TouchableOpacity
-                style={[defaultStyles.button, (loading ? defaultStyles.buttonDisabled : null)]}
-                disabled={loading}
+                style={[defaultStyles.button, (!entry.length ? defaultStyles.buttonDisabled : null)]}
+                disabled={!entry.length}
                 onPress={onSubmit}
             >
                 <Text
-                    style={[defaultStyles.buttonLabel, (loading ? defaultStyles.buttonLabelDisabled : null)]}
+                    style={[defaultStyles.buttonLabel, (!entry.length ? defaultStyles.buttonLabelDisabled : null)]}
                 >
-                    {loading ? 'Sending...' : 'Say it'}
+                    Say it
                 </Text>
             </TouchableOpacity>
 
