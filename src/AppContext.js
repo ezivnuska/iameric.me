@@ -36,15 +36,11 @@ const reducer = (state = initialState, action) => {
         case 'NEW_ENTRY':
             entries = [...entries, action.entry]
             break
-        // case 'ENTRY_DELETE':
-        //     entries = entries.filter(entry => entry._id !== action.entryId)
-        //     break
         case 'SET_ENTRIES':
             entries = action.entries
             break
         case 'SET_STATUS':
             status = action.status
-            // console.log('>>>', action.status)
             break
         case 'SIGNOUT':
             user = null
@@ -69,7 +65,11 @@ export const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
     
     return (
-        <AppContext.Provider value={{ state, dispatch }}>
+        <AppContext.Provider value={{
+            state,
+            dispatch,
+            user: state.user,
+        }}>
             {children}
         </AppContext.Provider>
     )

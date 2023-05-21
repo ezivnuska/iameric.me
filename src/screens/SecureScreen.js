@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     StyleSheet,
     View,
@@ -19,7 +19,10 @@ const SecureScreen = ({ children, ...props }) => {
     
     const { user } = state
 
+    const [verified, setVerified] = useState(false)
+
     const resetToAuthScreen = async () => {
+        console.log('clearing local storage...')
         dispatch({ type: 'SET_STATUS', status: 'Clearing local storage...' })
         await AsyncStorage
             .multiRemove(['route', 'userToken'], err => {
@@ -43,10 +46,12 @@ const SecureScreen = ({ children, ...props }) => {
     }
         
     useEffect(() => {
+        console.log('SecureScreen:checking for verified user...')
         if (!user) {
             console.log('No verified user found. Resetting....')
+            if (verified) setVerified(false)
             resetToAuthScreen()
-        }
+        } else setVerified(true)
     }, [user])
 
     return (

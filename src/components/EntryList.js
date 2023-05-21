@@ -1,6 +1,4 @@
-import React, {
-    // useEffect,
-} from 'react'
+import React from 'react'
 import {
     FlatList,
     StyleSheet,
@@ -8,26 +6,21 @@ import {
 } from 'react-native'
 import { EntryListItem } from '../components'
 
-const EntryList = ({ deleteItem, items }) => {
-    // useEffect(() => {
-    //     console.log('EntryList:items:', items)
-    // }, [])
-    return (
-        <View style={styles.container}>
-            <FlatList
-                style={styles.list}
-                data={items}
-                keyExtractor={(item, index) => index}
-                renderItem={({ item }) => (
-                    <EntryListItem
-                        entry={item}
-                        deleteItem={deleteItem}
-                    />
-                )} 
-            />
-        </View>
-    )
-}
+const EntryList = ({ deleteItem, items }) => (
+    <View style={styles.container}>
+        <FlatList
+            style={styles.list}
+            data={items}
+            keyExtractor={(item, index) => index}
+            renderItem={({ item }) => (
+                <EntryListItem
+                    entry={item}
+                    onDelete={deleteItem}
+                />
+            )} 
+        />
+    </View>
+)
 
 export default EntryList
 

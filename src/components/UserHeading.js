@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     StyleSheet,
     Text,
@@ -7,18 +7,24 @@ import {
 import { Avatar } from '.'
 import defaultStyles from '../styles'
 
-const UserHeading = ({ user, userId, username, styleProps, ...props }) => {
+const UserHeading = ({ user, styleProps, ...props }) => {
     
+    const { profileImage, userId, username } = user
+    const [path, setPath] = useState(null)
+    
+    useEffect(() => {
+        if (!user) return
+        if (profileImage) setPath(`${username}/${profileImage}`)
+    }, [user])
+
     return (
         <View style={[styles.container, styleProps]}>
-            {user.profileImage ? (
-                <View style={styles.leftColumn}>
-                    <Avatar
-                        path={`${username}/${user.profileImage}`}
-                        size={24}
-                    />
-                </View>
-            ) : null}
+            <View style={styles.leftColumn}>
+                <Avatar
+                    path={path}
+                    size={24}
+                />
+            </View>
             <View style={styles.main}>
                 <View style={styles.header}>
                     <Text style={styles.heading}>{username}</Text>
@@ -36,7 +42,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        width: '100%',
+        // width: '100%',
         // borderWidth: 1,
         // borderColor: 'green',
         // minWidth: 300,

@@ -13,7 +13,7 @@ import { AppContext } from '../AppContext'
 import UserHeading from './UserHeading'
 import axios from 'axios'
 
-const EntryListItem = ({ entry, deleteItem, ...props }) => {
+const EntryListItem = ({ entry, onDelete, ...props }) => {
     
     const {
         state,
@@ -25,11 +25,9 @@ const EntryListItem = ({ entry, deleteItem, ...props }) => {
     const [author, setAuthor] = useState({ userId, username })
 
     const getSelf = () => {
-        console.log('getting profileImage by id:', userId)
         axios
             .get(`/api/users/self/${userId}`)
             .then(({ data }) => {
-                console.log('got:', data)
                 if (data.profileImage) setAuthor({
                     ...author,
                     profileImage: data.profileImage,
@@ -37,13 +35,9 @@ const EntryListItem = ({ entry, deleteItem, ...props }) => {
             })
             .catch(err => console.log('Error getting author', err))
     }
-
-    // useEffect(() => {
-    // }, [])
     
     useEffect(() => {
         if (userId && !author.profileImage) {
-            console.log('getting profileImage')
             getSelf()
         }
     }, [userId, user])
@@ -65,7 +59,7 @@ const EntryListItem = ({ entry, deleteItem, ...props }) => {
                             <View style={styles.aside}>
                                 <TouchableOpacity
                                     style={styles.iconDelete}
-                                    onPress={() => deleteItem(entry._id)}
+                                    onPress={() => onDelete(entry._id)}
                                 >
                                     <CloseCircleOutlined />
                                 </TouchableOpacity>

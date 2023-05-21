@@ -5,49 +5,60 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-// import { Avatar } from './'
+import { Avatar, UserHeading } from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import defaultStyles from '../styles'
 
-const UserDetails = ({ clearUser, user }) => (
-    <View style={styles.container}>
-        <View style={styles.leftColumn}>
-            {/*<Avatar user={user} size={50} />*/}
-        </View>
-        <View style={styles.main}>
+const UserDetails = ({ user, clearUser = null }) => {
+
+    return (
+        <View style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.heading}>{user.username}</Text>
-                <TouchableOpacity
-                    style={styles.icon}
-                    onPress={() => clearUser()}
-                >
-                    <CloseCircleOutlined />
-                </TouchableOpacity>
+                <UserHeading
+                    user={user}
+                />
+                {clearUser ? (
+                    <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => clearUser()}
+                        >
+                            <CloseCircleOutlined />
+                    </TouchableOpacity>
+                ) : null}
             </View>
-            <View style={styles.content}>
-                <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
+            <View style={styles.main}>
+                <View style={styles.content}>
+                    <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
+                </View>
             </View>
         </View>
-    </View>
-)
+    )
+}
 
 export default UserDetails
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 12,
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    leftColumn: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        // paddingHorizontal: 10,
+        width: '100%',
+        // borderWidth: 1,
+        // borderColor: 'orange',
+        // paddingVertical: 10,
+        // paddingHorizontal: 5,
+    },
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignContent: 'flex-start',
         flex: 1,
         flexBasis: 'auto',
         flexGrow: 0,
-        paddingRight: 10,
+        // paddingLeft: 5,
+        // borderWidth: 1,
+        // borderColor: 'green',
     },
     main: {
         flex: 2,
@@ -55,27 +66,21 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
     },
-    header: {
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignContent: 'flex-start',
-        marginBottom: 15,
-    },
-    heading: {
-        flex: 2,
-        fontSize: 18,
-        fontWeight: 600,
-        lineHeight: 24,
-    },
-    icon: {
+    button: {
         flex: 1,
         flexShrink: 0,
         flexGrow: 0,
-        flexBasis: 25,
+        flexBasis: 30,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        // paddingRight: 5,
+        // borderWidth: 1,
+        // borderColor: 'red',
     },
     content: {
+        marginVertical: 10,
+        // paddingHorizontal: 5,
         flex: 2,
     },
 })

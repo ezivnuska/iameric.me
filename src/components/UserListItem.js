@@ -3,20 +3,25 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
+    View,
 } from 'react-native'
-import { Profile } from './'
+import { Profile, UserDetails } from './'
 import { RightOutlined } from '@ant-design/icons'
 
-const UserListItem = ({ setUser, user }) => (
+const UserListItem = ({ clearUser, setUser, user }) => (
   <TouchableOpacity
     style={styles.rowContainer}
     onPress={() => setUser(user._id)}
->
-    <Profile
-      user={user}
-      style={styles.profile}
-    />
-    <RightOutlined />
+  >
+    <View style={styles.profile}>
+      <UserDetails
+        user={user}
+        clearUser={clearUser}
+      />
+    </View>
+    <View style={styles.arrow}>
+      <RightOutlined />
+    </View>
   </TouchableOpacity>
 )
 
@@ -27,22 +32,12 @@ const styles = StyleSheet.create({
     flex: 1,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     // marginBottom: 10,
-    paddingVertical: 12,
-    paddingHorizontal: 0,
+    paddingTop: 12,
     borderStyle: 'solid',
     borderBottomWidth: 1,
     borderBottomColor: '#aaa',
-  },
-  userDetails: {
-    flex: 1,
-    flexGrow: 1,
-    // marginBottom: 10,
-    // justifyContent: 'space-between',
-  },
-  username: {
-    lineHeight: 22,
   },
   profile: {
     flex: 1,
@@ -50,5 +45,13 @@ const styles = StyleSheet.create({
     flexShrink: 0,
     flexBasis: 'auto',
     marginRight: 10,
+  },
+  arrow: {
+    flex: 1,
+    flexGrow: 0,
+    flexBasis: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 })

@@ -1,11 +1,11 @@
 import React from 'react'
-import { SecureScreen } from '.'
+import { Screen } from '.'
 import { UserDisplay } from '../components'
 
 const UserListScreen = props => (
-    <SecureScreen { ...props }>
+    <Screen { ...props }>
         <UserDisplay />
-    </SecureScreen>
+    </Screen>
 )
 
 export default UserListScreen

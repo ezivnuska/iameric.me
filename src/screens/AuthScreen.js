@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
+import { authenticate } from '../Auth'
 
 const AuthScreen = ({ navigation, ...props }) => {
     
@@ -48,7 +49,7 @@ const AuthScreen = ({ navigation, ...props }) => {
             .then(() => {
                 updateStatus('User saved.')
                 dispatch({ type: 'SET_USER', user })
-                // navigate('private')
+                // navigate('home')
             })
             .catch(err => {
                 updateStatus('Error storing user.')
@@ -119,7 +120,7 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     const authenticateUser = async token => {
         console.log('Authenticating token...')
-        const authenticatedUser = await verifyToken(token)
+        const authenticatedUser = await authenticate()
         
         if (!authenticatedUser) {
             console.log('no authenticated user found')
@@ -136,11 +137,8 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     useEffect(() => {
         if (user) {
-            if (lastUserId || lastUserId !== user._id) {
-                console.log('*** Different (or new) user ***', user, lastUserId)
-                dispatch({ type: 'SET_STATUS', status: `${user.username} verified.` })
-                advanceToScreen('private')
-            } else advanceToScreen()
+            dispatch({ type: 'SET_STATUS', status: `${user.username} verified.` })
+            advanceToScreen('home')
         } else {
             setFormVisible(true)
             setSignupVisible(false)
@@ -164,17 +162,14 @@ const AuthScreen = ({ navigation, ...props }) => {
     const advanceToScreen = async () => {
         const lastRoute = await getLastRoute()
         
-        navigate(lastRoute || 'private')
+        navigate(lastRoute || user ? 'home' : 'auth')
     }
 
     const getUserToken = async () => {
         console.log('Checking for stored token...')
         return await AsyncStorage
             .getItem('userToken')
-            .then(async token => {
-                console.log('Stored token found.')
-                return token
-            })
+            .then(token => token)
             .catch(err => {
                 console.log('Caught Error checking for stored token.', err)
                 return null

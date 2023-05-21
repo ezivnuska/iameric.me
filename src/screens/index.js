@@ -1,18 +1,20 @@
 import AuthScreen from './AuthScreen'
+import ChatScreen from './ChatScreen'
 import FallbackScreen from './FallbackScreen'
+import HomeScreen from './HomeScreen'
 import LoadingScreen from './LoadingScreen'
-import PrivateScreen from './PrivateScreen'
 import PublicScreen from './PublicScreen'
 import Screen from './Screen'
 import SecureScreen from './SecureScreen'
 import SettingsScreen from './SettingsScreen'
-import UserListScreen from './UserListScreen'
+import UserListScreen from './UserListScreen_old'
 
 export {
     AuthScreen,
+    ChatScreen,
     FallbackScreen,
+    HomeScreen,
     LoadingScreen,
-    PrivateScreen,
     PublicScreen,
     Screen,
     SecureScreen,

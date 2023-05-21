@@ -1,13 +1,13 @@
 import React from 'react'
-import { SecureScreen } from './'
+import { Screen } from './'
 import {
     Settings,
 } from '../components'
 
 const SettingsScreen = props => (
-    <SecureScreen { ...props }>
+    <Screen { ...props }>
         <Settings />
-    </SecureScreen>
+    </Screen>
 )
 
 export default SettingsScreen

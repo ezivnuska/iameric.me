@@ -33,7 +33,7 @@ const SignUpForm = ({ updateStatus, setUser }) => {
   const onChangeConfirmPassword = value => setConfirmPassword(value)
 
   useEffect(() => {
-    if (user) navigate('private')
+    if (user) navigate('home')
   }, [user])
 
   useEffect(() => {

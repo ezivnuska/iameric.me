@@ -17,23 +17,31 @@ const Header = () => {
     
     const {
         state,
+        user,
     } = useContext(AppContext)
-
-    const { user } = state
     
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <View style={styles.header}>
+                <TouchableOpacity
+                    style={styles.header}
+                    onPress={() => navigate(user ? 'home' : 'auth')}
+                >
                     <Text style={styles.title}>
                         iam
                         <Text style={{color: '#ddd'}}>
                             eric
                         </Text>
                     </Text>
-                </View>
+                </TouchableOpacity>
                 {user ? (
                     <View style={styles.aside}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => navigate('chat')}
+                        >
+                            <Text style={styles.username}>chat</Text>
+                        </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.usernameButton}
                             onPress={() => navigate('settings')}

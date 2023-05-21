@@ -20,10 +20,10 @@ const Menu = ({ currentRoute, ...props }) => {
                     <Text>Users</Text>
                 </TouchableOpacity>
             )}
-            {currentRoute !== 'private' && (
+            {currentRoute !== 'home' && (
                 <TouchableOpacity
                     style={styles.item}
-                    onPress={() => handlePress('private')}
+                    onPress={() => handlePress('home')}
                 >
                     <Text>Home</Text>
                 </TouchableOpacity>

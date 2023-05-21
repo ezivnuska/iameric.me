@@ -8,10 +8,9 @@ export const navigate = async (name, params) => {
         if (name !== 'auth') {
             await AsyncStorage
                 .setItem('route', name)
-                .then(() => navigationRef.navigate(name))
+                .then(() => null)
                 .catch(err => alert('Error saving route name while navigating:', err))
-        } else {
-            navigationRef.navigate(name)
         }
+        navigationRef.navigate(name)
     }
 }
