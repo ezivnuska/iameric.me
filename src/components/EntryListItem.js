@@ -38,7 +38,7 @@ const EntryListItem = ({ entry, onDelete, ...props }) => {
     
     useEffect(() => {
         if (userId && !author.profileImage) {
-            getSelf()
+            // getSelf()
         }
     }, [userId, user])
 

@@ -31,7 +31,7 @@ const HomeScreen = ({ navigation, ...props }) => {
         axios
             .get('/api/users')
             .then(({ data }) => {
-                console.log('Users loaded.', data.users)
+                console.log('Users loaded.')
                 setLoading(false)
                 dispatch({ type: 'SET_STATUS', status: 'Users loaded.' })
                 dispatch({ type: 'SET_USERS', users: data.users })

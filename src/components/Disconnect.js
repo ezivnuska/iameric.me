@@ -10,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { navigate } from '../navigators/RootNavigation'
+import { cleanStorage } from '../Auth'
+
 const Disconnect = props => {
 
     const {
@@ -20,13 +22,15 @@ const Disconnect = props => {
     const { user } = state
     const [working, setWorking] = useState(false)
 
-    const signout = () => {
+    const signout = async () => {
+
         setWorking(true)
         axios
             .post('/api/signout', { _id: user._id })
             .then(async ({ data }) => {
                 if (!data.success) throw new Error('Error signing out')
                 setWorking(false)
+                await cleanStorage()
                 dispatch({ type: 'SIGNOUT' })
             })
             .catch(err => console.log('Signout failed.', err))

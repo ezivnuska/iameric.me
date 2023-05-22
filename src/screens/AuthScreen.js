@@ -4,13 +4,13 @@ import {
     View,
 } from 'react-native'
 import {
+    GuestSigninButton,
     SignInForm,
     SignUpForm,
     SimpleLink,
 } from '../components'
 import { Screen } from './'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import { authenticate } from '../Auth'
@@ -43,6 +43,7 @@ const AuthScreen = ({ navigation, ...props }) => {
     const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
 
     const setUser = user => {
+        if (!user) console.log('Error storing user')
         updateStatus('Storing user in cookie...')
         AsyncStorage
             .setItem('userToken', user.token)
@@ -64,58 +65,6 @@ const AuthScreen = ({ navigation, ...props }) => {
         return signupVisible
             ? <SignUpForm updateStatus={updateStatus} setUser={setUser} />
             : <SignInForm updateStatus={updateStatus} setUser={setUser} />
-    }
-
-    const storeToken = async token => {
-        console.log('Storing user token...')
-        return await AsyncStorage
-            .setItem('userToken', token)
-            .then(() => {
-                console.log('User token stored.')
-                dispatch({ type: 'SET_STATUS', status: `User token stored.` })
-            })
-            .catch(err => {
-                console.log('Error caught while storing token:', err)
-                dispatch({ type: 'SET_STATUS', status: `Error caught while storing user token.` })
-            })
-    }
-
-    const clearStorage = async () => {
-        return await AsyncStorage.multiRemove(['userToken', 'route'])
-    }
-
-    const verifyToken = async token => {
-        return await axios
-            .post('/api/authenticate', { token })
-            .then(async ({ data }) => {
-                const { error, user } = data
-
-                if (error) {
-                    console.log('Error authenticating token', error)
-                    await clearStorage()
-                    return null
-                }
-                
-                if (user) {
-                    console.log(`${user.username} verified`)
-                    dispatch({ type: 'SET_STATUS', status: `${user.username} verified.` })
-                    await storeToken(user.token)
-                    return user
-                }
-
-                // else
-                console.log('no user found. clearing local storage.')
-                    
-               await clearStorage() 
-
-                // setFormVisible(true)
-                
-                return null
-            })
-            .catch(err => {
-                console.log('Error getting user', err)
-                return null
-            })
     }
 
     const authenticateUser = async token => {
@@ -213,6 +162,7 @@ const AuthScreen = ({ navigation, ...props }) => {
             <View style={styles.container}>
                 {formVisible ? renderForm() : null}
                 {formVisible ? renderNav() : null}
+                <GuestSigninButton setUser={setUser} />
             </View>
         </Screen>
     )

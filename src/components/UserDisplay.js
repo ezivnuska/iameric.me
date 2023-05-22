@@ -26,10 +26,6 @@ const UserDisplay = ({ users }) => {
 
     const setUser = id => setProfileId(id)
 
-
-    useEffect(() => {
-        console.log('>>>', users)
-    }, [users])
     return (
         <View style={styles.container}>
             {(users && users.length) ? (

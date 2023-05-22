@@ -59,9 +59,9 @@ const Navigation = () => {
 
     const { state, user } = useContext(AppContext)
 
-    useEffect(() => {
-        console.log('user changed', user)
-    }, [user])
+    // useEffect(() => {
+    //     console.log('user changed', user)
+    // }, [user])
 
     // const config = {
     //     screens: {

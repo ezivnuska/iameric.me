@@ -4,6 +4,7 @@ import {
 } from 'react-native-web'
 import {
     AvatarModule,
+    DeleteAccountButton,
     ImageList,
     Profile,
 } from '.'
@@ -13,6 +14,7 @@ const Settings = () => (
         <Profile />
         <AvatarModule />
         <ImageList />
+        <DeleteAccountButton />
     </View>
 )
 

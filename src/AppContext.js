@@ -3,7 +3,6 @@ import React, { createContext, useReducer } from 'react'
 const initialState = {
     entries: [],
     isLoading: false,
-    lastUserId: null,
     profileId: null,
     status: null,
     user: null,
@@ -11,14 +10,13 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    let { entries, isLoading, lastUserId, profileId, status, user, users } = state
+    let { entries, isLoading, profileId, status, user, users } = state
 
     switch(action.type) {
         case 'SET_LOADING':
             isLoading = action.loading
             break
         case 'SET_USER':
-            if (!lastUserId || lastUserId !== action.user._id) lastUserId = action.user._id
             user = action.user
             break
         case 'SET_PROFILE_IMAGE':
@@ -53,7 +51,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { entries, isLoading, lastUserId, profileId, status, user, users }
+    return { entries, isLoading, profileId, status, user, users }
 }
 
 export const AppContext = createContext({

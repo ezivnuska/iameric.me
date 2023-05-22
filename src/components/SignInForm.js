@@ -47,15 +47,15 @@ const SignInForm = ({ updateStatus, setUser }) => {
 			})
 		
 		updateStatus('Attempting sign in...')
+		setLoading(true)
 		axios
 			.post('/api/signin', user)
 			.then(({ data }) => {
-				const { user } = data
+				const { err, user } = data
+				if (err) return updateStatus(err)
 				if (user) {
 					updateStatus('Sign in successful.')
 					setUser(user)
-				} else {
-					updateStatus('No user found.')
 				}
 				setLoading(false)
 			})
@@ -69,9 +69,8 @@ const SignInForm = ({ updateStatus, setUser }) => {
 	const onSubmit = () => {
 		
 		if (!email.length || !password.length)
-			updateStatus('Email and password are required')
+			updateStatus('Email and password are required.')
 		
-		setLoading(true)
 		sendData({ email, password })
 	}
 

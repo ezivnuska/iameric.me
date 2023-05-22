@@ -1,13 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
-const clearStorage = async () => {
-    return await AsyncStorage.multiRemove(['userToken', 'route'])
-}
+export const cleanStorage = () => AsyncStorage.multiRemove(['userToken', 'route'])
+export const clearStorage = () => AsyncStorage.multiRemove(['userToken', 'route', 'email'])
 
 const storeToken = async token => {
     console.log('Storing user token...')
-    return await AsyncStorage
+    await AsyncStorage
         .setItem('userToken', token)
         .then(() => console.log('User token stored.'))
         .catch(err => console.log('Error caught while storing token:', err))
@@ -17,6 +16,7 @@ export const authenticate = async () => {
     return await AsyncStorage.getItem('userToken')
         .then(token => {
             if (!token) return null
+            console.log('authenticating token...', token)
             return axios
                 .post('/api/authenticate', { token })
                 .then(async ({ data }) => {

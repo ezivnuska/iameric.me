@@ -4,12 +4,14 @@ import Avatar from './Avatar'
 import AvatarModule from './AvatarModule'
 import CircleButton from './CircleButton'
 import Container from './Container'
+import DeleteAccountButton from './DeleteAccountButton'
 import Disconnect from './Disconnect'
 import Dropzone from './Dropzone'
 import EntryDisplay from './EntryDisplay'
 import EntryList from './EntryList'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
+import GuestSigninButton from './GuestSigninButton'
 import FileSelector from './FileSelector'
 import HoverableView from './HoverableView'
 import ImageDisplay from './ImageDisplay'
@@ -36,6 +38,7 @@ export {
     AvatarModule,
     CircleButton,
     Container,
+    DeleteAccountButton,
     Disconnect,
     Dropzone,
     EntryDisplay,
@@ -43,6 +46,7 @@ export {
     EntryListItem,
     FileSelector,
     FeedbackForm,
+    GuestSigninButton,
     HoverableView,
     ImageDisplay,
     ImageLoader,

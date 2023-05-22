@@ -42,12 +42,14 @@ const Header = () => {
                         >
                             <Text style={styles.username}>chat</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.usernameButton}
-                            onPress={() => navigate('settings')}
-                        >
-                            <Text style={styles.username}>{user.username}</Text>
-                        </TouchableOpacity>
+                        {(user.username !== 'Guest') ? (
+                            <TouchableOpacity
+                                style={styles.usernameButton}
+                                onPress={() => navigate('settings')}
+                            >
+                                <Text style={styles.username}>{user.username}</Text>
+                            </TouchableOpacity>
+                        ) : null}
                         <Disconnect />
                     </View>
                 ) : null}

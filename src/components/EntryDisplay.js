@@ -24,13 +24,16 @@ const EntryDisplay = () => {
     const [refetch, setRefetch] = useState(false)
 
     useEffect(() => {
-        getEntries()
+        if (!entries || !entries.length) getEntries()
     }, [])
+
+    useEffect(() => {
+        setItems(entries || [])
+    }, [entries])
 
     useEffect(() => {
         if (refetch) {
             setRefetch(false)
-            console.log('setting items', entries)
             setItems(entries)
         }
         

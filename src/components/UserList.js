@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     FlatList,
     StyleSheet,
@@ -14,11 +14,17 @@ const UserList = ({ clearUser, setUser, users }) => {
         dispatch,
     } = useContext(AppContext)
 
+    const [items, setItems] = useState([])
+
+    useEffect(() => {
+        if (users) setItems([...users.filter(user => user.username !== 'Guest')])
+    }, [users])
+
     return (
         <View style={styles.container}>
             <FlatList
                 style={styles.list}
-                data={users}
+                data={items}
                 keyExtractor={(item, index) => 'key' + index}
                 renderItem={({ item }) => (
                     <UserListItem

@@ -27,25 +27,26 @@ const SignUpForm = ({ updateStatus, setUser }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const onChangeEmail = value => setEmail(value)
-  const onChangeUsername = value => setUsername(value)
-  const onChangePassword = value => setPassword(value)
-  const onChangeConfirmPassword = value => setConfirmPassword(value)
+  const onChangeEmail = value => setEmail(value || '')
+  const onChangeUsername = value => setUsername(value || '')
+  const onChangePassword = value => setPassword(value || '')
+  const onChangeConfirmPassword = value => setConfirmPassword(value || '')
 
   useEffect(() => {
     if (user) navigate('home')
   }, [user])
 
   useEffect(() => {
-	const getEmail = async () => {
-	  await AsyncStorage
-		.getItem('email')
-		.then(result => {
-		  if (!result) return console.log('no email found in local storage')
-		  setEmail(result)
-	  })
+	const storeEmail = async () => {
+		await AsyncStorage
+			.getItem('email')
+			.then(result => {
+				if (!result) console.log('no email found in local storage')
+				else setEmail(result)
+			})
+			.catch(err => console.log('Error getting stored email', err))
 	}
-    getEmail()
+	storeEmail()
   }, [])
 
   const sendData = async user => {
@@ -58,14 +59,15 @@ const SignUpForm = ({ updateStatus, setUser }) => {
 	  })
 	
 	updateStatus('Attempting sign up...')
+	setLoading(true)
     axios
       .post('/api/signup', user)
-      .then(result => {
-		if (result) {
+      .then(({ data }) => {
+		if (user) {
 			updateStatus('Sign up successful.')
-			setUser(result)
+			setUser(user)
 		} else {
-
+			console.log('Sign up failed to create user.')
 		}
 		setLoading(false)
       })
@@ -79,12 +81,13 @@ const SignUpForm = ({ updateStatus, setUser }) => {
   const onSubmit = () => {
     
     if (!email.length || !password.length || !confirmPassword.length)
-      return updateStatus('Email and password required.')
+	return updateStatus('Email and password required.')
+	
+    if (!username.length) return updateStatus('Username is required.')
 
     if (password !== confirmPassword)
       return updateStatus('Passwords do not match')
     
-	setLoading(true)
     sendData({ email, username, password })
   }
 

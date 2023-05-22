@@ -27,6 +27,8 @@ const app = express()
 const server = createServer(app)
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
+const imagePath = process.env.IMAGE_PATH ? process.env.IMAGE_PATH : './assets/images'
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cors({ origin: true, credentials: true }))
@@ -57,7 +59,7 @@ app.post('/signup', (req, res) => {
         if (err) {
             res.status(422).json({'error': err});
         } else {
-            const user = req.body;
+            const user = req.body
             const email = user.email
             User
                 .findOne({ email })
@@ -69,7 +71,7 @@ app.post('/signup', (req, res) => {
                         })
                     }
                     else {
-                        user.password = hashedPW;
+                        user.password = hashedPW
                         User
                             .create(user)
                             .then(newUser => {
@@ -111,7 +113,12 @@ app.post('/signin', (req, res) => {
             bcrypt
                 .compare(password, hashedPW)
                 .then(result => {
-                    if (!result) throw new Error()
+                    if (!result) {
+                        return res.json({
+                            success: false,
+                            err: 'Verification failed. Please try again.',
+                        })
+                    }
                     
                     const token = createToken(user)
                     // req.cookies.user = user
@@ -134,16 +141,23 @@ app.post('/signin', (req, res) => {
                             })
                         })
                 })
-                .catch(err => console.log('Failed when comparing password', password, hashedPW, err))
+                .catch(err => {
+                    console.log('Failed when comparing password', password, hashedPW, err)
+                    res.json({
+                        success: false,
+                        err,
+                    })
+                })
         })
         .catch(err => res.json({msg: 'Failed to find the user'}))
 })
 
 app.post('/authenticate', (req, res) => {
     const { token } = req.body
-    console.log('authenticating token...')
+    console.log('authenticating token...', token)
     if (token) {
         const user = getDecodedUser(token)
+        console.log('decoded user', user)
         const expired = (new Date(user.exp) - Date.now() > 0)
         if (expired) {
             console.log('token expired')
@@ -172,16 +186,29 @@ app.post('/signout', (req, res) => {
     const { body } = req
     // console.log('body', body)
     const { _id } = body
+    console.log('_id:', _id)
     // const user = getDecodedUser(token)
     // req.cookies.user = null
     User
         .findOneAndUpdate({ _id }, { $set: { token: null, } }, { new: true, })
-        .then(result => {
-            
-            res.json({
-                success: true,
-                msg: 'User Signed Out',
-            })
+        .then(user => {
+            console.log('user', user)
+            if (user.role === 'guest') {
+                Entry
+                    .deleteMany({ userId: user._id })
+                    .then(result => {
+                        console.log('Guest entries deleted.', result.deletedCount)
+                        res.json({
+                            success: true,
+                            msg: 'Guest entries deleted.',
+                        })
+                    })
+            } else {
+                res.json({
+                    success: true,
+                    msg: 'Guest signed out.',
+                })
+            }
         })
         .catch(err => {
             console.log('Error deleting token on sign out', err)
@@ -226,7 +253,9 @@ app.get('/entries', (req, res) => {
 })
 
 app.delete('/entry/delete', async (req, res) => {
+    console.log('deleting entry...')
     const entry = await Entry.findByIdAndDelete(req.body.id)
+    console.log('Entry deleted.', entry)
     return res.json({ entry })
 })
 
@@ -315,9 +344,10 @@ app.post(
         }    
 })
 
+const removeImageFile = filepath => fs.rm(filepath, () => console.log('removed file at path', filepath))
+const removeAllImages = username => fs.rmSync(`${IMAGE_PATH}/${username}`, { recursive: true, force: true })
 app.post('/images/delete', (req, res) => {
     const { _id, filename, userId, username } = req.body
-    const imagePath = process.env.IMAGE_PATH ? process.env.IMAGE_PATH : './assets/images'
     const filepath = `${imagePath}/${username}/${filename}`
     console.log('filepath to remove:', filepath)
     User
@@ -332,10 +362,8 @@ app.post('/images/delete', (req, res) => {
                             .findOneAndRemove({ _id })
                             .then(result => {
                                 console.log('image entry removed from db', result.filename)
-                                fs.rm(filepath, () => {
-                                    console.log('and also removed file at path', filepath)
-                                    res.status(200).json({ user })
-                                })
+                                removeImageFile(filepath)
+                                res.status(200).json({ user })
                             })
                     })
                     .catch(err => console.log('err', err))
@@ -381,6 +409,35 @@ app.get('/user/images/:id', (req, res) => {
             console.log('Error getting images', err)
             res.status(400).json({ error: err })
         })
+})
+
+app.post('/unsubscribe', (req, res) => {
+    console.log('unsubbing', req.body)
+    const { _id } = req.body
+    console.log('unsubbing', _id)
+    Entry
+        .deleteMany({ userId: _id })
+        .then(({ deletedCount }) => console.log('deleted entries', deletedCount))
+        .catch(err => console.log('Error deleting entries', err))
+    
+    UserImage
+        .deleteMany({ userId: _id })
+        .then(({ deletedCount }) => console.log('deleted images', deletedCount))
+        .catch(err => console.log('Error deleting images', err))
+    
+    // removeAllImages()
+
+    User
+        .deleteOne({ _id })
+        .then(result => {
+            console.log('User deleted.', result)
+            removeAllImages(result.username)
+        })
+        .catch(err => console.log('Error deleting user', err))
+
+    res.status(200).json({
+        msg: 'Account closed.'
+    })
 })
 
 mongoose.Promise = global.Promise
