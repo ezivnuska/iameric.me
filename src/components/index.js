@@ -21,6 +21,8 @@ import Menu from './Menu'
 import Profile from './Profile'
 import Settings from './Settings'
 import SimpleButton from './SimpleButton'
+import AuthButton from './AuthButton'
+import ButtonPrimary from './ButtonPrimary'
 import SimpleLink from './SimpleLink'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
@@ -55,6 +57,8 @@ export {
     Profile,
     Settings,
     SimpleButton,
+    ButtonPrimary,
+    AuthButton,
     SimpleLink,
     SignInForm,
     SignUpForm,

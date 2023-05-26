@@ -10,6 +10,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
+import ButtonPrimary from './ButtonPrimary'
 
 const SignInForm = ({ updateStatus, setUser }) => {
 
@@ -39,6 +40,7 @@ const SignInForm = ({ updateStatus, setUser }) => {
 
 	const sendData = async user => {
 		updateStatus('Storing email...')
+		setLoading(true)
 		await AsyncStorage
 			.setItem('email', user.email)
 			.then(() => {
@@ -47,17 +49,18 @@ const SignInForm = ({ updateStatus, setUser }) => {
 			})
 		
 		updateStatus('Attempting sign in...')
-		setLoading(true)
 		axios
 			.post('/api/signin', user)
 			.then(({ data }) => {
+				setLoading(false)
 				const { err, user } = data
-				if (err) return updateStatus(err)
+				if (err) {
+					return updateStatus(err)
+				}
 				if (user) {
 					updateStatus('Sign in successful.')
 					setUser(user)
 				}
-				setLoading(false)
 			})
 			.catch(err => {
 				updateStatus('Error signing in.')
@@ -100,18 +103,12 @@ const SignInForm = ({ updateStatus, setUser }) => {
                 secureTextEntry={true}
             />
 
-            <TouchableOpacity
-                style={[defaultStyles.button, (loading ? defaultStyles.buttonDisabled : null)]}
-                onPress={onSubmit}
+			<ButtonPrimary
 				disabled={loading}
-            >
-                <Text
-                    style={[defaultStyles.buttonLabel, (loading ? defaultStyles.buttonLabelDisabled : null)]}
-                    accessibilityLabel='Connect'
-                >
-                    {loading ? 'Connecting' : 'Connect'}
-                </Text>
-            </TouchableOpacity>
+				label='Sign In'
+				altLabel='Signing in...'
+				onPress={onSubmit}
+			/>
 
         </View>
     )

@@ -7,6 +7,7 @@ import {
     GuestSigninButton,
     SignInForm,
     SignUpForm,
+    AuthButton,
     SimpleLink,
 } from '../components'
 import { Screen } from './'
@@ -27,18 +28,6 @@ const AuthScreen = ({ navigation, ...props }) => {
     const [formVisible, setFormVisible] = useState(false)
     const [signupVisible, setSignupVisible] = useState(false)
     const [route, setRoute] = useState(null)
-
-    const renderNav = () => signupVisible ? (
-        <SimpleLink
-            labelText='Sign In'
-            onPress={() => setSignupVisible(false)}
-        />
-    ) : (
-        <SimpleLink
-            labelText='Sign Up'
-            onPress={() => setSignupVisible(true)}
-        />
-    )
 
     const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
 
@@ -161,7 +150,12 @@ const AuthScreen = ({ navigation, ...props }) => {
         <Screen { ...props }>
             <View style={styles.container}>
                 {formVisible ? renderForm() : null}
-                {formVisible ? renderNav() : null}
+                {formVisible ? (
+                    <AuthButton
+                        signin={!!signupVisible}
+                        onPress={() => setSignupVisible(!signupVisible)}
+                    />
+                ) : null}
                 <GuestSigninButton setUser={setUser} />
             </View>
         </Screen>

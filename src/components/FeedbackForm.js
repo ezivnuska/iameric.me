@@ -55,13 +55,13 @@ const FeedbackForm = ({ addEntry, updateStatus }) => {
 
             <TouchableOpacity
                 style={[defaultStyles.button, (!entry.length ? defaultStyles.buttonDisabled : null)]}
-                disabled={!entry.length}
+                disabled={!!entry.length}
                 onPress={onSubmit}
             >
                 <Text
                     style={[defaultStyles.buttonLabel, (!entry.length ? defaultStyles.buttonLabelDisabled : null)]}
                 >
-                    Say it
+                    Send
                 </Text>
             </TouchableOpacity>
 

@@ -58,21 +58,23 @@ export default StyleSheet.create({
 	button: {
 		paddingHorizontal: 20,
 		height: 40,
-		backgroundColor: '#555',
+		backgroundColor: '#369',
 		borderRadius: 10,
 		marginTop: 10,
 	},
 	buttonDisabled: {
-		backgroundColor: '#aaa',
+		backgroundColor: '#ddd',
 	},
 	buttonLabel: {
 		color: '#fff',
 		fontSize: 20,
-		marginTop: 7,
 		textAlign: 'center',
+		fontWeight: 500,
+		letterSpacing: 1.1,
+		lineHeight: 40,
 	},
 	buttonLabelDisabled: {
-		color: '#333',
+		color: '#369',
 	},
 	linkText: {
 		paddingVertical: 5,

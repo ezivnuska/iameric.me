@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import {
     StyleSheet,
-    Text,
-    TouchableOpacity,
 } from 'react-native'
+import {
+    ButtonPrimary,
+} from '.'
 import axios from 'axios'
-import defaultStyles from '../styles'
 
 const GuestSigninButton = ({ setUser }) => {
 
@@ -29,27 +29,13 @@ const GuestSigninButton = ({ setUser }) => {
     }
 
     return (
-        <TouchableOpacity
-            style={[defaultStyles.button, styles.container]}
-            onPress={handlePress}
+        <ButtonPrimary
+            label='Join as Guest'
+            altLabel='Connecting...'
             disabled={loading}
-        >
-            <Text style={[defaultStyles.buttonLabel, loading ? defaultStyles.buttonLabelDisabled : null]}>
-                Or, join as guest
-            </Text>
-            
-        </TouchableOpacity>
+            onPress={handlePress}
+        />
     )
 }
 
 export default GuestSigninButton
-
-const styles = StyleSheet.create({
-    container: {
-        // display: 'flex',
-        // flexDirection: 'row',
-        // justifyContent: 'center',
-        // borderWidth: 1,
-        // borderColor: 'red',
-    },
-})
