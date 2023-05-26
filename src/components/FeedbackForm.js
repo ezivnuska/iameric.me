@@ -9,6 +9,7 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
+import ButtonPrimary from './ButtonPrimary'
 
 const FeedbackForm = ({ addEntry, updateStatus }) => {
 
@@ -53,17 +54,11 @@ const FeedbackForm = ({ addEntry, updateStatus }) => {
                 keyboardType='default'
             />
 
-            <TouchableOpacity
-                style={[defaultStyles.button, (!entry.length ? defaultStyles.buttonDisabled : null)]}
+            <ButtonPrimary
+                label='Send'
                 disabled={!!entry.length}
                 onPress={onSubmit}
-            >
-                <Text
-                    style={[defaultStyles.buttonLabel, (!entry.length ? defaultStyles.buttonLabelDisabled : null)]}
-                >
-                    Send
-                </Text>
-            </TouchableOpacity>
+            />
 
         </View>
     )
