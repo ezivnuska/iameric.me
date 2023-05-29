@@ -2,6 +2,8 @@
 #
 .DS_Store
 .env
+dist/
+config/
 
 # Xcode
 #
@@ -63,8 +65,4 @@ yarn-error.log
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
-/dist/iameric.bundle.js
-/dist/
-/dist/assets/
-
-/assets/
+assets/

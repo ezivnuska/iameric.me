@@ -6,8 +6,8 @@ const session = require('express-session')
 const jwt = require('jsonwebtoken')
 // const cookieParser = require('cookie-parser')
 require('dotenv').config()
-const SESSION_SECRET = process.env.JWT_SECRET// || require('./config').JWT_SECRET
-const db = process.env.DB_CONNECTION_STRING// || require('./config').DB_CONNECTION_STRING
+const SESSION_SECRET = process.env.JWT_SECRET || require('./config').JWT_SECRET
+const db = process.env.DB_CONNECTION_STRING || require('./config').DB_CONNECTION_STRING
 // const multer = require('multer')
 // const formidable = require('formidable')
 const fs = require('fs')
@@ -15,7 +15,7 @@ const gm = require('gm')
 const { mkdirp } = require('mkdirp')
 const im = gm.subClass({ imageMagick: true })
 const path = require('path')
-const PORT = process.env.PORT
+const PORT = process.env.PORT || require('./config').PORT
 const IMAGE_PATH = process.env.IMAGE_PATH || 'assets/images'
 
 const Entry = require('./models/Entry')
@@ -102,55 +102,112 @@ app.post('/signup', (req, res) => {
     })
 })
 
-app.post('/signin', (req, res) => {
-    const { email, password } = req.body
-    User
+const isMatch = (password, hashedPassword) => bcrypt
+    .compare(password, hashedPassword)
+    .then(result => result)
+
+const userFromEmail =  async email => {
+    const user = await User
         .findOne({ email })
         .then(result => {
-            const { _id, email, username, dataURI } = result
-            const user = { _id, email, username, dataURI }
-            const hashedPW = result.password
-            bcrypt
-                .compare(password, hashedPW)
-                .then(result => {
-                    if (!result) {
-                        return res.json({
-                            success: false,
-                            err: 'Verification failed. Please try again.',
-                        })
-                    }
-                    
-                    const token = createToken(user)
-                    // req.cookies.user = user
-                    User
-                        .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
-                        .then(newUser => {
-                            const { _id, email, username, profileImage } = newUser
-                            // req.cookies.user = newUser
-                            res.json({
-                                success: true,
-                                user: { _id, email, username, token, profileImage },  
-                            })
-                            
-                        })
-                        .catch(err => {
-                            console.log('Error setting user token on sign in.', err)
-                            res.json({
-                                success: false,
-                                err,
-                            })
-                        })
-                })
-                .catch(err => {
-                    console.log('Failed when comparing password', password, hashedPW, err)
-                    res.json({
-                        success: false,
-                        err,
-                    })
-                })
+            if (!result) return null
+            const { _id, email, username, dataURI, password } = result
+            return { _id, email, username, dataURI, password }
         })
-        .catch(err => res.json({msg: 'Failed to find the user'}))
-})
+
+    return user
+}
+
+const updatedUser = async user => {
+    const { _id } = user
+    const token = createToken(user)
+    return await User
+        .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
+        .then(newUser => {
+            if (!newUser) return null
+            const { _id, email, username, token, profileImage } = newUser
+            return { _id, email, username, token, profileImage }
+        })
+        .catch(err => {
+            console.log('Error setting user token on sign in.', err)
+            return null
+        })
+
+}
+
+const handleSignin = async (req, res) => {
+    const { email, password } = req.body
+    if (!email || !password) return res.json({ success: false, msg: 'Need email and password.' })
+    console.log('> signin with email:', email)
+    const user = await userFromEmail(email)
+    if (!user) {
+        console.log('> no user found.')
+        return res.json({ success: false, msg: 'No user found with that email.' })
+    }
+    console.log('> user found:', user.username)
+    const userVerified = isMatch(password, user.password)
+    if (!userVerified) return res.json({ success: false, msg: 'Could not verify user.' })
+    console.log('> user verified:', user.username)
+    const verifiedUser = await updatedUser(user)
+    if (!verifiedUser) return res.json({ success: false, msg: 'Error updating user token.' })
+    return res.json({
+        success: true,
+        user: verifiedUser,
+        msg: 'Signin successful.',
+    })
+}
+
+app.post('/signin', (req, res) => handleSignin(req, res))
+
+// app.post('/signinx', (req, res) => {
+//     const { email, password } = req.body
+//     User
+//         .findOne({ email })
+//         .then(result => {
+//             const { _id, email, username, dataURI } = result
+//             const user = { _id, email, username, dataURI }
+//             const hashedPW = result.password
+//             bcrypt
+//                 .compare(password, hashedPW)
+//                 .then(result => {
+//                     if (!result) {
+//                         return res.json({
+//                             success: false,
+//                             err: 'Verification failed. Please try again.',
+//                         })
+//                     }
+                    
+//                     const token = createToken(user)
+//                     // req.cookies.user = user
+//                     User
+//                         .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
+//                         .then(newUser => {
+//                             const { _id, email, username, profileImage } = newUser
+//                             // req.cookies.user = newUser
+//                             res.json({
+//                                 success: true,
+//                                 user: { _id, email, username, token, profileImage },  
+//                             })
+                            
+//                         })
+//                         .catch(err => {
+//                             console.log('Error setting user token on sign in.', err)
+//                             res.json({
+//                                 success: false,
+//                                 err,
+//                             })
+//                         })
+//                 })
+//                 .catch(err => {
+//                     console.log('Failed when comparing password', password, hashedPW, err)
+//                     res.json({
+//                         success: false,
+//                         err,
+//                     })
+//                 })
+//         })
+//         .catch(err => res.json({msg: 'Failed to find the user'}))
+// })
 
 app.post('/authenticate', (req, res) => {
     const { token } = req.body
@@ -182,10 +239,62 @@ app.post('/authenticate', (req, res) => {
     }
 })
 
-app.post('/signout', (req, res) => {
-    const { body } = req
-    // console.log('body', body)
-    const { _id } = body
+const clearAllEntries = async userId => await Entry
+        .deleteMany({ userId })
+        .then(result => result.deletedCount)
+        .catch(err => {
+            console.log('Error clearing entries', err)
+            return 0
+        })
+
+const clearUser = async _id => await User
+    .findOneAndUpdate({ _id }, { $set: { token: null, } }, { new: true })
+    .then(user => user)
+    .catch(err => {
+        console.log('Error clearing user on sign out', err)
+        return null
+    })
+
+const signoutUser = async _id => {
+
+    const updatedUser = await clearUser(_id)
+    if (!updatedUser) {
+        console.log('no user found to signout.')
+        return null
+    }
+    if (updatedUser.role === 'guest') {
+        const entriesCleaned = await clearAllEntries(resetUser._id)
+        console.log('entriesCleaned', entriesCleaned)
+    }
+    return updatedUser
+        // Entry
+        //     .deleteMany({ userId: user._id })
+        //     .then(result => {
+        //         console.log('Guest entries deleted.', result.deletedCount)
+        //         res.json({
+        //             success: true,
+        //             msg: 'Guest entries deleted.',
+        //         })
+        //     })
+    }
+    //  else {
+        // res.json({
+        //     success: true,
+        //     msg: 'Guest signed out.',
+        // })
+    // }
+// }
+
+const handleSignout = async (req, res) => {
+    const signedOutUser = await signoutUser(req.body._id)
+    if (!signedOutUser) return res.json({ success: false, msg: 'Could not sign out user.' })
+    return res.json({ success: true, user: signedOutUser, msg: 'User signed out.' })
+}
+
+app.post('/signout', (req, res) => handleSignout(req, res))
+
+app.post('/signoutx', (req, res) => {
+    const { _id } = req.body
     console.log('_id:', _id)
     // const user = getDecodedUser(token)
     // req.cookies.user = null
