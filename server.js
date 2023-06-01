@@ -263,7 +263,7 @@ const signoutUser = async _id => {
         return null
     }
     if (updatedUser.role === 'guest') {
-        const entriesCleaned = await clearAllEntries(resetUser._id)
+        const entriesCleaned = await clearAllEntries(updatedUser._id)
         console.log('entriesCleaned', entriesCleaned)
     }
     return updatedUser

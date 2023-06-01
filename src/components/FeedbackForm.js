@@ -56,7 +56,7 @@ const FeedbackForm = ({ addEntry, updateStatus }) => {
 
             <ButtonPrimary
                 label='Send'
-                disabled={!!entry.length}
+                disabled={!entry.length}
                 onPress={onSubmit}
             />
 

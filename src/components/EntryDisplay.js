@@ -20,23 +20,22 @@ const EntryDisplay = () => {
 
     const { entries, user } = state
     const [items, setItems] = useState(entries || [])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     const [refetch, setRefetch] = useState(false)
 
     useEffect(() => {
         if (!entries || !entries.length) getEntries()
     }, [])
 
-    useEffect(() => {
-        setItems(entries || [])
-    }, [entries])
+    // useEffect(() => {
+    //     if (entries) setItems(entries)
+    // }, [entries])
 
     useEffect(() => {
         if (refetch) {
             setRefetch(false)
             setItems(entries)
         }
-        
     }, [entries])
     
     const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
@@ -89,8 +88,9 @@ const EntryDisplay = () => {
     }
 
     const addEntry = entry => {
-        dispatch({ type: 'NEW_ENTRY', entry })
+        setItems({ entry, ...items })
         setRefetch(true)
+        dispatch({ type: 'NEW_ENTRY', entry })
     }
 
     return (
