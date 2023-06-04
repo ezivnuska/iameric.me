@@ -1,5 +1,6 @@
 import {
     Dimensions,
+	Platform,
     StyleSheet,
 } from 'react-native'
 
@@ -17,9 +18,9 @@ export default StyleSheet.create({
         color: '#0000ff',
     },
     title: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 700,
-        color: '#333',
+        color: '#000',
         marginBottom: 15,
         marginLeft: 5,
     },
@@ -34,23 +35,48 @@ export default StyleSheet.create({
 		paddingBottom: 15,
 	},
 	label: {
-		fontSize: 20,
+		fontSize: 18,
 		fontWeight: '600',
 		padding: 5,
-		color: '#fff',
+		color: '#333',
 		marginTop: 5,
 	},
+	inputContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		borderBottomWidth: 1,
+		borderBottomColor: '#ccc',
+	},
 	input: {
+		flex: 1,
+		flexGrow: 1,
 		height: 40,
 		color: '#000',
 		paddingHorizontal: 10,
 		fontSize: 18,
 		lineHeight: 23,
 		backgroundColor: '#fff',
-		borderWidth: 1,
-		borderColor: '#ccc',
-		marginBottom: 5,
-		borderRadius: 10,
+		outlineWidth: 0,
+		placeholderTextColor: '#999',
+	},
+	inputStatusIconContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		alignItems: 'center',
+		flex: 1,
+		flexGrow: 0,
+		flexBasis: 'auto',
+	},
+	inputStatusIconBackground: {
+		padding: 3,
+		width: 24,
+		height: 24,
+		borderRadius: 12,
+		overflow: 'hidden',
+	},
+	inputStatusIcon: {
+		color: '#fff',
+        fontSize: 24,
 	},
 	rootError: {
 		color: 'red',

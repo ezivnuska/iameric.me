@@ -33,18 +33,10 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     const setUser = user => {
         if (!user) console.log('Error storing user')
-        updateStatus('Storing user in cookie...')
         AsyncStorage
             .setItem('userToken', user.token)
-            .then(() => {
-                updateStatus('User saved.')
-                dispatch({ type: 'SET_USER', user })
-                // navigate('home')
-            })
-            .catch(err => {
-                updateStatus('Error storing user.')
-                console.log('Erro saving user to local storage:', err)
-        })
+            .then(() => dispatch({ type: 'SET_USER', user }))
+            .catch(err => console.log('Error saving user to local storage:', err))
     }
 
     const renderForm = () => {

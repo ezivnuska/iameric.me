@@ -54,6 +54,99 @@ const createToken = user => {
 
 const getDecodedUser = token => jwt.decode(token, SESSION_SECRET)
 
+app.post('/user/get', (req, res) => checkForUser(req, res))
+
+const checkForUser = async (req, res) => {
+    const { email } = req.body
+    if (!email) res.status(200).json({ msg: 'No email received.', user: null })
+    console.log('> checking for user with email:', email)
+    const userExists = await User
+        .findOne({ email })
+        .then(result => {
+            console.log('User found (result):', result)
+            if (!result) return false
+            return true
+        })
+        .catch(err => {
+            console.log('> error finding user from email.', err)
+            return false
+        })
+    
+    if (!userExists) {
+        console.log('> no user found.')
+        return res.json({ msg: 'No user found with that email.', user: false })
+    }
+    console.log('> user exists:', userExists)
+    return res.json({ msg: 'User found.', user: true })
+}
+
+app.post('/signin', (req, res) => handleSignin(req, res))
+
+const handleSignin = async (req, res) => {
+    const { email, password } = req.body
+    
+    if (!email || !password)
+        return res.json({ msg: 'Need email and password.' })
+    
+        console.log('> signin with email:', email)
+    
+    const user = await userFromEmail(email)
+    if (!user) {
+        console.log('> no user found.')
+        return res.json({ invalid: 'email', msg: 'No user found with that email.' })
+    }
+    
+    console.log('> user found:', user.username)
+    
+    const userVerified = await isMatch(password, user.password)
+    if (!userVerified)
+        return res.json({ invalid: 'password', msg: 'Could not verify user.' })
+    
+    console.log('> user verified:', user.username)
+    
+    const verifiedUser = await updatedUser(user)
+    if (!verifiedUser)
+        return res.json({ msg: 'Error updating user token.' })
+    
+    return res.json({
+        user: verifiedUser,
+        msg: 'Signin successful.',
+    })
+}
+
+const isMatch = (password, hashedPassword) => bcrypt
+    .compare(password, hashedPassword)
+    .then(result => result)
+
+const userFromEmail =  async email => {
+    const user = await User
+        .findOne({ email })
+        .then(result => {
+            if (!result) return null
+            const { _id, email, username, dataURI, password } = result
+            return { _id, email, username, dataURI, password }
+        })
+
+    return user
+}
+
+const updatedUser = async user => {
+    const { _id } = user
+    const token = createToken(user)
+    return await User
+        .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
+        .then(newUser => {
+            if (!newUser) return null
+            const { _id, email, username, token, profileImage } = newUser
+            return { _id, email, username, token, profileImage }
+        })
+        .catch(err => {
+            console.log('Error setting user token on sign in.', err)
+            return null
+        })
+
+}
+
 app.post('/signup', (req, res) => {
     bcrypt.hash(req.body.password, 10, (err, hashedPW) => {
         if (err) {
@@ -101,63 +194,6 @@ app.post('/signup', (req, res) => {
         }
     })
 })
-
-const isMatch = (password, hashedPassword) => bcrypt
-    .compare(password, hashedPassword)
-    .then(result => result)
-
-const userFromEmail =  async email => {
-    const user = await User
-        .findOne({ email })
-        .then(result => {
-            if (!result) return null
-            const { _id, email, username, dataURI, password } = result
-            return { _id, email, username, dataURI, password }
-        })
-
-    return user
-}
-
-const updatedUser = async user => {
-    const { _id } = user
-    const token = createToken(user)
-    return await User
-        .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
-        .then(newUser => {
-            if (!newUser) return null
-            const { _id, email, username, token, profileImage } = newUser
-            return { _id, email, username, token, profileImage }
-        })
-        .catch(err => {
-            console.log('Error setting user token on sign in.', err)
-            return null
-        })
-
-}
-
-const handleSignin = async (req, res) => {
-    const { email, password } = req.body
-    if (!email || !password) return res.json({ success: false, msg: 'Need email and password.' })
-    console.log('> signin with email:', email)
-    const user = await userFromEmail(email)
-    if (!user) {
-        console.log('> no user found.')
-        return res.json({ success: false, msg: 'No user found with that email.' })
-    }
-    console.log('> user found:', user.username)
-    const userVerified = isMatch(password, user.password)
-    if (!userVerified) return res.json({ success: false, msg: 'Could not verify user.' })
-    console.log('> user verified:', user.username)
-    const verifiedUser = await updatedUser(user)
-    if (!verifiedUser) return res.json({ success: false, msg: 'Error updating user token.' })
-    return res.json({
-        success: true,
-        user: verifiedUser,
-        msg: 'Signin successful.',
-    })
-}
-
-app.post('/signin', (req, res) => handleSignin(req, res))
 
 // app.post('/signinx', (req, res) => {
 //     const { email, password } = req.body

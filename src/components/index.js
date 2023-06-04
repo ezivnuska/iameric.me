@@ -11,6 +11,8 @@ import EntryDisplay from './EntryDisplay'
 import EntryList from './EntryList'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
+import FormInput from './FormInput'
+import FormInputStatusIcon from './FormInputStatusIcon'
 import GuestSigninButton from './GuestSigninButton'
 import FileSelector from './FileSelector'
 import HoverableView from './HoverableView'
@@ -47,8 +49,9 @@ export {
     EntryList,
     EntryListItem,
     FileSelector,
-    FeedbackForm,
     GuestSigninButton,
+    FormInput,
+    FormInputStatusIcon,
     HoverableView,
     ImageDisplay,
     ImageLoader,
