@@ -15,7 +15,7 @@ import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 import ButtonPrimary from './ButtonPrimary'
 
-const SignInForm = ({ updateStatus, setUser }) => {
+const SignInFormWithStatusIcon = ({ updateStatus, setUser }) => {
 
     const {
         state,
@@ -117,6 +117,8 @@ const SignInForm = ({ updateStatus, setUser }) => {
 				autoCapitalize='none'
 				keyboardType='email-address'
 				style={defaultStyles.input}
+				isLoading={loading}
+				isValid={isValidEmail()}
 			/>
 
 			<FormInput
@@ -128,6 +130,8 @@ const SignInForm = ({ updateStatus, setUser }) => {
 				autoCapitalize='none'
 				secureTextEntry={true}
 				style={defaultStyles.input}
+				isLoading={loading}
+				isValid={password.length > 0}
 			/>
 
 			<ButtonPrimary
@@ -140,4 +144,4 @@ const SignInForm = ({ updateStatus, setUser }) => {
     )
 }
 
-export default SignInForm
+export default SignInFormWithStatusIcon

@@ -5,9 +5,10 @@ import {
 	TextInput,
     View,
 } from 'react-native'
+import { FormInputStatusIcon } from '.'
 import defaultStyles from '../styles'
 
-const FormInput = ({ label, onChange, ...props }) => {
+const FormInputWithStatusIcon = ({ isLoading, isValid, label, onChange, ...props }) => {
     
     const [inputValue, setInputValue] = useState('')
 
@@ -27,15 +28,25 @@ const FormInput = ({ label, onChange, ...props }) => {
                     value={inputValue}
                     {...props}
                 />
+                <View style={defaultStyles.inputStatusIconContainer}>
+                    <FormInputStatusIcon
+                        isLoading={isLoading}
+                        isValid={isValid}
+                    />
+                </View>
             </View>
         </View>
     )
 }
 
-export default FormInput
+export default FormInputWithStatusIcon
 
 const styles = StyleSheet.create({
     container: {
 
     },
+    dirty: {
+        borderWidth: 1,
+        borderColor: 'red',
+    }
 })

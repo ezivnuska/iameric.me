@@ -25,7 +25,7 @@ const User = require('./models/User')
 const { createServer } = require('http')
 const app = express()
 const server = createServer(app)
-const { createProxyMiddleware } = require('http-proxy-middleware')
+// const { createProxyMiddleware } = require('http-proxy-middleware')
 
 const imagePath = process.env.IMAGE_PATH ? process.env.IMAGE_PATH : './assets/images'
 
