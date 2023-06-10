@@ -37,7 +37,7 @@ export default StyleSheet.create({
 	label: {
 		fontSize: 18,
 		fontWeight: '600',
-		padding: 5,
+		paddingHorizontal: 5,
 		color: '#333',
 		marginTop: 5,
 	},
@@ -46,6 +46,7 @@ export default StyleSheet.create({
 		flexDirection: 'row',
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc',
+		marginBottom: 10,
 	},
 	input: {
 		flex: 1,

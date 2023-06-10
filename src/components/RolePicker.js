@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'row',
+        marginBottom: 10,
     },
     option: {
         flex: 1,

@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    ActivityIndicator,
     StyleSheet,
     Text,
     View,
 } from 'react-native'
 import {
+    RolePicker,
     UserDetails,
     UserList,
 } from './'
@@ -20,14 +22,26 @@ const UserDisplay = ({ users }) => {
     const { user } = state
 
     const [ profileId, setProfileId ] = useState(null)
+    const [role, setRole] = useState(null)
+
+    useEffect(() => {
+        if (user) setRole(user.role)
+    }, [user])
+
+    const getUsersByRole = role => users.filter(user => user.role === role)
 
     const clearUser = () => setProfileId(null)
     const getProfile = () => profileId ? users.filter(usr => usr._id === profileId)[0] : null
 
     const setUser = id => setProfileId(id)
 
-    return (
+    return user ? (
         <View style={styles.container}>
+            <RolePicker
+                value={role}
+                onChange={setRole}
+            />
+
             {(users && users.length) ? (
                 <View>
                     {profileId ? (
@@ -37,7 +51,7 @@ const UserDisplay = ({ users }) => {
                         />
                     ) : (
                         <UserList
-                            users={users.filter(usr => user && usr._id !== user._id)}
+                            users={getUsersByRole(role).filter(usr => user && usr._id !== user._id)}
                             setUser={setUser}
                         />
                     )}
@@ -46,7 +60,7 @@ const UserDisplay = ({ users }) => {
                 <Text>No users found</Text>
             )}
         </View>
-    )
+    ) : <ActivityIndicator />
 }
 
 export default UserDisplay
