@@ -29,6 +29,7 @@ const UserDetails = ({ user, clearUser = null }) => {
             <View style={styles.main}>
                 <View style={styles.content}>
                     <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
+                    <Text style={[defaultStyles.text]}>{user.role}</Text>
                 </View>
             </View>
         </View>

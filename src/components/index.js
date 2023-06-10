@@ -19,7 +19,11 @@ import HoverableView from './HoverableView'
 import ImageDisplay from './ImageDisplay'
 import ImageLoader from './ImageLoader'
 import ImageList from './ImageList'
+import RolePicker from './RolePicker'
 import Menu from './Menu'
+import MenuDisplay from './EntryDisplay'
+import MenuList from './EntryList'
+import MenuListItem from './EntryListItem'
 import Profile from './Profile'
 import Settings from './Settings'
 import SimpleButton from './SimpleButton'
@@ -56,7 +60,11 @@ export {
     ImageDisplay,
     ImageLoader,
     ImageList,
+    RolePicker,
     Menu,
+    MenuDisplay,
+    MenuList,
+    MenuListItem,
     Profile,
     Settings,
     SimpleButton,

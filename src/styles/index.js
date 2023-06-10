@@ -32,7 +32,7 @@ export default StyleSheet.create({
 		justifyContent: 'flex-start',
 		width: '100%',
 		alignSelf: 'center',
-		paddingBottom: 15,
+		// paddingBottom: 15,
 	},
 	label: {
 		fontSize: 18,

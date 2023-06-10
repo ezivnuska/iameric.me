@@ -19,6 +19,8 @@ const PORT = process.env.PORT || require('./config').PORT
 const IMAGE_PATH = process.env.IMAGE_PATH || 'assets/images'
 
 const Entry = require('./models/Entry')
+const Item = require('./models/Item')
+const Merchant = require('./models/Merchant')
 const UserImage = require('./models/UserImage')
 const User = require('./models/User')
 
@@ -367,11 +369,7 @@ app.post('/signoutx', (req, res) => {
 app.get('/users', (req, res) => {
     User
         .find({})
-        .then(result => {
-            return res.json({
-                users: result,
-            })
-        })
+        .then(users => res.json({ users }))
 })
 
 app.post('/entry', (req, res) => {
@@ -402,6 +400,53 @@ app.delete('/entry/delete', async (req, res) => {
     const entry = await Entry.findByIdAndDelete(req.body.id)
     console.log('Entry deleted.', entry)
     return res.json({ entry })
+})
+
+// [menu] item
+
+app.post('/item', (req, res) => {
+    const { body } = req
+    const { merchantId, title } = body
+    const newItem = { title, merchantId }
+    return Item
+        .create(newItem)
+        .then(item => res.json({ item }))
+})
+
+app.get('/items', (req, res) => {
+    console.log('loading all items...')
+    return Item
+        .find({})
+        .then(items => res.json({ items }))
+})
+
+app.delete('/item/delete', (req, res) => {
+    return Item
+        .findByIdAndDelete(req.body.id)
+        .then(item => res.json({ item }))
+})
+
+// merchant
+
+app.post('/merchant', (req, res) => {
+    const { body } = req
+    const { title } = body
+    const newMerchant = { title }
+    return Merchant
+        .create(newMerchant)
+        .then(merchant => res.json({ merchant }))
+})
+
+app.get('/merchants', (req, res) => {
+    return Merchant
+        .find({})
+        .then(merchants => res.json({ merchants }))
+})
+
+app.delete('/merchant/delete', (req, res) => {
+    return Merchant
+        .findByIdAndDelete(req.body.id)
+        .then(merchant => res.json({ merchant }))
 })
 
 app.get('/users/:id', async (req, res, next) => {

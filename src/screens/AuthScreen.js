@@ -39,15 +39,6 @@ const AuthScreen = ({ navigation, ...props }) => {
             .catch(err => console.log('Error saving user to local storage:', err))
     }
 
-    const renderForm = () => {
-        // console.log('status', status)
-        // if (status !== null) dispatch({ type: 'SET_STATUS', status: null })
-
-        return signupVisible
-            ? <SignUpForm updateStatus={updateStatus} setUser={setUser} />
-            : <SignInForm updateStatus={updateStatus} setUser={setUser} />
-    }
-
     const authenticateUser = async token => {
         console.log('Authenticating token...')
         const authenticatedUser = await authenticate()
@@ -137,6 +128,10 @@ const AuthScreen = ({ navigation, ...props }) => {
         }
 
     }
+
+    const renderForm = () => signupVisible
+        ? <SignUpForm updateStatus={updateStatus} setUser={setUser} />
+        : <SignInForm updateStatus={updateStatus} setUser={setUser} />
 
     return (
         <Screen { ...props }>

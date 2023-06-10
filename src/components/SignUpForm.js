@@ -11,6 +11,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
+import { FormInput, RolePicker } from '.'
 
 const SignUpForm = ({ updateStatus, setUser }) => {
 
@@ -23,14 +24,16 @@ const SignUpForm = ({ updateStatus, setUser }) => {
   
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
+  const [role, setRole] = useState('driver')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const onChangeEmail = value => setEmail(value || '')
-  const onChangeUsername = value => setUsername(value || '')
-  const onChangePassword = value => setPassword(value || '')
-  const onChangeConfirmPassword = value => setConfirmPassword(value || '')
+  const onChangeRole = value => setRole(value)
+  const onChangeEmail = value => setEmail(value)
+  const onChangeUsername = value => setUsername(value)
+  const onChangePassword = value => setPassword(value)
+  const onChangeConfirmPassword = value => setConfirmPassword(value)
 
   useEffect(() => {
     if (user) navigate('home')
@@ -88,54 +91,67 @@ const SignUpForm = ({ updateStatus, setUser }) => {
     if (password !== confirmPassword)
       return updateStatus('Passwords do not match')
     
-    sendData({ email, username, password })
+    sendData({ email, username, password, role })
   }
+  	const selectRole = role => {
+		setRole(role)
+	}
 
 	return (
 				
 		<View style={defaultStyles.form}>
 
 			<Text style={defaultStyles.title}>Sign Up</Text>
-			
-			<TextInput
-				style={defaultStyles.input}
-				// onBlur={onBlur}
-				onChangeText={onChangeEmail}
+
+			<RolePicker
+				value={role}
+				onChange={selectRole}
+			/>
+
+			<FormInput
+				label='Email'
 				value={email}
-				placeholder='Email'
+				onChangeText={onChangeEmail}
+				placeholder='email'
 				textContentType='emailAddress'
 				autoCapitalize='none'
 				keyboardType='email-address'
+				style={defaultStyles.input}
 			/>
 
-			<TextInput
-				style={defaultStyles.input}
-				// onBlur={onBlur}
-				onChangeText={onChangeUsername}
+			<FormInput
+				label='Username'
 				value={username}
-				placeholder='Username'
-				textContentType='username'
+				onChangeText={onChangeUsername}
+				placeholder='username'
+				textContentType='none'
 				autoCapitalize='none'
+				keyboardType='default'
+				style={defaultStyles.input}
 			/>
 
-			<TextInput
-				style={defaultStyles.input}
-				// onBlur={onBlur}
-				onChangeText={onChangePassword}
+			<FormInput
+				label='Password'
 				value={password}
-				placeholder='Password'
+				onChangeText={onChangePassword}
+				placeholder='password'
 				textContentType='password'
+				autoCapitalize='none'
+				keyboardType='default'
 				secureTextEntry={true}
+				style={defaultStyles.input}
 			/>
 
-			<TextInput
-				style={defaultStyles.input}
-				// onBlur={onBlur}
-				onChangeText={onChangeConfirmPassword}
+			<FormInput
+				label='Confirm Password'
 				value={confirmPassword}
-				placeholder='Confirm Password'
+				onChangeText={onChangeConfirmPassword}
+				placeholder='password again'
 				textContentType='password'
+				autoCapitalize='none'
+				keyboardType='default'
 				secureTextEntry={true}
+				style={defaultStyles.input}
 			/>
 
 			<TouchableOpacity
