@@ -95,7 +95,6 @@ const SignInForm = ({ updateStatus, setUser }) => {
 		if (!email.length || !password.length)
 			updateStatus('Email and password are required.')
 		
-		
 		authenticateUser()
 	}
 

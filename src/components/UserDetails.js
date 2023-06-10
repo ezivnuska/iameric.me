@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import { Avatar, UserHeading } from './'
+import { Avatar, MenuDisplay, UserHeading } from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import defaultStyles from '../styles'
 
@@ -30,6 +30,9 @@ const UserDetails = ({ user, clearUser = null }) => {
                 <View style={styles.content}>
                     <Text style={[defaultStyles.text, defaultStyles.email]}>{user.email}</Text>
                     <Text style={[defaultStyles.text]}>{user.role}</Text>
+                    {user.role === 'merchant' && (
+                        <MenuDisplay />
+                    )}
                 </View>
             </View>
         </View>

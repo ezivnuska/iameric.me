@@ -20,7 +20,6 @@ const IMAGE_PATH = process.env.IMAGE_PATH || 'assets/images'
 
 const Entry = require('./models/Entry')
 const Item = require('./models/Item')
-const Merchant = require('./models/Merchant')
 const UserImage = require('./models/UserImage')
 const User = require('./models/User')
 
@@ -139,8 +138,8 @@ const updatedUser = async user => {
         .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
         .then(newUser => {
             if (!newUser) return null
-            const { _id, email, username, token, profileImage } = newUser
-            return { _id, email, username, token, profileImage }
+            const { _id, email, username, role, token, profileImage } = newUser
+            return { _id, email, username, role, token, profileImage }
         })
         .catch(err => {
             console.log('Error setting user token on sign in.', err)
@@ -149,53 +148,61 @@ const updatedUser = async user => {
 
 }
 
-app.post('/signup', (req, res) => {
-    bcrypt.hash(req.body.password, 10, (err, hashedPW) => {
-        if (err) {
-            res.status(422).json({'error': err});
-        } else {
-            const user = req.body
-            const email = user.email
-            User
-                .findOne({ email })
-                .then(result => {
-                    if (result) {
-                        alert('A user with that email already exists.')
-                        res.status(200).json({
-                            success: false,
-                        })
-                    }
-                    else {
-                        user.password = hashedPW
-                        User
-                            .create(user)
-                            .then(newUser => {
-                                if (!newUser) throw new Error()
-                                // req.cookies.user = newUser
-                                const token = createToken(newUser)
+app.post('/signup', (req, res) => handleSignup(req, res))
 
-                                User
-                                    .findOneAndUpdate({ _id: newUser._id }, { $set: { token } }, { new: true } )
-                                    .then(updatedUser => {
-                                        const { _id, email, username, profileImage } = updatedUser
-                                        const user = { _id, email, username, profileImage }
-                                        res.status(200).json({ user })
-                                    })
-                                    .catch(err => {
-                                        console.log('Error setting user token on sign up.', err)
-                                        res.json({
-                                            success: false,
-                                            err,
-                                        })
-                                    })
-                            })
-                            .catch(err => console.log('Error creating new user.', err))
-                    }
-                })
-                .catch(err => console.log('Error: User already exists.'))
+const handleSignup = async (req, res) => {
+    const { password } = req.body
+    bcrypt.hash(password, 10, (err, hashedPW) => {
+        if (err) {
+            console.log('Error hashing pw', err)
+            return null
         }
+        const user = req.body
+        const email = user.email
+        console.log('-->', user)
+        return User
+            .findOne({ email })
+            .then(result => {
+                if (result) {
+                    console.log('A user with that email already exists.')
+                    return res.status(200).json({
+                        success: false,
+                    })
+                }
+                else {
+                    user.password = hashedPW
+                    return User
+                        .create(user)
+                        .then(newUser => {
+                            if (!newUser) throw new Error()
+                            // req.cookies.user = newUser
+                            const token = createToken(newUser)
+                            console.log('token', token)
+                            return User
+                                .findOneAndUpdate({ _id: newUser._id }, { $set: { token } }, { new: true } )
+                                .then(updatedUser => {
+                                    const { _id, email, username, role, profileImage, token } = updatedUser
+                                    const user = { _id, email, username, role, profileImage, token }
+                                    return res.status(200).json({ user })
+                                })
+                                .catch(err => {
+                                    console.log('Error setting user token on sign up.', err)
+                                    return res.json({
+                                        success: false,
+                                        err,
+                                    })
+                                })
+                        })
+                        .catch(err => {
+                            console.log('Error creating new user.', err)
+                            return null
+                        })
+                }
+            })
+            .catch(err => console.log('Error: User already exists.', err))
     })
-})
+
+}
 
 // app.post('/signinx', (req, res) => {
 //     const { email, password } = req.body
@@ -424,29 +431,6 @@ app.delete('/item/delete', (req, res) => {
     return Item
         .findByIdAndDelete(req.body.id)
         .then(item => res.json({ item }))
-})
-
-// merchant
-
-app.post('/merchant', (req, res) => {
-    const { body } = req
-    const { title } = body
-    const newMerchant = { title }
-    return Merchant
-        .create(newMerchant)
-        .then(merchant => res.json({ merchant }))
-})
-
-app.get('/merchants', (req, res) => {
-    return Merchant
-        .find({})
-        .then(merchants => res.json({ merchants }))
-})
-
-app.delete('/merchant/delete', (req, res) => {
-    return Merchant
-        .findByIdAndDelete(req.body.id)
-        .then(merchant => res.json({ merchant }))
 })
 
 app.get('/users/:id', async (req, res, next) => {

@@ -23,7 +23,7 @@ const Disconnect = props => {
     const [working, setWorking] = useState(false)
 
     const signout = async () => {
-
+        console.log('signout user', user)
         setWorking(true)
         axios
             .post('/api/signout', { _id: user._id })

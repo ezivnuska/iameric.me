@@ -28,6 +28,7 @@ const SignUpForm = ({ updateStatus, setUser }) => {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [formReady, setFormReady] = useState(false)
 
   const onChangeRole = value => setRole(value)
   const onChangeEmail = value => setEmail(value)
@@ -36,39 +37,61 @@ const SignUpForm = ({ updateStatus, setUser }) => {
   const onChangeConfirmPassword = value => setConfirmPassword(value)
 
   useEffect(() => {
+    initForm()
+  }, [])
+
+  useEffect(() => {
     if (user) navigate('home')
   }, [user])
 
-  useEffect(() => {
-	const storeEmail = async () => {
+//   useEffect(() => {
+// 	const storeEmail = async () => {
+// 		await AsyncStorage
+// 			.getItem('email')
+// 			.then(result => {
+// 				if (!result) console.log('no email found in local storage')
+// 				else setEmail(result)
+// 			})
+// 			.catch(err => console.log('Error getting stored email', err))
+// 	}
+// 	storeEmail()
+//   }, [])
+
+  const initForm = async () => {
+	const localEmail = await getEmailFromStorage()
+	if (localEmail) setEmail(localEmail)
+	setFormReady(true)
+  }
+
+  const getEmailFromStorage = async () =>
 		await AsyncStorage
 			.getItem('email')
-			.then(result => {
-				if (!result) console.log('no email found in local storage')
-				else setEmail(result)
-			})
-			.catch(err => console.log('Error getting stored email', err))
+			.then(localEmail => localEmail)
+
+	const storeEmail = async email => {
+		try {
+			await AsyncStorage.setItem('email', email)
+		} catch (err) {
+			console.log('Error storing email.', err)
+		}
 	}
-	storeEmail()
-  }, [])
 
   const sendData = async user => {
-	updateStatus('Storing email...')
-	await AsyncStorage
-	  .setItem('email', user.email)
-	  .then(() => {
-		updateStatus('Email stored.')
-		setEmail(user.email)
-	  })
-	
-	updateStatus('Attempting sign up...')
 	setLoading(true)
+	storeEmail(user.email)
     axios
       .post('/api/signup', user)
-      .then(({ data }) => {
-		if (user) {
+      .then(async ({ data }) => {
+		console.log('data', data)
+		if (data.user) {
 			updateStatus('Sign up successful.')
-			setUser(user)
+			await AsyncStorage
+				.setItem('userToken', data.user.token)
+				.then(() => {
+					dispatch({ type: 'SET_USER', user: data.user })
+				})
+				.catch(err => console.log('Signin Error:', err))
+			setUser(data.user)
 		} else {
 			console.log('Sign up failed to create user.')
 		}
