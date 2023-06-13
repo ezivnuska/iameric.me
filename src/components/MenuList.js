@@ -12,12 +12,14 @@ const MenuList = ({ deleteItem, items }) => (
             style={styles.list}
             data={items}
             keyExtractor={(item, index) => index}
-            renderItem={({ item }) => (
-                <MenuListItem
-                    entry={item}
-                    onDelete={deleteItem}
-                />
-            )} 
+            renderItem={({ item }) => {
+                return (
+                    <MenuListItem
+                        item={item}
+                        onDelete={deleteItem}
+                    />
+                )
+            }} 
         />
     </View>
 )

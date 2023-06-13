@@ -9,7 +9,10 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
-import ButtonPrimary from './ButtonPrimary'
+import {
+    ButtonPrimary,
+    FormInput,
+} from '.'
 
 const FeedbackForm = ({ addEntry, updateStatus }) => {
 
@@ -44,14 +47,15 @@ const FeedbackForm = ({ addEntry, updateStatus }) => {
     return (
         <View style={defaultStyles.form}>
             
-            <TextInput
-                style={defaultStyles.input}
-                onChangeText={onChangeEntry}
+            <FormInput
+                label='Feedback'
                 value={entry}
+                onChangeText={onChangeEntry}
                 placeholder='say something...'
                 textContentType='none'
                 autoCapitalize='sentences'
                 keyboardType='default'
+                style={defaultStyles.input}
             />
 
             <ButtonPrimary

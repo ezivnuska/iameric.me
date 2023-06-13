@@ -4,36 +4,34 @@ import {
     Text,
     View,
 } from 'react-native'
-import {
-    UserList,
-} from './'
+import { UserList } from '.'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 
-const UserDisplay = () => {
-
+const MerchantDisplay = () => {
+    
     const {
-        state,
         dispatch,
+        state,
     } = useContext(AppContext)
 
     const { users } = state
-
-    const [ items, setItems ] = useState(null)
+    
+    const [items, setItems] = useState(null)
 
     useEffect(() => {
-        if (users) setItems(users.filter(user => user.role === 'customer'))
+        if (users) setItems(users.filter(user => user.role === 'merchant'))
     }, [users])
 
     return (
         <View style={styles.container}>
-            <Text style={defaultStyles.heading}>Customers</Text>
+            <Text style={defaultStyles.heading}>Merchants</Text>
             {items && <UserList users={items} />}
         </View>
     )
 }
 
-export default UserDisplay
+export default MerchantDisplay
 
 const styles = StyleSheet.create({
     container: {

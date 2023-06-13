@@ -20,17 +20,23 @@ const MenuItemForm = ({ addItem, updateStatus }) => {
     } = useContext(AppContext)
 
     const { user } = state
-    const [ item, setItem ] = useState('')
+    const [ itemName, setItemName ] = useState('')
+    const [ itemPrice, setItemPrice ] = useState('')
 
-    const onChangeItem = value => setItem(value)
+    const onChangeItemName = value => setItemName(value)
+    const onChangeItemPrice = value => setItemPrice(value)
 
     const onSubmit = () => {
         const { username, _id } = user
-        const newItem = { username, userId: _id, title: item }
+        const newItem = {
+            username,
+            merchantId: _id,
+            name: itemName,
+        }
         addItem(newItem)
-        if (updateStatus) updateStatus('Sending...')
+        
         axios
-            .post('/api/menu', newItem)
+            .post('/api/item', newItem)
             .then(({ data }) => {
                 updateStatus('Sent!')
                 // dispatch({ type: 'NEW_ENTRY', entry: data.entry })
@@ -44,21 +50,30 @@ const MenuItemForm = ({ addItem, updateStatus }) => {
 
     return (
         <View style={defaultStyles.form}>
-            
+            <Text style={defaultStyles.label}>Add Item</Text>
             <FormInput
                 label='Item Name'
-                value={item}
-                onChangeText={onChangeItem}
+                value={itemName}
+                onChangeText={onChangeItemName}
                 placeholder='item name'
                 textContentType='default'
-                autoCapitalize={true}
+                autoCapitalize='true'
                 keyboardType='default'
+                style={defaultStyles.input}
+            />
+
+            <FormInput
+                label='Item Price'
+                value={itemPrice}
+                onChangeText={onChangeItemPrice}
+                placeholder='0.00'
+                keyboardType='decimal-pad'
                 style={defaultStyles.input}
             />
 
             <ButtonPrimary
                 label='Send'
-                disabled={!item.length}
+                disabled={!itemName.length && !itemPrice.length}
                 onPress={onSubmit}
             />
 

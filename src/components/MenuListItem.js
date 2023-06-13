@@ -11,25 +11,28 @@ import { CloseCircleOutlined } from '@ant-design/icons'
 import defaultStyles from '../styles'
 
 
-const MenuListItem = ({ item, onDelete, ...props }) => (
-    <View style={styles.container} {...props}>
-        <View style={styles.flexContainer}>
-            
-            <Text style={styles.title}>{title}</Text>
-            <View style={styles.aside}>
-                <TouchableOpacity
-                    style={styles.iconDelete}
-                    onPress={() => onDelete(entry._id)}
-                >
-                    <CloseCircleOutlined />
-                </TouchableOpacity>
+const MenuListItem = ({ item, onDelete, ...props }) => {
+    const { _id, title } = item
+    return (
+        <View style={styles.container} {...props}>
+            <View style={styles.flexContainer}>
+                
+                <Text style={styles.title}>{title}</Text>
+                <View style={styles.aside}>
+                    <TouchableOpacity
+                        style={styles.iconDelete}
+                        onPress={() => onDelete(entry._id)}
+                    >
+                        <CloseCircleOutlined />
+                    </TouchableOpacity>
+                </View>
+            </View>
+            <View style={styles.textContainer}>
+                <Text style={[defaultStyles.text, styles.text]}>{_id}</Text>
             </View>
         </View>
-        <View style={styles.textContainer}>
-            <Text style={[defaultStyles.text, styles.text]}>{_id}</Text>
-        </View>
-    </View>
-)
+    )
+}
 
 export default MenuListItem
 

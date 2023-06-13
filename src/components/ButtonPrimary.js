@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import defaultStyles from '../styles'
 
-const ButtonPrimary = ({ label, onPress, disabled = false }) => {
+const ButtonPrimary = ({ label, onPress, disabled = false, fontSize = null }) => {
     
     const handlePress = async () => {
         // do stuff
@@ -18,7 +18,11 @@ const ButtonPrimary = ({ label, onPress, disabled = false }) => {
             onPress={handlePress}
             disabled={disabled}
         >
-            <Text style={[defaultStyles.buttonLabel, disabled ? defaultStyles.buttonLabelDisabled : null]}>
+            <Text style={[
+                defaultStyles.buttonLabel,
+                disabled ? defaultStyles.buttonLabelDisabled : null,
+                fontSize ? { fontSize } : null,
+            ]}>
                 {label}
             </Text>
             

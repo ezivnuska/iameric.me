@@ -6,6 +6,10 @@ import {
 } from 'react-native'
 import { Screen } from '.'
 import {
+    DriverDisplay,
+    EntryDisplay,
+    MerchantDisplay,
+    Module,
     UserDisplay,
 } from '../components'
 import axios from 'axios'
@@ -43,18 +47,33 @@ const HomeScreen = ({ navigation, ...props }) => {
     }
 
     useEffect(() => {
-        if (!users) getUsers()
+        getUsers()
     }, [])
 
-    useEffect(() => {
-        setItems(users)
-    }, [users])
+    // useEffect(() => {
+    //     if (users) setItems(users)
+    // }, [users])
 
     return (
         <Screen {...props}>
-            <View style={styles.container}>
-                {items ? <UserDisplay users={items} /> : <ActivityIndicator size='large' />}
-            </View>
+            {users ? (
+                <View style={styles.container}>
+                    <View style={styles.modules}>
+                        <Module>
+                            <DriverDisplay />
+                        </Module>
+                        <Module>
+                            <MerchantDisplay />
+                        </Module>
+                        <Module>
+                            <UserDisplay />
+                        </Module>
+                    </View>
+                    <Module>
+                        <EntryDisplay />
+                    </Module>
+                </View>
+            ) : <ActivityIndicator size='large' />}
         </Screen>
     )
 }
@@ -63,6 +82,20 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
     container: {
-
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        flexWrap: 'wrap',
+    },
+    modules: {
+        flex: 1,
+        flexShrink: 1,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        flexWrap: 'wrap',
+        width: 550,
+        minWidth: '70%',
+        maxWidth: 900,
     },
 })

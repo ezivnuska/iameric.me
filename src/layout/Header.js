@@ -36,13 +36,13 @@ const Header = () => {
                 </TouchableOpacity>
                 {user ? (
                     <View style={styles.aside}>
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                             style={styles.button}
                             onPress={() => navigate('chat')}
                         >
                             <Text style={styles.username}>chat</Text>
-                        </TouchableOpacity>
-                        {(user.username !== 'Guest') ? (
+                        </TouchableOpacity> */}
+                        {(user.role !== 'guest') ? (
                             <TouchableOpacity
                                 style={styles.usernameButton}
                                 onPress={() => navigate('settings')}

@@ -49,6 +49,5 @@ export default Screen
 const styles = StyleSheet.create({
     container: {
         height: height - 50,
-
     },
 })

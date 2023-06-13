@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
     ActivityIndicator,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -10,6 +11,7 @@ import {
 } from './'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import defaultStyles from '../styles'
 
 const EntryDisplay = () => {
     
@@ -21,36 +23,26 @@ const EntryDisplay = () => {
     const { entries, user } = state
     const [items, setItems] = useState(entries || [])
     const [loading, setLoading] = useState(false)
-    const [refetch, setRefetch] = useState(false)
 
     useEffect(() => {
-        if (!entries || !entries.length) getEntries()
+        getEntries()
     }, [])
 
-    // useEffect(() => {
-    //     if (entries) setItems(entries)
-    // }, [entries])
-
     useEffect(() => {
-        if (refetch) {
-            setRefetch(false)
-            setItems(entries)
-        }
+        if (entries) setItems(entries)
     }, [entries])
     
     const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
 
-    const getEntries = () => {
-
+    const getEntries = async () => {
         console.log('loading entries...')
         setLoading(true)
-        axios
+        await axios
             .get('/api/entries')
             .then(({ data }) => {
                 console.log('entries loaded.')
                 setLoading(false)
                 dispatch({ type: 'SET_ENTRIES', entries: data.entries })
-                setItems(data.entries)
             })
             .catch(err => {
                 console.log('Error loading entries', err)
@@ -88,8 +80,7 @@ const EntryDisplay = () => {
     }
 
     const addEntry = entry => {
-        setItems({ entry, ...items })
-        setRefetch(true)
+        // setItems({ entry, ...items })
         dispatch({ type: 'NEW_ENTRY', entry })
     }
 
@@ -99,8 +90,8 @@ const EntryDisplay = () => {
                 addEntry={addEntry}
                 updateStatus={updateStatus}
             />
-
-            {loading ? <ActivityIndicator size='large' /> : (
+            <Text style={defaultStyles.heading}>Feedback</Text>
+            {items && (
                 <EntryList
                     items={items}
                     deleteItem={deleteItem}

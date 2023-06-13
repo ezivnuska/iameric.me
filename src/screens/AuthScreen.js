@@ -153,7 +153,10 @@ export default AuthScreen
 
 const styles = StyleSheet.create({
     container: {
-
+        marginHorizontal: 'auto',
+        width: 300,
+        minWidth: 300,
+        maxWidth: 300,
     },
     loadingText: {
         fontSize: 18,

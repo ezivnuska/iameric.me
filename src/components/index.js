@@ -6,6 +6,7 @@ import CircleButton from './CircleButton'
 import Container from './Container'
 import DeleteAccountButton from './DeleteAccountButton'
 import Disconnect from './Disconnect'
+import DriverDisplay from './DriverDisplay'
 import Dropzone from './Dropzone'
 import EntryDisplay from './EntryDisplay'
 import EntryList from './EntryList'
@@ -19,12 +20,13 @@ import HoverableView from './HoverableView'
 import ImageDisplay from './ImageDisplay'
 import ImageLoader from './ImageLoader'
 import ImageList from './ImageList'
-import RolePicker from './RolePicker'
 import Menu from './Menu'
 import MenuDisplay from './MenuDisplay'
 import MenuItemForm from './MenuItemForm'
 import MenuList from './MenuList'
 import MenuListItem from './MenuListItem'
+import MerchantDisplay from './MerchantDisplay'
+import Module from './Module'
 import Profile from './Profile'
 import Settings from './Settings'
 import SimpleButton from './SimpleButton'
@@ -49,23 +51,27 @@ export {
     Container,
     DeleteAccountButton,
     Disconnect,
+    DriverDisplay,
     Dropzone,
     EntryDisplay,
     EntryList,
     EntryListItem,
     FileSelector,
     GuestSigninButton,
+    FeedbackForm,
     FormInput,
     FormInputStatusIcon,
     HoverableView,
     ImageDisplay,
     ImageLoader,
     ImageList,
-    RolePicker,
     Menu,
     MenuDisplay,
+    MenuItemForm,
     MenuList,
     MenuListItem,
+    MerchantDisplay,
+    Module,
     Profile,
     Settings,
     SimpleButton,

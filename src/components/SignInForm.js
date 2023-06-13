@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+	ButtonPrimary,
 	FormInput,
 } from '.'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -13,7 +14,6 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
-import ButtonPrimary from './ButtonPrimary'
 
 const SignInForm = ({ updateStatus, setUser }) => {
 

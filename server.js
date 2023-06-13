@@ -411,20 +411,22 @@ app.delete('/entry/delete', async (req, res) => {
 
 // [menu] item
 
-app.post('/item', (req, res) => {
+app.post('/item', async (req, res) => {
     const { body } = req
-    const { merchantId, title } = body
-    const newItem = { title, merchantId }
-    return Item
+    const { merchantId, price, title } = body
+    const newItem = { merchantId, price, title }
+    return await Item
         .create(newItem)
         .then(item => res.json({ item }))
 })
 
-app.get('/items', (req, res) => {
-    console.log('loading all items...')
-    return Item
+const getItems = () => 
+
+app.get('/items', async (req, res) => {
+    const items = await Item
         .find({})
-        .then(items => res.json({ items }))
+        .then(items => items)
+    return res.json({ items })
 })
 
 app.delete('/item/delete', (req, res) => {

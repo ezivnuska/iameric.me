@@ -12,7 +12,10 @@ export default StyleSheet.create({
 		lineHeight: 24,
     },
     heading: {
-        fontHeight: 25,
+        fontSize: 20,
+		fontWeight: 700,
+		color: '#333',
+		padding: 5,
     },
     email: {
         color: '#0000ff',
