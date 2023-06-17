@@ -7,7 +7,7 @@ import PublicScreen from './PublicScreen'
 import Screen from './Screen'
 import SecureScreen from './SecureScreen'
 import SettingsScreen from './SettingsScreen'
-import UserListScreen from './UserListScreen_old'
+import UserScreen from './UserScreen'
 
 export {
     AuthScreen,
@@ -19,5 +19,5 @@ export {
     Screen,
     SecureScreen,
     SettingsScreen,
-    UserListScreen,
+    UserScreen,
 }

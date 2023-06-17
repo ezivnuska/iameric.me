@@ -1,33 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
-import { navigate } from '../navigators/RootNavigation'
+import {
+    ProductList,
+} from '.'
 
-const Menu = ({ currentRoute, ...props }) => {
-    const handlePress = route => navigate(route)
+const Menu = () => {
 
+    const [selected, setSelected] = useState()
+    
     return (
         <View style={styles.container}>
-            {currentRoute !== 'users' && (
-                <TouchableOpacity
-                    style={styles.item}
-                    onPress={() => handlePress('users')}
-                >
-                    <Text>Users</Text>
-                </TouchableOpacity>
-            )}
-            {currentRoute !== 'home' && (
-                <TouchableOpacity
-                    style={styles.item}
-                    onPress={() => handlePress('home')}
-                >
-                    <Text>Home</Text>
-                </TouchableOpacity>
-            )}
+            <ProductList />
         </View>
     )
 }

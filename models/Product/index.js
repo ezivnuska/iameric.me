@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const ItemSchema = new Schema({
-    merchantId: {
+const ProductSchema = new Schema({
+    vendorId: {
         type: String,
         // required: true,
     },
@@ -17,6 +17,6 @@ const ItemSchema = new Schema({
     },
 })
 
-const ItemModel = mongoose.model('Item', ItemSchema)
+const ProductModel = mongoose.model('Product', ProductSchema)
 
-module.exports = ItemModel
+module.exports = ProductModel

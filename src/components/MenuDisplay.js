@@ -10,7 +10,7 @@ import {
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 
-const MenuDisplay = () => {
+const MenuDisplay = ({ vendorId }) => {
     
     const {
         dispatch,
@@ -31,7 +31,7 @@ const MenuDisplay = () => {
         console.log('loading menu items...')
         setLoading(true)
         axios
-            .get('/api/items')
+            .get('/api/products', { vendorId })
             .then(({ data }) => {
                 console.log('menu items loaded.')
                 setLoading(false)
@@ -60,14 +60,14 @@ const MenuDisplay = () => {
     const deleteItem = id => {
         removeItemById(id)
         axios
-            .delete('/api/menu/items/delete', { data: { id } })
+            .delete('/api/products/delete', { data: { id } })
             .then(({ data }) => {
                 // const { entry } = data
-                updateStatus('Menu item deleted.')
+                updateStatus('Product deleted.')
             })
             .catch(err => {
-                console.log('Error deleting menu item', err)
-                updateStatus('Error deleting mennu item.')
+                console.log('Error deleting product.', err)
+                updateStatus('Error deleting product.')
             })
     }
 

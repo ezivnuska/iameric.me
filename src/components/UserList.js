@@ -2,13 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
     FlatList,
     StyleSheet,
+    TouchableOpacity,
     View,
 } from 'react-native'
 
-import { UserListItem } from '.'
-import { AppContext } from '../AppContext'
+import { UserDetails } from '.'
 
-const UserList = ({ users }) => {
+const UserList = ({ onItemPressed, users }) => {
 
     const [items, setItems] = useState([])
 
@@ -22,7 +22,13 @@ const UserList = ({ users }) => {
                 style={styles.list}
                 data={items}
                 keyExtractor={(item, index) => 'key' + index}
-                renderItem={({ item }) => <UserListItem user={item} />} 
+                renderItem={({ item }) => (
+                    <TouchableOpacity
+                        onPress={() => onItemPressed(item._id)}
+                    >
+                        <UserDetails user={item} />
+                    </TouchableOpacity>
+                )} 
             />
         </View>
     )

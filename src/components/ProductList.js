@@ -4,9 +4,9 @@ import {
     StyleSheet,
     View,
 } from 'react-native'
-import { MenuListItem } from '.'
+import { ProductListItem } from '.'
 
-const MenuList = ({ deleteItem, items }) => (
+const ProductList = ({ deleteItem, items }) => (
     <View style={styles.container}>
         <FlatList
             style={styles.list}
@@ -14,9 +14,9 @@ const MenuList = ({ deleteItem, items }) => (
             keyExtractor={(item, index) => index}
             renderItem={({ item }) => {
                 return (
-                    <MenuListItem
+                    <ProductListItem
                         item={item}
-                        onDelete={deleteItem}
+                        onDelete={() => deleteItem(item._id)}
                     />
                 )
             }} 
@@ -24,7 +24,7 @@ const MenuList = ({ deleteItem, items }) => (
     </View>
 )
 
-export default MenuList
+export default ProductList
 
 const styles = StyleSheet.create({
     container: {

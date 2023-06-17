@@ -1,18 +1,17 @@
 import React, { useContext, useState } from 'react'
 import {
-    // StyleSheet,
     Text,
-    TextInput,
-    TouchableOpacity,
     View
 } from 'react-native'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
-import ButtonPrimary from './ButtonPrimary'
-import FormInput from './FormInput'
+import {
+    ButtonPrimary,
+    FormInput,
+} from '.'
 
-const MenuItemForm = ({ addItem, updateStatus }) => {
+const ProductForm = ({ addItem, updateStatus }) => {
 
     const {
         state,
@@ -20,27 +19,28 @@ const MenuItemForm = ({ addItem, updateStatus }) => {
     } = useContext(AppContext)
 
     const { user } = state
-    const [ itemName, setItemName ] = useState('')
-    const [ itemPrice, setItemPrice ] = useState('')
+    const [ title, setTitle ] = useState('')
+    const [ price, setPrice ] = useState('')
 
-    const onChangeItemName = value => setItemName(value)
-    const onChangeItemPrice = value => setItemPrice(value)
+    const onChangeTitle = value => setTitle(value)
+    const onChangePrice = value => setPrice(value)
 
     const onSubmit = () => {
-        const { username, _id } = user
+        const { _id, role, username } = user
         const newItem = {
-            username,
-            merchantId: _id,
-            name: itemName,
+            vendorId: _id,
+            title,
+            price,
         }
         addItem(newItem)
         
         axios
-            .post('/api/item', newItem)
+            .post('/api/product', newItem)
             .then(({ data }) => {
                 updateStatus('Sent!')
                 // dispatch({ type: 'NEW_ENTRY', entry: data.entry })
-                setItem('')
+                setTitle('')
+                setPrice('')
             })
             .catch(err => {
                 updateStatus('Error saving item.')
@@ -50,12 +50,12 @@ const MenuItemForm = ({ addItem, updateStatus }) => {
 
     return (
         <View style={defaultStyles.form}>
-            <Text style={defaultStyles.label}>Add Item</Text>
+            <Text style={defaultStyles.label}>Add Product</Text>
             <FormInput
-                label='Item Name'
-                value={itemName}
-                onChangeText={onChangeItemName}
-                placeholder='item name'
+                label='Product Name'
+                value={title}
+                onChangeText={onChangeTitle}
+                placeholder='product name'
                 textContentType='default'
                 autoCapitalize='true'
                 keyboardType='default'
@@ -63,17 +63,17 @@ const MenuItemForm = ({ addItem, updateStatus }) => {
             />
 
             <FormInput
-                label='Item Price'
-                value={itemPrice}
-                onChangeText={onChangeItemPrice}
+                label='Product Price'
+                value={price}
+                onChangeText={onChangePrice}
                 placeholder='0.00'
                 keyboardType='decimal-pad'
                 style={defaultStyles.input}
             />
 
             <ButtonPrimary
-                label='Send'
-                disabled={!itemName.length && !itemPrice.length}
+                label='Add Product'
+                disabled={!title.length && !price.length}
                 onPress={onSubmit}
             />
 
@@ -81,7 +81,7 @@ const MenuItemForm = ({ addItem, updateStatus }) => {
     )
 }
 
-export default MenuItemForm
+export default ProductForm
 
 // const styles = StyleSheet.create({
 

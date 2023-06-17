@@ -1,11 +1,14 @@
 import React from 'react'
 import {
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
+import defaultStyles from '../styles'
 
-const Module = ({ children }) => (
+const Module = ({ children, title }) => (
     <View style={styles.container}>
+        <Text style={defaultStyles.heading}>{title}</Text>
         {children}
     </View>
 )
@@ -20,7 +23,7 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
         marginHorizontal: 5,
         width: '20%',
-        minWidth: 200,
+        minWidth: 300,
         maxWidth: 300,
         marginBottom: 10,
     },

@@ -19,7 +19,7 @@ const PORT = process.env.PORT || require('./config').PORT
 const IMAGE_PATH = process.env.IMAGE_PATH || 'assets/images'
 
 const Entry = require('./models/Entry')
-const Item = require('./models/Item')
+const Product = require('./models/Product')
 const UserImage = require('./models/UserImage')
 const User = require('./models/User')
 
@@ -409,30 +409,31 @@ app.delete('/entry/delete', async (req, res) => {
     return res.json({ entry })
 })
 
-// [menu] item
+// [menu] product
 
-app.post('/item', async (req, res) => {
+app.post('/product', async (req, res) => {
     const { body } = req
-    const { merchantId, price, title } = body
-    const newItem = { merchantId, price, title }
-    return await Item
+    const { price, title, vendorId } = body
+    const newItem = { price, title, vendorId }
+    return await Product
         .create(newItem)
         .then(item => res.json({ item }))
 })
 
-const getItems = () => 
-
-app.get('/items', async (req, res) => {
-    const items = await Item
-        .find({})
+app.get('/products/:id', async (req, res) => {
+    const { id } = req.params
+    console.log('getting products', id)
+    const items = await Product
+        .find({ vendorId: id })
         .then(items => items)
     return res.json({ items })
 })
 
-app.delete('/item/delete', (req, res) => {
-    return Item
+app.delete('/products/delete', async (req, res) => {
+    const item = await Product
         .findByIdAndDelete(req.body.id)
-        .then(item => res.json({ item }))
+        .then(item => item)
+    return res.json({ item })
 })
 
 app.get('/users/:id', async (req, res, next) => {
