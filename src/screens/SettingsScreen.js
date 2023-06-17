@@ -7,15 +7,14 @@ import {
     AvatarModule,
     DeleteAccountButton,
     ImageList,
-    ProductForm,
-    ProductList,
+    ProductDisplay,
     Module,
 } from '../components'
 import {
     Screen,
 } from '.'
 import { AppContext } from '../AppContext'
-import axios from 'axios'
+import AvatarDisplay from '../components/AvatarDisplay'
 
 const SettingsScreen = ({ ...props }) => {
 
@@ -25,56 +24,20 @@ const SettingsScreen = ({ ...props }) => {
     } = useContext(AppContext)
 
     const { user } = state
-
-    const [items, setItems] = useState(null)
-
     useEffect(() => {
-        if (user && user.role === 'vendor') getProducts()
-    }, [])
-
-    const getProducts = () => {
-        axios
-            .get(`/api/products/${user._id}`)
-            .then(({ data }) => {
-                console.log('DATA', data.items)
-                setItems(data.items)
-            })
-            .catch(err => console.log('Error:', err))
-    }
-
-    const onDelete = id => {
-        axios
-            .delete('/api/products/delete', { data: { id } })
-            .then(({ data }) => console.log('deleted data', data))
-            .catch(err => console.log('Error deleting product', err))
-    }
-
+        console.log('---> user', user)
+    }, [user])
     return (
         <Screen { ...props }>
             <View style={styles.container}>
                 <View style={styles.modules}>
-                    <Module>
-                        <View>
-                            <ProductForm
-                                addItem={item => setItems([
-                                    item,
-                                    ...items,
-                                ])}
-                                updateStatus={() => console.log('updateStatus')}
-                            />
-                            {items && (
-                                <ProductList
-                                    deleteItem={onDelete}
-                                    items={items}
-                                />
-                            )}
-                        </View>
-                    </Module>
-                    <Module>
-                        <View>
-                            <AvatarModule />
-                            <ImageList />
-                        </View>
+                    {(user && user.role === 'vendor') && (
+                        <Module title='Products'>
+                            <ProductDisplay vendor={user} />
+                        </Module>
+                    )}
+                    <Module title='Avatar'>
+                        <AvatarDisplay />
                     </Module>
                 </View>
                 <Module>

@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
 import {
+    FlatList,
     StyleSheet,
     View,
 } from 'react-native'
-import {
-    ProductList,
-} from '.'
+import { MenuItem } from '.'
 
-const Menu = () => {
+const Menu = ({ items }) => {
 
     const [selected, setSelected] = useState()
     
     return (
         <View style={styles.container}>
-            <ProductList />
+            <FlatList
+                data={items}
+                keyExtractor={(item, index) => index}
+                renderItem={({ item }) => <MenuItem item={item} />} 
+            />
         </View>
     )
 }
@@ -22,14 +25,6 @@ export default Menu
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        backgroundColor: '#ccc',
-    },
-    item: {
-        flex: 1,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
+
     },
 })

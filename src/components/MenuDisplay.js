@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    ActivityIndicator,
     StyleSheet,
     View,
 } from 'react-native'
 import {
-    MenuList,
+    Menu,
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
@@ -31,7 +30,7 @@ const MenuDisplay = ({ vendorId }) => {
         console.log('loading menu items...')
         setLoading(true)
         axios
-            .get('/api/products', { vendorId })
+            .get(`/api/products/${vendorId}`)
             .then(({ data }) => {
                 console.log('menu items loaded.')
                 setLoading(false)
@@ -78,12 +77,9 @@ const MenuDisplay = ({ vendorId }) => {
 
     return (
         <View style={styles.container}>
-            {loading ? <ActivityIndicator size='large' /> : (
-                <MenuList
-                    items={items}
-                    deleteItem={deleteItem}
-                />
-            )}
+            {items && items.length ? (
+                <Menu items={items} />
+            ) : null}
         </View>
     )
 }

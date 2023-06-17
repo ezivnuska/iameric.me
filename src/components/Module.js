@@ -6,9 +6,9 @@ import {
 } from 'react-native'
 import defaultStyles from '../styles'
 
-const Module = ({ children, title }) => (
+const Module = ({ children, title = null }) => (
     <View style={styles.container}>
-        <Text style={defaultStyles.heading}>{title}</Text>
+        {title && <Text style={defaultStyles.heading}>{title}</Text>}
         {children}
     </View>
 )

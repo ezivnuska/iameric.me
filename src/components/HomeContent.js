@@ -84,7 +84,9 @@ const HomeContent = () => {
             )}
             {feature ? (
                 <View style={styles.aside}>
-                    <UserProfile user={feature} />
+                    <Module>
+                        <UserProfile user={feature} />
+                    </Module>
                 </View>
             ) : null}
         </View>

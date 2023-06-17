@@ -2,6 +2,7 @@ import ActivityList from './ActivityList'
 import ActivityListItem from './ActivityListItem'
 import AuthButton from './AuthButton'
 import Avatar from './Avatar'
+import AvatarDisplay from './AvatarDisplay'
 import AvatarModule from './AvatarModule'
 import ButtonPrimary from './ButtonPrimary'
 import CircleButton from './CircleButton'
@@ -23,13 +24,15 @@ import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
 import ImageLoader from './ImageLoader'
 import Menu from './Menu'
+import MenuItem from './MenuItem'
 import MenuDisplay from './MenuDisplay'
 import Module from './Module'
+import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import Profile from './Profile'
-import Settings from './Settings'
+// import Settings from './Settings_delete'
 import SimpleButton from './SimpleButton'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
@@ -44,6 +47,7 @@ export {
     ActivityList,
     ActivityListItem,
     Avatar,
+    AvatarDisplay,
     AvatarModule,
     CircleButton,
     Container,
@@ -64,13 +68,15 @@ export {
     ImageLoader,
     ImageList,
     Menu,
+    MenuItem,
     MenuDisplay,
     Module,
+    ProductDisplay,
     ProductForm,
     ProductList,
     ProductListItem,
     Profile,
-    Settings,
+    // Settings,
     SimpleButton,
     ButtonPrimary,
     AuthButton,
