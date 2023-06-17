@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
-    Dimensions,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -9,9 +8,6 @@ import {
 import { Disconnect } from '../components'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
-
-const windowWidth = Dimensions.get('window').width
-const windowHeight = Dimensions.get('window').height
 
 const Header = () => {
     
@@ -25,34 +21,15 @@ const Header = () => {
             <View style={styles.headerContainer}>
                 <TouchableOpacity
                     style={styles.header}
-                    onPress={() => navigate(user ? 'home' : 'auth')}
+                    onPress={() => navigate('home')}
                 >
                     <Text style={styles.title}>
                         iam
                         <Text style={{color: '#ddd'}}>
-                            eric
+                            zach
                         </Text>
                     </Text>
                 </TouchableOpacity>
-                {user ? (
-                    <View style={styles.aside}>
-                        {/* <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => navigate('chat')}
-                        >
-                            <Text style={styles.username}>chat</Text>
-                        </TouchableOpacity> */}
-                        {(user.role !== 'guest') ? (
-                            <TouchableOpacity
-                                style={styles.usernameButton}
-                                onPress={() => navigate('settings')}
-                            >
-                                <Text style={styles.username}>{user.username}</Text>
-                            </TouchableOpacity>
-                        ) : null}
-                        <Disconnect />
-                    </View>
-                ) : null}
             </View>
         </View>
     )

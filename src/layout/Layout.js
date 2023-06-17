@@ -29,7 +29,7 @@ const Layout = () => {
 
     return (
         <View style={[styles.layoutContainer, { width: dimensions.window.width }]}>
-            <Header>iameric</Header>
+            <Header>iamzach</Header>
             <Body>
                 <Navigation />
             </Body>

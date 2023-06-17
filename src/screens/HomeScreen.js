@@ -1,13 +1,6 @@
 import React from 'react'
-import { Screen } from '.'
-import {
-    HomeContent,
-} from '../components'
+import { HomeContent } from '../components'
 
-const HomeScreen = ({ navigation, ...props }) => (
-    <Screen {...props}>
-        <HomeContent />
-    </Screen>
-)
+const HomeScreen = ({ navigation, ...props }) => <HomeContent />
 
 export default HomeScreen
