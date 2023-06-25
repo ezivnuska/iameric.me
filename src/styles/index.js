@@ -36,6 +36,8 @@ export default StyleSheet.create({
 		width: '100%',
 		alignSelf: 'center',
 		// paddingBottom: 15,
+		borderWidth: 1,
+		borderColor: 'green',
 	},
 	label: {
 		fontSize: 18,

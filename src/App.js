@@ -1,9 +1,9 @@
-import { Layout } from './layout'
+import { FixedLayout } from './layout'
 import { AppProvider } from './AppContext'
 
 const App = () => (
   <AppProvider>
-    <Layout />
+    <FixedLayout />
   </AppProvider>
 )
 

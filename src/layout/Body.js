@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
         // paddingHorizontal: 20,
         paddingVertical: 0,
         // backgroundColor: '#fff',
+        borderWidth: 4,
+        borderStyle: 'dotted',
+        borderColor: 'pink',
     },
     body: {
         flex: 1,
@@ -40,5 +43,8 @@ const styles = StyleSheet.create({
         // width: '80%',
         margin: 0,
         padding: 0,
+        borderWidth: 2,
+        borderStyle: 'dashed',
+        borderColor: 'blue',
     },
 })

@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { LinkingOptions, NavigationContainer } from '@react-navigation/native'
+import {
+    // LinkingOptions,
+    NavigationContainer,
+} from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import {
@@ -96,7 +99,11 @@ const Navigation = () => {
                 // linking={linking}
                 fallback={<FallbackScreen />}
             >
-                {user ? <SecureStackScreen /> : <AuthStackScreen />}
+                {
+                    user
+                        ? <SecureStackScreen />
+                        : <AuthStackScreen />
+                }
             </NavigationContainer>
         </SafeAreaProvider>
         

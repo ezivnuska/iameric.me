@@ -8,7 +8,7 @@ import {
     SignInForm,
     SignUpForm,
     AuthButton,
-    SimpleLink,
+    // SimpleLink,
 } from '../components'
 import { Screen } from './'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -154,9 +154,9 @@ export default AuthScreen
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 'auto',
-        width: 300,
-        minWidth: 300,
-        maxWidth: 300,
+        width: '98%',
+        // minWidth: 300,
+        // maxWidth: 300,
     },
     loadingText: {
         fontSize: 18,

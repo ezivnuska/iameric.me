@@ -16,8 +16,11 @@ const styles = StyleSheet.create({
     container: {
         marginHorizontal: 'auto',
         paddingBottom: 20,
-        width: '95%',
-        minWidth: 300,
-        maxWidth: 900,
+        width: '100%',
+        // minWidth: 300,
+        // maxWidth: 900,
+        borderWidth: 4,
+        borderStyle: 'dotted',
+        borderColor: '#ccc',
     },
 })

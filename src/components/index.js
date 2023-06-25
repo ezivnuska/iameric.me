@@ -1,9 +1,11 @@
 import ActivityList from './ActivityList'
 import ActivityListItem from './ActivityListItem'
 import AuthButton from './AuthButton'
+import AuthMenu from './AuthMenu'
 import Avatar from './Avatar'
 import AvatarDisplay from './AvatarDisplay'
 import AvatarModule from './AvatarModule'
+import Brand from './Brand'
 import ButtonPrimary from './ButtonPrimary'
 import CircleButton from './CircleButton'
 import Container from './Container'
@@ -46,9 +48,13 @@ import UserProfile from './UserProfile'
 export {
     ActivityList,
     ActivityListItem,
+    AuthButton,
+    AuthMenu,
     Avatar,
     AvatarDisplay,
     AvatarModule,
+    Brand,
+    ButtonPrimary,
     CircleButton,
     Container,
     DeleteAccountButton,
@@ -78,8 +84,6 @@ export {
     Profile,
     // Settings,
     SimpleButton,
-    ButtonPrimary,
-    AuthButton,
     SimpleLink,
     SignInForm,
     SignUpForm,

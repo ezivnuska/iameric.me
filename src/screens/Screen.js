@@ -5,7 +5,7 @@ import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 import { Container, StatusDisplay } from '../components'
 import { AppContext } from '../AppContext'
-// const window = Dimensions.get('window')
+const window = Dimensions.get('window')
 const { height } = window
 
 const Screen = ({ children, route }) => {
@@ -49,5 +49,8 @@ export default Screen
 const styles = StyleSheet.create({
     container: {
         height: height - 50,
+        borderWidth: 4,
+        borderStyle: 'dashed',
+        borderColor: 'purple',
     },
 })
