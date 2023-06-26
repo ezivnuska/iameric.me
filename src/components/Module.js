@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
         // minWidth: 300,
         // maxWidth: 300,
         marginBottom: 10,
-        borderWidth: 2,
-        borderStyle: 'dotted',
-        borderColor: 'orange',
+        // borderWidth: 2,
+        // borderStyle: 'dotted',
+        // borderColor: 'orange',
     },
 })

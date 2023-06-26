@@ -13,7 +13,7 @@ import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 import { FormInput, RolePicker } from '.'
 
-const SignUpForm = ({ updateStatus, setUser }) => {
+const SignUpForm = ({ children, updateStatus, setUser }) => {
 
 	const {
         state,
@@ -122,73 +122,79 @@ const SignUpForm = ({ updateStatus, setUser }) => {
 
 	return (
 				
-		<View style={defaultStyles.form}>
+		<View style={defaultStyles.formContainer}>
 
 			<Text style={defaultStyles.title}>Sign Up</Text>
 
-			<RolePicker
-				value={role}
-				onChange={selectRole}
-			/>
+			<View style={defaultStyles.form}>
 
-			<FormInput
-				label='Email'
-				value={email}
-				onChangeText={onChangeEmail}
-				placeholder='email'
-				textContentType='emailAddress'
-				autoCapitalize='none'
-				keyboardType='email-address'
-				style={defaultStyles.input}
-			/>
+				<RolePicker
+					value={role}
+					onChange={selectRole}
+				/>
 
-			<FormInput
-				label='Username'
-				value={username}
-				onChangeText={onChangeUsername}
-				placeholder='username'
-				textContentType='none'
-				autoCapitalize='none'
-				keyboardType='default'
-				style={defaultStyles.input}
-			/>
+				<FormInput
+					label='Email'
+					value={email}
+					onChangeText={onChangeEmail}
+					placeholder='email'
+					textContentType='emailAddress'
+					autoCapitalize='none'
+					keyboardType='email-address'
+					style={defaultStyles.input}
+				/>
 
-			<FormInput
-				label='Password'
-				value={password}
-				onChangeText={onChangePassword}
-				placeholder='password'
-				textContentType='password'
-				autoCapitalize='none'
-				keyboardType='default'
-				secureTextEntry={true}
-				style={defaultStyles.input}
-			/>
+				<FormInput
+					label='Username'
+					value={username}
+					onChangeText={onChangeUsername}
+					placeholder='username'
+					textContentType='none'
+					autoCapitalize='none'
+					keyboardType='default'
+					style={defaultStyles.input}
+				/>
 
-			<FormInput
-				label='Confirm Password'
-				value={confirmPassword}
-				onChangeText={onChangeConfirmPassword}
-				placeholder='password again'
-				textContentType='password'
-				autoCapitalize='none'
-				keyboardType='default'
-				secureTextEntry={true}
-				style={defaultStyles.input}
-			/>
+				<FormInput
+					label='Password'
+					value={password}
+					onChangeText={onChangePassword}
+					placeholder='password'
+					textContentType='password'
+					autoCapitalize='none'
+					keyboardType='default'
+					secureTextEntry={true}
+					style={defaultStyles.input}
+				/>
 
-			<TouchableOpacity
-				style={[defaultStyles.button, (loading ? defaultStyles.buttonDisabled : null)]}
-				disabled={loading}
-				onPress={onSubmit}
-			>
-				<Text
-					style={[defaultStyles.buttonLabel, (loading ? defaultStyles.buttonLabelDisabled : null)]}
-					accessibilityLabel='Sign Up'
+				<FormInput
+					label='Confirm Password'
+					value={confirmPassword}
+					onChangeText={onChangeConfirmPassword}
+					placeholder='password again'
+					textContentType='password'
+					autoCapitalize='none'
+					keyboardType='default'
+					secureTextEntry={true}
+					style={defaultStyles.input}
+				/>
+
+				<TouchableOpacity
+					style={[defaultStyles.button, (loading ? defaultStyles.buttonDisabled : null)]}
+					disabled={loading}
+					onPress={onSubmit}
 				>
-					{loading ? 'Signing Up' : 'Sign Up'}
-				</Text>
-			</TouchableOpacity>
+					<Text
+						style={[defaultStyles.buttonLabel, (loading ? defaultStyles.buttonLabelDisabled : null)]}
+						accessibilityLabel='Sign Up'
+					>
+						{loading ? 'Signing Up' : 'Sign Up'}
+					</Text>
+				</TouchableOpacity>
+
+				{children}
+				
+			</View>
 
 		</View>
 	)

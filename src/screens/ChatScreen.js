@@ -1,5 +1,5 @@
 import React from 'react'
-import { Screen } from '.'
+import { Screen } from '../components'
 import {
     EntryDisplay, Module,
 } from '../components'

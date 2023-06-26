@@ -1,5 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
+    Animated,
     Dimensions,
     StyleSheet,
     Text,
@@ -24,6 +25,7 @@ const Header = () => {
         user,
     } = useContext(AppContext)
     
+    
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
@@ -38,12 +40,14 @@ export default Header
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        flexGrow: 0,
-        flexShrink: 0,
-        flexBasis: 'auto',
+        // position: 'absolute',
+        // top: 0,
+        // left: 0,
+        // right: 0,
+        // display: 'flex',
+        // flexDirection: 'row',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         backgroundColor: '#999',
         width: '100%',
     },
@@ -53,8 +57,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection:'row',
         alignItems: 'center',
-        width: '80%',
+        width: '90%',
         minWidth: 350,
         maxWidth: 900,
+        marginHorizontal: 'auto',
+        // borderWidth: 1,
+        // borderColor: 'green',
     },
 })

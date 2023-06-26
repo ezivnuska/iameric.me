@@ -15,7 +15,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 
-const SignInForm = ({ updateStatus, setUser }) => {
+const SignInForm = ({ children, updateStatus, setUser }) => {
 
     const {
         state,
@@ -103,39 +103,45 @@ const SignInForm = ({ updateStatus, setUser }) => {
 	)
 
     return (
-        <View style={defaultStyles.form}>
+        <View style={defaultStyles.formContainer}>
 					
             <Text style={defaultStyles.title}>Sign In</Text>
 
-			<FormInput
-				label='Email'
-				value={email}
-				onChange={value => setEmail(value)}
-				placeholder='Email'
-				textContentType='emailAddress'
-				autoCapitalize='none'
-				keyboardType='email-address'
-				style={defaultStyles.input}
-			/>
+			<View style={defaultStyles.form}>
 
-			<FormInput
-				label='Password'
-				value={password}
-				onChange={value => setPassword(value)}
-				placeholder='Password'
-				textContentType='password'
-				autoCapitalize='none'
-				secureTextEntry={true}
-				style={defaultStyles.input}
-			/>
+				<FormInput
+					label='Email'
+					value={email}
+					onChange={value => setEmail(value)}
+					placeholder='Email'
+					textContentType='emailAddress'
+					autoCapitalize='none'
+					keyboardType='email-address'
+					style={defaultStyles.input}
+				/>
 
-			<ButtonPrimary
-				disabled={loading}
-				label={loading ? 'Signing in...' : 'Sign In'}
-				onPress={onSubmit}
-			/>
+				<FormInput
+					label='Password'
+					value={password}
+					onChange={value => setPassword(value)}
+					placeholder='Password'
+					textContentType='password'
+					autoCapitalize='none'
+					secureTextEntry={true}
+					style={defaultStyles.input}
+				/>
 
-        </View>
+				<ButtonPrimary
+					disabled={loading}
+					label={loading ? 'Signing in...' : 'Sign In'}
+					onPress={onSubmit}
+				/>
+
+				{children}
+
+			</View>
+
+		</View>
     )
 }
 

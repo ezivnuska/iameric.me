@@ -1,9 +1,13 @@
-import React, { useContext, useEffect } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import {
+    Dimensions,
+    StyleSheet,
+    View,
+} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
-import { Container, StatusDisplay } from '../components'
+import { Container, Header, StatusDisplay } from '.'
 import { AppContext } from '../AppContext'
 const window = Dimensions.get('window')
 const { height } = window
@@ -36,10 +40,7 @@ const Screen = ({ children, route }) => {
     
     return (
         <View style={styles.container}>
-            <StatusDisplay status={status} close={hideStatus} />
-            <Container>
-                {children}
-            </Container>
+            {children}
         </View>
     )
 }
@@ -48,9 +49,11 @@ export default Screen
 
 const styles = StyleSheet.create({
     container: {
+        marginHorizontal: 'auto',
+        paddingHorizontal: 10,
         height: height - 50,
-        borderWidth: 4,
-        borderStyle: 'dashed',
-        borderColor: 'purple',
+        width: '90%',
+        minWidth: 300,
+        maxWidth: 900,
     },
 })

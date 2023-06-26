@@ -1,16 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    StyleSheet,
     View,
 } from 'react-native'
 import {
+    AuthButton,
     GuestSigninButton,
+    Screen,
     SignInForm,
     SignUpForm,
-    AuthButton,
-    // SimpleLink,
 } from '../components'
-import { Screen } from './'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
@@ -82,6 +80,7 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     const advanceToScreen = async () => {
         const lastRoute = await getLastRoute()
+        console.log('advance to screen', lastRoute)
         
         navigate(lastRoute || user ? 'home' : 'auth')
     }
@@ -129,38 +128,29 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     }
 
-    const renderForm = () => signupVisible
-        ? <SignUpForm updateStatus={updateStatus} setUser={setUser} />
-        : <SignInForm updateStatus={updateStatus} setUser={setUser} />
+    const renderForm = () => {
+        return signupVisible
+            ? <SignUpForm updateStatus={updateStatus} setUser={setUser}>{renderButtons()}</SignUpForm>
+            : <SignInForm updateStatus={updateStatus} setUser={setUser}>{renderButtons()}</SignInForm>
+    }
 
+    const renderButtons = () => (
+        <View>
+            {formVisible ? (
+                <AuthButton
+                    signin={!!signupVisible}
+                    onPress={() => setSignupVisible(!signupVisible)}
+                />
+            ) : null}
+            <GuestSigninButton setUser={setUser} />
+        </View>
+    )
     return (
-        <Screen { ...props }>
-            <View style={styles.container}>
-                {formVisible ? renderForm() : null}
-                {formVisible ? (
-                    <AuthButton
-                        signin={!!signupVisible}
-                        onPress={() => setSignupVisible(!signupVisible)}
-                    />
-                ) : null}
-                <GuestSigninButton setUser={setUser} />
-            </View>
+        <Screen {...props}>
+            {formVisible ? renderForm() : null}
         </Screen>
     )
 }
 
 export default AuthScreen
-
-const styles = StyleSheet.create({
-    container: {
-        marginHorizontal: 'auto',
-        width: '98%',
-        // minWidth: 300,
-        // maxWidth: 300,
-    },
-    loadingText: {
-        fontSize: 18,
-        textAlign: 'center',
-    },
-})
 

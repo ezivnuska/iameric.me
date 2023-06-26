@@ -1,7 +1,7 @@
 import React from 'react'
-import { Screen } from '.'
 import {
     HomeContent,
+    Screen,
 } from '../components'
 
 const HomeScreen = ({ navigation, ...props }) => (

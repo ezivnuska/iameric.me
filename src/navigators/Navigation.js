@@ -4,7 +4,6 @@ import {
     NavigationContainer,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
 import {
     AuthScreen,
     ChatScreen,
@@ -15,41 +14,46 @@ import {
 } from '../screens'
 import { navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
+// import { Header } from '../layout'
 
 const SecureStack = createNativeStackNavigator()
 const SecureStackScreen = ({ navigation, route }) => (
     <SecureStack.Navigator
-        screenOptions={{
-            headerShown: false,
+        screenOptions={() => ({
             initialRouteName: 'home',
-        }}
+            headerShown: false,
+            // headerMode: 'screen',
+            // header: () => <Header />,
+        })}
     >
         <SecureStack.Screen
             name='home'
             component={HomeScreen}
-        />
+            />
         <SecureStack.Screen
             name='settings'
             component={SettingsScreen}
-        />
+            />
         <SecureStack.Screen
             name='users'
             component={UserScreen}
-        />
+            />
         <SecureStack.Screen
             name='chat'
             component={ChatScreen}
-        />
+            />
     </SecureStack.Navigator>
 )
 
 const AuthStack = createNativeStackNavigator()
 const AuthStackScreen = ({ navigation, route }) => (
     <AuthStack.Navigator
-        screenOptions={{
-            headerShown: false,
+        screenOptions={() => ({
             initialRouteName: 'auth',
-        }}
+            headerShown: false,
+            // headerMode: 'screen',
+            // header: () => <Header />,
+        })}
     >
         <AuthStack.Screen
             name='auth'
@@ -93,20 +97,17 @@ const Navigation = () => {
     }
 
     return (
-        <SafeAreaProvider>
-            <NavigationContainer
-                ref={navigationRef}
-                // linking={linking}
-                fallback={<FallbackScreen />}
-            >
-                {
-                    user
-                        ? <SecureStackScreen />
-                        : <AuthStackScreen />
-                }
-            </NavigationContainer>
-        </SafeAreaProvider>
-        
+        <NavigationContainer
+            ref={navigationRef}
+            // linking={linking}
+            fallback={<FallbackScreen />}
+        >
+            {
+                user
+                    ? <SecureStackScreen />
+                    : <AuthStackScreen />
+            }
+        </NavigationContainer>
     )
 }
 

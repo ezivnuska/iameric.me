@@ -35,6 +35,7 @@ import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import Profile from './Profile'
 // import Settings from './Settings_delete'
+import Screen from './Screen'
 import SimpleButton from './SimpleButton'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
@@ -83,6 +84,7 @@ export {
     ProductListItem,
     Profile,
     // Settings,
+    Screen,
     SimpleButton,
     SimpleLink,
     SignInForm,
