@@ -16,7 +16,7 @@ const Layout = () => {
 
         // example of axios request
 
-        // axios.post('/api/data', (req, res) => {
+        // axios.post('/api/data', { value: inputValue }, (req, res) => {
         //     console.log(res.data)
         // })
     }
