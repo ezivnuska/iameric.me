@@ -34,6 +34,7 @@ import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import Profile from './Profile'
 // import Settings from './Settings_delete'
+import RolePicker from './RolePicker'
 import Screen from './Screen'
 import SimpleButton from './SimpleButton'
 import SignInForm from './SignInForm'
@@ -82,6 +83,7 @@ export {
     ProductListItem,
     Profile,
     // Settings,
+    RolePicker,
     Screen,
     SimpleButton,
     SimpleLink,

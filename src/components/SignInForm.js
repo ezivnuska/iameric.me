@@ -105,9 +105,9 @@ const SignInForm = ({ setUser }) => {
     return (
         <View style={defaultStyles.formContainer}>
 					
-            <Text style={defaultStyles.title}>Sign In</Text>
-
 			<View style={defaultStyles.form}>
+
+            	<Text style={defaultStyles.title}>Sign In</Text>
 
 				<FormInput
 					label='Email'

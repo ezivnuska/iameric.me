@@ -30,7 +30,7 @@ export default StyleSheet.create({
         fontWeight: 700,
         color: '#000',
         marginBottom: 15,
-		paddingHorizontal: 10,
+		// paddingHorizontal: 10,
     },
     formContainer: {
 		// flex: 1,

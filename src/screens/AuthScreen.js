@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import { authenticate } from '../Auth'
+import defaultStyles from '../styles'
 
 const AuthScreen = ({ navigation, ...props }) => {
     
@@ -133,14 +134,19 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     return (
         <View>
+            
             {signupVisible
                 ? <SignUpForm setUser={setUser} />
-                : <SignInForm setUser={setUser} />}
-            <AuthButton
-                signin={!!signupVisible}
-                onPress={() => setSignupVisible(!signupVisible)}
-            />
-            <GuestSigninButton setUser={setUser} />
+                : <SignInForm setUser={setUser} />
+            }
+
+            <View style={defaultStyles.form}>
+                <AuthButton
+                    signin={!!signupVisible}
+                    onPress={() => setSignupVisible(!signupVisible)}
+                />
+                <GuestSigninButton setUser={setUser} />
+            </View>
         </View>
     )
 }
