@@ -33,7 +33,8 @@ const ListLayout = () => {
                 <Header />,
                 <Navigation />
             ]}
-            keyExtractor={(item, index) => 'key' + index}
+            listKey={(item, index) => 'layout'}
+            keyExtractor={(item, index) => 'layout' + index}
             renderItem={({ item }) => item}
             style={[styles.list, {
                 width: dimensions.window.width,

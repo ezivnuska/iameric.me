@@ -81,6 +81,7 @@ const ImageList = () => {
                 <FlatList
                     contentContainerStyle={styles.list}
                     data={images}
+                    listKey={() => 'images'}
                     keyExtractor={(filename, index) => `${filename}${index}`}
                     numColumns={3}
                     renderItem={({ item }) => (

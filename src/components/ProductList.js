@@ -7,7 +7,8 @@ import { ProductListItem } from '.'
 const ProductList = ({ deleteItem, items }) => (
     <FlatList
         data={items}
-        keyExtractor={(item, index) => index}
+        listKey={() => 'products'}
+        keyExtractor={(item, index) => 'product' + index}
         renderItem={({ item }) => {
             return (
                 <ProductListItem

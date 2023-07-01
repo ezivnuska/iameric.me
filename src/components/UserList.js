@@ -21,7 +21,8 @@ const UserList = ({ onItemPressed, users }) => {
             <FlatList
                 style={styles.list}
                 data={items}
-                keyExtractor={(item, index) => 'key' + index}
+                listKey={() => 'users'}
+                keyExtractor={(item, index) => 'user' + index}
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         onPress={() => onItemPressed(item._id)}

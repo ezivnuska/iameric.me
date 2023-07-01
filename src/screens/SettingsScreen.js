@@ -9,10 +9,8 @@ import {
     ImageList,
     ProductDisplay,
     Module,
-} from '../components'
-import {
     Screen,
-} from '.'
+} from '../components'
 import { AppContext } from '../AppContext'
 import AvatarDisplay from '../components/AvatarDisplay'
 
