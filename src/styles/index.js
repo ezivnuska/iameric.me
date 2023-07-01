@@ -7,6 +7,11 @@ import {
 const windowWidth = Dimensions.get('window').width
 
 export default StyleSheet.create({
+	screenContainer: {
+        flex: 1,
+        width: '100%',
+        backgroundColor: '#fff',
+	},
     text: {
         fontHeight: 20,
 		lineHeight: 24,
@@ -25,11 +30,14 @@ export default StyleSheet.create({
         fontWeight: 700,
         color: '#000',
         marginBottom: 15,
+		paddingHorizontal: 10,
     },
     formContainer: {
+		// flex: 1,
         width: '100%',
 		alignSelf: 'center',
 		paddingTop: 20,
+		backgroundColor: '#fff',
 	},
 	form: {
 		marginHorizontal: 'auto',
@@ -42,6 +50,7 @@ export default StyleSheet.create({
 		fontWeight: '600',
 		color: '#333',
 		marginTop: 5,
+		marginBottom: 5,
 	},
 	inputContainer: {
 		display: 'flex',

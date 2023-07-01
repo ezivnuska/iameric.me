@@ -40,7 +40,9 @@ const Screen = ({ children, route }) => {
     
     return (
         <View style={styles.container}>
-            {children}
+            <View style={styles.screenContainer}>
+                {children}
+            </View>
         </View>
     )
 }
@@ -49,11 +51,21 @@ export default Screen
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 'auto',
-        paddingHorizontal: 10,
+        flex: 1,
+        // marginHorizontal: 'auto',
         height: height - 50,
-        width: '90%',
+        width: '100%',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+    },
+    screenContainer: {
+        flex: 1,
+        width: '98%',
         minWidth: 300,
         maxWidth: 900,
+        borderWidth: 1,
+        borderStyle: 'dotted',
+        borderColor: 'blue',
+        backgroundColor: '#fff',
     },
 })

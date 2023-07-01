@@ -3,12 +3,11 @@ import {
     Animated,
     Dimensions,
     SafeAreaView,
-    ScrollView,
     StyleSheet,
-    View,
 } from 'react-native'
-import { Body, Header } from '.'
+import { Header } from '.'
 import { Navigation } from '../navigators'
+import { Screen } from '../components'
 
 const windowDimensions = Dimensions.get('window');
 const screenDimensions = Dimensions.get('screen');
@@ -16,11 +15,6 @@ const screenDimensions = Dimensions.get('screen');
 const AnimatedLayout = () => {
 
     const [scrollOffsetY, setScrollOffsetY] = useState(useRef(new Animated.Value(0)).current)
-
-    useEffect(() => {
-        // scrollOffsetY = 
-        console.log('scrollOffsetY', scrollOffsetY)
-    }, [])
     
     const [dimensions, setDimensions] = useState({
         window: windowDimensions,
@@ -40,20 +34,9 @@ const AnimatedLayout = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Header animHeaderValue={scrollOffsetY} />
-            <ScrollView
-                scrollEventThrottle={40}
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
-                    { useNativeDriver: false }
-                )}
-            >
-                <View style={[styles.layoutContainer, { width: dimensions.window.width }]}>
-                    <Header>iameric</Header>
-                    <Body>
-                        <Navigation />
-                    </Body>
-                </View>
-            </ScrollView>
+            <Screen>
+                <Navigation />
+            </Screen>
         </SafeAreaView>
     )
 }
@@ -64,23 +47,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
-    },
-    layoutContainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        // position: 'absolute',
-        // top: 0,
-        // left: 0,
-        // bottom: 0,
-        // right: 0,
-        // display: 'flex',
-        // flexDirection: 'column',
-        // justifyContent: 'flex-start',
-        // height: '100%',
-        // minHeight: '100%',
-        // borderWidth: 5,
-        // borderColor: 'pink',
+        // backgroundColor: '#fff',
+        backgroundColor: 'pink',
     },
 })

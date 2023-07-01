@@ -15,7 +15,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 
-const SignInForm = ({ children, updateStatus, setUser }) => {
+const SignInForm = ({ setUser }) => {
 
     const {
         state,
@@ -93,7 +93,7 @@ const SignInForm = ({ children, updateStatus, setUser }) => {
 	const onSubmit = async () => {
 		
 		if (!email.length || !password.length)
-			updateStatus('Email and password are required.')
+		console.log('Email and password are required.')
 		
 		authenticateUser()
 	}
@@ -136,8 +136,6 @@ const SignInForm = ({ children, updateStatus, setUser }) => {
 					label={loading ? 'Signing in...' : 'Sign In'}
 					onPress={onSubmit}
 				/>
-
-				{children}
 
 			</View>
 

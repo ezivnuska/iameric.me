@@ -13,7 +13,7 @@ import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles'
 import { FormInput, RolePicker } from '.'
 
-const SignUpForm = ({ children, updateStatus, setUser }) => {
+const SignUpForm = ({ setUser }) => {
 
 	const {
         state,
@@ -84,7 +84,7 @@ const SignUpForm = ({ children, updateStatus, setUser }) => {
       .then(async ({ data }) => {
 		console.log('data', data)
 		if (data.user) {
-			updateStatus('Sign up successful.')
+			console.log('Sign up successful.')
 			await AsyncStorage
 				.setItem('userToken', data.user.token)
 				.then(() => {
@@ -98,7 +98,7 @@ const SignUpForm = ({ children, updateStatus, setUser }) => {
 		setLoading(false)
       })
       .catch(err => {
-        updateStatus('Error signing up.')
+        console.log('Error signing up.')
 		setLoading(false)
         console.log('Error signing up new user.', err)
       })
@@ -107,12 +107,12 @@ const SignUpForm = ({ children, updateStatus, setUser }) => {
   const onSubmit = () => {
     
     if (!email.length || !password.length || !confirmPassword.length)
-	return updateStatus('Email and password required.')
+	return console.log('Email and password required.')
 	
-    if (!username.length) return updateStatus('Username is required.')
+    if (!username.length) return console.log('Username is required.')
 
     if (password !== confirmPassword)
-      return updateStatus('Passwords do not match')
+      return console.log('Passwords do not match')
     
     sendData({ email, username, password, role })
   }
@@ -192,8 +192,6 @@ const SignUpForm = ({ children, updateStatus, setUser }) => {
 					</Text>
 				</TouchableOpacity>
 
-				{children}
-				
 			</View>
 
 		</View>

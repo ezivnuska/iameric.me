@@ -42,11 +42,10 @@ const styles = StyleSheet.create({
         // display: 'flex',
         // flexDirection: 'column',
         // justifyContent: 'center',
-        paddingHorizontal: 5,
-        // paddingHorizontal: 5,
+        paddingHorizontal: 3,
         borderWidth: 1,
         borderColor: '#aaa',
-        borderRadius: 10,
+        borderRadius: 6,
     },
     list: {
         // flex: 1,
@@ -54,6 +53,6 @@ const styles = StyleSheet.create({
         // width: 300,
         // minWidth: 300,
         // maxWidth: 300,
-        paddingVertical: 5,
+        paddingVertical: 3,
     },
 })

@@ -18,21 +18,43 @@ import { navigate } from '../navigators/RootNavigation'
 // const windowWidth = Dimensions.get('window').width
 // const windowHeight = Dimensions.get('window').height
 
-const Header = () => {
+const maxHeight = 50
+const minHeight = 0
+const scrollDistance = maxHeight - minHeight
+
+const Header = ({ animHeaderValue }) => {
     
     const {
         // state,
         user,
     } = useContext(AppContext)
     
+
+    const animatedHeaderHeight =  animHeaderValue.interpolate({
+        inputRange: [0, scrollDistance],
+        outputRange: [maxHeight , minHeight],
+        extrapolate: 'clamp'
+    })
+
+    const animatedHeaderBackgroundColor = animHeaderValue.interpolate({
+        inputRange: [0, maxHeight - minHeight],
+        outputRange: ['blue', 'red'],
+        extrapolate: 'clamp'
+    })
     
     return (
-        <View style={styles.container}>
+        <Animated.View
+            style={[
+                styles.container,
+                {
+                    height: animatedHeaderHeight,
+                    // backgroundColor: animatedHeaderBackgroundColor,
+                }]}>
             <View style={styles.headerContainer}>
                 <Brand onPress={() => navigate(user ? 'home' : 'auth')} />
                 {user && <AuthMenu navigate={navigate} user={user} />}
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -48,7 +70,7 @@ const styles = StyleSheet.create({
         // flexDirection: 'row',
         // justifyContent: 'center',
         // alignItems: 'center',
-        backgroundColor: '#999',
+        backgroundColor: '#369',
         width: '100%',
     },
     headerContainer: {
@@ -57,10 +79,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection:'row',
         alignItems: 'center',
-        width: '90%',
-        minWidth: 350,
+        width: '98%',
+        minWidth: 300,
         maxWidth: 900,
         marginHorizontal: 'auto',
+        // backgroundColor: '#369',
         // borderWidth: 1,
         // borderColor: 'green',
     },

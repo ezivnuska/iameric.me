@@ -9,7 +9,6 @@ import {
     ImageList,
     ProductDisplay,
     Module,
-    Screen,
 } from '../components'
 import { AppContext } from '../AppContext'
 import AvatarDisplay from '../components/AvatarDisplay'
@@ -26,23 +25,21 @@ const SettingsScreen = ({ ...props }) => {
         console.log('---> user', user)
     }, [user])
     return (
-        <Screen { ...props }>
-            <View style={styles.container}>
-                <View style={styles.modules}>
-                    {(user && user.role === 'vendor') && (
-                        <Module title='Products'>
-                            <ProductDisplay vendor={user} />
-                        </Module>
-                    )}
-                    <Module title='Avatar'>
-                        <AvatarDisplay />
+        <View style={styles.container}>
+            <View style={styles.modules}>
+                {(user && user.role === 'vendor') && (
+                    <Module title='Products'>
+                        <ProductDisplay vendor={user} />
                     </Module>
-                </View>
-                <Module>
-                    <DeleteAccountButton />
+                )}
+                <Module title='Avatar'>
+                    <AvatarDisplay />
                 </Module>
             </View>
-        </Screen>
+            <Module>
+                <DeleteAccountButton />
+            </Module>
+        </View>
     )
 }
 

@@ -1,9 +1,9 @@
-import { ListLayout } from './layout'
+import { AnimatedLayout } from './layout'
 import { AppProvider } from './AppContext'
 
 const App = () => (
   <AppProvider>
-    <ListLayout />
+    <AnimatedLayout />
   </AppProvider>
 )
 

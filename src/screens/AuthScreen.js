@@ -21,13 +21,10 @@ const AuthScreen = ({ navigation, ...props }) => {
         dispatch,
     } = useContext(AppContext)
 
-    const { lastUserId, status, user } = state
+    const { user } = state
 
     const [formVisible, setFormVisible] = useState(false)
     const [signupVisible, setSignupVisible] = useState(false)
-    const [route, setRoute] = useState(null)
-
-    const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
 
     const setUser = user => {
         if (!user) console.log('Error storing user')
@@ -130,25 +127,21 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     const renderForm = () => {
         return signupVisible
-            ? <SignUpForm updateStatus={updateStatus} setUser={setUser}>{renderButtons()}</SignUpForm>
-            : <SignInForm updateStatus={updateStatus} setUser={setUser}>{renderButtons()}</SignInForm>
+            ? <SignUpForm setUser={setUser}>{renderButtons()}</SignUpForm>
+            : <SignInForm setUser={setUser}>{renderButtons()}</SignInForm>
     }
 
-    const renderButtons = () => (
+    return (
         <View>
-            {formVisible ? (
-                <AuthButton
-                    signin={!!signupVisible}
-                    onPress={() => setSignupVisible(!signupVisible)}
-                />
-            ) : null}
+            {signupVisible
+                ? <SignUpForm setUser={setUser} />
+                : <SignInForm setUser={setUser} />}
+            <AuthButton
+                signin={!!signupVisible}
+                onPress={() => setSignupVisible(!signupVisible)}
+            />
             <GuestSigninButton setUser={setUser} />
         </View>
-    )
-    return (
-        <Screen {...props}>
-            {formVisible ? renderForm() : null}
-        </Screen>
     )
 }
 

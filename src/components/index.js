@@ -20,7 +20,6 @@ import FileSelector from './FileSelector'
 import FormInput from './FormInput'
 import FormInputStatusIcon from './FormInputStatusIcon'
 import GuestSigninButton from './GuestSigninButton'
-import HomeContent from './HomeContent'
 import HoverableView from './HoverableView'
 import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
@@ -69,7 +68,6 @@ export {
     FeedbackForm,
     FormInput,
     FormInputStatusIcon,
-    HomeContent,
     HoverableView,
     ImageDisplay,
     ImageLoader,
