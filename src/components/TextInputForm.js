@@ -1,38 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
     Button,
-    FlatList,
     StyleSheet,
     Text,
     TextInput,
-    TouchableOpacity,
     View,
 } from 'react-native'
 
-const TextInputForm = () => {
+const TextInputForm = ({ onSubmit }) => {
 
     // we will set this as a reference to the textfield below
     let textfield
 
     const [inputValue, setInputValue] = useState('')
-    const [entries, setEntries] = useState([])
-
-    // useEffect is a react hook that is called whenever
-    // the variable(s) in the ending array have changed.
-    // if the ending array is empty, the function will be 
-    // called when the component mounts.
-
-    useEffect(() => {
-        console.log('entries changed...', entries)
-    }, [entries])
 
     const submitForm = () => {
-        console.log(inputValue)
+
         if (!inputValue.length) return alert('Field cannot be blank.')
-
-        setEntries([...entries, inputValue])
+        
+        onSubmit(inputValue)
+        
         setInputValue('')
-
         textfield.focus()
 
         // example of axios request
@@ -42,50 +30,26 @@ const TextInputForm = () => {
         // })
     }
 
-    const deleteEntryAtIndex = index => {
-        const updatedArray = entries.filter((entry, i) => index != i)
-        setEntries(updatedArray)
-    }
-
     return (
         <View style={styles.container}>
 
-            <View style={styles.formContainer}>
+            <Text style={styles.header}>Simple Form</Text>
 
-                <Text style={styles.header}>Simple Form</Text>
+            <Text style={styles.display}>{inputValue}</Text>
 
-                <Text style={styles.display}>{inputValue}</Text>
+            <TextInput
+                style={styles.input}
+                ref={ref => textfield = ref}
+                onChangeText={value => setInputValue(value)}
+                placeholder='write something...'
+                placeholderTextColor='#ccc'
+                value={inputValue}
+            />
 
-                <TextInput
-                    style={styles.input}
-                    ref={ref => textfield = ref}
-                    onChangeText={value => setInputValue(value)}
-                    placeholder='write something...'
-                    placeholderTextColor='#ccc'
-                    value={inputValue}
-                />
-
-                <Button
-                    title='Submit'
-                    onPress={() => submitForm()}
-                    style={styles.button}
-                />
-
-            </View>
-
-            {entries.length ? (
-                <FlatList
-                    data={entries}
-                    keyExtractor={(item, index) => 'entry' + index}
-                    renderItem={({ item, index }) => (
-                        <TouchableOpacity
-                            onPress={() => deleteEntryAtIndex(index)}
-                        >
-                            <Text style={styles.entry}>{item}</Text>
-                        </TouchableOpacity>
-                    )}
-                />
-            ) : <Text>No entries yet.</Text>}
+            <Button
+                title='Submit'
+                onPress={submitForm}
+            />
 
         </View>
     )
@@ -95,9 +59,6 @@ export default TextInputForm
 
 const styles = StyleSheet.create({
     container: {
-
-    },
-    formContainer: {
         padding: 20,
         borderWidth: 1,
         borderRadius: 6,
@@ -125,12 +86,5 @@ const styles = StyleSheet.create({
         padding: 10,
         lineHeight: 24,
         fontSize: 20,
-    },
-    button: {
-        borderRadius: 10,
-    },
-    entry: {
-        fontWeight: 700,
-        color: 'red',
     },
 })

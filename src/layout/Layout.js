@@ -3,12 +3,11 @@ import {
     StyleSheet,
     View,
 } from 'react-native'
-import TextInputForm from '../components/TextInputForm'
-// I don't know why this is causing errors when importing with curly brackets
+import { EntryModule } from '../components'
 
 const Layout = () => (
     <View style={styles.container}>
-        <TextInputForm />
+        <EntryModule />
     </View>
 )
 
