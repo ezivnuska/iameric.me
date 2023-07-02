@@ -37,13 +37,15 @@ export default StyleSheet.create({
         width: '100%',
 		alignSelf: 'center',
 		paddingTop: 20,
-		backgroundColor: '#fff',
+		// backgroundColor: 'red',
 	},
 	form: {
+		// flex: 1,
 		marginHorizontal: 'auto',
 		width: '100%',
 		minWidth: 300,
 		maxWidth: 300,
+		paddingBottom: 15,
 	},
 	label: {
 		fontSize: 18,

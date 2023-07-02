@@ -59,13 +59,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     screenContainer: {
-        flex: 1,
+        // flex: 1,
         width: '98%',
         minWidth: 300,
         maxWidth: 900,
-        borderWidth: 1,
-        borderStyle: 'dotted',
-        borderColor: 'blue',
-        backgroundColor: '#fff',
+        // borderWidth: 5,
+        // borderStyle: 'dotted',
+        // borderColor: 'blue',
     },
 })

@@ -3,6 +3,7 @@ import {
     Animated,
     Dimensions,
     SafeAreaView,
+    ScrollView,
     StyleSheet,
 } from 'react-native'
 import { Header } from '.'
@@ -34,9 +35,16 @@ const AnimatedLayout = () => {
     return (
         <SafeAreaView style={styles.container}>
             <Header animHeaderValue={scrollOffsetY} />
-            <Screen>
+            <ScrollView
+                // style={{ flex: 1 }}
+                scrollEventThrottle={16}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
+                    { useNativeDriver: false }
+                )}
+            >
                 <Navigation />
-            </Screen>
+            </ScrollView>
         </SafeAreaView>
     )
 }
@@ -46,8 +54,8 @@ export default AnimatedLayout
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
+        // alignItems: 'center',
         // backgroundColor: '#fff',
-        backgroundColor: 'pink',
+        backgroundColor: '#fff',
     },
 })

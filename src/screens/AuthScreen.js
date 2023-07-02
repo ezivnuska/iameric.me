@@ -126,14 +126,8 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     }
 
-    const renderForm = () => {
-        return signupVisible
-            ? <SignUpForm setUser={setUser}>{renderButtons()}</SignUpForm>
-            : <SignInForm setUser={setUser}>{renderButtons()}</SignInForm>
-    }
-
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             
             {signupVisible
                 ? <SignUpForm setUser={setUser} />
