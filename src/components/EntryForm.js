@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
     Button,
     StyleSheet,
@@ -7,10 +7,10 @@ import {
     View,
 } from 'react-native'
 
-const TextInputForm = ({ onSubmit }) => {
+const EntryForm = ({ onSubmit }) => {
 
-    // we will set this as a reference to the textfield below
-    let textfield
+    // setting this to use as a reference to textfield
+    let input = useRef()
 
     const [inputValue, setInputValue] = useState('')
 
@@ -19,12 +19,9 @@ const TextInputForm = ({ onSubmit }) => {
         if (!inputValue.length) return alert('Field cannot be blank.')
         
         onSubmit(inputValue)
-        
         setInputValue('')
-        textfield.focus()
 
         // example of axios request
-
         // axios.post('/api/data', { value: inputValue }, (req, res) => {
         //     console.log(res.data)
         // })
@@ -33,17 +30,22 @@ const TextInputForm = ({ onSubmit }) => {
     return (
         <View style={styles.container}>
 
-            <Text style={styles.header}>Simple Form</Text>
+            <Text style={styles.header}>Entry Form</Text>
 
             <Text style={styles.display}>{inputValue}</Text>
 
             <TextInput
                 style={styles.input}
-                ref={ref => textfield = ref}
+                ref={input}
                 onChangeText={value => setInputValue(value)}
                 placeholder='write something...'
                 placeholderTextColor='#ccc'
                 value={inputValue}
+                autoFocus
+                onBlur={() => input.current.focus()}
+                onKeyPress={({ nativeEvent }) => {
+                    if (nativeEvent.key === 'Enter') submitForm()
+                }}
             />
 
             <Button
@@ -55,7 +57,7 @@ const TextInputForm = ({ onSubmit }) => {
     )
 }
 
-export default TextInputForm
+export default EntryForm
 
 const styles = StyleSheet.create({
     container: {

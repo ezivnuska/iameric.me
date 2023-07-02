@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native'
 import {
-    TextInputForm,
+    EntryForm,
     EntryList,
 } from '.'
 
@@ -40,7 +40,7 @@ const EntryModule = () => {
     return (
         <View style={styles.container}>
             
-            <TextInputForm
+            <EntryForm
                 onSubmit={onSubmit}
             />
 
