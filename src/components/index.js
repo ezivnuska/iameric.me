@@ -1,7 +1,11 @@
-import HomeContent from './HomeContent'
-import Zach from './Zach'
+import {
+    HomeContent,
+    TextInputForm,
+    Zach,
+} from './'
 
 export {
     HomeContent,
+    TextInputForm,
     Zach,
 }
