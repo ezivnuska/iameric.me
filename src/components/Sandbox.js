@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     View,
-} from 'react-native-web'
+} from 'react-native'
 import {
     AvatarModule,
     ImageList,

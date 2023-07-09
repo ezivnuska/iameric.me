@@ -19,6 +19,7 @@ const PORT = process.env.PORT || require('./config').PORT
 const IMAGE_PATH = process.env.IMAGE_PATH || 'assets/images'
 
 const Entry = require('./models/Entry')
+const Location = require('./models/Location')
 const Product = require('./models/Product')
 const UserImage = require('./models/UserImage')
 const User = require('./models/User')
@@ -407,6 +408,40 @@ app.delete('/entry/delete', async (req, res) => {
     const entry = await Entry.findByIdAndDelete(req.body.id)
     console.log('Entry deleted.', entry)
     return res.json({ entry })
+})
+
+// location
+
+app.post('/location', async (req, res) => {
+    const { body } = req
+    const { userId, username, address1, address2, city, state, zip } = body
+    const newLocation = { userId, username, address1, address2, city, state, zip }
+    const location = await Location
+        .findOne({ userId })
+        .then(response => {
+            return response
+        })
+    if (location) {
+        return await Location
+            .findOneAndUpdate({ _id: location._id }, { $set: newLocation }, { new: true })
+            .then(data => res.json({ data }))
+            .catch(err => res.json({ data: null, err }))
+    }
+    return await Location
+        .create(newLocation)
+        .then(data => res.json({ data }))
+        .catch(err => res.json({ data: null, err }))
+})
+
+app.get('/user/location/:userId', async (req, res) => {
+    const { userId } = req.params
+    return await Location
+        .findOne({ userId })
+        .then(response => {
+            if (!response) return res.json({ location: null })
+            return res.json({ location: response })
+        })
+        .catch(err => res.json({ location: null, err }))
 })
 
 // [menu] product

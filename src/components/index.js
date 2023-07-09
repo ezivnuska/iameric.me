@@ -24,6 +24,9 @@ import HoverableView from './HoverableView'
 import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
 import ImageLoader from './ImageLoader'
+import LocationDetails from './LocationDetails'
+import LocationDisplay from './LocationDisplay'
+import LocationForm from './LocationForm'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
 import MenuDisplay from './MenuDisplay'
@@ -73,6 +76,9 @@ export {
     ImageDisplay,
     ImageLoader,
     ImageList,
+    LocationDetails,
+    LocationDisplay,
+    LocationForm,
     Menu,
     MenuItem,
     MenuDisplay,

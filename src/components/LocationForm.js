@@ -1,12 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
-    // StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+    View,
 } from 'react-native'
-import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 import {
@@ -14,49 +9,52 @@ import {
     FormInput,
 } from '.'
 
-const LocationForm = ({ addLocation, updateStatus }) => {
+const LocationForm = ({ onSubmit, location }) => {
 
-    const {
-        state,
-        dispatch,
-    } = useContext(AppContext)
+    const context = useContext(AppContext)
 
-    const { user } = state
-    const [ title, setTitle ] = useState('')
-    const [ address, setAddress ] = useState('')
-    const [ city, setCity ] = useState('')
-    const [ type, setType ] = useState('')
+    const { user } = context.state
+    
+    const [ address1, setAddress1 ] = useState(location.address1)
+    const [ address2, setAddress2 ] = useState(location.address2)
+    const [ city, setCity ] = useState(location.city)
+    const [ state, setState ] = useState(location.state)
+    const [ zip, setZip ] = useState(location.zip)
 
-    const onChangeTitle = value => setTitle(value)
-    const onChangeAddress = value => setAddress(value)
+    const onChangeAddressLine1 = value => setAddress1(value)
+    const onChangeAddressLine2 = value => setAddress2(value)
     const onChangeCity = value => setCity(value)
-    const onChangeType = value => setType(value)
+    const onChangeState = value => setState(value)
+    const onChangeZip = value => setZip(value)
 
-    const onSubmit = () => {
-        const { _id, role, username } = user
-        const newLocation = { title, address, city, type }
-        addLocation(newLocation)
-        if (updateStatus) updateStatus('Sending...')
-        axios
-            .post('/api/location', newLocation)
-            .then(({ data }) => {
-                updateStatus('Sent!')
-                // dispatch({ type: 'NEW_ENTRY', entry: data.entry })
-                // setEntry('')
-                console.log('Location added.', data.location)
-            })
-            .catch(err => {
-                updateStatus('Error saving location.')
-                console.log('Error saving location', err)
-            })
+    const setLocation = () => {
+        setAddress1(location.address1)
+        setAddress2(location.address2)
+        setCity(location.city)
+        setState(location.state)
+        setZip(location.zip)
+    }
+    
+    // useEffect(() => {
+    //     setLocation()
+    // }, [])
+
+    // useEffect(() => {
+    //     setLocation()
+    // }, [location])
+
+    const submitForm = () => {
+        const { _id, username } = user
+        const newLocation = { userId: _id, username, address1, address2, city, state, zip }
+        onSubmit(newLocation)
     }
 
     const isValid = () => {
         return (
-            title.length &&
-            address.length &&
+            address1.length &&
             city.length &&
-            type.length
+            state.length &&
+            zip.length
         )
     }
 
@@ -64,45 +62,56 @@ const LocationForm = ({ addLocation, updateStatus }) => {
         <View style={defaultStyles.form}>
             
             <FormInput
-                label='Title'
-                value={title}
-                onChangeText={onChangeTitle}
-                placeholder='title'
-                textContentType='none'
-                autoCapitalize='words'
-                keyboardType='default'
-                style={defaultStyles.input}
-            />
-            
-            <FormInput
                 label='Address'
-                value={address}
-                onChangeText={onChangeAddress}
-                placeholder='address'
-                textContentType='none'
+                value={address1}
+                onChangeText={onChangeAddressLine1}
+                placeholder='address1'
+                textContentType='streetAddressLine1'
                 autoCapitalize='words'
                 keyboardType='default'
                 style={defaultStyles.input}
             />
             
             <FormInput
-                label='CIty'
+                label=''
+                value={address2}
+                onChangeText={onChangeAddressLine2}
+                placeholder='address2'
+                textContentType='streetAddressLine2'
+                autoCapitalize='words'
+                keyboardType='default'
+                style={defaultStyles.input}
+            />
+            
+            <FormInput
+                label='City'
                 value={city}
                 onChangeText={onChangeCity}
                 placeholder='city'
-                textContentType='none'
+                textContentType='addressCity'
                 autoCapitalize='words'
                 keyboardType='default'
                 style={defaultStyles.input}
             />
             
             <FormInput
-                label='Type'
-                value={type}
-                onChangeText={onChangeType}
-                placeholder='type'
-                textContentType='none'
-                autoCapitalize='words'
+                label='State'
+                value={state}
+                onChangeText={onChangeState}
+                placeholder='state'
+                textContentType='addressState'
+                autoCapitalize='none'
+                keyboardType='default'
+                style={defaultStyles.input}
+            />
+            
+            <FormInput
+                label='Zip'
+                value={zip}
+                onChangeText={onChangeZip}
+                placeholder='zip'
+                textContentType='postalCode'
+                autoCapitalize='none'
                 keyboardType='default'
                 style={defaultStyles.input}
             />
@@ -110,7 +119,7 @@ const LocationForm = ({ addLocation, updateStatus }) => {
             <ButtonPrimary
                 label='Add Location'
                 disabled={!isValid()}
-                onPress={onSubmit}
+                onPress={submitForm}
             />
 
         </View>
@@ -118,7 +127,3 @@ const LocationForm = ({ addLocation, updateStatus }) => {
 }
 
 export default LocationForm
-
-// const styles = StyleSheet.create({
-
-// })

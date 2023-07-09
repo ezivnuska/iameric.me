@@ -18,7 +18,7 @@ const FormInput = ({ label, onChange, ...props }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={defaultStyles.label}>{label}</Text>
+            {(label && label.length) ? <Text style={defaultStyles.label}>{label}</Text> : null}
             <View style={defaultStyles.inputContainer}>
                 <TextInput
                     style={[defaultStyles.input]}

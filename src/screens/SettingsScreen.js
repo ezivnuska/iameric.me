@@ -4,14 +4,15 @@ import {
     View,
 } from 'react-native'
 import {
-    AvatarModule,
+    // AvatarModule,
+    AvatarDisplay,
     DeleteAccountButton,
-    ImageList,
+    // ImageList,
     ProductDisplay,
     Module,
+    LocationDisplay,
 } from '../components'
 import { AppContext } from '../AppContext'
-import AvatarDisplay from '../components/AvatarDisplay'
 
 const SettingsScreen = ({ ...props }) => {
 
@@ -21,21 +22,31 @@ const SettingsScreen = ({ ...props }) => {
     } = useContext(AppContext)
 
     const { user } = state
-    useEffect(() => {
-        console.log('---> user', user)
-    }, [user])
+
+    const renderProducts = () => (
+        <Module title='Products'>
+            <ProductDisplay vendor={user} />
+        </Module>
+    )
+    const renderLocation = () => (
+        <Module title='Location'>
+            <LocationDisplay user={user} />
+        </Module>
+    )
+    const renderModules = () => user ? (
+        <View style={styles.modules}>
+            {(user.role === 'vendor' || user.role === 'customer')
+                ? renderLocation() : null}
+            {(user.role === 'vendor') ? renderProducts() : null}
+            <Module title='Avatar'>
+                <AvatarDisplay />
+            </Module>
+        </View>
+    ) : null
+
     return (
         <View style={styles.container}>
-            <View style={styles.modules}>
-                {(user && user.role === 'vendor') && (
-                    <Module title='Products'>
-                        <ProductDisplay vendor={user} />
-                    </Module>
-                )}
-                <Module title='Avatar'>
-                    <AvatarDisplay />
-                </Module>
-            </View>
+            {renderModules()}
             <Module>
                 <DeleteAccountButton />
             </Module>
