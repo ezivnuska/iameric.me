@@ -424,13 +424,13 @@ app.post('/location', async (req, res) => {
     if (location) {
         return await Location
             .findOneAndUpdate({ _id: location._id }, { $set: newLocation }, { new: true })
-            .then(data => res.json({ data }))
-            .catch(err => res.json({ data: null, err }))
+            .then(data => res.json({ location: data }))
+            .catch(err => res.json({ location: null, err }))
     }
     return await Location
         .create(newLocation)
-        .then(data => res.json({ data }))
-        .catch(err => res.json({ data: null, err }))
+        .then(data => res.json({ location: data }))
+        .catch(err => res.json({ location: null, err }))
 })
 
 app.get('/user/location/:userId', async (req, res) => {

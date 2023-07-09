@@ -30,6 +30,7 @@ import LocationForm from './LocationForm'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
 import MenuDisplay from './MenuDisplay'
+import ModalContainer from './ModalContainer'
 import Module from './Module'
 import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
@@ -82,6 +83,7 @@ export {
     Menu,
     MenuItem,
     MenuDisplay,
+    ModalContainer,
     Module,
     ProductDisplay,
     ProductForm,

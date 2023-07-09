@@ -1,11 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    Alert,
+    Pressable,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
     LocationForm,
     LocationDetails,
+    ModalContainer,
+    ButtonPrimary,
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
@@ -28,10 +33,15 @@ const LocationDisplay = props => {
     const { user } = state
 
     const [location, setLocation] = useState(null)
+    const [modalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
         getLocation()
     }, [])
+
+    // useEffect(() => {
+    //     console.log('location changed', location)
+    // }, [location])
 
     const getLocation = () => {
         axios
@@ -42,22 +52,37 @@ const LocationDisplay = props => {
             .catch(err => console.log('Error getting location:', err))
     }
 
-    const onSubmitAddress = newLocation => {
-        
-        axios
+    const onSubmitAddress = async newLocation => {
+        setModalVisible(false)
+        const address = await axios
             .post('/api/location', newLocation)
-            .then(({ data }) => setLocation(data))
-            .catch(err => console.log('Error saving location', err))
+            .then(({ data }) => data.location)
+            .catch(err => {
+                console.log('Error saving location', err)
+                return null
+            })
+        
+        if (address) setLocation(address)
     }
 
     return location ? (
         <View style={styles.container}>
-            <LocationForm
-                location={location}
-                onSubmit={onSubmitAddress}
-            />
+            <ModalContainer
+                animationType='slide'
+                transparent={false}
+                visible={modalVisible}
+            >
+                <LocationForm
+                    location={location}
+                    onSubmit={onSubmitAddress}
+                />
+            </ModalContainer>
             <LocationDetails
                 location={location}
+            />
+            <ButtonPrimary
+                label={!location ? 'Add Location' : 'Edit Location'}
+                onPress={() => setModalVisible(true)}
             />
         </View>
     ) : null
