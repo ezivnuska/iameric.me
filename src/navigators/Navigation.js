@@ -7,10 +7,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     AuthScreen,
     ChatScreen,
+    CustomerScreen,
+    DriverScreen,
     FallbackScreen,
     HomeScreen,
     SettingsScreen,
     UserScreen,
+    VendorScreen,
 } from '../screens'
 import { navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
@@ -29,20 +32,77 @@ const SecureStackScreen = ({ navigation, route }) => (
         <SecureStack.Screen
             name='home'
             component={HomeScreen}
-            />
+        />
         <SecureStack.Screen
             name='settings'
             component={SettingsScreen}
-            />
+        />
         <SecureStack.Screen
             name='users'
             component={UserScreen}
-            />
+        />
         <SecureStack.Screen
             name='chat'
             component={ChatScreen}
-            />
+        />
     </SecureStack.Navigator>
+)
+
+const CustomerStack = createNativeStackNavigator()
+const CustomerStackScreen = ({ navigation, route }) => (
+    <CustomerStack.Navigator
+        screenOptions={() => ({
+            initialRouteName: 'home',
+            headerShown: false,
+        })}
+    >
+        <CustomerStack.Screen
+            name='home'
+            component={CustomerScreen}
+        />
+        <SecureStack.Screen
+            name='settings'
+            component={SettingsScreen}
+        />
+    </CustomerStack.Navigator>
+)
+
+const DriverStack = createNativeStackNavigator()
+const DriverStackScreen = ({ navigation, route }) => (
+    <DriverStack.Navigator
+        screenOptions={() => ({
+            initialRouteName: 'home',
+            headerShown: false,
+        })}
+    >
+        <DriverStack.Screen
+            name='home'
+            component={DriverScreen}
+        />
+        <SecureStack.Screen
+            name='settings'
+            component={SettingsScreen}
+        />
+    </DriverStack.Navigator>
+)
+
+const VendorStack = createNativeStackNavigator()
+const VendorStackScreen = ({ navigation, route }) => (
+    <VendorStack.Navigator
+        screenOptions={() => ({
+            initialRouteName: 'home',
+            headerShown: false,
+        })}
+    >
+        <VendorStack.Screen
+            name='home'
+            component={VendorScreen}
+        />
+        <SecureStack.Screen
+            name='settings'
+            component={SettingsScreen}
+        />
+    </VendorStack.Navigator>
 )
 
 const AuthStack = createNativeStackNavigator()
@@ -96,6 +156,20 @@ const Navigation = () => {
         config,
     }
 
+    const renderSecureStack = () => {
+        switch(user.role) {
+            case 'customer':
+                return <CustomerStackScreen />
+            break
+            case 'driver':
+                return <DriverStackScreen />
+            break
+            case 'vendor':
+                return <VendorStackScreen />
+            break
+        }
+    }
+
     return (
         <NavigationContainer
             ref={navigationRef}
@@ -104,7 +178,7 @@ const Navigation = () => {
         >
             {
                 user
-                    ? <SecureStackScreen />
+                    ? renderSecureStack()
                     : <AuthStackScreen />
             }
         </NavigationContainer>

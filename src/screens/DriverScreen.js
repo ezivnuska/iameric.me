@@ -17,7 +17,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 
-const HomeScreen = ({ navigation }) => {
+const DriverScreen = ({ navigation }) => {
 
     const {
         dispatch,
@@ -79,30 +79,14 @@ const HomeScreen = ({ navigation }) => {
                         <Module title='Drivers'>
                             <Driver itemPressed={onItemPressed} users={drivers} />
                         </Module>
-                        <Module title='Vendors'>
-                            <Vendor itemPressed={onItemPressed} users={vendors} />
-                        </Module>
-                        <Module title='Customers'>
-                            <Customer itemPressed={onItemPressed} users={customers} />
-                        </Module>
                     </View>
                 )
-            }
-            {feature
-                ? (
-                    <View style={styles.aside}>
-                        <Module>
-                            <UserProfile user={feature} />
-                        </Module>
-                    </View>
-                )
-                : null
             }
         </View>
     )
 }
 
-export default HomeScreen
+export default DriverScreen
 
 const styles = StyleSheet.create({
     container: {

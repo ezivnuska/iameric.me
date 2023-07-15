@@ -25,6 +25,7 @@ const UserList = ({ onItemPressed, users }) => {
                 keyExtractor={(item, index) => 'user' + index}
                 renderItem={({ item }) => (
                     <TouchableOpacity
+                        style={{ }}
                         onPress={() => onItemPressed(item._id)}
                     >
                         <UserDetails user={item} />
@@ -53,6 +54,8 @@ const styles = StyleSheet.create({
         // width: 300,
         // minWidth: 300,
         // maxWidth: 300,
+        // borderWidth: 2,
+        // borderColor: '#f00',
         paddingVertical: 3,
     },
 })

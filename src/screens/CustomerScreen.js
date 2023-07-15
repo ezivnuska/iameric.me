@@ -8,7 +8,9 @@ import {
 import {
     Customer,
     Driver,
+    ModalContainer,
     Module,
+    Storefront,
     UserList,
     UserProfile,
     Vendor,
@@ -17,7 +19,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 
-const HomeScreen = ({ navigation }) => {
+const CustomerScreen = ({ navigation }) => {
 
     const {
         dispatch,
@@ -31,6 +33,7 @@ const HomeScreen = ({ navigation }) => {
     const [drivers, setDrivers] = useState(null)
     const [vendors, setVendors] = useState(null)
     const [feature, setFeature] = useState(null)
+    const [modalVisible, setModalVisible] = useState(false)
 
     const getUsers = () => {
         console.log('Loading users...')
@@ -68,6 +71,7 @@ const HomeScreen = ({ navigation }) => {
 
     const onItemPressed = id => {
         setFeature(getUserById(id))
+        setModalVisible(true)
     }
     
     return (
@@ -76,50 +80,46 @@ const HomeScreen = ({ navigation }) => {
                 ? <ActivityIndicator size='small' />
                 : (
                     <View style={styles.modules}>
-                        <Module title='Drivers'>
-                            <Driver itemPressed={onItemPressed} users={drivers} />
-                        </Module>
                         <Module title='Vendors'>
                             <Vendor itemPressed={onItemPressed} users={vendors} />
                         </Module>
-                        <Module title='Customers'>
-                            <Customer itemPressed={onItemPressed} users={customers} />
-                        </Module>
                     </View>
                 )
             }
-            {feature
-                ? (
-                    <View style={styles.aside}>
-                        <Module>
-                            <UserProfile user={feature} />
-                        </Module>
-                    </View>
-                )
-                : null
-            }
+            
+            <ModalContainer
+                animationType='slide'
+                transparent={false}
+                visible={modalVisible}
+                closeModal={() => setModalVisible(false)}
+            >
+                <Storefront
+                    vendor={feature}
+                    onComplete={() => setModalVisible(false)}
+                />
+            </ModalContainer>
         </View>
     )
 }
 
-export default HomeScreen
+export default CustomerScreen
 
 const styles = StyleSheet.create({
     container: {
         // flex: 1,
         // paddingTop: StatusBar.currentHeight,
-        // borderWidth: 5,
-        // borderColor: 'pink',
     },
     modules: {
-        flex: 1,
-        flexShrink: 1,
+        // flex: 1,
+        // flexShrink: 1,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
         alignContent: 'flex-start',
         flexWrap: 'wrap',
         backgroundColor: 'transparent',
+        // borderWidth: 5,
+        // borderColor: 'pink',
     },
     aside: {
         flex: 1,        

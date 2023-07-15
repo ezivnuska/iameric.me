@@ -17,7 +17,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 
-const HomeScreen = ({ navigation }) => {
+const VendorScreen = ({ navigation }) => {
 
     const {
         dispatch,
@@ -76,33 +76,17 @@ const HomeScreen = ({ navigation }) => {
                 ? <ActivityIndicator size='small' />
                 : (
                     <View style={styles.modules}>
-                        <Module title='Drivers'>
-                            <Driver itemPressed={onItemPressed} users={drivers} />
-                        </Module>
                         <Module title='Vendors'>
                             <Vendor itemPressed={onItemPressed} users={vendors} />
                         </Module>
-                        <Module title='Customers'>
-                            <Customer itemPressed={onItemPressed} users={customers} />
-                        </Module>
                     </View>
                 )
-            }
-            {feature
-                ? (
-                    <View style={styles.aside}>
-                        <Module>
-                            <UserProfile user={feature} />
-                        </Module>
-                    </View>
-                )
-                : null
             }
         </View>
     )
 }
 
-export default HomeScreen
+export default VendorScreen
 
 const styles = StyleSheet.create({
     container: {

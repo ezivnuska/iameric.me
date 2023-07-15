@@ -9,7 +9,7 @@ import {
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 
-const MenuDisplay = ({ vendorId }) => {
+const MenuDisplay = ({ vendor }) => {
     
     const {
         dispatch,
@@ -30,7 +30,7 @@ const MenuDisplay = ({ vendorId }) => {
         console.log('loading menu items...')
         setLoading(true)
         axios
-            .get(`/api/products/${vendorId}`)
+            .get(`/api/products/${vendor._id}`)
             .then(({ data }) => {
                 console.log('menu items loaded.')
                 setLoading(false)

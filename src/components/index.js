@@ -9,8 +9,10 @@ import Brand from './Brand'
 import ButtonPrimary from './ButtonPrimary'
 import CircleButton from './CircleButton'
 import Container from './Container'
+import Customer from './Customer'
 import DeleteAccountButton from './DeleteAccountButton'
 import Disconnect from './Disconnect'
+import Driver from './Driver'
 import Dropzone from './Dropzone'
 import EntryDisplay from './EntryDisplay'
 import EntryList from './EntryList'
@@ -45,10 +47,12 @@ import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import SimpleLink from './SimpleLink'
 import StatusDisplay from './StatusDisplay'
+import Storefront from './Storefront'
 import UserDetails from './UserDetails'
 import UserHeading from './UserHeading'
 import UserList from './UserList'
 import UserProfile from './UserProfile'
+import Vendor from './Vendor'
 
 export {
     ActivityList,
@@ -62,8 +66,10 @@ export {
     ButtonPrimary,
     CircleButton,
     Container,
+    Customer,
     DeleteAccountButton,
     Disconnect,
+    Driver,
     Dropzone,
     EntryDisplay,
     EntryList,
@@ -98,8 +104,10 @@ export {
     SignInForm,
     SignUpForm,
     StatusDisplay,
+    Storefront,
     UserDetails,
     UserHeading,
     UserList,
     UserProfile,
+    Vendor,
 }
