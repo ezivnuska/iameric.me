@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     ActivityIndicator,
+    SafeAreaView,
+    ScrollView,
+    StatusBar,
     StyleSheet,
     View,
 } from 'react-native'
@@ -67,46 +70,57 @@ const HomeScreen = ({ navigation }) => {
     }
     
     return (
-        <View style={defaultStyles.screenContainer}>
-            {loading
-                ? <ActivityIndicator size='small' />
-                : (
-                    <View style={styles.modules}>
-                        <Module title='Drivers'>
-                            <UserList onItemPressed={onItemPressed} users={drivers} />
-                        </Module>
-                        <Module title='Vendors'>
-                            <UserList onItemPressed={onItemPressed} users={vendors} />
-                        </Module>
-                        <Module title='Customers'>
-                            <UserList onItemPressed={onItemPressed} users={customers} />
-                        </Module>
-                    </View>
-                )
-            }
-            {feature
-                ? (
-                    <View style={styles.aside}>
-                        <Module>
-                            <UserProfile user={feature} />
-                        </Module>
-                    </View>
-                )
-                : null
-            }
-        </View>
+        <SafeAreaView style={styles.container}>
+            <ScrollView style={styles.scrollView}>
+                {loading
+                    ? <ActivityIndicator size='small' />
+                    : (
+                        <View style={styles.modules}>
+                            <Module title='Drivers'>
+                                <UserList onItemPressed={onItemPressed} users={drivers} />
+                            </Module>
+                            <Module title='Vendors'>
+                                <UserList onItemPressed={onItemPressed} users={vendors} />
+                            </Module>
+                            <Module title='Customers'>
+                                <UserList onItemPressed={onItemPressed} users={customers} />
+                            </Module>
+                        </View>
+                    )
+                }
+                {feature
+                    ? (
+                        <View style={styles.aside}>
+                            <Module>
+                                <UserProfile user={feature} />
+                            </Module>
+                        </View>
+                    )
+                    : null
+                }
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 
 export default HomeScreen
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight,
+    },
+    scrollView: {
+        // backgroundColor: 'pink',
+        // marginHorizontal: 20,
+    },
     modules: {
         flex: 1,
         flexShrink: 1,
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
+        alignContent: 'flex-start',
         flexWrap: 'wrap',
         backgroundColor: 'transparent',
     },

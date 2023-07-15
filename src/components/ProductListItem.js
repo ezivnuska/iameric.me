@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     iconDelete: {
         marginLeft: 5,
         marginRight: 2,
-        paddingTop: 5,
+        paddingTop: 2,
     },
 })

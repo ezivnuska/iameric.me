@@ -11,7 +11,7 @@ import {
     FormInput,
 } from '.'
 
-const ProductForm = ({ addItem, updateStatus }) => {
+const ProductForm = ({ addItem }) => {
 
     const {
         state,
@@ -37,13 +37,10 @@ const ProductForm = ({ addItem, updateStatus }) => {
         axios
             .post('/api/product', newItem)
             .then(({ data }) => {
-                updateStatus('Sent!')
-                // dispatch({ type: 'NEW_ENTRY', entry: data.entry })
                 setTitle('')
                 setPrice('')
             })
             .catch(err => {
-                updateStatus('Error saving item.')
                 console.log('Error saving item', err)
             })
     }

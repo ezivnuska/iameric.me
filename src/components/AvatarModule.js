@@ -25,7 +25,7 @@ import defaultStyles from '../styles'
 const windowDimensions = Dimensions.get('window')
 const screenDimensions = Dimensions.get('screen')
 
-const AvatarModule = () => {
+const AvatarModule = ({ onComplete }) => {
 
     const {
         state,
@@ -136,6 +136,7 @@ const AvatarModule = () => {
                 dispatch({ type: 'SET_STATUS', status: 'Image URI saved.' })
                 setUploading(false)
                 dispatch({ type: 'SET_USER', user: data.user })
+                if (onComplete) onComplete()
             })
             .catch(err => console.log('Error saving dataURI', err))
     }

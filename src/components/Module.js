@@ -24,8 +24,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         paddingBottom: 5,
         marginVertical: 5,
-        maxWidth: 350,
-        minWidth: 400,
+        maxWidth: 400,
+        minWidth: 350,
         width: 'auto',
     },
 })

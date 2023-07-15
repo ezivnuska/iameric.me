@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import {
     Dimensions,
+    SafeAreaView,
+    ScrollView,
     StyleSheet,
-    View,
 } from 'react-native'
-import { Body, Header } from './'
 import { Navigation } from '../navigators'
+import { Header } from '.'
 
-const windowDimensions = Dimensions.get('window');
-const screenDimensions = Dimensions.get('screen');
+const windowDimensions = Dimensions.get('window')
+const screenDimensions = Dimensions.get('screen')
 
 const Layout = () => {
     
@@ -28,12 +29,19 @@ const Layout = () => {
     }, [])
 
     return (
-        <View style={[styles.layoutContainer, { width: dimensions.window.width }]}>
-            <Header>iameric</Header>
-            <Body>
+        <SafeAreaView style={[styles.layoutContainer, { width: dimensions.window.width }]}>
+            <Header />
+            <ScrollView
+                style={{ flex: 1 }}
+                // scrollEventThrottle={16}
+                // onScroll={Animated.event(
+                //     [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
+                //     { useNativeDriver: false }
+                // )}
+            >
                 <Navigation />
-            </Body>
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 

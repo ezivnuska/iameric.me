@@ -1,17 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    Alert,
-    Pressable,
     StyleSheet,
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native'
 import {
     LocationForm,
     LocationDetails,
     ModalContainer,
-    ButtonPrimary,
 } from '.'
+import {
+    PlusCircleOutlined,
+} from '@ant-design/icons'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 
@@ -67,23 +68,36 @@ const LocationDisplay = props => {
 
     return location ? (
         <View style={styles.container}>
+            
+            <View style={styles.displayHeader}>
+                <Text style={styles.title}>Location</Text>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        style={styles.headerButton}
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <PlusCircleOutlined
+                            style={{ fontSize: 22 }}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+            <LocationDetails
+                location={location}
+            />
+
             <ModalContainer
                 animationType='slide'
                 transparent={false}
                 visible={modalVisible}
+                closeModal={() => setModalVisible(false)}
             >
                 <LocationForm
                     location={location}
                     onSubmit={onSubmitAddress}
                 />
             </ModalContainer>
-            <LocationDetails
-                location={location}
-            />
-            <ButtonPrimary
-                label={!location ? 'Add Location' : 'Edit Location'}
-                onPress={() => setModalVisible(true)}
-            />
         </View>
     ) : null
 }
@@ -92,20 +106,47 @@ export default LocationDisplay
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        flexWrap: 'wrap',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
     },
-    modules: {
-        flex: 1,
-        flexShrink: 1,
+    displayHeader: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        flexWrap: 'wrap',
-        width: 550,
-        minWidth: '70%',
-        maxWidth: 900,
+        // borderWidth: 1,
+        // borderColor: 'blue',
+    },
+    title: {
+        // flex: 1,
+        // flexBasis: 'auto',
+        // flexGrow: 0,
+        // flexShrink: 1,
+        fontSize: 24,
+        // lineHeight: 30,
+        // borderWidth: 1,
+        // borderColor: 'green',
+    },
+    buttonContainer: {
+        paddingVertical: 2,
+        paddingHorizontal: 5,
+        // display: 'flex',
+        // flexDirection: 'row',
+        // alignItems: 'stretch',
+        // lineHeight: 60,
+        // borderWidth: 1,
+        // borderStyle: 'dotted',
+        // borderColor: 'purple',
+    },
+    headerButton: {
+        alignContent: 'center',
+        flex: 1,
+        flexGrow: 0,
+        flexShrink: 1,
+        flexBasis: 'auto',
+        // lineHeight: 30,
+        height: 30,
+        // width: 30,
+        // borderWidth: 1,
+        // borderColor: 'red',
     },
 })

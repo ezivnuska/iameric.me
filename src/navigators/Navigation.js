@@ -14,16 +14,16 @@ import {
 } from '../screens'
 import { navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
-// import { Header } from '../layout'
+import { Header } from '../layout'
 
 const SecureStack = createNativeStackNavigator()
 const SecureStackScreen = ({ navigation, route }) => (
     <SecureStack.Navigator
         screenOptions={() => ({
             initialRouteName: 'home',
-            headerShown: false,
-            // headerMode: 'screen',
-            // header: () => <Header />,
+            // headerShown: false,
+            headerMode: 'screen',
+            header: () => <Header />,
         })}
     >
         <SecureStack.Screen
@@ -50,9 +50,9 @@ const AuthStackScreen = ({ navigation, route }) => (
     <AuthStack.Navigator
         screenOptions={() => ({
             initialRouteName: 'auth',
-            headerShown: false,
-            // headerMode: 'screen',
-            // header: () => <Header />,
+            // headerShown: false,
+            headerMode: 'screen',
+            header: () => <Header />,
         })}
     >
         <AuthStack.Screen
