@@ -45,5 +45,8 @@ const styles = StyleSheet.create({
         minWidth: 300,
         maxWidth: 900,
         marginHorizontal: 'auto',
+        // height: 50,
+        minHeight: 50,
+        maxHeight: 50,
     },
 })

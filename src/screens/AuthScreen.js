@@ -127,7 +127,9 @@ const AuthScreen = ({ navigation, ...props }) => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            // style={{ flex: 1 }}
+        >
             
             {signupVisible
                 ? <SignUpForm setUser={setUser} />

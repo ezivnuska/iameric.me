@@ -32,7 +32,7 @@ const Layout = () => {
         <SafeAreaView style={[styles.layoutContainer, { width: dimensions.window.width }]}>
             <Header />
             <ScrollView
-                style={{ flex: 1 }}
+                style={{ height: dimensions.window.height - 50 }}
                 // scrollEventThrottle={16}
                 // onScroll={Animated.event(
                 //     [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
@@ -49,9 +49,9 @@ export default Layout
 
 const styles = StyleSheet.create({
     layoutContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
+        // display: 'flex',
+        // flexDirection: 'column',
+        // justifyContent: 'flex-start',
         height: '100%',
         minHeight: '100%',
     },

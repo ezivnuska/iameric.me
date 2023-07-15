@@ -21,9 +21,9 @@ const SecureStackScreen = ({ navigation, route }) => (
     <SecureStack.Navigator
         screenOptions={() => ({
             initialRouteName: 'home',
-            // headerShown: false,
-            headerMode: 'screen',
-            header: () => <Header />,
+            headerShown: false,
+            // headerMode: 'screen',
+            // header: () => <Header />,
         })}
     >
         <SecureStack.Screen
@@ -50,9 +50,9 @@ const AuthStackScreen = ({ navigation, route }) => (
     <AuthStack.Navigator
         screenOptions={() => ({
             initialRouteName: 'auth',
-            // headerShown: false,
-            headerMode: 'screen',
-            header: () => <Header />,
+            headerShown: false,
+            // headerMode: 'screen',
+            // header: () => <Header />,
         })}
     >
         <AuthStack.Screen

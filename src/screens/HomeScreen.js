@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     ActivityIndicator,
-    SafeAreaView,
-    ScrollView,
     StatusBar,
     StyleSheet,
     View,
@@ -70,36 +68,34 @@ const HomeScreen = ({ navigation }) => {
     }
     
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView style={styles.scrollView}>
-                {loading
-                    ? <ActivityIndicator size='small' />
-                    : (
-                        <View style={styles.modules}>
-                            <Module title='Drivers'>
-                                <UserList onItemPressed={onItemPressed} users={drivers} />
-                            </Module>
-                            <Module title='Vendors'>
-                                <UserList onItemPressed={onItemPressed} users={vendors} />
-                            </Module>
-                            <Module title='Customers'>
-                                <UserList onItemPressed={onItemPressed} users={customers} />
-                            </Module>
-                        </View>
-                    )
-                }
-                {feature
-                    ? (
-                        <View style={styles.aside}>
-                            <Module>
-                                <UserProfile user={feature} />
-                            </Module>
-                        </View>
-                    )
-                    : null
-                }
-            </ScrollView>
-        </SafeAreaView>
+        <View style={styles.container}>
+            {loading
+                ? <ActivityIndicator size='small' />
+                : (
+                    <View style={styles.modules}>
+                        <Module title='Drivers'>
+                            <UserList onItemPressed={onItemPressed} users={drivers} />
+                        </Module>
+                        <Module title='Vendors'>
+                            <UserList onItemPressed={onItemPressed} users={vendors} />
+                        </Module>
+                        <Module title='Customers'>
+                            <UserList onItemPressed={onItemPressed} users={customers} />
+                        </Module>
+                    </View>
+                )
+            }
+            {feature
+                ? (
+                    <View style={styles.aside}>
+                        <Module>
+                            <UserProfile user={feature} />
+                        </Module>
+                    </View>
+                )
+                : null
+            }
+        </View>
     )
 }
 
@@ -107,12 +103,10 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingTop: StatusBar.currentHeight,
-    },
-    scrollView: {
-        // backgroundColor: 'pink',
-        // marginHorizontal: 20,
+        // flex: 1,
+        // paddingTop: StatusBar.currentHeight,
+        // borderWidth: 5,
+        // borderColor: 'pink',
     },
     modules: {
         flex: 1,
