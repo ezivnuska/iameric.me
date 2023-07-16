@@ -66,8 +66,8 @@ export default ProductListItem
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        marginBottom: 5,
-        paddingBottom: 5,
+        marginBottom: 12,
+        paddingBottom: 10,
         borderBottomWidth: 1, 
         borderBottomColor: '#ccc', 
     },
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginBottom: 7,
     },
     setForDeletion: {
         opacity: .3,
@@ -83,13 +84,16 @@ const styles = StyleSheet.create({
         flex: 4,
         flexBasis: '80%',
         flexGrow: 1,
+        fontSize: 18,
         fontWeight: 700,
     },
     price: {
         flex: 1,
         flexBasis: '20%',
         textAlign: 'right',
-        // fontWeight: 700,
+        fontSize: 18,
+        fontWeight: 700,
+        color: '#666',
     },
     username: {
         fontSize: 16,

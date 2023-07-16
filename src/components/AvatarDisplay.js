@@ -22,8 +22,10 @@ const AvatarDisplay = () => {
         <View style={styles.container}>
                 
             <View style={styles.displayHeader}>
+                
                 <Text style={styles.title}>Images &amp; Avatar</Text>
-                <View style={styles.buttonContainer}>
+                
+                <View style={styles.buttons}>
                     <TouchableOpacity
                         style={styles.headerButton}
                         onPress={() => setModalVisible(true)}
@@ -33,6 +35,7 @@ const AvatarDisplay = () => {
                         />
                     </TouchableOpacity>
                 </View>
+
             </View>
 
             <ImageList />
@@ -60,40 +63,19 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        // borderWidth: 1,
-        // borderColor: 'blue',
+        marginBottom: 15,
     },
     title: {
-        // flex: 1,
-        // flexBasis: 'auto',
-        // flexGrow: 0,
-        // flexShrink: 1,
         fontSize: 24,
-        // lineHeight: 30,
-        // borderWidth: 1,
-        // borderColor: 'green',
     },
-    buttonContainer: {
-        paddingVertical: 2,
-        paddingHorizontal: 5,
-        // display: 'flex',
-        // flexDirection: 'row',
-        // alignItems: 'stretch',
-        // lineHeight: 60,
-        // borderWidth: 1,
-        // borderStyle: 'dotted',
-        // borderColor: 'purple',
-    },
-    headerButton: {
-        alignContent: 'center',
+    buttons: {
         flex: 1,
         flexGrow: 0,
         flexShrink: 1,
         flexBasis: 'auto',
-        // lineHeight: 30,
-        height: 30,
-        // width: 30,
-        // borderWidth: 1,
-        // borderColor: 'red',
+    },
+    headerButton: {
+        marginVertical: 4,
+        marginHorizontal: 7,
     },
 })

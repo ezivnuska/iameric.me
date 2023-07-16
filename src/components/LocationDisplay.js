@@ -70,14 +70,16 @@ const LocationDisplay = props => {
         <View style={styles.container}>
             
             <View style={styles.displayHeader}>
+                
                 <Text style={styles.title}>Location</Text>
-                <View style={styles.buttonContainer}>
+                
+                <View style={styles.buttons}>
                     <TouchableOpacity
                         style={styles.headerButton}
                         onPress={() => setModalVisible(true)}
                     >
                         <PlusCircleOutlined
-                            style={{ fontSize: 22 }}
+                            style={{ fontSize: 20 }}
                         />
                     </TouchableOpacity>
                 </View>
@@ -107,46 +109,25 @@ export default LocationDisplay
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
     },
     displayHeader: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        // borderWidth: 1,
-        // borderColor: 'blue',
+        marginBottom: 15,
     },
     title: {
-        // flex: 1,
-        // flexBasis: 'auto',
-        // flexGrow: 0,
-        // flexShrink: 1,
         fontSize: 24,
-        // lineHeight: 30,
-        // borderWidth: 1,
-        // borderColor: 'green',
     },
-    buttonContainer: {
-        paddingVertical: 2,
-        paddingHorizontal: 5,
-        // display: 'flex',
-        // flexDirection: 'row',
-        // alignItems: 'stretch',
-        // lineHeight: 60,
-        // borderWidth: 1,
-        // borderStyle: 'dotted',
-        // borderColor: 'purple',
-    },
-    headerButton: {
-        alignContent: 'center',
+    buttons: {
         flex: 1,
         flexGrow: 0,
         flexShrink: 1,
         flexBasis: 'auto',
-        // lineHeight: 30,
-        height: 30,
-        // width: 30,
-        // borderWidth: 1,
-        // borderColor: 'red',
+    },
+    headerButton: {
+        marginVertical: 4,
+        marginHorizontal: 7,
     },
 })

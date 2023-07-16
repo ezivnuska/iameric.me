@@ -136,7 +136,7 @@ const AuthScreen = ({ navigation, ...props }) => {
                 : <SignInForm setUser={setUser} />
             }
 
-            <View style={defaultStyles.form}>
+            <View style={defaultStyles.formContainer}>
                 <AuthButton
                     signin={!!signupVisible}
                     onPress={() => setSignupVisible(!signupVisible)}

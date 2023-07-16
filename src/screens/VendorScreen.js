@@ -30,10 +30,10 @@ const VendorScreen = ({ navigation }) => {
 export default VendorScreen
 
 const styles = StyleSheet.create({
-    container: {
+    container: { 
         marginHorizontal: 'auto',
-        minWidth: 300,
+        minWidth: 350,
         maxWidth: 450,
-        width: 400,
+        width: 375,
     },
 })

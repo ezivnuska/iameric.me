@@ -13,8 +13,8 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
 	},
     text: {
-        fontHeight: 20,
-		lineHeight: 24,
+        fontSize: 16,
+		lineHeight: 20,
     },
     heading: {
         fontSize: 20,
@@ -36,16 +36,18 @@ export default StyleSheet.create({
 		// flex: 1,
         width: '100%',
 		alignSelf: 'center',
-		paddingTop: 20,
+		paddingVertical: 20,
+		paddingHorizontal: 15,
+		minWidth: 350,
+        maxWidth: 450,
+        width: '100%',
 		// backgroundColor: 'red',
 	},
 	form: {
 		// flex: 1,
 		marginHorizontal: 'auto',
-		width: '100%',
-		minWidth: 300,
-		maxWidth: 300,
 		paddingBottom: 15,
+		width: '100%',
 	},
 	label: {
 		fontSize: 18,
@@ -102,7 +104,7 @@ export default StyleSheet.create({
 		color: 'red',
 	},
 	button: {
-		paddingHorizontal: 20,
+		paddingHorizontal: 10,
 		height: 40,
 		backgroundColor: '#369',
 		borderRadius: 10,
