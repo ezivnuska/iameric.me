@@ -7,6 +7,7 @@ import AvatarDisplay from './AvatarDisplay'
 import AvatarModule from './AvatarModule'
 import Brand from './Brand'
 import ButtonPrimary from './ButtonPrimary'
+import Cart from './Cart'
 import CircleButton from './CircleButton'
 import Container from './Container'
 import Customer from './Customer'
@@ -64,6 +65,7 @@ export {
     AvatarModule,
     Brand,
     ButtonPrimary,
+    Cart,
     CircleButton,
     Container,
     Customer,

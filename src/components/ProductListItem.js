@@ -1,35 +1,62 @@
 import React, { useEffect, useContext, useState } from 'react'
 import {
-    ActivityIndicator,
-    Dimensions,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native'
-import { CloseCircleOutlined } from '@ant-design/icons'
+// import { CloseCircleOutlined } from '@ant-design/icons'
 import defaultStyles from '../styles'
+import {
+    ModalContainer,
+    ProductForm,
+} from '.'
 
 
-const ProductListItem = ({ item, onDelete, ...props }) => {
-    const { _id, price, title, vendorId } = item
+const ProductListItem = ({ item, onDelete, update }) => {
+    const { _id, desc, price, title, vendorId } = item
+    const [modalVisible, setModalVisible] = useState(false)
+
+    const onProductPressed = () => {
+        setModalVisible(true)
+    }
+
+    const onComplete = () => {
+        update()
+        setModalVisible(false)
+    }
+
     return (
-        <View style={styles.container} {...props}>
-            <View style={styles.flexContainer}>
-                
-                <Text style={styles.title}>{title}</Text>
-                <View style={styles.aside}>
+        <View style={styles.container}>
+            <TouchableOpacity
+                onPress={onProductPressed}
+            >
+                <View style={styles.flexContainer}>
+                    <Text style={[defaultStyles.text, styles.title]}>{title}</Text>
+                    <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
+                </View>
+                <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
+                {/* <View style={styles.aside}>
                     <TouchableOpacity
                         style={styles.iconDelete}
                         onPress={() => onDelete(_id)}
                     >
                         <CloseCircleOutlined />
                     </TouchableOpacity>
-                </View>
-            </View>
-            <View style={styles.textContainer}>
-                <Text style={[defaultStyles.text, styles.text]}>{price}</Text>
-            </View>
+                </View> */}
+            </TouchableOpacity>
+
+            <ModalContainer
+                animationType='slide'
+                transparent={false}
+                visible={modalVisible}
+                closeModal={() => setModalVisible(false)}
+            >
+                <ProductForm
+                    onComplete={onComplete}
+                    product={item}
+                />
+            </ModalContainer>
         </View>
     )
 }
@@ -40,7 +67,9 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         marginBottom: 5,
-        paddingBottom: 10,
+        paddingBottom: 5,
+        borderBottomWidth: 1, 
+        borderBottomColor: '#ccc', 
     },
     flexContainer: {
         display: 'flex',
@@ -51,9 +80,16 @@ const styles = StyleSheet.create({
         opacity: .3,
     },
     title: {
-        flex: 1,
-        flexBasis: 'auto',
+        flex: 4,
+        flexBasis: '80%',
         flexGrow: 1,
+        fontWeight: 700,
+    },
+    price: {
+        flex: 1,
+        flexBasis: '20%',
+        textAlign: 'right',
+        // fontWeight: 700,
     },
     username: {
         fontSize: 16,
@@ -61,14 +97,6 @@ const styles = StyleSheet.create({
         fontWeight: 700,
         marginTop: 2, 
         color: '#999',
-    },
-    textContainer: {
-        paddingVertical: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    text: {
-        width: '90%',
     },
     aside: {
         flex: 1,

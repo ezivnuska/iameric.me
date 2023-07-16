@@ -73,6 +73,12 @@ export default StyleSheet.create({
 		outlineWidth: 0,
 		placeholderTextColor: '#999',
 	},
+	textArea: {
+		height: 60,
+		borderWidth: 1,
+		borderColor: '#ccc',
+		borderRadius: 12,
+	},
 	inputStatusIconContainer: {
 		display: 'flex',
 		flexDirection: 'row',

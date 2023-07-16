@@ -448,16 +448,19 @@ app.get('/user/location/:userId', async (req, res) => {
 
 app.post('/product', async (req, res) => {
     const { body } = req
-    const { price, title, vendorId } = body
-    const newItem = { price, title, vendorId }
-    return await Product
-        .create(newItem)
-        .then(item => res.json({ item }))
+    const { _id, price, title, desc, vendorId } = body
+    const newItem = { price, title, desc, vendorId }
+    return _id
+        ? await Product
+            .findOneAndUpdate({ _id }, { $set: { price, title, desc } }, { new: true } )
+            .then(item => res.json({ item }))
+        : await Product
+            .create(newItem)
+            .then(item => res.json({ item }))
 })
 
 app.get('/products/:id', async (req, res) => {
     const { id } = req.params
-    console.log('getting products', id)
     const items = await Product
         .find({ vendorId: id })
         .then(items => items)

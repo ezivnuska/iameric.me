@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import { ProductListItem } from '.'
 
-const ProductList = ({ deleteItem, items }) => (
+const ProductList = ({ deleteItem, items, update }) => (
     <FlatList
         data={items}
         listKey={() => 'products'}
@@ -13,6 +13,7 @@ const ProductList = ({ deleteItem, items }) => (
             return (
                 <ProductListItem
                     item={item}
+                    update={update}
                     onDelete={() => deleteItem(item._id)}
                 />
             )

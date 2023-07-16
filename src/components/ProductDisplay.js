@@ -16,7 +16,7 @@ import {
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 
-const ProductDisplay = ({ vendor, ...props }) => {
+const ProductDisplay = () => {
 
     const {
         dispatch,
@@ -33,24 +33,18 @@ const ProductDisplay = ({ vendor, ...props }) => {
     }, [])
 
     const getProducts = () => {
+        console.log('getting products')
         axios
-            .get(`/api/products/${vendor._id}`)
-            .then(({ data }) => {
-                console.log('DATA', data.items)
-                setItems(data.items)
-            })
-            .catch(err => console.log('Error:', err))
+            .get(`/api/products/${user._id}`)
+            .then(({ data }) => setItems(data.items))
+            .catch(err => console.log('Error getting products:', err))
     }
 
     const onDelete = id => {
         axios
             .delete('/api/products/delete', { data: { id } })
-            .then(({ data }) => {
-                const { item } = data
-                console.log('item deleted:', item)
-                setItems(items.filter(i => i._id !== item._id))
-            })
-            .catch(err => console.log('Error deleting product', err))
+            .then(({ data }) => setItems(items.filter(item => item._id !== data.item._id)))
+            .catch(err => console.log('Error deleting product:', err))
     }
 
     const onModalSubmitted = item => {
@@ -77,6 +71,7 @@ const ProductDisplay = ({ vendor, ...props }) => {
 
             <ProductList
                 deleteItem={onDelete}
+                update={getProducts}
                 items={items}
             />
 
@@ -87,7 +82,7 @@ const ProductDisplay = ({ vendor, ...props }) => {
                 closeModal={() => setModalVisible(false)}
             >
                 <ProductForm
-                    addItem={onModalSubmitted}
+                    onComplete={onModalSubmitted}
                 />
             </ModalContainer>
         </View>

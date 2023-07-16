@@ -28,8 +28,7 @@ const Settings = () => {
                 {(user && user.role === 'vendor') ? (
                     <Module>
                         <ProductForm
-                            addItem={() => console.log('addItem')}
-                            updateStatus={() => console.log('updateStatus')}
+                            onComplete={() => console.log('addItem')}
                         />
                         <ProductList items={[{ _id: 1, title: 'one' }, { _id: 2, title: 'two' }]} />
                     </Module>

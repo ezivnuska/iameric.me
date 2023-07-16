@@ -11,7 +11,7 @@ import {
     FormInput,
 } from '.'
 
-const ProductForm = ({ addItem }) => {
+const ProductForm = ({ onComplete, product = null }) => {
 
     const {
         state,
@@ -19,37 +19,48 @@ const ProductForm = ({ addItem }) => {
     } = useContext(AppContext)
 
     const { user } = state
-    const [ title, setTitle ] = useState('')
-    const [ price, setPrice ] = useState('')
+    const [ title, setTitle ] = useState(product ? product.title : '')
+    const [ price, setPrice ] = useState(product ? product.price : '')
+    const [ desc, setDesc ] = useState(product ? product.desc : '')
 
     const onChangeTitle = value => setTitle(value)
     const onChangePrice = value => setPrice(value)
+    const onChangeDesc = value => setDesc(value)
 
     const onSubmit = () => {
         const { _id, role, username } = user
-        const newItem = {
+        let newProduct = {
             vendorId: _id,
             title,
             price,
+            desc,
         }
-        addItem(newItem)
+
+        if (product) newProduct = {
+            ...newProduct,
+            _id: product._id,
+        }
         
         axios
-            .post('/api/product', newItem)
+            .post('/api/product', newProduct)
             .then(({ data }) => {
                 setTitle('')
                 setPrice('')
+                setDesc('')
+                onComplete(data.item)
             })
             .catch(err => {
-                console.log('Error saving item', err)
+                console.log('Error saving product', err)
             })
     }
 
     return (
         <View style={defaultStyles.form}>
-            <Text style={defaultStyles.label}>Add Product</Text>
+            
+            <Text style={defaultStyles.label}>{`${product ? 'Edit' : 'Add'} Product`}</Text>
+            
             <FormInput
-                label='Product Name'
+                label='Name'
                 value={title}
                 onChangeText={onChangeTitle}
                 placeholder='product name'
@@ -60,7 +71,7 @@ const ProductForm = ({ addItem }) => {
             />
 
             <FormInput
-                label='Product Price'
+                label='Price'
                 value={price}
                 onChangeText={onChangePrice}
                 placeholder='0.00'
@@ -68,8 +79,18 @@ const ProductForm = ({ addItem }) => {
                 style={defaultStyles.input}
             />
 
+            <FormInput
+                label='Description'
+                value={desc}
+                onChangeText={onChangeDesc}
+                placeholder='description'
+                keyboardType='default'
+                multiline
+                style={[defaultStyles.input, defaultStyles.textArea]}
+            />
+
             <ButtonPrimary
-                label='Add Product'
+                label={`${product ? 'Edit' : 'Add'} Product`}
                 disabled={!title.length && !price.length}
                 onPress={onSubmit}
             />
