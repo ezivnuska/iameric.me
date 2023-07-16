@@ -20,6 +20,7 @@ const MenuDisplay = ({ vendor }) => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
+        console.log('loading menu', vendor)
         getItems()
     }, [])
     
@@ -32,7 +33,7 @@ const MenuDisplay = ({ vendor }) => {
         axios
             .get(`/api/products/${vendor._id}`)
             .then(({ data }) => {
-                console.log('menu items loaded.')
+                console.log('menu items loaded.', data.items)
                 setLoading(false)
                 // dispatch({ type: 'SET_ENTRIES', entries: data.entries })
                 setItems(data.items)

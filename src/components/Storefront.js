@@ -9,6 +9,7 @@ import {
 } from '.'
 
 const Storefront = ({ onComplete, vendor }) => {
+    console.log('vendor-------->', vendor)
     return (
         <View style={styles.container}>
             <Text style={styles.title}>{vendor.username}</Text>

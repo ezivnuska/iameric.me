@@ -49,11 +49,11 @@ import SignUpForm from './SignUpForm'
 import SimpleLink from './SimpleLink'
 import StatusDisplay from './StatusDisplay'
 import Storefront from './Storefront'
-import UserDetails from './UserDetails'
+import UserListItem from './UserListItem'
 import UserHeading from './UserHeading'
 import UserList from './UserList'
 import UserProfile from './UserProfile'
-import Vendor from './Vendor'
+import VendorDisplay from './VendorDisplay'
 
 export {
     ActivityList,
@@ -107,9 +107,9 @@ export {
     SignUpForm,
     StatusDisplay,
     Storefront,
-    UserDetails,
+    UserListItem,
     UserHeading,
     UserList,
     UserProfile,
-    Vendor,
+    VendorDisplay,
 }

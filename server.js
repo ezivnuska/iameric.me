@@ -380,6 +380,12 @@ app.get('/users', (req, res) => {
         .then(users => res.json({ users }))
 })
 
+app.get('/vendors', (req, res) => {
+    User
+        .find({ role: 'vendor' })
+        .then(users => res.json({ users }))
+})
+
 app.post('/entry', (req, res) => {
     const { body } = req
     const { username, userId, text } = body

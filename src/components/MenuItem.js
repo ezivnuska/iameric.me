@@ -6,11 +6,12 @@ import {
 } from 'react-native'
 
 const MenuItem = ({ item, ...props }) => {
-    const { _id, price, title, vendorId } = item
+    const { _id, price, title, desc, vendorId } = item
     return (
         <View style={styles.container} {...props}>
             <Text style={styles.title}>{title}</Text>
             <Text style={styles.price}>${price}</Text>
+            <Text style={styles.desc}>{desc}</Text>
         </View>
     )
 }
@@ -36,5 +37,8 @@ const styles = StyleSheet.create({
         fontWeight: 700,
         marginTop: 2, 
         color: '#999',
-    }
+    },
+    desc: {
+
+    },
 })

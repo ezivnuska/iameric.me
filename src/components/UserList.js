@@ -6,15 +6,26 @@ import {
     View,
 } from 'react-native'
 
-import { UserDetails } from '.'
+import {
+    Menu,
+    ModalContainer,
+    UserListItem,
+} from '.'
 
 const UserList = ({ onItemPressed, users }) => {
 
     const [items, setItems] = useState([])
+    const [feature, setFeature] = useState(null)
+    const [modalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
         if (users) setItems(users)
     }, [users])
+
+    const onPress = user => {
+        setFeature(user)
+        setModalVisible(true)
+    }
 
     return (
         <View style={styles.container}>
@@ -24,14 +35,23 @@ const UserList = ({ onItemPressed, users }) => {
                 listKey={() => 'users'}
                 keyExtractor={(item, index) => 'user' + index}
                 renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={{ }}
-                        onPress={() => onItemPressed(item._id)}
-                    >
-                        <UserDetails user={item} />
-                    </TouchableOpacity>
+                    <UserListItem
+                        user={item}
+                        onPress={onPress}
+                    />
                 )} 
             />
+
+            <ModalContainer
+                animationType='slide'
+                transparent={false}
+                visible={modalVisible}
+                closeModal={() => setModalVisible(false)}
+            >
+                <Menu
+                    vendorId={feature ? feature._id : null}
+                />
+            </ModalContainer>
         </View>
     )
 }
