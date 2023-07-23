@@ -35,6 +35,7 @@ import MenuItem from './MenuItem'
 import MenuDisplay from './MenuDisplay'
 import ModalContainer from './ModalContainer'
 import Module from './Module'
+import ProductDetails from './ProductDetails'
 import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
@@ -93,6 +94,7 @@ export {
     MenuDisplay,
     ModalContainer,
     Module,
+    ProductDetails,
     ProductDisplay,
     ProductForm,
     ProductList,

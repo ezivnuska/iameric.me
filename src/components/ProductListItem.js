@@ -28,6 +28,7 @@ const ProductListItem = ({ item, onDelete, update }) => {
 
     return (
         <View style={styles.container}>
+
             <TouchableOpacity
                 onPress={onProductPressed}
             >
@@ -36,14 +37,7 @@ const ProductListItem = ({ item, onDelete, update }) => {
                     <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
                 </View>
                 <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
-                {/* <View style={styles.aside}>
-                    <TouchableOpacity
-                        style={styles.iconDelete}
-                        onPress={() => onDelete(_id)}
-                    >
-                        <CloseCircleOutlined />
-                    </TouchableOpacity>
-                </View> */}
+                
             </TouchableOpacity>
 
             <ModalContainer
@@ -76,9 +70,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 7,
-    },
-    setForDeletion: {
-        opacity: .3,
     },
     title: {
         flex: 4,

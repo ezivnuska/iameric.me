@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    ActivityIndicator,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
+    Cart,
     Menu,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -16,11 +19,12 @@ const MenuDisplay = ({ vendor }) => {
         state,
     } = useContext(AppContext)
 
+    const { cart } = state
+
     const [items, setItems] = useState(null)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        console.log('loading menu', vendor)
         getItems()
     }, [])
     
@@ -29,7 +33,7 @@ const MenuDisplay = ({ vendor }) => {
     const getItems = () => {
 
         console.log('loading menu items...')
-        setLoading(true)
+        
         axios
             .get(`/api/products/${vendor._id}`)
             .then(({ data }) => {
@@ -71,16 +75,15 @@ const MenuDisplay = ({ vendor }) => {
             })
     }
 
-    const addItem = item => {
-        setItems({ item, ...items })
-        // dispatch({ type: 'NEW_MENU_ITEM', item })
-    }
-
     return (
         <View style={styles.container}>
-            {items && items.length ? (
-                <Menu items={items} />
-            ) : null}
+            <Cart items={cart.items} />
+            {loading
+                ? <ActivityIndicator size='small' />
+                : (items && items.length)
+                    ? <Menu items={items} />
+                    : <Text>No products to display.</Text>
+            }
         </View>
     )
 }
@@ -89,7 +92,6 @@ export default MenuDisplay
 
 const styles = StyleSheet.create({
     container: {
-        // borderWidth: 1,
-        // borderColor: 'blue',
+
     },
 })

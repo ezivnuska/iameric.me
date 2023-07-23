@@ -11,6 +11,7 @@ import {
     ModalContainer,
     UserListItem,
 } from '.'
+import { navigate } from '../navigators/RootNavigation'
 
 const UserList = ({ onItemPressed, users }) => {
 
@@ -24,7 +25,8 @@ const UserList = ({ onItemPressed, users }) => {
 
     const onPress = user => {
         setFeature(user)
-        setModalVisible(true)
+        // setModalVisible(true)
+        navigate('vendor', { vendor: user })
     }
 
     return (
@@ -42,7 +44,7 @@ const UserList = ({ onItemPressed, users }) => {
                 )} 
             />
 
-            <ModalContainer
+            {/* <ModalContainer
                 animationType='slide'
                 transparent={false}
                 visible={modalVisible}
@@ -51,7 +53,7 @@ const UserList = ({ onItemPressed, users }) => {
                 <Menu
                     vendorId={feature ? feature._id : null}
                 />
-            </ModalContainer>
+            </ModalContainer> */}
         </View>
     )
 }

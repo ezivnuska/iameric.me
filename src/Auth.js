@@ -16,7 +16,7 @@ export const authenticate = async () => {
     return await AsyncStorage.getItem('userToken')
         .then(token => {
             if (!token) return null
-            console.log('authenticating token...', token)
+            
             return axios
                 .post('/api/authenticate', { token })
                 .then(async ({ data }) => {

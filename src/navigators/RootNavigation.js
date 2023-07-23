@@ -11,6 +11,6 @@ export const navigate = async (name, params) => {
                 .then(() => null)
                 .catch(err => alert('Error saving route name while navigating:', err))
         }
-        navigationRef.navigate(name)
+        navigationRef.navigate(name, params)
     }
 }

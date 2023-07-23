@@ -1,35 +1,56 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     FlatList,
     StyleSheet,
     View,
 } from 'react-native'
-import { MenuItem } from '.'
-import axios from 'axios'
+import {
+    MenuItem,
+    ModalContainer,
+    ProductDetails,
+} from '.'
+import { AppContext } from '../AppContext'
 
-const Menu = ({ vendorId }) => {
+const Menu = ({ items }) => {
 
-    const [selected, setSelected] = useState()
-    const [items, setItems] = useState([])
-    
-    const getProducts = () => {
-        axios
-            .get(`/api/products/${vendorId}`)
-            .then(({ data }) => setItems(data.items))
-            .catch(err => console.log('Error getting products:', err))
+    const {
+        state,
+        dispatch,
+    } = useContext(AppContext)
+
+    const [featured, setFeatured] = useState(null)
+
+    const addToCart = item => {
+        dispatch({ type: 'ADD_TO_CART', item })
+        setFeatured(null)
     }
-    
-    useEffect(() => {
-        getProducts()
-    }, [])
     
     return (
         <View style={styles.container}>
             <FlatList
                 data={items}
-                keyExtractor={(item, index) => index}
-                renderItem={({ item }) => <MenuItem item={item} />} 
+                keyExtractor={item => `product-${item._id}`}
+                renderItem={({ item }) => (
+                    <MenuItem
+                        item={item}
+                        onPress={() => setFeatured(item)}
+                    />
+                )} 
             />
+
+            <ModalContainer
+                animationType='slide'
+                transparent={false}
+                visible={featured}
+                closeModal={() => setFeatured(null)}
+            >
+                {featured ? (
+                    <ProductDetails
+                        product={featured}
+                        onOrder={addToCart}
+                    />
+                ) : null }
+            </ModalContainer>
         </View>
     )
 }

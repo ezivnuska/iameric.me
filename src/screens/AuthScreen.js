@@ -49,7 +49,6 @@ const AuthScreen = ({ navigation, ...props }) => {
 
     useEffect(() => {
         checkIn()
-        return () => console.log('AuthLoadingScreen unmounting...')
     }, [])
 
     useEffect(() => {
@@ -84,7 +83,6 @@ const AuthScreen = ({ navigation, ...props }) => {
     }
 
     const getUserToken = async () => {
-        console.log('Checking for stored token...')
         return await AsyncStorage
             .getItem('userToken')
             .then(token => token)

@@ -13,11 +13,13 @@ import {
     HomeScreen,
     SettingsScreen,
     UserScreen,
+    VendorDetailsScreen,
     VendorScreen,
 } from '../screens'
 import { navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
 import { Header } from '../layout'
+import { Customer } from '../components'
 
 const SecureStack = createNativeStackNavigator()
 const SecureStackScreen = ({ navigation, route }) => (
@@ -59,6 +61,10 @@ const CustomerStackScreen = ({ navigation, route }) => (
         <CustomerStack.Screen
             name='home'
             component={CustomerScreen}
+        />
+        <CustomerStack.Screen
+            name='vendor'
+            component={VendorDetailsScreen}
         />
         <SecureStack.Screen
             name='settings'

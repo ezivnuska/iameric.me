@@ -1,6 +1,10 @@
 import React, { createContext, useReducer } from 'react'
 
 const initialState = {
+    cart: {
+        vendorId: null,
+        items: []
+    },
     entries: [],
     isLoading: false,
     profileId: null,
@@ -10,7 +14,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    let { entries, isLoading, profileId, status, user, users } = state
+    let { cart, entries, isLoading, profileId, status, user, users } = state
 
     switch(action.type) {
         case 'SET_LOADING':
@@ -20,10 +24,7 @@ const reducer = (state = initialState, action) => {
             user = action.user
             break
         case 'SET_PROFILE_IMAGE':
-            user = {
-                ...user,
-                profileImage: action.image,
-            }
+            user = { ...user, profileImage: action.image }
             break
         case 'SET_USERS':
             users = action.users
@@ -31,8 +32,21 @@ const reducer = (state = initialState, action) => {
         case 'SET_FEATURED_USER':
             profileId = action.id
             break
+        case 'ADD_TO_CART':
+            const { items, vendorId } = cart
+            cart = {
+                vendorId: vendorId || action.item.vendorId,
+                items: [...items, action.item],
+            }
+        break
+        case 'CLEAR_CART':
+            cart = {
+                vendorId: null,
+                items: [],
+            }
+        break
         case 'NEW_ENTRY':
-            entries = [...entries, action.entry]
+            entries = [ ...entries, action.entry ]
             break
         case 'SET_ENTRIES':
             entries = action.entries
@@ -41,6 +55,7 @@ const reducer = (state = initialState, action) => {
             status = action.status
             break
         case 'SIGNOUT':
+            cart = null
             user = null
             users = null
             entries = []
@@ -51,7 +66,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { entries, isLoading, profileId, status, user, users }
+    return { cart, entries, isLoading, profileId, status, user, users }
 }
 
 export const AppContext = createContext({
@@ -67,6 +82,7 @@ export const AppProvider = ({ children }) => {
             state,
             dispatch,
             user: state.user,
+            cart: state.cart,
         }}>
             {children}
         </AppContext.Provider>

@@ -6,8 +6,6 @@ import {
 } from 'react-native'
 import {
     UserList,
-    ModalContainer,
-    Storefront,
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
@@ -24,7 +22,6 @@ const VendorDisplay = () => {
     const [vendors, setVendors] = useState(null)
     const [loading, setLoading] = useState(false)
     const [vendor, setVendor] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false)
 
     const getVendors = () => {
         setLoading(true)
@@ -49,7 +46,6 @@ const VendorDisplay = () => {
     
     const onItemPressed = vendor => {
         setVendor(vendor)
-        setModalVisible(true)
     }
 
     return (
@@ -63,18 +59,6 @@ const VendorDisplay = () => {
                 users={vendors}
                 onItemPressed={vendor => onItemPressed(vendor)}
             />
-
-            <ModalContainer
-                animationType='slide'
-                transparent={false}
-                visible={modalVisible}
-                closeModal={() => setModalVisible(false)}
-            >
-                <Storefront
-                    vendor={vendor}
-                    onComplete={() => setModalVisible(false)}
-                />
-            </ModalContainer>
         </View>
     )
 }

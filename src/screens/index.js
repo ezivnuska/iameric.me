@@ -9,6 +9,7 @@ import PublicScreen from './PublicScreen'
 import SettingsScreen from './SettingsScreen'
 import UserScreen from './UserScreen'
 import VendorScreen from './VendorScreen'
+import VendorDetailsScreen from './VendorDetailsScreen'
 
 export {
     AuthScreen,
@@ -22,4 +23,5 @@ export {
     SettingsScreen,
     UserScreen,
     VendorScreen,
+    VendorDetailsScreen,
 }
