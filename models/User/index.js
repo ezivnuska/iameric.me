@@ -38,6 +38,9 @@ const UserSchema = new Schema({
     token: {
         type: String,
     },
+},
+{
+    timestamps: true,
 })
 
 // UserSchema.pre('save', function(next) {

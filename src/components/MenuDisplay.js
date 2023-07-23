@@ -37,9 +37,8 @@ const MenuDisplay = ({ vendor }) => {
         axios
             .get(`/api/products/${vendor._id}`)
             .then(({ data }) => {
-                console.log('menu items loaded.', data.items)
+                console.log('menu items loaded.')
                 setLoading(false)
-                // dispatch({ type: 'SET_ENTRIES', entries: data.entries })
                 setItems(data.items)
             })
             .catch(err => {
@@ -57,7 +56,6 @@ const MenuDisplay = ({ vendor }) => {
         
         const updatedItems = items.filter((item, i) => i !== indexToRemove)
         
-        // dispatch({ type: 'SET_ENTRIES', entries: updatedEntries })
         setItems(updatedItems)
     }
 

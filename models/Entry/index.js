@@ -4,17 +4,20 @@ const Schema = mongoose.Schema
 
 const EntrySchema = new Schema({
     userId: {
-        type: String,
-        // required: true,
+        type: Schema.Types.ObjectId,
+        required: true,
     },
     username: {
-        type: String,
-        // required: true,
+        type: Schema.Types.String,
+        required: true,
     },
     text: {
-        type: String,
-        // required: true,
+        type: Schema.Types.String,
+        required: true,
     },
+},
+{
+    timestamps: true,
 })
 
 // UserSchema.pre('save', function(next) {

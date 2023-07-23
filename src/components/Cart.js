@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     FlatList,
     StyleSheet,
     Text,
     View,
 } from 'react-native'
+import { ButtonPrimary } from '.'
+import { AppContext } from '../AppContext'
 
 const Item = ({ item }) => {
     const { title, price } = item
@@ -18,7 +20,8 @@ const Item = ({ item }) => {
 
 const Cart = ({ items }) => {
 
-    
+    const { dispatch } = useContext(AppContext)
+
     const getTotal = () => {
         let total = 0
         items.map(i => total += Number(i.price))
@@ -37,6 +40,11 @@ const Cart = ({ items }) => {
                 <Text style={[styles.text, styles.total]}>Total:</Text>
                 <Text style={[styles.value, styles.total]}>${getTotal()}</Text>
             </View>
+
+            <ButtonPrimary
+                label='Clear Cart'
+                onPress={() => dispatch({ type: 'CLEAR_CART' })}
+            />
         </View>
     ) : null
 }

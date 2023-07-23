@@ -6,9 +6,9 @@ import {
     View,
 } from 'react-native'
 import {
+    CartButton,
     Disconnect,
-} from './'
-import { ShoppingCartOutlined } from '@ant-design/icons'
+} from '.'
 import { AppContext } from '../AppContext'
 
 const AuthMenu = ({ navigate, user }) => {
@@ -18,16 +18,8 @@ const AuthMenu = ({ navigate, user }) => {
 
     return (
         <View style={styles.aside}>
-            {items.length
-                ? (
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => console.log('cart button pressed')}
-                    >
-                        <ShoppingCartOutlined />
-                    </TouchableOpacity>
-                ) : null
-            }
+
+            {items && items.length ? <CartButton /> : null}
 
             {(user.role !== 'guest')
                 ? (

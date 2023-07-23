@@ -5,10 +5,9 @@ export const cleanStorage = () => AsyncStorage.multiRemove(['userToken', 'route'
 export const clearStorage = () => AsyncStorage.multiRemove(['userToken', 'route', 'email'])
 
 const storeToken = async token => {
-    console.log('Storing user token...')
     await AsyncStorage
         .setItem('userToken', token)
-        .then(() => console.log('User token stored.'))
+        .then(() => console.log('credentials saved locally'))
         .catch(err => console.log('Error caught while storing token:', err))
 }
 

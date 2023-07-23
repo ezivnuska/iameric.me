@@ -55,12 +55,16 @@ const reducer = (state = initialState, action) => {
             status = action.status
             break
         case 'SIGNOUT':
-            cart = null
+            cart = {
+                vendorId: null,
+                items: [],
+            }
             user = null
             users = null
             entries = []
             profileId = null
             isLoading = false
+            status = null
             break
         default:
             throw new Error('Not valid action type')

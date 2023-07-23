@@ -4,17 +4,20 @@ const Schema = mongoose.Schema
 
 const UserImageSchema = new Schema({
     userId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
     },
     filename: {
-        type: String,
+        type: Schema.Types.String,
         required: true,
     },
     caption: {
-        type: String,
+        type: Schema.Types.String,
         // required: true,
     },
+},
+{
+    timestamps: true,
 })
 
 const UserImageModel = mongoose.model('UserImage', UserImageSchema)

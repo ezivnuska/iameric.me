@@ -4,20 +4,33 @@ const Schema = mongoose.Schema
 
 const ProductSchema = new Schema({
     vendorId: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Vendor',
         required: true,
     },
     title: {
-        type: String,
+        type: Schema.Types.String,
         required: true,
     },
-    price: {
-        type: String,
-        required: true,
+    blurb: {
+        type: Schema.Types.String,
     },
     desc: {
-        type: String,
-    }
+        type: Schema.Types.String,
+    },
+    price: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    category: {
+        type: Schema.Types.String,
+    },
+    keywords: {
+        type: Schema.Types.String,
+    },
+},
+{
+    timestamps: true,
 })
 
 const ProductModel = mongoose.model('Product', ProductSchema)
