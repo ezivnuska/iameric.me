@@ -8,7 +8,7 @@ import {
 import defaultStyles from '../styles'
 
 const MenuItem = ({ item, onPress }) => {
-    const { _id, price, title, desc, vendorId } = item
+    const { _id, price, title, desc, vendorId, blurb, category } = item
 
     return (
         <View style={styles.container}>
@@ -20,8 +20,10 @@ const MenuItem = ({ item, onPress }) => {
                     <Text style={[defaultStyles.text, styles.title]}>{title}</Text>
                     <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
                 </View>
+                <Text style={[defaultStyles.text, styles.blurb]}>{blurb}</Text>
                 <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
             </TouchableOpacity>
+            
         </View>
     )
 }
@@ -68,6 +70,9 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 700,
         color: '#666',
+    },
+    blurb: {
+        paddingHorizontal: 5,
     },
     desc: {
         paddingHorizontal: 5,

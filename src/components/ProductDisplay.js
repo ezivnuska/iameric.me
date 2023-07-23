@@ -36,7 +36,10 @@ const ProductDisplay = () => {
         console.log('getting products')
         axios
             .get(`/api/products/${user._id}`)
-            .then(({ data }) => setItems(data.items))
+            .then(({ data }) => {
+                console.log('found products', data.items)
+                setItems(data.items)
+            })
             .catch(err => console.log('Error getting products:', err))
     }
 
@@ -72,11 +75,14 @@ const ProductDisplay = () => {
 
             </View>
 
-            <ProductList
-                deleteItem={onDelete}
-                update={getProducts}
-                items={items}
-            />
+            {items && items.length
+                ? (
+                    <ProductList
+                        deleteItem={onDelete}
+                        update={getProducts}
+                        items={items}
+                    />
+                ) : <Text>No products to display.</Text>}
 
             <ModalContainer
                 animationType='slide'

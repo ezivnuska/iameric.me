@@ -25,9 +25,6 @@ const ProductSchema = new Schema({
     category: {
         type: Schema.Types.String,
     },
-    keywords: {
-        type: Schema.Types.String,
-    },
 },
 {
     timestamps: true,

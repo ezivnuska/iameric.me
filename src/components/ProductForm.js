@@ -8,6 +8,7 @@ import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 import {
     ButtonPrimary,
+    CategoryPicker,
     FormInput,
 } from '.'
 
@@ -21,11 +22,15 @@ const ProductForm = ({ onComplete, product = null }) => {
     const { user } = state
     const [ title, setTitle ] = useState(product ? product.title : '')
     const [ price, setPrice ] = useState(product ? product.price : '')
+    const [ blurb, setBlurb ] = useState(product ? product.blurb : '')
     const [ desc, setDesc ] = useState(product ? product.desc : '')
+    const [ category, setCategory ] = useState(product ? product.category : '')
 
     const onChangeTitle = value => setTitle(value)
     const onChangePrice = value => setPrice(value)
     const onChangeDesc = value => setDesc(value)
+    const onChangeBlurb = value => setBlurb(value)
+    const onChangeCategory = value => setCategory(value)
 
     const onSubmit = () => {
         const { _id, role, username } = user
@@ -33,7 +38,9 @@ const ProductForm = ({ onComplete, product = null }) => {
             vendorId: _id,
             title,
             price,
+            blurb,
             desc,
+            category,
         }
 
         if (product) newProduct = {
@@ -47,6 +54,8 @@ const ProductForm = ({ onComplete, product = null }) => {
                 setTitle('')
                 setPrice('')
                 setDesc('')
+                setBlurb('')
+                setCategory('')
                 onComplete(data.item)
             })
             .catch(err => {
@@ -80,6 +89,16 @@ const ProductForm = ({ onComplete, product = null }) => {
             />
 
             <FormInput
+                label='Blurb'
+                value={blurb}
+                onChangeText={onChangeBlurb}
+                placeholder='blurb'
+                keyboardType='default'
+                multiline
+                style={[defaultStyles.input, defaultStyles.textArea]}
+            />
+
+            <FormInput
                 label='Description'
                 value={desc}
                 onChangeText={onChangeDesc}
@@ -88,6 +107,8 @@ const ProductForm = ({ onComplete, product = null }) => {
                 multiline
                 style={[defaultStyles.input, defaultStyles.textArea]}
             />
+
+            <CategoryPicker onChange={onChangeCategory} />
 
             <ButtonPrimary
                 label={`${product ? 'Edit' : 'Add'} Product`}

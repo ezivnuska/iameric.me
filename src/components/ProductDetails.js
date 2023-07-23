@@ -10,7 +10,7 @@ import {
 import defaultStyles from '../styles'
 
 const ProductDetails = ({ product, onOrder }) => {
-    const { _id, title, price, desc, vendorId } = product
+    const { _id, title, price, desc, vendorId, blurb, category } = product
 
     return (
         <View style={styles.container}>
@@ -18,6 +18,7 @@ const ProductDetails = ({ product, onOrder }) => {
                 <Text style={[defaultStyles.text, styles.title]}>{title}</Text>
                 <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
             </View>
+            <Text style={[defaultStyles.text, styles.blurb]}>{blurb}</Text>
             <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
             <ButtonPrimary
                 label='Order'
@@ -58,7 +59,10 @@ const styles = StyleSheet.create({
         fontWeight: 700,
         color: '#666',
     },
+    blurb: {
+        
+    },
     desc: {
         
-    }
+    },
 })

@@ -9,6 +9,7 @@ import Brand from './Brand'
 import ButtonPrimary from './ButtonPrimary'
 import Cart from './Cart'
 import CartButton from './CartButton'
+import CategoryPicker from './CategoryPicker'
 import CircleButton from './CircleButton'
 import Container from './Container'
 import Customer from './Customer'
@@ -69,6 +70,7 @@ export {
     ButtonPrimary,
     Cart,
     CartButton,
+    CategoryPicker,
     CircleButton,
     Container,
     Customer,

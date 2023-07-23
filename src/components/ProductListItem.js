@@ -14,7 +14,7 @@ import {
 
 
 const ProductListItem = ({ item, onDelete, update }) => {
-    const { _id, desc, price, title, vendorId } = item
+    const { _id, desc, price, title, vendorId, blurb, category } = item
     const [modalVisible, setModalVisible] = useState(false)
 
     const onProductPressed = () => {
@@ -36,6 +36,8 @@ const ProductListItem = ({ item, onDelete, update }) => {
                     <Text style={[defaultStyles.text, styles.title]}>{title}</Text>
                     <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
                 </View>
+
+                <Text style={[defaultStyles.text, styles.blurb]}>{blurb}</Text>
                 <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
                 
             </TouchableOpacity>
@@ -85,6 +87,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 700,
         color: '#666',
+    },
+    desc: {
+
+    },
+    blurb: {
+
     },
     username: {
         fontSize: 16,

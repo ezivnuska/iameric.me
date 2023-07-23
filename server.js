@@ -454,11 +454,11 @@ app.get('/user/location/:userId', async (req, res) => {
 
 app.post('/product', async (req, res) => {
     const { body } = req
-    const { _id, price, title, desc, vendorId } = body
-    const newItem = { price, title, desc, vendorId }
+    const { _id, price, title, desc, vendorId, blurb, category } = body
+    const newItem = { price, title, desc, vendorId, blurb, category }
     return _id
         ? await Product
-            .findOneAndUpdate({ _id }, { $set: { price, title, desc } }, { new: true } )
+            .findOneAndUpdate({ _id }, { $set: { price, title, desc, blurb, category } }, { new: true } )
             .then(item => res.json({ item }))
         : await Product
             .create(newItem)
@@ -466,10 +466,15 @@ app.post('/product', async (req, res) => {
 })
 
 app.get('/products/:id', async (req, res) => {
+    console.log('getting products...')
     const { id } = req.params
     const items = await Product
         .find({ vendorId: id })
-        .then(items => items)
+        .then(items => {
+            console.log('found items', items)
+            return items
+        })
+        .catch(err => console.log('Error getting items:', err))
     return res.json({ items })
 })
 
