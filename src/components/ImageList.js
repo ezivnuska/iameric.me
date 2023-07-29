@@ -3,6 +3,7 @@ import {
     ActivityIndicator,
     FlatList,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -24,7 +25,9 @@ const ImageList = () => {
     const [ loading, setLoading ] = useState(false)
 
     useEffect(() => {
-        if (user) getImages()
+        if (user) {
+            getImages()
+        }
     }, [user])
     
     const getImages = () => {
@@ -52,7 +55,7 @@ const ImageList = () => {
         axios
             .post('/api/user/avatar', { _id, filename })
             .then(({ data }) => {
-                dispatch({ type: 'SET_PROFILE_IMAGE', image: filename })
+                dispatch({ type: 'SET_PROFILE_IMAGE', image: _id })
                 dispatch({ type: 'SET_STATUS', status: 'Avatar saved.'})
             })
             .catch(err => console.log(`Catch: Error setting avatar with filename ${filename}`, err))
@@ -61,41 +64,41 @@ const ImageList = () => {
     const trimImages = id => setImages(images.filter(image => image._id !== id))
 
     const deleteImage = (_id, filename) => {
-        dispatch({ type: 'SET_STATUS', status: 'Deleting image...'})
         axios
-            .post('/api/images/delete', { _id, filename, userId: user._id, username: user.username })
+            // .post('/api/images/delete', { _id, filename, user: user._id, username: user.username })
+            .post('/api/images/delete', { _id })
             .then(({ data }) => {
-                const { error, success, user } = data
-                if (error) console.log('Error deleting image', error)
-                // console.log('delete:user:', user)
+                const { user } = data
                 if (user) dispatch({ type: 'SET_USER', user })
                 trimImages(_id)
-                dispatch({ type: 'SET_STATUS', status: 'Avatar deleted.'})
             })
             .catch(err => console.log(`Catch: Error deleting filename: ${filename}`, err))
     }
 
+    const renderItems = () => (images && images.length) ? (
+        <View style={styles.list}>
+            {images.map((item, index) => (
+                <View
+                    style={styles.item}
+                    key={`image-${index}`}
+                >
+                    <ImageDisplay
+                        username={user.username}
+                        filename={item.filename}
+                        deleteImage={() => deleteImage(item._id, item.filename)}
+                        setAvatar={() => setAvatar(user._id, item.filename)}
+                    />
+                </View>
+            ))}
+        </View>
+    ) : <Text>No images to display.</Text>
+
     return (
         <View style={styles.container}>
-            {images ? (
-                <FlatList
-                    contentContainerStyle={styles.list}
-                    data={images}
-                    listKey={() => 'images'}
-                    keyExtractor={(filename, index) => `${filename}${index}`}
-                    numColumns={3}
-                    renderItem={({ item }) => (
-                        <View style={styles.item}>
-                            <ImageDisplay
-                                username={user.username}
-                                filename={item.filename}
-                                deleteImage={() => deleteImage(item._id, item.filename)}
-                                setAvatar={() => setAvatar(user._id, item.filename)}
-                            />
-                        </View>
-                    )}
-                />
-            ) : <ActivityIndicator size='small' />}
+            {images
+                ? renderItems()
+                : <ActivityIndicator size='small' />
+            }
         </View>
     )
 }
@@ -104,25 +107,24 @@ export default ImageList
 
 const styles = StyleSheet.create({
     container: {
-        // marginHorizontal: 'auto',
-        paddingHorizontal: 10,
-        paddingTop: 10,
-        borderWidth: 1,
-        borderColor: '#aaa',
-        borderRadius: 10,
+
     },
     list: {
         display: 'flex',
         flexDirection: 'row',
         flexGrow: 0,
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
+        flexWrap: 'wrap',
+        gap: 10,
+		minWidth: 350,
+        maxWidth: 350,
+        width: 350,
+        marginHorizontal: 'auto',
     },
     item: {
         flex: 1,
         flexBasis: 'auto',
         flexShrink: 0,
-        flexGrow: 0,
-        marginHorizontal: 2,
-        marginBottom: 10,
-    }
+        flexGrow: 1,
+    },
 })

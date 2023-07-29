@@ -33,7 +33,6 @@ const FileSelector = ({ handleDrop }) => {
   }
 
   const handlePress = () => {
-    console.log('platform:', Platform.OS)
     if (Platform.OS === 'web') selectImage()
     else openImagePickerAsync()
   }

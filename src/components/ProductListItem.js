@@ -64,7 +64,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         marginBottom: 12,
         paddingBottom: 10,
-        borderBottomWidth: 1, 
+        width: '100%',
+        minWidth: 350,
+        maxWidth: 350,
+        borderBottomWidth: 1,
         borderBottomColor: '#ccc', 
     },
     flexContainer: {
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
         marginBottom: 7,
     },
     title: {
-        flex: 4,
+        flex: 1,
         flexBasis: '80%',
         flexGrow: 1,
         fontSize: 18,

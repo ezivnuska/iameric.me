@@ -56,8 +56,10 @@ export default AvatarDisplay
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+        padding: 10,
+		minWidth: 350,
+        maxWidth: 375,
+        width: 375,
     },
     displayHeader: {
         display: 'flex',
@@ -66,12 +68,16 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     title: {
+        flex: 1,
+        flexBasis: 'auto',
+        flexGrow: 0,
+        flexShrink: 0,
         fontSize: 24,
     },
     buttons: {
         flex: 1,
         flexGrow: 0,
-        flexShrink: 1,
+        flexShrink: 0,
         flexBasis: 'auto',
     },
     headerButton: {

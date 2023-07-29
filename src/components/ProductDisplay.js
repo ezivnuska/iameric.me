@@ -33,11 +33,9 @@ const ProductDisplay = () => {
     }, [])
 
     const getProducts = () => {
-        console.log('getting products')
         axios
             .get(`/api/products/${user._id}`)
             .then(({ data }) => {
-                console.log('found products', data.items)
                 setItems(data.items)
             })
             .catch(err => console.log('Error getting products:', err))

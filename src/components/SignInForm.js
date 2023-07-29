@@ -27,42 +27,45 @@ const SignInForm = ({ setUser }) => {
 	const [password, setPassword] = useState('')
 	const [loading, setLoading] = useState(false)
 	const [invalid, setInvalid] = useState(null)
-	const [verifiedUser, setVerifiedUser] = useState(null)
 
 	useEffect(() => {
 		initForm()
 	}, [])
 
 	const initForm = async () => {
-		const localEmail = await getEmailFromStorage()
-		if (localEmail) setEmail(localEmail)
+		const storedEmail = await AsyncStorage.getItem('email')
+		if (storedEmail) setEmail(storedEmail)
 		setFormReady(true)
 	}
 
-	const getEmailFromStorage = async () =>
-		await AsyncStorage
-			.getItem('email')
-			.then(localEmail => localEmail)
-
-	useEffect(() => {
-		if (verifiedUser) setUser(verifiedUser)
-	}, [verifiedUser])
-
 	const authenticateUser = async () => {
 		setLoading(true)
-		const user = await verifyUser()
+		const user = await axios
+			.post('/api/signin', { email, password })
+			.then(({ data }) => data)
+		
+		if (!user) return console.log('Error authenitcating user')
 		setLoading(false)
 		storeEmail(email)
-		setVerifiedUser(user)
+		setUser(user)
 		setPassword('')
 	}
+	// const authenticateUser = async () => {
+	// 	setLoading(true)
+	// 	const user = await verifyUser()
+	// 	if (!user) return console.log('Error authenitcating user')
+	// 	console.log('user authenitcated')
+	// 	setLoading(false)
+	// 	storeEmail(email)
+	// 	setUser(user)
+	// 	setPassword('')
+	// }
 
 	const verifyUser = async () => await axios
 		.post('/api/signin', { email, password })
 		.then(({ data }) => {
-			const { msg, user } = data
-			if (msg) console.log('signin message:', msg)
-			return user
+			console.log('user verified-->', data)
+			return data
 		})
 		.catch(err => {
 			console.log('Error signing in.', err)

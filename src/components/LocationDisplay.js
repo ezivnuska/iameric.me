@@ -108,8 +108,7 @@ export default LocationDisplay
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 10,
-        paddingHorizontal: 10,
+        padding: 10,
     },
     displayHeader: {
         display: 'flex',

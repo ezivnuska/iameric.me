@@ -79,7 +79,6 @@ const AvatarModule = ({ onComplete }) => {
     }
 
     const handleSubmit = () => {
-        dispatch({ type: 'SET_STATUS', status: 'Submitting image.' })
         if (editor) {
             const canvas = editor.getImage()
             const dataURL = canvas.toDataURL('image/png;base64;')
@@ -114,8 +113,7 @@ const AvatarModule = ({ onComplete }) => {
             ctx.drawImage(image, 0, 0, image.width, image.height)
         
             const dataURL = canvas.toDataURL('image/png;base64;')
-            
-            dispatch({ type: 'SET_STATUS', status: 'Image optimized.' })
+
             setOptimizing(false)
             setOptimized(true)
             saveDataURI(dataURL)
@@ -131,10 +129,10 @@ const AvatarModule = ({ onComplete }) => {
         setUpdated(true)
         setUploading(true)
         axios
-            .post('/api/upload/avatar', { dataurl: dataURI, username: user.username }, { new: true })
+            .post('/api/upload/avatar', { _id: user._id, dataurl: dataURI }, { new: true })
             .then(({ data }) => {
-                dispatch({ type: 'SET_STATUS', status: 'Image URI saved.' })
                 setUploading(false)
+                console.log('\nimage uploaded. updatedUser:', data.user)
                 dispatch({ type: 'SET_USER', user: data.user })
                 if (onComplete) onComplete()
             })

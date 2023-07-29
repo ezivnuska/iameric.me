@@ -57,6 +57,7 @@ import UserHeading from './UserHeading'
 import UserList from './UserList'
 import UserProfile from './UserProfile'
 import VendorDisplay from './VendorDisplay'
+import VendorList from './VendorList'
 
 export {
     ActivityList,
@@ -118,4 +119,5 @@ export {
     UserList,
     UserProfile,
     VendorDisplay,
+    VendorList,
 }

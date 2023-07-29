@@ -23,12 +23,14 @@ const Disconnect = props => {
     const [working, setWorking] = useState(false)
 
     const signout = async () => {
-        console.log('signout user', user)
+        const username = user.username
+        console.log(`${username} signing out`)
         setWorking(true)
         axios
             .post('/api/signout', { _id: user._id })
             .then(async ({ data }) => {
                 if (!data.success) throw new Error('Error signing out')
+                console.log(`${username} signed out`)
                 setWorking(false)
                 await cleanStorage()
                 dispatch({ type: 'SIGNOUT' })

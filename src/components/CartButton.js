@@ -28,7 +28,7 @@ const CartButton = () => {
             <TouchableOpacity
                 onPress={() => setModalVisible(true)}
             >
-                <ShoppingCartOutlined />
+                <ShoppingCartOutlined style={{ color: '#fff', fontSize: 20 }} />
             </TouchableOpacity>
 
             <ModalContainer

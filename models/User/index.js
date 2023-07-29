@@ -5,30 +5,31 @@ const Schema = mongoose.Schema
 
 const UserSchema = new Schema({
     password: {
-        type: String,
+        type: Schema.Types.String,
         required: true
     },
     email: {
-        type: String,
+        type: Schema.Types.String,
         required: true,
         unique: true
     },
     username: {
-        type: String,
+        type: Schema.Types.String,
         required: true,
         unique: true
     },
     phone: {
-      type: String,
+      type: Schema.Types.String,
     },
     bio: {
-        type: String
+        type: Schema.Types.String
     },
     profileImage: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'UserImage',
     },
     role: {
-      type: String,
+      type: Schema.Types.String,
       default: 'driver',
     },
     joinDate: {
@@ -36,8 +37,12 @@ const UserSchema = new Schema({
         default: Date.now(),
     },
     token: {
-        type: String,
+        type: Schema.Types.String,
     },
+    images: [{
+        type: Schema.Types.ObjectId,
+        ref: 'UserImage',
+    }]
 },
 {
     timestamps: true,

@@ -12,40 +12,36 @@ const storeToken = async token => {
 }
 
 export const authenticate = async () => {
-    return await AsyncStorage.getItem('userToken')
-        .then(token => {
-            if (!token) return null
+    const token = await AsyncStorage.getItem('userToken')
+    if (!token) return null
+    return axios
+        .post('/api/authenticate', { token })
+        .then(async ({ data }) => {
+            const { error, user } = data
+
+            if (error) {
+                console.log('Error authenticating token', error)
+                await clearStorage()
+                return null
+            }
             
-            return axios
-                .post('/api/authenticate', { token })
-                .then(async ({ data }) => {
-                    const { error, user } = data
+            if (user) {
+                console.log(`${user.username} verified`)
+                await storeToken(user.token)
+                return user
+            }
 
-                    if (error) {
-                        console.log('Error authenticating token', error)
-                        await clearStorage()
-                        return null
-                    }
-                    
-                    if (user) {
-                        console.log(`${user.username} verified`)
-                        await storeToken(user.token)
-                        return user
-                    }
+            // else
+            console.log('no user found. clearing local storage.')
+                
+            await clearStorage() 
 
-                    // else
-                    console.log('no user found. clearing local storage.')
-                        
-                    await clearStorage() 
-
-                    // setFormVisible(true)
-                    
-                    return null
-                })
-                .catch(err => {
-                    console.log('Error getting user', err)
-                    return null
-                })
+            // setFormVisible(true)
+            
+            return null
         })
-        .catch(err => reject(err))
+        .catch(err => {
+            console.log('Error getting user', err)
+            return null
+        })
 }

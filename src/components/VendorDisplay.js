@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native'
 import {
-    UserList,
+    VendorList,
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
@@ -30,7 +30,7 @@ const VendorDisplay = () => {
             .get('/api/vendors')
             .then(({ data }) => {
                 setLoading(false)
-                setVendors(data.users)
+                setVendors(data.vendors)
             })
             .catch(err => console.log('Error getting vendors:', err))
     }
@@ -39,10 +39,9 @@ const VendorDisplay = () => {
         getVendors()
     }, [])
     
-    // useEffect(() => {
-    //     console.log('getting vendors because of user change')
-    //     getVendors()
-    // }, [users])
+    useEffect(() => {
+        getVendors()
+    }, [user])
     
     const onItemPressed = vendor => {
         setVendor(vendor)
@@ -55,7 +54,7 @@ const VendorDisplay = () => {
                 <Text style={styles.title}>Restaurants</Text>
             </View>
 
-            <UserList
+            <VendorList
                 users={vendors}
                 onItemPressed={vendor => onItemPressed(vendor)}
             />

@@ -130,11 +130,7 @@ const AuthStackScreen = ({ navigation, route }) => (
 
 const Navigation = () => {
 
-    const { state, user } = useContext(AppContext)
-
-    // useEffect(() => {
-    //     console.log('user changed', user)
-    // }, [user])
+    const { user } = useContext(AppContext)
 
     const config = {
         screens: {
@@ -163,7 +159,7 @@ const Navigation = () => {
     }
 
     const renderSecureStack = () => {
-        switch(user.role) {
+        switch(user && user.role) {
             case 'customer':
                 return <CustomerStackScreen />
             break
@@ -173,6 +169,8 @@ const Navigation = () => {
             case 'vendor':
                 return <VendorStackScreen />
             break
+            default:
+                return <AuthStackScreen />
         }
     }
 
@@ -182,11 +180,7 @@ const Navigation = () => {
             // linking={linking}
             fallback={<FallbackScreen />}
         >
-            {
-                user
-                    ? renderSecureStack()
-                    : <AuthStackScreen />
-            }
+            {renderSecureStack()}
         </NavigationContainer>
     )
 }

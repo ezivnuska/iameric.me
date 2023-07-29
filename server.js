@@ -45,11 +45,12 @@ app.use(session({
 }))
 
 const createToken = user => {
-    const { _id, username, email } = user
+    const { _id, username, email, role } = user
     return jwt.sign({
         _id,
         username,
         email,
+        role,
         exp: Math.floor(Date.now() / 1000) + ((60 * 60) * 24),
     }, SESSION_SECRET, {})
 }
@@ -86,123 +87,83 @@ app.post('/signin', (req, res) => handleSignin(req, res))
 
 const handleSignin = async (req, res) => {
     const { email, password } = req.body
+    console.log('signing in...', email)
     
-    if (!email || !password)
-        return res.json({ msg: 'Need email and password.' })
+    const user = await User.findOne({ email })
+
+    if (!user)
+        return res.status(406).json({ invalid: 'email', msg: 'No user found with that email.' })
+    console.log('user found', user.username)
+    const passwordsMatch = await bcrypt.compare(password, user.password)
+
+    if (!passwordsMatch)
+        return res.status(406).json({ invalid: 'password', msg: 'Could not verify user.' })
+
+    user.token = createToken(user)
+
+    await user.save()
+
+    const { _id, username, dataURI, token, role } = user
     
-        console.log('> signin with email:', email)
-    
-    const user = await userFromEmail(email)
-    if (!user) {
-        console.log('> no user found.')
-        return res.json({ invalid: 'email', msg: 'No user found with that email.' })
-    }
-    
-    console.log('> user found:', user.username)
-    
-    const userVerified = await isMatch(password, user.password)
-    if (!userVerified)
-        return res.json({ invalid: 'password', msg: 'Could not verify user.' })
-    
-    console.log('> user verified:', user.username)
-    
-    const verifiedUser = await updatedUser(user)
-    if (!verifiedUser)
-        return res.json({ msg: 'Error updating user token.' })
-    
-    return res.json({
-        user: verifiedUser,
-        msg: 'Signin successful.',
-    })
+    return res.status(200).json({ _id, email: user.email, username, dataURI, password: user.password, token, role })
 }
 
-const isMatch = (password, hashedPassword) => bcrypt
-    .compare(password, hashedPassword)
-    .then(result => result)
-
-const userFromEmail =  async email => {
+const userFromEmail = async emailAddress => {
     const user = await User
-        .findOne({ email })
-        .then(result => {
-            if (!result) return null
-            const { _id, email, username, dataURI, password } = result
-            return { _id, email, username, dataURI, password }
-        })
+        .findOne({ email: emailAddress })
+        .then(u => u)
 
-    return user
-}
+    const passwordsMatch = await bcrypt.compare(password, user.password)
 
-const updatedUser = async user => {
-    const { _id } = user
-    const token = createToken(user)
-    return await User
-        .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
-        .then(newUser => {
-            if (!newUser) return null
-            const { _id, email, username, role, token, profileImage } = newUser
-            return { _id, email, username, role, token, profileImage }
-        })
-        .catch(err => {
-            console.log('Error setting user token on sign in.', err)
-            return null
-        })
+    if (!passwordsMatch)
+        return res.status(406).json({ invalid: 'password', msg: 'Could not verify user.' })
 
+    user.token = createToken(user)
+    await user.save()
+
+    const { _id, email, username, dataURI, password, token, role } = user
+    return { _id, email, username, dataURI, password, token, role }
 }
 
 app.post('/signup', (req, res) => handleSignup(req, res))
 
+const createUser = async user => {
+    
+    const userExists = await User.
+        findOne({ email: user.email })
+    
+    if (userExists) {
+        console.log('A user with that email already exists.')
+        return res.status(200).json({ success: false })
+    }
+
+    const newUser = await User.create(user)
+
+    if (!newUser) throw new Error(`Error creating user: ${newUser}`)
+    
+    await newUser.save()
+    
+    const newToken = createToken(newUser)
+    
+    const updatedUser = await User.
+        findOneAndUpdate({ _id: newUser._id.toString() }, { $set: { token: newToken } }, { new: true })
+
+    const { _id, email, username, role, profileImage, images, token } = updatedUser
+
+    return { _id, email, username, role, profileImage, images, token }
+}
+
 const handleSignup = async (req, res) => {
     const { password } = req.body
-    bcrypt.hash(password, 10, (err, hashedPW) => {
-        if (err) {
-            console.log('Error hashing pw', err)
-            return null
-        }
-        const user = req.body
-        const email = user.email
-        console.log('-->', user)
-        return User
-            .findOne({ email })
-            .then(result => {
-                if (result) {
-                    console.log('A user with that email already exists.')
-                    return res.status(200).json({
-                        success: false,
-                    })
-                }
-                else {
-                    user.password = hashedPW
-                    return User
-                        .create(user)
-                        .then(newUser => {
-                            if (!newUser) throw new Error()
-                            // req.cookies.user = newUser
-                            const token = createToken(newUser)
-                            console.log('token', token)
-                            return User
-                                .findOneAndUpdate({ _id: newUser._id }, { $set: { token } }, { new: true } )
-                                .then(updatedUser => {
-                                    const { _id, email, username, role, profileImage, token } = updatedUser
-                                    const user = { _id, email, username, role, profileImage, token }
-                                    return res.status(200).json({ user })
-                                })
-                                .catch(err => {
-                                    console.log('Error setting user token on sign up.', err)
-                                    return res.json({
-                                        success: false,
-                                        err,
-                                    })
-                                })
-                        })
-                        .catch(err => {
-                            console.log('Error creating new user.', err)
-                            return null
-                        })
-                }
-            })
-            .catch(err => console.log('Error: User already exists.', err))
-    })
+    return bcrypt.hash(password, 10, async (err, hashedPW) => {
+        if (err) return res.status(406).json({ success: false })
 
+        const user = await createUser({...req.body, password: hashedPW})
+
+        if (!user) return res.status(406).json({ success: false })
+
+        return res.status(200).json({ user })
+    })
 }
 
 // app.post('/signinx', (req, res) => {
@@ -257,7 +218,7 @@ const handleSignup = async (req, res) => {
 
 app.post('/authenticate', (req, res) => {
     const { token } = req.body
-    console.log('authenticating token...', token)
+    console.log('authenticating token...')
     if (token) {
         const user = getDecodedUser(token)
         console.log('decoded user', user)
@@ -286,14 +247,14 @@ app.post('/authenticate', (req, res) => {
 })
 
 const clearAllEntries = async userId => await Entry
-        .deleteMany({ userId })
-        .then(result => result.deletedCount)
-        .catch(err => {
-            console.log('Error clearing entries', err)
-            return 0
-        })
+    .deleteMany({ userId })
+    .then(result => result.deletedCount)
+    .catch(err => {
+        console.log('Error clearing entries', err)
+        return 0
+    })
 
-const clearUser = async _id => await User
+const clearUserToken = async _id => await User
     .findOneAndUpdate({ _id }, { $set: { token: null, } }, { new: true })
     .then(user => user)
     .catch(err => {
@@ -302,34 +263,15 @@ const clearUser = async _id => await User
     })
 
 const signoutUser = async _id => {
-
-    const updatedUser = await clearUser(_id)
-    if (!updatedUser) {
+    const user = await clearUserToken(_id)
+    if (!user) {
         console.log('no user found to signout.')
         return null
     }
-    if (updatedUser.role === 'guest') {
-        const entriesCleaned = await clearAllEntries(updatedUser._id)
-        console.log('entriesCleaned', entriesCleaned)
-    }
-    return updatedUser
-        // Entry
-        //     .deleteMany({ userId: user._id })
-        //     .then(result => {
-        //         console.log('Guest entries deleted.', result.deletedCount)
-        //         res.json({
-        //             success: true,
-        //             msg: 'Guest entries deleted.',
-        //         })
-        //     })
-    }
-    //  else {
-        // res.json({
-        //     success: true,
-        //     msg: 'Guest signed out.',
-        // })
-    // }
-// }
+    if (user.role === 'guest') await clearAllEntries(user._id)
+    
+    return user
+}
 
 const handleSignout = async (req, res) => {
     const signedOutUser = await signoutUser(req.body._id)
@@ -339,52 +281,25 @@ const handleSignout = async (req, res) => {
 
 app.post('/signout', (req, res) => handleSignout(req, res))
 
-app.post('/signoutx', (req, res) => {
-    const { _id } = req.body
-    console.log('_id:', _id)
-    // const user = getDecodedUser(token)
-    // req.cookies.user = null
-    User
-        .findOneAndUpdate({ _id }, { $set: { token: null, } }, { new: true, })
-        .then(user => {
-            console.log('user', user)
-            if (user.role === 'guest') {
-                Entry
-                    .deleteMany({ userId: user._id })
-                    .then(result => {
-                        console.log('Guest entries deleted.', result.deletedCount)
-                        res.json({
-                            success: true,
-                            msg: 'Guest entries deleted.',
-                        })
-                    })
-            } else {
-                res.json({
-                    success: true,
-                    msg: 'Guest signed out.',
-                })
-            }
-        })
-        .catch(err => {
-            console.log('Error deleting token on sign out', err)
-            res.json({
-                success: false,
-                err,
-            })
-        })
-})
-
 app.get('/users', (req, res) => {
     User
         .find({})
         .then(users => res.json({ users }))
 })
 
-app.get('/vendors', (req, res) => {
-    User
-        .find({ role: 'vendor' })
-        .then(users => res.json({ users }))
-})
+app.get('/vendors', async (req, res) => await User.
+    find({ role: 'vendor' }).
+    populate('profileImage', 'filename').
+    then(vendors => {
+        // console.log('vendors', vendors)
+        const result = vendors.map(v => {
+            const { _id, profileImage, username, } = v
+            return { _id, profileImage: profileImage.filename, username }
+        })
+        // console.log('result', result)
+        return res.json({ vendors: result })
+    })
+)
 
 app.post('/entry', (req, res) => {
     const { body } = req
@@ -466,34 +381,25 @@ app.post('/product', async (req, res) => {
 })
 
 app.get('/products/:id', async (req, res) => {
-    console.log('getting products...')
     const { id } = req.params
-    const items = await Product
-        .find({ vendorId: id })
-        .then(items => {
-            console.log('found items', items)
-            return items
-        })
-        .catch(err => console.log('Error getting items:', err))
-    return res.json({ items })
+    const items = await Product.
+        find({ vendorId: id })
+
+    return res.status(200).json({ items })
 })
 
 app.delete('/products/delete', async (req, res) => {
     const item = await Product
         .findByIdAndDelete(req.body.id)
-        .then(item => item)
-    return res.json({ item })
+    return res.status(200).json({ item })
 })
 
 app.get('/users/:id', async (req, res, next) => {
-    const { id } = req.params
-    User
-        .findOne({ _id: id})
-        .then(result => {
-            res.json({
-                user: result,
-            })
-        })
+    const _id = req.params.id
+    const user = User.
+        findOne({ _id })
+        
+    return res.status(200).json({ user })
 })
 
 app.get('/users/self/:id', async (req, res, next) => {
@@ -531,89 +437,213 @@ const writeFileToPath = async (file, pathname) => {
 app.post(
     '/upload/avatar',
     async (req, res) => {
-        const { dataurl, username } = req.body
+        const { _id, dataurl } = req.body
+        const user = await User.findOne({ _id })
+        console.log('\nuser', user)
+        
         const imagePath = process.env.IMAGE_PATH || './assets/images'
-        const pathname = `${imagePath}/${username}`
-        console.log('writing to pathname', pathname)
+        const pathname = `${imagePath}/${user.username}`
+        console.log('\nwriting to pathname', pathname)
+        
         const filename = await writeFileToPath(dataurl, pathname)
         console.log('file written', filename)
+        
         if (!filename) {
-            console.log('Error: Cannot write file to path.')
+            console.log('\nError: Cannot write file to path.')
             return res.status(400).json({ error: 'Error writing file to path.' })
-        } else {
-            User
-                .findOne({ username })
-                .then(({ _id }) => {
-                    UserImage
-                        .create({ userId: _id, filename })
-                        .then(image => {
-                            User
-                                .findOneAndUpdate({ _id }, { $set: { profileImage: image.filename } }, { new: true })
-                                .then(updatedUser => {
-                                    const { _id, email, username, profileImage } = updatedUser
-                                    res.status(200).json({ user: { _id, email, username, profileImage } })
-                                })
-                                .catch(err => {
-                                    console.log('Error updating user profile image', err)
-                                    res.status(400).json({ error: 'Error updating user profile image' })
-                                })
-                        })
-                        .catch(err => {
-                            console.log('Error updating user profile image', err)
-                            res.status(400).json({ error: 'Error updating user profile image' })
-                        })
-                })
-                .catch(err => {
-                    console.log('error doing UserImage stuff', err)
-                    return res.status(400).json({ error: 'Error doing UserImage stuff' })
-                })
-        }    
+        }
+
+        const newImage = new UserImage({
+            user: user._id.toHexString(),
+            filename,
+        })
+
+        await newImage.save()
+        
+        console.log('newImage', newImage)
+
+        const updatedUser = await User.
+            findOneAndUpdate({ _id: user._id }, { $set: { profileImage: newImage._id.toHexString(), images: [...user.images, newImage._id.toHexString()] } }, { new: true }).
+            // populate('images').
+            exec()
+
+        console.log('updatedUser', updatedUser)
+        
+        return res.status(200).json({ user: updatedUser })
+            
+        // return User
+        //     .findOne({ username })
+        //     .then(({ _id, images }) => {
+        //         return UserImage
+        //             .create({ user: _id, filename })
+        //             .then(image => {
+        //                 return User
+        //                     .findOneAndUpdate({ _id }, { $set: { profileImage: image._id, images: [...images, image._id] } }, { new: true })
+        //                     .then(updatedUser => {
+        //                         const { _id, email, username, profileImage, images } = updatedUser
+        //                         res.status(200).json({ user: { _id, email, username, profileImage, images } })
+        //                     })
+        //                     .catch(err => {
+        //                         console.log('Error updating user profile image', err)
+        //                         res.status(400).json({ error: 'Error updating user profile image' })
+        //                     })
+        //             })
+        //             .catch(err => {
+        //                 console.log('Error updating user profile image', err)
+        //                 return res.status(400).json({ error: 'Error updating user profile image' })
+        //             })
+        //     })
+        //     .catch(err => {
+        //         console.log('error doing UserImage stuff', err)
+        //         return res.status(400).json({ error: 'Error doing UserImage stuff' })
+        //     })    
 })
+// app.post(
+//     '/upload/avatar',
+//     async (req, res) => {
+//         const { dataurl, username } = req.body
+//         const imagePath = process.env.IMAGE_PATH || './assets/images'
+//         const pathname = `${imagePath}/${username}`
+//         console.log('writing to pathname', pathname)
+//         const filename = await writeFileToPath(dataurl, pathname)
+//         console.log('file written', filename)
+//         if (!filename) {
+//             console.log('Error: Cannot write file to path.')
+//             return res.status(400).json({ error: 'Error writing file to path.' })
+//         } else {
+//             return User
+//                 .findOne({ username })
+//                 .then(({ _id, images }) => {
+//                     return UserImage
+//                         .create({ user: _id, filename })
+//                         .then(image => {
+//                             return User
+//                                 .findOneAndUpdate({ _id }, { $set: { profileImage: image._id, images: [...images, image._id] } }, { new: true })
+//                                 .then(updatedUser => {
+//                                     const { _id, email, username, profileImage, images } = updatedUser
+//                                     res.status(200).json({ user: { _id, email, username, profileImage, images } })
+//                                 })
+//                                 .catch(err => {
+//                                     console.log('Error updating user profile image', err)
+//                                     res.status(400).json({ error: 'Error updating user profile image' })
+//                                 })
+//                         })
+//                         .catch(err => {
+//                             console.log('Error updating user profile image', err)
+//                             return res.status(400).json({ error: 'Error updating user profile image' })
+//                         })
+//                 })
+//                 .catch(err => {
+//                     console.log('error doing UserImage stuff', err)
+//                     return res.status(400).json({ error: 'Error doing UserImage stuff' })
+//                 })
+//         }    
+// })
 
 const removeImageFile = filepath => fs.rm(filepath, () => console.log('removed file at path', filepath))
 const removeAllImages = username => fs.rmSync(`${IMAGE_PATH}/${username}`, { recursive: true, force: true })
-app.post('/images/delete', (req, res) => {
-    const { _id, filename, userId, username } = req.body
-    const filepath = `${imagePath}/${username}/${filename}`
-    console.log('filepath to remove:', filepath)
-    User
-        .findOne({ _id: userId })
-        .then(user => {
-            if (user.profileImage === filename) {
-                console.log(`Image to delete is currently used as avatar. Updating user.profileImage before deleting file: ${filename}`)
-                User
-                    .findOneAndUpdate({ _id: userId }, { $set: { profileImage: null } }, { new: true })
-                    .then(user => {
-                        UserImage
-                            .findOneAndRemove({ _id })
-                            .then(result => {
-                                console.log('image entry removed from db', result.filename)
-                                removeImageFile(filepath)
-                                res.status(200).json({ user })
-                            })
-                    })
-                    .catch(err => console.log('err', err))
-            } else {
-                UserImage
-                    .findOneAndRemove({ _id })
-                    .then(result => {
-                        console.log('image entry removed from db', result.filename)
-                        fs.rm(filepath, () => {
-                            console.log('and also removed file at path', filepath)
-                            console.log('returning success')
-                            res.status(200).json({ success: true })
-                        })
-                    })
-            }
 
-        })
-        .catch(err => console.log('error', err))
-})
+app.post(
+    '/images/delete',
+    async (req, res) => {
+        const { _id } = req.body
+
+        console.log('attempting to remove image with _id:', _id)
+        
+        const deletedImage = await UserImage.
+            findOneAndRemove({ _id }).
+            populate('user')
+
+        if (!deletedImage) console.log('no image found to delete')
+
+        console.log('deletedImage', deletedImage)
+        
+        const filepath = `${imagePath}/${deletedImage.user.username}/${deletedImage.filename}`
+        console.log('filepath to remove:', filepath)
+
+        const { images, profileImage } = deletedImage.user
+        const updatedImages = images.filter(imageId => imageId !== _id)
+        console.log('updatedImages', updatedImages)
+        const updatedUser = await User.
+            findOneAndUpdate({ _id: deletedImage.user._id },
+            {
+                $set: {
+                    profileImage: profileImage === _id ? null : profileImage,
+                    images: updatedImages,
+                }
+            },
+            { new: true })
+            .exec()
+
+        removeImageFile(`${imagePath}/${updatedUser.username}/${deletedImage.filename}`)
+        return res.status(200).json({ user: updatedUser })
+        // UserImage
+        //     .findOneAndRemove({ _id })
+        //     .populate('user')
+        //     .then(image => {
+        //         const { user, filename } = image
+        //         console.log('deleted image-->', image)
+        //         const updatedImages = user.images.filter(img => img._id !== _id)
+        //         console.log('updatedImages', updatedImages)
+        //         User
+        //             .findOneAndUpdate({ _id: user._id }, { $set: { profileImage: user.profileImage === _id ? null : user.profileImage, images: updatedImages } }, { new: true })
+        //             .then(updatedUser => {
+        //                 removeImageFile(`${imagePath}/${updatedUser.username}/${filename}`)
+        //                 res.status(200).json({ user: updatedUser })
+        //             })
+        //             .catch(err => console.log('err', err))
+        //     })
+        //     .catch(err => console.log('err', err))
+
+
+
+        // User
+        //     .findOne({ _id: req.body.user })
+        //     .then(user => {
+        //         console.log('user images before delete', user.images)
+        //         const updatedImages = user.images.filter((image, index) => image._id !== _id)
+        //         console.log('user images after delete', updatedImages)
+        //         if (user.profileImage === filename) {
+        //             console.log(`Image to delete is currently used as avatar. Updating user.profileImage before deleting file: ${filename}`)
+        //             User
+        //                 .findOneAndUpdate({ _id: req.body.user }, { $set: { profileImage: null, images: updatedImages } }, { new: true })
+        //                 .then(user => {
+        //                     UserImage
+        //                         .findOneAndRemove({ _id })
+        //                         .then(result => {
+        //                             console.log('image entry removed from db', result.filename)
+        //                             removeImageFile(filepath)
+        //                             res.status(200).json({ user })
+        //                         })
+        //                 })
+        //                 .catch(err => console.log('err', err))
+        //         } else {
+        //             User
+        //                 .findOneAndUpdate({ _id: req.body.user }, { $set: { images: updatedImages } }, { new: true })
+        //                 .then(user => {
+        //                     UserImage
+        //                         .findOneAndRemove({ _id })
+        //                         .then(result => {
+        //                             console.log('image entry removed from db', result.filename)
+        //                             fs.rm(filepath, () => {
+        //                                 console.log('and also removed file at path', filepath)
+        //                                 console.log('returning success')
+        //                                 res.status(200).json({ success: true })
+        //                             })
+        //                         })
+        //                 })
+        //                 .catch(err => console.log('err', err))
+        //         }
+
+        //     })
+        //     .catch(err => console.log('error', err))
+    }
+)
 
 app.post('/user/avatar/', (req, res) => {
     const { _id, filename } = req.body
     User
-        .findOneAndUpdate({ _id }, { $set: { profileImage: filename } }, { new: true })
+        .findOneAndUpdate({ _id }, { $set: { profileImage: _id } }, { new: true })
         .then(updatedUser => {
             const { _id, email, username, profileImage } = updatedUser
             res.status(200).json({ user: { _id, email, username, profileImage } })
@@ -624,17 +654,15 @@ app.post('/user/avatar/', (req, res) => {
         })
 })
 
-app.get('/user/images/:id', (req, res) => {
-    const userId = req.params.id
-    UserImage
-        .find({ userId })
-        .then(images => {
-            res.status(200).json({ images })
-        })
-        .catch(err => {
-            console.log('Error getting images', err)
-            res.status(400).json({ error: err })
-        })
+app.get('/user/images/:id', async (req, res) => {
+    const _id = req.params.id
+    
+    const images = await UserImage.
+        find({ user: _id })
+    
+    console.log('images', images)
+        
+    return res.status(200).json({ images })
 })
 
 app.post('/unsubscribe', (req, res) => {
@@ -647,7 +675,7 @@ app.post('/unsubscribe', (req, res) => {
         .catch(err => console.log('Error deleting entries', err))
     
     UserImage
-        .deleteMany({ userId: _id })
+        .deleteMany({ user: _id })
         .then(({ deletedCount }) => console.log('deleted images', deletedCount))
         .catch(err => console.log('Error deleting images', err))
     

@@ -14,7 +14,7 @@ const UserHeading = ({ user, styleProps, ...props }) => {
     
     useEffect(() => {
         if (!user) return
-        if (profileImage) setPath(`${username}/${profileImage}`)
+        setPath(profileImage ? `${username}/${profileImage}` : 'avatar-default-small.png')
     }, [user])
 
     return (

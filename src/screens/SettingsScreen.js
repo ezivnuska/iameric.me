@@ -60,13 +60,14 @@ const styles = StyleSheet.create({
     },
     modules: {
         flex: 1,
+        flexGrow: 0,
         flexShrink: 1,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
         flexWrap: 'wrap',
-        width: 550,
-        minWidth: '70%',
+        width: 350,
+        minWidth: 350,
         maxWidth: 900,
     },
 })

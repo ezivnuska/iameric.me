@@ -27,24 +27,10 @@ const AuthScreen = ({ navigation, ...props }) => {
     const [formVisible, setFormVisible] = useState(false)
     const [signupVisible, setSignupVisible] = useState(false)
 
-    const setUser = user => {
+    const setUser = async user => {
         if (!user) console.log('Error storing user')
-        AsyncStorage
-            .setItem('userToken', user.token)
-            .then(() => dispatch({ type: 'SET_USER', user }))
-            .catch(err => console.log('Error saving user to local storage:', err))
-    }
-
-    const authenticateUser = async token => {
-        console.log('Authenticating token...')
-        const authenticatedUser = await authenticate()
-        
-        if (!authenticatedUser) {
-            console.log('no authenticated user found')
-            return null
-        }
-
-        return authenticatedUser
+        await AsyncStorage.setItem('userToken', user.token)
+        dispatch({ type: 'SET_USER', user })
     }
 
     useEffect(() => {
@@ -54,7 +40,7 @@ const AuthScreen = ({ navigation, ...props }) => {
     useEffect(() => {
         if (user) {
             dispatch({ type: 'SET_STATUS', status: `${user.username} verified.` })
-            advanceToScreen('home')
+            advanceToScreen()
         } else {
             setFormVisible(true)
             setSignupVisible(false)
@@ -76,10 +62,13 @@ const AuthScreen = ({ navigation, ...props }) => {
     }
 
     const advanceToScreen = async () => {
-        const lastRoute = await getLastRoute()
-        console.log('advance to screen', lastRoute)
+        const lastRoute = await AsyncStorage.
+            getItem('route')
         
-        navigate(lastRoute || user ? 'home' : 'auth')
+        if (lastRoute) {
+            console.log('advancing to last route', lastRoute)
+            navigate(lastRoute)
+        }
     }
 
     const getUserToken = async () => {
@@ -107,21 +96,19 @@ const AuthScreen = ({ navigation, ...props }) => {
         dispatch({ type: 'SET_STATUS', status: 'Verifying user...' })
         setFormVisible(false)
 
-        const authenticatedUser = await authenticateUser(userToken)
-        // console.log(`authenticatedUser: ${authenticatedUser}`)
-        if (authenticatedUser) {
-            await AsyncStorage
-                .setItem('userToken', authenticatedUser.token)
-                .then(() => {
-                    dispatch({ type: 'SET_USER', user: authenticatedUser })
-                })
-                .catch(err => console.log('Signin Error:', err))
-            // advanceToScreen()
-        } else {
+        const authenticatedUser = await authenticate()
+        
+        if (!authenticatedUser) {
+            console.log('no authenticated user found')
             dispatch({ type: 'SET_STATUS', status: 'Authentication failed. Please sign in.' })
             setFormVisible(true)
+            return
         }
 
+        await AsyncStorage
+            .setItem('userToken', authenticatedUser.token)
+            .then(() => dispatch({ type: 'SET_USER', user: authenticatedUser }))
+            .catch(err => console.log('Signin Error:', err))
     }
 
     return (
