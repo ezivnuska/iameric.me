@@ -7,6 +7,7 @@ import HomeScreen from './HomeScreen'
 import LoadingScreen from './LoadingScreen'
 import PublicScreen from './PublicScreen'
 import SettingsScreen from './SettingsScreen'
+import StartScreen from './StartScreen'
 import UserScreen from './UserScreen'
 import VendorScreen from './VendorScreen'
 import VendorDetailsScreen from './VendorDetailsScreen'
@@ -21,6 +22,7 @@ export {
     LoadingScreen,
     PublicScreen,
     SettingsScreen,
+    StartScreen,
     UserScreen,
     VendorScreen,
     VendorDetailsScreen,

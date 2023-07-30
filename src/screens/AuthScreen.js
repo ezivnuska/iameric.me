@@ -47,20 +47,6 @@ const AuthScreen = ({ navigation, ...props }) => {
         }
     }, [user])
 
-    const getLastRoute = async () => {
-        console.log('Checking for saved location...')
-        return await AsyncStorage
-            .getItem('route')
-            .then(route => {
-                if (route) console.log('Previous location found.', route)
-                return route
-            })
-            .catch(err => {
-                console.log('Error checking for previously saved location.', err)
-                return null
-            })
-    }
-
     const advanceToScreen = async () => {
         const lastRoute = await AsyncStorage.
             getItem('route')
@@ -87,7 +73,6 @@ const AuthScreen = ({ navigation, ...props }) => {
         const userToken = await getUserToken()
 
         if (!userToken) {
-            dispatch({ type: 'SET_STATUS', status: null })
             console.log('no user token found')
             setFormVisible(true)
             return
