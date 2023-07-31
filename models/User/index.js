@@ -42,7 +42,11 @@ const UserSchema = new Schema({
     images: [{
         type: Schema.Types.ObjectId,
         ref: 'UserImage',
-    }]
+    }],
+    location: {
+        type: Schema.Types.ObjectId,
+        ref: 'Location',
+    },
 },
 {
     timestamps: true,

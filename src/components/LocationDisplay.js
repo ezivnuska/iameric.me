@@ -40,10 +40,6 @@ const LocationDisplay = props => {
         getLocation()
     }, [])
 
-    // useEffect(() => {
-    //     console.log('location changed', location)
-    // }, [location])
-
     const getLocation = () => {
         axios
             .get(`/api/user/location/${user._id}`)
@@ -66,7 +62,7 @@ const LocationDisplay = props => {
         if (address) setLocation(address)
     }
 
-    return location ? (
+    return (
         <View style={styles.container}>
             
             <View style={styles.displayHeader}>
@@ -101,7 +97,7 @@ const LocationDisplay = props => {
                 />
             </ModalContainer>
         </View>
-    ) : null
+    )
 }
 
 export default LocationDisplay

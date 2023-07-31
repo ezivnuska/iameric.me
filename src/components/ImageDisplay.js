@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+    Image,
     StyleSheet,
     TouchableOpacity,
     View,
@@ -9,18 +10,16 @@ import {
     ImageLoader,
 } from './'
 import { CloseCircleOutlined } from '@ant-design/icons'
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 const size = 100
 
-const ImageDisplay = ({ deleteImage, filename, username, setAvatar }) => {
+const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
     // console.log(`ImageDisplay path: ${IMAGE_PATH}/${path}`)
     //WARNING: This log command causes infinite loop.
 
     const [loading, setLoading] = useState(true)
     const [loaded, setLoaded] = useState(false)
-
-    // useEffect(() => {
-    //     setLoading(true)
-    // }, [])
+    const [imagePath] = useState(path)
     
     return (
         <View style={styles.container}>
@@ -41,12 +40,23 @@ const ImageDisplay = ({ deleteImage, filename, username, setAvatar }) => {
                     onPress={() => setAvatar()}
                     disabled={loading}
                 >
-                    <ImageLoader
-                        path={`${username}/${filename}`}
-                        whenLoaded={() => {
+                    <Image
+                        width={size}
+                        height={size}
+                        source={{ uri: `${IMAGE_PATH}/${imagePath}` }}
+                        onLoadEnd={() => {
                             setLoading(false)
                             setLoaded(true)
                         }}
+                        
+                        style={[
+                            styles.image,
+                            {
+                                width: size,
+                                height: size,
+                                // display: loading ? 'block' : 'none',
+                            },
+                        ]}
                     />
                 </TouchableOpacity>
             </HoverableView>
@@ -104,5 +114,9 @@ const styles = StyleSheet.create({
     },
     image: {
         resizeMode: 'stretch',
+        width: size,
+        height: size,
+        borderWidth: 1,
+        borderColor: '#f00',
     },
 })

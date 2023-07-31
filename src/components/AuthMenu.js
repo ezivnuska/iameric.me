@@ -25,7 +25,7 @@ const AuthMenu = ({ navigate, user }) => {
                 ? (
                     <TouchableOpacity
                         style={styles.usernameButton}
-                        onPress={() => navigate('settings')}
+                        onPress={() => navigate('Settings')}
                     >
                         <Text style={styles.username}>{user.username}</Text>
                     </TouchableOpacity>

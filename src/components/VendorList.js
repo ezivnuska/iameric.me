@@ -24,9 +24,9 @@ const VendorList = ({ onItemPressed, users }) => {
     }, [users])
 
     const onPress = user => {
-        setFeature(user)
+        // setFeature(user)
         // setModalVisible(true)
-        navigate('vendor', { vendor: user })
+        navigate('Details', { id: user._id })
     }
 
     return (

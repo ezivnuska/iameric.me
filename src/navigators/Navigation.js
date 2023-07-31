@@ -1,155 +1,113 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    // LinkingOptions,
     NavigationContainer,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
     AuthScreen,
-    ChatScreen,
-    CustomerScreen,
-    DriverScreen,
+    DetailsScreen,
     FallbackScreen,
-    HomeScreen,
     SettingsScreen,
+    SplashScreen,
+    StartScreen,
     UserScreen,
-    VendorDetailsScreen,
-    VendorScreen,
 } from '../screens'
 import { navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
-import { Header } from '../layout'
-import { Customer } from '../components'
 
-const SecureStack = createNativeStackNavigator()
-const SecureStackScreen = ({ navigation, route }) => (
-    <SecureStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'home',
-            headerShown: false,
-            // headerMode: 'screen',
-            // header: () => <Header />,
-        })}
-    >
-        <SecureStack.Screen
-            name='home'
-            component={HomeScreen}
-        />
-        <SecureStack.Screen
-            name='settings'
-            component={SettingsScreen}
-        />
-        <SecureStack.Screen
-            name='users'
-            component={UserScreen}
-        />
-        <SecureStack.Screen
-            name='chat'
-            component={ChatScreen}
-        />
-    </SecureStack.Navigator>
-)
+// const AuthStack = createNativeStackNavigator()
+// const AuthStackScreen = ({ navigation, route }) => (
+//     <AuthStack.Navigator
+//         screenOptions={() => ({
+//             initialRouteName: 'auth',
+//             headerShown: false,
+//             // headerMode: 'screen',
+//             // header: () => <Header />,
+//         })}
+//     >
+//         <AuthStack.Screen
+//             name='auth'
+//             component={AuthScreen}
+//         />
+//     </AuthStack.Navigator>
+// )
 
-const CustomerStack = createNativeStackNavigator()
-const CustomerStackScreen = ({ navigation, route }) => (
-    <CustomerStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'home',
-            headerShown: false,
-        })}
-    >
-        <CustomerStack.Screen
-            name='home'
-            component={CustomerScreen}
-        />
-        <CustomerStack.Screen
-            name='vendor'
-            component={VendorDetailsScreen}
-        />
-        <SecureStack.Screen
-            name='settings'
-            component={SettingsScreen}
-        />
-    </CustomerStack.Navigator>
-)
+const Stack = createNativeStackNavigator()
+const StackScreen = ({ navigation, route }) => {
+    
+    const { user, state } = useContext(AppContext)
+    const { isLoading } = state
+    
+    if (isLoading) return <SplashScreen />
 
-const DriverStack = createNativeStackNavigator()
-const DriverStackScreen = ({ navigation, route }) => (
-    <DriverStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'home',
-            headerShown: false,
-        })}
-    >
-        <DriverStack.Screen
-            name='home'
-            component={DriverScreen}
-        />
-        <SecureStack.Screen
-            name='settings'
-            component={SettingsScreen}
-        />
-    </DriverStack.Navigator>
-)
+    return (
+        <Stack.Navigator
+        >
+            {!user ? (
+                <Stack.Screen
+                    name='Start'
+                    component={StartScreen}
+                    options={{ title: 'Start' }}
+                />
+            ) : (
+                <>
+                    <Stack.Screen
+                        name='Home'
+                        component={UserScreen}
+                        options={{ title: 'Home' }}
+                    />
 
-const VendorStack = createNativeStackNavigator()
-const VendorStackScreen = ({ navigation, route }) => (
-    <VendorStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'home',
-            headerShown: false,
-        })}
-    >
-        <VendorStack.Screen
-            name='home'
-            component={VendorScreen}
-        />
-        <SecureStack.Screen
-            name='settings'
-            component={SettingsScreen}
-        />
-    </VendorStack.Navigator>
-)
+                    <Stack.Screen
+                        name='Details'
+                        component={DetailsScreen}
+                        options={{ title: 'Details' }}
+                    />
 
-const AuthStack = createNativeStackNavigator()
-const AuthStackScreen = ({ navigation, route }) => (
-    <AuthStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'auth',
-            headerShown: false,
-            // headerMode: 'screen',
-            // header: () => <Header />,
-        })}
-    >
-        <AuthStack.Screen
-            name='auth'
-            component={AuthScreen}
-        />
-    </AuthStack.Navigator>
-)
+                    <Stack.Screen
+                        name='Settings'
+                        component={SettingsScreen}
+                        options={{ title: 'Settings' }}
+                    />
+                </>
+            )}
+        </Stack.Navigator>
+    )
+}
 
 const Navigation = () => {
 
-    const { user } = useContext(AppContext)
+    const saveRoute = async () => {
+        const currentRoute = navigationRef.getCurrentRoute()
+        const { name, params } = currentRoute
+        if (name == 'Start') return
+        const detail = params ? params.id : null
+        await AsyncStorage.setItem('route', name)
+        await AsyncStorage.setItem('detail', detail)
+    }
 
     const config = {
         screens: {
-            initialRouteName: 'auth',
-            auth: {
-                screens: {
-                    auth: '/',
-                }
-            },
-            secure: {
-                screens: {
-                    home: 'home',
-                    settings: 'settings',
-                    users: 'users',
-                    chat: 'chat',
-                    user: 'user',
-                },
-            },
-            fallback: '*',
+            Start: '',
+            Home: 'dashboard',
+            Details: 'details/:id',
+            Settings: 'settings',
+            // initialRouteName: 'auth',
+            // auth: {
+            //     screens: {
+            //         auth: '/',
+            //     }
+            // },
+            // secure: {
+            //     screens: {
+            //         home: 'home',
+            //         settings: 'settings',
+            //         users: 'users',
+            //         chat: 'chat',
+            //         user: 'user',
+            //     },
+            // },
+            // fallback: '*',
         },
     }
 
@@ -158,29 +116,14 @@ const Navigation = () => {
         config,
     }
 
-    const renderSecureStack = () => {
-        switch(user && user.role) {
-            case 'customer':
-                return <CustomerStackScreen />
-            break
-            case 'driver':
-                return <DriverStackScreen />
-            break
-            case 'vendor':
-                return <VendorStackScreen />
-            break
-            default:
-                return <AuthStackScreen />
-        }
-    }
-
     return (
         <NavigationContainer
             ref={navigationRef}
-            // linking={linking}
+            linking={linking}
             fallback={<FallbackScreen />}
+            onStateChange={async () => await saveRoute()}
         >
-            {renderSecureStack()}
+            <StackScreen />
         </NavigationContainer>
     )
 }

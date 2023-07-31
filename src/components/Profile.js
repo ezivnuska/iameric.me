@@ -15,11 +15,7 @@ const Profile = () => {
         <View style={styles.container}>
             <View style={styles.leftColumn}>
                 <Avatar
-                    path={
-                        user.profileImage
-                        ? `${user.username}/${user.profileImage}`
-                        : null
-                    }
+                    userId={user._id}
                     size={48}
                 />
             </View>

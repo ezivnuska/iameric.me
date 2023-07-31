@@ -1,20 +1,17 @@
 import React from 'react'
 import {
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
-import {
-    VendorDisplay,
-} from '../components'
-import defaultStyles from '../styles'
 
-const CustomerScreen = ({ navigation }) => (
+const DriverHome = () => (
     <View style={styles.container}>
-        <VendorDisplay />
+        <Text>Driver page.</Text>
     </View>
 )
 
-export default CustomerScreen
+export default DriverHome
 
 const styles = StyleSheet.create({
     container: {

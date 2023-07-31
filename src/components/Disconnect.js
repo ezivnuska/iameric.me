@@ -20,25 +20,17 @@ const Disconnect = props => {
     } = useContext(AppContext)
 
     const { user } = state
-    const [working, setWorking] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const signout = async () => {
-        const username = user.username
-        console.log(`${username} signing out`)
-        setWorking(true)
-        axios
-            .post('/api/signout', { _id: user._id })
-            .then(async ({ data }) => {
-                if (!data.success) throw new Error('Error signing out')
-                console.log(`${username} signed out`)
-                setWorking(false)
-                await cleanStorage()
-                dispatch({ type: 'SIGNOUT' })
-            })
-            .catch(err => console.log('Signout failed.', err))
+        setLoading(true)
+        await axios.post('/api/signout', { _id: user._id })
+        await cleanStorage()
+        setLoading(false)
+        dispatch({ type: 'SIGNOUT' })
     }
 
-    return (user && !working) ? (
+    return !loading ? (
         <TouchableOpacity
             {...props}
             onPress={signout}

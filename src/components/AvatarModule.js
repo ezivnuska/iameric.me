@@ -125,14 +125,12 @@ const AvatarModule = ({ onComplete }) => {
     
 
     const saveDataURI = dataURI => {
-        console.log('saving data URI', user.username)
         setUpdated(true)
         setUploading(true)
         axios
             .post('/api/upload/avatar', { _id: user._id, dataurl: dataURI }, { new: true })
             .then(({ data }) => {
                 setUploading(false)
-                console.log('\nimage uploaded. updatedUser:', data.user)
                 dispatch({ type: 'SET_USER', user: data.user })
                 if (onComplete) onComplete()
             })

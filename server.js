@@ -45,12 +45,13 @@ app.use(session({
 }))
 
 const createToken = user => {
-    const { _id, username, email, role } = user
+    const { _id, username, email, role, profileImage } = user
     return jwt.sign({
         _id,
         username,
         email,
         role,
+        profileImage: profileImage ? profileImage.filename : null,
         exp: Math.floor(Date.now() / 1000) + ((60 * 60) * 24),
     }, SESSION_SECRET, {})
 }
@@ -89,48 +90,35 @@ const handleSignin = async (req, res) => {
     const { email, password } = req.body
     console.log('signing in...', email)
     
-    const user = await User.findOne({ email })
+    const user = await User.
+        findOne({ email }).
+        // populate('profileImage', 'filename').
+        populate('location')
 
     if (!user)
         return res.status(406).json({ invalid: 'email', msg: 'No user found with that email.' })
-    console.log('user found', user.username)
-    const passwordsMatch = await bcrypt.compare(password, user.password)
-
-    if (!passwordsMatch)
-        return res.status(406).json({ invalid: 'password', msg: 'Could not verify user.' })
-
-    user.token = createToken(user)
-
-    await user.save()
-
-    const { _id, username, dataURI, token, role } = user
     
-    return res.status(200).json({ _id, email: user.email, username, dataURI, password: user.password, token, role })
-}
-
-const userFromEmail = async emailAddress => {
-    const user = await User
-        .findOne({ email: emailAddress })
-        .then(u => u)
-
+    console.log('user found', user)
+    
     const passwordsMatch = await bcrypt.compare(password, user.password)
 
     if (!passwordsMatch)
         return res.status(406).json({ invalid: 'password', msg: 'Could not verify user.' })
 
     user.token = createToken(user)
+
     await user.save()
 
-    const { _id, email, username, dataURI, password, token, role } = user
-    return { _id, email, username, dataURI, password, token, role }
+    const { _id, username, profileImage, token, role, location } = user
+    
+    return res.status(200).json({ _id, email: user.email, username, profileImage, password: user.password, token, role, location })
 }
 
 app.post('/signup', (req, res) => handleSignup(req, res))
 
 const createUser = async user => {
     
-    const userExists = await User.
-        findOne({ email: user.email })
+    const userExists = await User.findOne({ email: user.email })
     
     if (userExists) {
         console.log('A user with that email already exists.')
@@ -166,84 +154,28 @@ const handleSignup = async (req, res) => {
     })
 }
 
-// app.post('/signinx', (req, res) => {
-//     const { email, password } = req.body
-//     User
-//         .findOne({ email })
-//         .then(result => {
-//             const { _id, email, username, dataURI } = result
-//             const user = { _id, email, username, dataURI }
-//             const hashedPW = result.password
-//             bcrypt
-//                 .compare(password, hashedPW)
-//                 .then(result => {
-//                     if (!result) {
-//                         return res.json({
-//                             success: false,
-//                             err: 'Verification failed. Please try again.',
-//                         })
-//                     }
-                    
-//                     const token = createToken(user)
-//                     // req.cookies.user = user
-//                     User
-//                         .findOneAndUpdate({ _id }, { $set: { token } }, { new: true } )
-//                         .then(newUser => {
-//                             const { _id, email, username, profileImage } = newUser
-//                             // req.cookies.user = newUser
-//                             res.json({
-//                                 success: true,
-//                                 user: { _id, email, username, token, profileImage },  
-//                             })
-                            
-//                         })
-//                         .catch(err => {
-//                             console.log('Error setting user token on sign in.', err)
-//                             res.json({
-//                                 success: false,
-//                                 err,
-//                             })
-//                         })
-//                 })
-//                 .catch(err => {
-//                     console.log('Failed when comparing password', password, hashedPW, err)
-//                     res.json({
-//                         success: false,
-//                         err,
-//                     })
-//                 })
-//         })
-//         .catch(err => res.json({msg: 'Failed to find the user'}))
-// })
-
-app.post('/authenticate', (req, res) => {
+app.post('/authenticate', async (req, res) => {
     const { token } = req.body
     console.log('authenticating token...')
-    if (token) {
-        const user = getDecodedUser(token)
-        console.log('decoded user', user)
-        const expired = (new Date(user.exp) - Date.now() > 0)
-        if (expired) {
-            console.log('token expired')
-            return res.status(200).json({ user, error: 'token expired' })
-        } else {
-            const newToken = createToken(user)
-            console.log('token valid. refreshing...')
-            User
-                .findOneAndUpdate({ token }, { $set: { token: newToken } }, { new: true })
-                .then(refreshedUser => {
-                    console.log('token refreshed.\n')
-                    return res.status(200).json({
-                        user: refreshedUser,
-                    })
-                })
-                .catch(err => {
-                    console.log('Error refreshing user token. newToken, error:', newToken, err)
-                })
-        }
-    } else {
-        res.status(200).json({ user: null, error: 'auth token required'})
+    const userFromToken = getDecodedUser(token)
+    console.log('decoded user', userFromToken)
+    const expired = (new Date(userFromToken.exp) - Date.now() > 0)
+    if (expired) {
+        console.log('token expired')
+        return res.status(406).json({ userFromToken, error: 'token expired' })
     }
+    const user = await User.
+        findOne({ _id: userFromToken._id })
+        // populate('profileImage', 'filename')
+
+    user.token = createToken(userFromToken)
+    await user.save()
+    
+    console.log('refreshedUser', user)
+        // findOneAndUpdate({ token }, { $set: { token: newToken } }, { new: true })
+    if (!user) return console.log('failed to refresh user token')
+
+    return res.status(200).json({ user })
 })
 
 const clearAllEntries = async userId => await Entry
@@ -262,16 +194,8 @@ const clearUserToken = async _id => await User
         return null
     })
 
-const signoutUser = async _id => {
-    const user = await clearUserToken(_id)
-    if (!user) {
-        console.log('no user found to signout.')
-        return null
-    }
-    if (user.role === 'guest') await clearAllEntries(user._id)
-    
-    return user
-}
+const signoutUser = async _id => await User.
+    findOneAndUpdate({ _id }, { $set: { token: null, } }, { new: true })
 
 const handleSignout = async (req, res) => {
     const signedOutUser = await signoutUser(req.body._id)
@@ -289,12 +213,12 @@ app.get('/users', (req, res) => {
 
 app.get('/vendors', async (req, res) => await User.
     find({ role: 'vendor' }).
-    populate('profileImage', 'filename').
+    // populate('profileImage', 'filename').
     then(vendors => {
         // console.log('vendors', vendors)
         const result = vendors.map(v => {
             const { _id, profileImage, username, } = v
-            return { _id, profileImage: profileImage.filename, username }
+            return { _id, profileImage: profileImage ? profileImage.filename : null, username }
         })
         // console.log('result', result)
         return res.json({ vendors: result })
@@ -337,21 +261,15 @@ app.post('/location', async (req, res) => {
     const { body } = req
     const { userId, username, address1, address2, city, state, zip } = body
     const newLocation = { userId, username, address1, address2, city, state, zip }
-    const location = await Location
-        .findOne({ userId })
-        .then(response => {
-            return response
-        })
-    if (location) {
-        return await Location
-            .findOneAndUpdate({ _id: location._id }, { $set: newLocation }, { new: true })
-            .then(data => res.json({ location: data }))
-            .catch(err => res.json({ location: null, err }))
+    let location = await Location.findOneAndUpdate({ userId }, { $set: newLocation }, { new: true })
+    if (!location) location = await Location.create(newLocation)
+    const user = await User.findOne({ _id: userId })
+    if (!user.location) {
+        user.location = location._id
+        await user.save()
     }
-    return await Location
-        .create(newLocation)
-        .then(data => res.json({ location: data }))
-        .catch(err => res.json({ location: null, err }))
+    return res.status(200).json({ location })
+    
 })
 
 app.get('/user/location/:userId', async (req, res) => {
@@ -396,9 +314,11 @@ app.delete('/products/delete', async (req, res) => {
 
 app.get('/users/:id', async (req, res, next) => {
     const _id = req.params.id
-    const user = User.
-        findOne({ _id })
-        
+    const user = await User.
+        findOne({ _id }).
+        populate('location')
+        if (!user) return res.status(406).json({ user: null })
+        console.log('populated user', user)
     return res.status(200).json({ user })
 })
 
@@ -454,7 +374,7 @@ app.post(
         }
 
         const newImage = new UserImage({
-            user: user._id.toHexString(),
+            user: user._id,
             filename,
         })
 
@@ -463,9 +383,8 @@ app.post(
         console.log('newImage', newImage)
 
         const updatedUser = await User.
-            findOneAndUpdate({ _id: user._id }, { $set: { profileImage: newImage._id.toHexString(), images: [...user.images, newImage._id.toHexString()] } }, { new: true }).
-            // populate('images').
-            exec()
+            findOneAndUpdate({ _id: user._id }, { $set: { profileImage: newImage._id, images: [...user.images, newImage._id] } }, { new: true })
+            // populate('profileImage', 'filename')
 
         console.log('updatedUser', updatedUser)
         
@@ -640,28 +559,40 @@ app.post(
     }
 )
 
-app.post('/user/avatar/', (req, res) => {
-    const { _id, filename } = req.body
-    User
-        .findOneAndUpdate({ _id }, { $set: { profileImage: _id } }, { new: true })
-        .then(updatedUser => {
-            const { _id, email, username, profileImage } = updatedUser
-            res.status(200).json({ user: { _id, email, username, profileImage } })
-        })
-        .catch(err => {
-            console.log('Error setting avatar', err)
-            res.status(400).json({ error: err })
-        })
+app.post('/user/avatar', async (req, res) => {
+    const { userId, imageId } = req.body
+    
+    const user = await User.
+        findOneAndUpdate({ _id: userId }, { $set: { profileImage: imageId } }, { new: true }).
+        populate('profileImage', 'filename')
+
+    if (!user) return console.log('Error: could not find user while updating avatar')
+    
+    return res.status(200).json(user)
+})
+
+app.get('/images/:id', async (req, res) => {
+    const _id = req.params.id
+    
+    const image = await UserImage.findOne({ _id })
+    
+    return res.status(200).json(image)
+})
+
+app.get('/avatar/:id', async (req, res) => {
+    const _id = req.params.id
+    console.log('ID', _id, req.params)
+    const user = await User.
+        findOne({ _id }).
+        populate('profileImage', 'filename')
+
+    return res.status(200).json(user)
 })
 
 app.get('/user/images/:id', async (req, res) => {
     const _id = req.params.id
     
-    const images = await UserImage.
-        find({ user: _id })
-    
-    console.log('images', images)
-        
+    const images = await UserImage.find({ user: _id })
     return res.status(200).json({ images })
 })
 

@@ -11,6 +11,7 @@ import {
     ProductDisplay,
     Module,
     LocationDisplay,
+    UserHeading,
 } from '../components'
 import { AppContext } from '../AppContext'
 
@@ -23,28 +24,24 @@ const SettingsScreen = ({ ...props }) => {
 
     const { user } = state
 
-    const renderModules = () => user ? (
-        <View style={styles.modules}>
-            
-            {(user.role === 'vendor' || user.role === 'customer')
-                ? <LocationDisplay user={user} />
-                : null}
-
-            {(user.role === 'vendor')
-                ? <ProductDisplay vendor={user} />
-                : null}
-
-            <AvatarDisplay />
-            
-        </View>
-    ) : null
-
     return (
         <View style={styles.container}>
-            {renderModules()}
-            <Module>
-                <DeleteAccountButton />
-            </Module>
+            <UserHeading user={user} />
+            <View style={styles.modules}>
+                {(user.role === 'vendor' || user.role === 'customer')
+                    ? <LocationDisplay user={user} />
+                    : null}
+
+                {(user.role === 'vendor')
+                    ? <ProductDisplay vendor={user} />
+                    : null}
+
+                <AvatarDisplay />
+                
+            </View>
+            
+            {/*<DeleteAccountButton />*/}
+
         </View>
     )
 }

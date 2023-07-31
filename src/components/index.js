@@ -13,9 +13,11 @@ import CategoryPicker from './CategoryPicker'
 import CircleButton from './CircleButton'
 import Container from './Container'
 import Customer from './Customer'
+import CustomerHome from './CustomerHome'
 import DeleteAccountButton from './DeleteAccountButton'
 import Disconnect from './Disconnect'
 import Driver from './Driver'
+import DriverHome from './DriverHome'
 import Dropzone from './Dropzone'
 import EntryDisplay from './EntryDisplay'
 import EntryList from './EntryList'
@@ -36,16 +38,13 @@ import Menu from './Menu'
 import MenuItem from './MenuItem'
 import MenuDisplay from './MenuDisplay'
 import ModalContainer from './ModalContainer'
-import Module from './Module'
 import ProductDetails from './ProductDetails'
 import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import Profile from './Profile'
-// import Settings from './Settings_delete'
 import RolePicker from './RolePicker'
-import Screen from './Screen'
 import SimpleButton from './SimpleButton'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
@@ -57,6 +56,7 @@ import UserHeading from './UserHeading'
 import UserList from './UserList'
 import UserProfile from './UserProfile'
 import VendorDisplay from './VendorDisplay'
+import VendorHome from './VendorHome'
 import VendorList from './VendorList'
 
 export {
@@ -75,9 +75,11 @@ export {
     CircleButton,
     Container,
     Customer,
+    CustomerHome,
     DeleteAccountButton,
     Disconnect,
     Driver,
+    DriverHome,
     Dropzone,
     EntryDisplay,
     EntryList,
@@ -98,16 +100,13 @@ export {
     MenuItem,
     MenuDisplay,
     ModalContainer,
-    Module,
     ProductDetails,
     ProductDisplay,
     ProductForm,
     ProductList,
     ProductListItem,
     Profile,
-    // Settings,
     RolePicker,
-    Screen,
     SimpleButton,
     SimpleLink,
     SignInForm,
@@ -119,5 +118,6 @@ export {
     UserList,
     UserProfile,
     VendorDisplay,
+    VendorHome,
     VendorList,
 }

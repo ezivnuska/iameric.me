@@ -18,31 +18,26 @@ const ImageList = () => {
     const {
         dispatch,
         state,
+        user,
     } = useContext(AppContext)
 
-    const { user } = state
     const [ images, setImages ] = useState(null)
     const [ loading, setLoading ] = useState(false)
 
     useEffect(() => {
-        if (user) {
-            getImages()
-        }
+        getImages()
+    }, [])
+    useEffect(() => {
+        getImages()
     }, [user])
     
-    const getImages = () => {
+    const getImages = async () => {
         setLoading(true)
-        const userId = user._id
-        axios
-            .get(`/api/user/images/${userId}`)
-            .then(({ data }) => {
-                setLoading(false)
-                setImages(data.images)
-            })
-            .catch(err => {
-                setLoading(false)
-                console.log('Error getting images', err)
-            })
+        const items = await axios.
+            get(`/api/user/images/${user._id}`).
+            then(({ data }) => data.images)
+        setLoading(false)
+        setImages(items)
     }
 
     // useEffect(() => {
@@ -50,27 +45,22 @@ const ImageList = () => {
     //     if (images) setItems(images)
     // }, [])
 
-    const setAvatar = (_id, filename) => {
-        dispatch({ type: 'SET_STATUS', status: 'Setting avatar...'})
-        axios
-            .post('/api/user/avatar', { _id, filename })
-            .then(({ data }) => {
-                dispatch({ type: 'SET_PROFILE_IMAGE', image: _id })
-                dispatch({ type: 'SET_STATUS', status: 'Avatar saved.'})
-            })
-            .catch(err => console.log(`Catch: Error setting avatar with filename ${filename}`, err))
+    const setAvatar = async (userId, imageId) => {
+        const { data } = await axios.post('/api/user/avatar', { userId, imageId })
+        dispatch({ type: 'SET_USER', user: data })
+        return
     }
 
     const trimImages = id => setImages(images.filter(image => image._id !== id))
 
-    const deleteImage = (_id, filename) => {
+    const deleteImage = (userId, imageId) => {
         axios
             // .post('/api/images/delete', { _id, filename, user: user._id, username: user.username })
-            .post('/api/images/delete', { _id })
+            .post('/api/images/delete', { _id: userId })
             .then(({ data }) => {
                 const { user } = data
                 if (user) dispatch({ type: 'SET_USER', user })
-                trimImages(_id)
+                trimImages(userId)
             })
             .catch(err => console.log(`Catch: Error deleting filename: ${filename}`, err))
     }
@@ -83,10 +73,9 @@ const ImageList = () => {
                     key={`image-${index}`}
                 >
                     <ImageDisplay
-                        username={user.username}
-                        filename={item.filename}
+                        path={`${user.username}/${item.filename}`}
                         deleteImage={() => deleteImage(item._id, item.filename)}
-                        setAvatar={() => setAvatar(user._id, item.filename)}
+                        setAvatar={() => setAvatar(user._id, item._id)}
                     />
                 </View>
             ))}

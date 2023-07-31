@@ -1,7 +1,7 @@
 import React from 'react'
 import { Screen } from '../components'
 import {
-    EntryDisplay, Module,
+    EntryDisplay,
 } from '../components'
 import {
     StyleSheet,
@@ -9,13 +9,9 @@ import {
 } from 'react-native'
 
 const ChatScreen = ({ navigation, ...props }) => (
-    <Screen { ...props }>
-        <View style={styles.container}>
-            <Module>
-                <EntryDisplay />
-            </Module>
-        </View>
-    </Screen>
+    <View style={styles.container}>
+        <EntryDisplay />
+    </View>
 )
 
 export default ChatScreen

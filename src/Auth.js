@@ -11,9 +11,9 @@ const storeToken = async token => {
         .catch(err => console.log('Error caught while storing token:', err))
 }
 
-export const authenticate = async () => {
-    const token = await AsyncStorage.getItem('userToken')
-    if (!token) return null
+export const authenticate = async token => {
+    // const token = await AsyncStorage.getItem('userToken')
+    // if (!token) return null
     return axios
         .post('/api/authenticate', { token })
         .then(async ({ data }) => {

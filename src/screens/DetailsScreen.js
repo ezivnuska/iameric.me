@@ -4,30 +4,29 @@ import {
     View,
 } from 'react-native'
 import {
-    LocationDisplay,
-    ProductDisplay,
+    Storefront,
 } from '../components'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 
-const VendorScreen = ({ navigation }) => {
+const DetailsScreen = ({ navigation, route }) => {
 
     const {
         dispatch,
         state,
+        cart,
     } = useContext(AppContext)
 
-    const { user } = state
-    
-    return user ? (
+    // const { cart, user } = state
+    const { id } = route.params
+    return (
         <View style={styles.container}>
-            <LocationDisplay user={user} />
-            <ProductDisplay user={user} />
+            <Storefront id={id} />
         </View>
-    ) : null
+    )
 }
 
-export default VendorScreen
+export default DetailsScreen
 
 const styles = StyleSheet.create({
     container: { 

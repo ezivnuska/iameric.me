@@ -6,7 +6,7 @@ const initialState = {
         items: []
     },
     entries: [],
-    isLoading: false,
+    isLoading: true,
     profileId: null,
     status: null,
     user: null,

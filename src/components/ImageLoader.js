@@ -15,26 +15,29 @@ const ImageLoader = ({ path, whenLoaded }) => {
 
     const [loading, setLoading] = useState(false)
     const [loaded, setLoaded] = useState(false)
+    const [imagePath] = useState(path)
+    useEffect(() => {
+        console.log('IMAGE_LOADER')
+        console.log(`path: ${IMAGE_PATH}/${imagePath}`)
+        console.log('loading:', `${IMAGE_PATH}/${imagePath}`)
+    }, [])
 
-    // useEffect(() => {
-    //     console.log(`path: ${IMAGE_PATH}/${path}`)
-    //     console.log('loading:', loading)
-    // }, [])
-
-    // useEffect(() => {
-    //     console.log(`path changed: ${IMAGE_PATH}/${path}`)
-    //     console.log('loading:', loading)
-    // }, [path])
+    useEffect(() => {
+        console.log(`PATH: ${IMAGE_PATH}/${imagePath}`)
+        console.log('loading:', loading)
+    }, [path])
     
     // useEffect(() => {
     //     console.log('loading change:', loading)
     // }, [loading])
 
     const onLoadStart = () => {
+        console.log('onLoadStart')
         setLoading(true)
     }
-
+    
     const onLoaded = () => {
+        console.log('onLoadEnd')
         whenLoaded()
         setLoading(false)
         setLoaded(true)
@@ -45,7 +48,7 @@ const ImageLoader = ({ path, whenLoaded }) => {
             <Image
                 width={size}
                 height={size}
-                source={{ uri: `${IMAGE_PATH}/${path}` }}
+                source={{ uri: `${IMAGE_PATH}/${imagePath}` }}
                 onLoadStart={onLoadStart}
                 onLoadEnd={onLoaded}
                 style={[

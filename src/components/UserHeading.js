@@ -5,17 +5,27 @@ import {
     View,
 } from 'react-native'
 import { Avatar } from '.'
+import axios from 'axios'
 import defaultStyles from '../styles'
 
 const UserHeading = ({ user, styleProps, ...props }) => {
-    
-    const { profileImage, userId, username } = user
+
+    const { _id, profileImage, username } = user
     const [path, setPath] = useState(null)
     
     useEffect(() => {
-        if (!user) return
-        setPath(profileImage ? `${username}/${profileImage}` : 'avatar-default-small.png')
+        getPath()
+    }, [])
+
+    useEffect(() => {
+        getPath()
     }, [user])
+
+    const getPath = async () => {
+        const { data: { profileImage } } = await axios.get(`/api/avatar/${user._id}`)
+        const imagePath = profileImage ? `${username}/${profileImage.filename}` : 'avatar-default-small.png'
+        setPath(imagePath)
+    }
 
     return (
         <View style={[styles.container, styleProps]}>

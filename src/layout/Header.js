@@ -21,7 +21,7 @@ const Header = () => {
         <View
             style={styles.container}>
             <View style={styles.headerContainer}>
-                <Brand onPress={() => navigate(user ? 'home' : 'auth')} />
+                <Brand onPress={() => navigate(user ? 'Home' : 'Start')} />
                 {user && <AuthMenu navigate={navigate} user={user} />}
             </View>
         </View>

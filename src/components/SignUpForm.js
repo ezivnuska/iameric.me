@@ -38,7 +38,7 @@ const SignUpForm = ({ setUser }) => {
 	}, [])
 
 	useEffect(() => {
-		if (user) navigate('home')
+		if (user) navigate('Home')
 	}, [user])
 
 	const initForm = async () => {

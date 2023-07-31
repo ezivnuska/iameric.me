@@ -1,29 +1,23 @@
 import AuthScreen from './AuthScreen'
 import ChatScreen from './ChatScreen'
-import CustomerScreen from './CustomerScreen'
-import DriverScreen from './DriverScreen'
+import DetailsScreen from './DetailsScreen'
 import FallbackScreen from './FallbackScreen'
 import HomeScreen from './HomeScreen'
 import LoadingScreen from './LoadingScreen'
-import PublicScreen from './PublicScreen'
 import SettingsScreen from './SettingsScreen'
+import SplashScreen from './SplashScreen'
 import StartScreen from './StartScreen'
 import UserScreen from './UserScreen'
-import VendorScreen from './VendorScreen'
-import VendorDetailsScreen from './VendorDetailsScreen'
 
 export {
     AuthScreen,
     ChatScreen,
-    CustomerScreen,
-    DriverScreen,
+    DetailsScreen,
     FallbackScreen,
     HomeScreen,
     LoadingScreen,
-    PublicScreen,
     SettingsScreen,
+    SplashScreen,
     StartScreen,
     UserScreen,
-    VendorScreen,
-    VendorDetailsScreen,
 }
