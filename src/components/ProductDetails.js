@@ -14,12 +14,11 @@ const ProductDetails = ({ product, onOrder }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.flexContainer}>
-                <Text style={[defaultStyles.text, styles.title]}>{title}</Text>
+            <View style={styles.details}>
+                <Text style={[defaultStyles.text, styles.blurb]}>{blurb}</Text>
+                <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
                 <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
             </View>
-            <Text style={[defaultStyles.text, styles.blurb]}>{blurb}</Text>
-            <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
             <ButtonPrimary
                 label='Order'
                 onPress={() => onOrder(product)}
@@ -38,31 +37,26 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         paddingBottom: 10,
     },
-    flexContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+    details: {
         marginBottom: 7,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
     },
-    title: {
-        flex: 4,
-        flexBasis: '80%',
-        flexGrow: 1,
-        fontSize: 18,
-        fontWeight: 700,
+    blurb: {
+        fontSize: 20,
+        fontWeight: 600,
+        color: '#777',
+    },
+    desc: {
+        marginVertical: 10,
+        fontWeight: 18,
+        paddingHorizontal: 5,
     },
     price: {
-        flex: 1,
-        flexBasis: '20%',
         textAlign: 'right',
+        marginBottom: 10,
         fontSize: 18,
         fontWeight: 700,
         color: '#666',
-    },
-    blurb: {
-        
-    },
-    desc: {
-        
     },
 })

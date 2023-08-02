@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
+        lineHeight: 34,
         fontWeight: 700,
         marginBottom: 15,
         borderBottomWidth: 1,

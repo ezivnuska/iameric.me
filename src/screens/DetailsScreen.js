@@ -19,6 +19,7 @@ const DetailsScreen = ({ navigation, route }) => {
 
     // const { cart, user } = state
     const { id } = route.params
+    
     return (
         <View style={styles.container}>
             <Storefront id={id} />

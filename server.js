@@ -88,17 +88,13 @@ app.post('/signin', (req, res) => handleSignin(req, res))
 
 const handleSignin = async (req, res) => {
     const { email, password } = req.body
-    console.log('signing in...', email)
     
     const user = await User.
-        findOne({ email }).
-        // populate('profileImage', 'filename').
-        populate('location')
+        findOne({ email })
+        // .populate('location')
 
     if (!user)
         return res.status(406).json({ invalid: 'email', msg: 'No user found with that email.' })
-    
-    console.log('user found', user)
     
     const passwordsMatch = await bcrypt.compare(password, user.password)
 

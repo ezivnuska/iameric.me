@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    ActivityIndicator,
     StyleSheet,
     View,
 } from 'react-native'
@@ -37,7 +38,7 @@ const StartScreen = ({ navigation }) => {
         
         const { email, password } = creds[role]
         
-        console.log(`connecting as ${role}`, email, password)
+        console.log(`connecting as ${role}`)
 		
         const user = await axios.
             post('/api/signin', { email, password }).
@@ -55,23 +56,27 @@ const StartScreen = ({ navigation }) => {
     return (
         <View style={styles.container}>
 
-            <ButtonPrimary
-                label='Customer Experience'
-                onPress={() => connect('customer')}
-                disabled={loading}
-            />
-            
-            <ButtonPrimary
-                label='Vendor Experience'
-                onPress={() => connect('vendor')}
-                disabled={loading}
-            />
-    
-            <ButtonPrimary
-                label='Driver Experience'
-                onPress={() => connect('driver')}
-                disabled={loading}
-            />
+            {loading
+                ? <ActivityIndicator size='large' />
+                : (
+                    <View>
+                        <ButtonPrimary
+                            label='Customer Experience'
+                            onPress={() => connect('customer')}
+                        />
+                        
+                        <ButtonPrimary
+                            label='Vendor Experience'
+                            onPress={() => connect('vendor')}
+                        />
+                
+                        <ButtonPrimary
+                            label='Driver Experience'
+                            onPress={() => connect('driver')}
+                        />
+                    </View>
+                )
+            }
 
         </View>
     )

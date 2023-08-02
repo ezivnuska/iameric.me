@@ -120,8 +120,8 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     static: {
-      directory: path.join(__dirname, 'assets'),
-      publicPath: '/assets',
+      directory: path.resolve(__dirname, 'assets', 'images'),
+      publicPath: '/images',
     },
     port: 8081,
     historyApiFallback: true,

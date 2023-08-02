@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     cart: {
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+        paddingBottom: 10,
     },
     flexContainer: {
         display: 'flex',
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingBottom: 5,
+        paddingBottom: 10,
     },
     text: {
         flexBasis: '80%',

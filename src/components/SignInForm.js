@@ -43,8 +43,11 @@ const SignInForm = ({ setUser }) => {
 		const user = await axios
 			.post('/api/signin', { email, password })
 			.then(({ data }) => data)
-		
-		if (!user) return console.log('Error authenitcating user')
+			console.log('signin data', data)
+		if (!user) {
+			console.log('Error authenitcating user')
+			return null
+		}
 		setLoading(false)
 		storeEmail(email)
 		setUser(user)
