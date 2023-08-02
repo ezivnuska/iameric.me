@@ -45,6 +45,7 @@ const AvatarDisplay = () => {
                 transparent={false}
                 visible={modalVisible}
                 closeModal={() => setModalVisible(false)}
+                label='Avatar Modal'
             >
                 <AvatarModule onComplete={() => setModalVisible(false)} />
             </ModalContainer>

@@ -65,8 +65,12 @@ const ProductForm = ({ onComplete, product = null }) => {
 
     return (
         <View style={defaultStyles.form}>
-            
-            <Text style={defaultStyles.label}>{`${product ? 'Edit' : 'Add'} Product`}</Text>
+
+            <CategoryPicker
+                style={{ marginBottom: 10 }}
+                label='Category'
+                onChange={onChangeCategory}
+            />
             
             <FormInput
                 label='Name'
@@ -108,10 +112,8 @@ const ProductForm = ({ onComplete, product = null }) => {
                 style={[defaultStyles.input, defaultStyles.textArea]}
             />
 
-            <CategoryPicker onChange={onChangeCategory} />
-
             <ButtonPrimary
-                label={`${product ? 'Edit' : 'Add'} Product`}
+                label='Save'
                 disabled={!title.length && !price.length}
                 onPress={onSubmit}
             />
@@ -121,7 +123,3 @@ const ProductForm = ({ onComplete, product = null }) => {
 }
 
 export default ProductForm
-
-// const styles = StyleSheet.create({
-
-// })

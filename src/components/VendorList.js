@@ -65,10 +65,10 @@ const styles = StyleSheet.create({
         // display: 'flex',
         // flexDirection: 'column',
         // justifyContent: 'center',
-        paddingHorizontal: 3,
-        borderWidth: 1,
-        borderColor: '#aaa',
-        borderRadius: 6,
+        // paddingHorizontal: 5,
+        // borderWidth: 1,
+        // borderColor: '#aaa',
+        // borderRadius: 6,
     },
     list: {
         // flex: 1,
@@ -78,6 +78,6 @@ const styles = StyleSheet.create({
         // maxWidth: 300,
         // borderWidth: 2,
         // borderColor: '#f00',
-        paddingVertical: 3,
+        // paddingVertical: 3,
     },
 })

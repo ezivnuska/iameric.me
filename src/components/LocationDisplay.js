@@ -90,6 +90,7 @@ const LocationDisplay = props => {
                 transparent={false}
                 visible={modalVisible}
                 closeModal={() => setModalVisible(false)}
+                label={'Location Form'}
             >
                 <LocationForm
                     location={location}

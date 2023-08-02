@@ -84,9 +84,11 @@ const ProductDisplay = () => {
 
             <ModalContainer
                 animationType='slide'
+                presentationStyle='fullScreen'
                 transparent={false}
                 visible={modalVisible}
                 closeModal={() => setModalVisible(false)}
+                label='Add Product'
             >
                 <ProductForm
                     onComplete={onModalSubmitted}

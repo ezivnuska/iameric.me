@@ -30,8 +30,13 @@ const UserScreen = props => {
     }
     return (
         <View style={styles.container} { ...props }>
-            <UserHeading user={user} />
+            
+            <View style={styles.heading}>
+                <UserHeading user={user} />
+            </View>
+            
             {renderUserHome()}
+
         </View>
     )
 }
@@ -41,5 +46,9 @@ export default UserScreen
 const styles = StyleSheet.create({
     container: {
 
+    },
+    heading: {
+        paddingHorizontal: 10,
+        paddingVertical: 10,
     },
 })

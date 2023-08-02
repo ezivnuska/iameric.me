@@ -11,6 +11,8 @@ import {
 const size = 100
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 
+// this component is not being used
+
 const ImageLoader = ({ path, whenLoaded }) => {
 
     const [loading, setLoading] = useState(false)

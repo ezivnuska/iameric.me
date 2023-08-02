@@ -168,12 +168,13 @@ app.post('/authenticate', async (req, res) => {
         findOne({ _id: userFromToken._id })
         // populate('profileImage', 'filename')
 
-    user.token = createToken(userFromToken)
+    if (!user) {
+        console.log('failed to refresh user token')
+        return res.status(400).json(null)
+    }
+
+    user.token = createToken(user)
     await user.save()
-    
-    console.log('refreshedUser', user)
-        // findOneAndUpdate({ token }, { $set: { token: newToken } }, { new: true })
-    if (!user) return console.log('failed to refresh user token')
 
     return res.status(200).json({ user })
 })
@@ -581,7 +582,7 @@ app.get('/images/:id', async (req, res) => {
 
 app.get('/avatar/:id', async (req, res) => {
     const _id = req.params.id
-    console.log('ID', _id, req.params)
+    
     const user = await User.
         findOne({ _id }).
         populate('profileImage', 'filename')

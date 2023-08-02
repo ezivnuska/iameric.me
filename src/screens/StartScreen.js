@@ -32,17 +32,24 @@ const StartScreen = ({ navigation }) => {
     const [ loading, setLoading ] = useState(false)
 
     const connect = async role => {
+
         setLoading(true)
+        
         const { email, password } = creds[role]
-        console.log('connecting with creds:', email, password)
-		const user = await axios.
+        
+        console.log(`connecting as ${role}`, email, password)
+		
+        const user = await axios.
             post('/api/signin', { email, password }).
             then(({ data }) => data)
 
         if (!user) return console.log('error authenticating user')
+        
         await AsyncStorage.setItem('userToken', user.token)
-		dispatch({ type: 'SET_USER', user })
-		setLoading(false)
+        
+        setLoading(false)
+		
+        dispatch({ type: 'SET_USER', user })
     }
 
     return (

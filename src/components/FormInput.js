@@ -18,8 +18,11 @@ const FormInput = ({ label, onChange, ...props }) => {
 
     return (
         <View style={styles.container}>
+            
             {(label && label.length) ? <Text style={defaultStyles.label}>{label}</Text> : null}
+            
             <View style={defaultStyles.inputContainer}>
+                
                 <TextInput
                     style={[defaultStyles.input]}
                     // onBlur={onBlur}
@@ -27,6 +30,7 @@ const FormInput = ({ label, onChange, ...props }) => {
                     value={inputValue}
                     {...props}
                 />
+
             </View>
         </View>
     )
@@ -36,6 +40,6 @@ export default FormInput
 
 const styles = StyleSheet.create({
     container: {
-
+        marginBottom: 5,
     },
 })

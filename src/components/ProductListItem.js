@@ -47,6 +47,7 @@ const ProductListItem = ({ item, onDelete, update }) => {
                 transparent={false}
                 visible={modalVisible}
                 closeModal={() => setModalVisible(false)}
+                label='Edit Product'
             >
                 <ProductForm
                     onComplete={onComplete}

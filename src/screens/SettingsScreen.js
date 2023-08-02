@@ -26,15 +26,15 @@ const SettingsScreen = ({ ...props }) => {
 
     return (
         <View style={styles.container}>
-            <UserHeading user={user} />
+            <View style={styles.heading}>
+                <UserHeading user={user} />
+            </View>
             <View style={styles.modules}>
-                {(user.role === 'vendor' || user.role === 'customer')
-                    ? <LocationDisplay user={user} />
-                    : null}
-
-                {(user.role === 'vendor')
-                    ? <ProductDisplay vendor={user} />
-                    : null}
+                {
+                    (user.role === 'vendor' || user.role === 'customer')
+                        ? <LocationDisplay user={user} />
+                        : null
+                }
 
                 <AvatarDisplay />
                 
@@ -66,5 +66,9 @@ const styles = StyleSheet.create({
         width: 350,
         minWidth: 350,
         maxWidth: 900,
+    },
+    heading: {
+        paddingHorizontal: 10,
+        paddingVertical: 10,
     },
 })

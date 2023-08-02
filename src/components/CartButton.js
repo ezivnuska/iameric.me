@@ -36,6 +36,7 @@ const CartButton = () => {
                 transparent={false}
                 visible={modalVisible}
                 closeModal={() => setModalVisible(false)}
+                label='Cart'
             >
                 <Cart items={cart.items} />
             </ModalContainer>

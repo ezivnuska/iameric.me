@@ -43,6 +43,7 @@ const Menu = ({ items }) => {
                 transparent={false}
                 visible={featured}
                 closeModal={() => setFeatured(null)}
+                label={featured ? featured.title : null}
             >
                 {featured ? (
                     <ProductDetails

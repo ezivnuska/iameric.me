@@ -30,21 +30,18 @@ const MenuDisplay = ({ vendor }) => {
     
     const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
 
-    const getItems = () => {
-
-        console.log('loading menu items...')
+    const getItems = async () => {
         
-        axios
-            .get(`/api/products/${vendor._id}`)
-            .then(({ data }) => {
-                console.log('menu items loaded.')
-                setLoading(false)
-                setItems(data.items)
-            })
-            .catch(err => {
-                console.log('Error loading menu items', err)
-                dispatch({ type: 'SET_STATUS', status: 'Error loading menu items.' })
-            })
+        const { data } = await axios.
+            get(`/api/products/${vendor._id}`)
+
+        if (!data) {
+            console.log('Error loading menu items', err)
+            return null
+        }
+
+        setLoading(false)
+        setItems(data.items)
     }
 
     const removeItemById = id => {
