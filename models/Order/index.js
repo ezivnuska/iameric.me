@@ -35,7 +35,7 @@ const orderSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   }],
-  orderStatus: {
+  status: {
     type: Schema.Types.Number,
     default: 0,
   },
