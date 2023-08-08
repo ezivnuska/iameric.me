@@ -7,26 +7,22 @@ const orderSchema = Schema({
     type: Date,
     default: Date.now,
   },
+  items: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Product',
+  }],
   vendor: {
     type: Schema.Types.ObjectId,
-    ref: 'Vendor',
+    ref: 'User',
   },
-  bag: {
-    type: Schema.Types.Boolean,
-    default: false,
-  },
-  orderId: {
-    type: Schema.Types.String,
-    required: true,
-  },
-  headcount: {
-    type: Schema.Types.Number,
-    required: true,
-  },
-  locations: [{
+  customer: {
     type: Schema.Types.ObjectId,
-    ref: 'Location',
-  }],
+    ref: 'User',
+  },
+  // locations: [{
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Location',
+  // }],
   pickup: {
     type: Date,
     default: Date.now,
@@ -35,14 +31,14 @@ const orderSchema = Schema({
     type: Date,
     default: Date.now,
   },
-  drivers: [{
+  driver: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
   }],
-  orderState: {
+  orderStatus: {
     type: Schema.Types.Number,
     default: 0,
-  }
+  },
 },
 {
   timestamps: true,

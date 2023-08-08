@@ -12,14 +12,13 @@ import {
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 
-const MenuDisplay = ({ vendor }) => {
+const MenuDisplay = ({ vendorId }) => {
     
     const {
         dispatch,
         state,
+        cart,
     } = useContext(AppContext)
-
-    const { cart } = state
 
     const [items, setItems] = useState(null)
     const [loading, setLoading] = useState(true)
@@ -33,14 +32,15 @@ const MenuDisplay = ({ vendor }) => {
     const getItems = async () => {
         
         const { data } = await axios.
-            get(`/api/products/${vendor._id}`)
+            get(`/api/products/${vendorId}`)
+
+        setLoading(false)
 
         if (!data) {
             console.log('Error loading menu items', err)
             return null
         }
 
-        setLoading(false)
         setItems(data.items)
     }
 
@@ -72,11 +72,15 @@ const MenuDisplay = ({ vendor }) => {
 
     return (
         <View style={styles.container}>
-            <Cart items={cart.items} />
             {loading
                 ? <ActivityIndicator size='small' />
                 : (items && items.length)
-                    ? <Menu items={items} />
+                    ? (
+                        <Menu
+                            vendor={vendorId}
+                            items={items}
+                        />
+                    )
                     : <Text>No products to display.</Text>
             }
         </View>

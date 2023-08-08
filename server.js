@@ -20,6 +20,7 @@ const IMAGE_PATH = process.env.IMAGE_PATH || 'assets/images'
 
 const Entry = require('./models/Entry')
 const Location = require('./models/Location')
+const Order = require('./models/Order')
 const Product = require('./models/Product')
 const UserImage = require('./models/UserImage')
 const User = require('./models/User')
@@ -154,7 +155,6 @@ app.post('/authenticate', async (req, res) => {
     const { token } = req.body
     console.log('authenticating token...')
     const userFromToken = getDecodedUser(token)
-    console.log('decoded user', userFromToken)
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)
     if (expired) {
         console.log('token expired')
@@ -298,7 +298,13 @@ app.post('/product', async (req, res) => {
 app.get('/products/:id', async (req, res) => {
     const { id } = req.params
     const items = await Product.
-        find({ vendorId: id })
+        find({ vendor: id }).
+        populate('vendor')
+    
+    if (!items) {
+        console.log('Error getting products')
+        return res.status(400).json(null)
+    }
 
     return res.status(200).json({ items })
 })
@@ -314,8 +320,9 @@ app.get('/users/:id', async (req, res, next) => {
     const user = await User.
         findOne({ _id }).
         populate('location')
-        if (!user) return res.status(406).json({ user: null })
-        console.log('populated user', user)
+        
+    if (!user) return res.status(406).json({ user: null })
+        
     return res.status(200).json({ user })
 })
 
@@ -620,6 +627,56 @@ app.post('/unsubscribe', (req, res) => {
     res.status(200).json({
         msg: 'Account closed.'
     })
+})
+
+app.get('/orders', async (req, res) => {
+    const orders = await Order.
+        find({}).
+        populate({ path: 'items', select: '_id price title' }).
+        populate({ path: 'customer', select: '_id username' }).
+        populate({ path: 'vendor', select: '_id username' })
+
+    return res.status(200).json({ orders })
+})
+
+app.post('/order', async (req, res) => {
+    const { customer, items, vendor } = req.body
+    const orderDetails = {
+        items,
+        customer,
+        vendor,
+    }
+
+    const order = await Order.
+        create(orderDetails)
+
+    if (!order) {
+        console.log('Error creating new order')
+        return res.json(400).json(null)
+    }
+
+    // console.log('newOrder', newOrder)
+
+    // const order = await Order.
+    //     findOne({ _id: newOrder._id }).
+    //     populate('vendor').
+    //     populate('customer').
+    //     populate({
+    //         path: 'items',
+    //     })
+    
+    // console.log('order', order)
+
+    return res.status(200).json(order)
+    
+})
+
+app.delete('/order/:id', async (req, res) => {
+    const { id } = req.params
+    // console.log('deleting order...', id)
+    const order = await Order.findByIdAndDelete(id)
+    // console.log('Order deleted.', order)
+    return res.json({ order })
 })
 
 mongoose.Promise = global.Promise

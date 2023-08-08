@@ -3,9 +3,9 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const ProductSchema = new Schema({
-    vendorId: {
+    vendor: {
         type: Schema.Types.ObjectId,
-        ref: 'Vendor',
+        ref: 'User',
         required: true,
     },
     title: {

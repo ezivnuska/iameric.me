@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import { ButtonPrimary } from '.'
 import { AppContext } from '../AppContext'
+import axios from 'axios'
 
 const Item = ({ item }) => {
     const { title, price } = item
@@ -18,21 +19,43 @@ const Item = ({ item }) => {
     )
 }
 
-const Cart = ({ items }) => {
+const Cart = ({ onSubmitOrder }) => {
 
-    const { dispatch } = useContext(AppContext)
+    const {
+        dispatch,
+        state,
+        user,
+        cart,
+    } = useContext(AppContext)
 
     const getTotal = () => {
         let total = 0
-        items.map(i => total += Number(i.price))
+        cart.items.map(i => total += Number(i.price))
         return String(total)
     }
 
-    return items.length ? (
+    const submitOrder = async () => {
+        const { items, vendor } = cart
+        const newOrder = {
+            customer: user._id,
+            vendor,
+            items: items.map(item => item._id),
+        }
+        
+        const order = await axios.post('/api/order', newOrder)
+        
+        if (!order) console.log('Order submission failed', order)
+
+        dispatch({ type: 'ADD_ORDER', order })
+
+        onSubmitOrder()
+    }
+
+    return cart.items ? (
         <View style={styles.container}>
             <FlatList
                 style={styles.cart}
-                data={items}
+                data={cart.items}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item }) => <Item item={item} />} 
             />
@@ -44,6 +67,11 @@ const Cart = ({ items }) => {
             <ButtonPrimary
                 label='Clear Cart'
                 onPress={() => dispatch({ type: 'CLEAR_CART' })}
+            />
+
+            <ButtonPrimary
+                label='Submit Order'
+                onPress={submitOrder}
             />
         </View>
     ) : null

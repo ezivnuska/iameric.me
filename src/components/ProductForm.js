@@ -35,7 +35,7 @@ const ProductForm = ({ onComplete, product = null }) => {
     const onSubmit = () => {
         const { _id, role, username } = user
         let newProduct = {
-            vendorId: _id,
+            vendor: _id,
             title,
             price,
             blurb,

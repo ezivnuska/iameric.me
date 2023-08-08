@@ -32,13 +32,13 @@ const ProductDisplay = () => {
         getProducts()
     }, [])
 
-    const getProducts = () => {
-        axios
-            .get(`/api/products/${user._id}`)
-            .then(({ data }) => {
-                setItems(data.items)
-            })
-            .catch(err => console.log('Error getting products:', err))
+    const getProducts = async () => {
+        const { data } = await axios.
+            get(`/api/products/${user._id}`)
+        
+        if (!data) console.log('Error getting products:')
+
+        setItems(data.items)
     }
 
     const onDelete = id => {

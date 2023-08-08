@@ -49,14 +49,7 @@ const ImageDisplay = ({ deleteImage, path, setAvatar }) => {
                             setLoaded(true)
                         }}
                         
-                        style={[
-                            styles.image,
-                            {
-                                width: size,
-                                height: size,
-                                // display: loading ? 'block' : 'none',
-                            },
-                        ]}
+                        style={styles.image}
                     />
                 </TouchableOpacity>
             </HoverableView>
@@ -117,6 +110,14 @@ const styles = StyleSheet.create({
         width: size,
         height: size,
         borderWidth: 1,
-        borderColor: '#f00',
+        borderColor: '#999',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
     },
 })

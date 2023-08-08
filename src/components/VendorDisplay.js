@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    ActivityIndicator,
     StyleSheet,
     Text,
     View,
@@ -20,54 +21,55 @@ const VendorDisplay = () => {
     const { user, users } = state
 
     const [vendors, setVendors] = useState(null)
-    const [loading, setLoading] = useState(false)
-    const [vendor, setVendor] = useState(null)
+    const [loading, setLoading] = useState(true)
+    // const [vendor, setVendor] = useState(null)
 
-    const getVendors = () => {
+    const getVendors = async () => {
         setLoading(true)
 
-        axios
-            .get('/api/vendors')
-            .then(({ data }) => {
-                setLoading(false)
-                setVendors(data.vendors)
-            })
-            .catch(err => console.log('Error getting vendors:', err))
+        const { data } = await axios.
+            get('/api/vendors')
+
+        if (!data) console.log('Error: could not get vendors')
+
+        setLoading(false)
+        setVendors(data.vendors)
     }
 
     useEffect(() => {
         getVendors()
     }, [])
     
-    useEffect(() => {
-        getVendors()
-    }, [user])
+    // useEffect(() => {
+    //     getVendors()
+    // }, [user])
     
-    const onItemPressed = vendor => {
-        setVendor(vendor)
-    }
+    // const onItemPressed = vendor => {
+    //     setVendor(vendor)
+    // }
 
-    return (
-        <View style={styles.container}>
-            
-            <View style={styles.displayHeader}>
-                <Text style={styles.title}>Restaurants</Text>
+    return loading
+        ? <ActivityIndicator />
+        : (
+            <View style={styles.container}>
+                
+                <View style={styles.displayHeader}>
+                    <Text style={styles.title}>Vendors</Text>
+                </View>
+
+                <VendorList
+                    users={vendors}
+                />
             </View>
-
-            <VendorList
-                users={vendors}
-                onItemPressed={vendor => onItemPressed(vendor)}
-            />
-        </View>
-    )
+        )
 }
 
 export default VendorDisplay
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 10,
-        paddingHorizontal: 10,
+        paddingBottom: 10,
+        paddingHorizontal: 15,
     },
     displayHeader: {
         display: 'flex',

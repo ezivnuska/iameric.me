@@ -1,83 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
     FlatList,
-    StyleSheet,
-    TouchableOpacity,
-    View,
 } from 'react-native'
 
 import {
-    Menu,
-    ModalContainer,
     UserListItem,
 } from '.'
 import { navigate } from '../navigators/RootNavigation'
 
-const VendorList = ({ onItemPressed, users }) => {
+const VendorList = ({ users }) => {
 
-    const [items, setItems] = useState([])
-    const [feature, setFeature] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false)
+    const [items, setItems] = useState(users)
 
-    useEffect(() => {
-        if (users) setItems(users)
-    }, [users])
-
-    const onPress = user => {
-        // setFeature(user)
-        // setModalVisible(true)
-        navigate('Details', { id: user._id })
-    }
+    const onPress = user => navigate('Details', { id: user._id })
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                style={styles.list}
-                data={items}
-                listKey={() => 'users'}
-                keyExtractor={(item, index) => 'user' + index}
-                renderItem={({ item }) => (
-                    <UserListItem
-                        user={item}
-                        onPress={onPress}
-                    />
-                )} 
-            />
-
-            {/* <ModalContainer
-                animationType='slide'
-                transparent={false}
-                visible={modalVisible}
-                closeModal={() => setModalVisible(false)}
-            >
-                <Menu
-                    vendorId={feature ? feature._id : null}
+        <FlatList
+            data={items}
+            listKey={() => 'users'}
+            keyExtractor={(item, index) => 'user' + index}
+            renderItem={({ item }) => (
+                <UserListItem
+                    user={item}
+                    onPress={onPress}
                 />
-            </ModalContainer> */}
-        </View>
+            )} 
+        />
     )
 }
 
 export default VendorList
-
-const styles = StyleSheet.create({
-    container: {
-        // display: 'flex',
-        // flexDirection: 'column',
-        // justifyContent: 'center',
-        // paddingHorizontal: 5,
-        // borderWidth: 1,
-        // borderColor: '#aaa',
-        // borderRadius: 6,
-    },
-    list: {
-        // flex: 1,
-        // alignSelf: 'center',
-        // width: 300,
-        // minWidth: 300,
-        // maxWidth: 300,
-        // borderWidth: 2,
-        // borderColor: '#f00',
-        // paddingVertical: 3,
-    },
-})

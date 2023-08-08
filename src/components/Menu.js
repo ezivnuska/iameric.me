@@ -11,8 +11,7 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 
-const Menu = ({ items }) => {
-
+const Menu = ({ items, vendor }) => {
     const {
         state,
         dispatch,
@@ -21,7 +20,7 @@ const Menu = ({ items }) => {
     const [featured, setFeatured] = useState(null)
 
     const addToCart = item => {
-        dispatch({ type: 'ADD_TO_CART', item })
+        dispatch({ type: 'ADD_TO_CART', item, vendor })
         setFeatured(null)
     }
     

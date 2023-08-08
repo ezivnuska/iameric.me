@@ -10,6 +10,7 @@ import {
 } from '.'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import { AppContext } from '../AppContext'
+import { navigate } from '../navigators/RootNavigation'
 
 const CartButton = () => {
 
@@ -21,6 +22,11 @@ const CartButton = () => {
     const { cart } = state
 
     const [modalVisible, setModalVisible] = useState(false)
+
+    const onSubmitCart = () => {
+        setModalVisible(false)
+        navigate('Home')
+    }
 
     return (
         <View style={styles.container}>
@@ -38,7 +44,9 @@ const CartButton = () => {
                 closeModal={() => setModalVisible(false)}
                 label='Cart'
             >
-                <Cart items={cart.items} />
+                <Cart
+                    onSubmitOrder={onSubmitCart}
+                />
             </ModalContainer>
 
         </View>

@@ -30,7 +30,7 @@ const Storefront = ({ id }) => {
     const renderVendorDetails = () => (
         <View>
             <Text style={styles.title}>{vendor.username}</Text>
-            <MenuDisplay vendor={vendor} />
+            <MenuDisplay vendorId={vendor._id} />
         </View>
     )
 
@@ -54,13 +54,14 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     backButton: {
-        paddingVertical: 10,
+        paddingVertical: 15,
     },
     title: {
         fontSize: 20,
-        lineHeight: 34,
+        lineHeight: 24,
         fontWeight: 700,
         marginBottom: 15,
+        paddingBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#000',
         borderBottomStyle: 'dotted',

@@ -2,8 +2,8 @@ import React, { createContext, useReducer } from 'react'
 
 const initialState = {
     cart: {
-        vendorId: null,
-        items: []
+        vendor: null,
+        items: null,
     },
     entries: [],
     isLoading: true,
@@ -11,10 +11,11 @@ const initialState = {
     status: null,
     user: null,
     users: null,
+    orders: [],
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, entries, isLoading, profileId, status, user, users } = state
+    let { cart, entries, isLoading, orders, profileId, status, user, users } = state
 
     switch(action.type) {
         case 'SET_LOADING':
@@ -33,27 +34,35 @@ const reducer = (state = initialState, action) => {
             profileId = action.id
             break
         case 'ADD_TO_CART':
-            const { items, vendorId } = cart
+            const { item, vendor } = action
+            const items = cart.items || []
             cart = {
-                vendorId: vendorId || action.item.vendorId,
-                items: [...items, action.item],
+                vendor,
+                items: [...items, item],
             }
         break
         case 'CLEAR_CART':
             cart = {
-                vendorId: null,
-                items: [],
+                vendor: null,
+                items: null,
             }
+        break
+        case 'ADD_ORDER':
+            orders = [...orders, action.order]
+            cart = { vendor: null, items: null }
+        break
+        case 'REMOVE_ORDER':
+            orders = orders.filter(order => order._id != action.id)
         break
         case 'NEW_ENTRY':
             entries = [ ...entries, action.entry ]
-            break
+        break
         case 'SET_ENTRIES':
             entries = action.entries
-            break
+        break
         case 'SET_STATUS':
             status = action.status
-            break
+        break
         case 'SIGNOUT':
             cart = {
                 vendorId: null,
@@ -65,12 +74,13 @@ const reducer = (state = initialState, action) => {
             profileId = null
             isLoading = false
             status = null
-            break
+            orders = []
+        break
         default:
             throw new Error('Not valid action type')
     }
 
-    return { cart, entries, isLoading, profileId, status, user, users }
+    return { cart, entries, isLoading, orders, profileId, status, user, users }
 }
 
 export const AppContext = createContext({
@@ -87,6 +97,7 @@ export const AppProvider = ({ children }) => {
             dispatch,
             user: state.user,
             cart: state.cart,
+            orders: state.orders,
         }}>
             {children}
         </AppContext.Provider>

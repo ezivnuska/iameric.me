@@ -7,6 +7,7 @@ import { AppContext } from '../AppContext'
 import {
     CustomerHome,
     DriverHome,
+    OrderDisplay,
     UserHeading,
     VendorHome,
 } from '../components'
@@ -32,7 +33,7 @@ const UserScreen = props => {
         <View style={styles.container} { ...props }>
             
             <View style={styles.heading}>
-                <UserHeading user={user} />
+                <OrderDisplay />
             </View>
             
             {renderUserHome()}
