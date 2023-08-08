@@ -49,7 +49,7 @@ const VendorDisplay = () => {
     // }
 
     return loading
-        ? <ActivityIndicator />
+        ? <Text>Loading Vendors...</Text>
         : (
             <View style={styles.container}>
                 

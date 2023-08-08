@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
     ActivityIndicator,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -57,7 +58,7 @@ const StartScreen = ({ navigation }) => {
         <View style={styles.container}>
 
             {loading
-                ? <ActivityIndicator size='large' />
+                ? <Text>Remembering...</Text>
                 : (
                     <View>
                         <ButtonPrimary
