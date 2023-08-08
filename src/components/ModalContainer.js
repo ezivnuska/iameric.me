@@ -1,6 +1,7 @@
 import React from 'react'
 import {
     Modal,
+    ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -28,9 +29,9 @@ const ModalContainer = ({ children, closeModal, label = null, ...props }) => {
 
                 </View>
 
-                <View style={styles.modalView}>
+                <ScrollView style={styles.modalView}>
                     {children}
-                </View>
+                </ScrollView>
 
             </Modal>
 

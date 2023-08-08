@@ -51,6 +51,16 @@ const reducer = (state = initialState, action) => {
             orders = [...orders, action.order]
             cart = { vendor: null, items: null }
         break
+        case 'CONFIRM_ORDER':
+            orders = orders.map(order => {
+                if (order._id == action.id) {
+                    return {
+                        ...order,
+                        status: order.status + 1,
+                    }
+                } else return order
+            })
+        break
         case 'REMOVE_ORDER':
             orders = orders.filter(order => order._id != action.id)
         break

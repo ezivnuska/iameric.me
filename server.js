@@ -671,6 +671,16 @@ app.post('/order', async (req, res) => {
     
 })
 
+app.post('/order/confirm/:id', async (req, res) => {
+    const { id } = req.params
+    console.log('confirm order', id)
+    const order = await Order.findOne({ _id: id })
+    if (!order) console.log('Could not confirm order')
+    order.status = order.status + 1
+    await order.save()
+    return res.status(200).json(order)
+})
+
 app.delete('/order/:id', async (req, res) => {
     const { id } = req.params
     // console.log('deleting order...', id)

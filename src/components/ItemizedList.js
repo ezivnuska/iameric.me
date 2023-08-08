@@ -7,7 +7,10 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import { ItemizedListItem } from '.'
+import {
+    ButtonPrimary,
+    ItemizedListItem
+} from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
@@ -16,9 +19,10 @@ const ItemizedList = ({ order }) => {
     
     const {
         dispatch,
+        user,
     } = useContext(AppContext)
 
-    const { vendor, _id } = order
+    const { customer, vendor, _id } = order
 
     const [loading, setLoading] = useState(false)
     const [items, setItems] = useState(order.items)
@@ -49,6 +53,8 @@ const ItemizedList = ({ order }) => {
         return total.toFixed(2)
     }
 
+    const colors = ['red', 'blue', 'purple', 'orange', 'green']
+
     const getOrderStatus = () => {
         let status = null
         switch(order.status) {
@@ -58,32 +64,73 @@ const ItemizedList = ({ order }) => {
             case 3: status = 'Picked Up'; break
             case 4: status = 'Delivered'; break
         }
-        return status
+        return <Text style={[styles.status, { backgroundColor: colors[order.status]}]}>{status}</Text>
+    }
+
+    const confirmOrder = async () => {
+        const confirmedOrder = await axios.
+            post(`/api/order/confirm/${order._id}`)
+        
+        if (!confirmedOrder) console.log('Error confirming order')
+
+        dispatch({ type: 'CONFIRM_ORDER', id: confirmedOrder._id })
+    }
+
+    const renderButton = () => {
+        const { role } = user
+        const { status } = order
+        let button
+        switch (role) {
+            case 'customer':
+                
+            break
+            case 'vendor':
+                button = (status === 0) ? (
+                    <ButtonPrimary
+                        label='Confirm Order'
+                        onPress={() => confirmOrder()}
+                    />
+                ) : null
+            break
+            case 'driver':
+                button = (status === 1) ? (
+                    <ButtonPrimary
+                        label='Accept Order'
+                        onPress={() => confirmOrder()}
+                    />
+                ) : null
+            break
+        }
+        return button
     }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.vendorName}>{vendor.username} ({getOrderStatus()})</Text>
-            <FlatList
-                data={items}
-                listKey={() => 'products'}
-                keyExtractor={(item, index) => 'product' + index}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                    onPress={() => deleteOrder(_id)}
-                    disabled={loading}
-                    >
+        <TouchableOpacity
+            style={styles.container}
+            onPress={() => deleteOrder(_id)}
+            disabled={loading}
+        >
+            <Text style={styles.label}>{`${vendor.username} --> ${customer.username}`}</Text>
+            {getOrderStatus()}
+            <View style={styles.listContainer}>
+                <FlatList
+                    style={styles.list}
+                    data={items}
+                    listKey={() => 'products'}
+                    keyExtractor={(item, index) => 'product' + index}
+                    renderItem={({ item }) => (
                         <ItemizedListItem
                             item={item}
                         />
-                    </TouchableOpacity>
-                )} 
-            />
-            <View style={styles.totalContainer}>
-                <Text style={[defaultStyles.text, styles.label]}>Total:</Text>
-                <Text style={[defaultStyles.text, styles.total]}>${getOrderTotal()}</Text>
+                    )} 
+                />
+                <View style={styles.totalContainer}>
+                    <Text style={[defaultStyles.text, styles.label]}>Total:</Text>
+                    <Text style={[defaultStyles.text, styles.total]}>${getOrderTotal()}</Text>
+                </View>
+                {renderButton()}
             </View>
-        </View>
+        </TouchableOpacity>
     )   
 }
 
@@ -95,6 +142,15 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderWidth: 1,
         borderStyle: 'dotted',
+    },
+    listContainer: {
+        // marginVertical: 5,
+        borderWidth: 1,
+        borderStyle: 'dotted',
+        borderColor: 'red',
+    },
+    list: {
+
     },
     vendorName: {
         fontSize: 18,
@@ -111,13 +167,21 @@ const styles = StyleSheet.create({
         paddingVertical: 2,
         // paddingBottom: 5,
     },
+    status: {
+        fontWeight: 600,
+        color: '#fff',
+        borderRadius: 6,
+        marginVertical: 5,
+        paddingHorizontal: 5,
+        paddingVertical: 5,
+    },
     label: {
-        flex: 1,
-        flexBasis: '70%',
-        flexShrink: 0,
-        flexGrow: 1,
-        fontSize: 18,
-        fontWeight: 500,
+        // flex: 1,
+        // flexBasis: '70%',
+        // flexShrink: 0,
+        // flexGrow: 1,
+        // fontSize: 18,
+        // fontWeight: 500,
     },
     total: {
         flex: 1,
