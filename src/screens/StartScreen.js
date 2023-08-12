@@ -31,34 +31,60 @@ const StartScreen = ({ navigation }) => {
 
     const { dispatch, state } = useContext(AppContext)
 
-    const [ loading, setLoading ] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(null)
 
-    const connect = async role => {
+    const connect = async type => {
 
         setLoading(true)
         
-        const { email, password } = creds[role]
+        const { email, password } = creds[type]
         
-        console.log(`connecting as ${role}`)
+        console.log(`connecting as ${type}`)
 		
-        const user = await axios.
-            post('/api/signin', { email, password }).
-            then(({ data }) => data)
+        const response = await axios.
+            post('/api/signin', { email, password })
 
-        if (!user) return console.log('error authenticating user')
+        console.log('connect response:', response)
+
+        const user = response.data
+        
+        if (!user) {
+            console.log('error authenticating user')
+            setError('error authenticating user')
+            return
+        }
         
         await AsyncStorage.setItem('userToken', user.token)
         
+        console.log('user token set')
+
         setLoading(false)
-		
-        dispatch({ type: 'SET_USER', user })
+
+        const {
+            profileImage,
+            role,
+            username,
+            _id
+        } = user
+
+        dispatch({
+            type: 'SET_USER',
+            user: {
+                profileImage,
+                role,
+                username,
+                _id,
+                email,
+            }
+        })
     }
 
     return (
         <View style={styles.container}>
 
             {loading
-                ? <Text>Remembering...</Text>
+                ? <Text>Connecting...</Text>
                 : (
                     <View>
                         <ButtonPrimary

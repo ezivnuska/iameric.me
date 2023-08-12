@@ -59,31 +59,31 @@ const createToken = user => {
 
 const getDecodedUser = token => jwt.decode(token, SESSION_SECRET)
 
-app.post('/user/get', (req, res) => checkForUser(req, res))
+// app.post('/user/get', (req, res) => checkForUser(req, res))
 
-const checkForUser = async (req, res) => {
-    const { email } = req.body
-    if (!email) res.status(200).json({ msg: 'No email received.', user: null })
-    console.log('> checking for user with email:', email)
-    const userExists = await User
-        .findOne({ email })
-        .then(result => {
-            console.log('User found (result):', result)
-            if (!result) return false
-            return true
-        })
-        .catch(err => {
-            console.log('> error finding user from email.', err)
-            return false
-        })
+// const checkForUser = async (req, res) => {
+//     const { email } = req.body
+//     if (!email) res.status(200).json({ msg: 'No email received.', user: null })
+//     console.log('> checking for user with email:', email)
+//     const userExists = await User
+//         .findOne({ email })
+//         .then(result => {
+//             console.log('User found (result):', result)
+//             if (!result) return false
+//             return true
+//         })
+//         .catch(err => {
+//             console.log('> error finding user from email.', err)
+//             return false
+//         })
     
-    if (!userExists) {
-        console.log('> no user found.')
-        return res.json({ msg: 'No user found with that email.', user: false })
-    }
-    console.log('> user exists:', userExists)
-    return res.json({ msg: 'User found.', user: true })
-}
+//     if (!userExists) {
+//         console.log('> no user found.')
+//         return res.json({ msg: 'No user found with that email.', user: false })
+//     }
+//     console.log('> user exists:', userExists)
+//     return res.json({ msg: 'User found.', user: true })
+// }
 
 app.post('/signin', (req, res) => handleSignin(req, res))
 
@@ -92,7 +92,7 @@ const handleSignin = async (req, res) => {
     
     const user = await User.
         findOne({ email })
-        // .populate('location')
+        .populate('profileImage', 'filename')
 
     if (!user)
         return res.status(406).json({ invalid: 'email', msg: 'No user found with that email.' })
@@ -106,36 +106,59 @@ const handleSignin = async (req, res) => {
 
     await user.save()
 
-    const { _id, username, profileImage, token, role, location } = user
+    const {
+        _id,
+        username,
+        profileImage,
+        token,
+        role,
+        // location
+    } = user
     
-    return res.status(200).json({ _id, email: user.email, username, profileImage, password: user.password, token, role, location })
+    return res.status(200).json({
+        _id,
+        email: user.email,
+        username,
+        profileImage,
+        // password: user.password,
+        token,
+        role,
+        // location
+    })
 }
 
 app.post('/signup', (req, res) => handleSignup(req, res))
 
-const createUser = async user => {
+const createUser = async ({ email, username }) => {
     
-    const userExists = await User.findOne({ email: user.email })
+    let user = await User.findOne({ email })
     
-    if (userExists) {
+    if (user) {
         console.log('A user with that email already exists.')
         return res.status(200).json({ success: false })
     }
 
-    const newUser = await User.create(user)
+    user = await User.create({ username, email })
 
-    if (!newUser) throw new Error(`Error creating user: ${newUser}`)
+    if (!user) throw new Error(`Error creating user: ${username}, ${email}`)
     
-    await newUser.save()
-    
-    const newToken = createToken(newUser)
-    
-    const updatedUser = await User.
-        findOneAndUpdate({ _id: newUser._id.toString() }, { $set: { token: newToken } }, { new: true })
+    await user.save()
 
-    const { _id, email, username, role, profileImage, images, token } = updatedUser
+    console.log('New user created', user)
+    
+    const newToken = createToken(user)
+    
+    user = await User.
+        findOneAndUpdate({ _id: newUser._id.toString() }, { $set: { token: newToken } }, { new: true }).
+        populate('profileImage', 'filename')
 
-    return { _id, email, username, role, profileImage, images, token }
+    if (!user) {
+        console.log('Error updating user with token')
+        return
+    }
+
+    console.log('returning new user', user)
+    return user
 }
 
 const handleSignup = async (req, res) => {
@@ -152,17 +175,24 @@ const handleSignup = async (req, res) => {
 }
 
 app.post('/authenticate', async (req, res) => {
+    
     const { token } = req.body
-    console.log('authenticating token...')
+    
+    console.log('authenticating saved token...')
+    
     const userFromToken = getDecodedUser(token)
+    
+    console.log('token found belonging to user', userFromToken.username)
+    
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)
     if (expired) {
         console.log('token expired')
         return res.status(406).json({ userFromToken, error: 'token expired' })
     }
+
     const user = await User.
-        findOne({ _id: userFromToken._id })
-        // populate('profileImage', 'filename')
+        findOne({ _id: userFromToken._id }).
+        populate('profileImage', 'filename')
 
     if (!user) {
         console.log('failed to refresh user token')
@@ -170,9 +200,32 @@ app.post('/authenticate', async (req, res) => {
     }
 
     user.token = createToken(user)
+
     await user.save()
 
-    return res.status(200).json({ user })
+    if (!user) {
+        console.log('Error saving user with updated token')
+        return
+    }
+
+    const {
+        email,
+        profileImage,
+        role,
+        username,
+    } = user
+    
+    const data = {
+        user: {
+            email,
+            profileImage,
+            role,
+            username,
+            token: user.token,
+        }
+    }
+
+    return res.status(200).json(data)
 })
 
 const clearAllEntries = async userId => await Entry
@@ -284,11 +337,11 @@ app.get('/user/location/:userId', async (req, res) => {
 
 app.post('/product', async (req, res) => {
     const { body } = req
-    const { _id, price, title, desc, vendorId, blurb, category } = body
-    const newItem = { price, title, desc, vendorId, blurb, category }
+    const { _id, price, title, desc, vendor, blurb, category } = body
+    const newItem = { price, title, desc, vendor, blurb, category }
     return _id
         ? await Product
-            .findOneAndUpdate({ _id }, { $set: { price, title, desc, blurb, category } }, { new: true } )
+            .findOneAndUpdate({ _id }, { $set: { price, vendor, title, desc, blurb, category } }, { new: true } )
             .then(item => res.json({ item }))
         : await Product
             .create(newItem)
