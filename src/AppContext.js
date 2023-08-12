@@ -23,7 +23,6 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_USER':
             user = action.user
-            console.log('USER_SET', user)
             break
         case 'SET_PROFILE_IMAGE':
             user = { ...user, profileImage: action.image }

@@ -175,13 +175,14 @@ const Navigation = () => {
     }
 
     return (
-        <NavigationContainer
-            ref={navigationRef}
-            // linking={linking}
-            fallback={<FallbackScreen />}
-        >
-            {renderSecureStack()}
-        </NavigationContainer>
+        <View></View>
+        // <NavigationContainer
+        //     ref={navigationRef}
+        //     // linking={linking}
+        //     fallback={<FallbackScreen />}
+        // >
+        //     {renderSecureStack()}
+        // </NavigationContainer>
     )
 }
 

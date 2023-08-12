@@ -10,7 +10,7 @@ import {
 } from './'
 const size = 100
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
-console.log('IMAGE_PATH', IMAGE_PATH)
+// console.log('IMAGE_PATH', IMAGE_PATH)
 
 // this component is not being used
 

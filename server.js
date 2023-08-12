@@ -174,6 +174,22 @@ const handleSignup = async (req, res) => {
     })
 }
 
+const getSanitizedUser = ({
+    _id,
+    email,
+    profileImage,
+    role,
+    username,
+    token,
+}) => ({
+    _id,
+    email,
+    profileImage,
+    role,
+    username,
+    token,
+})
+
 app.post('/authenticate', async (req, res) => {
     
     const { token } = req.body
@@ -182,7 +198,7 @@ app.post('/authenticate', async (req, res) => {
     
     const userFromToken = getDecodedUser(token)
     
-    console.log('token found belonging to user', userFromToken.username)
+    console.log(`token found belonging to user ${userFromToken.username}\n`)
     
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)
     if (expired) {
@@ -208,24 +224,7 @@ app.post('/authenticate', async (req, res) => {
         return
     }
 
-    const {
-        email,
-        profileImage,
-        role,
-        username,
-    } = user
-    
-    const data = {
-        user: {
-            email,
-            profileImage,
-            role,
-            username,
-            token: user.token,
-        }
-    }
-
-    return res.status(200).json(data)
+    return res.status(200).json({ user: getSanitizedUser(user) })
 })
 
 const clearAllEntries = async userId => await Entry

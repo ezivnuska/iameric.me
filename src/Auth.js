@@ -4,12 +4,7 @@ import axios from 'axios'
 export const cleanStorage = () => AsyncStorage.multiRemove(['userToken', 'route'])
 export const clearStorage = () => AsyncStorage.multiRemove(['userToken', 'route', 'email'])
 
-const storeToken = async token => {
-    await AsyncStorage
-        .setItem('userToken', token)
-        .then(() => console.log('credentials saved locally'))
-        .catch(err => console.log('Error caught while storing token:', err))
-}
+const storeToken = async token => await AsyncStorage.setItem('userToken', token)
 
 export const authenticate = async token => {
     // const token = await AsyncStorage.getItem('userToken')

@@ -26,7 +26,7 @@ const SplashScreen = ({ navigation }) => {
 
     const checkStatus = async () => {
         
-        console.log('S P L A S H\nchecking auth status')
+        console.log('\nS P L A S H\n\nchecking auth status\n\n')
         
         const userToken = await AsyncStorage.getItem('userToken')
         
@@ -37,31 +37,21 @@ const SplashScreen = ({ navigation }) => {
         }
 
         console.log('verifying saved token')
-        const user = await authenticate(userToken)
-
-        if (!user) {
+        const response = await authenticate(userToken)
+        
+        if (!response) {
             console.log('invalid token')
             setLoading(false)
             return
         }
-
-        await AsyncStorage.setItem('userToken', user.token)
-
-        const {
-            email,
-            profileImage,
-            role,
-            username,
-        } = user
+        
+        const { token, ...user } = response
+        
+        await AsyncStorage.setItem('userToken', token)
         
         dispatch({
             type: 'SET_USER',
-            user: {
-                email,
-                profileImage,
-                role,
-                username,
-            }
+            user,
         })
 
         setLoading(false)
