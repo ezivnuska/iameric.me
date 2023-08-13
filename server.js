@@ -243,12 +243,12 @@ const clearUserToken = async _id => await User
         return null
     })
 
-const signoutUser = async _id => await User.
-    findOneAndUpdate({ _id }, { $set: { token: null, } }, { new: true })
-
 const handleSignout = async (req, res) => {
-    const signedOutUser = await signoutUser(req.body._id)
+    const signedOutUser = await User.
+        findOneAndUpdate({ _id: req.body._id }, { $set: { token: null, } }, { new: true })
+
     if (!signedOutUser) return res.json({ success: false, msg: 'Could not sign out user.' })
+
     return res.json({ success: true, user: signedOutUser, msg: 'User signed out.' })
 }
 
@@ -682,12 +682,33 @@ app.post('/unsubscribe', (req, res) => {
 })
 
 app.get('/orders', async (req, res) => {
-    const orders = await Order.
+    let orders = await Order.
         find({}).
-        populate({ path: 'items', select: '_id price title' }).
-        populate({ path: 'customer', select: '_id username' }).
-        populate({ path: 'vendor', select: '_id username' })
+        populate('items', 'price title').
+        populate('customer', 'username').
+        populate('vendor', 'username')
 
+    orders = orders.map(({
+        _id,
+        customer,
+        date,
+        driver,
+        items,
+        status,
+        vendor,
+    }) => ({
+        _id,
+        customer,
+        date,
+        driver,
+        items,
+        status,
+        vendor,
+    }))
+
+    // if (!orders || !orders.length) return res.status(400).json({error: 'no orders found'})
+    
+    // console.log('orders', orders)
     return res.status(200).json({ orders })
 })
 
@@ -699,8 +720,15 @@ app.post('/order', async (req, res) => {
         vendor,
     }
 
-    const order = await Order.
+    let order = await Order.
         create(orderDetails)
+        
+    order = await Order.findOne({ _id: order._id }).
+        populate('vendor', 'username').
+        populate('customer', 'username').
+        populate('items', 'title price')
+        
+    // console.log('whatever the fuck', order)
 
     if (!order) {
         console.log('Error creating new order')
@@ -717,19 +745,68 @@ app.post('/order', async (req, res) => {
     //         path: 'items',
     //     })
     
-    // console.log('order', order)
+    console.log('order', order)
 
     return res.status(200).json(order)
     
 })
 
 app.post('/order/confirm/:id', async (req, res) => {
-    const { id } = req.params
-    console.log('confirm order', id)
-    const order = await Order.findOne({ _id: id })
+    const _id = req.params.id
+    const order = await Order.findOne({ _id })
     if (!order) console.log('Could not confirm order')
-    order.status = order.status + 1
+    order.status = 1
     await order.save()
+    console.log('order saved. status:', order.status)
+    return res.status(200).json(order)
+})
+
+app.post('/order/accept', async (req, res) => {
+    const { id, driver } = req.body
+    const order = await Order.
+        findOneAndUpdate({ _id: id }, { $set: {
+            status: 2,
+            driver,
+        } }, { new: true }).
+        populate('driver', 'username')
+        
+    if (!order) console.log('Could not confirm order')
+
+    console.log('order accepted. driver, status:', order.driver, order.status)
+
+    return res.status(200).json(order)
+})
+
+app.post('/order/pickedup', async (req, res) => {
+    const { id } = req.body
+    const order = await Order.
+        findOneAndUpdate({ _id: id }, { $set: {
+            status: 3,
+        } }, { new: true }).
+        populate('driver', 'username')
+        
+    if (!order) console.log('Could not save order status as picked up')
+
+    console.log('order picked up. driver, status:', order.driver, order.status)
+
+    return res.status(200).json(order)
+})
+
+app.post('/order/complete/:id', async (req, res) => {
+    const _id = req.params.id
+    const order = await Order.
+        findOneAndUpdate({ _id }, { $set: {
+            status: 4,
+        } }, { new: true }).
+        populate('driver', 'username')
+        
+    if (!order) {
+        console.log('Could not complete order')
+        return res.status(406).json({ err: 'Error completing order'})
+    }
+    console.log('completed order', order)
+    console.log('order completed by:', order.driver.username)
+
     return res.status(200).json(order)
 })
 
@@ -737,7 +814,7 @@ app.delete('/order/:id', async (req, res) => {
     const { id } = req.params
     // console.log('deleting order...', id)
     const order = await Order.findByIdAndDelete(id)
-    // console.log('Order deleted.', order)
+    console.log('Order deleted.', order)
     return res.json({ order })
 })
 
@@ -749,7 +826,7 @@ mongoose
         useUnifiedTopology: true,
         keepAlive: true,
     })
-    .then(() => console.log(`MongoDB connected to\n${db}\n\nHello World`))
+    .then(() => console.log(`MongoDB connected to\n${db}\n\nHello World\n\n\n\n\n\n\n`))
     .catch(err => console.log('Error connecting to database', err))
 
 server.listen(PORT, () => console.log(`\n\n\nserver listen on ${PORT}\n`))

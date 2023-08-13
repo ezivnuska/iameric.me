@@ -9,7 +9,8 @@ import {
 } from 'react-native'
 import {
     ButtonPrimary,
-    ItemizedListItem
+    // ItemizedListItem,
+    OrderPreview,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
@@ -119,8 +120,8 @@ const ItemizedList = ({ order }) => {
                     listKey={() => 'products'}
                     keyExtractor={(item, index) => 'product' + index}
                     renderItem={({ item }) => (
-                        <ItemizedListItem
-                            item={item}
+                        <OrderPreview
+                            order={item}
                         />
                     )} 
                 />

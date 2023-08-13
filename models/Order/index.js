@@ -31,10 +31,10 @@ const orderSchema = Schema({
     type: Date,
     default: Date.now,
   },
-  driver: [{
+  driver: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-  }],
+  },
   status: {
     type: Schema.Types.Number,
     default: 0,

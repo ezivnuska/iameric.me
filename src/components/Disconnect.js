@@ -24,10 +24,10 @@ const Disconnect = props => {
 
     const signout = async () => {
         setLoading(true)
+        dispatch({ type: 'SIGNOUT' })
         await axios.post('/api/signout', { _id: user._id })
         await cleanStorage()
         setLoading(false)
-        dispatch({ type: 'SIGNOUT' })
     }
 
     return !loading ? (

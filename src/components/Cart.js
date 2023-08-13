@@ -42,11 +42,10 @@ const Cart = ({ onSubmitOrder }) => {
             items: items.map(item => item._id),
         }
         
-        const order = await axios.post('/api/order', newOrder)
+        const { data } = await axios.post('/api/order', newOrder)
         
-        if (!order) console.log('Order submission failed', order)
-
-        dispatch({ type: 'ADD_ORDER', order })
+        if (!data) console.log('Order submission failed', order)
+        dispatch({ type: 'ADD_ORDER', order: data })
 
         onSubmitOrder()
     }
