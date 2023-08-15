@@ -6,16 +6,13 @@ import {
 } from 'react-native'
 
 const OrderDetails = ({ order }) => {
+    console.log('order', order)
     return (
         <View style={styles.container}>
-            <View>
-                <Text>Date:</Text>
-                <Text>{order.date}</Text>
-            </View>
-            <View>
-                <Text>Vendor:</Text>
-                <Text>{order.vendor}</Text>
-            </View>
+            <Text>{`Date: ${order.date}`}</Text>
+            <Text>{`Vendor: ${order.vendor.username}`}</Text>
+            <Text>{`Customer: ${order.customer.username}`}</Text>
+            {order.driver ? <Text>{`Driver: ${order.driver.username}`}</Text> : null}
         </View>
     )
 }

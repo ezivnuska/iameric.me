@@ -29,15 +29,14 @@ const LocationDisplay = props => {
     const {
         dispatch,
         state,
+        user,
     } = useContext(AppContext)
 
-    const { user } = state
-
-    const [location, setLocation] = useState(null)
+    const [location, setLocation] = useState(user.location)
     const [modalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
-        getLocation()
+       if (!location) getLocation()
     }, [])
 
     const getLocation = () => {

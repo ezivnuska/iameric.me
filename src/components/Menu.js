@@ -46,12 +46,16 @@ const Menu = ({ items, vendor }) => {
                 closeModal={() => setFeatured(null)}
                 label={featured ? featured.title : null}
             >
-                {featured ? (
-                    <ProductDetails
-                        product={featured}
-                        onOrder={addToCart}
-                    />
-                ) : null }
+                {
+                    featured
+                        ? (
+                            <ProductDetails
+                                product={featured}
+                                onOrder={addToCart}
+                            />
+                        )
+                        : null
+                }
             </ModalContainer>
         </View>
     )

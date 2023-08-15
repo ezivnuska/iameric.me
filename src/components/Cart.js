@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     FlatList,
     StyleSheet,
@@ -28,6 +28,8 @@ const Cart = ({ onSubmitOrder }) => {
         cart,
     } = useContext(AppContext)
 
+    const [loading, setLoading] = useState(false)
+
     const getTotal = () => {
         let total = 0
         cart.items.map(i => total += Number(i.price))
@@ -42,9 +44,18 @@ const Cart = ({ onSubmitOrder }) => {
             items: items.map(item => item._id),
         }
         
-        const { data } = await axios.post('/api/order', newOrder)
+        setLoading(true)
+
+        const { data } = await axios.
+            post('/api/order', newOrder)
+
+        setLoading(false)
         
-        if (!data) console.log('Order submission failed', order)
+        if (!data) {
+            console.log('Order submission failed')
+            return
+        }
+
         dispatch({ type: 'ADD_ORDER', order: data })
 
         onSubmitOrder()
@@ -71,6 +82,7 @@ const Cart = ({ onSubmitOrder }) => {
             <ButtonPrimary
                 label='Submit Order'
                 onPress={submitOrder}
+                disabled={loading}
             />
         </View>
     ) : null

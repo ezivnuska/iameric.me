@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    Avatar,
     LocationDetails,
     MenuDisplay
 } from '.'
@@ -38,11 +39,16 @@ const Storefront = ({ id }) => {
             {
                 vendor ? (
                     <View>
-                        <View style={styles.vendorDetails}>
-                            <Text style={styles.title}>{vendor.username}</Text>
-                            {vendor.location ? <LocationDetails location={vendor.location} /> : null}
+                        <View style={styles.vendorHeading}>
+                            <View style={styles.vendorAvatar}>
+                                <Avatar size={70} path={`${vendor.username}/${vendor.profileImage.filename}`} />
+                            </View>
+                            <View style={styles.vendorDetails}>
+                                <Text style={styles.title}>{vendor.username}</Text>
+                                {vendor.location ? <LocationDetails location={vendor.location} /> : null}
+                            </View>
                         </View>
-                        <MenuDisplay vendorId={vendor._id} />)
+                        <MenuDisplay vendorId={vendor._id} />
                     </View>
                 ) : null
             }
@@ -60,12 +66,25 @@ const styles = StyleSheet.create({
     backButton: {
         paddingVertical: 15,
     },
-    vendorDetails: {
+    vendorHeading: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        columnGap: 10,
         paddingBottom: 10,
         marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#000',
         borderBottomStyle: 'dotted',
+    },
+    vendorAvatar: {
+        flex: 1,
+        flexBasis: 'auto',
+        flexGrow: 0,
+    },
+    vendorDetails: {
+        flex: 1,
+        flexGRow: 1,
     },
     title: {
         fontSize: 20,

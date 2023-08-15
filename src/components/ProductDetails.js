@@ -20,7 +20,7 @@ const ProductDetails = ({ product, onOrder }) => {
                 <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
             </View>
             <ButtonPrimary
-                label='Order'
+                label='Add to Cart'
                 onPress={() => onOrder(product)}
             />
         </View>

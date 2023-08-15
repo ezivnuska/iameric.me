@@ -65,7 +65,7 @@ const SplashScreen = ({ navigation }) => {
     
     return (
         <View style={styles.container}>
-            
+            <Text style={styles.splash}>Splash</Text>
         </View>
     )
 }

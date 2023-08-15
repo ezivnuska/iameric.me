@@ -125,7 +125,7 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
 
             <ButtonPrimary
                 label='Save'
-                disabled={!title.length && !price.length}
+                disabled={loading || !title.length || !price.length}
                 onPress={onSubmit}
             />
 

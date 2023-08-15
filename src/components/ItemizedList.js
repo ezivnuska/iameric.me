@@ -29,7 +29,6 @@ const ItemizedList = ({ order }) => {
     const [items, setItems] = useState(order.items)
 
     // useEffect(() => {
-    //     console.log('ORDER', order)
     // }, [])
 
     const removeItem = id => {

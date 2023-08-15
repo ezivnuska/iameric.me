@@ -52,7 +52,6 @@ const reducer = (state = initialState, action) => {
         break
         case 'ADD_ORDER':
             orders = [...orders, action.order]
-            // console.log('ORDER_ADDED', action.order)
             cart = { vendor: null, items: null }
         break
         case 'CONFIRM_ORDER':
@@ -67,12 +66,11 @@ const reducer = (state = initialState, action) => {
         break
         case 'ACCEPT_ORDER':
             orders = orders.map(order => {
-                if (order._id == action.id) {
-                    console.log('order accepted', order)
+                if (order._id == action.order._id) {
                     return {
                         ...order,
                         status: 2,
-                        driver: action.driver,
+                        driver: action.order.driver,
                     }
                 } else return order
             })

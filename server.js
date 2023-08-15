@@ -258,10 +258,16 @@ const handleSignout = async (req, res) => {
 
 app.post('/signout', (req, res) => handleSignout(req, res))
 
-app.get('/users', (req, res) => {
-    User
-        .find({})
-        .then(users => res.json({ users }))
+app.get('/users', async (req, res) => {
+    const users = await User.
+        find({})
+    
+    if (!users) {
+        console.log('Could not fetch users')
+        return res.json(null)
+    }
+
+    return res.status(200).json({ users })
 })
 
 app.get('/vendors', async (req, res) => await User.
@@ -384,7 +390,8 @@ app.get('/users/:id', async (req, res, next) => {
     const _id = req.params.id
     const user = await User.
         findOne({ _id }).
-        populate('location')
+        populate('location').
+        populate('profileImage', 'filename')
         
     if (!user) return res.status(406).json({ user: null })
         
@@ -699,7 +706,8 @@ app.get('/orders', async (req, res) => {
         find({}).
         populate('items', 'price title').
         populate('customer', 'username').
-        populate('vendor', 'username')
+        populate('vendor', 'username').
+        populate('driver', 'username')
 
     orders = orders.map(({
         _id,
@@ -719,9 +727,6 @@ app.get('/orders', async (req, res) => {
         vendor,
     }))
 
-    // if (!orders || !orders.length) return res.status(400).json({error: 'no orders found'})
-    
-    // console.log('orders', orders)
     return res.status(200).json({ orders })
 })
 
@@ -740,25 +745,13 @@ app.post('/order', async (req, res) => {
         populate('vendor', 'username').
         populate('customer', 'username').
         populate('items', 'title price')
-        
-    // console.log('whatever the fuck', order)
 
     if (!order) {
         console.log('Error creating new order')
         return res.json(400).json(null)
     }
-
-    // console.log('newOrder', newOrder)
-
-    // const order = await Order.
-    //     findOne({ _id: newOrder._id }).
-    //     populate('vendor').
-    //     populate('customer').
-    //     populate({
-    //         path: 'items',
-    //     })
     
-    console.log('order', order)
+    console.log(`new order created by ${order.customer.username} from ${order.vendor.username}`)
 
     return res.status(200).json(order)
     
@@ -766,11 +759,21 @@ app.post('/order', async (req, res) => {
 
 app.post('/order/confirm/:id', async (req, res) => {
     const _id = req.params.id
-    const order = await Order.findOne({ _id })
-    if (!order) console.log('Could not confirm order')
-    order.status = 1
-    await order.save()
-    console.log('order saved. status:', order.status)
+    const order = await Order.
+        findOneAndUpdate({ _id }, { $set: {
+            status: 1,
+        } }, { new: true }).
+        populate('customer', 'username').
+        populate('driver', 'username').
+        populate('vendor', 'username')
+
+    if (!order) {
+        console.log('Could not confirm order')
+        return res.status(400).json(null)
+    }
+
+    console.log(`${order.vendor.username} confirmed order for ${order.customer.username}`)
+
     return res.status(200).json(order)
 })
 
@@ -781,11 +784,13 @@ app.post('/order/accept', async (req, res) => {
             status: 2,
             driver,
         } }, { new: true }).
-        populate('driver', 'username')
+        populate('customer', 'username').
+        populate('driver', 'username').
+        populate('vendor', 'username')
         
-    if (!order) console.log('Could not confirm order')
+    if (!order) console.log('Could not accept order')
 
-    console.log('order accepted. driver, status:', order.driver, order.status)
+    console.log(`${order.driver.username} accepted order for ${order.customer.username} from ${order.vendor.username}`)
 
     return res.status(200).json(order)
 })
@@ -796,11 +801,13 @@ app.post('/order/pickedup', async (req, res) => {
         findOneAndUpdate({ _id: id }, { $set: {
             status: 3,
         } }, { new: true }).
-        populate('driver', 'username')
+        populate('customer', 'username').
+        populate('driver', 'username').
+        populate('vendor', 'username')
         
     if (!order) console.log('Could not save order status as picked up')
 
-    console.log('order picked up. driver, status:', order.driver, order.status)
+    console.log(`${order.driver.username} picked up order for ${order.customer.username} from ${order.vendor.username}`)
 
     return res.status(200).json(order)
 })
@@ -811,14 +818,15 @@ app.post('/order/complete/:id', async (req, res) => {
         findOneAndUpdate({ _id }, { $set: {
             status: 4,
         } }, { new: true }).
-        populate('driver', 'username')
+        populate('driver', 'username').
+        populate('customer', 'username').
+        populate('vendor', 'username')
         
     if (!order) {
         console.log('Could not complete order')
         return res.status(406).json({ err: 'Error completing order'})
     }
-    console.log('completed order', order)
-    console.log('order completed by:', order.driver.username)
+    console.log(`${order.driver.username} completed order from ${order.vendor.username} to ${order.customer.username}`)
 
     return res.status(200).json(order)
 })

@@ -38,6 +38,7 @@ import Menu from './Menu'
 import MenuItem from './MenuItem'
 import MenuDisplay from './MenuDisplay'
 import ModalContainer from './ModalContainer'
+import OrderDetails from './OrderDetails'
 import OrderDisplay from './OrderDisplay'
 import OrderPreview from './OrderPreview'
 import ItemizedListItem from './ItemizedListItem'
@@ -104,6 +105,7 @@ export {
     MenuItem,
     MenuDisplay,
     ModalContainer,
+    OrderDetails,
     OrderDisplay,
     OrderPreview,
     ItemizedList,
