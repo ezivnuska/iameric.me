@@ -7,36 +7,21 @@ export const clearStorage = () => AsyncStorage.multiRemove(['userToken', 'route'
 const storeToken = async token => await AsyncStorage.setItem('userToken', token)
 
 export const authenticate = async token => {
-    // const token = await AsyncStorage.getItem('userToken')
-    // if (!token) return null
-    return axios
-        .post('/api/authenticate', { token })
-        .then(async ({ data }) => {
-            const { error, user } = data
+    
+    const { data } = await axios.
+        post('/api/authenticate', { token })
+    
+    if (!data) {
+        console.log('Error authenticating token')
+        await clearStorage()
+        return null
+    }
 
-            if (error) {
-                console.log('Error authenticating token', error)
-                await clearStorage()
-                return null
-            }
-            
-            if (user) {
-                console.log(`${user.username} verified`)
-                await storeToken(user.token)
-                return user
-            }
+    const { user } = data
 
-            // else
-            console.log('no user found. clearing local storage.')
-                
-            await clearStorage() 
-
-            // setFormVisible(true)
-            
-            return null
-        })
-        .catch(err => {
-            console.log('Error getting user', err)
-            return null
-        })
+    console.log(`${user.username} verified`)
+    
+    await storeToken(user.token)
+    
+    return user
 }

@@ -48,20 +48,21 @@ const VendorDisplay = () => {
     //     setVendor(vendor)
     // }
 
-    return loading
-        ? <Text>Loading Vendors...</Text>
-        : (
-            <View style={styles.container}>
-                
-                <View style={styles.displayHeader}>
-                    <Text style={styles.title}>Vendors</Text>
-                </View>
-
-                <VendorList
-                    users={vendors}
-                />
+    return (
+        <View style={styles.container}>
+            
+            <View style={styles.displayHeader}>
+                <Text style={styles.title}>Vendors</Text>
             </View>
-        )
+
+            {
+                loading
+                    ? <Text>Loading Vendors...</Text>
+                    : <VendorList users={vendors} />
+            }
+            
+        </View>
+    )
 }
 
 export default VendorDisplay

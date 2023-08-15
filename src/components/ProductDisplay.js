@@ -41,11 +41,16 @@ const ProductDisplay = () => {
         setItems(data.items)
     }
 
-    const onDelete = id => {
-        axios
-            .delete('/api/products/delete', { data: { id } })
-            .then(({ data }) => setItems(items.filter(item => item._id !== data.item._id)))
-            .catch(err => console.log('Error deleting product:', err))
+    const onDelete = async id => {
+        const { data } = await axios.
+            delete('/api/products/delete', { data: { id } })
+        
+        if (!data) {
+            console.log('Error deleting product')
+            return
+        }
+
+        setItems(items.filter(item => item._id !== data.item._id))
     }
 
     const onModalSubmitted = item => {
@@ -92,6 +97,7 @@ const ProductDisplay = () => {
             >
                 <ProductForm
                     onComplete={onModalSubmitted}
+                    onDelete={onDelete}
                 />
             </ModalContainer>
         </View>
@@ -103,7 +109,7 @@ export default ProductDisplay
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
-        paddingHorizontal: 10,  
+        // paddingHorizontal: 10,
     },
     displayHeader: {
         display: 'flex',

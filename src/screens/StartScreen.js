@@ -44,9 +44,7 @@ const StartScreen = ({ navigation }) => {
 		
         const response = await axios.
             post('/api/signin', { email, password })
-
-        console.log('connect response:', response)
-
+        
         const user = response.data
         
         if (!user) {
@@ -54,6 +52,8 @@ const StartScreen = ({ navigation }) => {
             setError('error authenticating user')
             return
         }
+
+        console.log(`${user.username} connected`)
         
         await AsyncStorage.setItem('userToken', user.token)
         

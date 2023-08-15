@@ -177,6 +177,7 @@ const handleSignup = async (req, res) => {
 const getSanitizedUser = ({
     _id,
     email,
+    location,
     profileImage,
     role,
     username,
@@ -184,6 +185,7 @@ const getSanitizedUser = ({
 }) => ({
     _id,
     email,
+    location,
     profileImage,
     role,
     username,
@@ -208,7 +210,9 @@ app.post('/authenticate', async (req, res) => {
 
     const user = await User.
         findOne({ _id: userFromToken._id }).
-        populate('profileImage', 'filename')
+        populate('profileImage', 'filename').
+        populate('location')
+
 
     if (!user) {
         console.log('failed to refresh user token')
@@ -338,13 +342,22 @@ app.post('/product', async (req, res) => {
     const { body } = req
     const { _id, price, title, desc, vendor, blurb, category } = body
     const newItem = { price, title, desc, vendor, blurb, category }
-    return _id
-        ? await Product
-            .findOneAndUpdate({ _id }, { $set: { price, vendor, title, desc, blurb, category } }, { new: true } )
-            .then(item => res.json({ item }))
-        : await Product
-            .create(newItem)
-            .then(item => res.json({ item }))
+
+    let item = null
+
+    if (_id) {
+        item = await Product.
+            findOneAndUpdate({ _id }, { $set: { price, vendor, title, desc, blurb, category } }, { new: true } )
+    } else {
+        item = await Product.create(newItem)
+    }
+
+    if (!item) {
+        console.log(`Error ${_id ? 'updating' : 'adding'} item`)
+        return res.status(406).json({ item: null })
+    }
+
+    return res.status(200).json({ item })
 })
 
 app.get('/products/:id', async (req, res) => {
@@ -812,10 +825,8 @@ app.post('/order/complete/:id', async (req, res) => {
 
 app.delete('/order/:id', async (req, res) => {
     const { id } = req.params
-    // console.log('deleting order...', id)
     const order = await Order.findByIdAndDelete(id)
-    console.log('Order deleted.', order)
-    return res.json({ order })
+    return res.status(200).json({ order })
 })
 
 mongoose.Promise = global.Promise

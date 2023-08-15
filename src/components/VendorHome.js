@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import {
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -12,10 +13,11 @@ import { AppContext } from '../AppContext'
 const VendorHome = () => {
 
     const { user } = useContext(AppContext)
-    
+
     return (
         <View style={styles.container}>
-            <LocationDetails user={user} />
+            {/* <Text style={styles.heading}>{user.username}</Text>
+            {user.location ? <LocationDetails location={user.location} /> : null} */}
             <ProductDisplay user={user} />
         </View>
     )
@@ -25,9 +27,14 @@ export default VendorHome
 
 const styles = StyleSheet.create({
     container: { 
-        marginHorizontal: 'auto',
+        marginHorizontal: 10,
         minWidth: 350,
         maxWidth: 450,
         width: 375,
     },
+    heading: {
+        fontWeight: 600,
+        fontSize: 20,
+        marginBottom: 5,
+    }
 })

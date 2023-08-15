@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import {
     FlatList,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -26,6 +27,7 @@ const Menu = ({ items, vendor }) => {
     
     return (
         <View style={styles.container}>
+            <Text style={styles.heading}>Menu</Text>
             <FlatList
                 data={items}
                 keyExtractor={item => `product-${item._id}`}
@@ -61,4 +63,9 @@ const styles = StyleSheet.create({
     container: {
 
     },
+    heading: {
+        fontSize: 20,
+        fontWeight: 600,
+        marginBottom: 10,
+    }
 })

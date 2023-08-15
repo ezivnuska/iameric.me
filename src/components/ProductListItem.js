@@ -26,6 +26,11 @@ const ProductListItem = ({ item, onDelete, update }) => {
         setModalVisible(false)
     }
 
+    const deleteItem = id => {
+        onDelete(id)
+        setModalVisible(false)
+    }
+
     return (
         <View style={styles.container}>
 
@@ -51,6 +56,7 @@ const ProductListItem = ({ item, onDelete, update }) => {
             >
                 <ProductForm
                     onComplete={onComplete}
+                    onDelete={deleteItem}
                     product={item}
                 />
             </ModalContainer>

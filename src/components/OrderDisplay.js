@@ -86,8 +86,13 @@ const OrderDisplay = () => {
     }
 
     const confirmOrder = async () => {
+
+        setLoading(true)
+
         const order = await axios.
             post(`/api/order/confirm/${featuredItem}`)
+        
+        setLoading(false)
         
         if (!order) console.log('Error confirming order')
 
@@ -98,9 +103,13 @@ const OrderDisplay = () => {
 
     const acceptDelivery = async () => {
 
+        setLoading(true)
+
         const order = await axios.
             post('/api/order/accept', { id: featuredItem, driver: user._id })
         
+        setLoading(false)
+
         if (!order) console.log('Error confirming order')
 
         dispatch({ type: 'ACCEPT_ORDER', id: featuredItem, driver: user._id })
@@ -110,8 +119,12 @@ const OrderDisplay = () => {
 
     const pickedUpOrder = async () => {
 
+        setLoading(true)
+
         const order = await axios.
             post('/api/order/pickedup', { id: featuredItem, driver: user._id })
+        
+        setLoading(false)
         
         if (!order) console.log('Error marking order picked up')
 
@@ -121,10 +134,14 @@ const OrderDisplay = () => {
     }
 
     const completeDelivery = async () => {
-
+        
+        setLoading(true)
+        
         const order = await axios.
             post(`/api/order/complete/${featuredItem}`)
         
+        setLoading(false)
+
         if (!order) console.log('Error completing order')
 
         dispatch({ type: 'COMPLETE_ORDER', id: featuredItem })
@@ -137,20 +154,20 @@ const OrderDisplay = () => {
         const { status } = order
         switch (user.role) {
             case 'customer':
-                return <ButtonPrimary label='Cancel Order' onPress={cancelOrder} />
+                return <ButtonPrimary label='Cancel Order' onPress={cancelOrder} disabled={loading} />
             break
             case 'vendor':
-                return <ButtonPrimary label='Confirm Order' onPress={confirmOrder} />
+                return <ButtonPrimary label='Confirm Order' onPress={confirmOrder} disabled={loading} />
             break
             case 'driver':
                 if (status == 1) 
-                    return <ButtonPrimary label='Accept Delivery' onPress={acceptDelivery} />
+                    return <ButtonPrimary label='Accept Delivery' onPress={acceptDelivery} disabled={loading} />
                 if (status == 2)
-                    return <ButtonPrimary label='Picked Up' onPress={pickedUpOrder} />
+                    return <ButtonPrimary label='Picked Up' onPress={pickedUpOrder} disabled={loading} />
                 if (status == 3)
-                    return <ButtonPrimary label='Order Completed' onPress={completeDelivery} />
+                    return <ButtonPrimary label='Order Completed' onPress={completeDelivery} disabled={loading} />
                 if (status == 4)
-                    return <ButtonPrimary label='Clear Order' onPress={cancelOrder} />
+                    return <ButtonPrimary label='Clear Order' onPress={cancelOrder} disabled={loading} />
             break
         }
     }

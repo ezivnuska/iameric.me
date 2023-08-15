@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    LocationDetails,
     MenuDisplay
 } from '.'
 import axios from 'axios'
@@ -27,13 +28,6 @@ const Storefront = ({ id }) => {
         setVendor(user)
     }
 
-    const renderVendorDetails = () => (
-        <View>
-            <Text style={styles.title}>{vendor.username}</Text>
-            <MenuDisplay vendorId={vendor._id} />
-        </View>
-    )
-
     return (
         <View style={styles.container}>
             
@@ -41,8 +35,18 @@ const Storefront = ({ id }) => {
                 <Text style={styles.backButton}>&lt; Back</Text>
             </TouchableOpacity>
             
-            {vendor ? renderVendorDetails() : null}
-
+            {
+                vendor ? (
+                    <View>
+                        <View style={styles.vendorDetails}>
+                            <Text style={styles.title}>{vendor.username}</Text>
+                            {vendor.location ? <LocationDetails location={vendor.location} /> : null}
+                        </View>
+                        <MenuDisplay vendorId={vendor._id} />)
+                    </View>
+                ) : null
+            }
+        
         </View>
     )
 }
@@ -56,14 +60,16 @@ const styles = StyleSheet.create({
     backButton: {
         paddingVertical: 15,
     },
-    title: {
-        fontSize: 20,
-        lineHeight: 24,
-        fontWeight: 700,
-        marginBottom: 15,
+    vendorDetails: {
         paddingBottom: 10,
+        marginBottom: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#000',
         borderBottomStyle: 'dotted',
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 600,
+        marginBottom: 5,
     },
 })

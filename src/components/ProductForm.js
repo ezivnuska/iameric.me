@@ -12,7 +12,7 @@ import {
     FormInput,
 } from '.'
 
-const ProductForm = ({ onComplete, product = null }) => {
+const ProductForm = ({ onComplete, onDelete, product = null }) => {
 
     const {
         state,
@@ -20,6 +20,9 @@ const ProductForm = ({ onComplete, product = null }) => {
     } = useContext(AppContext)
 
     const { user } = state
+
+    const [loading, setLoading] = useState(false)
+
     const [ title, setTitle ] = useState(product ? product.title : '')
     const [ price, setPrice ] = useState(product ? product.price : '')
     const [ blurb, setBlurb ] = useState(product ? product.blurb : '')
@@ -32,8 +35,10 @@ const ProductForm = ({ onComplete, product = null }) => {
     const onChangeBlurb = value => setBlurb(value)
     const onChangeCategory = value => setCategory(value)
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
+
         const { _id, role, username } = user
+        
         let newProduct = {
             vendor: _id,
             title,
@@ -48,19 +53,25 @@ const ProductForm = ({ onComplete, product = null }) => {
             _id: product._id,
         }
         
-        axios
-            .post('/api/product', newProduct)
-            .then(({ data }) => {
-                setTitle('')
-                setPrice('')
-                setDesc('')
-                setBlurb('')
-                setCategory('')
-                onComplete(data.item)
-            })
-            .catch(err => {
-                console.log('Error saving product', err)
-            })
+        setLoading(true)
+
+        const { data } = await axios.
+            post('/api/product', newProduct)
+
+        setLoading(false)
+
+        if (!data) {
+            console.log('Error saving product')
+            return
+        }
+
+        setTitle('')
+        setPrice('')
+        setDesc('')
+        setBlurb('')
+        setCategory('')
+        
+        onComplete(data.item)
     }
 
     return (
@@ -116,6 +127,12 @@ const ProductForm = ({ onComplete, product = null }) => {
                 label='Save'
                 disabled={!title.length && !price.length}
                 onPress={onSubmit}
+            />
+
+            <ButtonPrimary
+                label='Delete'
+                disabled={loading}
+                onPress={() => onDelete(product._id)}
             />
 
         </View>

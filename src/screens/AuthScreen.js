@@ -58,34 +58,34 @@ const AuthScreen = ({ navigation, ...props }) => {
     }
 
     const getUserToken = async () => {
-        return await AsyncStorage
-            .getItem('userToken')
-            .then(token => token)
-            .catch(err => {
-                console.log('Caught Error checking for stored token.', err)
-                return null
-            })
+        const token = await AsyncStorage.
+            getItem('userToken')
+
+        if (!token) {
+            console.log('Caught Error checking for stored token.')
+            return null
+        }
+
+        return token
     }
 
     const checkIn = async () => {
         console.log('Checking in...')
         
-        const userToken = await getUserToken()
+        const token = await getUserToken()
 
-        if (!userToken) {
+        if (!token) {
             console.log('no user token found')
             setFormVisible(true)
             return
         }
 
-        dispatch({ type: 'SET_STATUS', status: 'Verifying user...' })
         setFormVisible(false)
 
-        const authenticatedUser = await authenticate()
+        const authenticatedUser = await authenticate(token)
         
         if (!authenticatedUser) {
             console.log('no authenticated user found')
-            dispatch({ type: 'SET_STATUS', status: 'Authentication failed. Please sign in.' })
             setFormVisible(true)
             return
         }
