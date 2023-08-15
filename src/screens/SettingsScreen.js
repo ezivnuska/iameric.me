@@ -18,11 +18,8 @@ import { AppContext } from '../AppContext'
 const SettingsScreen = ({ ...props }) => {
 
     const {
-        dispatch,
-        state,
+        user,
     } = useContext(AppContext)
-
-    const { user } = state
 
     return (
         <View style={styles.container}>
@@ -32,7 +29,7 @@ const SettingsScreen = ({ ...props }) => {
             <View style={styles.modules}>
                 {
                     (user.role === 'vendor' || user.role === 'customer')
-                        ? <LocationDisplay user={user} />
+                        ? <LocationDisplay details={user.location} />
                         : null
                 }
 

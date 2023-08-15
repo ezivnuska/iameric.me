@@ -22,11 +22,38 @@ const Storefront = ({ id }) => {
         getVendor()
     }, [])
 
+    // useEffect(() => {
+    //     if (loading) return
+    //     console.log('vendor changed', vendor)
+    //     if (typeof vendor.location != 'string') {
+    //         setVendor({
+    //             ...vendor,
+    //             location: vendor.location,
+    //         })
+    //     } else getVendorLocation()
+    // }, [vendor])
+
     const getVendor = async () => {
+        setLoading(true)
         const { data: { user } } = await axios.get(`/api/users/${id}`)
         setLoading(false)
         if (!user) return console.log('oops... could not get vendor details')
         setVendor(user)
+    }
+
+    const getVendorLocation = async () => {
+        setLoading(true)
+        const response = await axios.
+            get(`/api/user/location/${vendor._id}`)
+        
+        setLoading(false)
+
+        if (!response) {
+            console.log('could not get users location')
+            return null
+        }
+
+        setVendor(response)
     }
 
     return (

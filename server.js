@@ -333,13 +333,15 @@ app.post('/location', async (req, res) => {
 
 app.get('/user/location/:userId', async (req, res) => {
     const { userId } = req.params
-    return await Location
+    const response = await Location
         .findOne({ userId })
-        .then(response => {
-            if (!response) return res.json({ location: null })
-            return res.json({ location: response })
-        })
-        .catch(err => res.json({ location: null, err }))
+
+    if (!response) {
+        console.log('Error getting user location')
+        return res.json({ location: null })
+    }
+
+    return res.json({ location: response })
 })
 
 // [menu] product

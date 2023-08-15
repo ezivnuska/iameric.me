@@ -28,9 +28,9 @@ const OrderDisplay = () => {
         getOrders()
     }, [])
     
-    useEffect(() => {
-        console.log('orders changed', orders)
-    }, [orders])
+    // useEffect(() => {
+    //     console.log('orders changed', orders)
+    // }, [orders])
 
     const getFeaturedItem = id => {
         const item = orders.filter((order, index) => order._id === id)[0]
@@ -45,7 +45,6 @@ const OrderDisplay = () => {
 
         if (!data.orders) console.log('no orders found')
 
-        console.log("order found", data.orders)
         dispatch({ type: 'SET_ORDERS', orders: data.orders })   
     }
 
@@ -94,14 +93,14 @@ const OrderDisplay = () => {
 
         setLoading(true)
 
-        const order = await axios.
+        const { data } = await axios.
             post('/api/order/accept', { id: featuredItem, driver: user._id })
         
         setLoading(false)
 
-        if (!order) console.log('Error confirming order')
+        if (!data) console.log('Error confirming order')
 
-        dispatch({ type: 'ACCEPT_ORDER', order })
+        dispatch({ type: 'ACCEPT_ORDER', order: data })
 
         setFeaturedItem(null)
     }
@@ -139,13 +138,17 @@ const OrderDisplay = () => {
     }
 
     const renderOrderProcessButton = status => {
-        console.log('user.role', user.role)
+        
         switch (user.role) {
             case 'customer':
                 return <ButtonPrimary label='Cancel Order' onPress={cancelOrder} disabled={loading} />
             break
             case 'vendor':
-                return <ButtonPrimary label='Confirm Order' onPress={confirmOrder} disabled={loading} />
+                if (status == 0)
+                    return <ButtonPrimary label='Confirm Order' onPress={confirmOrder} disabled={loading} />
+                    
+                if (status == 4)
+                    return <ButtonPrimary label='Clear Order' onPress={cancelOrder} disabled={loading} />
             break
             case 'driver':
                 switch (status) {

@@ -24,7 +24,7 @@ const initialState = {
     zip: '',
 }
 
-const LocationDisplay = props => {
+const LocationDisplay = ({ details }) => {
 
     const {
         dispatch,
@@ -32,20 +32,23 @@ const LocationDisplay = props => {
         user,
     } = useContext(AppContext)
 
-    const [location, setLocation] = useState(user.location)
+    const [location, setLocation] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
-       if (!location) getLocation()
+        getLocation()
     }, [])
 
-    const getLocation = () => {
-        axios
+    const getLocation = async () => {
+        const { data } = await axios
             .get(`/api/user/location/${user._id}`)
-            .then(({ data }) => {
-                setLocation(data.location || initialState)
-            })
-            .catch(err => console.log('Error getting location:', err))
+
+        if (!data) {
+            console.log('Error getting location:')
+            return
+        }
+
+        setLocation(data.location || initialState)
     }
 
     const onSubmitAddress = async newLocation => {
@@ -80,9 +83,7 @@ const LocationDisplay = props => {
                 </View>
             </View>
 
-            <LocationDetails
-                location={location}
-            />
+            {location ? <LocationDetails location={location} /> : null}
 
             <ModalContainer
                 animationType='slide'

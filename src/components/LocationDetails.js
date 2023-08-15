@@ -8,7 +8,6 @@ import defaultStyles from '../styles'
 import { ContactsOutlined } from '@ant-design/icons'
 
 const LocationDetails = ({ location }) => {
-
     const { address1, address2, city, state, zip } = location
     
     return (

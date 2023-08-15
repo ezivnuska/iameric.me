@@ -34,8 +34,8 @@ const OrderPreview = ({ order, onPress }) => {
     // }, [driver])
 
     const modalDisabled = () => {
-        if (user.role == 'customer') return false
-        if (user.role == 'vendor' && status == 0) return false
+        if (user.role == 'customer' && status < 4) return false
+        if (user.role == 'vendor' && (status == 0 || status == 4)) return false
         if (user.role == 'driver' && (status > 0)) return false
         return true
     }
