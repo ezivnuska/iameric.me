@@ -7,15 +7,7 @@ import {
 } from 'react-native'
 import { AppContext } from '../AppContext'
 
-const colors = [
-    'pink',
-    'lightblue',
-    'green',
-    'orange',
-    'purple',
-]
-
-const OrderPreview = ({ order, onPress }) => {
+const OrderPreview = ({ order, onPress, ...props }) => {
 
     const {
         user,
@@ -64,7 +56,7 @@ const OrderPreview = ({ order, onPress }) => {
         <TouchableOpacity
             onPress={() => onPress(_id)}
             disabled={modalDisabled()}
-            style={[styles.container, { backgroundColor: colors[status] }]}
+            {...props}
         >
             {vendor && <Text>{vendor.username} ({items.length})</Text>}
             <Text>{renderStatus()}</Text>

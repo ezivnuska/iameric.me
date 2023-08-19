@@ -1,3 +1,4 @@
+import ActiveOrders from './ActiveOrders'
 import ActivityList from './ActivityList'
 import ActivityListItem from './ActivityListItem'
 import AuthButton from './AuthButton'
@@ -38,6 +39,8 @@ import Menu from './Menu'
 import MenuItem from './MenuItem'
 import MenuDisplay from './MenuDisplay'
 import ModalContainer from './ModalContainer'
+import OrderListContainer from './OrderListContainer'
+import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderDisplay from './OrderDisplay'
 import OrderPreview from './OrderPreview'
@@ -65,6 +68,7 @@ import VendorHome from './VendorHome'
 import VendorList from './VendorList'
 
 export {
+    ActiveOrders,
     ActivityList,
     ActivityListItem,
     AuthButton,
@@ -105,6 +109,8 @@ export {
     MenuItem,
     MenuDisplay,
     ModalContainer,
+    OrderListContainer,
+    OrderList,
     OrderDetails,
     OrderDisplay,
     OrderPreview,

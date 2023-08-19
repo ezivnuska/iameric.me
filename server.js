@@ -732,6 +732,99 @@ app.get('/orders', async (req, res) => {
     return res.status(200).json({ orders })
 })
 
+app.get('/orders/active', async (req, res) => {
+    const { driver } = req.body
+    let orders = await Order.
+        find({ driver, status: 1 }).
+        populate('items', 'price title').
+        populate('customer', 'username').
+        populate('vendor', 'username').
+        populate('driver', 'username')
+
+    console.log('orders waiting', orders)
+    orders = orders.map(({
+        _id,
+        customer,
+        date,
+        driver,
+        items,
+        status,
+        vendor,
+    }) => ({
+        _id,
+        customer,
+        date,
+        driver,
+        items,
+        status,
+        vendor,
+    }))
+
+    return res.status(200).json({ orders })
+})
+
+app.get('/orders/customer/:id', async (req, res) => {
+    const { id } = req.params
+    
+    let orders = await Order.
+        find({ customer: id }).
+        populate('items', 'price title').
+        populate('customer', 'username').
+        populate('vendor', 'username').
+        populate('driver', 'username')
+
+    orders = orders.map(({
+        _id, customer, date, driver, items, status, vendor,
+    }) => ({
+        _id, customer, date, driver, items, status, vendor,
+    }))
+
+    return res.status(200).json({ orders })
+})
+
+app.get('/orders/driver/:id', async (req, res) => {
+    const { id } = req.params
+    
+    let orders = await Order.
+        find({
+            $or: [
+                { driver: id },
+                { status: { $eq: 1 } },
+            ],
+        }).
+        populate('items', 'price title').
+        populate('customer', 'username').
+        populate('vendor', 'username').
+        populate('driver', 'username')
+
+    orders = orders.map(({
+        _id, customer, date, driver, items, status, vendor,
+    }) => ({
+        _id, customer, date, driver, items, status, vendor,
+    }))
+
+    return res.status(200).json({ orders })
+})
+
+app.get('/orders/vendor/:id', async (req, res) => {
+    const { id } = req.params
+    
+    let orders = await Order.
+        find({ vendor: id }).
+        populate('items', 'price title').
+        populate('customer', 'username').
+        populate('vendor', 'username').
+        populate('driver', 'username')
+
+    orders = orders.map(({
+        _id, customer, date, driver, items, status, vendor,
+    }) => ({
+        _id, customer, date, driver, items, status, vendor,
+    }))
+
+    return res.status(200).json({ orders })
+})
+
 app.post('/order', async (req, res) => {
     const { customer, items, vendor } = req.body
     const orderDetails = {
@@ -759,10 +852,10 @@ app.post('/order', async (req, res) => {
     
 })
 
-app.post('/order/confirm/:id', async (req, res) => {
-    const _id = req.params.id
+app.post('/order/confirm', async (req, res) => {
+    const { id } = req.body
     const order = await Order.
-        findOneAndUpdate({ _id }, { $set: {
+        findOneAndUpdate({ _id: id }, { $set: {
             status: 1,
         } }, { new: true }).
         populate('customer', 'username').

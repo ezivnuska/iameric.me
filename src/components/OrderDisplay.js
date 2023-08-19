@@ -18,24 +18,41 @@ const OrderDisplay = () => {
     const {
         dispatch,
         user,
-        orders,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)
+    const [items, setItems] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
 
     useEffect(() => {
         getOrders()
     }, [])
-    
-    // useEffect(() => {
-    //     console.log('orders changed', orders)
-    // }, [orders])
 
     const getFeaturedItem = id => {
-        const item = orders.filter((order, index) => order._id === id)[0]
-        return item
+        return items.filter((order, index) => order._id === id)[0]
     }
+
+    const relevantOrders = orders => {
+        switch(user.role) {
+            case 'driver':
+                return orders.filter(item => {
+                    return item.status == 1 || (item.driver && item.driver._id == user._id)
+                })
+            break
+            case 'customer':
+                return orders.filter(item => {
+                    console.log('customer, user', item.customer._id, user._id)
+                    return item.customer._id == user._id
+                })
+            break
+            case 'vendor':
+                return orders.filter(item => {
+                    return item.vendor._id == user._id
+                })
+            break
+        }
+    }
+
     const getOrders = async () => {
         setLoading(true)
         
@@ -45,7 +62,11 @@ const OrderDisplay = () => {
 
         if (!data.orders) console.log('no orders found')
 
-        dispatch({ type: 'SET_ORDERS', orders: data.orders })   
+        dispatch({ type: 'SET_ORDERS', orders: data.orders })
+
+        const orders = relevantOrders(data.orders)
+        
+        setItems(orders)
     }
 
     const removeOrder = id => {
@@ -73,6 +94,16 @@ const OrderDisplay = () => {
         setFeaturedItem(null)
     }
 
+    const setOrderConfirmed = id => {
+        const item = {
+            ...getItemById(id),
+            status: 1,
+        }
+        setItems(items.map(i => (i._id == id) ? item : i))
+
+        setFeaturedItem(null)
+    }
+
     const confirmOrder = async () => {
 
         setLoading(true)
@@ -86,7 +117,18 @@ const OrderDisplay = () => {
 
         dispatch({ type: 'CONFIRM_ORDER', id: featuredItem })
 
-        setFeaturedItem(null)
+        setOrderConfirmed(order._id)
+    }
+
+    const getItemById = id => items.filter(item => item._id == id)[0]
+
+    const setOrderAccepted = id => {
+        const item = {
+            ...getItemById(id),
+            status: 2,
+        }
+        
+        setItems(items.map(i => i._id == id ? item : i))
     }
 
     const acceptDelivery = async () => {
@@ -101,6 +143,17 @@ const OrderDisplay = () => {
         if (!data) console.log('Error confirming order')
 
         dispatch({ type: 'ACCEPT_ORDER', order: data })
+
+        setOrderAccepted(data._id)
+    }
+
+    const setOrderPickedUp = id => {
+        const item = {
+            ...getItemById(id),
+            status: 2,
+        }
+        console.log('item picked up', item)
+        setItems(items.map(i => i._id == id ? item : i))
 
         setFeaturedItem(null)
     }
@@ -118,7 +171,8 @@ const OrderDisplay = () => {
 
         dispatch({ type: 'ORDER_PICKEDUP', id: featuredItem, driver: user._id })
 
-        setFeaturedItem(null)
+        setOrderPickedUp(order._id)
+
     }
 
     const completeDelivery = async () => {
@@ -190,30 +244,21 @@ const OrderDisplay = () => {
     }
 
     const renderOrders = () => {
-        return (
-            <View style={styles.list}>
-                {orders.map((order, index) => (
-                    <OrderPreview
-                        key={`order-preview-${index}`}
-                        onPress={() => onPress(order)}
-                        order={order}
-                    />
-                ))}
-            </View>
-        )
-    }
-
-    return loading
-        ? <Text>Loading Orders...</Text>
-        : (
-            <View style={styles.container}>
-                <Text style={styles.heading}>{orders.length ? 'Pending Orders' : 'No Pending Orders'}</Text>
-                {
-                    orders.length
-                        ? renderOrders()
-                        : null
-                }
-                
+        if (loading) return <Text>Loading Orders...</Text>
+        if (!items || !items.length) return null
+        const orders = relevantOrders(items)
+        return (orders && orders.length) ? (
+            <View>
+                <View style={styles.list}>
+                    {orders.map((order, index) => (
+                        <OrderPreview
+                            key={`order-preview-${index}`}
+                            onPress={() => onPress(order)}
+                            order={order}
+                        />
+                    ))}
+                </View>
+            
                 <ModalContainer
                     animationType='slide'
                     transparent={false}
@@ -224,7 +269,14 @@ const OrderDisplay = () => {
                     {featuredItem ? renderOrderProcessForm(featuredItem) : null}
                 </ModalContainer>
             </View>
-        )
+        ) : null
+    }
+
+    return (
+        <View style={styles.container}>
+            {renderOrders()}
+        </View>
+    )
 }
 
 export default OrderDisplay
