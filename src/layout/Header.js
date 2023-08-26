@@ -18,11 +18,16 @@ const Header = () => {
     } = useContext(AppContext)
     
     return (
-        <View
-            style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <Brand onPress={() => navigate(user ? 'Home' : 'Start')} />
-                {user && <AuthMenu navigate={navigate} user={user} />}
+                <View style={styles.child}>
+                    <Brand onPress={() => navigate(user ? 'Home' : 'Start')} />
+                </View>
+                {user && (
+                    <View style={styles.child}>
+                        <AuthMenu navigate={navigate} user={user} />
+                    </View>
+                )}
             </View>
         </View>
     )
@@ -36,17 +41,21 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     headerContainer: {
-        flex: 1,
-        flexShrink: 0,
+        // flex: 1,
         display: 'flex',
-        flexDirection:'row',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        width: '98%',
+        flexShrink: 0,
+        width: '100%',
         minWidth: 300,
         maxWidth: 900,
         marginHorizontal: 'auto',
         // height: 50,
         minHeight: 50,
         maxHeight: 50,
+    },
+    child: {
+        flexBasis: 'auto',
     },
 })

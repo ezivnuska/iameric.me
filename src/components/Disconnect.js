@@ -36,7 +36,7 @@ const Disconnect = props => {
             onPress={signout}
             style={styles.container}
         >
-            <CloseCircleOutlined style={styles.icon} />
+            <CloseCircleOutlined size='large' style={{ color: '#fff' }} />
         </TouchableOpacity>
     ) : <ActivityIndicator size='small' />
 }
@@ -45,16 +45,9 @@ export default Disconnect
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        display: 'flex',
-        flexShrink: 0,
-        flexBasis: 'auto',
-        alignItems: 'center',
+        paddingVertical: 5,
     },
     icon: {
-        flex: 1,
-        // lineHeight: 45,
         color: '#fff',
-        paddingTop: 1,
     }
 })

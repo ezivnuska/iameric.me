@@ -21,8 +21,8 @@ const OrderListContainer = () => {
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState([])
-    const [type, setType] = useState('current')
+    const [current, setCurrent] = useState([])
+    const [available, setAvailable] = useState([])
 
     useEffect(() => {
         getOrders()
@@ -32,96 +32,57 @@ const OrderListContainer = () => {
         sortOrders()
     }, [orders])
 
-    useEffect(() => {
-        sortOrders()
-    }, [type])
-
-    // useEffect(() => {
-    // }, [items])
-
     const getOrders = async () => {
         setLoading(true)
         const { data } = await axios.
             get(`/api/orders/${user.role}/${user._id}`)
+
         setLoading(false)
+        
         if (!data) {
             console.log('could not get user orders')
             return
         }
-        // console.log('user orders...', data.orders.length, data.orders)
+        
         dispatch({ type: 'SET_ORDERS', orders: data.orders })
     }
 
     const sortOrders = () => {
-        let array = orders
-        if (user.role === 'driver') {
-            if (type == 'current') {
-                array = getCurrentOrders()
-            } else {
-                array = getAvailableOrders()
-            }
-        }
-
-        setItems(array)
+        setCurrent(currentUserOrders())
+        setAvailable(getAvailableOrders())
     }
 
-    const getAvailableOrders = () => orders.filter(order => {
-            if (order.status === 1) {
-                return order
-            }
-        })
-
-    const getCurrentOrders = () => {
-        if (!orders) {
-            console.log('no orders!!!!')
-            return []
-        }
-        if (user.role === 'driver') {
-            return orders.filter(order => {
-                if (order.driver && order.driver._id === user._id)
-                    return order
-            })
-        }
+    const currentUserOrders = () => {
+        const { role } = user
+        return orders.filter(order => (order[role] && order[role]._id === user._id))
     }
 
-    const renderTabs = () => {
-        if (user.role === 'driver') {
-            return (
-                <View style={styles.controls}>
-                    <TouchableOpacity
-                        style={[styles.button, type === 'current' ? styles.buttonDisabled : null ]}
-                        disabled={type === 'current'}
-                        onPress={() => setType('current')}
-                    >
-                        <Text
-                            style={[styles.buttonLabel, type === 'current' ? styles.buttonLabelDisabled : null ]}
-                        >Current</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[styles.button, type === 'available' ? styles.buttonDisabled : null ]}
-                        disabled={type === 'available'}
-                        onPress={() => setType('available')}
-                    >
-                        <Text
-                            style={[styles.buttonLabel, type === 'available' ? styles.buttonLabelDisabled : null ]}
-                        >
-                            Available
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            )
-        }
-        return null
+    const getAvailableOrders = () => orders.filter(order => order.status === 1)
+
+    const renderAvailableOrders = () => {
+        if (user.role !== 'driver') return null
+        return (available && available.length) ? (
+            <View>
+                <Text>Available Orders</Text>
+                <OrderList orders={available} />
+            </View>
+        ) : <Text>No available orders</Text>
     }
+
+    const renderCurrentOrders = () => (current && current.length) ? (
+        <View>
+            <Text>Current Orders</Text>
+            <OrderList orders={current} />
+        </View>
+    ) : null
     
     return loading
         ? <Text>Loading...</Text>
         : (
             <View style={styles.container}>
-            
-                {renderTabs()}
-
-                {<OrderList orders={items} />}
+                {renderCurrentOrders()}
+                
+                {renderAvailableOrders()}        
             </View>
         )
 }

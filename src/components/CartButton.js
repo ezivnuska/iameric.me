@@ -1,14 +1,16 @@
 import React, { useContext, useState } from 'react'
 import {
     StyleSheet,
-    View,
+    Text,
     TouchableOpacity,
+    View,
 } from 'react-native'
 import {
     Cart,
     ModalContainer,
 } from '.'
 import { ShoppingCartOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 
@@ -30,12 +32,15 @@ const CartButton = () => {
 
     return (
         <View style={styles.container}>
-            
-            <TouchableOpacity
-                onPress={() => setModalVisible(true)}
-            >
-                <ShoppingCartOutlined style={{ color: '#fff', fontSize: 20 }} />
-            </TouchableOpacity>
+            <Button
+                type='primary'
+                icon={<ShoppingCartOutlined />}
+                size='small'
+                onClick={() => setModalVisible(true)}
+            >   
+                &nbsp;
+                {cart.items.length}
+            </Button>
 
             <ModalContainer
                 animationType='slide'
@@ -57,6 +62,6 @@ export default CartButton
 
 const styles = StyleSheet.create({
     container: {
-
+        marginRight: 15,
     },
 })

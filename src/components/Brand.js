@@ -7,7 +7,7 @@ import {
 
 const Brand = ({ onPress }) => (
     <TouchableOpacity
-        style={styles.header}
+        style={styles.brand}
         onPress={onPress}
     >
         <Text style={styles.title}>
@@ -22,11 +22,9 @@ const Brand = ({ onPress }) => (
 export default Brand
 
 const styles = StyleSheet.create({
-    header: {
-        flex: 1,
+    brand: {
         margin: 0,
         paddingHorizontal: 10,
-        flexBasis: 'auto',
     },
     title: {
         flex: 1,

@@ -11,26 +11,26 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 
+const UserName = ({ username }) => (
+    <TouchableOpacity
+        style={styles.usernameButton}
+        onPress={() => navigate('Settings')}
+    >
+        <Text style={styles.username}>{username}</Text>
+    </TouchableOpacity>
+)
+
 const AuthMenu = ({ navigate, user }) => {
     
     const { state } = useContext(AppContext)
     const { items } = state.cart
 
     return (
-        <View style={styles.aside}>
+        <View style={styles.container}>
 
             {items && items.length ? <CartButton /> : null}
 
-            {(user.role !== 'guest')
-                ? (
-                    <TouchableOpacity
-                        style={styles.usernameButton}
-                        onPress={() => navigate('Settings')}
-                    >
-                        <Text style={styles.username}>{user.username}</Text>
-                    </TouchableOpacity>
-                ) : null
-            }
+            <UserName username={user.username} />
             
             <Disconnect />
         </View>
@@ -40,24 +40,30 @@ const AuthMenu = ({ navigate, user }) => {
 export default AuthMenu
 
 const styles = StyleSheet.create({
-    aside: {
+    container: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'flex-end',
+        justifyContent: 'flex-end',
         flex: 1,
         flexGrow: 0,
-        flexShrink: 0,
+        flexShrink: 1,
         flexBasis: 'auto',
         paddingRight: 10,
     },
     usernameButton: {
         flex: 1,
         flexShrink: 0,
+        flexShrink: 1,
         flexBasis: 'auto',
+        marginRight: 15,
+        padding: 5,
     },
     username: {
-        paddingHorizontal: 10,
+        // paddingHorizontal: 10,
         color: '#fff',
         fontWeight: 700,
+        // lineHeight: 24,
+
     },
 })
