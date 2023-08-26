@@ -7,13 +7,13 @@ import {
 import moment from 'moment'
 
 const OrderDetails = ({ order }) => {
-    const { date, customer, driver, vendor } = order
+    const { dropoff, customer, driver, vendor } = order
     return (
         <View style={styles.container}>
-            <Text>{`${moment(date).format('dddd, MMMM Do LT')}`}</Text>
             <Text>{`From ${vendor.username}`}</Text>
             <Text>{`To ${customer.username}`}</Text>
             {order.driver ? <Text>{`Assigned to ${driver.username}`}</Text> : null}
+            <Text>Deliver by: {`${moment(dropoff).format('dddd, MMMM Do LT')}`}</Text>
         </View>
     )
 }

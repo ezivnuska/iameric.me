@@ -8,9 +8,11 @@ import {
     ModalContainer,
     OrderDetails,
     OrderPreview,
+    TimeSelector,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
+import moment from 'moment'
 
 const OrderList = ({ orders }) => {
 
@@ -61,12 +63,15 @@ const OrderList = ({ orders }) => {
         setFeatured(null)
     }
 
-    const confirmOrder = async () => {
-
+    const confirmOrder = async time => {
+        console.log('time', time)
         setLoading(true)
-
+        
+        const pickup = moment().add(time, 'm')
+        
+        console.log('pickup', pickup)
         const { data } = await axios.
-            post('/api/order/confirm', { id: featured })
+            post('/api/order/confirm', { id: featured, pickup })
         
         setLoading(false)
 
@@ -113,8 +118,9 @@ const OrderList = ({ orders }) => {
         
         setLoading(true)
         
+        const time = new Date.now()
         const order = await axios.
-            post(`/api/order/complete/${featured}`)
+            post('/api/order/complete', { id: featured, time })
         
         setLoading(false)
 
@@ -132,7 +138,7 @@ const OrderList = ({ orders }) => {
     const renderOrderProcessButton = status => {
         if (user.role == 'customer') return renderButton('Cancel Order', cancelOrder)
         switch (status) {
-            case 0: return renderButton('Confirm Order', confirmOrder); break
+            case 0: return <TimeSelector onSelect={confirmOrder} />; break
             case 1: return renderButton('Accept Delivery', acceptDelivery); break
             case 2: return renderButton('Picked Up', pickedUpOrder); break
             case 3: return renderButton('Delivery Complete', completeDelivery); break

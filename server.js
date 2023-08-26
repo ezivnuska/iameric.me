@@ -853,10 +853,11 @@ app.post('/order', async (req, res) => {
 })
 
 app.post('/order/confirm', async (req, res) => {
-    const { id } = req.body
+    const { id, pickup } = req.body
     const order = await Order.
         findOneAndUpdate({ _id: id }, { $set: {
             status: 1,
+            pickup,
         } }, { new: true }).
         populate('customer', 'username').
         populate('driver', 'username').
@@ -907,11 +908,12 @@ app.post('/order/pickedup', async (req, res) => {
     return res.status(200).json(order)
 })
 
-app.post('/order/complete/:id', async (req, res) => {
-    const _id = req.params.id
+app.post('/order/complete', async (req, res) => {
+    const { id, time } = req.body
     const order = await Order.
-        findOneAndUpdate({ _id }, { $set: {
+        findOneAndUpdate({ _id: id }, { $set: {
             status: 4,
+            dropoff: time,
         } }, { new: true }).
         populate('driver', 'username').
         populate('customer', 'username').

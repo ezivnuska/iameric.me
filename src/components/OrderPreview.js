@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
+import moment from 'moment'
 
 const OrderPreview = ({ order, onPress, ...props }) => {
 
@@ -70,6 +71,8 @@ const OrderPreview = ({ order, onPress, ...props }) => {
             {vendor && <Text style={{ color: textColor()}}>{vendor.username} ({items.length})</Text>}
             <Text style={{ color: textColor()}}>{statusLabels[status]}</Text>
             {customer && <Text style={{ color: textColor()}}>{customer.username}</Text>}
+            {(status > 0) ? <Text>{`${moment(order.pickup).format('dddd, MMMM Do LT')}`}</Text> : null}
+            {(status > 3) ? <Text>{`Delivered: ${moment(order.dropoff).format('dddd, MMMM Do LT')}`}</Text> : null}
         </TouchableOpacity>
     )
 }
