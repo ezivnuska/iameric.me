@@ -6,7 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
-    ButtonPrimary,
+    // ButtonPrimary,
     OrderList,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -61,7 +61,7 @@ const OrderListContainer = () => {
                 array = getAvailableOrders()
             }
         }
-        
+
         setItems(array)
     }
 
@@ -88,18 +88,26 @@ const OrderListContainer = () => {
         if (user.role === 'driver') {
             return (
                 <View style={styles.controls}>
-                    <ButtonPrimary
-                        style={styles.button}
-                        label={'Current'}
+                    <TouchableOpacity
+                        style={[styles.button, type === 'current' ? styles.buttonDisabled : null ]}
                         disabled={type === 'current'}
                         onPress={() => setType('current')}
-                    />
-                    <ButtonPrimary
-                        style={styles.button}
-                        label={'Available'}
+                    >
+                        <Text
+                            style={[styles.buttonLabel, type === 'current' ? styles.buttonLabelDisabled : null ]}
+                        >Current</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[styles.button, type === 'available' ? styles.buttonDisabled : null ]}
                         disabled={type === 'available'}
                         onPress={() => setType('available')}
-                    />
+                    >
+                        <Text
+                            style={[styles.buttonLabel, type === 'available' ? styles.buttonLabelDisabled : null ]}
+                        >
+                            Available
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             )
         }
@@ -131,5 +139,19 @@ const styles= StyleSheet.create({
     },
     button: {
         flex: 1,
+        textAlign: 'center',
+        backgroundColor: 'blue',
+    },
+    buttonDisabled: {
+        backgroundColor: '#ccc',
+    },
+    buttonLabel: {
+        marginHorizontal: 'auto',
+        fontSize: 20,
+        lineHeight: 30,
+        color: '#000',
+    },
+    buttonLabelDisabled: {
+        color: '#fff',
     },
 })

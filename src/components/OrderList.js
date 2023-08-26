@@ -23,14 +23,6 @@ const OrderList = ({ orders }) => {
     const [activeOrders, setActiveOrders] = useState(orders)
     const [featured, setFeatured] = useState(null)
 
-    const colors = [
-        'pink',
-        'lightblue',
-        'green',
-        'orange',
-        'purple',
-    ]
-
     // useEffect(() => {
     //     getActiveOrders()
     // }, [])
@@ -133,42 +125,24 @@ const OrderList = ({ orders }) => {
         setFeatured(null)
     }
 
+    const renderButton = (label, action) => (
+        <ButtonPrimary label={label} onPress={action} disabled={loading} />
+    )
+
     const renderOrderProcessButton = status => {
-        if (user.role == 'customer') return <ButtonPrimary label='Cancel Order' onPress={cancelOrder} disabled={loading} />
+        if (user.role == 'customer') return renderButton('Cancel Order', cancelOrder)
         switch (status) {
-            case 0:
-                return <ButtonPrimary label='Confirm Order' onPress={confirmOrder} disabled={loading} />
-            break
-            case 1:
-                return <ButtonPrimary label='Accept Delivery' onPress={acceptDelivery} disabled={loading} />
-            break
-            case 2:
-                return <ButtonPrimary label='Picked Up' onPress={pickedUpOrder} disabled={loading} />
-            break
-            case 3:
-                return <ButtonPrimary label='Order Completed' onPress={completeDelivery} disabled={loading} />
-            break
-            case 4:
-                return <ButtonPrimary label='Clear Order' onPress={cancelOrder} disabled={loading} />
-            break
-            default:
-                return null
-        } 
+            case 0: return renderButton('Confirm Order', confirmOrder); break
+            case 1: return renderButton('Accept Delivery', acceptDelivery); break
+            case 2: return renderButton('Picked Up', pickedUpOrder); break
+            case 3: return renderButton('Delivery Complete', completeDelivery); break
+            case 4: return renderButton('Clear Order', cancelOrder); break
+            default: return null
+        }
     }
 
     const getFeaturedItem = id => {
         return orders.filter((order, index) => order._id === id)[0]
-    }
-
-    const renderOrderProcessForm = () => {
-        const order = getFeaturedItem(featured)
-        
-        return (
-            <View>
-                <OrderDetails order={order} />
-                {renderOrderProcessButton(order.status)}
-            </View>
-        )
     }
 
     const onPress = order => {
@@ -180,7 +154,7 @@ const OrderList = ({ orders }) => {
             <View style={styles.list}>
                 {orders.map((order, index) => (
                     <OrderPreview
-                        style={[styles.item, { backgroundColor: colors[order.status] }]}
+                        style={styles.item}
                         key={`order-preview-${index}`}
                         onPress={() => onPress(order)}
                         order={order}
@@ -200,7 +174,8 @@ const OrderList = ({ orders }) => {
                 closeModal={() => setFeatured(null)}
                 label='Order Details'
             >
-                {featured ? renderOrderProcessForm() : null}
+                {featured ? <OrderDetails order={getFeaturedItem(featured)} /> : null}
+                {featured ? renderOrderProcessButton(getFeaturedItem(featured).status) : null}
             </ModalContainer>
         </View>
     )
@@ -215,19 +190,22 @@ const styles = StyleSheet.create({
     list: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'flex-start',
         flexWrap: 'wrap',
-        rowGap: 3,
+        gap: '2%',
+        marginVertical: 10,
     },
     item: {
         flex: 1,
         flexBasis: '32%',
-        flexGrow: 0,
+        flexGrow: 1,
         flexShrink: 0,
+        maxWidth: '32%',
         // flexBasis: 'auto',
         marginBottom: 5,
         paddingVertical: 10,
         paddingHorizontal: 10,
         borderRadius: 4,
+        borderWidth: 0,
     }
 })

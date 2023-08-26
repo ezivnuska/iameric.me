@@ -22,8 +22,31 @@ const OrderPreview = ({ order, onPress, ...props }) => {
         status,
     } = order
 
-    // useEffect(() => {
-    // }, [driver])
+    const colors = [
+        'pink',
+        'lightblue',
+        'green',
+        'orange',
+        '#eee',
+    ]
+
+    const statusLabels = [
+        'Submitted',
+        'Confirmed',
+        'Accepted',
+        'Picked Up',
+        'Delivered',
+    ]
+
+    const textColor = () => order.status >= 4 ? '#aaa' : '#000'
+
+    const backgroundColor = () => colors[order.status]
+
+    const getCompletedStyles = () => order.status >= 4 ? {
+        borderWidth: 2,
+        borderStyle: 'dashed',
+        borderColor: '#aaa',
+    } : null
 
     const modalDisabled = () => {
         if (user.role == 'customer' && status < 4) return false
@@ -32,35 +55,21 @@ const OrderPreview = ({ order, onPress, ...props }) => {
         return true
     }
 
-    const renderStatus = () => {
-        switch (status) {
-            case 0:
-                return <Text>Submitted</Text>
-            break
-            case 1:
-                return <Text>Confirmed</Text>
-            break
-            case 2:
-                return <Text>Accepted</Text>
-            break
-            case 3:
-                return <Text>Picked Up</Text>
-            break
-            case 4:
-                return <Text>Delivered</Text>
-            break
-        }
-    }
-
     return (
         <TouchableOpacity
             onPress={() => onPress(_id)}
             disabled={modalDisabled()}
-            {...props}
+            style={[
+                props.style,
+                getCompletedStyles(),
+                {
+                    backgroundColor: backgroundColor(),
+                },
+            ]}
         >
-            {vendor && <Text>{vendor.username} ({items.length})</Text>}
-            <Text>{renderStatus()}</Text>
-            {customer && <Text>{customer.username}</Text>}
+            {vendor && <Text style={{ color: textColor()}}>{vendor.username} ({items.length})</Text>}
+            <Text style={{ color: textColor()}}>{statusLabels[status]}</Text>
+            {customer && <Text style={{ color: textColor()}}>{customer.username}</Text>}
         </TouchableOpacity>
     )
 }
