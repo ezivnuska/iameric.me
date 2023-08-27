@@ -9,14 +9,15 @@ import { Button } from 'antd'
 
 const numDurations = 6
 
-const TimeButton = ({ time, onSelect }) => {
+const TimeButton = ({ time, onSelect, ...props }) => {
     return (
         <Button
             type='primary'
             size='small'
             onClick={() => onSelect(time)}
+            style={props.style}
         >
-            {`${time} minutes`}
+            {`${time} m`}
         </Button>
     )
 }
@@ -32,6 +33,7 @@ const TimeSelector = ({ onSelect }) => {
                     key={time}
                     time={time * 5}
                     onSelect={t => onSelect(t)}
+                    style={styles.button}
                 />
             )
             time--
@@ -50,6 +52,15 @@ export default TimeSelector
 
 const styles = StyleSheet.create({
     container: {
-
+        marginVertical: 15,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'stretch',
+        columnGap: 2,
+    },
+    button: {
+        flex: 1,
+        flexShrink: 0,
+        height: 40,
     },
 })

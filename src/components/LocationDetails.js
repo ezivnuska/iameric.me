@@ -7,13 +7,13 @@ import {
 import defaultStyles from '../styles'
 import { ContactsOutlined } from '@ant-design/icons'
 
-const LocationDetails = ({ location }) => {
+const LocationDetails = ({ location, ...props }) => {
     const { address1, address2, city, state, zip } = location
     
     return (
         <View style={styles.container}>
-            <Text style={defaultStyles.text}>{address1}{address2.length ? ` ${address2}` : null}</Text>
-            <Text style={defaultStyles.text}>{`${city}, ${state} ${zip}`}</Text>
+            <Text style={props.style || defaultStyles.text}>{address1}{address2.length ? ` ${address2}` : null}</Text>
+            <Text style={props.style || defaultStyles.text}>{`${city}, ${state} ${zip}`}</Text>
         </View>
     )
 }

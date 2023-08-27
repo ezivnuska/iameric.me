@@ -57,22 +57,23 @@ const reducer = (state = initialState, action) => {
         case 'CONFIRM_ORDER':
             orders = orders.map(order => {
                 if (order._id == action.order._id) {
-                    return action.order
+                    return { ...order, ...action.order }
                 } else return order
             })
         break
         case 'ACCEPT_ORDER':
             orders = orders.map(order => {
                 if (order._id == action.order._id) {
-                    return action.order
+                    return { ...order, ...action.order }
                 } else return order
             })
         break
-        case 'ORDER_PICKEDUP':
+        case 'ORDER_RECEIVED':
             orders = orders.map(order => {
                 if (order._id == action.id) {
                     return {
                         ...order,
+                        ...action.order,
                         status: 3,
                     }
                 } else return order

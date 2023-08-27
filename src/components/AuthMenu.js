@@ -11,10 +11,10 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 
-const UserName = ({ username }) => (
+const UserName = ({ username, onPress }) => (
     <TouchableOpacity
         style={styles.usernameButton}
-        onPress={() => navigate('Settings')}
+        onPress={onPress}
     >
         <Text style={styles.username}>{username}</Text>
     </TouchableOpacity>
@@ -30,7 +30,7 @@ const AuthMenu = ({ navigate, user }) => {
 
             {items && items.length ? <CartButton /> : null}
 
-            <UserName username={user.username} />
+            <UserName username={user.username} onPress={() => navigate('Settings')} />
             
             <Disconnect />
         </View>

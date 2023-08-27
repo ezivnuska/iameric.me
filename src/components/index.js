@@ -13,6 +13,7 @@ import CartButton from './CartButton'
 import CategoryPicker from './CategoryPicker'
 import CircleButton from './CircleButton'
 import Container from './Container'
+import CountdownTimer from './CountdownTimer'
 import Customer from './Customer'
 import CustomerHome from './CustomerHome'
 import DeleteAccountButton from './DeleteAccountButton'
@@ -84,6 +85,7 @@ export {
     CategoryPicker,
     CircleButton,
     Container,
+    CountdownTimer,
     Customer,
     CustomerHome,
     DeleteAccountButton,

@@ -707,8 +707,16 @@ app.get('/orders', async (req, res) => {
     let orders = await Order.
         find({}).
         populate('items', 'price title').
-        populate('customer', 'username').
-        populate('vendor', 'username').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
         populate('driver', 'username')
 
     orders = orders.map(({
@@ -737,8 +745,16 @@ app.get('/orders/active', async (req, res) => {
     let orders = await Order.
         find({ driver, status: 1 }).
         populate('items', 'price title').
-        populate('customer', 'username').
-        populate('vendor', 'username').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
         populate('driver', 'username')
 
     console.log('orders waiting', orders)
@@ -769,14 +785,22 @@ app.get('/orders/customer/:id', async (req, res) => {
     let orders = await Order.
         find({ customer: id }).
         populate('items', 'price title').
-        populate('customer', 'username').
-        populate('vendor', 'username').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
         populate('driver', 'username')
 
     orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor,
+        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
     }) => ({
-        _id, customer, date, driver, items, status, vendor,
+        _id, customer, date, driver, items, status, vendor, pickup, accepted, received, delivered,
     }))
 
     return res.status(200).json({ orders })
@@ -793,14 +817,22 @@ app.get('/orders/driver/:id', async (req, res) => {
             ],
         }).
         populate('items', 'price title').
-        populate('customer', 'username').
-        populate('vendor', 'username').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
         populate('driver', 'username')
 
     orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor,
+        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
     }) => ({
-        _id, customer, date, driver, items, status, vendor,
+        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
     }))
 
     return res.status(200).json({ orders })
@@ -812,14 +844,22 @@ app.get('/orders/vendor/:id', async (req, res) => {
     let orders = await Order.
         find({ vendor: id }).
         populate('items', 'price title').
-        populate('customer', 'username').
-        populate('vendor', 'username').
-        populate('driver', 'username')
+        populate('driver', 'username').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        })
 
     orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor,
+        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
     }) => ({
-        _id, customer, date, driver, items, status, vendor,
+        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
     }))
 
     return res.status(200).json({ orders })
@@ -827,9 +867,10 @@ app.get('/orders/vendor/:id', async (req, res) => {
 
 app.post('/order', async (req, res) => {
     const { customer, items, vendor } = req.body
+    
     const orderDetails = {
-        items,
         customer,
+        items,
         vendor,
     }
 
@@ -837,9 +878,17 @@ app.post('/order', async (req, res) => {
         create(orderDetails)
         
     order = await Order.findOne({ _id: order._id }).
-        populate('vendor', 'username').
-        populate('customer', 'username').
-        populate('items', 'title price')
+        populate('items', 'title price').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        })
 
     if (!order) {
         console.log('Error creating new order')
@@ -854,14 +903,24 @@ app.post('/order', async (req, res) => {
 
 app.post('/order/confirm', async (req, res) => {
     const { id, pickup } = req.body
+    console.log('confirmed at', pickup)
     const order = await Order.
         findOneAndUpdate({ _id: id }, { $set: {
             status: 1,
+            confirmed: Date.now(),
             pickup,
         } }, { new: true }).
-        populate('customer', 'username').
-        populate('driver', 'username').
-        populate('vendor', 'username')
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate('driver', 'username')
 
     if (!order) {
         console.log('Could not confirm order')
@@ -879,10 +938,19 @@ app.post('/order/accept', async (req, res) => {
         findOneAndUpdate({ _id: id }, { $set: {
             status: 2,
             driver,
+            accepted: Date.now(),
         } }, { new: true }).
-        populate('customer', 'username').
-        populate('driver', 'username').
-        populate('vendor', 'username')
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate('driver', 'username')
         
     if (!order) console.log('Could not accept order')
 
@@ -891,14 +959,23 @@ app.post('/order/accept', async (req, res) => {
     return res.status(200).json(order)
 })
 
-app.post('/order/pickedup', async (req, res) => {
+app.post('/order/received', async (req, res) => {
     const { id } = req.body
     const order = await Order.
         findOneAndUpdate({ _id: id }, { $set: {
             status: 3,
+            received: Date.now(),
         } }, { new: true }).
-        populate('customer', 'username').
-        populate('driver', 'username').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
         populate('vendor', 'username')
         
     if (!order) console.log('Could not save order status as picked up')
@@ -913,10 +990,18 @@ app.post('/order/complete', async (req, res) => {
     const order = await Order.
         findOneAndUpdate({ _id: id }, { $set: {
             status: 4,
-            dropoff: time,
+            delivered: time,
         } }, { new: true }).
-        populate('driver', 'username').
-        populate('customer', 'username').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
         populate('vendor', 'username')
         
     if (!order) {

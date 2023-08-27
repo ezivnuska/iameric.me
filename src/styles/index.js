@@ -14,7 +14,7 @@ export default StyleSheet.create({
 	},
     text: {
         fontSize: 16,
-		lineHeight: 20,
+		lineHeight: 24,
     },
     heading: {
         fontSize: 20,

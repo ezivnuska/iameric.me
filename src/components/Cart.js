@@ -55,7 +55,7 @@ const Cart = ({ onSubmitOrder }) => {
             console.log('Order submission failed')
             return
         }
-
+        
         dispatch({ type: 'ADD_ORDER', order: data })
 
         onSubmitOrder()

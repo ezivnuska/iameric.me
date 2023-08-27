@@ -5,8 +5,14 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
+import {
+    CountdownTimer, LocationDetails,
+} from '.'
+
 import { AppContext } from '../AppContext'
+import defaultStyles from '../styles'
 import moment from 'moment'
+import { Button } from 'antd'
 
 const OrderPreview = ({ order, onPress, ...props }) => {
 
@@ -16,11 +22,17 @@ const OrderPreview = ({ order, onPress, ...props }) => {
 
     const {
         _id,
+        confirmed,
+        accepted,
         customer,
+        date,
         driver,
         items,
         vendor,
         status,
+        delivered,
+        pickup,
+        received,
     } = order
 
     const colors = [
@@ -43,6 +55,10 @@ const OrderPreview = ({ order, onPress, ...props }) => {
 
     const backgroundColor = () => colors[order.status]
 
+    // useEffect(() => {
+    //     console.log('order', order)
+    // }, [])
+
     const getCompletedStyles = () => order.status >= 4 ? {
         borderWidth: 2,
         borderStyle: 'dashed',
@@ -56,10 +72,24 @@ const OrderPreview = ({ order, onPress, ...props }) => {
         return true
     }
 
+    const renderCustomer = () => customer
+        ? (
+            <View style={styles.column}>
+                <Text style={[styles.heading, { color: textColor() }]}>{customer.username}</Text>
+                <LocationDetails location={customer.location} style={{ color: textColor()}} />
+            </View>
+        ) : null
+    
+    const renderVendor = () => vendor
+        ? (
+            <View style={styles.column}>
+                <Text style={[styles.heading, { color: textColor() }]}>{`${vendor.username} (${items.length} ${items.length > 1 ? 'items' : 'item'})`}</Text>
+                <LocationDetails location={vendor.location} style={{ color: textColor()}} />
+            </View>
+        ) : null
+
     return (
-        <TouchableOpacity
-            onPress={() => onPress(_id)}
-            disabled={modalDisabled()}
+        <View
             style={[
                 props.style,
                 getCompletedStyles(),
@@ -68,12 +98,33 @@ const OrderPreview = ({ order, onPress, ...props }) => {
                 },
             ]}
         >
-            {vendor && <Text style={{ color: textColor()}}>{vendor.username} ({items.length})</Text>}
-            <Text style={{ color: textColor()}}>{statusLabels[status]}</Text>
-            {customer && <Text style={{ color: textColor()}}>{customer.username}</Text>}
-            {(status > 0) ? <Text>{`${moment(order.pickup).format('dddd, MMMM Do LT')}`}</Text> : null}
-            {(status > 3) ? <Text>{`Delivered: ${moment(order.dropoff).format('dddd, MMMM Do LT')}`}</Text> : null}
-        </TouchableOpacity>
+            <Text style={[styles.text, { color: textColor()}]}>
+                {`${statusLabels[status]} on ${moment(order.date).format('ddd, MMM Do LT')}`}
+            </Text>
+
+            <Text style={[styles.text, { color: textColor()}]}>{moment(date).format('dddd, MMMM Do LT')}</Text>
+            
+            {pickup && <Text style={[styles.text, { color: textColor(), fontWeight: 600 }]}>{`Ready for pick up at ${moment(pickup).format('LT')}`}</Text>}
+
+            {received && <Text style={[styles.text, { color: textColor()}]}>{moment(received).format('dddd, MMMM Do LT')}</Text>}
+            
+            {delivered && <Text style={[styles.text, { color: textColor()}]}>{`Delivered: ${moment(delivered).format('dddd, MMMM Do LT')}`}</Text>}
+
+            <View style={styles.columns}>
+                {renderVendor()}
+                {renderCustomer()}
+            </View>
+
+            <Button
+                type='primary'
+                size='small'
+                onClick={() => onPress(_id)}
+                style={styles.button}
+            >   
+                Details &amp; Options
+            </Button>
+
+        </View>
     )
 }
 
@@ -90,5 +141,25 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 4,
+    },
+    columns: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'stretch',
+        marginTop: 5,
+        marginBottom: 10,
+    },
+    column: {
+        flex: 1,
+    },
+    heading: {
+        marginBottom: 3,
+        fontWeight: 600,
+    },
+    text: {
+        lineHeight: 24,
+    },
+    button: {
+        height: 40,
     },
 })

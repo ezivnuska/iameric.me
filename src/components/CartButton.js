@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     StyleSheet,
     Text,
@@ -24,6 +24,11 @@ const CartButton = () => {
     const { cart } = state
 
     const [modalVisible, setModalVisible] = useState(false)
+    const [items, setItems] = useState([])
+
+    useEffect(() => {
+        setItems(cart.items)
+    }, [cart])
 
     const onSubmitCart = () => {
         setModalVisible(false)
@@ -39,7 +44,7 @@ const CartButton = () => {
                 onClick={() => setModalVisible(true)}
             >   
                 &nbsp;
-                {cart.items.length}
+                {items.length}
             </Button>
 
             <ModalContainer

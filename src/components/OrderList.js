@@ -67,7 +67,8 @@ const OrderList = ({ orders }) => {
         console.log('time', time)
         setLoading(true)
         
-        const pickup = moment().add(time, 'm')
+        const m = moment()
+        const pickup = m.add(time, 'm')
         
         console.log('pickup', pickup)
         const { data } = await axios.
@@ -98,18 +99,18 @@ const OrderList = ({ orders }) => {
         setFeatured(null)
     }
 
-    const pickedUpOrder = async () => {
+    const receivedOrder = async () => {
 
         setLoading(true)
 
         const order = await axios.
-            post('/api/order/pickedup', { id: featured, driver: user._id })
+            post('/api/order/received', { id: featured, driver: user._id })
         
         setLoading(false)
         
         if (!order) console.log('Error marking order picked up')
 
-        dispatch({ type: 'ORDER_PICKEDUP', id: featured, driver: user._id })
+        dispatch({ type: 'ORDER_RECEIVED', id: featured, driver: user._id })
 
         setFeatured(null)
     }
@@ -140,7 +141,7 @@ const OrderList = ({ orders }) => {
         switch (status) {
             case 0: return <TimeSelector onSelect={confirmOrder} />; break
             case 1: return renderButton('Accept Delivery', acceptDelivery); break
-            case 2: return renderButton('Picked Up', pickedUpOrder); break
+            case 2: return renderButton('Picked Up', receivedOrder); break
             case 3: return renderButton('Delivery Complete', completeDelivery); break
             case 4: return renderButton('Clear Order', cancelOrder); break
             default: return null
@@ -195,19 +196,16 @@ const styles = StyleSheet.create({
     },
     list: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'flex-start',
-        flexWrap: 'wrap',
-        gap: '2%',
+        rowGap: 5,
         marginVertical: 10,
     },
     item: {
         flex: 1,
-        flexBasis: '32%',
-        flexGrow: 1,
+        flexBasis: 'auto',
+        flexGrow: 0,
         flexShrink: 0,
-        maxWidth: '32%',
-        // flexBasis: 'auto',
         marginBottom: 5,
         paddingVertical: 10,
         paddingHorizontal: 10,

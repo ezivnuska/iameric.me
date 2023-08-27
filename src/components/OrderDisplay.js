@@ -147,7 +147,7 @@ const OrderDisplay = () => {
         setOrderAccepted(data._id)
     }
 
-    const setOrderPickedUp = id => {
+    const setOrderReceived = id => {
         const item = {
             ...getItemById(id),
             status: 2,
@@ -158,20 +158,20 @@ const OrderDisplay = () => {
         setFeaturedItem(null)
     }
 
-    const pickedUpOrder = async () => {
+    const receivedOrder = async () => {
 
         setLoading(true)
 
         const order = await axios.
-            post('/api/order/pickedup', { id: featuredItem, driver: user._id })
+            post('/api/order/received', { id: featuredItem, driver: user._id })
         
         setLoading(false)
         
         if (!order) console.log('Error marking order picked up')
 
-        dispatch({ type: 'ORDER_PICKEDUP', id: featuredItem, driver: user._id })
+        dispatch({ type: 'ORDER_RECEIVED', id: featuredItem, driver: user._id })
 
-        setOrderPickedUp(order._id)
+        setOrderReceived(order._id)
 
     }
 
@@ -210,7 +210,7 @@ const OrderDisplay = () => {
                         return <ButtonPrimary label='Accept Delivery' onPress={acceptDelivery} disabled={loading} />
                     break
                     case 2:
-                        return <ButtonPrimary label='Picked Up' onPress={pickedUpOrder} disabled={loading} />
+                        return <ButtonPrimary label='Picked Up' onPress={receivedOrder} disabled={loading} />
                     break
                     case 3:
                         return <ButtonPrimary label='Order Completed' onPress={completeDelivery} disabled={loading} />

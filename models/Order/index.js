@@ -23,13 +23,25 @@ const orderSchema = Schema({
   //   type: Schema.Types.ObjectId,
   //   ref: 'Location',
   // }],
+  confirmed: {
+    type: Date,
+    default: null,
+  },
   pickup: {
     type: Date,
-    default: Date.now,
+    default: null,
   },
-  dropoff: {
+  accepted: {
     type: Date,
-    default: Date.now,
+    default: null,
+  },
+  received: {
+    type: Date,
+    default: null,
+  },
+  delivered: {
+    type: Date,
+    default: null,
   },
   driver: {
     type: Schema.Types.ObjectId,
