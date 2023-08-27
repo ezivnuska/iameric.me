@@ -39,19 +39,21 @@ const OrderPreview = ({ order, onPress, ...props }) => {
         'pink',
         'lightblue',
         'green',
+        'yellow',
         'orange',
         '#eee',
     ]
 
     const statusLabels = [
-        'Submitted',
+        'Ordered',
         'Confirmed',
         'Accepted',
+        'Arrived',
         'Picked Up',
         'Delivered',
     ]
 
-    const textColor = () => order.status >= 4 ? '#aaa' : '#000'
+    const textColor = () => order.status === 5 ? '#aaa' : '#000'
 
     const backgroundColor = () => colors[order.status]
 
@@ -59,34 +61,45 @@ const OrderPreview = ({ order, onPress, ...props }) => {
     //     console.log('order', order)
     // }, [])
 
-    const getCompletedStyles = () => order.status >= 4 ? {
+    const getCompletedStyles = () => order.status === 5 ? {
         borderWidth: 2,
         borderStyle: 'dashed',
         borderColor: '#aaa',
     } : null
 
-    const modalDisabled = () => {
-        if (user.role == 'customer' && status < 4) return false
-        if (user.role == 'vendor' && (status == 0 || status == 4)) return false
-        if (user.role == 'driver' && (status > 0)) return false
-        return true
+    const showOptionsButton = () => {
+        if (user.role === 'customer' && (status === 0 || status === 5)) return true
+        else if (user.role == 'vendor' && status === 0) return true
+        else if (user.role == 'driver' && status >= 1 && status < 5) return true
+
+        return false
     }
 
-    const renderCustomer = () => customer
-        ? (
-            <View style={styles.column}>
-                <Text style={[styles.heading, { color: textColor() }]}>{customer.username}</Text>
-                <LocationDetails location={customer.location} style={{ color: textColor()}} />
-            </View>
-        ) : null
+    const renderLocation = () => {
+        if (user.role === 'vendor') return null
+        if (user.role === 'driver' && order.status < 2) return null
+        return <LocationDetails location={customer.location} style={{ color: textColor()}} />
+    }
+
+    const renderCustomer = () => (
+        <View style={styles.column}>
+            <Text style={[styles.heading, { color: textColor() }]}>{customer.username}</Text>
+            {renderLocation()}
+        </View>
+    )
     
-    const renderVendor = () => vendor
-        ? (
-            <View style={styles.column}>
-                <Text style={[styles.heading, { color: textColor() }]}>{`${vendor.username} (${items.length} ${items.length > 1 ? 'items' : 'item'})`}</Text>
-                <LocationDetails location={vendor.location} style={{ color: textColor()}} />
-            </View>
-        ) : null
+    const renderVendor = () => (
+        <View style={styles.column}>
+            <Text style={[styles.heading, { color: textColor() }]}>{`${vendor.username} (${items.length} ${items.length > 1 ? 'items' : 'item'})`}</Text>
+            <LocationDetails location={vendor.location} style={{ color: textColor()}} />
+        </View>
+    )
+
+    const renderText = (text, format) => (
+        <Text style={[styles.text, { color: textColor() }, format]}>
+            {text}
+        </Text>
+    )
 
     return (
         <View
@@ -98,31 +111,37 @@ const OrderPreview = ({ order, onPress, ...props }) => {
                 },
             ]}
         >
-            <Text style={[styles.text, { color: textColor()}]}>
-                {`${statusLabels[status]} on ${moment(order.date).format('ddd, MMM Do LT')}`}
-            </Text>
-
-            <Text style={[styles.text, { color: textColor()}]}>{moment(date).format('dddd, MMMM Do LT')}</Text>
             
-            {pickup && <Text style={[styles.text, { color: textColor(), fontWeight: 600 }]}>{`Ready for pick up at ${moment(pickup).format('LT')}`}</Text>}
-
-            {received && <Text style={[styles.text, { color: textColor()}]}>{moment(received).format('dddd, MMMM Do LT')}</Text>}
             
-            {delivered && <Text style={[styles.text, { color: textColor()}]}>{`Delivered: ${moment(delivered).format('dddd, MMMM Do LT')}`}</Text>}
+            {renderText(`Ordered on ${moment(date).format('dddd, MMMM Do')} at ${moment(date).format('LT')}`)}
+            
+            {confirmed && renderText(`Confirmed by ${vendor.username} at ${moment(confirmed).format('LT')}`)}
+
+            {accepted && renderText(`Accepted by ${driver.username} at ${moment(accepted).format('LT')}`)}
+            
+            {pickup && !received && renderText(`Ready for pick up at ${moment(pickup).format('LT')}`, { fontWeight: 600 })}
+
+            {received && renderText(`Order picked up at ${moment(received).format('LT')}`)}
+            
+            {delivered && renderText(`Delivered at ${moment(delivered).format('LT')}`)}
 
             <View style={styles.columns}>
                 {renderVendor()}
                 {renderCustomer()}
             </View>
 
-            <Button
-                type='primary'
-                size='small'
-                onClick={() => onPress(_id)}
-                style={styles.button}
-            >   
-                Details &amp; Options
-            </Button>
+            {showOptionsButton()
+                ? (
+                    <Button
+                        type='primary'
+                        size='small'
+                        onClick={() => onPress(_id)}
+                        style={styles.button}
+                    >   
+                        Details &amp; Options
+                    </Button>
+                ) : null
+            }
 
         </View>
     )

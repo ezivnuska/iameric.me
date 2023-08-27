@@ -99,18 +99,34 @@ const OrderList = ({ orders }) => {
         setFeatured(null)
     }
 
+    const driverArrived = async () => {
+
+        setLoading(true)
+
+        const { data } = await axios.
+            post('/api/order/arrived', { id: featured })
+        
+        setLoading(false)
+
+        if (!data) console.log('Error updating driver status')
+
+        dispatch({ type: 'ACCEPT_ORDER', order: data })
+
+        setFeatured(null)
+    }
+
     const receivedOrder = async () => {
 
         setLoading(true)
 
         const order = await axios.
-            post('/api/order/received', { id: featured, driver: user._id })
+            post('/api/order/received', { id: featured })
         
         setLoading(false)
         
         if (!order) console.log('Error marking order picked up')
 
-        dispatch({ type: 'ORDER_RECEIVED', id: featured, driver: user._id })
+        dispatch({ type: 'ORDER_RECEIVED', order })
 
         setFeatured(null)
     }
@@ -119,15 +135,14 @@ const OrderList = ({ orders }) => {
         
         setLoading(true)
         
-        const time = new Date.now()
         const order = await axios.
-            post('/api/order/complete', { id: featured, time })
+            post('/api/order/complete', { id: featured })
         
         setLoading(false)
 
         if (!order) console.log('Error completing order')
 
-        dispatch({ type: 'COMPLETE_ORDER', id: featured })
+        dispatch({ type: 'COMPLETE_ORDER', order })
 
         setFeatured(null)
     }
@@ -137,13 +152,15 @@ const OrderList = ({ orders }) => {
     )
 
     const renderOrderProcessButton = status => {
+        console.log(status)
         if (user.role == 'customer') return renderButton('Cancel Order', cancelOrder)
         switch (status) {
             case 0: return <TimeSelector onSelect={confirmOrder} />; break
             case 1: return renderButton('Accept Delivery', acceptDelivery); break
-            case 2: return renderButton('Picked Up', receivedOrder); break
-            case 3: return renderButton('Delivery Complete', completeDelivery); break
-            case 4: return renderButton('Clear Order', cancelOrder); break
+            case 2: return renderButton('Arrived at Vendor', acceptDelivery); break
+            case 3: return renderButton('Picked Up', receivedOrder); break
+            case 4: return renderButton('Delivery Complete', completeDelivery); break
+            case 5: return renderButton('Clear Order', cancelOrder); break
             default: return null
         }
     }

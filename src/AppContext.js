@@ -55,37 +55,13 @@ const reducer = (state = initialState, action) => {
             cart = { vendor: null, items: null }
         break
         case 'CONFIRM_ORDER':
-            orders = orders.map(order => {
-                if (order._id == action.order._id) {
-                    return { ...order, ...action.order }
-                } else return order
-            })
-        break
         case 'ACCEPT_ORDER':
-            orders = orders.map(order => {
-                if (order._id == action.order._id) {
-                    return { ...order, ...action.order }
-                } else return order
-            })
-        break
+        case 'DRIVER_ARRIVED':
         case 'ORDER_RECEIVED':
-            orders = orders.map(order => {
-                if (order._id == action.id) {
-                    return {
-                        ...order,
-                        ...action.order,
-                        status: 3,
-                    }
-                } else return order
-            })
-        break
         case 'COMPLETE_ORDER':
             orders = orders.map(order => {
-                if (order._id == action.id) {
-                    return {
-                        ...order,
-                        status: 4,
-                    }
+                if (order._id == action.order._id) {
+                    return { ...order, ...action.order }
                 } else return order
             })
         break

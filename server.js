@@ -959,11 +959,41 @@ app.post('/order/accept', async (req, res) => {
     return res.status(200).json(order)
 })
 
+app.post('/order/arrived', async (req, res) => {
+    const { id } = req.body
+    console.log('driver arrived at pickup location', pickup)
+    const order = await Order.
+        findOneAndUpdate({ _id: id }, { $set: {
+            status: 3,
+            arrived: Date.now(),
+        } }, { new: true }).
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate('driver', 'username')
+
+    if (!order) {
+        console.log('Could not update driver status')
+        return res.status(400).json(null)
+    }
+
+    console.log(`${order.driver.username} arrived at ${order.vendor.username}`)
+
+    return res.status(200).json(order)
+})
+
 app.post('/order/received', async (req, res) => {
     const { id } = req.body
     const order = await Order.
         findOneAndUpdate({ _id: id }, { $set: {
-            status: 3,
+            status: 4,
             received: Date.now(),
         } }, { new: true }).
         populate({
@@ -986,11 +1016,11 @@ app.post('/order/received', async (req, res) => {
 })
 
 app.post('/order/complete', async (req, res) => {
-    const { id, time } = req.body
+    const { id } = req.body
     const order = await Order.
         findOneAndUpdate({ _id: id }, { $set: {
-            status: 4,
-            delivered: time,
+            status: 5,
+            delivered: Date.now(),
         } }, { new: true }).
         populate({
             path: 'customer',
