@@ -55,13 +55,58 @@ const reducer = (state = initialState, action) => {
             cart = { vendor: null, items: null }
         break
         case 'CONFIRM_ORDER':
+            orders = orders.map(order => {
+                if (order._id == action.order._id) {
+                    return {
+                        ...order,
+                        status: action.order.status,
+                        confirmed: action.order.confirmed,
+                    }
+                } else return order
+            })
+        break
         case 'ACCEPT_ORDER':
+            orders = orders.map(order => {
+                if (order._id == action.order._id) {
+                    return {
+                        ...order,
+                        status: action.order.status,
+                        accepted: action.order.accepted,
+                        driver: action.order.driver,
+                    }
+                } else return order
+            })
+        break
         case 'DRIVER_ARRIVED':
+            orders = orders.map(order => {
+                if (order._id == action.order._id) {
+                    return {
+                        ...order,
+                        status: action.order.status,
+                        arrived: action.order.arrived,
+                    }
+                } else return order
+            })
+        break
         case 'ORDER_RECEIVED':
+            orders = orders.map(order => {
+                if (order._id == action.order._id) {
+                    return {
+                        ...order,
+                        status: action.order.status,
+                        received: action.order.recieved,
+                    }
+                } else return order
+            })
+        break
         case 'COMPLETE_ORDER':
             orders = orders.map(order => {
                 if (order._id == action.order._id) {
-                    return { ...order, ...action.order }
+                    return {
+                        ...order,
+                        status: action.order.status,
+                        delivered: action.order.delivered,
+                    }
                 } else return order
             })
         break

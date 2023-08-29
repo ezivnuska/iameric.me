@@ -18,7 +18,7 @@ const VendorHome = () => {
         <View style={styles.container}>
             {/* <Text style={styles.heading}>{user.username}</Text>
             {user.location ? <LocationDetails location={user.location} /> : null} */}
-            <ProductDisplay user={user} />
+            {/* <ProductDisplay user={user} /> */}
         </View>
     )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+    ActivityIndicator,
     Modal,
     ScrollView,
     StyleSheet,
@@ -9,31 +10,38 @@ import {
 } from 'react-native'
 import { CloseOutlined } from '@ant-design/icons'
 
-const ModalContainer = ({ children, closeModal, label = null, ...props }) => {
+const ModalContainer = ({ children, closeModal, loading = null, label = null, ...props }) => {
     return (
         <View style={styles.centeredView}>
             
-            <Modal
-                {...props}
-            >
-                <View style={styles.modalHeader}>
-
-                    {label ? <Text style={styles.label}>{label}</Text> : null}
-                    
-                    <TouchableOpacity
-                        style={styles.closeButton}
-                        onPress={closeModal}
+            
+                    <Modal
+                        {...props}
                     >
-                        <CloseOutlined style={{ color: '#000', fontSize: 24 }} />
-                    </TouchableOpacity>
+                        {!loading
+                            ? (
+                                <View>
+                                    <View style={styles.modalHeader}>
 
-                </View>
+                                        {label ? <Text style={styles.label}>{label}</Text> : null}
+                                        
+                                        <TouchableOpacity
+                                            style={styles.closeButton}
+                                            onPress={closeModal}
+                                        >
+                                            <CloseOutlined style={{ color: '#000', fontSize: 24 }} />
+                                        </TouchableOpacity>
 
-                <ScrollView style={styles.modalView}>
-                    {children}
-                </ScrollView>
+                                    </View>
 
-            </Modal>
+                                    <ScrollView style={styles.modalView}>
+                                        {children}
+                                    </ScrollView>
+                                </View>
+                            ) : <ActivityIndicator size='large' />
+                        }
+
+                    </Modal>
 
         </View>
     )

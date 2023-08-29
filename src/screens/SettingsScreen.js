@@ -34,6 +34,8 @@ const SettingsScreen = ({ ...props }) => {
                 }
 
                 <AvatarDisplay />
+
+                <ProductDisplay user={user} />
                 
             </View>
             

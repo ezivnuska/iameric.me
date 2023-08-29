@@ -109,7 +109,7 @@ export default ProductDisplay
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 10,
-        // paddingHorizontal: 10,
+        paddingHorizontal: 10,
     },
     displayHeader: {
         display: 'flex',

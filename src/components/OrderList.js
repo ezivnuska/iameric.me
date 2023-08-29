@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    ActivityIndicator,
     StyleSheet,
     View,
 } from 'react-native'
@@ -24,10 +25,11 @@ const OrderList = ({ orders }) => {
     const [loading, setLoading] = useState(false)
     const [activeOrders, setActiveOrders] = useState(orders)
     const [featured, setFeatured] = useState(null)
+    const [featuredItem, setFeaturedItem] = useState(null)
 
-    // useEffect(() => {
-    //     getActiveOrders()
-    // }, [])
+    useEffect(() => {
+        setFeaturedItem(getFeaturedItem(featured))
+    }, [featured])
 
     const getActiveOrders = async () => {
         setLoading(true)
@@ -64,13 +66,12 @@ const OrderList = ({ orders }) => {
     }
 
     const confirmOrder = async time => {
-        console.log('time', time)
+        
         setLoading(true)
         
         const m = moment()
         const pickup = m.add(time, 'm')
         
-        console.log('pickup', pickup)
         const { data } = await axios.
             post('/api/order/confirm', { id: featured, pickup })
         
@@ -110,7 +111,7 @@ const OrderList = ({ orders }) => {
 
         if (!data) console.log('Error updating driver status')
 
-        dispatch({ type: 'ACCEPT_ORDER', order: data })
+        dispatch({ type: 'DRIVER_ARRIVED', order: data })
 
         setFeatured(null)
     }
@@ -119,14 +120,14 @@ const OrderList = ({ orders }) => {
 
         setLoading(true)
 
-        const order = await axios.
+        const { data } = await axios.
             post('/api/order/received', { id: featured })
         
         setLoading(false)
         
-        if (!order) console.log('Error marking order picked up')
-
-        dispatch({ type: 'ORDER_RECEIVED', order })
+        if (!data) console.log('Error marking order picked up')
+        
+        dispatch({ type: 'ORDER_RECEIVED', order: data })
 
         setFeatured(null)
     }
@@ -135,14 +136,14 @@ const OrderList = ({ orders }) => {
         
         setLoading(true)
         
-        const order = await axios.
+        const { data } = await axios.
             post('/api/order/complete', { id: featured })
         
         setLoading(false)
 
-        if (!order) console.log('Error completing order')
+        if (!data) console.log('Error completing order')
 
-        dispatch({ type: 'COMPLETE_ORDER', order })
+        dispatch({ type: 'COMPLETE_ORDER', order: data })
 
         setFeatured(null)
     }
@@ -152,12 +153,11 @@ const OrderList = ({ orders }) => {
     )
 
     const renderOrderProcessButton = status => {
-        console.log(status)
-        if (user.role == 'customer') return renderButton('Cancel Order', cancelOrder)
+        if (user.role == 'customer') return renderButton(`${status === 0 ? 'Cancel' : 'Clear'} Order`, cancelOrder)
         switch (status) {
             case 0: return <TimeSelector onSelect={confirmOrder} />; break
             case 1: return renderButton('Accept Delivery', acceptDelivery); break
-            case 2: return renderButton('Arrived at Vendor', acceptDelivery); break
+            case 2: return renderButton('Arrived at Vendor', driverArrived); break
             case 3: return renderButton('Picked Up', receivedOrder); break
             case 4: return renderButton('Delivery Complete', completeDelivery); break
             case 5: return renderButton('Clear Order', cancelOrder); break
@@ -197,9 +197,18 @@ const OrderList = ({ orders }) => {
                 visible={featured}
                 closeModal={() => setFeatured(null)}
                 label='Order Details'
+                loading={loading}
             >
-                {featured ? <OrderDetails order={getFeaturedItem(featured)} /> : null}
-                {featured ? renderOrderProcessButton(getFeaturedItem(featured).status) : null}
+                {featuredItem
+                    ? (
+                        <View>
+                            <OrderDetails order={featuredItem} />
+                            {renderOrderProcessButton(featuredItem.status)}
+                        </View>
+                    )
+                    : null
+                }
+                
             </ModalContainer>
         </View>
     )
@@ -228,5 +237,16 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 4,
         borderWidth: 0,
-    }
+    },
+    centeredView: {
+        height: '100%',
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+        borderWidth: 1,
+        borderColor: '#f00',
+    },
+    activity: {
+
+    },
 })

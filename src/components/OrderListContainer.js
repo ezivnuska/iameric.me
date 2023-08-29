@@ -15,25 +15,30 @@ import axios from 'axios'
 const OrderListContainer = () => {
 
     const {
-        user,
         dispatch,
-        orders,
+        state,
+        user,
     } = useContext(AppContext)
-
+    
+    const { orders } = state
+    
     const [loading, setLoading] = useState(false)
     const [current, setCurrent] = useState([])
     const [available, setAvailable] = useState([])
+    const [completed, setCompleted] = useState([])
 
     useEffect(() => {
         getOrders()
     }, [])
 
     useEffect(() => {
-        sortOrders()
+        sortOrders(orders)
     }, [orders])
 
     const getOrders = async () => {
+        
         setLoading(true)
+        
         const { data } = await axios.
             get(`/api/orders/${user.role}/${user._id}`)
 
@@ -47,17 +52,23 @@ const OrderListContainer = () => {
         dispatch({ type: 'SET_ORDERS', orders: data.orders })
     }
 
-    const sortOrders = () => {
-        setCurrent(currentUserOrders())
-        setAvailable(getAvailableOrders())
+    const sortOrders = items => {
+        setCurrent(currentUserOrders(items))
+        setAvailable(getAvailableOrders(items))
+        setCompleted(getCompletedOrders(items))
     }
 
-    const currentUserOrders = () => {
-        const { role } = user
-        return orders.filter(order => (order[role] && order[role]._id === user._id))
+    const currentUserOrders = (items) => {
+        return items.filter(order => {
+            return user.role === 'driver'
+                ? order[user.role] && order[user.role]._id === user._id && order.status < 5
+                : order[user.role] && order[user.role]._id === user._id && order.status < 5
+        })
     }
 
-    const getAvailableOrders = () => orders.filter(order => order.status === 1)
+    const getAvailableOrders = (items) => items.filter(order => order.status === 1)
+
+    const getCompletedOrders = (items) => items.filter(order => order[user.role] && order[user.role]._id === user._id && order.status === 5)
 
     const renderAvailableOrders = () => {
         if (user.role !== 'driver') return null
@@ -69,12 +80,22 @@ const OrderListContainer = () => {
         ) : <Text>No available orders</Text>
     }
 
+    const renderCompletedOrders = () => {
+        // if (user.role !== 'vendor') return null
+        return (completed && completed.length) ? (
+            <View>
+                <Text>Completed Orders</Text>
+                <OrderList orders={completed} />
+            </View>
+        ) : null
+    }
+
     const renderCurrentOrders = () => (current && current.length) ? (
         <View>
             <Text>Current Orders</Text>
             <OrderList orders={current} />
         </View>
-    ) : null
+    ) : <Text>No current orders</Text>
     
     return loading
         ? <Text>Loading...</Text>
@@ -82,7 +103,9 @@ const OrderListContainer = () => {
             <View style={styles.container}>
                 {renderCurrentOrders()}
                 
-                {renderAvailableOrders()}        
+                {renderAvailableOrders()}
+
+                {renderCompletedOrders()}
             </View>
         )
 }

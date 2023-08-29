@@ -903,7 +903,7 @@ app.post('/order', async (req, res) => {
 
 app.post('/order/confirm', async (req, res) => {
     const { id, pickup } = req.body
-    console.log('confirmed at', pickup)
+    
     const order = await Order.
         findOneAndUpdate({ _id: id }, { $set: {
             status: 1,
@@ -961,7 +961,7 @@ app.post('/order/accept', async (req, res) => {
 
 app.post('/order/arrived', async (req, res) => {
     const { id } = req.body
-    console.log('driver arrived at pickup location', pickup)
+    
     const order = await Order.
         findOneAndUpdate({ _id: id }, { $set: {
             status: 3,
@@ -1006,10 +1006,10 @@ app.post('/order/received', async (req, res) => {
             select: 'username location',
             populate: { path: 'location' }
         }).
-        populate('vendor', 'username')
+        populate('driver', 'username')
         
     if (!order) console.log('Could not save order status as picked up')
-
+    
     console.log(`${order.driver.username} picked up order for ${order.customer.username} from ${order.vendor.username}`)
 
     return res.status(200).json(order)
@@ -1032,7 +1032,7 @@ app.post('/order/complete', async (req, res) => {
             select: 'username location',
             populate: { path: 'location' }
         }).
-        populate('vendor', 'username')
+        populate('driver', 'username')
         
     if (!order) {
         console.log('Could not complete order')

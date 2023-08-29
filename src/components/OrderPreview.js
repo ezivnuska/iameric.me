@@ -22,23 +22,24 @@ const OrderPreview = ({ order, onPress, ...props }) => {
 
     const {
         _id,
-        confirmed,
         accepted,
+        arrived,
+        confirmed,
         customer,
         date,
+        delivered,
         driver,
         items,
-        vendor,
-        status,
-        delivered,
         pickup,
         received,
+        status,
+        vendor,
     } = order
 
     const colors = [
         'pink',
         'lightblue',
-        'green',
+        'turquoise',
         'yellow',
         'orange',
         '#eee',
@@ -119,7 +120,9 @@ const OrderPreview = ({ order, onPress, ...props }) => {
 
             {accepted && renderText(`Accepted by ${driver.username} at ${moment(accepted).format('LT')}`)}
             
-            {pickup && !received && renderText(`Ready for pick up at ${moment(pickup).format('LT')}`, { fontWeight: 600 })}
+            {pickup && renderText(`Ready for pick up at ${moment(pickup).format('LT')}`, { fontWeight: received ? 500 : 600 })}
+
+            {arrived && renderText(`Driver arrived at ${vendor.username} at ${moment(arrived).format('LT')}`)}
 
             {received && renderText(`Order picked up at ${moment(received).format('LT')}`)}
             
