@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import {
     ButtonPrimary,
+    CenteredLoader,
 } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
@@ -84,7 +85,7 @@ const StartScreen = ({ navigation }) => {
         <View style={styles.container}>
 
             {loading
-                ? <Text>Connecting...</Text>
+                ? <CenteredLoader />
                 : (
                     <View>
                         <ButtonPrimary
@@ -113,8 +114,8 @@ export default StartScreen
 
 const styles = StyleSheet.create({
     container: {
-        width: 300,
+        // width: 300,
         marginTop: 20,
-        marginHorizontal: 'auto',
+        marginHorizontal: 10,
     },
 })
