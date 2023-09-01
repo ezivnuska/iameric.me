@@ -35,7 +35,7 @@ const SettingsScreen = ({ ...props }) => {
 
                 <AvatarDisplay />
 
-                <ProductDisplay user={user} />
+                {user.role === 'vendor' && <ProductDisplay user={user} />}
                 
             </View>
             

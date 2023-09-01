@@ -15,33 +15,33 @@ const ModalContainer = ({ children, closeModal, loading = null, label = null, ..
         <View style={styles.centeredView}>
             
             
-                    <Modal
-                        {...props}
-                    >
-                        {!loading
-                            ? (
-                                <View>
-                                    <View style={styles.modalHeader}>
+            <Modal
+                {...props}
+            >
+                {!loading
+                    ? (
+                        <View>
+                            <View style={styles.modalHeader}>
 
-                                        {label ? <Text style={styles.label}>{label}</Text> : null}
-                                        
-                                        <TouchableOpacity
-                                            style={styles.closeButton}
-                                            onPress={closeModal}
-                                        >
-                                            <CloseOutlined style={{ color: '#000', fontSize: 24 }} />
-                                        </TouchableOpacity>
+                                {label ? <Text style={styles.label}>{label}</Text> : null}
+                                
+                                <TouchableOpacity
+                                    style={styles.closeButton}
+                                    onPress={closeModal}
+                                >
+                                    <CloseOutlined style={{ color: '#000', fontSize: 24 }} />
+                                </TouchableOpacity>
 
-                                    </View>
+                            </View>
 
-                                    <ScrollView style={styles.modalView}>
-                                        {children}
-                                    </ScrollView>
-                                </View>
-                            ) : <ActivityIndicator size='large' />
-                        }
+                            <ScrollView style={styles.modalView}>
+                                {children}
+                            </ScrollView>
+                        </View>
+                    ) : <ActivityIndicator size='large' />
+                }
 
-                    </Modal>
+            </Modal>
 
         </View>
     )
@@ -51,9 +51,9 @@ export default ModalContainer
 
 const styles = StyleSheet.create({
     centeredView: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
+        // flex: 1,
+        // justifyContent: 'flex-start',
+        // alignItems: 'stretch',
     },
     modalHeader: {
         display: 'flex',

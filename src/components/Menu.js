@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     FlatList,
     StyleSheet,
@@ -13,6 +13,7 @@ import {
 import { AppContext } from '../AppContext'
 
 const Menu = ({ items, vendor }) => {
+
     const {
         state,
         dispatch,
@@ -36,7 +37,7 @@ const Menu = ({ items, vendor }) => {
                         item={item}
                         onPress={() => setFeatured(item)}
                     />
-                )} 
+                )}
             />
 
             <ModalContainer
@@ -44,18 +45,9 @@ const Menu = ({ items, vendor }) => {
                 transparent={false}
                 visible={featured}
                 closeModal={() => setFeatured(null)}
-                label={featured ? featured.title : null}
+                label={featured && featured.title ? featured.title : null}
             >
-                {
-                    featured
-                        ? (
-                            <ProductDetails
-                                product={featured}
-                                onOrder={addToCart}
-                            />
-                        )
-                        : null
-                }
+                {featured && <ProductDetails product={featured} onOrder={addToCart} />}
             </ModalContainer>
         </View>
     )
@@ -65,7 +57,6 @@ export default Menu
 
 const styles = StyleSheet.create({
     container: {
-
     },
     heading: {
         fontSize: 20,

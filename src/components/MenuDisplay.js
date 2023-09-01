@@ -31,17 +31,18 @@ const MenuDisplay = ({ vendorId }) => {
 
     const getItems = async () => {
         
+        setLoading(true)
+        
         const { data } = await axios.
             get(`/api/products/${vendorId}`)
-
-        setLoading(false)
 
         if (!data) {
             console.log('Error loading menu items', err)
             return null
         }
-
+        
         setItems(data.items)
+        setLoading(false)
     }
 
     const removeItemById = id => {
@@ -57,6 +58,7 @@ const MenuDisplay = ({ vendorId }) => {
     }
 
     const deleteItem = id => {
+
         removeItemById(id)
         axios
             .delete('/api/products/delete', { data: { id } })
@@ -72,15 +74,9 @@ const MenuDisplay = ({ vendorId }) => {
 
     return (
         <View style={styles.container}>
-            {loading
-                ? <ActivityIndicator size='small' />
-                : (items && items.length)
-                    ? (
-                        <Menu
-                            vendor={vendorId}
-                            items={items}
-                        />
-                    )
+            {
+                (items && items.length)
+                    ? <Menu vendor={vendorId} items={items} />
                     : <Text>No products to display.</Text>
             }
         </View>
