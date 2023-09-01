@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import { authenticate } from '../Auth'
+import { CenteredLoader } from '../components'
 
 const SplashScreen = ({ navigation }) => {
 
@@ -64,16 +65,8 @@ const SplashScreen = ({ navigation }) => {
     }
     
     return (
-        <View style={styles.container}>
-            <Text style={styles.splash}>Splash</Text>
-        </View>
+        <CenteredLoader />
     )
 }
 
 export default SplashScreen
-
-const styles = StyleSheet.create({
-    container: {
-
-    },
-})
