@@ -8,6 +8,7 @@ import {
     CustomerHome,
     DriverHome,
     OrderListContainer,
+    Screen,
     VendorHome,
 } from '../components'
 
@@ -25,7 +26,7 @@ const UserScreen = props => {
         }
     }
     return (
-        <View style={styles.container} { ...props }>
+        <Screen>
             
             <View style={styles.heading}>
                 <OrderListContainer />
@@ -33,7 +34,7 @@ const UserScreen = props => {
             
             {renderUserHome()}
 
-        </View>
+        </Screen>
     )
 }
 
@@ -41,7 +42,7 @@ export default UserScreen
 
 const styles = StyleSheet.create({
     container: {
-
+        
     },
     heading: {
         paddingHorizontal: 10,

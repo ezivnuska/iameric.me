@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    MenuDisplay,
+    Menu,
     UserHeading,
 } from '.'
 
@@ -13,7 +13,7 @@ const UserProfile = ({ user }) => (
         <View style={styles.heading}>
             <UserHeading user={user} />
         </View>
-        {user.role === 'vendor' && <MenuDisplay vendorId={user._id} />}
+        {user.role === 'vendor' && <Menu vendorId={user._id} />}
     </View>
 )
 

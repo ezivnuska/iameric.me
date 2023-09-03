@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Dimensions,
     SafeAreaView,
@@ -6,33 +6,47 @@ import {
     StyleSheet,
 } from 'react-native'
 import { Navigation } from '../navigators'
-import { Header } from '.'
+import { AppContext } from '../AppContext'
+import { CenteredLoader, Header } from '../components'
+import base from '../styles/base'
 
-const windowDimensions = Dimensions.get('window')
-const screenDimensions = Dimensions.get('screen')
+let dims = {
+    window: Dimensions.get('window'),
+    screen: Dimensions.get('screen'),
+}
 
 const Layout = () => {
-    
-    const [dimensions, setDimensions] = useState({
-        window: windowDimensions,
-        screen: screenDimensions,
-    })
+
+    const {
+        dispatch,
+        dimensions,
+    } = useContext(AppContext)
+
+    const setDims = dimensions => dispatch({ type: 'SET_DIMS', dims: dimensions })
 
     useEffect(() => {
+        
+        setDims(dims)
+
         const subscription = Dimensions.addEventListener(
             'change',
-            ({ window, screen }) => {
-                setDimensions({ window, screen })
-            }
+            ({ window, screen }) => setDims({ window, screen })
         )
+
         return () => subscription.remove()
     }, [])
 
-    return (
-        <SafeAreaView style={[styles.layoutContainer, { width: dimensions.window.width }]}>
+    return dimensions ? (
+        <SafeAreaView style={[
+            styles.layoutContainer,
+            {
+                width: dimensions.window.width,
+                height: dimensions.window.height,
+            }
+        ]}>
             <Header />
             <ScrollView
-                style={{ height: dimensions.window.height - 50 }}
+                // style={{ height: dimensions.window.height - 50 }}
                 // scrollEventThrottle={16}
                 // onScroll={Animated.event(
                 //     [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
@@ -42,17 +56,13 @@ const Layout = () => {
                 <Navigation />
             </ScrollView>
         </SafeAreaView>
-    )
+    ) : <CenteredLoader />
 }
 
 export default Layout
 
 const styles = StyleSheet.create({
     layoutContainer: {
-        // display: 'flex',
-        // flexDirection: 'column',
-        // justifyContent: 'flex-start',
-        height: '100%',
-        minHeight: '100%',
+        backgroundColor: base.backgroundColor,
     },
 })

@@ -5,6 +5,7 @@ const initialState = {
         vendor: null,
         items: null,
     },
+    dims: null,
     entries: [],
     isLoading: true,
     profileId: null,
@@ -15,9 +16,12 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, entries, isLoading, orders, profileId, status, user, users } = state
+    let { cart, dims, entries, isLoading, orders, profileId, status, user, users } = state
 
     switch(action.type) {
+        case 'SET_DIMS':
+            dims = action.dims
+        break
         case 'SET_LOADING':
             isLoading = action.loading
             break
@@ -56,6 +60,7 @@ const reducer = (state = initialState, action) => {
         break
         case 'CONFIRM_ORDER':
             orders = orders.map(order => {
+                console.log('>>>', order, action.order)
                 if (order._id == action.order._id) {
                     return {
                         ...order,
@@ -139,7 +144,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, entries, isLoading, orders, profileId, status, user, users }
+    return { dims, cart, entries, isLoading, orders, profileId, status, user, users }
 }
 
 export const AppContext = createContext({
@@ -157,6 +162,7 @@ export const AppProvider = ({ children }) => {
             user: state.user,
             cart: state.cart,
             orders: state.orders,
+            dimensions: state.dims,
         }}>
             {children}
         </AppContext.Provider>

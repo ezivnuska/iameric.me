@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
-    ActivityIndicator,
     StyleSheet,
-    Text,
     View,
 } from 'react-native'
 import {
     ButtonPrimary,
     CenteredLoader,
+    CenteredView,
+    Screen,
 } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
@@ -82,12 +82,11 @@ const StartScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
-
+        <Screen>
             {loading
-                ? <CenteredLoader />
+                ? <CenteredLoader label='Connecting...' />
                 : (
-                    <View>
+                    <CenteredView>
                         <ButtonPrimary
                             label='Customer Experience'
                             onPress={() => connect('customer')}
@@ -102,11 +101,10 @@ const StartScreen = ({ navigation }) => {
                             label='Driver Experience'
                             onPress={() => connect('driver')}
                         />
-                    </View>
+                    </CenteredView>
                 )
             }
-
-        </View>
+        </Screen>
     )
 }
 

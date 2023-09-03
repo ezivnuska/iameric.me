@@ -6,7 +6,7 @@ import {
 import {
     AuthMenu,
     Brand,
-} from '../components'
+} from '.'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 

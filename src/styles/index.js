@@ -1,34 +1,40 @@
 import {
-    Dimensions,
-	Platform,
     StyleSheet,
 } from 'react-native'
-
-const windowWidth = Dimensions.get('window').width
+import base from '../styles/base'
 
 export default StyleSheet.create({
 	screenContainer: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
 	},
     text: {
-        fontSize: 16,
+        fontSize: base.textSize,
 		lineHeight: 24,
+		color: base.primaryTextColor,
     },
     heading: {
-        fontSize: 20,
-		fontWeight: 700,
-		color: '#333',
-		padding: 5,
+        fontSize: base.headingSize,
+		fontWeight: base.headingWeight,
+		color: base.primaryTextColor,
+		lineHeight: 24,
+		paddingVertical: 5,
+    },
+    subheading: {
+        fontSize: base.subheadingSize,
+		fontWeight: base.subheadingWeight,
+		color: base.secondaryTextColor,
+		lineHeight: 20,
+		marginBottom: 10,
     },
     email: {
-        color: '#0000ff',
+        color: base.linkColor,
     },
     title: {
-        fontSize: 20,
+        fontSize: base.textSize,
         fontWeight: 700,
-        color: '#000',
+        color: base.primaryTextColor,
         marginBottom: 15,
 		// paddingHorizontal: 10,
     },
@@ -48,9 +54,9 @@ export default StyleSheet.create({
 		width: '100%',
 	},
 	label: {
-		fontSize: 18,
-		fontWeight: '600',
-		color: '#333',
+		fontSize: base.textSize,
+		fontWeight: 600,
+		color: base.primaryTextColor,
 		marginBottom: 10,
 	},
 	inputContainer: {

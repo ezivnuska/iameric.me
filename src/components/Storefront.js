@@ -8,10 +8,11 @@ import {
 import {
     Avatar,
     LocationDetails,
-    MenuDisplay
+    Menu,
 } from '.'
 import axios from 'axios'
 import { navigate } from '../navigators/RootNavigation'
+import defaultStyles from '../styles'
 
 const Storefront = ({ id }) => {
 
@@ -71,11 +72,11 @@ const Storefront = ({ id }) => {
                                 <Avatar size={70} path={`${vendor.username}/${vendor.profileImage.filename}`} />
                             </View>
                             <View style={styles.vendorDetails}>
-                                <Text style={styles.title}>{vendor.username}</Text>
+                                <Text style={defaultStyles.heading}>{vendor.username}</Text>
                                 {vendor.location ? <LocationDetails location={vendor.location} /> : null}
                             </View>
                         </View>
-                        <MenuDisplay vendorId={vendor._id} />
+                        <Menu vendorId={vendor._id} />
                     </View>
                 ) : null
             }
@@ -111,11 +112,9 @@ const styles = StyleSheet.create({
     },
     vendorDetails: {
         flex: 1,
-        flexGRow: 1,
+        flexGrow: 1,
     },
     title: {
-        fontSize: 20,
-        fontWeight: 600,
         marginBottom: 5,
     },
 })

@@ -36,7 +36,7 @@ const UserHeading = ({ user, styleProps, ...props }) => {
                 />
             </View>
             <View style={styles.main}>
-                <Text style={styles.heading}>{username}</Text>
+                <Text style={[defaultStyles.subheading, { lineHeight: 24 }]}>{username}</Text>
             </View>
         </View>
     )
@@ -64,10 +64,5 @@ const styles = StyleSheet.create({
         flex: 2,
         flexGrow: 1,
         flexBasis: 'auto',
-    },
-    heading: {
-        fontSize: 18,
-        fontWeight: 600,
-        lineHeight: 24,
     },
 })

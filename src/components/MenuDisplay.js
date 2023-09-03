@@ -11,6 +11,7 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import defaultStyles from '../styles'
 
 const MenuDisplay = ({ vendorId }) => {
     
@@ -77,7 +78,7 @@ const MenuDisplay = ({ vendorId }) => {
             {
                 (items && items.length)
                     ? <Menu vendor={vendorId} items={items} />
-                    : <Text>No products to display.</Text>
+                    : <Text style={defaultStyles.text}>No products to display.</Text>
             }
         </View>
     )

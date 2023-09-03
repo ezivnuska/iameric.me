@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
     ActivityIndicator,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -14,6 +15,7 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import moment from 'moment'
+import defaultStyles from '../styles'
 
 const OrderList = ({ orders }) => {
 
@@ -30,19 +32,6 @@ const OrderList = ({ orders }) => {
     useEffect(() => {
         setFeaturedItem(getFeaturedItem(featured))
     }, [featured])
-
-    const getActiveOrders = async () => {
-        setLoading(true)
-        const { data } = await axios.
-            get('/api/orders/active', { driver: user._id })
-        setLoading(false)
-        if (!data) {
-            console.log('could not get waiting orders')
-            return
-        }
-        console.log('waiting orders', data.orders)
-        setActiveOrders(data.orders)
-    }
 
     const deleteOrder = async id => {
         setLoading(true)
@@ -78,6 +67,7 @@ const OrderList = ({ orders }) => {
         setLoading(false)
 
         if (!data) console.log('Error confirming order')
+        console.log('Confirmed order:', data)
 
         dispatch({ type: 'CONFIRM_ORDER', order: data })
 
@@ -110,7 +100,7 @@ const OrderList = ({ orders }) => {
         setLoading(false)
 
         if (!data) console.log('Error updating driver status')
-
+        console.log('...', data)
         dispatch({ type: 'DRIVER_ARRIVED', order: data })
 
         setFeatured(null)
@@ -152,10 +142,17 @@ const OrderList = ({ orders }) => {
         <ButtonPrimary label={label} onPress={action} disabled={loading} />
     )
 
+    const renderVendorForm = () => (
+        <View>
+            <Text style={defaultStyles.text}>How long until ready?</Text>
+            <TimeSelector onSelect={confirmOrder} />
+        </View>
+    )
+
     const renderOrderProcessButton = status => {
         if (user.role == 'customer') return renderButton(`${status === 0 ? 'Cancel' : 'Clear'} Order`, cancelOrder)
         switch (status) {
-            case 0: return <TimeSelector onSelect={confirmOrder} />; break
+            case 0: return renderVendorForm(); break
             case 1: return renderButton('Accept Delivery', acceptDelivery); break
             case 2: return renderButton('Arrived at Vendor', driverArrived); break
             case 3: return renderButton('Picked Up', receivedOrder); break
@@ -237,14 +234,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 4,
         borderWidth: 0,
-    },
-    centeredView: {
-        height: '100%',
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
-        borderWidth: 1,
-        borderColor: '#f00',
     },
     activity: {
 

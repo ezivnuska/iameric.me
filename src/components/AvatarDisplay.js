@@ -13,6 +13,7 @@ import {
 import {
     PlusCircleOutlined,
 } from '@ant-design/icons'
+import defaultStyles from '../styles'
 
 const AvatarDisplay = () => {
     
@@ -23,7 +24,7 @@ const AvatarDisplay = () => {
                 
             <View style={styles.displayHeader}>
                 
-                <Text style={styles.title}>Images &amp; Avatar</Text>
+                <Text style={defaultStyles.heading}>Images &amp; Avatar</Text>
                 
                 <View style={styles.buttons}>
                     <TouchableOpacity

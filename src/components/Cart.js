@@ -8,16 +8,7 @@ import {
 import { ButtonPrimary } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-
-const Item = ({ item }) => {
-    const { title, price } = item
-    return (
-        <View style={styles.item}>
-            <Text style={styles.text}>{title}</Text>
-            <Text style={styles.value}>${price}</Text>
-        </View>
-    )
-}
+import defaultStyles from '../styles'
 
 const Cart = ({ onSubmitOrder }) => {
 
@@ -33,7 +24,7 @@ const Cart = ({ onSubmitOrder }) => {
     const getTotal = () => {
         let total = 0
         cart.items.map(i => total += Number(i.price))
-        return String(total)
+        return String(total.toFixed(2))
     }
 
     const submitOrder = async () => {
@@ -67,11 +58,16 @@ const Cart = ({ onSubmitOrder }) => {
                 style={styles.cart}
                 data={cart.items}
                 keyExtractor={(item, index) => index}
-                renderItem={({ item }) => <Item item={item} />} 
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        <Text style={[defaultStyles.text, styles.text]}>{item.title}</Text>
+                        <Text style={[defaultStyles.text, styles.value]}>${item.price}</Text>
+                    </View>
+                )} 
             />
             <View style={styles.flexContainer}>
-                <Text style={[styles.text, styles.total]}>Total:</Text>
-                <Text style={[styles.value, styles.total]}>${getTotal()}</Text>
+                <Text style={[defaultStyles.text, styles.text, styles.total]}>Total:</Text>
+                <Text style={[defaultStyles.text, styles.value, styles.total]}>${getTotal()}</Text>
             </View>
 
             <ButtonPrimary

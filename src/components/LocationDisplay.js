@@ -11,10 +11,12 @@ import {
     ModalContainer,
 } from '.'
 import {
+    EditOutlined,
     PlusCircleOutlined,
 } from '@ant-design/icons'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import defaultStyles from '../styles'
 
 const initialState = {
     address1: '',
@@ -69,16 +71,18 @@ const LocationDisplay = ({ details }) => {
             
             <View style={styles.displayHeader}>
                 
-                <Text style={styles.title}>Location</Text>
+                <Text style={defaultStyles.heading}>Location</Text>
                 
                 <View style={styles.buttons}>
                     <TouchableOpacity
                         style={styles.headerButton}
                         onPress={() => setModalVisible(true)}
                     >
-                        <PlusCircleOutlined
-                            style={{ fontSize: 20 }}
-                        />
+                        {location
+                            ? <EditOutlined style={{ fontSize: 20, color: '#fff' }} />
+                            : <PlusCircleOutlined style={{ fontSize: 20, color: '#fff' }} />
+                        }
+                        
                     </TouchableOpacity>
                 </View>
             </View>

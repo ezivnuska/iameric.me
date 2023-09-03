@@ -10,7 +10,9 @@ import {
 import {
     CenteredLoader,
 } from '.'
-import { CloseOutlined } from '@ant-design/icons'
+import { CloseOutlined, ConsoleSqlOutlined } from '@ant-design/icons'
+import defaultStyles from '../styles'
+import base from '../styles/base'
 
 const ModalContainer = ({ children, closeModal, loading = null, label = null, ...props }) => {
     return (
@@ -19,16 +21,16 @@ const ModalContainer = ({ children, closeModal, loading = null, label = null, ..
         >
             {!loading
                 ? (
-                    <View>
+                    <View style={styles.container}>
                         <View style={styles.modalHeader}>
-
-                            {label ? <Text style={styles.label}>{label}</Text> : null}
                             
+                            {label ? <Text style={[defaultStyles.heading, styles.label]}>{label}</Text> : null}
+
                             <TouchableOpacity
                                 style={styles.closeButton}
                                 onPress={closeModal}
                             >
-                                <CloseOutlined style={{ color: '#000', fontSize: 24 }} />
+                                <CloseOutlined style={{ color: base.primaryTextColor, fontSize: 24 }} />
                             </TouchableOpacity>
 
                         </View>
@@ -37,7 +39,7 @@ const ModalContainer = ({ children, closeModal, loading = null, label = null, ..
                             {children}
                         </ScrollView>
                     </View>
-                ) : <CenteredLoader />
+                ) : <CenteredLoader label='Submitting...' />
             }
 
         </Modal>
@@ -47,10 +49,10 @@ const ModalContainer = ({ children, closeModal, loading = null, label = null, ..
 export default ModalContainer
 
 const styles = StyleSheet.create({
-    centeredView: {
-        // flex: 1,
-        // justifyContent: 'flex-start',
-        // alignItems: 'stretch',
+    container: {
+        width: '100%',
+        height: '100%',
+        backgroundColor: base.backgroundColor,
     },
     modalHeader: {
         display: 'flex',
@@ -71,7 +73,6 @@ const styles = StyleSheet.create({
     },
     modalView: {
         margin: 10,
-        // backgroundColor: 'white',
         // borderRadius: 20,
         // padding: 35,
         // alignItems: 'center',

@@ -11,34 +11,88 @@ import {
     ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
+import defaultStyles from '../styles'
+import axios from 'axios'
 
-const Menu = ({ items, vendor }) => {
+const Menu = ({ vendorId }) => {
 
     const {
         state,
         dispatch,
     } = useContext(AppContext)
 
+    const [items, setItems] = useState(null)
+    const [loading, setLoading] = useState(false)
     const [featured, setFeatured] = useState(null)
 
+    useEffect(() => {
+        getItems()
+    }, [])
+
+    const getItems = async () => {
+        
+        setLoading(true)
+        
+        const { data } = await axios.
+            get(`/api/products/${vendorId}`)
+
+        if (!data) {
+            console.log('Error loading menu items', err)
+            return null
+        }
+        
+        setItems(data.items)
+        setLoading(false)
+    }
+
+    const removeItemById = id => {
+        let indexToRemove = null
+        items.map((item, i) => {
+            if (item._id === id) indexToRemove = i
+        })
+        if (indexToRemove === null) return
+        
+        const updatedItems = items.filter((item, i) => i !== indexToRemove)
+        
+        setItems(updatedItems)
+    }
+
+    const deleteItem = id => {
+
+        removeItemById(id)
+        axios
+            .delete('/api/products/delete', { data: { id } })
+            .then(({ data }) => {
+                // const { entry } = data
+                updateStatus('Product deleted.')
+            })
+            .catch(err => {
+                console.log('Error deleting product.', err)
+                updateStatus('Error deleting product.')
+            })
+    }
+
     const addToCart = item => {
-        dispatch({ type: 'ADD_TO_CART', item, vendor })
+        dispatch({ type: 'ADD_TO_CART', item, vendor: vendorId })
         setFeatured(null)
     }
     
     return (
         <View style={styles.container}>
-            <Text style={styles.heading}>Menu</Text>
-            <FlatList
-                data={items}
-                keyExtractor={item => `product-${item._id}`}
-                renderItem={({ item }) => (
-                    <MenuItem
-                        item={item}
-                        onPress={() => setFeatured(item)}
+            <Text style={defaultStyles.heading}>Menu</Text>
+            {(items && items.length)
+                ? (
+                    <FlatList
+                        data={items}
+                        keyExtractor={item => `product-${item._id}`}
+                        renderItem={({ item }) => (
+                            <MenuItem
+                                item={item}
+                                onPress={() => setFeatured(item)}
+                            />
+                        )}
                     />
-                )}
-            />
+                ) : <Text style={defaultStyles.text}>No products to display.</Text>}
 
             <ModalContainer
                 animationType='slide'

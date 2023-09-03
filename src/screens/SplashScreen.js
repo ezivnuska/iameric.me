@@ -8,7 +8,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import { authenticate } from '../Auth'
-import { CenteredLoader } from '../components'
+import {
+    CenteredLoader,
+    Screen,
+} from '../components'
 
 const SplashScreen = ({ navigation }) => {
 
@@ -65,7 +68,9 @@ const SplashScreen = ({ navigation }) => {
     }
     
     return (
-        <CenteredLoader />
+        <Screen>
+            <CenteredLoader label='Checking status...' />
+        </Screen>
     )
 }
 

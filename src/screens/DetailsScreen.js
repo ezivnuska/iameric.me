@@ -4,6 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
+    Screen,
     Storefront,
 } from '../components'
 import { AppContext } from '../AppContext'
@@ -21,9 +22,9 @@ const DetailsScreen = ({ navigation, route }) => {
     const { id } = route.params
     
     return (
-        <View style={styles.container}>
+        <Screen>
             <Storefront id={id} />
-        </View>
+        </Screen>
     )
 }
 

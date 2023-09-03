@@ -703,6 +703,40 @@ app.post('/unsubscribe', (req, res) => {
     })
 })
 
+app.get('/orders/:id', async (req, res) => {
+    const { id } = req.params
+    console.log('id', id)
+    let orders = await Order.
+        find({ customer: id }).
+        populate('items', 'price title').
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate('driver', 'username')
+    
+    console.log('got orders', orders)
+
+    if (!orders) {
+        console.log('Error getting orders')
+        return res.json(400).json(null)
+    }
+
+    orders = orders.map(({
+        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
+    }) => ({
+        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
+    }))
+
+    return res.status(200).json(orders)
+})
+
 app.get('/orders', async (req, res) => {
     let orders = await Order.
         find({}).
@@ -719,64 +753,13 @@ app.get('/orders', async (req, res) => {
         }).
         populate('driver', 'username')
 
-    orders = orders.map(({
-        _id,
-        customer,
-        date,
-        driver,
-        items,
-        status,
-        vendor,
-    }) => ({
-        _id,
-        customer,
-        date,
-        driver,
-        items,
-        status,
-        vendor,
-    }))
+        orders = orders.map(({
+            _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
+        }) => ({
+            _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
+        }))
 
-    return res.status(200).json({ orders })
-})
-
-app.get('/orders/active', async (req, res) => {
-    const { driver } = req.body
-    let orders = await Order.
-        find({ driver, status: 1 }).
-        populate('items', 'price title').
-        populate({
-            path: 'customer',
-            select: 'username location',
-            populate: { path: 'location' }
-        }).
-        populate({
-            path: 'vendor',
-            select: 'username location',
-            populate: { path: 'location' }
-        }).
-        populate('driver', 'username')
-
-    console.log('orders waiting', orders)
-    orders = orders.map(({
-        _id,
-        customer,
-        date,
-        driver,
-        items,
-        status,
-        vendor,
-    }) => ({
-        _id,
-        customer,
-        date,
-        driver,
-        items,
-        status,
-        vendor,
-    }))
-
-    return res.status(200).json({ orders })
+    return res.status(200).json(orders)
 })
 
 app.get('/orders/customer/:id', async (req, res) => {
@@ -798,9 +781,9 @@ app.get('/orders/customer/:id', async (req, res) => {
         populate('driver', 'username')
 
     orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
+        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
     }) => ({
-        _id, customer, date, driver, items, status, vendor, pickup, accepted, received, delivered,
+        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
     }))
 
     return res.status(200).json({ orders })
@@ -830,9 +813,9 @@ app.get('/orders/driver/:id', async (req, res) => {
         populate('driver', 'username')
 
     orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
+        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
     }) => ({
-        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
+        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
     }))
 
     return res.status(200).json({ orders })
@@ -857,9 +840,9 @@ app.get('/orders/vendor/:id', async (req, res) => {
         })
 
     orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
+        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
     }) => ({
-        _id, customer, date, driver, items, status, vendor, accepted, pickup, received, delivered,
+        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
     }))
 
     return res.status(200).json({ orders })
@@ -873,6 +856,8 @@ app.post('/order', async (req, res) => {
         items,
         vendor,
     }
+
+    console.log('orderDetails', orderDetails)
 
     let order = await Order.
         create(orderDetails)

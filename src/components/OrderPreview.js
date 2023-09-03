@@ -58,9 +58,9 @@ const OrderPreview = ({ order, onPress, ...props }) => {
 
     const backgroundColor = () => colors[order.status]
 
-    // useEffect(() => {
-    //     console.log('order', order)
-    // }, [])
+    useEffect(() => {
+        console.log('order', order)
+    }, [order])
 
     const getCompletedStyles = () => order.status === 5 ? {
         borderWidth: 2,
@@ -89,12 +89,12 @@ const OrderPreview = ({ order, onPress, ...props }) => {
         </View>
     )
     
-    const renderVendor = () => (
+    const renderVendor = () => vendor ? (
         <View style={styles.column}>
             <Text style={[styles.heading, { color: textColor() }]}>{`${vendor.username} (${items.length} ${items.length > 1 ? 'items' : 'item'})`}</Text>
             <LocationDetails location={vendor.location} style={{ color: textColor()}} />
         </View>
-    )
+    ) : null
 
     const renderText = (text, format) => (
         <Text style={[styles.text, { color: textColor() }, format]}>
@@ -120,7 +120,7 @@ const OrderPreview = ({ order, onPress, ...props }) => {
 
             {accepted && renderText(`Accepted by ${driver.username} at ${moment(accepted).format('LT')}`)}
             
-            {pickup && renderText(`Ready for pick up at ${moment(pickup).format('LT')}`, { fontWeight: received ? 500 : 600 })}
+            {pickup && renderText(`Ready for pick up at ${moment( pickup).format('LT')}`, { fontWeight: received ? 500 : 600 })}
 
             {arrived && renderText(`Driver arrived at ${vendor.username} at ${moment(arrived).format('LT')}`)}
 

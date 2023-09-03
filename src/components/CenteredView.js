@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 
 const CenteredView = ({ children }) => (
-    <View style={styles.container}>
+    <View style={[styles.container]}>
         {children}
     </View>
 )
@@ -18,8 +18,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: 'red',
+        // backgroundColor: 'red',
+        // borderWidth: 4,
+        // borderStyle: 'dashed',
+        // borderColor: 'pink',
     },
 })
 

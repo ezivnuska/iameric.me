@@ -10,6 +10,7 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import defaultStyles from '../styles'
 
 const VendorDisplay = () => {
 
@@ -52,12 +53,12 @@ const VendorDisplay = () => {
         <View style={styles.container}>
             
             <View style={styles.displayHeader}>
-                <Text style={styles.title}>Vendors</Text>
+                <Text style={defaultStyles.heading}>Vendors</Text>
             </View>
 
             {
                 loading
-                    ? <Text>Loading Vendors...</Text>
+                    ? <Text style={defaultStyles.text}>Loading Vendors...</Text>
                     : <VendorList users={vendors} />
             }
             
@@ -77,8 +78,5 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         marginBottom: 15,
-    },
-    title: {
-        fontSize: 24,
     },
 })
