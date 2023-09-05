@@ -87,20 +87,24 @@ const StartScreen = ({ navigation }) => {
                 ? <CenteredLoader label='Connecting...' />
                 : (
                     <CenteredView>
-                        <ButtonPrimary
-                            label='Customer Experience'
-                            onPress={() => connect('customer')}
-                        />
-                        
-                        <ButtonPrimary
-                            label='Vendor Experience'
-                            onPress={() => connect('vendor')}
-                        />
-                
-                        <ButtonPrimary
-                            label='Driver Experience'
-                            onPress={() => connect('driver')}
-                        />
+                        <View style={styles.experience}>
+                            <ButtonPrimary
+                                label='Customer Experience'
+                                onPress={() => connect('customer')}
+                            />
+                        </View>
+                        <View style={styles.experience}>
+                            <ButtonPrimary
+                                label='Vendor Experience'
+                                onPress={() => connect('vendor')}
+                            />
+                        </View>
+                        <View style={styles.experience}>
+                            <ButtonPrimary
+                                label='Driver Experience'
+                                onPress={() => connect('driver')}
+                            />
+                        </View>
                     </CenteredView>
                 )
             }
@@ -115,5 +119,8 @@ const styles = StyleSheet.create({
         // width: 300,
         marginTop: 20,
         marginHorizontal: 10,
+    },
+    experience: {
+        paddingVertical: 10,
     },
 })

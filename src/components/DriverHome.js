@@ -8,7 +8,7 @@ import defaultStyles from '../styles'
 
 const DriverHome = () => (
     <View style={styles.container}>
-        <Text style={defaultStyles.text}>Driver page.</Text>
+        {/* <Text style={defaultStyles.text}>Driver page.</Text> */}
     </View>
 )
 

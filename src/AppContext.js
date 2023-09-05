@@ -60,12 +60,22 @@ const reducer = (state = initialState, action) => {
         break
         case 'CONFIRM_ORDER':
             orders = orders.map(order => {
-                console.log('>>>', order, action.order)
                 if (order._id == action.order._id) {
                     return {
                         ...order,
                         status: action.order.status,
                         confirmed: action.order.confirmed,
+                    }
+                } else return order
+            })
+        break
+        case 'ORDER_READY':
+            orders = orders.map(order => {
+                if (order._id == action.order._id) {
+                    return {
+                        ...order,
+                        status: action.order.status,
+                        ready: action.order.ready,
                     }
                 } else return order
             })
@@ -111,6 +121,17 @@ const reducer = (state = initialState, action) => {
                         ...order,
                         status: action.order.status,
                         delivered: action.order.delivered,
+                    }
+                } else return order
+            })
+        break
+        case 'CLOSE_ORDER':
+            orders = orders.map(order => {
+                if (order._id == action.order._id) {
+                    return {
+                        ...order,
+                        status: action.order.status,
+                        closed: action.order.closed,
                     }
                 } else return order
             })

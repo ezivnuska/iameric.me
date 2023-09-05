@@ -35,6 +35,10 @@ const orderSchema = Schema({
     type: Date,
     default: null,
   },
+  ready: {
+    type: Date,
+    default: null,
+  },
   arrived: {
     type: Date,
     default: null,
@@ -44,6 +48,10 @@ const orderSchema = Schema({
     default: null,
   },
   delivered: {
+    type: Date,
+    default: null,
+  },
+  closed: {
     type: Date,
     default: null,
   },

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     StyleSheet,
     Text,
@@ -13,8 +13,12 @@ import { AppContext } from '../AppContext'
 import defaultStyles from '../styles'
 import moment from 'moment'
 import { Button } from 'antd'
+import {
+    DownOutlined,
+    UpOutlined,
+} from '@ant-design/icons'
 
-const OrderPreview = ({ order, onPress, ...props }) => {
+const OrderPreview = ({ order, children, ...props }) => {
 
     const {
         user,
@@ -31,10 +35,13 @@ const OrderPreview = ({ order, onPress, ...props }) => {
         driver,
         items,
         pickup,
+        ready,
         received,
         status,
         vendor,
     } = order
+
+    const [expanded, setExpanded] = useState(false)
 
     const colors = [
         'pink',
@@ -58,9 +65,9 @@ const OrderPreview = ({ order, onPress, ...props }) => {
 
     const backgroundColor = () => colors[order.status]
 
-    useEffect(() => {
-        console.log('order', order)
-    }, [order])
+    // useEffect(() => {
+    //     console.log('order', order)
+    // }, [order])
 
     const getCompletedStyles = () => order.status === 5 ? {
         borderWidth: 2,
@@ -96,10 +103,14 @@ const OrderPreview = ({ order, onPress, ...props }) => {
         </View>
     ) : null
 
-    const renderText = (text, format) => (
-        <Text style={[styles.text, { color: textColor() }, format]}>
-            {text}
-        </Text>
+    const renderHeaderButton = () => (
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => setExpanded(!expanded)}
+        >
+            {expanded
+                ? <UpOutlined /> : <DownOutlined />}
+        </TouchableOpacity>
     )
 
     return (
@@ -112,28 +123,37 @@ const OrderPreview = ({ order, onPress, ...props }) => {
                 },
             ]}
         >
-            
-            
-            {renderText(`Ordered on ${moment(date).format('dddd, MMMM Do')} at ${moment(date).format('LT')}`)}
-            
-            {confirmed && renderText(`Confirmed by ${vendor.username} at ${moment(confirmed).format('LT')}`)}
+            <View style={styles.header}>
+                <View style={styles.statusDisplay}>
+                    {!confirmed && <Text style={styles.status}>Waiting on confirmation from {vendor.username}</Text>}
+                    {(confirmed && !accepted) && <Text style={styles.status}>Looking for available driver.</Text>}
+                    {(accepted && !arrived) && <Text style={styles.status}>{driver.username} is on the way to {vendor.username}.</Text>}
+                    {ready && <Text style={styles.status}>Order is ready.</Text>}
+                    {(arrived && !received) && <Text style={styles.status}>{driver.username} is onsite and waiting for your order.</Text>}
+                    {(received && !delivered) && <Text style={styles.status}>{driver.username} is on the way.</Text>}
+                </View>
 
-            {accepted && renderText(`Accepted by ${driver.username} at ${moment(accepted).format('LT')}`)}
-            
-            {pickup && renderText(`Ready for pick up at ${moment( pickup).format('LT')}`, { fontWeight: received ? 500 : 600 })}
+                {renderHeaderButton()}
+            </View>
 
-            {arrived && renderText(`Driver arrived at ${vendor.username} at ${moment(arrived).format('LT')}`)}
 
-            {received && renderText(`Order picked up at ${moment(received).format('LT')}`)}
-            
-            {delivered && renderText(`Delivered at ${moment(delivered).format('LT')}`)}
+            <View style={[styles.timeline, { display: expanded ? 'block' : 'none' }]}>
+                {<Text style={styles.milestone}>Ordered {moment(date).format('dddd, MMMM Do')} at {moment(date).format('LT')}</Text>}
+                {confirmed && <Text style={styles.milestone}>Confirmed by {vendor.username} at {moment(confirmed).format('LT')}</Text>}
+                {(pickup && !received) && <Text style={styles.milestone}>Ready for pick up at {moment(pickup).format('LT')}</Text>}
+                {accepted && <Text style={styles.milestone}>Accepted by {driver.username} at {moment(accepted).format('LT')}</Text>}
+                {arrived && <Text style={styles.milestone}>Driver arrived at {vendor.username} at {moment(arrived).format('LT')}</Text>}
+                {ready && <Text style={styles.milestone}>Order marked ready at {moment(ready).format('LT')}</Text>}
+                {received && <Text style={styles.milestone}>Order picked up at {moment(received).format('LT')}</Text>}
+                {delivered && <Text style={styles.milestone}>{driver.username} delivered order at {moment(delivered).format('LT')}</Text>}
+            </View>
 
             <View style={styles.columns}>
                 {renderVendor()}
                 {renderCustomer()}
             </View>
 
-            {showOptionsButton()
+            {/* {showOptionsButton()
                 ? (
                     <Button
                         type='primary'
@@ -144,7 +164,9 @@ const OrderPreview = ({ order, onPress, ...props }) => {
                         Details &amp; Options
                     </Button>
                 ) : null
-            }
+            } */}
+
+            {children}
 
         </View>
     )
@@ -178,10 +200,32 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         fontWeight: 600,
     },
-    text: {
-        lineHeight: 24,
+    header: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'stretch',
+        alignItems: 'flex-start',
+    },
+    statusDisplay: {
+        flex: 1,
+        flexBasis: 'auto',
+        flexGrow: 1,
     },
     button: {
-        height: 40,
+        flexBasis: 'auto',
+        flexShrink: 0,
+        paddingTop: 5,
+        paddingBottom: 10,
+        paddingHorizontal: 10,
+    },
+    status: {
+        lineHeight: 22,
+        fontWeight: 700,
+    },
+    timeline: {
+
+    },
+    milestone: {
+        lineHeight: 22,
     },
 })

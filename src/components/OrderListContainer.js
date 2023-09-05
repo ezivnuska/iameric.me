@@ -12,7 +12,6 @@ import {
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 import defaultStyles from '../styles'
-import { set } from 'mongoose'
 
 const OrderListContainer = () => {
 
@@ -27,88 +26,79 @@ const OrderListContainer = () => {
     const [current, setCurrent] = useState([])
     const [available, setAvailable] = useState([])
     const [completed, setCompleted] = useState([])
+    const [closed, setClosed] = useState([])
 
     useEffect(() => {
         getOrders()
     }, [])
 
     useEffect(() => {
-        console.log('orders changed')
-        
         if (orders) {
-            console.log('orders changed', orders)
             sortOrdersByStatus(orders)
         }
     }, [orders])
 
     const getOrders = async () => {
         
-        console.log('getting orders')
         setLoading(true)
 
         const url = () => {
             switch (user.role) {
                 case 'customer':
+                case 'vendor':
                     return `/api/orders/${user._id}`
                 break
-                case 'vendor':
                 case 'driver':
                     return  `/api/orders`
                 break
             }
         }
         
-        const { data } = await axios.
-            get(url())
+        const { data } = await axios.get(url())
         
         setLoading(false)
-        console.log('WOW', data)
         
         if (!data) {
-            console.log('could not get user orders')
-            return
+            return console.log('could not get user orders')
         }
-
-        console.log('WOW', data)
         
         dispatch({ type: 'SET_ORDERS', orders: data })
     }
 
     const sortOrdersByStatus = orders => {
-        const pending = []
+        // const pending = []
         const current = []
         const available = []
-        const completed = []
+        // const completed = []
+        const closed = []
 
         orders.map((order) => {
-            console.log('order/status', order, order.status)
             switch (order.status) {
                 case 0:
-                    pending.push(order)
-                break
                 case 1:
-                    available.push(order)
-                break
                 case 2:
                 case 3:
                 case 4:
-                    current.push(order)
-                break
                 case 5:
-                    completed.push(order)
+                    if (user.role !== 'driver' || (user.role === 'driver' && order.driver && order.driver._id === user._id)) current.push(order)
+                    if (user.role === 'driver' && order.status === 1) available.push(order)
+                break
+                case 6:
+                    closed.push(order)
                 break
             }
         })
 
-        console.log('pending', pending)
-        console.log('current', current)
-        console.log('available', available)
-        console.log('completed', completed)
+        // console.log('pending', pending)
+        // console.log('current', current)
+        // console.log('available', available)
+        // console.log('completed', completed)
 
-        setPending(pending)
+        // setPending(pending)
         setCurrent(current)
         setAvailable(available)
-        setCompleted(completed)
+        // setCompleted(completed)
+        setClosed(closed)
 
     }
 
@@ -130,54 +120,56 @@ const OrderListContainer = () => {
 
     // const getCompletedOrders = (items) => items.filter(order => order[user.role] && order[user.role]._id === user._id && order.status === 5)
 
-    const renderPendingOrders = () => {
-        if (user.role === 'driver') return null
-        return (pending.length) ? (
-            <View>
-                <DefaultText>Pending Orders</DefaultText>
-                <OrderList orders={pending} />
-            </View>
-        ) : <DefaultText>No pending orders</DefaultText>
-    }
+    // const renderPendingOrders = () => {
+    //     return (pending.length) ? (
+    //         <View>
+    //             <DefaultText>Pending Orders</DefaultText>
+    //             <OrderList orders={pending} />
+    //         </View>
+    //     ) : null
+    // }
     
     const renderAvailableOrders = () => {
-        console.log('available.......', available)
-        return user.role === 'driver' && available.length ? (
-            <View>
-                <DefaultText>Available Orders</DefaultText>
-                <OrderList orders={available} />
-            </View>
-        ) : <DefaultText>No available orders</DefaultText>
+        return (user.role === 'driver' && available.length)
+            ? (
+                <View>
+                    <DefaultText>Available Orders</DefaultText>
+                    <OrderList orders={available} />
+                </View>
+            ) : <DefaultText>No available orders</DefaultText>
     }
 
-    const renderCompletedOrders = () => {
-        // if (user.role !== 'vendor') return null
-        return (completed && completed.length) ? (
-            <View>
-                <DefaultText>Completed Orders</DefaultText>
-                <OrderList orders={completed} />
-            </View>
-        ) : null
-    }
+    // const renderCompletedOrders = () => {
+    //     // if (user.role !== 'vendor') return null
+    //     return (completed && completed.length) ? (
+    //         <View>
+    //             <DefaultText>Completed Orders</DefaultText>
+    //             <OrderList orders={completed} />
+    //         </View>
+    //     ) : null
+    // }
 
-    const renderCurrentOrders = () => (current && current.length) ? (
-        <View>
-            <DefaultText>Current Orders</DefaultText>
-            <OrderList orders={current} />
-        </View>
-    ) : <DefaultText>No current orders</DefaultText>
+    const renderCurrentOrders = () => {
+        return (current && current.length) ? (
+            <View>
+                <DefaultText>Current Orders</DefaultText>
+                <OrderList orders={current} />
+            </View>
+        ) : user.role !== 'driver'
+        ? <DefaultText>No current or pending orders.</DefaultText>
+        : null
+    }
     
     return loading
         ? <DefaultText>Loading...</DefaultText>
         : (
             <View style={styles.container}>
-                {renderPendingOrders()}
 
                 {renderCurrentOrders()}
                 
-                {renderAvailableOrders()}
+                {user.role === 'driver' && renderAvailableOrders()}
 
-                {renderCompletedOrders()}
+                {/* {renderCompletedOrders()} */}
             </View>
         )
 }

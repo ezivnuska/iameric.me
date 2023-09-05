@@ -703,11 +703,16 @@ app.post('/unsubscribe', (req, res) => {
     })
 })
 
+const getSanitizedOrders = orders => orders.map(({
+    _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, arrived, received, delivered, closed, ready,
+}) => ({
+    _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, arrived, received, delivered, closed, ready,
+}))
+
 app.get('/orders/:id', async (req, res) => {
     const { id } = req.params
-    console.log('id', id)
     let orders = await Order.
-        find({ customer: id }).
+        find({ $or: [{ customer: id }, { driver: id }, { vendor: id }] }).
         populate('items', 'price title').
         populate({
             path: 'customer',
@@ -720,19 +725,13 @@ app.get('/orders/:id', async (req, res) => {
             populate: { path: 'location' }
         }).
         populate('driver', 'username')
-    
-    console.log('got orders', orders)
 
     if (!orders) {
-        console.log('Error getting orders')
+        console.log('Error getting orders by id')
         return res.json(400).json(null)
     }
 
-    orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-    }) => ({
-        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-    }))
+    orders = getSanitizedOrders(orders)
 
     return res.status(200).json(orders)
 })
@@ -752,12 +751,13 @@ app.get('/orders', async (req, res) => {
             populate: { path: 'location' }
         }).
         populate('driver', 'username')
+    
+    if (!orders) {
+        console.log('Error getting orders')
+        return res.json(400).json(null)
+    }
 
-        orders = orders.map(({
-            _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-        }) => ({
-            _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-        }))
+    orders = getSanitizedOrders(orders)
 
     return res.status(200).json(orders)
 })
@@ -780,11 +780,12 @@ app.get('/orders/customer/:id', async (req, res) => {
         }).
         populate('driver', 'username')
 
-    orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-    }) => ({
-        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-    }))
+    if (!orders) {
+        console.log('Error getting customer orders by id')
+        return res.json(400).json(null)
+    }
+
+    orders = getSanitizedOrders(orders)
 
     return res.status(200).json({ orders })
 })
@@ -812,11 +813,12 @@ app.get('/orders/driver/:id', async (req, res) => {
         }).
         populate('driver', 'username')
 
-    orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-    }) => ({
-        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-    }))
+    if (!orders) {
+        console.log('Error getting driver orders by id')
+        return res.json(400).json(null)
+    }
+
+    orders = getSanitizedOrders(orders)
 
     return res.status(200).json({ orders })
 })
@@ -839,28 +841,24 @@ app.get('/orders/vendor/:id', async (req, res) => {
             populate: { path: 'location' }
         })
 
-    orders = orders.map(({
-        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-    }) => ({
-        _id, customer, date, driver, items, status, vendor, confirmed, accepted, pickup, received, delivered,
-    }))
+    if (!orders) {
+        console.log('Error getting vendor orders by id')
+        return res.json(400).json(null)
+    }
+
+    orders = getSanitizedOrders(orders)
 
     return res.status(200).json({ orders })
 })
 
 app.post('/order', async (req, res) => {
     const { customer, items, vendor } = req.body
-    
-    const orderDetails = {
+
+    let order = await Order.create({
         customer,
         items,
         vendor,
-    }
-
-    console.log('orderDetails', orderDetails)
-
-    let order = await Order.
-        create(orderDetails)
+    })
         
     order = await Order.findOne({ _id: order._id }).
         populate('items', 'title price').
@@ -940,6 +938,31 @@ app.post('/order/accept', async (req, res) => {
     if (!order) console.log('Could not accept order')
 
     console.log(`${order.driver.username} accepted order for ${order.customer.username} from ${order.vendor.username}`)
+
+    return res.status(200).json(order)
+})
+
+app.post('/order/ready', async (req, res) => {
+    const { id } = req.body
+    const order = await Order.
+        findOneAndUpdate({ _id: id }, { $set: {
+            ready: Date.now(),
+        } }, { new: true }).
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate('driver', 'username')
+        
+    if (!order) console.log('Could not mark order ready')
+
+    console.log(`${order.vendor.username} marked order for ${order.customer.username} as ready`)
 
     return res.status(200).json(order)
 })
@@ -1024,6 +1047,34 @@ app.post('/order/complete', async (req, res) => {
         return res.status(406).json({ err: 'Error completing order'})
     }
     console.log(`${order.driver.username} completed order from ${order.vendor.username} to ${order.customer.username}`)
+
+    return res.status(200).json(order)
+})
+
+app.post('/order/close', async (req, res) => {
+    const { id } = req.body
+    const order = await Order.
+        findOneAndUpdate({ _id: id }, { $set: {
+            status: 6,
+            closed: Date.now(),
+        } }, { new: true }).
+        populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        }).
+        populate('driver', 'username')
+        
+    if (!order) {
+        console.log('Could not close order')
+        return res.status(406).json({ err: 'Error closing order'})
+    }
+    console.log(`Closed order (${order._id}) from ${order.vendor.username}`)
 
     return res.status(200).json(order)
 })

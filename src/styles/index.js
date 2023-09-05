@@ -111,7 +111,6 @@ export default StyleSheet.create({
 		height: 40,
 		backgroundColor: '#369',
 		borderRadius: 10,
-		marginVertical: 10,
 	},
 	buttonDisabled: {
 		backgroundColor: '#ddd',

@@ -40,9 +40,9 @@ const OrderList = ({ orders }) => {
         setLoading(false)
     }
 
-    const cancelOrder = async () => {
+    const cancelOrder = async id => {
 
-        deleteOrder(featured)
+        deleteOrder(id)
 
         // const order = await axios.
         //     post(`/api/order/cancel/${featuredItem}`)
@@ -54,7 +54,7 @@ const OrderList = ({ orders }) => {
         setFeatured(null)
     }
 
-    const confirmOrder = async time => {
+    const confirmOrder = async (id, time) => {
         
         setLoading(true)
         
@@ -62,24 +62,23 @@ const OrderList = ({ orders }) => {
         const pickup = m.add(time, 'm')
         
         const { data } = await axios.
-            post('/api/order/confirm', { id: featured, pickup })
+            post('/api/order/confirm', { id, pickup })
         
         setLoading(false)
 
-        if (!data) console.log('Error confirming order')
-        console.log('Confirmed order:', data)
+        if (!data) return console.log('Error confirming order')
 
         dispatch({ type: 'CONFIRM_ORDER', order: data })
 
         setFeatured(null)
     }
 
-    const acceptDelivery = async () => {
+    const acceptDelivery = async id => {
 
         setLoading(true)
 
         const { data } = await axios.
-            post('/api/order/accept', { id: featured, driver: user._id })
+            post('/api/order/accept', { id, driver: user._id })
         
         setLoading(false)
 
@@ -90,28 +89,46 @@ const OrderList = ({ orders }) => {
         setFeatured(null)
     }
 
-    const driverArrived = async () => {
+    const onOrderReady = async id => {
 
         setLoading(true)
 
         const { data } = await axios.
-            post('/api/order/arrived', { id: featured })
+            post('/api/order/ready', { id })
+        
+        setLoading(false)
+
+        if (!data) console.log('Error marking order ready')
+
+        console.log('data', data)
+
+        dispatch({ type: 'ORDER_READY', order: data })
+
+        setFeatured(null)
+    }
+
+    const driverArrived = async id => {
+
+        setLoading(true)
+
+        const { data } = await axios.
+            post('/api/order/arrived', { id })
         
         setLoading(false)
 
         if (!data) console.log('Error updating driver status')
-        console.log('...', data)
+        
         dispatch({ type: 'DRIVER_ARRIVED', order: data })
 
         setFeatured(null)
     }
 
-    const receivedOrder = async () => {
+    const receivedOrder = async id => {
 
         setLoading(true)
 
         const { data } = await axios.
-            post('/api/order/received', { id: featured })
+            post('/api/order/received', { id })
         
         setLoading(false)
         
@@ -122,12 +139,12 @@ const OrderList = ({ orders }) => {
         setFeatured(null)
     }
 
-    const completeDelivery = async () => {
+    const completeDelivery = async id => {
         
         setLoading(true)
         
         const { data } = await axios.
-            post('/api/order/complete', { id: featured })
+            post('/api/order/complete', { id })
         
         setLoading(false)
 
@@ -138,26 +155,42 @@ const OrderList = ({ orders }) => {
         setFeatured(null)
     }
 
+    const closeOrder = async id => {
+        setLoading(true)
+        
+        const { data } = await axios.
+            post('/api/order/close', { id })
+        
+        setLoading(false)
+
+        if (!data) console.log('Error closing order')
+
+        dispatch({ type: 'CLOSE_ORDER', order: data })
+
+        setFeatured(null)
+    }
+
     const renderButton = (label, action) => (
         <ButtonPrimary label={label} onPress={action} disabled={loading} />
     )
 
-    const renderVendorForm = () => (
+    const renderVendorForm = id => (
         <View>
             <Text style={defaultStyles.text}>How long until ready?</Text>
-            <TimeSelector onSelect={confirmOrder} />
+            <TimeSelector onSelect={time => confirmOrder(id, time)} />
         </View>
     )
 
-    const renderOrderProcessButton = status => {
-        if (user.role == 'customer') return renderButton(`${status === 0 ? 'Cancel' : 'Clear'} Order`, cancelOrder)
-        switch (status) {
-            case 0: return renderVendorForm(); break
-            case 1: return renderButton('Accept Delivery', acceptDelivery); break
-            case 2: return renderButton('Arrived at Vendor', driverArrived); break
-            case 3: return renderButton('Picked Up', receivedOrder); break
-            case 4: return renderButton('Delivery Complete', completeDelivery); break
-            case 5: return renderButton('Clear Order', cancelOrder); break
+    const renderOrderProcessButton = order => {
+        console.log('status', order.status, user.role)
+        // if (user.role == 'customer') return renderButton(`${status === 0 ? 'Cancel' : 'Clear'} Order`, cancelOrder)
+        switch (order.status) {
+            case 0: return user.role === 'vendor' ? renderVendorForm(order._id) : user.role === 'customer' ? renderButton('Cancel Order', () => cancelOrder(order._id)) : null; break
+            case 1: return user.role === 'driver' ? renderButton('Accept Delivery', () => acceptDelivery(order._id)) : user.role === 'vendor' ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
+            case 2: return user.role === 'driver' ? renderButton('Arrived at Vendor', () => driverArrived(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
+            case 3: return user.role === 'driver' ? renderButton('Picked Up', () => receivedOrder(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
+            case 4: return user.role === 'driver' ? renderButton('Delivery Complete', () => completeDelivery(order._id)) : null; break
+            case 5: return user.role === 'customer' ? renderButton('Order Received', () => closeOrder(order._id)) : null; break
             default: return null
         }
     }
@@ -179,7 +212,9 @@ const OrderList = ({ orders }) => {
                         key={`order-preview-${index}`}
                         onPress={() => onPress(order)}
                         order={order}
-                    />
+                    >
+                        {renderOrderProcessButton(order)}
+                    </OrderPreview>
                 ))}
             </View>
         ) : null
@@ -200,7 +235,6 @@ const OrderList = ({ orders }) => {
                     ? (
                         <View>
                             <OrderDetails order={featuredItem} />
-                            {renderOrderProcessButton(featuredItem.status)}
                         </View>
                     )
                     : null
@@ -234,8 +268,5 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         borderRadius: 4,
         borderWidth: 0,
-    },
-    activity: {
-
     },
 })
