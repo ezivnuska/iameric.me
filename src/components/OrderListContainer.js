@@ -155,9 +155,7 @@ const OrderListContainer = () => {
                 <DefaultText>Current Orders</DefaultText>
                 <OrderList orders={current} />
             </View>
-        ) : user.role !== 'driver'
-        ? <DefaultText>No current or pending orders.</DefaultText>
-        : null
+        ) : null
     }
     
     return loading

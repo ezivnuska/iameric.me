@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import defaultStyles from '../styles'
 
-const ButtonPrimary = ({ label, onPress, disabled = false, fontSize = null }) => {
+const ButtonPrimary = ({ label, onPress, disabled = false, fontSize = null, ...props }) => {
     
     const handlePress = async () => {
         // do stuff
@@ -14,7 +14,7 @@ const ButtonPrimary = ({ label, onPress, disabled = false, fontSize = null }) =>
 
     return (
         <TouchableOpacity
-            style={[defaultStyles.button, disabled ? defaultStyles.buttonDisabled : null]}
+            style={[defaultStyles.button, disabled ? defaultStyles.buttonDisabled : props.style ? props.style : null]}
             onPress={handlePress}
             disabled={disabled}
         >

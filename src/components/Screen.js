@@ -20,6 +20,7 @@ const Screen = ({ children }) => {
             width: '100%',
             minWidth: 375,
             marginHorizontal: 'auto',
+            paddingHorizontal: 5,
         }}>
             {children}
         </View>

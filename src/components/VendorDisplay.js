@@ -53,7 +53,7 @@ const VendorDisplay = () => {
         <View style={styles.container}>
             
             <View style={styles.displayHeader}>
-                <Text style={defaultStyles.heading}>Available Now</Text>
+                <Text style={defaultStyles.subheading}>Participating Vendors</Text>
             </View>
 
             {

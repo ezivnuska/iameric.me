@@ -79,7 +79,6 @@ const Menu = ({ vendorId }) => {
     
     return (
         <View style={styles.container}>
-            <Text style={defaultStyles.heading}>Menu</Text>
             {(items && items.length)
                 ? (
                     <FlatList
@@ -111,6 +110,10 @@ export default Menu
 
 const styles = StyleSheet.create({
     container: {
+        // paddingHorizontal: 10,
+        // paddingVertical: 10,
+        // borderWidth: 1,
+        // borderColor: 'red',
     },
     heading: {
         fontSize: 20,

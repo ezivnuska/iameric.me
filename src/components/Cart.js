@@ -73,12 +73,14 @@ const Cart = ({ onSubmitOrder }) => {
             <ButtonPrimary
                 label='Clear Cart'
                 onPress={() => dispatch({ type: 'CLEAR_CART' })}
-            />
+                style={{ marginBottom: 10 }}
+                />
 
             <ButtonPrimary
                 label='Submit Order'
                 onPress={submitOrder}
                 disabled={loading}
+                style={{ marginBottom: 10 }}
             />
         </View>
     ) : null

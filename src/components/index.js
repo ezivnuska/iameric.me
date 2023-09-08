@@ -64,7 +64,6 @@ import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import SimpleLink from './SimpleLink'
 import StatusDisplay from './StatusDisplay'
-import Storefront from './Storefront'
 import TimeSelector from './TimeSelector'
 import UserListItem from './UserListItem'
 import UserHeading from './UserHeading'
@@ -141,7 +140,6 @@ export {
     SignInForm,
     SignUpForm,
     StatusDisplay,
-    Storefront,
     TimeSelector,
     UserListItem,
     UserHeading,
