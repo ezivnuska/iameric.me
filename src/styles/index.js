@@ -11,7 +11,7 @@ export default StyleSheet.create({
 	},
     text: {
         fontSize: base.textSize,
-		lineHeight: 24,
+		lineHeight: 22,
 		color: base.primaryTextColor,
     },
     heading: {
@@ -19,7 +19,7 @@ export default StyleSheet.create({
 		fontWeight: base.headingWeight,
 		color: base.primaryTextColor,
 		lineHeight: 24,
-		paddingVertical: 5,
+		paddingBottom: 3,
     },
     subheading: {
         fontSize: base.subheadingSize,

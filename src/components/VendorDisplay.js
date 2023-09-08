@@ -53,7 +53,7 @@ const VendorDisplay = () => {
         <View style={styles.container}>
             
             <View style={styles.displayHeader}>
-                <Text style={defaultStyles.heading}>Vendors</Text>
+                <Text style={defaultStyles.heading}>Available Now</Text>
             </View>
 
             {
@@ -71,12 +71,12 @@ export default VendorDisplay
 const styles = StyleSheet.create({
     container: {
         paddingBottom: 10,
-        paddingHorizontal: 15,
+        paddingHorizontal: 10,
     },
     displayHeader: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
+        // display: 'flex',
+        // flexDirection: 'row',
+        // justifyContent: 'flex-start',
         marginBottom: 15,
     },
 })
