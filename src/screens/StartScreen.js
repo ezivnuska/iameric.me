@@ -93,7 +93,7 @@ const StartScreen = ({ navigation }) => {
                                 {`Create an order\nas a customer.`}
                             </DefaultText>
                             <ButtonPrimary
-                                label='Customer Experience'
+                                label='Order Takeout'
                                 onPress={() => connect('customer')}
                             />
                         </View>
@@ -102,7 +102,7 @@ const StartScreen = ({ navigation }) => {
                                 {`Confirm new orders,\nor add new products,\nas a vendor.`}
                             </DefaultText>
                             <ButtonPrimary
-                                label='Vendor Experience'
+                                label='Handle Prep'
                                 onPress={() => connect('vendor')}
                             />
                         </View>
@@ -111,7 +111,7 @@ const StartScreen = ({ navigation }) => {
                                 {`Accept available orders,\nand complete them,\nas a driver.`}
                             </DefaultText>
                             <ButtonPrimary
-                                label='Driver Experience'
+                                label='Complete Deliveries'
                                 onPress={() => connect('driver')}
                             />
                         </View>
