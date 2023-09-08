@@ -5,7 +5,7 @@ import {
 import defaultStyles from '../styles'
 
 const DefaultText = ({ children, ...props }) => (
-    <Text style={props.style || defaultStyles.text}>
+    <Text style={[defaultStyles.text, props.style]}>
         {children}
     </Text>
 )

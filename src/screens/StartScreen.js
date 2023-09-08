@@ -7,6 +7,7 @@ import {
     ButtonPrimary,
     CenteredLoader,
     CenteredView,
+    DefaultText,
     Screen,
 } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -88,18 +89,27 @@ const StartScreen = ({ navigation }) => {
                 : (
                     <CenteredView>
                         <View style={styles.experience}>
+                            <DefaultText style={styles.caption}>
+                                {`Create an order\nas a customer.`}
+                            </DefaultText>
                             <ButtonPrimary
                                 label='Customer Experience'
                                 onPress={() => connect('customer')}
                             />
                         </View>
                         <View style={styles.experience}>
+                            <DefaultText style={styles.caption}>
+                                {`Confirm new orders,\nor add new products,\nas a vendor.`}
+                            </DefaultText>
                             <ButtonPrimary
                                 label='Vendor Experience'
                                 onPress={() => connect('vendor')}
                             />
                         </View>
                         <View style={styles.experience}>
+                            <DefaultText style={styles.caption}>
+                                {`Accept available orders,\nand complete them,\nas a driver.`}
+                            </DefaultText>
                             <ButtonPrimary
                                 label='Driver Experience'
                                 onPress={() => connect('driver')}
@@ -117,10 +127,16 @@ export default StartScreen
 const styles = StyleSheet.create({
     container: {
         // width: 300,
-        marginTop: 20,
-        marginHorizontal: 10,
+        // marginTop: 20,
+        // marginHorizontal: 10,
     },
     experience: {
-        paddingVertical: 10,
+        marginVertical: 20,
+        width: 250,
+    },
+    caption: {
+        fontWeight: 700,
+        textAlign: 'center',
+        marginBottom: 20,
     },
 })
