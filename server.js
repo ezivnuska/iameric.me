@@ -213,10 +213,9 @@ app.post('/authenticate', async (req, res) => {
         populate('profileImage', 'filename').
         populate('location')
 
-
     if (!user) {
         console.log('failed to refresh user token')
-        return res.status(400).json(null)
+        return res.status(200).json(null)
     }
 
     user.token = createToken(user)

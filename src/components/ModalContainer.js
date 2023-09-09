@@ -14,7 +14,7 @@ import { CloseOutlined, ConsoleSqlOutlined } from '@ant-design/icons'
 import defaultStyles from '../styles'
 import base from '../styles/base'
 
-const ModalContainer = ({ children, closeModal, loading = null, label = null, ...props }) => {
+const ModalContainer = ({ children, closeModal = null, loading = null, label = null, ...props }) => {
     return (
         <Modal
             {...props}
@@ -22,24 +22,26 @@ const ModalContainer = ({ children, closeModal, loading = null, label = null, ..
             {!loading
                 ? (
                     <View style={styles.container}>
-                        <View style={styles.modalHeader}>
+                        {(label && closeModal) && (
+                            <View style={styles.modalHeader}>
                             
-                            {label ? <Text style={[defaultStyles.heading, styles.label]}>{label}</Text> : null}
+                                {label ? <Text style={[defaultStyles.heading, styles.label]}>{label}</Text> : null}
 
-                            <TouchableOpacity
-                                style={styles.closeButton}
-                                onPress={closeModal}
-                            >
-                                <CloseOutlined style={{ color: base.primaryTextColor, fontSize: 24 }} />
-                            </TouchableOpacity>
+                                {closeModal && <TouchableOpacity
+                                    style={styles.closeButton}
+                                    onPress={closeModal}
+                                >
+                                    <CloseOutlined style={{ color: base.primaryTextColor, fontSize: 24 }} />
+                                </TouchableOpacity>}
 
-                        </View>
+                            </View>
+                        )}
 
                         <ScrollView style={styles.modalView}>
                             {children}
                         </ScrollView>
                     </View>
-                ) : <CenteredLoader label='Submitting...' />
+                ) : <CenteredLoader activity />
             }
 
         </Modal>

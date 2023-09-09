@@ -7,7 +7,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
-import { authenticate } from '../Auth'
+import { authenticate, cleanStorage } from '../Auth'
 import {
     CenteredLoader,
     Screen,
@@ -44,8 +44,10 @@ const SplashScreen = ({ navigation }) => {
         const response = await authenticate(userToken)
         
         if (!response) {
-            console.log('invalid token')
+            console.log('could not authenticate previous user')
+            await cleanStorage()
             setLoading(false)
+            navigate('Start')
             return
         }
         

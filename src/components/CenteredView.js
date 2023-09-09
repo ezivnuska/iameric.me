@@ -1,11 +1,15 @@
 import React from 'react'
 import {
+    ActivityIndicator,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 
-const CenteredView = ({ children }) => (
+const CenteredView = ({ activity, children, label = null }) => (
     <View style={[styles.container]}>
+        {activity && <ActivityIndicator size='small' />}
+        {label && <Text style={styles.label}>{label}</Text>}
         {children}
     </View>
 )
@@ -23,5 +27,9 @@ const styles = StyleSheet.create({
         // borderStyle: 'dashed',
         // borderColor: 'pink',
     },
+    label: {
+        fontWeight: 600,
+        textColor: '#aaa',
+    }
 })
 
