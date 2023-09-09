@@ -4,6 +4,7 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
+    View,
 } from 'react-native'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -25,31 +26,35 @@ const Disconnect = props => {
 
     const { user } = state
     const [loading, setLoading] = useState(false)
-
+    
     const signout = async () => {
         setLoading(true)
-        await axios.post('/api/signout', { _id: user._id })
         await cleanStorage()
+        const result = await axios.post('/api/signout', { _id: user._id })
+        console.log('signout result', result)
         setLoading(false)
+        if (!result) return console.log('could not sign out user')
         dispatch({ type: 'SIGNOUT' })
     }
 
     return (
-        <TouchableOpacity
-            {...props}
-            onPress={signout}
-            style={styles.container}
-        >
-            <CloseCircleOutlined size='large' style={{ color: '#fff' }} />
+        <View style={styles.container}>
+            <TouchableOpacity
+                {...props}
+                onPress={signout}
+                style={styles.button}
+            >
+                <CloseCircleOutlined size='large' style={{ color: '#fff' }} />
+            </TouchableOpacity>
 
             <ModalContainer
-                animationType='slide'
-                transparent={false}
+                animationType='none'
+                transparent={true}
                 visible={loading}
             >
                 <CenteredView label='signing out...' activity />
             </ModalContainer>
-        </TouchableOpacity>
+        </View>
     )
 }
 
@@ -57,6 +62,9 @@ export default Disconnect
 
 const styles = StyleSheet.create({
     container: {
+        
+    },
+    button: {
         paddingVertical: 5,
     },
     icon: {

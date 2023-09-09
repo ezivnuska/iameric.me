@@ -9,7 +9,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import { authenticate, cleanStorage } from '../Auth'
 import {
-    CenteredLoader,
+    CenteredView,
     Screen,
 } from '../components'
 
@@ -71,7 +71,7 @@ const SplashScreen = ({ navigation }) => {
     
     return (
         <Screen>
-            <CenteredLoader label='Checking status...' />
+            <CenteredView activity label='Checking status...' />
         </Screen>
     )
 }

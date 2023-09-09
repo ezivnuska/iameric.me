@@ -11,7 +11,7 @@ export default StyleSheet.create({
 	},
     text: {
         fontSize: base.textSize,
-		lineHeight: 22,
+		lineHeight: 24,
 		color: base.primaryTextColor,
     },
     heading: {
@@ -107,7 +107,7 @@ export default StyleSheet.create({
 		color: 'red',
 	},
 	button: {
-		paddingHorizontal: 10,
+		paddingHorizontal: 20,
 		height: 40,
 		backgroundColor: '#369',
 		borderRadius: 10,

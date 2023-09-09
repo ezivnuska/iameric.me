@@ -182,8 +182,6 @@ const OrderList = ({ orders }) => {
     )
 
     const renderOrderProcessButton = order => {
-        console.log('status', order.status, user.role)
-        // if (user.role == 'customer') return renderButton(`${status === 0 ? 'Cancel' : 'Clear'} Order`, cancelOrder)
         switch (order.status) {
             case 0: return user.role === 'vendor' ? renderVendorForm(order._id) : user.role === 'customer' ? renderButton('Cancel Order', () => cancelOrder(order._id)) : null; break
             case 1: return user.role === 'driver' ? renderButton('Accept Delivery', () => acceptDelivery(order._id)) : user.role === 'vendor' ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break

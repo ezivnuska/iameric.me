@@ -158,9 +158,8 @@ const OrderListContainer = () => {
         ) : null
     }
     
-    return loading
-        ? <DefaultText>Loading...</DefaultText>
-        : (
+    return !loading
+        ? (
             <View style={styles.container}>
 
                 {renderCurrentOrders()}
@@ -169,7 +168,7 @@ const OrderListContainer = () => {
 
                 {/* {renderCompletedOrders()} */}
             </View>
-        )
+        ) : null
 }
 
 export default OrderListContainer

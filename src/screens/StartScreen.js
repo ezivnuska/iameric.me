@@ -5,7 +5,6 @@ import {
 } from 'react-native'
 import {
     ButtonPrimary,
-    CenteredLoader,
     CenteredView,
     DefaultText,
     Screen,
@@ -85,35 +84,37 @@ const StartScreen = ({ navigation }) => {
     return (
         <Screen>
             {loading
-                ? <CenteredLoader label='Connecting...' />
+                ? <CenteredView activity label='Connecting...' />
                 : (
                     <CenteredView>
-                        <View style={styles.experience}>
-                            <DefaultText style={styles.caption}>
-                                {`Create an order\nas a customer.`}
-                            </DefaultText>
-                            <ButtonPrimary
-                                label='Order Takeout'
-                                onPress={() => connect('customer')}
-                            />
-                        </View>
-                        <View style={styles.experience}>
-                            <DefaultText style={styles.caption}>
-                                {`Confirm new orders,\nor add new products,\nas a vendor.`}
-                            </DefaultText>
-                            <ButtonPrimary
-                                label='Handle Prep'
-                                onPress={() => connect('vendor')}
-                            />
-                        </View>
-                        <View style={styles.experience}>
-                            <DefaultText style={styles.caption}>
-                                {`Accept available orders,\nand complete them,\nas a driver.`}
-                            </DefaultText>
-                            <ButtonPrimary
-                                label='Complete Deliveries'
-                                onPress={() => connect('driver')}
-                            />
+                        <View style={styles.container}>
+                            <View style={styles.experience}>
+                                <DefaultText style={styles.caption}>
+                                    {`Create an order\nas a customer.`}
+                                </DefaultText>
+                                <ButtonPrimary
+                                    label='Order Takeout'
+                                    onPress={() => connect('customer')}
+                                />
+                            </View>
+                            <View style={styles.experience}>
+                                <DefaultText style={styles.caption}>
+                                    {`Confirm new orders,\nor add new products,\nas a vendor.`}
+                                </DefaultText>
+                                <ButtonPrimary
+                                    label='Handle Prep'
+                                    onPress={() => connect('vendor')}
+                                />
+                            </View>
+                            <View style={styles.experience}>
+                                <DefaultText style={styles.caption}>
+                                    {`Accept available orders,\nand complete them,\nas a driver.`}
+                                </DefaultText>
+                                <ButtonPrimary
+                                    label='Complete Deliveries'
+                                    onPress={() => connect('driver')}
+                                />
+                            </View>
                         </View>
                     </CenteredView>
                 )
@@ -126,13 +127,21 @@ export default StartScreen
 
 const styles = StyleSheet.create({
     container: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        alignItems: 'stretch',
+        height: '100%',
         // width: 300,
         // marginTop: 20,
         // marginHorizontal: 10,
     },
     experience: {
-        marginVertical: 20,
-        width: 250,
+        paddingHorizontal: 30,
+        paddingVertical: 20,
+        // width: 250,
+        backgroundColor: '#ddd',
+        borderRadius: 12,
     },
     caption: {
         fontWeight: 700,

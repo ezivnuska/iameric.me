@@ -84,6 +84,7 @@ const Menu = ({ vendorId }) => {
                     <FlatList
                         data={items}
                         keyExtractor={item => `product-${item._id}`}
+                        style={styles.list}
                         renderItem={({ item }) => (
                             <MenuItem
                                 item={item}
@@ -119,5 +120,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 600,
         marginBottom: 10,
-    }
+    },
+    list: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+    },
 })

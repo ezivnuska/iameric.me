@@ -1,15 +1,12 @@
 import React from 'react'
 import {
     Modal,
-    ScrollView,
+    // ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native'
-import {
-    CenteredLoader,
-} from '.'
 import { CloseOutlined, ConsoleSqlOutlined } from '@ant-design/icons'
 import defaultStyles from '../styles'
 import base from '../styles/base'
@@ -19,30 +16,28 @@ const ModalContainer = ({ children, closeModal = null, loading = null, label = n
         <Modal
             {...props}
         >
-            {!loading
-                ? (
-                    <View style={styles.container}>
-                        {(label && closeModal) && (
-                            <View style={styles.modalHeader}>
-                            
-                                {label ? <Text style={[defaultStyles.heading, styles.label]}>{label}</Text> : null}
+            <View style={styles.container}>
+                {(label && closeModal) && (
+                    <View style={styles.modalHeader}>
+                    
+                        {label ? <Text style={[defaultStyles.heading, styles.label]}>{label}</Text> : null}
 
-                                {closeModal && <TouchableOpacity
-                                    style={styles.closeButton}
-                                    onPress={closeModal}
-                                >
-                                    <CloseOutlined style={{ color: base.primaryTextColor, fontSize: 24 }} />
-                                </TouchableOpacity>}
+                        {closeModal && <TouchableOpacity
+                            style={styles.closeButton}
+                            onPress={closeModal}
+                        >
+                            <CloseOutlined style={{ color: base.primaryTextColor, fontSize: 24 }} />
+                        </TouchableOpacity>}
 
-                            </View>
-                        )}
-
-                        <ScrollView style={styles.modalView}>
-                            {children}
-                        </ScrollView>
                     </View>
-                ) : <CenteredLoader activity />
-            }
+                )}
+
+                <View
+                    style={styles.modalView}
+                >
+                    {children}
+                </View>
+            </View>
 
         </Modal>
     )
@@ -74,7 +69,9 @@ const styles = StyleSheet.create({
         paddingTop: 2,
     },
     modalView: {
-        margin: 10,
+        // margin: 10,
+        height: '100%',
+        // backgroundColor: 'yellow',
         // borderRadius: 20,
         // padding: 35,
         // alignItems: 'center',

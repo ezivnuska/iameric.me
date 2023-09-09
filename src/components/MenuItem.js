@@ -21,10 +21,10 @@ const MenuItem = ({ item, onPress }) => {
         >
             <View style={styles.flexContainer}>
                 <Text style={[defaultStyles.subheading, styles.title]}>{title}</Text>
-                <Text style={[defaultStyles.subheading, styles.price]}>${price}</Text>
+                <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
             </View>
 
-            <DefaultText style={styles.blurb}>{blurb}</DefaultText>
+            {(blurb && blurb.length) && <DefaultText style={styles.blurb}>{blurb}</DefaultText>}
             <View style={styles.content}>
                 <DefaultText style={styles.desc}>{desc}</DefaultText>
             </View>
@@ -37,9 +37,10 @@ export default MenuItem
 
 const styles = StyleSheet.create({
     container: {
-        marginBottom: 10,
-        paddingBottom: 5,
-        backgroundColor: '#eee',
+        // marginBottom: 10,
+        paddingBottom: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
     },
     flexContainer: {
         display: 'flex',
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
         // paddingBottom: 5,
         paddingHorizontal: 8,
         // paddingBottom: 5,
-        backgroundColor: '#900',
+        // backgroundColor: '#900',
         // marginBottom: 5,
     },
     title: {
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
         flexBasis: '70%',
         flexShrink: 0,
         flexGrow: 1,
-        color: '#fff',
+        // color: '#fff',
     },
     price: {
         flex: 1,
@@ -67,23 +68,23 @@ const styles = StyleSheet.create({
         flexBasis: '30%',
         textAlign: 'right',
         // color: '#666',
-        color: '#fff',
+        // color: '#fff',
     },
     blurb: {
         // fontSize: 20,
         // color: '#777',
         fontWeight: 600,
-        paddingTop: 7,
+        // paddingTop: 7,
         paddingHorizontal: 8,
         paddingBottom: 5,
-        backgroundColor: 'yellow',
+        // backgroundColor: 'yellow',
     },
     content: {
-        paddingTop: 5,
+        // paddingTop: 5,
         paddingHorizontal: 8,
     },
     desc: {
-        marginVertical: 10,
+        // marginVertical: 10,
         fontSize: 18,
     },
 })

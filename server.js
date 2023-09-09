@@ -114,8 +114,8 @@ const handleSignin = async (req, res) => {
         role,
         // location
     } = user
-    
-    return res.status(200).json({
+
+    const data = {
         _id,
         email: user.email,
         username,
@@ -124,7 +124,11 @@ const handleSignin = async (req, res) => {
         token,
         role,
         // location
-    })
+    }
+
+    console.log(`\nUser signed in: ${username}`)
+    
+    return res.status(200).json(data)
 }
 
 app.post('/signup', (req, res) => handleSignup(req, res))
@@ -157,7 +161,8 @@ const createUser = async ({ email, username }) => {
         return
     }
 
-    console.log('returning new user', user)
+    console.log(`User created: ${user.username}`)
+
     return user
 }
 
@@ -227,6 +232,8 @@ app.post('/authenticate', async (req, res) => {
         return
     }
 
+    console.log(`\nUser authenticated: ${user.username}`)
+
     return res.status(200).json({ user: getSanitizedUser(user) })
 })
 
@@ -247,12 +254,14 @@ const clearUserToken = async _id => await User
     })
 
 const handleSignout = async (req, res) => {
-    const signedOutUser = await User.
+    const user = await User.
         findOneAndUpdate({ _id: req.body._id }, { $set: { token: null, } }, { new: true })
 
-    if (!signedOutUser) return res.json({ success: false, msg: 'Could not sign out user.' })
+    if (!user) return res.status(200).json(null)
 
-    return res.json({ success: true, user: signedOutUser, msg: 'User signed out.' })
+    console.log(`\nUser signed out: ${user.username}`)
+
+    return res.status(200).json({ user })
 }
 
 app.post('/signout', (req, res) => handleSignout(req, res))

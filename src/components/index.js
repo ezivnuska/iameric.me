@@ -11,7 +11,6 @@ import ButtonPrimary from './ButtonPrimary'
 import Cart from './Cart'
 import CartButton from './CartButton'
 import CategoryPicker from './CategoryPicker'
-import CenteredLoader from './CenteredLoader'
 import CenteredView from './CenteredView'
 import CircleButton from './CircleButton'
 import Container from './Container'
@@ -87,7 +86,6 @@ export {
     Cart,
     CartButton,
     CategoryPicker,
-    CenteredLoader,
     CenteredView,
     CircleButton,
     Container,

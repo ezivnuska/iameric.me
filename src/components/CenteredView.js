@@ -7,8 +7,8 @@ import {
 } from 'react-native'
 
 const CenteredView = ({ activity, children, label = null }) => (
-    <View style={[styles.container]}>
-        {activity && <ActivityIndicator size='small' />}
+    <View style={styles.container}>
+        {activity && <ActivityIndicator size='large' />}
         {label && <Text style={styles.label}>{label}</Text>}
         {children}
     </View>
@@ -18,16 +18,14 @@ export default CenteredView
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        display: 'flex',
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'red',
-        // borderWidth: 4,
-        // borderStyle: 'dashed',
-        // borderColor: 'pink',
     },
     label: {
+        marginTop: 20,
+        fontSize: 20,
+        lineHeight: 24,
         fontWeight: 600,
         textColor: '#aaa',
     }
