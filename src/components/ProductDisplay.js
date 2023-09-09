@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    DefaultText,
     ModalContainer,
     ProductForm,
     ProductList,
@@ -26,6 +27,7 @@ const ProductDisplay = () => {
     const { user } = state
 
     const [items, setItems] = useState([])
+    const [loading, setLoading] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
@@ -33,10 +35,13 @@ const ProductDisplay = () => {
     }, [])
 
     const getProducts = async () => {
+        setLoading(true)
         const { data } = await axios.
             get(`/api/products/${user._id}`)
         
-        if (!data) console.log('Error getting products:')
+        if (!data) return console.log('Error getting products:')
+        
+        setLoading(false)
 
         setItems(data.items)
     }
@@ -78,14 +83,16 @@ const ProductDisplay = () => {
 
             </View>
 
-            {items && items.length
-                ? (
-                    <ProductList
-                        deleteItem={onDelete}
-                        update={getProducts}
-                        items={items}
-                    />
-                ) : <Text>No products to display.</Text>}
+            {loading
+                ? <DefaultText>Loading products...</DefaultText>
+                : items && items.length
+                    ? (
+                        <ProductList
+                            deleteItem={onDelete}
+                            update={getProducts}
+                            items={items}
+                        />
+                    ) : <DefaultText>No products to display.</DefaultText>}
 
             <ModalContainer
                 animationType='slide'

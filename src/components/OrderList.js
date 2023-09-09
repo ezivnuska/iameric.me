@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
         flexGrow: 0,
         flexShrink: 0,
         marginBottom: 5,
-        paddingVertical: 10,
+        paddingVertical: 5,
         paddingHorizontal: 10,
         borderRadius: 4,
         borderWidth: 0,

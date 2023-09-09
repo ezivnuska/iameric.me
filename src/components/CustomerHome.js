@@ -21,6 +21,6 @@ const styles = StyleSheet.create({
         marginHorizontal: 'auto',
         minWidth: 350,
         maxWidth: 450,
-        width: 375,
+        width: '100%',
     },
 })

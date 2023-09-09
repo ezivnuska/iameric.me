@@ -8,7 +8,7 @@ import { Avatar } from '.'
 import axios from 'axios'
 import defaultStyles from '../styles'
 
-const UserHeading = ({ user, styleProps, ...props }) => {
+const UserHeading = ({ user, ...props }) => {
 
     const { _id, profileImage, username } = user
     const [path, setPath] = useState(null)
@@ -28,7 +28,7 @@ const UserHeading = ({ user, styleProps, ...props }) => {
     }
 
     return (
-        <View style={[styles.container, styleProps]}>
+        <View style={styles.container}>
             <View style={styles.leftColumn}>
                 <Avatar
                     path={path}
@@ -46,7 +46,8 @@ export default UserHeading
 
 const styles = StyleSheet.create({
     container: {
-        padding: 2,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',

@@ -71,7 +71,7 @@ const LocationDisplay = ({ details }) => {
             
             <View style={styles.displayHeader}>
                 
-                <Text style={defaultStyles.heading}>Location</Text>
+                <Text style={[defaultStyles.subheading, styles.heading]}>Address</Text>
                 
                 <View style={styles.buttons}>
                     <TouchableOpacity
@@ -79,8 +79,8 @@ const LocationDisplay = ({ details }) => {
                         onPress={() => setModalVisible(true)}
                     >
                         {location
-                            ? <EditOutlined style={{ fontSize: 20, color: '#fff' }} />
-                            : <PlusCircleOutlined style={{ fontSize: 20, color: '#fff' }} />
+                            ? <EditOutlined style={{ fontSize: 20 }} />
+                            : <PlusCircleOutlined style={{ fontSize: 20 }} />
                         }
                         
                     </TouchableOpacity>
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        marginBottom: 15,
+        // marginBottom: 15,
     },
     title: {
         fontSize: 24,
@@ -127,7 +127,10 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
     },
     headerButton: {
-        marginVertical: 4,
+        // marginVertical: 4,
         marginHorizontal: 7,
+    },
+    heading: {
+        marginBottom: 5,
     },
 })

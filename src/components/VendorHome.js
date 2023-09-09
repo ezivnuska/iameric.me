@@ -16,9 +16,7 @@ const VendorHome = () => {
 
     return (
         <View style={styles.container}>
-            {/* <Text style={styles.heading}>{user.username}</Text>
-            {user.location ? <LocationDetails location={user.location} /> : null} */}
-            {/* <ProductDisplay user={user} /> */}
+            <ProductDisplay user={user} />
         </View>
     )
 }
@@ -27,10 +25,10 @@ export default VendorHome
 
 const styles = StyleSheet.create({
     container: { 
-        marginHorizontal: 10,
+        marginHorizontal: 'auto',
         minWidth: 350,
         maxWidth: 450,
-        width: 375,
+        width: '100%',
     },
     heading: {
         fontWeight: 600,

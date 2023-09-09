@@ -152,7 +152,7 @@ const OrderListContainer = () => {
     const renderCurrentOrders = () => {
         return (current && current.length) ? (
             <View>
-                <DefaultText>Current Orders</DefaultText>
+                <DefaultText style={styles.heading}>Current Orders</DefaultText>
                 <OrderList orders={current} />
             </View>
         ) : null
@@ -176,6 +176,9 @@ export default OrderListContainer
 const styles= StyleSheet.create({
     container: {
 
+    },
+    heading: {
+        paddingHorizontal: 5,
     },
     controls: {
         display: 'flex',

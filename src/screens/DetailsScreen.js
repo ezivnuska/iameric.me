@@ -65,8 +65,12 @@ const DetailsScreen = ({ navigation, route }) => {
                 <Text style={defaultStyles.text}>&lt; Back</Text>
             </TouchableOpacity>
             
-            {vendor ? renderVendorHeader() : <Text>Loading Vendor...</Text>}
-            {vendor && <Menu vendorId={vendor._id} />}
+            {vendor ? (
+                <View>
+                    {renderVendorHeader()}
+                    <Menu vendorId={vendor._id} />
+                </View>
+            ) : <Text>Loading Vendor...</Text>}
         </Screen>
     )
 }

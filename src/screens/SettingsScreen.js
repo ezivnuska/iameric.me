@@ -1,4 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {
+    useContext,
+    // useEffect,
+    // useState,
+} from 'react'
 import {
     StyleSheet,
     View,
@@ -6,16 +10,16 @@ import {
 import {
     // AvatarModule,
     AvatarDisplay,
-    DeleteAccountButton,
+    // DeleteAccountButton,
     // ImageList,
-    ProductDisplay,
-    Module,
+    // ProductDisplay,
+    // Module,
     LocationDisplay,
-    UserHeading,
+    // UserHeading,
 } from '../components'
 import { AppContext } from '../AppContext'
 
-const SettingsScreen = ({ ...props }) => {
+const SettingsScreen = () => {
 
     const {
         user,
@@ -23,9 +27,7 @@ const SettingsScreen = ({ ...props }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.heading}>
-                <UserHeading user={user} />
-            </View>
+
             <View style={styles.modules}>
                 {
                     (user.role === 'vendor' || user.role === 'customer')
@@ -34,8 +36,6 @@ const SettingsScreen = ({ ...props }) => {
                 }
 
                 <AvatarDisplay />
-
-                {user.role === 'vendor' && <ProductDisplay user={user} />}
                 
             </View>
             
@@ -65,9 +65,5 @@ const styles = StyleSheet.create({
         width: 350,
         minWidth: 350,
         maxWidth: 900,
-    },
-    heading: {
-        paddingHorizontal: 10,
-        paddingVertical: 10,
     },
 })

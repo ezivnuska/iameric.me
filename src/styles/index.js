@@ -11,7 +11,7 @@ export default StyleSheet.create({
 	},
     text: {
         fontSize: base.textSize,
-		lineHeight: 24,
+		lineHeight: 22,
 		color: base.primaryTextColor,
     },
     heading: {
@@ -26,7 +26,6 @@ export default StyleSheet.create({
 		fontWeight: base.subheadingWeight,
 		color: base.secondaryTextColor,
 		lineHeight: 20,
-		marginBottom: 10,
     },
     email: {
         color: base.linkColor,
