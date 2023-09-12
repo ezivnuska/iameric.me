@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
         // marginHorizontal: 10,
     },
     experience: {
+        marginVertical: 10,
         paddingHorizontal: 30,
         paddingVertical: 20,
         // width: 250,

@@ -91,11 +91,12 @@ export default Cart
 const styles = StyleSheet.create({
     container: {
         paddingBottom: 10,
+        paddingHorizontal: 10,
     },
     cart: {
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
-        paddingBottom: 10,
+        // paddingBottom: 10,
     },
     flexContainer: {
         display: 'flex',

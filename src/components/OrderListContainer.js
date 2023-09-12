@@ -129,15 +129,21 @@ const OrderListContainer = () => {
     //     ) : null
     // }
     
-    const renderAvailableOrders = () => {
-        return (user.role === 'driver' && available.length)
-            ? (
-                <View>
-                    <DefaultText>Available Orders</DefaultText>
-                    <OrderList orders={available} />
-                </View>
-            ) : <DefaultText>No available orders</DefaultText>
-    }
+    const renderAvailableOrders = () => available.length
+        ? (
+            <View>
+                <DefaultText style={styles.heading}>Available Orders</DefaultText>
+                <OrderList orders={available} />
+            </View>
+        ) : <DefaultText style={styles.heading}>No available orders</DefaultText>
+
+    const renderCurrentOrders = () => current.length
+        ? (
+            <View>
+                <DefaultText style={styles.heading}>Current Orders</DefaultText>
+                <OrderList orders={current} />
+            </View>
+        ) : null
 
     // const renderCompletedOrders = () => {
     //     // if (user.role !== 'vendor') return null
@@ -149,16 +155,14 @@ const OrderListContainer = () => {
     //     ) : null
     // }
 
-    const renderCurrentOrders = () => {
-        return (current && current.length) ? (
-            <View>
-                <DefaultText style={styles.heading}>Current Orders</DefaultText>
-                <OrderList orders={current} />
-            </View>
-        ) : null
+    const ordersExist = () => {
+        if (current.length) return true
+        if (user.role === 'driver' && available.length) return true
+        return false
     }
     
     return !loading
+        ? ordersExist()
         ? (
             <View style={styles.container}>
 
@@ -168,14 +172,14 @@ const OrderListContainer = () => {
 
                 {/* {renderCompletedOrders()} */}
             </View>
-        ) : null
+        ) : null : null
 }
 
 export default OrderListContainer
 
 const styles= StyleSheet.create({
     container: {
-
+        paddingVertical: 15,
     },
     heading: {
         paddingHorizontal: 5,

@@ -58,7 +58,7 @@ const VendorDisplay = () => {
 
             {
                 loading
-                    ? <Text style={defaultStyles.text}>Loading Vendors...</Text>
+                    ? <Text style={[defaultStyles.text, styles.loadText]}>Loading Vendors...</Text>
                     : <VendorList users={vendors} />
             }
             
@@ -79,5 +79,8 @@ const styles = StyleSheet.create({
         // justifyContent: 'flex-start',
         paddingHorizontal: 5,
         marginBottom: 10,
+    },
+    loadText: {
+        paddingHorizontal: 5,
     },
 })

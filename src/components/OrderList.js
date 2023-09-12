@@ -184,7 +184,7 @@ const OrderList = ({ orders }) => {
     const renderOrderProcessButton = order => {
         switch (order.status) {
             case 0: return user.role === 'vendor' ? renderVendorForm(order._id) : user.role === 'customer' ? renderButton('Cancel Order', () => cancelOrder(order._id)) : null; break
-            case 1: return user.role === 'driver' ? renderButton('Accept Delivery', () => acceptDelivery(order._id)) : user.role === 'vendor' ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
+            case 1: return user.role === 'driver' ? renderButton('Accept Delivery', () => acceptDelivery(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
             case 2: return user.role === 'driver' ? renderButton('Arrived at Vendor', () => driverArrived(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
             case 3: return user.role === 'driver' ? renderButton('Picked Up', () => receivedOrder(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
             case 4: return user.role === 'driver' ? renderButton('Delivery Complete', () => completeDelivery(order._id)) : null; break
@@ -257,14 +257,13 @@ const styles = StyleSheet.create({
         marginVertical: 10,
     },
     item: {
-        flex: 1,
-        flexBasis: 'auto',
-        flexGrow: 0,
-        flexShrink: 0,
+        // flex: 1,
+        // flexBasis: 'auto',
+        // flexGrow: 0,
+        // flexShrink: 0,
         marginBottom: 5,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        borderRadius: 4,
-        borderWidth: 0,
+        paddingVertical: 10,
+        paddingHorizontal: 5,
+        // borderRadius: 4,
     },
 })

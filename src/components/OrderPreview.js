@@ -179,17 +179,6 @@ const OrderPreview = ({ order, children, ...props }) => {
 export default OrderPreview
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexGrow: 1,
-        flexShrink: 0,
-        flexBasis: 'auto',
-        maxWidth: '30%',
-        marginBottom: 10,
-        paddingVertical: 5,
-        paddingHorizontal: 5,
-        borderRadius: 4,
-    },
     columns: {
         display: 'flex',
         flexDirection: 'row',
@@ -219,12 +208,13 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
         flexShrink: 0,
         paddingTop: 5,
-        paddingBottom: 10,
+        // paddingBottom: 10,
         paddingHorizontal: 5,
     },
     status: {
+        fontSize: 18,
         lineHeight: 22,
-        fontWeight: 700,
+        fontWeight: 600,
     },
     timeline: {
         display: 'flex',

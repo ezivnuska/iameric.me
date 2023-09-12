@@ -46,7 +46,7 @@ export default UserHeading
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 10,
+        paddingHorizontal: 5,
         paddingVertical: 10,
         display: 'flex',
         flexDirection: 'row',

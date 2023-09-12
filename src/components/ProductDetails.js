@@ -36,11 +36,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 12,
         paddingBottom: 10,
+        paddingHorizontal: 10,
     },
     details: {
-        marginBottom: 7,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        marginBottom: 15,
     },
     blurb: {
         fontSize: 20,
@@ -50,7 +49,7 @@ const styles = StyleSheet.create({
     desc: {
         marginVertical: 10,
         fontWeight: 18,
-        paddingHorizontal: 5,
+        // paddingHorizontal: 5,
     },
     price: {
         textAlign: 'right',
