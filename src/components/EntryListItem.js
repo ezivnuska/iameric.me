@@ -8,7 +8,7 @@ import {
     View,
 } from 'react-native'
 import { CloseCircleOutlined } from '@ant-design/icons'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 import { AppContext } from '../AppContext'
 import UserHeading from './UserHeading'
 import axios from 'axios'

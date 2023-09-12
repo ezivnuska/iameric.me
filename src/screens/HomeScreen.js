@@ -15,7 +15,7 @@ import {
 } from '../components'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const HomeScreen = ({ navigation }) => {
 

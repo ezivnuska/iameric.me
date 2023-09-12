@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    Image,
     StyleSheet,
     Text,
     TouchableOpacity,
@@ -10,11 +11,13 @@ import {
     Menu,
     Screen,
     LocationDetails,
+    PanelView,
 } from '../components'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import axios from 'axios'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/images'
 
 const DetailsScreen = ({ navigation, route }) => {
 
@@ -42,35 +45,72 @@ const DetailsScreen = ({ navigation, route }) => {
         setVendor(user)
     }
 
-    const renderVendorHeader = () => {
-        return (
-            <View style={styles.vendorHeading}>
-                <View style={styles.vendorAvatar}>
-                    <Avatar size={70} path={`${vendor.username}/${vendor.profileImage.filename}`} />
-                </View>
-                <View style={styles.vendorDetails}>
-                    <Text style={defaultStyles.heading}>{vendor.username}</Text>
-                    {vendor.location ? <LocationDetails location={vendor.location} /> : null}
-                </View>
-            </View>
-        )
-    }
+    // TODO: clean this.
+    const renderVendorAvatar = () => (
+        <PanelView type='full'>
+            <Image
+                style={[
+                    styles.stretch,
+                    {
+                        width: '100%',
+                        height: 200,
+                        backgroundColor: '#ccc',
+                    }
+                ]}
+                // onLoadEnd={() => setLoading(false)}
+                source={
+                    vendor
+                    ? `${IMAGE_PATH}/${vendor.username}/${vendor.profileImage.filename}`
+                    : `${IMAGE_PATH}/avatar-default.png`
+                }
+            />
+        </PanelView>
+    )
+
+    // const renderVendorHeader = () => {
+    //     return (
+    //         <View style={styles.vendorHeading}>
+    //             <View style={styles.vendorAvatar}>
+    //                 <Avatar size={70} path={`${vendor.username}/${vendor.profileImage.filename}`} />
+    //             </View>
+    //             <View style={styles.vendorDetails}>
+    //                 <Text style={defaultStyles.heading}>{vendor.username}</Text>
+    //                 {vendor.location ? <LocationDetails location={vendor.location} /> : null}
+    //             </View>
+    //         </View>
+    //     )
+    // }
+    const renderVendorHeader = () => (
+        <View>
+            <Text style={defaultStyles.heading}>{vendor.username}</Text>
+            {vendor.location ? <LocationDetails location={vendor.location} /> : null}
+        </View>
+    )
 
     return (
         <Screen>
-            <TouchableOpacity
-                style={styles.backButton}
-                onPress={() => navigate('Home')}
-            >
-                <Text style={defaultStyles.text}>&lt; Back</Text>
-            </TouchableOpacity>
+            <PanelView>
+                <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={() => navigate('Home')}
+                >
+                    <Text style={defaultStyles.text}>&lt; Back</Text>
+                </TouchableOpacity>
+            </PanelView>
             
             {vendor ? (
                 <View>
-                    {renderVendorHeader()}
-                    <Menu vendorId={vendor._id} />
+                    <PanelView type='full'>{renderVendorAvatar()}</PanelView>
+                    <PanelView>{renderVendorHeader()}</PanelView>
+                    <PanelView type='expanded'>
+                        <Menu vendorId={vendor._id} />
+                    </PanelView>
                 </View>
-            ) : <Text>Loading Vendor...</Text>}
+            ) : (
+                <PanelView type='expanded'>
+                    <Text style={[defaultStyles.text, defaultStyles.padded]}>Loading Vendor...</Text>
+                </PanelView>
+            )}
         </Screen>
     )
 }
@@ -103,7 +143,10 @@ const styles = StyleSheet.create({
         flexGrow: 1,
     },
     backButton: {
-        paddingHorizontal: 5,
-        paddingVertical: 10,
+        // paddingHorizontal: 5,
+        // paddingVertical: 10,
+    },
+    stretch: {
+        resizeMode: 'contain',
     },
 })

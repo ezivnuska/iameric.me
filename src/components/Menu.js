@@ -11,7 +11,7 @@ import {
     ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 import axios from 'axios'
 
 const Menu = ({ vendorId }) => {
@@ -84,7 +84,7 @@ const Menu = ({ vendorId }) => {
                     <FlatList
                         data={items}
                         keyExtractor={item => `product-${item._id}`}
-                        style={styles.list}
+                        // style={styles.list}
                         renderItem={({ item }) => (
                             <MenuItem
                                 item={item}
@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
     },
     list: {
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: 'blue',
+        backgroundColor: 'pink',
     },
 })

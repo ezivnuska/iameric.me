@@ -8,7 +8,7 @@ import {
     CheckCircleOutlined,
     SyncOutlined,
 } from '@ant-design/icons'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const FormInputStatusIcon = ({ isLoading, isValid, ...props }) => isLoading ? (
     <View style={[defaultStyles.inputStatusIconBackground, styles.loading]}>

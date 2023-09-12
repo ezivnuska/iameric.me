@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 import { ButtonPrimary, FormInput, RolePicker } from '.'
 
 const SignUpForm = ({ setUser }) => {

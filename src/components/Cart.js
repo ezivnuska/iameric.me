@@ -8,7 +8,7 @@ import {
 import { ButtonPrimary } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const Cart = ({ onSubmitOrder }) => {
 

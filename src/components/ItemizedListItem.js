@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const ItemizedListItem = ({ item, onPress }) => {
     const { _id, price, title, desc, vendorId, blurb, category } = item

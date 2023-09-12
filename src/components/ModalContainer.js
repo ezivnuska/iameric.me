@@ -8,7 +8,7 @@ import {
     View,
 } from 'react-native'
 import { CloseOutlined, ConsoleSqlOutlined } from '@ant-design/icons'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 import base from '../styles/base'
 
 const ModalContainer = ({ children, closeModal = null, loading = null, label = null, ...props }) => {

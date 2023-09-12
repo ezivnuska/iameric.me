@@ -50,6 +50,7 @@ import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
 import ItemizedListItem from './ItemizedListItem'
 import ItemizedList from './ItemizedList'
+import PanelView from './PanelView'
 import ProductDetails from './ProductDetails'
 import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
@@ -125,6 +126,7 @@ export {
     OrderPreview,
     ItemizedList,
     ItemizedListItem,
+    PanelView,
     ProductDetails,
     ProductDisplay,
     ProductForm,

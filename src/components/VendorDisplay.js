@@ -10,7 +10,7 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import defaultStyles from '../styles'
+import main from '../styles/main'
 
 const VendorDisplay = () => {
 
@@ -49,38 +49,20 @@ const VendorDisplay = () => {
     //     setVendor(vendor)
     // }
 
-    return (
-        <View style={styles.container}>
-            
-            <View style={styles.displayHeader}>
-                <Text style={defaultStyles.heading}>Restaurants</Text>
+    return loading
+        ? <Text style={[main.text, main.paddedV]}>Loading Vendors...</Text>
+        : (
+            <View>
+                <Text style={[main.heading, main.padded]}>{`Restaurants (${vendors.length})`}</Text>
+                <VendorList users={vendors} />
             </View>
-
-            {
-                loading
-                    ? <Text style={[defaultStyles.text, styles.loadText]}>Loading Vendors...</Text>
-                    : <VendorList users={vendors} />
-            }
-            
-        </View>
-    )
+        )
 }
 
 export default VendorDisplay
 
 const styles = StyleSheet.create({
     container: {
-        // paddingBottom: 10,
-        // paddingHorizontal: 5,
-    },
-    displayHeader: {
-        // display: 'flex',
-        // flexDirection: 'row',
-        // justifyContent: 'flex-start',
-        paddingHorizontal: 5,
-        marginBottom: 10,
-    },
-    loadText: {
-        paddingHorizontal: 5,
+        
     },
 })

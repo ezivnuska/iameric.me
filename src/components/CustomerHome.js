@@ -4,14 +4,15 @@ import {
     View,
 } from 'react-native'
 import {
+    PanelView,
     VendorDisplay,
 } from '.'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const CustomerHome = () => (
-    <View style={styles.container}>
+    <PanelView type='full'>
         <VendorDisplay />
-    </View>
+    </PanelView>
 )
 
 export default CustomerHome

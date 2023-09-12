@@ -8,7 +8,7 @@ import {
     DefaultText,
     LocationDetails,
 } from '.'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 import moment from 'moment'
 import { AppContext } from '../AppContext'
 

@@ -5,7 +5,7 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import axios from 'axios'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 import { AppContext } from '../AppContext'
 import { clearStorage } from '../Auth'
 

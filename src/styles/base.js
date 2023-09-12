@@ -9,7 +9,7 @@ const subheadingWeight = 600
 const subheadingColor = secondaryTextColor
 const linkColor = '#00f'
 const textSize = 18
-const textLineHeight = 24
+const textLineHeight = 26
 
 export default {
     backgroundColor,

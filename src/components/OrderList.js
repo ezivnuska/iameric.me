@@ -15,7 +15,7 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import moment from 'moment'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const OrderList = ({ orders }) => {
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {
     FlatList,
-    StyleSheet,
 } from 'react-native'
 import {
     UserListItem,
@@ -19,7 +18,7 @@ const VendorList = ({ users }) => {
             data={items}
             listKey={() => 'users'}
             keyExtractor={(item, index) => 'user' + index}
-            style={styles.list}
+            style={{ borderTopWidth: 1 }}
             renderItem={({ item }) => (
                 <UserListItem
                     user={item}
@@ -31,10 +30,3 @@ const VendorList = ({ users }) => {
 }
 
 export default VendorList
-
-const styles = StyleSheet.create({
-    list: {
-        borderWidth: 1,
-        borderColor: '#ccc',
-    },
-})

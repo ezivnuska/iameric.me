@@ -16,7 +16,7 @@ import {
 } from '@ant-design/icons'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const initialState = {
     address1: '',

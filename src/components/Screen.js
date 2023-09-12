@@ -17,10 +17,11 @@ const Screen = ({ children }) => {
     return (
         <View style={{
             height: dimensions.window.height - 50,
-            width: '100%',
+            width: dimensions.window.width,//'100%',
             minWidth: 375,
-            marginHorizontal: 'auto',
-            paddingHorizontal: 5,
+            // marginHorizontal: 0,//'auto',
+            // paddingHorizontal: 0,//5,
+            // borderWidth: 1,
         }}>
             {children}
         </View>

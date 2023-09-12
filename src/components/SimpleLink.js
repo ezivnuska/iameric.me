@@ -3,7 +3,7 @@ import {
     Text,
     TouchableOpacity,
 } from 'react-native'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const SimpleLink = ({ labelText, onPress }) => (
     <TouchableOpacity

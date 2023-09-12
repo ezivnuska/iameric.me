@@ -7,7 +7,7 @@ import {
 import {
     ButtonPrimary
 } from '.'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const ProductDetails = ({ product, onOrder }) => {
     const { _id, title, price, desc, vendorId, blurb, category } = product

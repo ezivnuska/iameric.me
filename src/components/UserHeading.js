@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import { Avatar } from '.'
 import axios from 'axios'
-import defaultStyles from '../styles'
+import main from '../styles/main'
 
 const UserHeading = ({ user, ...props }) => {
 
@@ -28,7 +28,7 @@ const UserHeading = ({ user, ...props }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, main.padded]}>
             <View style={styles.leftColumn}>
                 <Avatar
                     path={path}
@@ -36,7 +36,7 @@ const UserHeading = ({ user, ...props }) => {
                 />
             </View>
             <View style={styles.main}>
-                <Text style={[defaultStyles.subheading, { lineHeight: 24 }]}>{username}</Text>
+                <Text style={[main.subheading, { lineHeight: 24 }]}>{username}</Text>
             </View>
         </View>
     )
@@ -46,8 +46,6 @@ export default UserHeading
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: 5,
-        paddingVertical: 10,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',

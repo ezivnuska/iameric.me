@@ -12,7 +12,7 @@ import {
 } from '.'
 
 import { AppContext } from '../AppContext'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 import moment from 'moment'
 import { Button } from 'antd'
 import {

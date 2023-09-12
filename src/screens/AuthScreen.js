@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import { authenticate } from '../Auth'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const AuthScreen = ({ navigation, ...props }) => {
     

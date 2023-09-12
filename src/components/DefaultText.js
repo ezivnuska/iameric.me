@@ -2,10 +2,10 @@ import React from 'react'
 import {
     Text,
 } from 'react-native'
-import defaultStyles from '../styles'
+import main from '../styles/main'
 
 const DefaultText = ({ children, ...props }) => (
-    <Text style={[defaultStyles.text, props.style]}>
+    <Text style={[main.text, props.style]}>
         {children}
     </Text>
 )

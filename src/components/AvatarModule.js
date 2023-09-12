@@ -20,7 +20,7 @@ import {
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const windowDimensions = Dimensions.get('window')
 const screenDimensions = Dimensions.get('screen')

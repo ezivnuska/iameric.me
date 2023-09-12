@@ -13,7 +13,7 @@ import {
 import {
     PlusCircleOutlined,
 } from '@ant-design/icons'
-import defaultStyles from '../styles'
+import defaultStyles from '../styles/main'
 
 const AvatarDisplay = () => {
     

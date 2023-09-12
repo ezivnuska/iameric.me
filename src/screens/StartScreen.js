@@ -12,6 +12,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import layout from '../styles/layout'
 
 const StartScreen = ({ navigation }) => {
 
@@ -130,16 +131,16 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
-        alignItems: 'stretch',
+        // alignItems: 'stretch',
         height: '100%',
         // width: 300,
         // marginTop: 20,
         // marginHorizontal: 10,
     },
     experience: {
-        marginVertical: 10,
-        paddingHorizontal: 30,
-        paddingVertical: 20,
+        // marginVertical: 10,
+        paddingHorizontal: layout.horizontalPadding,
+        paddingVertical: layout.verticalPadding,
         // width: 250,
         backgroundColor: '#ddd',
         borderRadius: 12,
