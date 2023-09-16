@@ -13,7 +13,8 @@ import { CloseCircleOutlined } from '@ant-design/icons'
 import { navigate } from '../navigators/RootNavigation'
 import { cleanStorage } from '../Auth'
 import {
-    CenteredView,
+    CloseButton,
+    LoadingView,
     ModalContainer,
 } from '.'
 
@@ -39,20 +40,14 @@ const Disconnect = props => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity
-                {...props}
-                onPress={signout}
-                style={styles.button}
-            >
-                <CloseCircleOutlined size='large' style={{ color: '#fff' }} />
-            </TouchableOpacity>
+            <CloseButton onPress={signout} />
 
             <ModalContainer
                 animationType='none'
                 transparent={true}
                 visible={loading}
             >
-                <CenteredView label='signing out...' activity />
+                <LoadingView label='signing out...' />
             </ModalContainer>
         </View>
     )

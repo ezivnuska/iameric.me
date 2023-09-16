@@ -8,7 +8,7 @@ import {
     DefaultText,
     LocationDetails,
 } from '.'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
 import moment from 'moment'
 import { AppContext } from '../AppContext'
 
@@ -31,24 +31,24 @@ const OrderDetails = ({ order }) => {
 
     const renderCustomerInfo = () => (
         <View style={styles.locationContainer}>
-            <DefaultText>{`Deliver to ${customer.username}`}</DefaultText>
+            <Text style={main.text}>{`Deliver to ${customer.username}`}</Text>
             {renderLocation()}
         </View>
     )
 
     const renderVendorInfo = () => (
         <View style={styles.locationContainer}>
-            <DefaultText style={defaultStyles.subheading}>{`Pick up from ${vendor.username} by ${getPickupTime()}`}</DefaultText>
+            <Text style={[main.text, main.subheading]}>{`Pick up from ${vendor.username} by ${getPickupTime()}`}</Text>
             <LocationDetails location={vendor.location} />
         </View>
     )
 
     const renderDriverInfo = () => driver ? (
         <View>
-            <Text style={defaultStyles.text}>{`Assigned to ${driver.username}`}</Text>
-            <DefaultText>Deliver by {`${getDeliveryTime()}`}</DefaultText>
+            <Text style={main.text}>{`Assigned to ${driver.username}`}</Text>
+            <Text style={[main.text]}>Deliver by {`${getDeliveryTime()}`}</Text>
         </View>
-    ) : <DefaultText>Looking for driver...</DefaultText>
+    ) : <Text style={main.text}>Looking for driver...</Text>
 
     const renderDetails = () => user.role !== 'vendor'
         ? (

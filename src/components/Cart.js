@@ -5,10 +5,13 @@ import {
     Text,
     View,
 } from 'react-native'
-import { ButtonPrimary } from '.'
+import {
+    ButtonPrimary,
+    PanelView,
+} from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
 
 const Cart = ({ onSubmitOrder }) => {
 
@@ -53,21 +56,21 @@ const Cart = ({ onSubmitOrder }) => {
     }
 
     return cart.items ? (
-        <View style={styles.container}>
+        <View style={main.paddedH}>
             <FlatList
                 style={styles.cart}
                 data={cart.items}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item }) => (
                     <View style={styles.item}>
-                        <Text style={[defaultStyles.text, styles.text]}>{item.title}</Text>
-                        <Text style={[defaultStyles.text, styles.value]}>${item.price}</Text>
+                        <Text style={[main.text, styles.text]}>{item.title}</Text>
+                        <Text style={[main.text, styles.value]}>${item.price}</Text>
                     </View>
                 )} 
             />
             <View style={styles.flexContainer}>
-                <Text style={[defaultStyles.text, styles.text, styles.total]}>Total:</Text>
-                <Text style={[defaultStyles.text, styles.value, styles.total]}>${getTotal()}</Text>
+                <Text style={[main.text, styles.text, styles.total]}>Total:</Text>
+                <Text style={[main.text, styles.value, styles.total]}>${getTotal()}</Text>
             </View>
 
             <ButtonPrimary
@@ -89,26 +92,22 @@ const Cart = ({ onSubmitOrder }) => {
 export default Cart
 
 const styles = StyleSheet.create({
-    container: {
-        paddingBottom: 10,
-        paddingHorizontal: 10,
-    },
     cart: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        // borderBottomWidth: 1,
+        // borderBottomColor: '#ccc',
         // paddingBottom: 10,
+        paddingBottom: 10,
     },
     flexContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingVertical: 10,
+        paddingBottom: 10,
     },
     item: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingBottom: 10,
     },
     text: {
         flexBasis: '80%',

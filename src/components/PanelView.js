@@ -20,7 +20,7 @@ const PanelView = ({ children, type, ...props }) => {
     }
 
     return (
-        <View style={[getStyles(), props.styles]}>
+        <View style={[getStyles(), props.style]}>
             {children}
         </View>
     )

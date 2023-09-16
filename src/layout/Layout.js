@@ -7,7 +7,11 @@ import {
 } from 'react-native'
 import { Navigation } from '../navigators'
 import { AppContext } from '../AppContext'
-import { CenteredView, Header } from '../components'
+import {
+    CenteredView,
+    Header,
+    LoadingView,
+} from '../components'
 import base from '../styles/base'
 
 let dims = {
@@ -56,7 +60,9 @@ const Layout = () => {
                 <Navigation />
             </ScrollView>
         </SafeAreaView>
-    ) : <CenteredView activity label='getting started...' />
+    ) : (
+        <LoadingView label='getting started...' />
+    )
 }
 
 export default Layout

@@ -3,11 +3,11 @@ import {
     Image,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import {
-    Avatar,
+    BackButton,
+    DefaultText,
     Menu,
     Screen,
     LocationDetails,
@@ -16,7 +16,7 @@ import {
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import axios from 'axios'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/images'
 
 const DetailsScreen = ({ navigation, route }) => {
@@ -39,10 +39,10 @@ const DetailsScreen = ({ navigation, route }) => {
 
     const getVendor = async () => {
         setLoading(true)
-        const { data: { user } } = await axios.get(`/api/users/${id}`)
+        const { data } = await axios.get(`/api/users/${id}`)
+        if (!data.user) return console.log('oops... could not get vendor details')
         setLoading(false)
-        if (!user) return console.log('oops... could not get vendor details')
-        setVendor(user)
+        setVendor(data.user)
     }
 
     // TODO: clean this.
@@ -74,43 +74,41 @@ const DetailsScreen = ({ navigation, route }) => {
     //                 <Avatar size={70} path={`${vendor.username}/${vendor.profileImage.filename}`} />
     //             </View>
     //             <View style={styles.vendorDetails}>
-    //                 <Text style={defaultStyles.heading}>{vendor.username}</Text>
+    //                 <Text style={main.heading}>{vendor.username}</Text>
     //                 {vendor.location ? <LocationDetails location={vendor.location} /> : null}
     //             </View>
     //         </View>
     //     )
     // }
     const renderVendorHeader = () => (
-        <View>
-            <Text style={defaultStyles.heading}>{vendor.username}</Text>
+        <View style={main.paddedV}>
+            <Text style={main.heading}>{vendor.username}</Text>
             {vendor.location ? <LocationDetails location={vendor.location} /> : null}
         </View>
     )
 
     return (
         <Screen>
-            <PanelView>
-                <TouchableOpacity
-                    style={styles.backButton}
-                    onPress={() => navigate('Home')}
-                >
-                    <Text style={defaultStyles.text}>&lt; Back</Text>
-                </TouchableOpacity>
-            </PanelView>
-            
-            {vendor ? (
-                <View>
-                    <PanelView type='full'>{renderVendorAvatar()}</PanelView>
-                    <PanelView>{renderVendorHeader()}</PanelView>
-                    <PanelView type='expanded'>
-                        <Menu vendorId={vendor._id} />
+
+            {loading
+                ? (
+                    <PanelView>
+                        <DefaultText style={[main.text, main.padded]}>Loading Vendor...</DefaultText>
                     </PanelView>
-                </View>
-            ) : (
-                <PanelView type='expanded'>
-                    <Text style={[defaultStyles.text, defaultStyles.padded]}>Loading Vendor...</Text>
-                </PanelView>
-            )}
+                ) : vendor
+                    ? (
+                        <View>
+                            <PanelView>
+                                <BackButton />
+                                {renderVendorAvatar()}
+                                {renderVendorHeader()}
+                            </PanelView>
+                            <PanelView type='expanded'>
+                                <Menu vendorId={vendor._id} />
+                            </PanelView>
+                        </View>
+                ) : <DefaultText style={[main.text, main.padded]}>Could not load vendor...</DefaultText>}
+            
         </Screen>
     )
 }

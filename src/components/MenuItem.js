@@ -5,32 +5,30 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import {
-    DefaultText,
-} from '.'
 import main from '../styles/main'
+import { PlusOutlined } from '@ant-design/icons'
 
 const MenuItem = ({ item, onPress }) => {
     
     const { _id, price, title, desc, vendorId, blurb, category } = item
     
     return (
-        <TouchableOpacity
-            style={[styles.container, main.padded]}
-            onPress={onPress}
-        >
+        <View style={[styles.container, main.padded]}>
             <View style={styles.flexContainer}>
                 <Text style={[main.subheading, styles.title]}>{title}</Text>
-                <Text style={[main.text, styles.price]}>${price}</Text>
+
+                <TouchableOpacity
+                    onPress={onPress}
+                >
+                    <Text style={[main.text, styles.price]}>${price} <PlusOutlined /></Text>
+                </TouchableOpacity>
             </View>
 
-            {(blurb && blurb.length) && <DefaultText style={styles.blurb}>{blurb}</DefaultText>}
-            
             <View style={styles.content}>
-                <DefaultText style={styles.desc}>{desc}</DefaultText>
+                {(blurb && blurb.length) ? <Text style={main.text}>{blurb}</Text> : null}
+                <Text style={[main.text, styles.desc]}>{desc}</Text>
             </View>
-
-        </TouchableOpacity>
+        </View>
     )
 }
 
@@ -51,13 +49,14 @@ const styles = StyleSheet.create({
         // paddingHorizontal: 8,
         // paddingBottom: 5,
         // backgroundColor: '#900',
-        // marginBottom: 5,
+        marginBottom: 5,
     },
     title: {
         flex: 1,
         flexBasis: '70%',
         flexShrink: 0,
         flexGrow: 1,
+        marginTop: 4,
         // color: '#fff',
     },
     price: {
@@ -66,8 +65,12 @@ const styles = StyleSheet.create({
         flexShrink: 1,
         flexBasis: '30%',
         textAlign: 'right',
+        backgroundColor: '#00f',
+        borderRadius: 10,
+        paddingVertical: 2,
+        paddingHorizontal: 7,
+        color: '#fff',
         // color: '#666',
-        // color: '#fff',
     },
     blurb: {
         // fontSize: 20,

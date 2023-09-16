@@ -362,9 +362,11 @@ app.post('/product', async (req, res) => {
     let item = null
 
     if (_id) {
+        console.log('updating existing product')
         item = await Product.
-            findOneAndUpdate({ _id }, { $set: { price, vendor, title, desc, blurb, category } }, { new: true } )
+        findOneAndUpdate({ _id }, { $set: { price, vendor, title, desc, blurb, category } }, { new: true } )
     } else {
+        console.log('adding new product')
         item = await Product.create(newItem)
     }
 
@@ -373,13 +375,13 @@ app.post('/product', async (req, res) => {
         return res.status(406).json({ item: null })
     }
 
-    return res.status(200).json({ item })
+    return res.status(200).json(item)
 })
 
-app.get('/products/:id', async (req, res) => {
-    const { id } = req.params
+app.get('/products/:vendor', async (req, res) => {
+    const { vendor } = req.params
     const items = await Product.
-        find({ vendor: id }).
+        find({ vendor }).
         populate('vendor')
     
     if (!items) {

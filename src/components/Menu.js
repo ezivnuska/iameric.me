@@ -6,12 +6,13 @@ import {
     View,
 } from 'react-native'
 import {
+    CenteredView,
     MenuItem,
     ModalContainer,
     ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
 import axios from 'axios'
 
 const Menu = ({ vendorId }) => {
@@ -45,40 +46,13 @@ const Menu = ({ vendorId }) => {
         setLoading(false)
     }
 
-    const removeItemById = id => {
-        let indexToRemove = null
-        items.map((item, i) => {
-            if (item._id === id) indexToRemove = i
-        })
-        if (indexToRemove === null) return
-        
-        const updatedItems = items.filter((item, i) => i !== indexToRemove)
-        
-        setItems(updatedItems)
-    }
-
-    const deleteItem = id => {
-
-        removeItemById(id)
-        axios
-            .delete('/api/products/delete', { data: { id } })
-            .then(({ data }) => {
-                // const { entry } = data
-                updateStatus('Product deleted.')
-            })
-            .catch(err => {
-                console.log('Error deleting product.', err)
-                updateStatus('Error deleting product.')
-            })
-    }
-
     const addToCart = item => {
         dispatch({ type: 'ADD_TO_CART', item, vendor: vendorId })
         setFeatured(null)
     }
     
     return (
-        <View style={styles.container}>
+        <View stye={styles.container}>
             {(items && items.length)
                 ? (
                     <FlatList
@@ -92,7 +66,7 @@ const Menu = ({ vendorId }) => {
                             />
                         )}
                     />
-                ) : <Text style={defaultStyles.text}>No products to display.</Text>}
+                ) : <Text style={main.text}>No products to display.</Text>}
 
             <ModalContainer
                 animationType='slide'
@@ -101,7 +75,7 @@ const Menu = ({ vendorId }) => {
                 closeModal={() => setFeatured(null)}
                 label={featured && featured.title ? featured.title : null}
             >
-                {featured && <ProductDetails product={featured} onOrder={addToCart} />}
+                <ProductDetails product={featured} onOrder={addToCart} />
             </ModalContainer>
         </View>
     )
@@ -111,10 +85,11 @@ export default Menu
 
 const styles = StyleSheet.create({
     container: {
+        height: '100%',
         // paddingHorizontal: 10,
         // paddingVertical: 10,
-        // borderWidth: 1,
-        // borderColor: 'red',
+        borderWidth: 1,
+        backgroundColor: 'blue',
     },
     heading: {
         fontSize: 20,

@@ -5,11 +5,12 @@ import {
 } from 'react-native'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
 import {
     ButtonPrimary,
     CategoryPicker,
     FormInput,
+    PanelView,
 } from '.'
 
 const ProductForm = ({ onComplete, onDelete, product = null }) => {
@@ -55,12 +56,12 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
         
         setLoading(true)
 
-        const { data } = await axios.
+        const item = await axios.
             post('/api/product', newProduct)
 
         setLoading(false)
 
-        if (!data) {
+        if (!item) {
             console.log('Error saving product')
             return
         }
@@ -71,71 +72,75 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
         setBlurb('')
         setCategory('')
         
-        onComplete(data.item)
+        onComplete(item)
     }
 
     return (
-        <View style={defaultStyles.form}>
+        <PanelView type='full'>
+            <View style={main.form}>
 
-            <CategoryPicker
-                style={{ marginBottom: 10 }}
-                label='Category'
-                onChange={onChangeCategory}
-            />
-            
-            <FormInput
-                label='Name'
-                value={title}
-                onChangeText={onChangeTitle}
-                placeholder='product name'
-                textContentType='default'
-                autoCapitalize='true'
-                keyboardType='default'
-                style={defaultStyles.input}
-            />
+                <CategoryPicker
+                    style={{ marginBottom: 10 }}
+                    label='Category'
+                    onChange={onChangeCategory}
+                />
+                
+                <FormInput
+                    label='Name'
+                    value={title}
+                    onChangeText={onChangeTitle}
+                    placeholder='product name'
+                    textContentType='default'
+                    autoCapitalize='true'
+                    keyboardType='default'
+                    style={main.input}
+                />
 
-            <FormInput
-                label='Price'
-                value={price}
-                onChangeText={onChangePrice}
-                placeholder='0.00'
-                keyboardType='decimal-pad'
-                style={defaultStyles.input}
-            />
+                <FormInput
+                    label='Price'
+                    value={price}
+                    onChangeText={onChangePrice}
+                    placeholder='0.00'
+                    keyboardType='decimal-pad'
+                    style={main.input}
+                />
 
-            <FormInput
-                label='Blurb'
-                value={blurb}
-                onChangeText={onChangeBlurb}
-                placeholder='blurb'
-                keyboardType='default'
-                multiline
-                style={[defaultStyles.input, defaultStyles.textArea]}
-            />
+                <FormInput
+                    label='Blurb'
+                    value={blurb}
+                    onChangeText={onChangeBlurb}
+                    placeholder='blurb'
+                    keyboardType='default'
+                    multiline
+                    style={[main.input, main.textArea]}
+                />
 
-            <FormInput
-                label='Description'
-                value={desc}
-                onChangeText={onChangeDesc}
-                placeholder='description'
-                keyboardType='default'
-                multiline
-                style={[defaultStyles.input, defaultStyles.textArea]}
-            />
+                <FormInput
+                    label='Description'
+                    value={desc}
+                    onChangeText={onChangeDesc}
+                    placeholder='description'
+                    keyboardType='default'
+                    multiline
+                    style={[main.input, main.textArea]}
+                />
 
-            <ButtonPrimary
-                label='Save'
-                disabled={loading || !title.length || !price.length}
-                onPress={onSubmit}
-            />
+                <ButtonPrimary
+                    style={main.button}
+                    label='Save'
+                    disabled={loading || (title && !title.length) || (price && !price.length)}
+                    onPress={onSubmit}
+                />
 
-            <ButtonPrimary
-                label='Delete'
-                disabled={loading}
-                onPress={() => onDelete(product._id)}
-            />
+                <ButtonPrimary
+                    style={main.button}
+                    label='Delete'
+                    disabled={loading}
+                    onPress={() => onDelete(product._id)}
+                />
 
-        </View>
+            </View>
+        </PanelView>
     )
 }
 

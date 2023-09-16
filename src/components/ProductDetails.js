@@ -5,57 +5,47 @@ import {
     View,
 } from 'react-native'
 import {
-    ButtonPrimary
+    ButtonPrimary,
+    CenteredView,
+    PanelView,
 } from '.'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
 
-const ProductDetails = ({ product, onOrder }) => {
-    const { _id, title, price, desc, vendorId, blurb, category } = product
-
-    return (
-        <View style={styles.container}>
-            <View style={styles.details}>
-                <Text style={[defaultStyles.text, styles.blurb]}>{blurb}</Text>
-                <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
-                <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
+const ProductDetails = ({ product, onOrder }) => product ? (
+    <View style={main.paddedH}>
+        <View style={styles.columns}>
+            <View style={styles.main}>
+                {product.blurb && <Text style={[main.text, main.bold]}>{product.blurb}</Text>}
+                <Text style={[main.text]}>{product.desc}</Text>
             </View>
-            <ButtonPrimary
-                label='Add to Cart'
-                onPress={() => onOrder(product)}
-            />
+            <View style={styles.aside}>
+                <Text style={[main.text, main.bold]}>${product.price}</Text>
+            </View>
         </View>
-    )
-}
+
+        <ButtonPrimary
+            label='Add to Cart'
+            onPress={() => onOrder(product)}
+        />
+    </View>
+) : null
 
 export default ProductDetails
 
 const styles = StyleSheet.create({
-    container: {
+    columns: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        marginBottom: 12,
-        paddingBottom: 10,
-        paddingHorizontal: 10,
-    },
-    details: {
-        marginBottom: 15,
-    },
-    blurb: {
-        fontSize: 20,
-        fontWeight: 600,
-        color: '#777',
-    },
-    desc: {
-        marginVertical: 10,
-        fontWeight: 18,
-        // paddingHorizontal: 5,
-    },
-    price: {
-        textAlign: 'right',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
         marginBottom: 10,
-        fontSize: 18,
-        fontWeight: 700,
-        color: '#666',
+    },
+    main: {
+        flexBasis: 'auto',
+        flexGrow: 1,
+    },
+    aside: {
+        flexBasis: '20%',
+        flexGrow: 0,
+        textAlign: 'right',
     },
 })

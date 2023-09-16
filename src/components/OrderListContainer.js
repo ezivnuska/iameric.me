@@ -8,10 +8,11 @@ import {
 import {
     DefaultText,
     OrderList,
+    PanelView,
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
 
 const OrderListContainer = () => {
 
@@ -66,10 +67,8 @@ const OrderListContainer = () => {
     }
 
     const sortOrdersByStatus = orders => {
-        // const pending = []
         const current = []
         const available = []
-        // const completed = []
         const closed = []
 
         orders.map((order) => {
@@ -89,71 +88,19 @@ const OrderListContainer = () => {
             }
         })
 
-        // console.log('pending', pending)
-        // console.log('current', current)
-        // console.log('available', available)
-        // console.log('completed', completed)
-
-        // setPending(pending)
         setCurrent(current)
         setAvailable(available)
-        // setCompleted(completed)
         setClosed(closed)
 
     }
-
-    // const sortOrders = items => {
-    //     setCurrent(currentUserOrders(items))
-    //     setAvailable(getAvailableOrders(items))
-    //     setCompleted(getCompletedOrders(items))
-    // }
-
-    // const currentUserOrders = (items) => {
-    //     return items.filter(order => {
-    //         return user.role === 'driver'
-    //             ? order[user.role] && order[user.role]._id === user._id && order.status < 5
-    //             : order[user.role] && order[user.role]._id === user._id && order.status < 5
-    //     })
-    // }
-
-    // const getAvailableOrders = (items) => items.filter(order => order.status === 1)
-
-    // const getCompletedOrders = (items) => items.filter(order => order[user.role] && order[user.role]._id === user._id && order.status === 5)
-
-    // const renderPendingOrders = () => {
-    //     return (pending.length) ? (
-    //         <View>
-    //             <DefaultText>Pending Orders</DefaultText>
-    //             <OrderList orders={pending} />
-    //         </View>
-    //     ) : null
-    // }
     
     const renderAvailableOrders = () => available.length
-        ? (
-            <View>
-                <DefaultText style={styles.heading}>Available Orders</DefaultText>
-                <OrderList orders={available} />
-            </View>
-        ) : <DefaultText style={styles.heading}>No available orders</DefaultText>
+        ? <OrderList orders={available} />
+        : null
 
     const renderCurrentOrders = () => current.length
-        ? (
-            <View>
-                <DefaultText style={styles.heading}>Current Orders</DefaultText>
-                <OrderList orders={current} />
-            </View>
-        ) : null
-
-    // const renderCompletedOrders = () => {
-    //     // if (user.role !== 'vendor') return null
-    //     return (completed && completed.length) ? (
-    //         <View>
-    //             <DefaultText>Completed Orders</DefaultText>
-    //             <OrderList orders={completed} />
-    //         </View>
-    //     ) : null
-    // }
+        ? <OrderList orders={current} />
+        : null
 
     const ordersExist = () => {
         if (current.length) return true
@@ -164,7 +111,7 @@ const OrderListContainer = () => {
     return !loading
         ? ordersExist()
         ? (
-            <View style={styles.container}>
+            <View>
 
                 {renderCurrentOrders()}
                 
@@ -178,12 +125,6 @@ const OrderListContainer = () => {
 export default OrderListContainer
 
 const styles= StyleSheet.create({
-    container: {
-        paddingVertical: 15,
-    },
-    heading: {
-        paddingHorizontal: 5,
-    },
     controls: {
         display: 'flex',
         flexDirection: 'row',

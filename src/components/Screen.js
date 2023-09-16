@@ -19,7 +19,8 @@ const Screen = ({ children }) => {
             height: dimensions.window.height - 50,
             width: dimensions.window.width,//'100%',
             minWidth: 375,
-            // marginHorizontal: 0,//'auto',
+            maxWidth: 450,
+            marginHorizontal: 'auto',
             // paddingHorizontal: 0,//5,
             // borderWidth: 1,
         }}>

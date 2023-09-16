@@ -6,7 +6,9 @@ import {
 import {
     ButtonPrimary,
     CenteredView,
+    LoadingView,
     DefaultText,
+    PanelView,
     Screen,
 } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -84,10 +86,10 @@ const StartScreen = ({ navigation }) => {
 
     return (
         <Screen>
-            {loading
-                ? <CenteredView activity label='Connecting...' />
-                : (
-                    <CenteredView>
+            <PanelView style={{ height: '100%' }}>
+                {loading
+                    ? <LoadingView label='Connecting...' />
+                    : (
                         <View style={styles.container}>
                             <View style={styles.experience}>
                                 <DefaultText style={styles.caption}>
@@ -117,9 +119,9 @@ const StartScreen = ({ navigation }) => {
                                 />
                             </View>
                         </View>
-                    </CenteredView>
                 )
             }
+            </PanelView>
         </Screen>
     )
 }
@@ -131,23 +133,26 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
-        // alignItems: 'stretch',
+        alignItems: 'stretch',
         height: '100%',
-        // width: 300,
+        // width: '100%',
         // marginTop: 20,
         // marginHorizontal: 10,
     },
     experience: {
-        // marginVertical: 10,
+        // flex: 1,
+        marginHorizontal: 'auto',
         paddingHorizontal: layout.horizontalPadding,
         paddingVertical: layout.verticalPadding,
-        // width: 250,
+        width: '75%',
+        minWidth: 250,
+        maxWidth: 375,
         backgroundColor: '#ddd',
         borderRadius: 12,
     },
     caption: {
         fontWeight: 700,
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: layout.verticalMargin,
     },
 })

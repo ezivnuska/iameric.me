@@ -6,16 +6,16 @@ import {
     View,
 } from 'react-native'
 import {
+    AddButton,
     DefaultText,
     ModalContainer,
+    PanelView,
     ProductForm,
     ProductList,
 } from '.'
-import {
-    PlusCircleOutlined,
-} from '@ant-design/icons'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import main from '../styles/main'
 
 const ProductDisplay = () => {
 
@@ -28,7 +28,7 @@ const ProductDisplay = () => {
 
     const [items, setItems] = useState([])
     const [loading, setLoading] = useState(false)
-    const [modalVisible, setModalVisible] = useState(false)
+    const [featured, setFeatured] = useState(null)
 
     useEffect(() => {
         getProducts()
@@ -58,53 +58,58 @@ const ProductDisplay = () => {
         setItems(items.filter(item => item._id !== data.item._id))
     }
 
+    const updateItems = product => {
+        const products = items.map((item, index) => {
+            if (product._id === item._id) return product
+            else return item
+        })
+
+        setItems(products)
+    }
+
     const onModalSubmitted = item => {
-        setItems([item, ...items])
-        setModalVisible(false)
+        updateItems(item)
+        setFeatured(null)
     }
 
     return (
-        <View style={styles.container}>
-            
-            <View style={styles.displayHeader}>
-                
-                <Text style={styles.title}>Products</Text>
-                
-                <View style={styles.buttons}>
-                    <TouchableOpacity
-                        style={styles.headerButton}
-                        onPress={() => setModalVisible(true)}
-                    >
-                        <PlusCircleOutlined
-                            style={{ fontSize: 20 }}
-                        />
-                    </TouchableOpacity>
+        <View>
+            {/* <PanelView> */}
+                <View style={[styles.displayHeader, main.padded]}>
+                    
+                    <Text style={main.heading}>Products</Text>
+                    
+                    <View style={styles.buttons}>
+                        <AddButton iconStyle={styles.headerButton} onPress={() => setFeatured(true)} />
+                    </View>
+
                 </View>
+            {/* </PanelView> */}
 
-            </View>
-
-            {loading
+            <PanelView type='expanded'>
+                {loading
                 ? <DefaultText>Loading products...</DefaultText>
                 : items && items.length
                     ? (
                         <ProductList
-                            deleteItem={onDelete}
-                            update={getProducts}
                             items={items}
+                            onPress={item => setFeatured(item)}
                         />
                     ) : <DefaultText>No products to display.</DefaultText>}
+            </PanelView>
 
             <ModalContainer
                 animationType='slide'
                 presentationStyle='fullScreen'
                 transparent={false}
-                visible={modalVisible}
-                closeModal={() => setModalVisible(false)}
-                label='Add Product'
+                visible={featured}
+                closeModal={() => setFeatured(null)}
+                label={`${featured && featured._id ? 'Edit' : 'Add'} Product`}
             >
                 <ProductForm
                     onComplete={onModalSubmitted}
                     onDelete={onDelete}
+                    product={featured}
                 />
             </ModalContainer>
         </View>
@@ -115,14 +120,13 @@ export default ProductDisplay
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 10,
-        paddingHorizontal: 10,
+        // paddingVertical: 10,
+        // paddingHorizontal: 10,
     },
     displayHeader: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        marginBottom: 15,
     },
     title: {
         fontSize: 24,
@@ -134,7 +138,7 @@ const styles = StyleSheet.create({
         flexBasis: 'auto',
     },
     headerButton: {
-        marginVertical: 4,
+        // marginVertical: 4,
         marginHorizontal: 7,
     },
 })

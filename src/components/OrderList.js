@@ -10,12 +10,13 @@ import {
     ModalContainer,
     OrderDetails,
     OrderPreview,
+    PanelView,
     TimeSelector,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import moment from 'moment'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
 
 const OrderList = ({ orders }) => {
 
@@ -176,7 +177,7 @@ const OrderList = ({ orders }) => {
 
     const renderVendorForm = id => (
         <View>
-            <Text style={defaultStyles.text}>How long until ready?</Text>
+            <Text style={main.text}>How long until ready?</Text>
             <TimeSelector onSelect={time => confirmOrder(id, time)} />
         </View>
     )
@@ -203,10 +204,10 @@ const OrderList = ({ orders }) => {
 
     const renderOrders = () => (orders && orders.length)
         ? (
-            <View style={styles.list}>
+            <PanelView type='expanded' style={main.padded}>
                 {orders.map((order, index) => (
                     <OrderPreview
-                        style={styles.item}
+                        style={main.padded}
                         key={`order-preview-${index}`}
                         onPress={() => onPress(order)}
                         order={order}
@@ -214,11 +215,12 @@ const OrderList = ({ orders }) => {
                         {renderOrderProcessButton(order)}
                     </OrderPreview>
                 ))}
-            </View>
+            </PanelView>
         ) : null
 
     return (
         <View style={styles.container}>
+            
             {renderOrders()}
 
             <ModalContainer
@@ -229,14 +231,9 @@ const OrderList = ({ orders }) => {
                 label='Order Details'
                 loading={loading}
             >
-                {featuredItem
-                    ? (
-                        <View>
-                            <OrderDetails order={featuredItem} />
-                        </View>
-                    )
-                    : null
-                }
+                <View>
+                    <OrderDetails order={featuredItem} />
+                </View>
                 
             </ModalContainer>
         </View>
@@ -254,7 +251,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         rowGap: 5,
-        marginVertical: 10,
+        // marginVertical: 10,
     },
     item: {
         // flex: 1,
@@ -262,7 +259,7 @@ const styles = StyleSheet.create({
         // flexGrow: 0,
         // flexShrink: 0,
         marginBottom: 5,
-        paddingVertical: 10,
+        // paddingVertical: 10,
         paddingHorizontal: 5,
         // borderRadius: 4,
     },

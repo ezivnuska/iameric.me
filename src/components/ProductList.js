@@ -2,22 +2,23 @@ import React from 'react'
 import {
     FlatList,
 } from 'react-native'
-import { ProductListItem } from '.'
+import {
+    ProductListItem,
+} from '.'
 
-const ProductList = ({ deleteItem, items, update }) => (
+const ProductList = ({ deleteItem, items, onPress, update }) => (
     <FlatList
         data={items}
         listKey={() => 'products'}
-        keyExtractor={(item, index) => 'product' + index}
-        renderItem={({ item }) => {
-            return (
-                <ProductListItem
-                    item={item}
-                    update={update}
-                    onDelete={() => deleteItem(item._id)}
-                />
-            )
-        }} 
+        keyExtractor={item => `product-${item._id}`}
+        renderItem={({ item }) => (
+            <ProductListItem
+                item={item}
+                update={update}
+                onDelete={() => deleteItem(item._id)}
+                onPress={() => onPress(item)}
+            />
+        )} 
     />
 )
 

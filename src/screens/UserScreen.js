@@ -1,13 +1,10 @@
 import React, { useContext } from 'react'
-import {
-    StyleSheet,
-    View,
-} from 'react-native'
 import { AppContext } from '../AppContext'
 import {
     CustomerHome,
     DriverHome,
     OrderListContainer,
+    PanelView,
     Screen,
     VendorHome,
 } from '../components'
@@ -27,10 +24,7 @@ const UserScreen = props => {
     }
     return (
         <Screen>
-            
-            <View style={styles.heading}>
-                <OrderListContainer />
-            </View>
+            <OrderListContainer />
             
             {renderUserHome()}
 
@@ -39,14 +33,3 @@ const UserScreen = props => {
 }
 
 export default UserScreen
-
-const styles = StyleSheet.create({
-    container: {
-        
-    },
-    heading: {
-        // paddingHorizontal: 5,
-        // paddingVertical: 10,
-        // backgroundColor: 'yellow',
-    },
-})

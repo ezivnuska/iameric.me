@@ -1,15 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {
-    StyleSheet,
-    Text,
-    View,
-} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import { authenticate, cleanStorage } from '../Auth'
 import {
-    CenteredView,
+    LoadingView,
     Screen,
 } from '../components'
 
@@ -71,7 +66,7 @@ const SplashScreen = ({ navigation }) => {
     
     return (
         <Screen>
-            <CenteredView activity label='Checking status...' />
+            <LoadingView label='Checking status...' />
         </Screen>
     )
 }

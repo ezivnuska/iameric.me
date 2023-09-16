@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    ActivityIndicator,
     StyleSheet,
-    Text,
     View,
 } from 'react-native'
 import {
+    DefaultText,
     VendorList,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -22,7 +21,7 @@ const VendorDisplay = () => {
     const { user, users } = state
 
     const [vendors, setVendors] = useState(null)
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
     // const [vendor, setVendor] = useState(null)
 
     const getVendors = async () => {
@@ -50,13 +49,14 @@ const VendorDisplay = () => {
     // }
 
     return loading
-        ? <Text style={[main.text, main.paddedV]}>Loading Vendors...</Text>
-        : (
-            <View>
-                <Text style={[main.heading, main.padded]}>{`Restaurants (${vendors.length})`}</Text>
-                <VendorList users={vendors} />
-            </View>
-        )
+        ? <DefaultText style={[main.text, main.padded]}>Loading Vendors...</DefaultText>
+        : vendors
+            ? (
+                <View>
+                    <DefaultText style={[main.heading, main.padded]}>{`Restaurants (${vendors.length})`}</DefaultText>
+                    <VendorList users={vendors} />
+                </View>
+            ) : null
 }
 
 export default VendorDisplay

@@ -4,11 +4,13 @@ import {
     ScrollView,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
-import { CloseOutlined, ConsoleSqlOutlined } from '@ant-design/icons'
-import defaultStyles from '../styles/main'
+import {
+    CloseButton,
+    PanelView,
+} from '.'
+import main from '../styles/main'
 import base from '../styles/base'
 
 const ModalContainer = ({ children, closeModal = null, loading = null, label = null, ...props }) => {
@@ -16,29 +18,16 @@ const ModalContainer = ({ children, closeModal = null, loading = null, label = n
         <Modal
             {...props}
         >
-            <View style={styles.container}>
-                {(label && closeModal) && (
-                    <View style={styles.modalHeader}>
-                    
-                        {label ? <Text style={[defaultStyles.heading, styles.label]}>{label}</Text> : null}
-
-                        {closeModal && <TouchableOpacity
-                            style={styles.closeButton}
-                            onPress={closeModal}
-                        >
-                            <CloseOutlined style={{ color: base.primaryTextColor, fontSize: 24 }} />
-                        </TouchableOpacity>}
-
-                    </View>
+            <View style={[styles.container]}>
+                {(label || closeModal) && (
+                    <PanelView style={styles.modalHeader}>
+                        {label ? <Text style={[main.heading, styles.label]}>{label}</Text> : null}
+                        {closeModal && <CloseButton onPress={closeModal} iconStyle={{ color: base.primaryTextColor }} />}
+                    </PanelView>
                 )}
 
-                <ScrollView
-                    style={styles.modalView}
-                >
-                    {children}
-                </ScrollView>
+                <ScrollView style={styles.modalView}>{children}</ScrollView>
             </View>
-
         </Modal>
     )
 }
@@ -48,20 +37,21 @@ export default ModalContainer
 const styles = StyleSheet.create({
     container: {
         width: '100%',
+        minWidth: 375,
+        maxWidth: 450,
         height: '100%',
         backgroundColor: base.backgroundColor,
+        marginHorizontal: 'auto',
+        // marginTop: 15,
     },
     modalHeader: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-end',
-        padding: 10,
     },
     label: {
         flexBasis: 'auto',
         flexGrow: 1,
-        fontSize: 24,
-        fontWeight: 600,
     },
     closeButton: {
         flexBasis: 'auto',
@@ -69,19 +59,7 @@ const styles = StyleSheet.create({
         paddingTop: 2,
     },
     modalView: {
-        // margin: 10,
         height: '100%',
-        // backgroundColor: 'yellow',
-        // borderRadius: 20,
-        // padding: 35,
-        // alignItems: 'center',
-        // shadowColor: '#000',
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
-        // elevation: 5,
+        // borderWidth: 1,
     },
 })

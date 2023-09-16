@@ -22,7 +22,8 @@ const UserHeading = ({ user, ...props }) => {
     }, [user])
 
     const getPath = async () => {
-        const { data: { profileImage } } = await axios.get(`/api/avatar/${user._id}`)
+        const { data } = await axios.get(`/api/avatar/${user._id}`)
+        const { profileImage } = data
         const imagePath = profileImage ? `${username}/${profileImage.filename}` : 'avatar-default-small.png'
         setPath(imagePath)
     }

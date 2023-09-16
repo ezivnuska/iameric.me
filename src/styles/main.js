@@ -14,8 +14,10 @@ export default StyleSheet.create({
         fontSize: base.textSize,
 		lineHeight: base.textLineHeight,
 		color: base.primaryTextColor,
-		marginBottom: 3,
     },
+	bold: {
+		fontWeight: 600,
+	},
     padded: {
         paddingHorizontal: layout.horizontalPadding,
         paddingVertical: layout.verticalPadding,
@@ -30,8 +32,7 @@ export default StyleSheet.create({
         fontSize: base.headingSize,
 		fontWeight: base.headingWeight,
 		color: base.primaryTextColor,
-		lineHeight: 24,
-		marginBottom: 5,
+		lineHeight: 30,
     },
     subheading: {
 		fontSize: base.subheadingSize,
@@ -62,7 +63,8 @@ export default StyleSheet.create({
 	},
 	form: {
 		// flex: 1,
-		marginHorizontal: 'auto',
+		// marginHorizontal: 'auto',
+		marginVertical: layout.verticalMargin,
 		width: '100%',
 	},
 	label: {
@@ -123,6 +125,7 @@ export default StyleSheet.create({
 		height: 40,
 		backgroundColor: '#369',
 		borderRadius: 10,
+		marginBottom: 10,
 	},
 	buttonDisabled: {
 		backgroundColor: '#ddd',

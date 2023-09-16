@@ -6,60 +6,42 @@ import {
     View,
 } from 'react-native'
 // import { CloseCircleOutlined } from '@ant-design/icons'
-import defaultStyles from '../styles/main'
-import {
-    ModalContainer,
-    ProductForm,
-} from '.'
+import main from '../styles/main'
+import { EditButton } from '.'
 
 
-const ProductListItem = ({ item, onDelete, update }) => {
+const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
     const { _id, desc, price, title, vendorId, blurb, category } = item
     const [modalVisible, setModalVisible] = useState(false)
 
     const onProductPressed = () => {
-        setModalVisible(true)
+        onPress()
     }
 
     const onComplete = () => {
         update()
-        setModalVisible(false)
+        // setModalVisible(false)
     }
 
     const deleteItem = id => {
         onDelete(id)
-        setModalVisible(false)
+        // setModalVisible(false)
     }
 
     return (
-        <View style={styles.container}>
-
-            <TouchableOpacity
-                onPress={onProductPressed}
-            >
-                <View style={styles.flexContainer}>
-                    <Text style={[defaultStyles.text, styles.title]}>{title}</Text>
-                    <Text style={[defaultStyles.text, styles.price]}>${price}</Text>
+        <View
+            {...props}
+            style={[styles.container, main.padded]}
+        >
+            <View style={styles.flexContainer}>
+                <View style={styles.main}>
+                    <Text style={[main.text, styles.title]}>{title} <EditButton onPress={onPress} /></Text>
                 </View>
+                <Text style={[main.text, styles.price]}>${price}</Text>
+            </View>
 
-                <Text style={[defaultStyles.text, styles.blurb]}>{blurb}</Text>
-                <Text style={[defaultStyles.text, styles.desc]}>{desc}</Text>
-                
-            </TouchableOpacity>
-
-            <ModalContainer
-                animationType='slide'
-                transparent={false}
-                visible={modalVisible}
-                closeModal={() => setModalVisible(false)}
-                label='Edit Product'
-            >
-                <ProductForm
-                    onComplete={onComplete}
-                    onDelete={deleteItem}
-                    product={item}
-                />
-            </ModalContainer>
+            <Text style={[main.text, styles.blurb]}>{blurb}</Text>
+            <Text style={[main.text, styles.desc]}>{desc}</Text>
         </View>
     )
 }
@@ -68,25 +50,20 @@ export default ProductListItem
 
 const styles = StyleSheet.create({
     container: {
-        display: 'flex',
-        marginBottom: 12,
-        paddingBottom: 10,
-        width: '100%',
-        minWidth: 350,
-        maxWidth: 350,
         borderBottomWidth: 1,
-        borderBottomColor: '#ccc', 
+        borderBottomColor: '#ccc',
     },
     flexContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginBottom: 7,
     },
-    title: {
+    main: {
         flex: 1,
         flexBasis: '80%',
         flexGrow: 1,
+    },
+    title: {
         fontSize: 18,
         fontWeight: 700,
     },

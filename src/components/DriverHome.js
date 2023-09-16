@@ -1,13 +1,16 @@
 import React from 'react'
 import {
-    DefaultText,
+    Text,
+} from 'react-native'
+import {
     PanelView,
 } from '.'
+import main from '../styles/main'
 
 const DriverHome = () => (
     <PanelView>
-        <DefaultText>No available orders.</DefaultText>
-        <DefaultText>Check back later.</DefaultText>
+        <Text style={main.text}>No available orders.</Text>
+        <Text style={main.text}>Check back later.</Text>
     </PanelView>
 )
 

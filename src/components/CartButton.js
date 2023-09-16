@@ -8,6 +8,7 @@ import {
 import {
     Cart,
     ModalContainer,
+    PanelView,
 } from '.'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
