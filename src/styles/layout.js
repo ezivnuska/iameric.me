@@ -23,8 +23,8 @@ const margin = {
 const expanded = {
     marginBottom: verticalMargin,
     marginHorizontal: horizontalMargin / 2,
-    paddingVertical: 0,//verticalPadding,
-    paddingHorizontal: 0,//horizontalPadding / 2,
+    paddingVertical: verticalPadding,
+    paddingHorizontal: 0,
     borderWidth: 1,
     // backgroundColor: '#ccc',
 }

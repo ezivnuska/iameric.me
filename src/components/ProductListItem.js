@@ -31,7 +31,7 @@ const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
     return (
         <View
             {...props}
-            style={[styles.container, main.padded]}
+            style={[styles.container, main.paddedH]}
         >
             <View style={styles.flexContainer}>
                 <View style={styles.main}>
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     container: {
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+        paddingBottom: 10,
     },
     flexContainer: {
         display: 'flex',

@@ -75,9 +75,9 @@ const ProductDisplay = () => {
     return (
         <View>
             {/* <PanelView> */}
-                <View style={[styles.displayHeader, main.padded]}>
+                <View style={[styles.displayHeader, main.paddedH]}>
                     
-                    <Text style={main.heading}>Products</Text>
+                    <Text style={[main.heading, main.paddedV]}>Products</Text>
                     
                     <View style={styles.buttons}>
                         <AddButton iconStyle={styles.headerButton} onPress={() => setFeatured(true)} />
@@ -86,17 +86,17 @@ const ProductDisplay = () => {
                 </View>
             {/* </PanelView> */}
 
-            <PanelView type='expanded'>
                 {loading
                 ? <DefaultText>Loading products...</DefaultText>
                 : items && items.length
                     ? (
-                        <ProductList
-                            items={items}
-                            onPress={item => setFeatured(item)}
-                        />
+                        <PanelView type='expanded'>
+                            <ProductList
+                                items={items}
+                                onPress={item => setFeatured(item)}
+                                />
+                        </PanelView>
                     ) : <DefaultText>No products to display.</DefaultText>}
-            </PanelView>
 
             <ModalContainer
                 animationType='slide'

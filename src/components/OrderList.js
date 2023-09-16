@@ -203,23 +203,18 @@ const OrderList = ({ orders }) => {
     }
 
     const renderOrders = () => (orders && orders.length)
-        ? (
-            <PanelView type='expanded' style={main.padded}>
-                {orders.map((order, index) => (
-                    <OrderPreview
-                        style={main.padded}
-                        key={`order-preview-${index}`}
-                        onPress={() => onPress(order)}
-                        order={order}
-                    >
-                        {renderOrderProcessButton(order)}
-                    </OrderPreview>
-                ))}
-            </PanelView>
-        ) : null
+        ? orders.map((order, index) => (
+            <OrderPreview
+                key={`order-preview-${index}`}
+                onPress={() => onPress(order)}
+                order={order}
+            >
+                {renderOrderProcessButton(order)}
+            </OrderPreview>
+        )) : null
 
     return (
-        <View style={styles.container}>
+        <View style={main.padded}>
             
             {renderOrders()}
 
@@ -231,10 +226,7 @@ const OrderList = ({ orders }) => {
                 label='Order Details'
                 loading={loading}
             >
-                <View>
-                    <OrderDetails order={featuredItem} />
-                </View>
-                
+                <OrderDetails order={featuredItem} />
             </ModalContainer>
         </View>
     )

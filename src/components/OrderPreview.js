@@ -65,26 +65,6 @@ const OrderPreview = ({ order, children, ...props }) => {
 
     const textColor = () => order.status === 5 ? '#aaa' : '#000'
 
-    const backgroundColor = () => colors[order.status]
-
-    // useEffect(() => {
-    //     console.log('order', order)
-    // }, [order])
-
-    const getCompletedStyles = () => order.status === 5 ? {
-        borderWidth: 2,
-        borderStyle: 'dashed',
-        borderColor: '#aaa',
-    } : null
-
-    const showOptionsButton = () => {
-        if (user.role === 'customer' && (status === 0 || status === 5)) return true
-        else if (user.role == 'vendor' && status === 0) return true
-        else if (user.role == 'driver' && status >= 1 && status < 5) return true
-
-        return false
-    }
-
     const renderLocation = () => {
         if (user.role === 'vendor') return null
         if (user.role === 'driver' && order.status < 2) return null
@@ -117,15 +97,7 @@ const OrderPreview = ({ order, children, ...props }) => {
 
     return (
         <View
-            style={[
-                // props.style,
-                getCompletedStyles(),
-                {
-                    borderWidth: 1,
-                    borderColor: '#ccc',
-                    borderRadius: 12,
-                },
-            ]}
+            // style={main.padded}
         >
             <View style={styles.header}>
                 <View style={styles.statusDisplay}>
