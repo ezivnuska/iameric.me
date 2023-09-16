@@ -32,7 +32,7 @@ const Disconnect = props => {
         setLoading(true)
         await cleanStorage()
         const { data } = await axios.post('/api/signout', { _id: user._id })
-        console.log('signout data', data)
+        console.log('signed out', data.user)
         setLoading(false)
         if (!data) return console.log('could not sign out user')
         dispatch({ type: 'SIGNOUT' })

@@ -254,6 +254,7 @@ const clearUserToken = async _id => await User
     })
 
 const handleSignout = async (req, res) => {
+    console.log('\nsigning out')
     const user = await User.
         findOneAndUpdate({ _id: req.body._id }, { $set: { token: null, } }, { new: true })
 
