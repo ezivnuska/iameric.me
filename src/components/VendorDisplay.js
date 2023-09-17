@@ -5,6 +5,9 @@ import {
 } from 'react-native'
 import {
     DefaultText,
+    Heading,
+    LoadingView,
+    PanelView,
     VendorList,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -48,15 +51,25 @@ const VendorDisplay = () => {
     //     setVendor(vendor)
     // }
 
-    return loading
-        ? <DefaultText style={[main.text, main.padded]}>Loading Vendors...</DefaultText>
-        : vendors
-            ? (
-                <View>
-                    <DefaultText style={[main.heading, main.padded]}>{`Restaurants (${vendors.length})`}</DefaultText>
-                    <VendorList users={vendors} />
-                </View>
-            ) : null
+    return (
+        <View style={{ height: '100%' }}>
+            {loading
+                ? (
+                    <PanelView style={{ height: '100%' }}>
+                        <LoadingView label='Loading Vendors...' />
+                    </PanelView>
+                )
+                : vendors
+                    ? (
+                        <View>
+                            <Heading style={main.padded}>{`Restaurants (${vendors.length})`}</Heading>
+                            <PanelView type='expanded'>
+                                <VendorList users={vendors} />
+                            </PanelView>
+                        </View>
+                    ) : null}
+        </View>
+    )
 }
 
 export default VendorDisplay

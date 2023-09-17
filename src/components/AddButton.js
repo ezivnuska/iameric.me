@@ -13,7 +13,7 @@ const AddButton = ({ iconStyle, onPress }) => (
         style={styles.container}
         onPress={onPress}
     >
-        <Button shape='circle' icon={<PlusOutlined style={iconStyle} />} />
+        <Button size='small' shape='circle' icon={<PlusOutlined style={iconStyle} />} />
     </TouchableOpacity>
 )
 

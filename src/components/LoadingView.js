@@ -4,7 +4,9 @@ import {
     Text,
     View,
 } from 'react-native'
-import { CenteredView, DefaultText } from '.'
+import {
+    CenteredView,
+} from '.'
 import main from '../styles/main'
 
 const LoadingView = ({ label = null }) => (

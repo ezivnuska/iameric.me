@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import {
     CloseButton,
+    Heading,
     PanelView,
 } from '.'
 import main from '../styles/main'
@@ -21,7 +22,7 @@ const ModalContainer = ({ children, closeModal = null, loading = null, label = n
             <View style={[styles.container]}>
                 {(label || closeModal) && (
                     <PanelView style={styles.modalHeader}>
-                        {label ? <Text style={[main.heading, styles.label]}>{label}</Text> : null}
+                        {label ? <Heading style={styles.label}>{label}</Heading> : null}
                         {closeModal && <CloseButton onPress={closeModal} iconStyle={{ color: base.primaryTextColor }} />}
                     </PanelView>
                 )}

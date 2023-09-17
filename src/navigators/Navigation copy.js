@@ -10,7 +10,7 @@ import {
     CustomerScreen,
     DriverScreen,
     FallbackScreen,
-    HomeScreen,
+    // HomeScreen,
     SettingsScreen,
     UserScreen,
     VendorDetailsScreen,
@@ -31,10 +31,10 @@ const SecureStackScreen = ({ navigation, route }) => (
             // header: () => <Header />,
         })}
     >
-        <SecureStack.Screen
+        {/* <SecureStack.Screen
             name='home'
             component={HomeScreen}
-        />
+        /> */}
         <SecureStack.Screen
             name='settings'
             component={SettingsScreen}

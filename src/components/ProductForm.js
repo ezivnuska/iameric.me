@@ -76,7 +76,7 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
     }
 
     return (
-        <PanelView type='full'>
+        <PanelView>
             <View style={main.form}>
 
                 <CategoryPicker

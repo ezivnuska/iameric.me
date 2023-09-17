@@ -74,29 +74,23 @@ const ProductDisplay = () => {
 
     return (
         <View>
-            {/* <PanelView> */}
-                <View style={[styles.displayHeader, main.paddedH]}>
-                    
-                    <Text style={[main.heading, main.paddedV]}>Products</Text>
-                    
-                    <View style={styles.buttons}>
-                        <AddButton iconStyle={styles.headerButton} onPress={() => setFeatured(true)} />
-                    </View>
+            <View style={[styles.displayHeader, main.paddedH]}>
+                
+                <Text style={[main.heading, main.paddedV]}>Products</Text>
+                <AddButton iconStyle={styles.headerButton} onPress={() => setFeatured(true)} />
+            </View>
 
-                </View>
-            {/* </PanelView> */}
-
-                {loading
-                ? <DefaultText>Loading products...</DefaultText>
-                : items && items.length
-                    ? (
-                        <PanelView type='expanded'>
-                            <ProductList
-                                items={items}
-                                onPress={item => setFeatured(item)}
-                                />
-                        </PanelView>
-                    ) : <DefaultText>No products to display.</DefaultText>}
+            {loading
+            ? <Text style={main.text}>Loading products...</Text>
+            : items && items.length
+                ? (
+                    <PanelView type='expanded'>
+                        <ProductList
+                            items={items}
+                            onPress={item => setFeatured(item)}
+                            />
+                    </PanelView>
+                ) : <Text style={main.text}>No products to display.</Text>}
 
             <ModalContainer
                 animationType='slide'
@@ -127,18 +121,17 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
+        alignItems: 'center',
     },
     title: {
         fontSize: 24,
     },
-    buttons: {
+    headerButton: {
+        // marginVertical: 4,
         flex: 1,
         flexGrow: 0,
         flexShrink: 1,
         flexBasis: 'auto',
-    },
-    headerButton: {
-        // marginVertical: 4,
         marginHorizontal: 7,
     },
 })

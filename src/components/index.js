@@ -20,10 +20,10 @@ import Container from './Container'
 import CountdownTimer from './CountdownTimer'
 import Customer from './Customer'
 import CustomerHome from './CustomerHome'
-import DefaultText from './DefaultText'
+// import DefaultText from './DefaultText'
 import DeleteAccountButton from './DeleteAccountButton'
 import Disconnect from './Disconnect'
-import Driver from './Driver'
+// import Driver from './Driver'
 import DriverHome from './DriverHome'
 import Dropzone from './Dropzone'
 import EditButton from './EditButton'
@@ -36,6 +36,7 @@ import FormInput from './FormInput'
 import FormInputStatusIcon from './FormInputStatusIcon'
 import GuestSigninButton from './GuestSigninButton'
 import Header from './Header'
+import Heading from './Heading'
 import HoverableView from './HoverableView'
 import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
@@ -101,10 +102,10 @@ export {
     CountdownTimer,
     Customer,
     CustomerHome,
-    DefaultText,
+    // DefaultText,
     DeleteAccountButton,
     Disconnect,
-    Driver,
+    // Driver,
     DriverHome,
     Dropzone,
     EditButton,
@@ -117,6 +118,7 @@ export {
     FormInput,
     FormInputStatusIcon,
     Header,
+    Heading,
     HoverableView,
     ImageDisplay,
     ImageLoader,

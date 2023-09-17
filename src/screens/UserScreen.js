@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { AppContext } from '../AppContext'
 import {
-    CustomerHome,
     DriverHome,
     OrderListContainer,
     PanelView,
     Screen,
+    VendorDisplay,
     VendorHome,
 } from '../components'
 
@@ -17,7 +17,7 @@ const UserScreen = props => {
 
     const renderUserHome = () => {
         switch(user.role) {
-            case 'customer': return <CustomerHome />
+            case 'customer': return <VendorDisplay />
             case 'driver': return <DriverHome />
             case 'vendor': return <VendorHome />
         }

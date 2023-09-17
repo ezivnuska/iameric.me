@@ -1,22 +1,16 @@
 import React, { useContext, useState } from 'react'
 import {
-    ActivityIndicator,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
-import axios from 'axios'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { AppContext } from '../AppContext'
-import { CloseCircleOutlined } from '@ant-design/icons'
-import { navigate } from '../navigators/RootNavigation'
-import { cleanStorage } from '../Auth'
 import {
     CloseButton,
     LoadingView,
     ModalContainer,
+    PanelView,
 } from '.'
+import axios from 'axios'
+import { AppContext } from '../AppContext'
+import { cleanStorage } from '../Auth'
 
 const Disconnect = props => {
 
@@ -39,7 +33,7 @@ const Disconnect = props => {
     }
 
     return (
-        <View style={styles.container}>
+        <View>
             <CloseButton onPress={signout} />
 
             <ModalContainer
@@ -47,22 +41,12 @@ const Disconnect = props => {
                 transparent={true}
                 visible={loading}
             >
-                <LoadingView label='signing out...' />
+                <PanelView style={{ height: '100%' }}>
+                    <LoadingView label='signing out...' />
+                </PanelView>
             </ModalContainer>
         </View>
     )
 }
 
 export default Disconnect
-
-const styles = StyleSheet.create({
-    container: {
-        
-    },
-    button: {
-        paddingVertical: 5,
-    },
-    icon: {
-        color: '#fff',
-    }
-})

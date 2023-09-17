@@ -10,9 +10,7 @@ import {
 import defaultStyles from '../styles/main'
 
 const CustomerHome = () => (
-    <PanelView type='full'>
-        <VendorDisplay />
-    </PanelView>
+    <VendorDisplay />
 )
 
 export default CustomerHome

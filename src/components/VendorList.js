@@ -18,7 +18,6 @@ const VendorList = ({ users }) => {
             data={items}
             listKey={() => 'users'}
             keyExtractor={(item, index) => 'user' + index}
-            style={{ borderTopWidth: 1 }}
             renderItem={({ item }) => (
                 <UserListItem
                     user={item}

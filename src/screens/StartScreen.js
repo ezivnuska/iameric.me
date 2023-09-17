@@ -1,13 +1,12 @@
 import React, { useContext, useState } from 'react'
 import {
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
     ButtonPrimary,
-    CenteredView,
     LoadingView,
-    DefaultText,
     PanelView,
     Screen,
 } from '../components'
@@ -15,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 import layout from '../styles/layout'
+import main from '../styles/main'
 
 const StartScreen = ({ navigation }) => {
 
@@ -92,27 +92,21 @@ const StartScreen = ({ navigation }) => {
                     : (
                         <View style={styles.container}>
                             <View style={styles.experience}>
-                                <DefaultText style={styles.caption}>
-                                    {`Create an order\nas a customer.`}
-                                </DefaultText>
+                                <Text style={[main.text, styles.caption]}>{`Create an order\nas a customer.`}</Text>
                                 <ButtonPrimary
                                     label='Order Takeout'
                                     onPress={() => connect('customer')}
                                 />
                             </View>
                             <View style={styles.experience}>
-                                <DefaultText style={styles.caption}>
-                                    {`Confirm new orders,\nor add new products,\nas a vendor.`}
-                                </DefaultText>
+                                <Text style={[main.text, styles.caption]}>{`Confirm new orders,\nor add new products,\nas a vendor.`}</Text>
                                 <ButtonPrimary
                                     label='Handle Prep'
                                     onPress={() => connect('vendor')}
                                 />
                             </View>
                             <View style={styles.experience}>
-                                <DefaultText style={styles.caption}>
-                                    {`Accept available orders,\nand complete them,\nas a driver.`}
-                                </DefaultText>
+                                <Text style={[main.text, styles.caption]}>{`Accept available orders,\nand complete them,\nas a driver.`}</Text>
                                 <ButtonPrimary
                                     label='Complete Deliveries'
                                     onPress={() => connect('driver')}

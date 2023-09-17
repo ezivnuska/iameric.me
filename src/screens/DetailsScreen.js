@@ -7,9 +7,10 @@ import {
 } from 'react-native'
 import {
     BackButton,
-    DefaultText,
+    Heading,
     Menu,
     Screen,
+    LoadingView,
     LocationDetails,
     PanelView,
 } from '../components'
@@ -82,20 +83,18 @@ const DetailsScreen = ({ navigation, route }) => {
     // }
     const renderVendorHeader = () => (
         <View style={main.paddedV}>
-            <Text style={main.heading}>{vendor.username}</Text>
+            <Heading>{vendor.username}</Heading>
             {vendor.location ? <LocationDetails location={vendor.location} /> : null}
         </View>
     )
 
     return (
         <Screen>
+            <PanelView type='full' style={{ height: '100%' }}>
 
             {loading
-                ? (
-                    <PanelView>
-                        <DefaultText style={[main.text, main.padded]}>Loading Vendor...</DefaultText>
-                    </PanelView>
-                ) : vendor
+                ? <LoadingView label='Loading Vendor...' />
+                : vendor
                     ? (
                         <View>
                             <PanelView>
@@ -107,8 +106,9 @@ const DetailsScreen = ({ navigation, route }) => {
                                 <Menu vendorId={vendor._id} />
                             </PanelView>
                         </View>
-                ) : <DefaultText style={[main.text, main.padded]}>Could not load vendor...</DefaultText>}
+                    ) : <Text style={[main.text, main.padded]}>Could not load vendor...</Text>}
             
+            </PanelView>
         </Screen>
     )
 }
