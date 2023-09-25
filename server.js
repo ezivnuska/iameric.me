@@ -205,6 +205,7 @@ app.post('/authenticate', async (req, res) => {
     
     const userFromToken = getDecodedUser(token)
     
+    console.log(`userFromToken: ${userFromToken}\n`)
     console.log(`token found belonging to user ${userFromToken.username}\n`)
     
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)
@@ -281,12 +282,12 @@ app.get('/users', async (req, res) => {
 
 app.get('/vendors', async (req, res) => await User.
     find({ role: 'vendor' }).
-    // populate('profileImage', 'filename').
+    populate('profileImage', 'filename').
     then(vendors => {
         // console.log('vendors', vendors)
         const result = vendors.map(v => {
             const { _id, profileImage, username, } = v
-            return { _id, profileImage: profileImage ? profileImage.filename : null, username }
+            return { _id, profileImage: profileImage ? profileImage : null, username }
         })
         // console.log('result', result)
         return res.json({ vendors: result })

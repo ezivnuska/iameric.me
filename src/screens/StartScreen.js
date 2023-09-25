@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     StyleSheet,
     Text,
@@ -33,10 +33,73 @@ const StartScreen = ({ navigation }) => {
         },
     }
 
-    const { dispatch, state } = useContext(AppContext)
+    const {
+        dispatch,
+        loading,
+        user,
+    } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
+    const setLoading = value => dispatch({ type: 'SET_LOADING', loading: value })
+    const setStatus = value => dispatch({ type: 'SET_STATUS', status: value })
+
+    useEffect(() => {
+        if (user) getData()
+    }, [user])
+
+    const getData = async () => {
+        await getOrders()
+        await getVendors()
+        // setLoaded(true)
+        setLoading(false)
+    }
+
+    const getOrders = async () => {
+        
+        setStatus('Loading Orders...')
+        console.log('Loading Orders...')
+
+        const url = () => {
+            switch (user.role) {
+                case 'customer':
+                case 'vendor': return `/api/orders/${user._id}`
+                case 'driver': return  `/api/orders`
+            }
+        }
+        
+        const { data } = await axios.get(url())
+        
+        if (!data) {
+            console.log('could not get user orders')
+            return null
+        }
+
+        setStatus('Finished Loading Orders...')
+        console.log('Finished Loading Orders...')
+        
+        dispatch({ type: 'SET_ORDERS', orders: data })
+
+        return data
+    }
+    
+    const getVendors = async () => {
+        setStatus('Loading Vendors...')
+        console.log('Loading Vendors...')
+        
+        const { data } = await axios.
+            get('/api/vendors')
+
+        if (!data) {
+            console.log('Error: could not get vendors')
+            return null
+        }
+
+        setStatus('Finished Loading Vendors...')
+        console.log('Finished Loading Vendors...')
+        
+        dispatch({ type: 'SET_VENDORS', vendors: data.vendors })
+
+        return data.vendors
+    }
 
     const connect = async type => {
 
@@ -53,17 +116,15 @@ const StartScreen = ({ navigation }) => {
         
         if (!user) {
             console.log('error authenticating user')
-            setError('error authenticating user')
+            setLoading(false)
             return
         }
-
-        console.log(`${user.username} connected`)
         
         await AsyncStorage.setItem('userToken', user.token)
         
-        console.log('user token set')
-
-        setLoading(false)
+        setStatus('User token set')
+        
+        console.log(`${user.username} connected`)
 
         const {
             profileImage,

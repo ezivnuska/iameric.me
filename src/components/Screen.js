@@ -8,12 +8,20 @@ import {
     CenteredLoader,
     Header,
 } from '.'
+import { navigate } from '../navigators/RootNavigation'
 
 const Screen = ({ children }) => {
 
     const {
         dimensions,
+        loaded,
+        user,
     } = useContext(AppContext)
+
+    // useEffect(() => {
+    //     if (!user || !loaded) navigate('Start')
+    // }, [])
+
     return (
         <View style={{
             height: dimensions.window.height - 50,

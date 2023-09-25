@@ -26,6 +26,7 @@ const DetailsScreen = ({ navigation, route }) => {
         dispatch,
         state,
         cart,
+        vendors,
     } = useContext(AppContext)
 
     // const { cart, user } = state
@@ -35,15 +36,27 @@ const DetailsScreen = ({ navigation, route }) => {
     const [vendor, setVendor] = useState(null)
 
     useEffect(() => {
-        getVendor()
-    }, [])
+        console.log('vendors...', vendors)
+        if (vendors) getVendor()
+    }, [vendors])
 
-    const getVendor = async () => {
+    useEffect(() => {
+        if (vendor) getProducts()
+    }, [vendor])
+
+    const getVendor = () => {
+        console.log('vendors', vendors)
+        const v = vendors.filter(v => v._id === id)[0]
+        console.log('v', v)
+        setVendor(v)}
+
+    const getProducts = async () => {
         setLoading(true)
-        const { data } = await axios.get(`/api/users/${id}`)
-        if (!data.user) return console.log('oops... could not get vendor details')
+        const { data } = await axios.get(`/api/products/${id}`)
         setLoading(false)
-        setVendor(data.user)
+        console.log('products data', data)
+        if (!data.items) return console.log('oops... could not get vendor products')
+        dispatch({ type: 'SET_PRODUCTS', vendor: id, products: data.items })
     }
 
     // TODO: clean this.

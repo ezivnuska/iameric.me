@@ -6,27 +6,43 @@ const initialState = {
         items: null,
     },
     dims: null,
-    entries: [],
-    isLoading: true,
+    loaded: false,
+    loading: false,
     profileId: null,
-    status: null,
     user: null,
     users: null,
-    orders: [],
+    orders: null,
+    vendors: null,
+    statuses: [],
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, entries, isLoading, orders, profileId, status, user, users } = state
+    let { cart, dims, loaded, loading, orders, profileId, statuses, user, users, vendors } = state
 
     switch(action.type) {
         case 'SET_DIMS':
             dims = action.dims
-        break
-        case 'SET_LOADING':
-            isLoading = action.loading
             break
         case 'SET_USER':
             user = action.user
+            break
+        case 'SET_VENDORS':
+            vendors = action.vendors
+            break
+        case 'SET_PRODUCTS':
+            let index
+            vendors.map((v, i) => {
+                if (v._id === action.vendor) index = i
+            })
+            vendors[index].products = action.products
+            break
+        case 'SET_LOADING':
+            loading = action.loading
+            loaded = !action.loading
+            break
+        case 'DATA_LOADED':
+            loaded = true
+            loading = false
             break
         case 'SET_PROFILE_IMAGE':
             user = { ...user, profileImage: action.image }
@@ -52,7 +68,9 @@ const reducer = (state = initialState, action) => {
             }
         break
         case 'SET_ORDERS':
+            // console.log('setting orders', action.orders)
             orders = action.orders
+            // console.log('orders set', orders)
         break
         case 'ADD_ORDER':
             orders = [...orders, action.order]
@@ -139,33 +157,29 @@ const reducer = (state = initialState, action) => {
         case 'REMOVE_ORDER':
             orders = orders.filter(order => order._id != action.id)
         break
-        case 'NEW_ENTRY':
-            entries = [ ...entries, action.entry ]
-        break
-        case 'SET_ENTRIES':
-            entries = action.entries
-        break
         case 'SET_STATUS':
-            status = action.status
+            statuses.push(action.status)
         break
         case 'SIGNOUT':
             cart = {
                 vendorId: null,
                 items: [],
             }
+            loaded = false
+            loading = false
+            orders = null
+            products = null
+            profileId = null
+            statuses = ['Signed Out']
             user = null
             users = null
-            entries = []
-            profileId = null
-            isLoading = false
-            status = null
-            orders = []
+            vendors = null
         break
         default:
             throw new Error('Not valid action type')
     }
 
-    return { dims, cart, entries, isLoading, orders, profileId, status, user, users }
+    return { cart, dims, loaded, loading, orders, profileId, statuses, user, users, vendors }
 }
 
 export const AppContext = createContext({
@@ -180,10 +194,14 @@ export const AppProvider = ({ children }) => {
         <AppContext.Provider value={{
             state,
             dispatch,
-            user: state.user,
             cart: state.cart,
-            orders: state.orders,
             dimensions: state.dims,
+            loaded: state.loaded,
+            loading: state.loading,
+            orders: state.orders,
+            status: state.statuses[state.statuses.length],
+            user: state.user,
+            vendors: state.vendors,
         }}>
             {children}
         </AppContext.Provider>

@@ -14,6 +14,7 @@ const UserHeading = ({ user, ...props }) => {
     const [path, setPath] = useState(null)
     
     useEffect(() => {
+        console.log('user getting path', user)
         getPath()
     }, [])
 

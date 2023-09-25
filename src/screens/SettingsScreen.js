@@ -1,6 +1,6 @@
 import React, {
     useContext,
-    // useEffect,
+    useEffect,
     // useState,
 } from 'react'
 import {
@@ -16,8 +16,10 @@ import {
     // Module,
     LocationDisplay,
     // UserHeading,
+    Screen,
 } from '../components'
 import { AppContext } from '../AppContext'
+import { navigate } from '../navigators/RootNavigation'
 
 const SettingsScreen = () => {
 
@@ -25,8 +27,16 @@ const SettingsScreen = () => {
         user,
     } = useContext(AppContext)
 
+    // useEffect(() => {
+    //     console.log('user---->', user)
+    //     if (!user) {
+    //         console.log('no user')
+    //         navigate('Start')
+    //     }
+    // }, [])
+
     return (
-        <View style={styles.container}>
+        <Screen>
 
             <View style={styles.modules}>
                 {
@@ -41,7 +51,7 @@ const SettingsScreen = () => {
             
             {/*<DeleteAccountButton />*/}
 
-        </View>
+        </Screen>
     )
 }
 

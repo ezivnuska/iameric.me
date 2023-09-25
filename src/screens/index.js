@@ -2,7 +2,7 @@ import AuthScreen from './AuthScreen'
 import ChatScreen from './ChatScreen'
 import DetailsScreen from './DetailsScreen'
 import FallbackScreen from './FallbackScreen'
-// import HomeScreen from './HomeScreen'
+import HomeScreen from './HomeScreen'
 import LoadingScreen from './LoadingScreen'
 import SettingsScreen from './SettingsScreen'
 import SplashScreen from './SplashScreen'
@@ -14,7 +14,7 @@ export {
     ChatScreen,
     DetailsScreen,
     FallbackScreen,
-    // HomeScreen,
+    HomeScreen,
     LoadingScreen,
     SettingsScreen,
     SplashScreen,

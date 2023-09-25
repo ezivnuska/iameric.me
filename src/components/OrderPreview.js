@@ -6,8 +6,8 @@ import {
     View,
 } from 'react-native'
 import {
-    CountdownTimer,
-    DefaultText,
+    // CountdownTimer,
+    // DefaultText,
     LocationDetails,
 } from '.'
 

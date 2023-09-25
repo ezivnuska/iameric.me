@@ -5,15 +5,15 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
-    AuthScreen,
     DetailsScreen,
     FallbackScreen,
+    HomeScreen,
     SettingsScreen,
     SplashScreen,
     StartScreen,
     UserScreen,
 } from '../screens'
-import { navigationRef } from './RootNavigation'
+import { navigate, navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
 
 // const AuthStack = createNativeStackNavigator()
@@ -36,21 +36,17 @@ import { AppContext } from '../AppContext'
 const Stack = createNativeStackNavigator()
 const StackScreen = ({ navigation, route }) => {
     
-    const { user, state } = useContext(AppContext)
-    const { isLoading } = state
-    
-    if (isLoading) return <SplashScreen />
+    const { loaded, loading, user } = useContext(AppContext)
+    if (loading || !loaded) return <SplashScreen />
 
     return (
         <Stack.Navigator
+            screenOptions={() => ({
+                initialRouteName: 'Home',
+            })}
         >
-            {!user ? (
-                <Stack.Screen
-                    name='Start'
-                    component={StartScreen}
-                    options={{ title: 'Start' }}
-                />
-            ) : (
+            
+            {user ? (
                 <>
                     <Stack.Screen
                         name='Home'
@@ -70,28 +66,49 @@ const StackScreen = ({ navigation, route }) => {
                         options={{ title: 'Settings' }}
                     />
                 </>
+            ) : (
+                <Stack.Screen
+                    name='Start'
+                    component={StartScreen}
+                    options={{ title: 'Welcome' }}
+                />
             )}
+
+            
         </Stack.Navigator>
     )
 }
 
 const Navigation = () => {
 
+    const [route, setRoute] = useState(null)
+
+    // useEffect(() => {
+    //     navigate('Start')
+    // }, [])
+
+    useEffect(() => {
+        if (route) saveRoute()
+    }, [route])
+
     const saveRoute = async () => {
-        const currentRoute = navigationRef.getCurrentRoute()
-        const { name, params } = currentRoute
-        if (name == 'Start') return
+        const { name, params } = route
+
+        if (name === 'Start') return
+        
         const detail = params ? params.id : null
+        
         await AsyncStorage.setItem('route', name)
-        await AsyncStorage.setItem('detail', detail)
+
+        if (detail) await AsyncStorage.setItem('detail', detail)
     }
 
     const config = {
         screens: {
-            Start: '',
-            Home: 'dashboard',
-            Details: 'details/:id',
-            Settings: 'settings',
+            Start: '/',
+            Home: '/dashboard',
+            Details: '/details/:id',
+            Settings: '/settings',
             // initialRouteName: 'auth',
             // auth: {
             //     screens: {
@@ -112,7 +129,7 @@ const Navigation = () => {
     }
 
     const linking = {
-        prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:8081'],
+        prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:8080'],
         config,
     }
 
@@ -121,7 +138,7 @@ const Navigation = () => {
             ref={navigationRef}
             linking={linking}
             fallback={<FallbackScreen />}
-            onStateChange={async () => await saveRoute()}
+            onStateChange={() => setRoute(navigationRef.getCurrentRoute())}
         >
             <StackScreen />
         </NavigationContainer>

@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
-export const cleanStorage = () => AsyncStorage.multiRemove(['userToken', 'route'])
-export const clearStorage = () => AsyncStorage.multiRemove(['userToken', 'route', 'email'])
+export const cleanStorage = () => AsyncStorage.multiRemove(['userToken', 'route', 'detail'])
+export const clearStorage = () => AsyncStorage.multiRemove(['userToken', 'route', 'detail', 'email'])
 
 const storeToken = async token => await AsyncStorage.setItem('userToken', token)
 

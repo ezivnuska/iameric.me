@@ -11,7 +11,7 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import defaultStyles from '../styles'
+import main from '../styles'
 
 const MenuDisplay = ({ vendorId }) => {
     
@@ -19,31 +19,36 @@ const MenuDisplay = ({ vendorId }) => {
         dispatch,
         state,
         cart,
+        vendors,
     } = useContext(AppContext)
 
-    const [items, setItems] = useState(null)
+    const [vendor, setVendor] = useState[null]
+    const [products, setProducts] = useState(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        getItems()
-    }, [])
-    
-    const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
+        setVendor(vendors.map(v => v._id === vendorId)[0])
+    }, [vendors])
 
-    const getItems = async () => {
+    useEffect(() => {
+        getProducts()
+    }, [vendor])
+
+    const getProducts = async () => {
         
         setLoading(true)
         
         const { data } = await axios.
             get(`/api/products/${vendorId}`)
+            
+        setLoading(false)
 
         if (!data) {
             console.log('Error loading menu items', err)
             return null
         }
         
-        setItems(data.items)
-        setLoading(false)
+        dispatch({ type: 'SET_PRODUCTS', vendor: vendorId, products: data.items })
     }
 
     const removeItemById = id => {
@@ -76,9 +81,9 @@ const MenuDisplay = ({ vendorId }) => {
     return (
         <View style={styles.container}>
             {
-                (items && items.length)
-                    ? <Menu vendor={vendorId} items={items} />
-                    : <Text style={defaultStyles.text}>No products to display.</Text>
+                (vendor && vendor.products && vendor.products.length)
+                    ? <Menu vendor={vendorId} items={vendor.products} />
+                    : <Text style={main.text}>No products to display.</Text>
             }
         </View>
     )

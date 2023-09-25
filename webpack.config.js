@@ -123,7 +123,7 @@ module.exports = {
       directory: path.resolve(__dirname, 'assets', 'images'),
       publicPath: '/images',
     },
-    port: 8081,
+    port: 8080,
     historyApiFallback: true,
     proxy: {
       '/api': {

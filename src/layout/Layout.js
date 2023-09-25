@@ -50,7 +50,7 @@ const Layout = () => {
         ]}>
             <Header />
             <ScrollView
-                // style={{ height: dimensions.window.height - 50 }}
+                style={{ borderWidth: 3, borderStyle: 'dashed', borderColor: 'red' }}//, height: dimensions.window.height - 50
                 // scrollEventThrottle={16}
                 // onScroll={Animated.event(
                 //     [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
