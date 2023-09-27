@@ -214,7 +214,7 @@ const OrderList = ({ orders }) => {
         )) : null
 
     return (
-        <View style={main.padded}>
+        <View style={[main.padded, { borderWidth: 1, borderColor: 'green' }]}>
             
             {renderOrders()}
 

@@ -1,6 +1,7 @@
 const backgroundColor = '#fff'
 const primaryTextColor = '#000'
 const secondaryTextColor = '#333'
+const headerBGColor = '#369'
 const headingSize = 22
 const headingWeight = 600
 const headingColor = primaryTextColor
@@ -15,6 +16,7 @@ export default {
     backgroundColor,
     primaryTextColor,
     secondaryTextColor,
+    headerBGColor,
     headingSize,
     headingWeight,
     headingColor,

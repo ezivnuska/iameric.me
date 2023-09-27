@@ -10,8 +10,9 @@ import {
     PanelView,
 } from '.'
 import { AppContext } from '../AppContext'
-import axios from 'axios'
 import main from '../styles/main'
+import axios from 'axios'
+import { Button } from 'antd'
 
 const Cart = ({ onSubmitOrder }) => {
 
@@ -56,7 +57,7 @@ const Cart = ({ onSubmitOrder }) => {
     }
 
     return cart.items ? (
-        <View style={main.paddedH}>
+        <View>
             <FlatList
                 style={styles.cart}
                 data={cart.items}
@@ -73,18 +74,24 @@ const Cart = ({ onSubmitOrder }) => {
                 <Text style={[main.text, styles.value, styles.total]}>${getTotal()}</Text>
             </View>
 
-            <ButtonPrimary
-                label='Clear Cart'
-                onPress={() => dispatch({ type: 'CLEAR_CART' })}
-                style={{ marginBottom: 10 }}
-                />
-
-            <ButtonPrimary
-                label='Submit Order'
-                onPress={submitOrder}
+            <Button
+                type='primary'
+                onClick={submitOrder}
                 disabled={loading}
                 style={{ marginBottom: 10 }}
-            />
+            >
+                Submit Order
+            </Button>
+
+            <Button
+                type='default'
+                onClick={() => dispatch({ type: 'CLEAR_CART' })}
+                disabled={loading}
+                style={{ marginBottom: 10 }}
+            >
+                Clear Cart
+            </Button>
+
         </View>
     ) : null
 }

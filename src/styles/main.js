@@ -15,9 +15,6 @@ export default StyleSheet.create({
 		lineHeight: base.textLineHeight,
 		color: base.primaryTextColor,
     },
-	bold: {
-		fontWeight: 600,
-	},
     padded: {
         paddingHorizontal: layout.horizontalPadding,
         paddingVertical: layout.verticalPadding,

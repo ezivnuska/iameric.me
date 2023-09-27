@@ -19,10 +19,8 @@ const VendorDisplay = () => {
 
     return (
         <View>
-            <Heading style={main.padded}>{`Restaurants (${vendors.length})`}</Heading>
-            <PanelView type='expanded'>
-                <VendorList />
-            </PanelView>
+            <Heading>{`Restaurants (${vendors.length})`}</Heading>
+            <VendorList />
         </View>
     )
 }

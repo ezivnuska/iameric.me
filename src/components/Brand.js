@@ -1,16 +1,21 @@
 import React from 'react'
 import {
-    StyleSheet,
     Text,
     TouchableOpacity,
 } from 'react-native'
+import layout from '../styles/layout'
 
-const Brand = ({ onPress }) => (
+export default ({ onPress }) => (
     <TouchableOpacity
-        style={styles.brand}
+        style={{ paddingHorizontal: layout.horizontalPadding }}
         onPress={onPress}
     >
-        <Text style={styles.title}>
+        <Text style={{
+            lineHeight: 45,
+            fontSize: 25,
+            fontWeight: 700,
+            color: '#fff',
+        }}>
             iam
             <Text style={{ color: '#ddd' }}>
                 eric
@@ -18,22 +23,3 @@ const Brand = ({ onPress }) => (
         </Text>
     </TouchableOpacity>
 )
-
-export default Brand
-
-const styles = StyleSheet.create({
-    brand: {
-        margin: 0,
-        paddingHorizontal: 10,
-    },
-    title: {
-        flex: 1,
-        flexGrow: 1,
-        flexShrink: 0,
-        flexBasis: 'auto',
-        lineHeight: 45,
-        fontSize: 25,
-        fontWeight: 700,
-        color: '#fff',
-    },
-})

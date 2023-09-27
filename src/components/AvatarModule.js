@@ -30,6 +30,7 @@ const AvatarModule = ({ onComplete }) => {
     const {
         state,
         dispatch,
+        dims,
     } = useContext(AppContext)
 
     const { user } = state
@@ -41,30 +42,41 @@ const AvatarModule = ({ onComplete }) => {
     const [ updated, setUpdated ] = useState(false)
     const [ uploading, setUploading ] = useState(false)
 
-    const [dimensions, setDimensions] = useState({
-        window: windowDimensions,
-        screen: screenDimensions,
-    })
+    // const [dimensions, setDimensions] = useState({
+    //     window: windowDimensions,
+    //     screen: screenDimensions,
+    // })
+
+    useEffect(() => {
+        if (dims) {
+            const dropzone = document.getElementById('avatar-dropzone-wrapper')
+            if (dropzone) {
+                const maxWidth = size || 350
+                const actualWidth = dropzone.offsetWidth
+                setSize(actualWidth > maxWidth ? maxWidth : actualWidth)
+            }
+        }
+    }, [dims])
 
     const [ editor, setEditor ] = useState(null)
 
-    useEffect(() => {
-        // console.log('dimensions', dimensions)
-        const subscription = Dimensions.addEventListener(
-            'change',
-            ({ window, screen }) => {
-                setDimensions({ window, screen })
+    // useEffect(() => {
+    //     // console.log('dimensions', dimensions)
+    //     const subscription = Dimensions.addEventListener(
+    //         'change',
+    //         ({ window, screen }) => {
+    //             setDimensions({ window, screen })
 
-                const dropzone = document.getElementById('avatar-dropzone-wrapper')
-                if (dropzone) {
-                    const maxWidth = size || 350
-                    const actualWidth = dropzone.offsetWidth
-                    setSize(actualWidth > maxWidth ? maxWidth : actualWidth)
-                }
-            }
-        )
-        return () => subscription.remove()
-    }, [])
+    //             const dropzone = document.getElementById('avatar-dropzone-wrapper')
+    //             if (dropzone) {
+    //                 const maxWidth = size || 350
+    //                 const actualWidth = dropzone.offsetWidth
+    //                 setSize(actualWidth > maxWidth ? maxWidth : actualWidth)
+    //             }
+    //         }
+    //     )
+    //     return () => subscription.remove()
+    // }, [])
 
     useEffect(() => {
         if (updated) {

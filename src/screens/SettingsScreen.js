@@ -1,79 +1,55 @@
-import React, {
-    useContext,
-    useEffect,
-    // useState,
-} from 'react'
+import React, { useContext } from 'react'
 import {
-    StyleSheet,
-    View,
-} from 'react-native'
-import {
-    // AvatarModule,
     AvatarDisplay,
-    // DeleteAccountButton,
-    // ImageList,
-    // ProductDisplay,
-    // Module,
+    CenteredContent,
+    CloseButton,
     LocationDisplay,
-    // UserHeading,
     Screen,
 } from '../components'
 import { AppContext } from '../AppContext'
-import { navigate } from '../navigators/RootNavigation'
+import { cleanStorage } from '../Auth'
+import axios from 'axios'
 
 const SettingsScreen = () => {
 
     const {
+        dispatch,
         user,
     } = useContext(AppContext)
 
-    // useEffect(() => {
-    //     console.log('user---->', user)
-    //     if (!user) {
-    //         console.log('no user')
-    //         navigate('Start')
-    //     }
-    // }, [])
+    const signout = async () => {
+        
+        await cleanStorage()
+        
+        console.log('attempting sign out')
+        
+        const { data } = await axios.
+            post('/api/signout', { _id: user._id })
+        
+        if (!data) return console.log('could not sign out user')
+            
+        console.log(`dispatching SIGNOUT for ${data.user.username}`)
+        
+        dispatch({ type: 'SIGNOUT' })
+    }
 
     return (
         <Screen>
 
-            <View style={styles.modules}>
-                {
-                    (user.role === 'vendor' || user.role === 'customer')
-                        ? <LocationDisplay details={user.location} />
-                        : null
-                }
+            <CenteredContent>
+                    
+                {(user.role !== 'driver') && <LocationDisplay details={user.location} />}
 
                 <AvatarDisplay />
-                
-            </View>
-            
-            {/*<DeleteAccountButton />*/}
+
+                <CloseButton onPress={signout} />
+                    
+                {/*<DeleteAccountButton />*/}
+
+            </CenteredContent>
 
         </Screen>
     )
 }
 
 export default SettingsScreen
-
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        flexWrap: 'wrap',
-    },
-    modules: {
-        flex: 1,
-        flexGrow: 0,
-        flexShrink: 1,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        flexWrap: 'wrap',
-        width: 350,
-        minWidth: 350,
-        maxWidth: 900,
-    },
-})

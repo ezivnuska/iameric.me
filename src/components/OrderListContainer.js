@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Text,
+    View,
 } from 'react-native'
 import {
     LoadingView,
@@ -24,10 +25,6 @@ const OrderListContainer = () => {
     const [current, setCurrent] = useState([])
     const [available, setAvailable] = useState([])
 
-    // useEffect(() => {
-    //     if (!user || !loaded) navigate('Start')
-    // }, [])
-
     useEffect(() => {
         if (orders) sortOrders()
     }, [orders])
@@ -41,10 +38,6 @@ const OrderListContainer = () => {
                 case order.status <= 5:
                     if (user.role !== 'driver' || (user.role === 'driver' && order.driver && order.driver._id === user._id)) current.push(order)
                     if (user.role === 'driver' && order.status === 1) available.push(order)
-                // break
-                // case 6:
-                //     closed.push(order)
-                // break
             }
         })
 
@@ -55,38 +48,23 @@ const OrderListContainer = () => {
     
     const renderAvailableOrders = () => available.length
         ? <OrderList orders={available} />
-        : null
+        : renderText('No available orders.')
 
     const renderCurrentOrders = () => current.length
         ? <OrderList orders={current} />
-        : null
+        : renderText('No current or available orders.')
 
-    const ordersExist = () => {
-        if (current.length) return true
-        if (user.role === 'driver' && available.length) return true
-        return false
-    }
+    const renderText = text => (
+        // <PanelView>
+            <Text style={[main.text, main.paddedV]}>{text}</Text>
+        // </PanelView>
+    )
     
     return (
-        <PanelView type='full'>
-            {ordersExist()
-                ? (
-                    <PanelView>
-
-                        {renderCurrentOrders()}
-                        
-                        {user.role === 'driver' && renderAvailableOrders()}
-
-                        {/* {renderCompletedOrders()} */}
-                    </PanelView>
-                )
-                : (user.role === 'driver')
-                ? <Text style={[main.text, main.padded]}>No current or available orders.</Text>
-                : (user.role === 'vendor')
-                ? <Text style={[main.text, main.padded]}>No current or pending orders.</Text>
-                : null
-            }
-        </PanelView>
+        <View>
+            {renderCurrentOrders()}
+            {user.role === 'driver' && renderAvailableOrders()}
+        </View>
     )
 }
 

@@ -30,14 +30,13 @@ const UserHeading = ({ user, ...props }) => {
     }
 
     return (
-        <View style={[styles.container, main.padded]}>
-            <View style={styles.leftColumn}>
-                <Avatar
-                    path={path}
-                    size={24}
-                />
-            </View>
-            <View style={styles.main}>
+        <View style={[styles.container, main.paddedV]}>
+            <Avatar
+                style={styles.avatar}
+                path={path}
+                size={24}
+            />
+            <View style={styles.title}>
                 <Text style={[main.subheading, { lineHeight: 24 }]}>{username}</Text>
             </View>
         </View>
@@ -50,20 +49,20 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         // borderWidth: 1,
         // borderColor: 'green',
     },
-    leftColumn: {
-        flex: 1,
+    avatar: {
+        // flex: 1,
         flexBasis: 'auto',
-        flexGrow: 0,
-        flexShrink: 0,
+        // flexGrow: 0,
+        // flexShrink: 0,
         marginRight: 10,
     },
-    main: {
-        flex: 2,
-        flexGrow: 1,
+    title: {
+        // flex: 2,
+        // flexGrow: 1,
         flexBasis: 'auto',
     },
 })

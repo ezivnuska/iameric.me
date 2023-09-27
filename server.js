@@ -658,7 +658,7 @@ app.post('/user/avatar', async (req, res) => {
 
     if (!user) return console.log('Error: could not find user while updating avatar')
     
-    return res.status(200).json(user)
+    return res.status(200).json(user.profileImage)
 })
 
 app.get('/images/:id', async (req, res) => {

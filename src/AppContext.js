@@ -45,7 +45,7 @@ const reducer = (state = initialState, action) => {
             loading = false
             break
         case 'SET_PROFILE_IMAGE':
-            user = { ...user, profileImage: action.image }
+            user = { ...user, profileImage: action.profileImage }
             break
         case 'SET_USERS':
             users = action.users
@@ -195,7 +195,7 @@ export const AppProvider = ({ children }) => {
             state,
             dispatch,
             cart: state.cart,
-            dimensions: state.dims,
+            dims: state.dims,
             loaded: state.loaded,
             loading: state.loading,
             orders: state.orders,

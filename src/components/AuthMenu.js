@@ -1,69 +1,60 @@
 import React, { useContext } from 'react'
 import {
-    StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native'
 import {
     CartButton,
-    Disconnect,
+    CloseButton,
 } from '.'
 import { AppContext } from '../AppContext'
+import { navigate } from '../navigators/RootNavigation'
+import layout from '../styles/layout'
 
-const UserName = ({ username, onPress }) => (
+const SettingsButton = ({ label }) => (
     <TouchableOpacity
-        style={styles.usernameButton}
-        onPress={onPress}
+        onPress={() => navigate('Settings')}
+        style={{
+            flex: 1,
+            flexShrink: 0,
+            flexShrink: 1,
+            flexBasis: 'auto',
+            marginHorizontal: layout.horizontalPadding,
+            padding: 5,
+        }}
     >
-        <Text style={styles.username}>{username}</Text>
+        <Text style={{
+            color: '#fff',
+            fontWeight: 700,
+        }}>
+            {label}
+        </Text>
     </TouchableOpacity>
 )
-
-const AuthMenu = ({ navigate, user }) => {
+const AuthMenu = () => {
     
-    const { state } = useContext(AppContext)
-    const { items } = state.cart
+    const {
+        cart,
+        user,
+    } = useContext(AppContext)
 
-    return (
-        <View style={styles.container}>
+    const { items } = cart
+
+    return user ? (
+        <View style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            height: '100%',
+        }}>
 
             {items && items.length ? <CartButton /> : null}
 
-            <UserName username={user.username} onPress={() => navigate('Settings')} />
-            
-            <Disconnect />
+            <SettingsButton label={user.username} />
         </View>
-    )
+    ) : null
 }
 
 export default AuthMenu
-
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
-        flex: 1,
-        flexGrow: 0,
-        flexShrink: 1,
-        flexBasis: 'auto',
-        paddingRight: 10,
-    },
-    usernameButton: {
-        flex: 1,
-        flexShrink: 0,
-        flexShrink: 1,
-        flexBasis: 'auto',
-        marginRight: 15,
-        padding: 5,
-    },
-    username: {
-        // paddingHorizontal: 10,
-        color: '#fff',
-        fontWeight: 700,
-        // lineHeight: 24,
-
-    },
-})

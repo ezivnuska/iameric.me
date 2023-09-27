@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     StyleSheet,
     Text,
@@ -7,30 +7,22 @@ import {
 import {
     ButtonPrimary,
     LoadingView,
-    PanelView,
+    CenteredView,
     Screen,
 } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import { Button } from 'antd'
 import layout from '../styles/layout'
 import main from '../styles/main'
 
-const StartScreen = ({ navigation }) => {
+const StartScreen = () => {
 
     const creds = {
-        customer: {
-            email: 'customer@iameric.me',
-            password: 'customer',
-        },
-        driver: {
-            email: 'driver@iameric.me',
-            password: 'driver',
-        },
-        vendor: {
-            email: 'vendor@iameric.me',
-            password: 'vendor',
-        },
+        customer: { email: 'customer@iameric.me', password: 'customer' },
+        driver: { email: 'driver@iameric.me', password: 'driver' },
+        vendor: { email: 'vendor@iameric.me', password: 'vendor' },
     }
 
     const {
@@ -49,7 +41,6 @@ const StartScreen = ({ navigation }) => {
     const getData = async () => {
         await getOrders()
         await getVendors()
-        // setLoaded(true)
         setLoading(false)
     }
 
@@ -94,7 +85,7 @@ const StartScreen = ({ navigation }) => {
         }
 
         setStatus('Finished Loading Vendors...')
-        console.log('Finished Loading Vendors...')
+        console.log('Finished Loading Vendors...', data.vendors)
         
         dispatch({ type: 'SET_VENDORS', vendors: data.vendors })
 
@@ -126,57 +117,72 @@ const StartScreen = ({ navigation }) => {
         
         console.log(`${user.username} connected`)
 
-        const {
-            profileImage,
-            role,
-            username,
-            _id
-        } = user
+        setUser(user)
+    }
 
+    const setUser = ({
+        _id,
+        email,
+        profileImage,
+        role,
+        username,
+    }) => {
         dispatch({
             type: 'SET_USER',
             user: {
+                _id,
+                email,
                 profileImage,
                 role,
                 username,
-                _id,
-                email,
             }
         })
     }
 
     return (
         <Screen>
-            <PanelView style={{ height: '100%' }}>
+            <CenteredView style={{ height: '100%' }}>
                 {loading
                     ? <LoadingView label='Connecting...' />
                     : (
                         <View style={styles.container}>
                             <View style={styles.experience}>
-                                <Text style={[main.text, styles.caption]}>{`Create an order\nas a customer.`}</Text>
-                                <ButtonPrimary
-                                    label='Order Takeout'
-                                    onPress={() => connect('customer')}
-                                />
+                                
+                                <Text style={[main.text, styles.caption]}>
+                                    Customer Experience
+                                </Text>
+                                
+                                <Button type='primary' onClick={() => connect('customer')}>
+                                    Order Takeout
+                                </Button>
+
                             </View>
+
                             <View style={styles.experience}>
-                                <Text style={[main.text, styles.caption]}>{`Confirm new orders,\nor add new products,\nas a vendor.`}</Text>
-                                <ButtonPrimary
-                                    label='Handle Prep'
-                                    onPress={() => connect('vendor')}
-                                />
+                                
+                                <Text style={[main.text, styles.caption]}>
+                                    Vendor Experience
+                                </Text>
+
+                                <Button type='primary' onClick={() => connect('vendor')}>
+                                    Make Sales
+                                </Button>
                             </View>
+
                             <View style={styles.experience}>
-                                <Text style={[main.text, styles.caption]}>{`Accept available orders,\nand complete them,\nas a driver.`}</Text>
-                                <ButtonPrimary
-                                    label='Complete Deliveries'
-                                    onPress={() => connect('driver')}
-                                />
+                                
+                                <Text style={[main.text, styles.caption]}>
+                                    Driver Experience
+                                </Text>
+
+                                <Button type='primary' onClick={() => connect('driver')}>
+                                    Make Deliveries
+                                </Button>
                             </View>
                         </View>
                 )
             }
-            </PanelView>
+            </CenteredView>
         </Screen>
     )
 }
@@ -190,18 +196,18 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'stretch',
         height: '100%',
-        // width: '100%',
+        // width: 250,
         // marginTop: 20,
-        // marginHorizontal: 10,
+        marginHorizontal: 'auto',
     },
     experience: {
         // flex: 1,
         marginHorizontal: 'auto',
         paddingHorizontal: layout.horizontalPadding,
         paddingVertical: layout.verticalPadding,
-        width: '75%',
-        minWidth: 250,
-        maxWidth: 375,
+        width: 200,
+        minWidth: 300,
+        maxWidth: 400,
         backgroundColor: '#ddd',
         borderRadius: 12,
     },

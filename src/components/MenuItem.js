@@ -43,12 +43,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // marginBottom: 7,
-        // paddingTop: 10,
-        // paddingBottom: 5,
-        // paddingHorizontal: 8,
-        // paddingBottom: 5,
-        // backgroundColor: '#900',
         marginBottom: 5,
     },
     title: {
@@ -57,7 +51,6 @@ const styles = StyleSheet.create({
         flexShrink: 0,
         flexGrow: 1,
         marginTop: 4,
-        // color: '#fff',
     },
     price: {
         flex: 1,
@@ -70,23 +63,14 @@ const styles = StyleSheet.create({
         paddingVertical: 2,
         paddingHorizontal: 7,
         color: '#fff',
-        // color: '#666',
     },
     blurb: {
-        // fontSize: 20,
-        // color: '#777',
         fontWeight: 600,
-        // paddingTop: 7,
-        // paddingHorizontal: 8,
-        // paddingBottom: 5,
-        // backgroundColor: 'yellow',
     },
     content: {
-        // paddingTop: 5,
-        // paddingHorizontal: 8,
+        
     },
     desc: {
-        // marginVertical: 10,
         fontSize: 18,
     },
 })

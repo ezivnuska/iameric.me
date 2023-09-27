@@ -3,32 +3,54 @@ import {
     Modal,
     ScrollView,
     StyleSheet,
-    Text,
     View,
 } from 'react-native'
 import {
+    CenteredContent,
     CloseButton,
     Heading,
-    PanelView,
 } from '.'
-import main from '../styles/main'
 import base from '../styles/base'
+import layout from '../styles/layout'
 
 const ModalContainer = ({ children, closeModal = null, loading = null, label = null, ...props }) => {
     return (
         <Modal
             {...props}
         >
-            <View style={[styles.container]}>
+            <CenteredContent>
                 {(label || closeModal) && (
-                    <PanelView style={styles.modalHeader}>
-                        {label ? <Heading style={styles.label}>{label}</Heading> : null}
-                        {closeModal && <CloseButton onPress={closeModal} iconStyle={{ color: base.primaryTextColor }} />}
-                    </PanelView>
+                    <View style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center',
+                        height: 50,
+                    }}>
+                        {label && (
+                            <Heading style={{
+                                flexBasis: 'auto',
+                                flexGrow: 1,
+                            }}>
+                                {label}
+                            </Heading>
+                        )}
+
+                        {closeModal && (
+                            <CloseButton
+                                onPress={closeModal}
+                                iconStyle={{
+                                    marginHorizontal: layout.horizontalPadding,
+                                    color: base.primaryTextColor,
+                                }}
+                            />
+                        )}
+                    </View>
                 )}
+                
 
                 <ScrollView style={styles.modalView}>{children}</ScrollView>
-            </View>
+            </CenteredContent>
         </Modal>
     )
 }
@@ -36,24 +58,6 @@ const ModalContainer = ({ children, closeModal = null, loading = null, label = n
 export default ModalContainer
 
 const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        minWidth: 375,
-        maxWidth: 450,
-        height: '100%',
-        backgroundColor: base.backgroundColor,
-        marginHorizontal: 'auto',
-        // marginTop: 15,
-    },
-    modalHeader: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
-    label: {
-        flexBasis: 'auto',
-        flexGrow: 1,
-    },
     closeButton: {
         flexBasis: 'auto',
         flexGrow: 0,
@@ -61,6 +65,7 @@ const styles = StyleSheet.create({
     },
     modalView: {
         height: '100%',
+        width: '100%',
         // borderWidth: 1,
     },
 })

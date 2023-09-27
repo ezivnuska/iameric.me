@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
     FlatList,
 } from 'react-native'
@@ -8,31 +8,24 @@ import {
 import { navigate } from '../navigators/RootNavigation'
 import { AppContext } from '../AppContext'
 
-const VendorList = () => {
+export default () => {
 
     const {
         vendors,
     } = useContext(AppContext)
 
-    useEffect(() => {
-        console.log('vendors on load', vendors)
-    }, [])
-
-    const onPress = id => navigate('Details', { id })
-
-    return (
-        <FlatList
-            data={vendors}
-            listKey={() => 'vendors'}
-            keyExtractor={item => 'vendor' + item._id}
-            renderItem={({ item }) => (
-                <UserListItem
-                    user={item}
-                    onPress={onPress}
-                />
-            )} 
-        />
-    )
+    return (vendors && vendors.length)
+        ? (
+            <FlatList
+                data={vendors}
+                listKey={() => 'vendors'}
+                keyExtractor={item => 'vendor' + item._id}
+                renderItem={({ item }) => (
+                    <UserListItem
+                        user={item}
+                        onPress={id => navigate('Details', { id })}
+                    />
+                )} 
+            />
+        ) : null
 }
-
-export default VendorList

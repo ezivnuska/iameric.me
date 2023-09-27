@@ -76,71 +76,69 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
     }
 
     return (
-        <PanelView>
-            <View style={main.form}>
+        <View style={main.form}>
 
-                <CategoryPicker
-                    style={{ marginBottom: 10 }}
-                    label='Category'
-                    onChange={onChangeCategory}
-                />
-                
-                <FormInput
-                    label='Name'
-                    value={title}
-                    onChangeText={onChangeTitle}
-                    placeholder='product name'
-                    textContentType='default'
-                    autoCapitalize='true'
-                    keyboardType='default'
-                    style={main.input}
-                />
+            <CategoryPicker
+                style={{ marginBottom: 10 }}
+                label='Category'
+                onChange={onChangeCategory}
+            />
+            
+            <FormInput
+                label='Name'
+                value={title}
+                onChangeText={onChangeTitle}
+                placeholder='product name'
+                textContentType='default'
+                autoCapitalize='true'
+                keyboardType='default'
+                style={main.input}
+            />
 
-                <FormInput
-                    label='Price'
-                    value={price}
-                    onChangeText={onChangePrice}
-                    placeholder='0.00'
-                    keyboardType='decimal-pad'
-                    style={main.input}
-                />
+            <FormInput
+                label='Price'
+                value={price}
+                onChangeText={onChangePrice}
+                placeholder='0.00'
+                keyboardType='decimal-pad'
+                style={main.input}
+            />
 
-                <FormInput
-                    label='Blurb'
-                    value={blurb}
-                    onChangeText={onChangeBlurb}
-                    placeholder='blurb'
-                    keyboardType='default'
-                    multiline
-                    style={[main.input, main.textArea]}
-                />
+            <FormInput
+                label='Blurb'
+                value={blurb}
+                onChangeText={onChangeBlurb}
+                placeholder='blurb'
+                keyboardType='default'
+                multiline
+                style={[main.input, main.textArea]}
+            />
 
-                <FormInput
-                    label='Description'
-                    value={desc}
-                    onChangeText={onChangeDesc}
-                    placeholder='description'
-                    keyboardType='default'
-                    multiline
-                    style={[main.input, main.textArea]}
-                />
+            <FormInput
+                label='Description'
+                value={desc}
+                onChangeText={onChangeDesc}
+                placeholder='description'
+                keyboardType='default'
+                multiline
+                style={[main.input, main.textArea]}
+            />
 
-                <ButtonPrimary
-                    style={main.button}
-                    label='Save'
-                    disabled={loading || (title && !title.length) || (price && !price.length)}
-                    onPress={onSubmit}
-                />
+            <ButtonPrimary
+                style={main.button}
+                label='Save'
+                disabled={loading || (title && !title.length) || (price && !price.length)}
+                onPress={onSubmit}
+            />
 
-                <ButtonPrimary
-                    style={main.button}
-                    label='Delete'
-                    disabled={loading}
-                    onPress={() => onDelete(product._id)}
-                />
+            <ButtonPrimary
+                style={main.button}
+                label='Delete'
+                disabled={loading}
+                onPress={() => onDelete(product._id)}
+            />
 
-            </View>
-        </PanelView>
+        </View>
     )
 }
 

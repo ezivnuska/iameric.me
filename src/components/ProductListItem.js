@@ -31,9 +31,17 @@ const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
     return (
         <View
             {...props}
-            style={[styles.container, main.paddedH]}
+            style={{
+                borderBottomWidth: 1,
+                borderBottomColor: '#ccc',
+                paddingBottom: 10,
+            }}
         >
-            <View style={styles.flexContainer}>
+            <View style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            }}>
                 <View style={styles.main}>
                     <Text style={[main.text, styles.title]}>{title} <EditButton onPress={onPress} /></Text>
                 </View>
@@ -49,22 +57,6 @@ const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
 export default ProductListItem
 
 const styles = StyleSheet.create({
-    container: {
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-        paddingBottom: 10,
-    },
-    flexContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingTop: 10,
-    },
-    main: {
-        flex: 1,
-        flexBasis: '80%',
-        flexGrow: 1,
-    },
     title: {
         fontSize: 18,
         fontWeight: 700,

@@ -13,7 +13,8 @@ import {
 import {
     PlusCircleOutlined,
 } from '@ant-design/icons'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
+import layout from '../styles/layout'
 
 const AvatarDisplay = () => {
     
@@ -24,7 +25,7 @@ const AvatarDisplay = () => {
                 
             <View style={styles.displayHeader}>
                 
-                <Text style={defaultStyles.heading}>Images &amp; Avatar</Text>
+                <Text style={main.heading}>Images &amp; Avatar</Text>
                 
                 <View style={styles.buttons}>
                     <TouchableOpacity
@@ -58,7 +59,7 @@ export default AvatarDisplay
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
+        marginVertical: layout.verticalMargin,
 		minWidth: 350,
         maxWidth: 375,
         width: 375,

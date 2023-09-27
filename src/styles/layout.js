@@ -1,7 +1,7 @@
 const verticalMargin = 10
 const verticalPadding = 10
 const horizontalPadding = 10
-const horizontalMargin = 15
+const horizontalMargin = 10
 
 const full = {
     marginVertical: 0,

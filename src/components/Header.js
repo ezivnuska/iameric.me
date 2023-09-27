@@ -6,9 +6,11 @@ import {
 import {
     AuthMenu,
     Brand,
+    CenteredContent,
 } from '.'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
+import base from '../styles/base'
 
 const Header = () => {
     
@@ -18,18 +20,20 @@ const Header = () => {
     } = useContext(AppContext)
     
     return (
-        <View style={styles.container}>
-            <View style={styles.headerContainer}>
-                <View style={styles.child}>
+        <CenteredContent type='full' style={{ backgroundColor: base.headerBGColor }}>
+            
+            <View style={styles.container}>
+                
+                <View style={styles.brand}>
                     <Brand onPress={() => navigate(user ? 'Home' : 'Start')} />
                 </View>
-                {user && (
-                    <View style={styles.child}>
-                        <AuthMenu navigate={navigate} user={user} />
-                    </View>
-                )}
+
+                <View style={styles.auth}>
+                    <AuthMenu />
+                </View>
             </View>
-        </View>
+
+        </CenteredContent>
     )
 }
 
@@ -37,25 +41,28 @@ export default Header
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#369',
-        width: '100%',
-    },
-    headerContainer: {
-        // flex: 1,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        flexShrink: 0,
+        alignItems: 'stretch',
         width: '100%',
         minWidth: 300,
         maxWidth: 900,
         marginHorizontal: 'auto',
-        // height: 50,
+        height: 50,
         minHeight: 50,
         maxHeight: 50,
     },
-    child: {
+    brand: {
+        // flex: 1,
+        // flexGrow: 1,
+        // flexShrink: 0,
+        flexBasis: 'auto',
+    },
+    auth: {
+        // flex: 1,
+        // flexGrow: 0,
+        // flexShrink: 0,
         flexBasis: 'auto',
     },
 })

@@ -14,7 +14,7 @@ import {
 } from '../components'
 import base from '../styles/base'
 
-let dims = {
+let initialDims = {
     window: Dimensions.get('window'),
     screen: Dimensions.get('screen'),
 }
@@ -23,34 +23,32 @@ const Layout = () => {
 
     const {
         dispatch,
-        dimensions,
+        dims,
     } = useContext(AppContext)
-
-    const setDims = dimensions => dispatch({ type: 'SET_DIMS', dims: dimensions })
 
     useEffect(() => {
         
-        setDims(dims)
+        dispatch({ type: 'SET_DIMS', dims: initialDims })
 
         const subscription = Dimensions.addEventListener(
             'change',
-            ({ window, screen }) => setDims({ window, screen })
+            ({ window, screen }) => dispatch({ type: 'SET_DIMS', dims: { window, screen } })
         )
 
         return () => subscription.remove()
     }, [])
 
-    return dimensions ? (
+    return dims ? (
         <SafeAreaView style={[
             styles.layoutContainer,
             {
-                width: dimensions.window.width,
-                height: dimensions.window.height,
+                width: dims.window.width,
+                height: dims.window.height,
             }
         ]}>
             <Header />
             <ScrollView
-                style={{ borderWidth: 3, borderStyle: 'dashed', borderColor: 'red' }}//, height: dimensions.window.height - 50
+                // style={{ borderWidth: 1, borderStyle: 'dashed', borderColor: 'red' }}//, height: dimensions.window.height - 50
                 // scrollEventThrottle={16}
                 // onScroll={Animated.event(
                 //     [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],

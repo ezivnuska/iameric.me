@@ -14,6 +14,7 @@ const ProductList = ({ deleteItem, items, onPress, update }) => (
         renderItem={({ item }) => (
             <ProductListItem
                 item={item}
+                key={item => `product-${item._id}`}
                 update={update}
                 onDelete={() => deleteItem(item._id)}
                 onPress={() => onPress(item)}

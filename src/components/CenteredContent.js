@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import {
-    StyleSheet,
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
 import layout from '../styles/layout'
+import base from '../styles/base'
 
-const PanelView = ({ children, type, ...props }) => {
+const CenteredContent = ({ children, type, ...props }) => {
 
     const {
         dims,
@@ -14,16 +14,15 @@ const PanelView = ({ children, type, ...props }) => {
 
     const styles = ({
         margin: {
-            width: dims.window.width - (layout.horizontalMargin * 2),
+            width: dims.window.width,
             maxWidth: 400,
             marginHorizontal: 'auto',
-            backgroundColor: 'purple',
+            paddingHorizontal: layout.horizontalPadding,
         },
         full: {
             width: dims.window.width,
             maxWidth: 400,
             marginHorizontal: 'auto',
-            backgroundColor: 'blue',
         },
         expanded: {
             width: dims.window.width - layout.horizontalMargin,
@@ -41,10 +40,15 @@ const PanelView = ({ children, type, ...props }) => {
     }
 
     return (
-        <View style={[getStyles(), { borderWidth: 1 }, props.style]}>
-            {children}
+        <View style={[{ width: dims.window.width }, props.style]}>
+            <View style={[
+                getStyles(),
+                // { borderWidth: 1 }
+            ]}>
+                {children}
+            </View>
         </View>
     )
 }
 
-export default PanelView
+export default CenteredContent

@@ -16,7 +16,8 @@ import {
 } from '@ant-design/icons'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import defaultStyles from '../styles/main'
+import main from '../styles/main'
+import layout from '../styles/layout'
 
 const initialState = {
     address1: '',
@@ -71,7 +72,7 @@ const LocationDisplay = ({ details }) => {
             
             <View style={styles.displayHeader}>
                 
-                <Text style={[defaultStyles.subheading, styles.heading]}>Address</Text>
+                <Text style={[main.subheading, styles.heading]}>Address</Text>
                 
                 <View style={styles.buttons}>
                     <TouchableOpacity
@@ -109,7 +110,7 @@ export default LocationDisplay
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
+        marginVertical: layout.verticalMargin,
     },
     displayHeader: {
         display: 'flex',
