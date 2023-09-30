@@ -18,9 +18,7 @@ export default ({ navigation, route }) => {
         <Screen>
 
             <CenteredContent>
-
-                {user && <OrderListContainer />}
-                
+                <OrderListContainer />
             </CenteredContent>
 
             {

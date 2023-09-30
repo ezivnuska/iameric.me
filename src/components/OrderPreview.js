@@ -71,27 +71,33 @@ const OrderPreview = ({ order, children, ...props }) => {
         return <LocationDetails location={customer.location} style={{ color: textColor()}} />
     }
 
-    const renderCustomer = () => (
+    const renderCustomer = () => customer ? (
         <View style={styles.column}>
             <Text style={[styles.heading, { color: textColor() }]}>{customer.username}</Text>
             {renderLocation()}
         </View>
-    )
+    ) : <Text>No customer</Text>
     
     const renderVendor = () => vendor ? (
         <View style={styles.column}>
             <Text style={[styles.heading, { color: textColor() }]}>{`${vendor.username} (${items.length} ${items.length > 1 ? 'items' : 'item'})`}</Text>
             <LocationDetails location={vendor.location} style={{ color: textColor()}} />
         </View>
-    ) : null
+    ) : <Text>No vendor</Text>
 
     const renderHeaderButton = () => (
         <TouchableOpacity
             style={styles.button}
             onPress={() => setExpanded(!expanded)}
         >
-            {expanded
-                ? <UpOutlined /> : <DownOutlined />}
+            {
+            expanded
+            ?
+            <UpOutlined />
+            :
+            <DownOutlined />
+            }
+
         </TouchableOpacity>
     )
 
@@ -101,7 +107,7 @@ const OrderPreview = ({ order, children, ...props }) => {
         >
             <View style={styles.header}>
                 <View style={styles.statusDisplay}>
-                    {!confirmed && <Text style={[main.text, styles.status]}>Waiting on confirmation from {vendor.username}</Text>}
+                    {!confirmed && vendor && <Text style={[main.text, styles.status]}>Waiting on confirmation from {vendor.username}</Text>}
                     {(confirmed && !accepted) && <Text style={[main.text, styles.status]}>Looking for available driver.</Text>}
                     {(pickup && !received) && <Text style={[main.text, styles.milestone]}>Ready for pick up at {moment(pickup).format('LT')}</Text>}
                     {(accepted && !arrived) && <Text style={[main.text, styles.status]}>{driver.username} is on the way to {vendor.username}.</Text>}

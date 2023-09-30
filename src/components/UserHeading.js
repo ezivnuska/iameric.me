@@ -10,11 +10,10 @@ import main from '../styles/main'
 
 const UserHeading = ({ user, ...props }) => {
 
-    const { _id, profileImage, username } = user
+    const { username } = user
     const [path, setPath] = useState(null)
     
     useEffect(() => {
-        console.log('user getting path', user)
         getPath()
     }, [])
 
@@ -50,19 +49,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        // borderWidth: 1,
-        // borderColor: 'green',
     },
     avatar: {
-        // flex: 1,
         flexBasis: 'auto',
-        // flexGrow: 0,
-        // flexShrink: 0,
         marginRight: 10,
     },
     title: {
-        // flex: 2,
-        // flexGrow: 1,
         flexBasis: 'auto',
     },
 })

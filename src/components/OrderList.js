@@ -202,21 +202,20 @@ const OrderList = ({ orders }) => {
         setFeatured(order._id)
     }
 
-    const renderOrders = () => (orders && orders.length)
-        ? orders.map((order, index) => (
-            <OrderPreview
-                key={`order-preview-${index}`}
-                onPress={() => onPress(order)}
-                order={order}
-            >
-                {renderOrderProcessButton(order)}
-            </OrderPreview>
-        )) : null
+    const renderOrders = () => orders.map((order, index) => (
+        <OrderPreview
+            key={`order-preview-${index}`}
+            onPress={() => onPress(order)}
+            order={order}
+        >
+            {renderOrderProcessButton(order)}
+        </OrderPreview>
+    ))
 
     return (
         <View style={[main.padded, { borderWidth: 1, borderColor: 'green' }]}>
             
-            {renderOrders()}
+            {(orders && orders.length) && renderOrders()}
 
             <ModalContainer
                 animationType='slide'
@@ -233,26 +232,3 @@ const OrderList = ({ orders }) => {
 }
 
 export default OrderList
-
-const styles = StyleSheet.create({
-    container: {
-
-    },
-    list: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        rowGap: 5,
-        // marginVertical: 10,
-    },
-    item: {
-        // flex: 1,
-        // flexBasis: 'auto',
-        // flexGrow: 0,
-        // flexShrink: 0,
-        marginBottom: 5,
-        // paddingVertical: 10,
-        paddingHorizontal: 5,
-        // borderRadius: 4,
-    },
-})

@@ -9,63 +9,36 @@ import {
     PanelView,
 } from '.'
 import { AppContext } from '../AppContext'
-import axios from 'axios'
-import { navigate } from '../navigators/RootNavigation'
 import main from '../styles/main'
 
 const OrderListContainer = () => {
 
     const {
-        dispatch,
-        loaded,
         user,
         orders,
     } = useContext(AppContext)
     
     const [current, setCurrent] = useState([])
-    const [available, setAvailable] = useState([])
 
     useEffect(() => {
-        if (orders) sortOrders()
+        if (orders) sortOrders(orders.filter(order => order.status < 6))
     }, [orders])
 
-    const sortOrders = () => {
-        const current = []
-        const available = []
+    const driverOrders = activeOrders => activeOrders.filter(order => ((order.driver && order.driver._id === user._id) || (order.status === 1)))
+    const customerOrders = activeOrders => activeOrders.filter(order => order)
+    const vendorOrders = activeOrders => activeOrders.filter(order => order)
 
-        orders.map((order) => {
-            switch (order.status) {
-                case order.status <= 5:
-                    if (user.role !== 'driver' || (user.role === 'driver' && order.driver && order.driver._id === user._id)) current.push(order)
-                    if (user.role === 'driver' && order.status === 1) available.push(order)
-            }
-        })
-
-        setCurrent(current)
-        setAvailable(available)
-
+    const sortOrders = activeOrders => {
+        let sortedOrders = []
+        if (user.role === 'customer') sortedOrders = customerOrders(activeOrders)
+        if (user.role === 'vendor') sortedOrders = vendorOrders(activeOrders)
+        if (user.role === 'driver') sortedOrders = driverOrders(activeOrders)
+        setCurrent(sortedOrders.length ? sortedOrders : [])
     }
     
-    const renderAvailableOrders = () => available.length
-        ? <OrderList orders={available} />
-        : renderText('No available orders.')
-
-    const renderCurrentOrders = () => current.length
+    return current.length
         ? <OrderList orders={current} />
-        : renderText('No current or available orders.')
-
-    const renderText = text => (
-        // <PanelView>
-            <Text style={[main.text, main.paddedV]}>{text}</Text>
-        // </PanelView>
-    )
-    
-    return (
-        <View>
-            {renderCurrentOrders()}
-            {user.role === 'driver' && renderAvailableOrders()}
-        </View>
-    )
+        : <Text style={[main.text, main.paddedV]}>No current or available orders.</Text>
 }
 
 export default OrderListContainer
