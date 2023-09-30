@@ -1,5 +1,5 @@
 import AddButton from './AddButton'
-import AuthButton from './AuthButton'
+// import AuthButton from './AuthButton'
 import AuthMenu from './AuthMenu'
 import Avatar from './Avatar'
 import AvatarDisplay from './AvatarDisplay'
@@ -66,7 +66,7 @@ export {
     // ActivityList,
     // ActivityListItem,
     AddButton,
-    AuthButton,
+    // AuthButton,
     AuthMenu,
     Avatar,
     AvatarDisplay,
