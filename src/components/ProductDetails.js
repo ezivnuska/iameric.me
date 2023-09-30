@@ -4,52 +4,60 @@ import {
     View,
 } from 'react-native'
 import {
-    ButtonPrimary,
+    LoadingView,
 } from '.'
 import { Button } from 'antd'
 import main from '../styles/main'
 
-const ProductDetails = ({ product, onOrder }) => product ? (
-    <>
-        <View style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginBottom: 10,
-        }}>
-
+const ProductDetails = ({ loading, product, onOrder }) => product
+    ?
+    !loading
+    ? (
+        <View>
             <View style={{
-                flexBasis: 'auto',
-                flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginBottom: 10,
             }}>
 
-                {
-                product.blurb
-                &&
-                <Text style={[main.text, { fontWeight: 600 }]}>{product.blurb}</Text>
-                }
+                <View style={{
+                    flexBasis: 'auto',
+                    flexGrow: 1,
+                }}>
 
-                <Text style={[main.text]}>{product.desc}</Text>
+                    {product.blurb ?
+                        <Text style={[main.text, { fontWeight: 600 }]}>{product.blurb}</Text>
+                        : null
+                    }
 
+                    {product.desc ? 
+                        <Text style={[main.text]}>{product.desc}</Text>
+                        : null
+                    }
+
+                </View>
+
+                <View style={{
+                    flexBasis: 'auto',
+                    flexGrow: 0,
+                    textAlign: 'right',
+                }}>
+                    <Text style={[main.text, { fontWeight: 600 }]}>${product.price}</Text>
+                </View>
+                
             </View>
 
-            <View style={{
-                flexBasis: 'auto',
-                flexGrow: 0,
-                textAlign: 'right',
-            }}>
-                <Text style={[main.text, { fontWeight: 600 }]}>${product.price}</Text>
-            </View>
-            
+            <Button
+                type='primary'
+                onClick={() => onOrder(product)}
+            >
+                Add to Cart
+            </Button>
         </View>
-
-        <Button
-            type='primary'
-            onClick={() => onOrder(product)}
-        >
-            Add to Cart
-        </Button>
-    </>
-) : null
+    )
+    :
+    <LoadingView label='Adding Item...' />
+    : null
 
 export default ProductDetails

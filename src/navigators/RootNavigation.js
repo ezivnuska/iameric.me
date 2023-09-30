@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 export const navigationRef = createNavigationContainerRef()
 
 export const navigate = async (name, params) => {
-    console.log('NAVIGATING', name, params)
     if (navigationRef.isReady()) {
         if (name !== 'Start') {
             await AsyncStorage

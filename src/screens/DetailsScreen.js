@@ -28,27 +28,37 @@ const DetailsScreen = ({ navigation, route }) => {
 
     const { id } = route.params
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(null)
     const [vendor, setVendor] = useState(null)
 
     useEffect(() => {
-        if (vendors) getVendor()
-    }, [vendors])
-
-    useEffect(() => {
-        if (vendor) getProducts()
-    }, [vendor])
+        getVendor()
+    }, [])
 
     const getVendor = () => {
         const v = vendors.filter(v => v._id === id)[0]
-        setVendor(v)}
+        setVendor(v)
+    }
+
+    useEffect(() => {
+        if (!vendor) return
+        if (!vendor.products) getProducts()
+    }, [vendor])
+
+    const updateProducts = products => {
+        setVendor({
+            ...vendor,
+            products,
+        })
+        dispatch({ type: 'SET_PRODUCTS', vendor: id, products })
+    }
 
     const getProducts = async () => {
-        setLoading(true)
+        setLoading('Loading products...')
         const { data } = await axios.get(`/api/products/${id}`)
         if (!data.items) return console.log('oops... could not get vendor products')
-        dispatch({ type: 'SET_PRODUCTS', vendor: id, products: data.items })
-        setLoading(false)
+        updateProducts(data.items)
+        setLoading(null)
     }
 
     // TODO: clean this.
@@ -83,7 +93,7 @@ const DetailsScreen = ({ navigation, route }) => {
             {loading
             ?
             (<CenteredContent>
-                <LoadingView label='Loading Vendor...' />
+                <LoadingView label={loading} />
             </CenteredContent>)
             :
             vendor
@@ -101,7 +111,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 </CenteredContent>
 
                 <CenteredContent type='expanded'>
-                    <Menu vendorId={vendor._id} />
+                    <Menu vendor={vendor} />
                 </CenteredContent>
             </>)
             :
