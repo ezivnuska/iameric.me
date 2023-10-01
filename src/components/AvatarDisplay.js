@@ -8,6 +8,7 @@ import {
 import {
     AvatarModule,
     ImageList,
+    ImageUploader,
     ModalContainer,
 } from '.'
 import {
@@ -16,7 +17,7 @@ import {
 import main from '../styles/main'
 import layout from '../styles/layout'
 
-const AvatarDisplay = () => {
+const AvatarDisplay = ({ user }) => {
     
     const [modalVisible, setModalVisible] = useState(false)
     
@@ -50,6 +51,7 @@ const AvatarDisplay = () => {
                 label='Avatar Modal'
             >
                 <AvatarModule onComplete={() => setModalVisible(false)} />
+                {/* <ImageUploader user={user} onComplete={() => setModalVisible(false)} /> */}
             </ModalContainer>
         </View>
     )

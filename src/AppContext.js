@@ -26,6 +26,16 @@ const reducer = (state = initialState, action) => {
         case 'SET_USER':
             user = action.user
             break
+        case 'REMOVE_IMAGE':
+            const idToRemove = action.id
+            const images = user.images
+            if (!images) return
+            const updatedImages = images.filter(image => image._id !== idToRemove)
+            user = {
+                ...user,
+                images: updatedImages,
+            }
+            break
         case 'SET_VENDORS':
             vendors = action.vendors
             break

@@ -15,6 +15,7 @@ import {
 } from './'
 import {
     CloseCircleOutlined,
+    ConsoleSqlOutlined,
     UpCircleOutlined,
 } from '@ant-design/icons'
 import EXIF from 'exif-js'
@@ -42,11 +43,6 @@ const AvatarModule = ({ onComplete }) => {
     const [ updated, setUpdated ] = useState(false)
     const [ uploading, setUploading ] = useState(false)
 
-    // const [dimensions, setDimensions] = useState({
-    //     window: windowDimensions,
-    //     screen: screenDimensions,
-    // })
-
     useEffect(() => {
         if (dims) {
             const dropzone = document.getElementById('avatar-dropzone-wrapper')
@@ -59,24 +55,6 @@ const AvatarModule = ({ onComplete }) => {
     }, [dims])
 
     const [ editor, setEditor ] = useState(null)
-
-    // useEffect(() => {
-    //     // console.log('dimensions', dimensions)
-    //     const subscription = Dimensions.addEventListener(
-    //         'change',
-    //         ({ window, screen }) => {
-    //             setDimensions({ window, screen })
-
-    //             const dropzone = document.getElementById('avatar-dropzone-wrapper')
-    //             if (dropzone) {
-    //                 const maxWidth = size || 350
-    //                 const actualWidth = dropzone.offsetWidth
-    //                 setSize(actualWidth > maxWidth ? maxWidth : actualWidth)
-    //             }
-    //         }
-    //     )
-    //     return () => subscription.remove()
-    // }, [])
 
     useEffect(() => {
         if (updated) {
@@ -151,11 +129,12 @@ const AvatarModule = ({ onComplete }) => {
     
     
     const handleDrop = async dataUrl => {
+        
         const reader = new FileReader()
+        
         reader.onload = e => {
             const image = e.target.result
             const exif = EXIF.readFromBinaryFile(image)
-            // alert(`exif, ${exif}`)
             resetOrientation(dataUrl, exif ? exif.Orientation : null)
         }
         const blob = await dataURItoBlob(dataUrl)
@@ -171,7 +150,7 @@ const AvatarModule = ({ onComplete }) => {
     }
 
     const resetOrientation = (srcBase64, srcOrientation) => {
-        // alert(`srcOrientation: ${srcOrientation}`)
+
         const image = new Image()
 
         image.onload = () => {
@@ -188,18 +167,6 @@ const AvatarModule = ({ onComplete }) => {
                 canvas.width = width;
                 canvas.height = height;
             }
-        
-            // transform context before drawing image
-            // switch (srcOrientation) {
-            //     case 2: ctx.transform(-1, 0, 0, 1, width, 0); break
-            //     case 3: ctx.transform(-1, 0, 0, -1, width, height ); break
-            //     case 4: ctx.transform(1, 0, 0, -1, 0, height ); break
-            //     case 5: ctx.transform(0, 1, 1, 0, 0, 0); break
-            //     case 6: ctx.transform(0, 1, -1, 0, height, 0); break
-            //     case 7: ctx.transform(0, -1, -1, 0, height , width); break
-            //     case 8: ctx.transform(0, -1, 1, 0, 0, width); break
-            //     default: break
-            // }
     
             // draw image
             ctx.drawImage(image, 0, 0)

@@ -40,7 +40,7 @@ const SettingsScreen = () => {
                     
                 {(user.role !== 'driver') && <LocationDisplay details={user.location} />}
 
-                <AvatarDisplay />
+                <AvatarDisplay user={user} />
 
                 <CloseButton onPress={signout} />
                     

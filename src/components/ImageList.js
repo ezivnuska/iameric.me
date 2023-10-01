@@ -4,6 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
+    ImageDetail,
     ImageDisplay,
     LoadingView,
 } from './'
@@ -36,30 +37,6 @@ const ImageList = () => {
         setLoading(false)
     }
 
-    const setAvatar = async (userId, imageId) => {
-        
-        setLoading(true)
-        
-        const profileImage = await axios.post('/api/user/avatar', { userId, imageId })
-        
-        dispatch({ type: 'SET_PROFILE_IMAGE', profileImage })
-        
-        setLoading(false)
-    }
-
-    const trimImages = id => setImages(images.filter(image => image._id !== id))
-
-    const deleteImage = (userId, imageId) => {
-        axios
-            .post('/api/images/delete', { _id: userId })
-            .then(({ data }) => {
-                const { user } = data
-                if (user) dispatch({ type: 'SET_USER', user })
-                trimImages(userId)
-            })
-            .catch(err => console.log(`Catch: Error deleting filename: ${filename}`, err))
-    }
-
     const renderImages = () => (
         <View style={{
             display: 'flex',
@@ -69,7 +46,7 @@ const ImageList = () => {
             gap: 10,
             width: '100%',
         }}>
-            {images.map((item, index) => (
+            {images.map((image, index) => (
                 <View
                     style={{
                         flex: 1,
@@ -77,11 +54,7 @@ const ImageList = () => {
                     }}
                     key={`image-${index}`}
                 >
-                    <ImageDisplay
-                        path={`${user.username}/${item.filename}`}
-                        deleteImage={() => deleteImage(item._id, item.filename)}
-                        setAvatar={() => setAvatar(user._id, item._id)}
-                    />
+                    <ImageDisplay image={image} />
                 </View>
             ))}
         </View>
