@@ -33,6 +33,7 @@ const reducer = (state = initialState, action) => {
             const updatedImages = images.filter(image => image._id !== idToRemove)
             user = {
                 ...user,
+                profileImage: profileImage !== idToRemove ? profileImage : null,
                 images: updatedImages,
             }
             break
@@ -49,6 +50,7 @@ const reducer = (state = initialState, action) => {
         case 'SET_LOADING':
             loading = action.loading
             loaded = !action.loading
+            console.log('loading >>', loading)
             break
         case 'DATA_LOADED':
             loaded = true

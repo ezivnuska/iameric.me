@@ -9,6 +9,7 @@ import {
 import { AppContext } from '../AppContext'
 import { cleanStorage } from '../Auth'
 import axios from 'axios'
+import { Button } from 'antd'
 
 const SettingsScreen = () => {
 
@@ -42,7 +43,12 @@ const SettingsScreen = () => {
 
                 <AvatarDisplay user={user} />
 
-                <CloseButton onPress={signout} />
+                <Button
+                    onClick={signout}
+                    style={{ marginTop: 10 }}
+                >
+                    Sign Out
+                </Button>
                     
                 {/*<DeleteAccountButton />*/}
 

@@ -561,18 +561,22 @@ app.post(
         
         const deletedImage = await UserImage.
             findOneAndRemove({ _id }).
-            populate('user')
+            populate('user', 'username')
 
-        if (!deletedImage) console.log('no image found to delete')
+        if (!deletedImage) console.log('Could not find image to delete')
 
-        console.log('deletedImage', deletedImage)
+        console.log('found image to delete:', deletedImage)
         
         const filepath = `${imagePath}/${deletedImage.user.username}/${deletedImage.filename}`
-        console.log('filepath to remove:', filepath)
+
+        console.log('removing file at path:', filepath)
 
         const { images, profileImage } = deletedImage.user
+
         const updatedImages = images.filter(imageId => imageId !== _id)
+        
         console.log('updatedImages', updatedImages)
+
         const updatedUser = await User.
             findOneAndUpdate({ _id: deletedImage.user._id },
             {
@@ -582,70 +586,10 @@ app.post(
                 }
             },
             { new: true })
-            .exec()
 
         removeImageFile(`${imagePath}/${updatedUser.username}/${deletedImage.filename}`)
+
         return res.status(200).json({ user: updatedUser })
-        // UserImage
-        //     .findOneAndRemove({ _id })
-        //     .populate('user')
-        //     .then(image => {
-        //         const { user, filename } = image
-        //         console.log('deleted image-->', image)
-        //         const updatedImages = user.images.filter(img => img._id !== _id)
-        //         console.log('updatedImages', updatedImages)
-        //         User
-        //             .findOneAndUpdate({ _id: user._id }, { $set: { profileImage: user.profileImage === _id ? null : user.profileImage, images: updatedImages } }, { new: true })
-        //             .then(updatedUser => {
-        //                 removeImageFile(`${imagePath}/${updatedUser.username}/${filename}`)
-        //                 res.status(200).json({ user: updatedUser })
-        //             })
-        //             .catch(err => console.log('err', err))
-        //     })
-        //     .catch(err => console.log('err', err))
-
-
-
-        // User
-        //     .findOne({ _id: req.body.user })
-        //     .then(user => {
-        //         console.log('user images before delete', user.images)
-        //         const updatedImages = user.images.filter((image, index) => image._id !== _id)
-        //         console.log('user images after delete', updatedImages)
-        //         if (user.profileImage === filename) {
-        //             console.log(`Image to delete is currently used as avatar. Updating user.profileImage before deleting file: ${filename}`)
-        //             User
-        //                 .findOneAndUpdate({ _id: req.body.user }, { $set: { profileImage: null, images: updatedImages } }, { new: true })
-        //                 .then(user => {
-        //                     UserImage
-        //                         .findOneAndRemove({ _id })
-        //                         .then(result => {
-        //                             console.log('image entry removed from db', result.filename)
-        //                             removeImageFile(filepath)
-        //                             res.status(200).json({ user })
-        //                         })
-        //                 })
-        //                 .catch(err => console.log('err', err))
-        //         } else {
-        //             User
-        //                 .findOneAndUpdate({ _id: req.body.user }, { $set: { images: updatedImages } }, { new: true })
-        //                 .then(user => {
-        //                     UserImage
-        //                         .findOneAndRemove({ _id })
-        //                         .then(result => {
-        //                             console.log('image entry removed from db', result.filename)
-        //                             fs.rm(filepath, () => {
-        //                                 console.log('and also removed file at path', filepath)
-        //                                 console.log('returning success')
-        //                                 res.status(200).json({ success: true })
-        //                             })
-        //                         })
-        //                 })
-        //                 .catch(err => console.log('err', err))
-        //         }
-
-        //     })
-        //     .catch(err => console.log('error', err))
     }
 )
 

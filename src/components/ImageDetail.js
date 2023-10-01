@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     Image,
     View,
@@ -10,27 +10,21 @@ import layout from '../styles/layout'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
 
-export default ({ image, width = 100, height = 100, resize = 'stretch' }) => {
+export default ({ done, image, width = 100, height = 100, resize = 'stretch' }) => {
 
     const {
         dispatch,
         user,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
-
     const isAvatar = () => user.profileImage && user.profileImage._id === image._id
 
     const deleteImage = async () => {
-        
-        setLoading(true)
         
         const { data } = await axios
             .post('/api/images/delete', { _id: image._id })
         
         console.log('image delete result: data:', data)
-        
-        setLoading(false)
         
         if (!data.user) return console.log('Error deleting image.')
 
@@ -40,17 +34,17 @@ export default ({ image, width = 100, height = 100, resize = 'stretch' }) => {
 
     const setAvatar = async () => {
         
-        setLoading(true)
-        
         const profileImage = await axios
             .post('/api/user/avatar', {
                 userId: user._id,
                 imageId: image._id
             })
+
+        if (!profileImage) return console.log('Error setting profileImage.')
         
         dispatch({ type: 'SET_PROFILE_IMAGE', profileImage })
         
-        setLoading(false)
+        done()
     }
 
     return image ? (

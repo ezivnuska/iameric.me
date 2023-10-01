@@ -4,8 +4,8 @@ import {
     View,
 } from 'react-native'
 import {
+    CenteredView,
     Heading,
-    PanelView,
     VendorList,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -17,11 +17,15 @@ const VendorDisplay = () => {
         vendors,
     } = useContext(AppContext)
 
-    return (
+    return vendors && vendors.length ? (
         <View>
             <Heading>{`Restaurants (${vendors.length})`}</Heading>
             <VendorList />
         </View>
+    ) : (
+        <CenteredView>
+            <Text>No Available Vendors</Text>
+        </CenteredView>
     )
 }
 

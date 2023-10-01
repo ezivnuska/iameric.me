@@ -66,6 +66,7 @@ const ImageDisplay = ({ image }) => {
                 <ImageDetail
                     image={image}
                     // width={200}
+                    done={() => setFeatured(false)}
                 />
             </ModalContainer>
         </View>

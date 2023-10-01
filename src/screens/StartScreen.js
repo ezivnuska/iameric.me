@@ -16,6 +16,7 @@ import axios from 'axios'
 import { Button } from 'antd'
 import layout from '../styles/layout'
 import main from '../styles/main'
+import { loadData } from '../Data'
 
 const StartScreen = () => {
 
@@ -32,69 +33,25 @@ const StartScreen = () => {
     } = useContext(AppContext)
 
     const setLoading = value => dispatch({ type: 'SET_LOADING', loading: value })
-    const setStatus = value => dispatch({ type: 'SET_STATUS', status: value })
 
     useEffect(() => {
-        if (user) getData()
+        if (user) {
+            console.log('USER', user)
+            getData()
+        }
     }, [user])
 
     const getData = async () => {
-        await getOrders()
-        await getVendors()
-        setLoading(false)
-    }
-
-    const getOrders = async () => {
-        
-        setStatus('Loading Orders...')
-        console.log('Loading Orders...')
-
-        const url = () => {
-            switch (user.role) {
-                case 'customer':
-                case 'vendor': return `/api/orders/${user._id}`
-                case 'driver': return  `/api/orders`
-            }
-        }
-        
-        const { data } = await axios.get(url())
-        
-        if (!data) {
-            console.log('could not get user orders')
-            return null
-        }
-
-        setStatus('Finished Loading Orders...')
-        console.log('Finished Loading Orders...')
-        
-        dispatch({ type: 'SET_ORDERS', orders: data })
-
-        return data
-    }
-    
-    const getVendors = async () => {
-        setStatus('Loading Vendors...')
-        console.log('Loading Vendors...')
-        
-        const { data } = await axios.
-            get('/api/vendors')
-
-        if (!data) {
-            console.log('Error: could not get vendors')
-            return null
-        }
-
-        setStatus('Finished Loading Vendors...')
-        console.log('Finished Loading Vendors...', data.vendors)
-        
-        dispatch({ type: 'SET_VENDORS', vendors: data.vendors })
-
-        return data.vendors
+        setLoading('Getting data...')
+        const { orders, vendors } = await loadData(user)
+        dispatch({ type: 'SET_ORDERS', orders })
+        dispatch({ type: 'SET_VENDORS', vendors })
+        dispatch({ type: 'DATA_LOADED' })
     }
 
     const connect = async type => {
 
-        setLoading(true)
+        setLoading('Connecting...')
         
         const { email, password } = creds[type]
         
@@ -104,20 +61,17 @@ const StartScreen = () => {
             post('/api/signin', { email, password })
         
         const user = response.data
-        
-        if (!user) {
-            console.log('error authenticating user')
-            setLoading(false)
-            return
-        }
+
+        if (!user) return console.log('error authenticating user')
         
         await AsyncStorage.setItem('userToken', user.token)
-        
-        setStatus('User token set')
         
         console.log(`${user.username} connected`)
 
         setUser(user)
+
+        await getData(user)
+
     }
 
     const setUser = ({
@@ -142,46 +96,41 @@ const StartScreen = () => {
     return (
         <Screen>
             <CenteredView style={{ height: '100%' }}>
-                {loading
-                    ? <LoadingView label='Connecting...' />
-                    : (
-                        <View style={styles.container}>
-                            <View style={styles.experience}>
-                                
-                                <Text style={[main.text, styles.caption]}>
-                                    Customer Experience
-                                </Text>
-                                
-                                <Button type='primary' onClick={() => connect('customer')}>
-                                    Order Takeout
-                                </Button>
+                <View style={styles.container}>
+                    <View style={styles.experience}>
+                        
+                        <Text style={[main.text, styles.caption]}>
+                            Customer Experience
+                        </Text>
+                        
+                        <Button type='primary' onClick={() => connect('customer')}>
+                            Order Takeout
+                        </Button>
 
-                            </View>
+                    </View>
 
-                            <View style={styles.experience}>
-                                
-                                <Text style={[main.text, styles.caption]}>
-                                    Vendor Experience
-                                </Text>
+                    <View style={styles.experience}>
+                        
+                        <Text style={[main.text, styles.caption]}>
+                            Vendor Experience
+                        </Text>
 
-                                <Button type='primary' onClick={() => connect('vendor')}>
-                                    Make Sales
-                                </Button>
-                            </View>
+                        <Button type='primary' onClick={() => connect('vendor')}>
+                            Make Sales
+                        </Button>
+                    </View>
 
-                            <View style={styles.experience}>
-                                
-                                <Text style={[main.text, styles.caption]}>
-                                    Driver Experience
-                                </Text>
+                    <View style={styles.experience}>
+                        
+                        <Text style={[main.text, styles.caption]}>
+                            Driver Experience
+                        </Text>
 
-                                <Button type='primary' onClick={() => connect('driver')}>
-                                    Make Deliveries
-                                </Button>
-                            </View>
-                        </View>
-                )
-            }
+                        <Button type='primary' onClick={() => connect('driver')}>
+                            Make Deliveries
+                        </Button>
+                    </View>
+                </View>
             </CenteredView>
         </Screen>
     )
