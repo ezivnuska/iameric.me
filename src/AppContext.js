@@ -50,11 +50,11 @@ const reducer = (state = initialState, action) => {
         case 'SET_LOADING':
             loading = action.loading
             loaded = !action.loading
-            console.log('loading >>', loading)
+            console.log('>>', loading)
             break
         case 'DATA_LOADED':
             loaded = true
-            loading = false
+            loading = null
             break
         case 'SET_PROFILE_IMAGE':
             user = { ...user, profileImage: action.profileImage }

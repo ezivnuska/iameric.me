@@ -39,7 +39,6 @@ const StackScreen = ({ navigation, route }) => {
     const { loaded, loading, user } = useContext(AppContext)
     
     if (!loaded || loading) return <SplashScreen />
-    if (!user) return <StartScreen />
 
     return (
         <Stack.Navigator
@@ -47,23 +46,35 @@ const StackScreen = ({ navigation, route }) => {
                 initialRouteName: 'Home',
             })}
         >
-            <Stack.Screen
-                name='Home'
-                component={UserScreen}
-                options={{ title: 'Home' }}
-            />
+            
+            {user ? (
+                <>
+                    <Stack.Screen
+                        name='Home'
+                        component={UserScreen}
+                        options={{ title: 'Home' }}
+                    />
 
-            <Stack.Screen
-                name='Details'
-                component={DetailsScreen}
-                options={{ title: 'Details' }}
-            />
+                    <Stack.Screen
+                        name='Details'
+                        component={DetailsScreen}
+                        options={{ title: 'Details' }}
+                    />
 
-            <Stack.Screen
-                name='Settings'
-                component={SettingsScreen}
-                options={{ title: 'Settings' }}
-            />
+                    <Stack.Screen
+                        name='Settings'
+                        component={SettingsScreen}
+                        options={{ title: 'Settings' }}
+                    />
+                </>
+            ) : (
+                <Stack.Screen
+                    name='Start'
+                    component={StartScreen}
+                    options={{ title: 'Welcome' }}
+                />
+            )}
+
             
         </Stack.Navigator>
     )

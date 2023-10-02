@@ -29,24 +29,17 @@ const StartScreen = () => {
     const {
         dispatch,
         loading,
-        user,
     } = useContext(AppContext)
 
     const setLoading = value => dispatch({ type: 'SET_LOADING', loading: value })
 
-    useEffect(() => {
-        if (user) {
-            console.log('USER', user)
-            getData()
-        }
-    }, [user])
-
-    const getData = async () => {
-        setLoading('Getting data...')
+    const getData = async user => {
         const { orders, vendors } = await loadData(user)
         dispatch({ type: 'SET_ORDERS', orders })
         dispatch({ type: 'SET_VENDORS', vendors })
         dispatch({ type: 'DATA_LOADED' })
+
+        setUser(user)
     }
 
     const connect = async type => {
@@ -67,8 +60,6 @@ const StartScreen = () => {
         await AsyncStorage.setItem('userToken', user.token)
         
         console.log(`${user.username} connected`)
-
-        setUser(user)
 
         await getData(user)
 

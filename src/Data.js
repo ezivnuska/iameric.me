@@ -11,7 +11,6 @@ export const loadData = async user => {
 const getOrders = async user => {
 
     const url = () => {
-        console.log('user.role:user:', user)
         switch (user.role) {
             case 'customer':
             case 'vendor': return `/api/orders/${user._id}`
