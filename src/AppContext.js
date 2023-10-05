@@ -6,18 +6,18 @@ const initialState = {
         items: null,
     },
     dims: null,
-    loaded: false,
     loading: false,
+    orders: null,
     profileId: null,
+    ready: false,
+    statuses: [],
     user: null,
     users: null,
-    orders: null,
     vendors: null,
-    statuses: [],
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, loaded, loading, orders, profileId, statuses, user, users, vendors } = state
+    let { cart, dims, ready, loading, orders, profileId, statuses, user, users, vendors } = state
 
     switch(action.type) {
         case 'SET_DIMS':
@@ -26,14 +26,15 @@ const reducer = (state = initialState, action) => {
         case 'SET_USER':
             user = action.user
             break
+        case 'SET_USER_IMAGES':
+            user.images = action.images
+            break
         case 'REMOVE_IMAGE':
-            const idToRemove = action.id
-            const images = user.images
-            if (!images) return
-            const updatedImages = images.filter(image => image._id !== idToRemove)
+            console.log('removing image: user', user)
+            const updatedImages = user.images.filter(image => image._id !== action.id)
             user = {
                 ...user,
-                profileImage: profileImage !== idToRemove ? profileImage : null,
+                profileImage: user.profileImage !== action.id ? user.profileImage : null,
                 images: updatedImages,
             }
             break
@@ -49,12 +50,13 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_LOADING':
             loading = action.loading
-            loaded = !action.loading
+            if (loading) ready = false
             console.log('>>', loading)
             break
-        case 'DATA_LOADED':
-            loaded = true
+        case 'READY':
+            ready = true
             loading = null
+            console.log('READY')
             break
         case 'SET_PROFILE_IMAGE':
             user = { ...user, profileImage: action.profileImage }
@@ -66,28 +68,23 @@ const reducer = (state = initialState, action) => {
             profileId = action.id
             break
         case 'ADD_TO_CART':
-            const { item, vendor } = action
-            const items = cart.items || []
             cart = {
-                vendor,
-                items: [...items, item],
+                vendor: action.vendor,
+                items: [...cart.items, action.item],
             }
-        break
+            break
         case 'CLEAR_CART':
-            cart = {
-                vendor: null,
-                items: null,
-            }
-        break
+            cart = { vendor: null, items: null }
+            break
         case 'SET_ORDERS':
             // console.log('setting orders', action.orders)
             orders = action.orders
             // console.log('orders set', orders)
-        break
+            break
         case 'ADD_ORDER':
             orders = [...orders, action.order]
             cart = { vendor: null, items: null }
-        break
+            break
         case 'CONFIRM_ORDER':
             orders = orders.map(order => {
                 if (order._id == action.order._id) {
@@ -174,10 +171,10 @@ const reducer = (state = initialState, action) => {
         break
         case 'SIGNOUT':
             cart = {
-                vendorId: null,
+                vendor: null,
                 items: [],
             }
-            loaded = false
+            ready = true
             loading = false
             orders = null
             products = null
@@ -191,7 +188,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, loaded, loading, orders, profileId, statuses, user, users, vendors }
+    return { cart, dims, ready, loading, orders, profileId, statuses, user, users, vendors }
 }
 
 export const AppContext = createContext({
@@ -208,7 +205,7 @@ export const AppProvider = ({ children }) => {
             dispatch,
             cart: state.cart,
             dims: state.dims,
-            loaded: state.loaded,
+            ready: state.ready,
             loading: state.loading,
             orders: state.orders,
             status: state.statuses[state.statuses.length],

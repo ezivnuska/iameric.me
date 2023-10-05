@@ -55,9 +55,8 @@ const LoginMenu = () => {
         const user = response.data
         
         if (!user) {
-            console.log('error authenticating user')
-            setLoading(false)
-            return
+            console.log('Could not authenticate user.')
+            return dispatch({ type: 'READY' })
         }
         
         await AsyncStorage.setItem('userToken', user.token)

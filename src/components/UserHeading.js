@@ -11,22 +11,7 @@ import main from '../styles/main'
 const UserHeading = ({ user, ...props }) => {
 
     const { username } = user
-    const [path, setPath] = useState(null)
-    
-    useEffect(() => {
-        getPath()
-    }, [])
-
-    useEffect(() => {
-        getPath()
-    }, [user])
-
-    const getPath = async () => {
-        const { data } = await axios.get(`/api/avatar/${user._id}`)
-        const { profileImage } = data
-        const imagePath = profileImage ? `${username}/${profileImage.filename}` : 'avatar-default-small.png'
-        setPath(imagePath)
-    }
+    const [path, setPath] = useState(user.profileImage ? `${user.username}/${user.profileImage.filename}` : 'avatar-default-small.png')
 
     return (
         <View style={[styles.container, main.paddedV]}>

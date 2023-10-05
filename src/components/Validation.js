@@ -14,7 +14,7 @@ const Validation = () => {
     const {
         dispatch,
         state,
-        loaded,
+        ready,
         loading,
         orders,
         status,
@@ -25,7 +25,7 @@ const Validation = () => {
     // const [status, setStatus] = useState('...')
 
     const setLoading = value => dispatch({ type: 'SET_LOADING', loading: value })
-    // const setLoaded = () => dispatch({ type: 'DATA_LOADED' })
+    // const setLoaded = () => dispatch({ type: 'READY' })
     const setStatus = value => dispatch({ type: 'SET_STATUS', status: value })
 
     // useEffect(() => {

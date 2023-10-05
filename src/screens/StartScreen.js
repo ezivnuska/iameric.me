@@ -16,7 +16,7 @@ import axios from 'axios'
 import { Button } from 'antd'
 import layout from '../styles/layout'
 import main from '../styles/main'
-import { loadData } from '../Data'
+import { getOrders, getVendors, loadData } from '../Data'
 
 const StartScreen = () => {
 
@@ -34,12 +34,23 @@ const StartScreen = () => {
     const setLoading = value => dispatch({ type: 'SET_LOADING', loading: value })
 
     const getData = async user => {
-        const { orders, vendors } = await loadData(user)
+
+        setLoading('Loading Orders...')
+        const orders = await getOrders(user)
+        setLoading('Orders Loaded.')
         dispatch({ type: 'SET_ORDERS', orders })
-        dispatch({ type: 'SET_VENDORS', vendors })
-        dispatch({ type: 'DATA_LOADED' })
+
+        if (user.role === 'customer') {
+            setLoading('Loading Vendors...')
+            const vendors = await getVendors()
+            setLoading('Vendors Loaded.')
+            dispatch({ type: 'SET_VENDORS', vendors })
+        }
 
         setUser(user)
+        
+        dispatch({ type: 'READY' })
+
     }
 
     const connect = async type => {

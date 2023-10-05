@@ -47,7 +47,6 @@ const imageLoaderConfiguration = {
     options: {
       name: '[name].[ext]',
       esModule: false,
-      // exclude: [path.resolve(__dirname, './assets/images/')],
     },
   },
 }
@@ -89,7 +88,7 @@ module.exports = {
       navigators: path.resolve(__dirname, './src/navigators'),
       layout: path.resolve(__dirname, './src/layout'),
       styles: path.resolve(__dirname, './src/styles'),
-      images: path.resolve(__dirname, './assets/images'),
+      images: path.resolve(__dirname, './assets'),
     },
   },
   module: {
@@ -111,8 +110,8 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: './src/images',
-          to: './assets/images',
+          from: './assets',
+          to: './assets',
         }
       ],
     }),
@@ -120,8 +119,8 @@ module.exports = {
   devtool: 'source-map',
   devServer: {
     static: {
-      directory: path.resolve(__dirname, 'assets', 'images'),
-      publicPath: '/images',
+      directory: path.resolve(__dirname, 'assets'),
+      publicPath: '/assets',
     },
     port: 8080,
     historyApiFallback: true,

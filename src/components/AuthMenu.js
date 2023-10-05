@@ -37,11 +37,12 @@ const AuthMenu = () => {
     const {
         cart,
         user,
+        ready,
     } = useContext(AppContext)
 
     const { items } = cart
 
-    return user ? (
+    return user && ready ? (
         <View style={{
             display: 'flex',
             flexDirection: 'row',

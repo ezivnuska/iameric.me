@@ -27,7 +27,6 @@ import HoverableView from './HoverableView'
 import ImageDetail from './ImageDetail'
 import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
-import ImageLoader from './ImageLoader'
 import ImageUploader from './ImageUploader'
 import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
@@ -95,7 +94,6 @@ export {
     HoverableView,
     ImageDetail,
     ImageDisplay,
-    ImageLoader,
     ImageList,
     ImageUploader,
     LoadingView,

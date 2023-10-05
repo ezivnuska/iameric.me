@@ -36,9 +36,9 @@ import { AppContext } from '../AppContext'
 const Stack = createNativeStackNavigator()
 const StackScreen = ({ navigation, route }) => {
     
-    const { loaded, loading, user } = useContext(AppContext)
+    const { ready, loading, user } = useContext(AppContext)
     
-    if (!loaded || loading) return <SplashScreen />
+    if (!ready) return <SplashScreen />
 
     return (
         <Stack.Navigator

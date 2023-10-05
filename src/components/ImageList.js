@@ -1,42 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import {
     Text,
+    TouchableOpacity,
     View,
 } from 'react-native'
 import {
-    ImageDetail,
     ImageDisplay,
     LoadingView,
-} from './'
-import axios from 'axios'
-import { AppContext } from '../AppContext'
+} from '.'
 
-const ImageList = () => {
-
-    const {
-        dispatch,
-        user,
-    } = useContext(AppContext)
-
-    const [ images, setImages ] = useState(null)
-    const [ loading, setLoading ] = useState(false)
-
-    useEffect(() => {
-        getImages()
-    }, [])
-
-    const getImages = async () => {
-        
-        setLoading(true)
-
-        const { data } = await axios.
-            get(`/api/user/images/${user._id}`)
-
-        setImages(data.images)
-        
-        setLoading(false)
-    }
-
+const ImageList = ({ images, loading, path, setFeatured }) => {
+    console.log('ImageList:images:', images)
     const renderImages = () => (
         <View style={{
             display: 'flex',
@@ -47,22 +21,35 @@ const ImageList = () => {
             width: '100%',
         }}>
             {images.map((image, index) => (
-                <View
+                <TouchableOpacity
+                    onPress={() => setFeatured(image)}
                     style={{
                         flex: 1,
                         flexBasis: 'auto',
                     }}
                     key={`image-${index}`}
                 >
-                    <ImageDisplay image={image} />
-                </View>
+                    <ImageDisplay
+                        size={100}
+                        path={`${path}/thumb/${image.filename}`}
+                    />
+                </TouchableOpacity>
             ))}
         </View>
     )
 
-    return loading ? <LoadingView label='Loading Images...' />
-        : (images && images.length) ? renderImages()
-        : <Text>No images to display.</Text>
+    return (
+        <View>
+            {loading
+                ? <LoadingView label='Loading Images...' />
+                : (images && images.length)
+                ? renderImages()
+                : <Text>No images to display.</Text>
+            }
+
+            
+        </View>
+    )
 }
 
 export default ImageList

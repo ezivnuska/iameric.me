@@ -17,7 +17,7 @@ import { AppContext } from '../AppContext'
 import axios from 'axios'
 import main from '../styles/main'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/images'
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const DetailsScreen = ({ navigation, route }) => {
 
@@ -71,9 +71,9 @@ const DetailsScreen = ({ navigation, route }) => {
                 resizeMode: 'contain',
             }}
             source={
-                vendor
+                vendor.profileImage
                 ?
-                `${IMAGE_PATH}/${vendor.username}/${vendor.profileImage.filename}`
+                `${IMAGE_PATH}/${vendor.username}/avatar/${vendor.profileImage.filename}`
                 :
                 `${IMAGE_PATH}/avatar-default.png`
             }

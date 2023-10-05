@@ -18,8 +18,6 @@ export const authenticate = async token => {
     }
 
     const { user } = data
-
-    console.log(`${user.username} verified`)
     
     await storeToken(user.token)
     

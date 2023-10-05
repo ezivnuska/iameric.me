@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     StyleSheet,
     Text,
@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import {
     AvatarModule,
+    ImageDetail,
     ImageList,
     ImageUploader,
     ModalContainer,
@@ -16,10 +17,69 @@ import {
 } from '@ant-design/icons'
 import main from '../styles/main'
 import layout from '../styles/layout'
+import { AppContext } from '../AppContext'
+import axios from 'axios'
 
-const AvatarDisplay = ({ user }) => {
-    
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+
+const AvatarDisplay = () => {
+
+    const {
+        dispatch,
+        user,
+    } = useContext(AppContext)
+
     const [modalVisible, setModalVisible] = useState(false)
+
+    const [featured, setFeatured] = useState(null)
+    const [images, setImages] = useState(null)
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        getImages()
+    }, [])
+
+    useEffect(() => {
+        if (user) getImages()
+    }, [user])
+
+    useEffect(() => {
+        setImages(user.images)
+    }, [user.images])
+
+    const getImages = async () => {
+        
+        setLoading(true)
+        
+        const { data } = await axios
+            .get(`/api/user/images/${user._id}`)
+        
+        if (!data) return console.log('could not load user images')
+        console.log('images', data.images)
+        setImages(data.images)
+        
+        setLoading(false)
+    }
+
+    const onUpload = (images, profileImage) => {
+
+        dispatch({ type: 'SET_USER_IMAGES', images })
+        setImages(images)
+        if (profileImage) dispatch({ type: 'SET_PROFILE_IMAGE', profileImage })
+
+        setModalVisible(false)
+    }
+
+    const removeImage = id => {
+        const imageArray = images.filter(image => image._id !== id)
+        setImages(imageArray)
+        setFeatured(false)
+    }
+
+    const updateAvatar = avatar => {
+        dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: avatar })
+        setFeatured(false)
+    }
     
     return (
         <View style={styles.container}>
@@ -41,7 +101,14 @@ const AvatarDisplay = ({ user }) => {
 
             </View>
 
-            <ImageList />
+            {(images && images.length) ? (
+                <ImageList
+                    images={images}
+                    loading={loading}
+                    path={`${IMAGE_PATH}/${user.username}`}
+                    setFeatured={setFeatured}
+                />
+            ) : null}
             
             <ModalContainer
                 animationType='slide'
@@ -50,8 +117,22 @@ const AvatarDisplay = ({ user }) => {
                 closeModal={() => setModalVisible(false)}
                 label='Avatar Modal'
             >
-                <AvatarModule onComplete={() => setModalVisible(false)} />
-                {/* <ImageUploader user={user} onComplete={() => setModalVisible(false)} /> */}
+                {/* <AvatarModule onComplete={() => setModalVisible(false)} /> */}
+                <ImageUploader user={user} onUpload={onUpload} />
+            </ModalContainer>
+
+            <ModalContainer
+                animationType='slide'
+                transparent={false}
+                visible={featured}
+                closeModal={() => setFeatured(null)}
+                label='Image Details'
+            >
+                <ImageDetail
+                    image={featured}
+                    onImageDeleted={id => removeImage(id)}
+                    onAvatarSet={avatar => updateAvatar(avatar)}
+                />
             </ModalContainer>
         </View>
     )

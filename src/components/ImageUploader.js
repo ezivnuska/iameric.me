@@ -6,18 +6,19 @@ import {
     FileSelector,
 } from './'
 import ReactAvatarEditor from 'react-avatar-editor'
-import { AppContext } from '../AppContext'
-import EXIF from 'exif-js'
 import { Button } from 'antd'
+import EXIF from 'exif-js'
+import axios from 'axios'
+import { AppContext } from '../AppContext'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/images'
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const initialSize = 300
-const MAX_SIZE = 100
 
-export default ({ user, onComplete = null }) => {
+export default ({ user, onUpload = null }) => {
 
     const {
         dims,
+        dispatch,
     } = useContext(AppContext)
 
     const [size, setSize] = useState(initialSize)
@@ -90,48 +91,133 @@ export default ({ user, onComplete = null }) => {
         }
     }
 
+    // const loadPreview = async src => {
+
+    //     const image = new Image()
+        
+    //     image.onload = async () => {
+    
+    //         const canvas = document.createElement('canvas')
+        
+    //         if (image.height > MAX_SIZE) {
+    //             image.width *= MAX_SIZE / image.height
+    //             image.height = MAX_SIZE
+    //         }
+        
+    //         if (image.width > MAX_SIZE) {
+    //             image.height *= MAX_SIZE / image.width
+    //             image.width = MAX_SIZE
+    //         }
+        
+    //         const ctx = canvas.getContext('2d')
+    //         canvas.width = image.width
+    //         canvas.height = image.height
+    //         ctx.clearRect(0, 0, canvas.width, canvas.height)
+    //         ctx.drawImage(image, 0, 0, image.width, image.height)
+        
+    //         const dataURL = canvas.toDataURL('image/png;base64;')
+
+    //         saveDataURI(dataURL)
+    //     }
+
+    //     image.src = src
+    // }
+
     const loadPreview = async src => {
 
         const image = new Image()
         
-        image.onload = async () => {
-    
-            const canvas = document.createElement('canvas')
-        
-            if (image.height > MAX_SIZE) {
-                image.width *= MAX_SIZE / image.height
-                image.height = MAX_SIZE
-            }
-        
-            if (image.width > MAX_SIZE) {
-                image.height *= MAX_SIZE / image.width
-                image.width = MAX_SIZE
-            }
-        
-            const ctx = canvas.getContext('2d')
-            canvas.width = image.width
-            canvas.height = image.height
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            ctx.drawImage(image, 0, 0, image.width, image.height)
-        
-            const dataURL = canvas.toDataURL('image/png;base64;')
+        const THUMB_SIZE = 100
+        const AVATAR_SIZE = 200
 
-            saveDataURI(dataURL)
+        image.onload = async () => {
+            
+            const timestamp = Date.now()
+
+            const thumb = imageToDataURI(image, THUMB_SIZE)
+            const thumbSaved = await uploadThumb(thumb, timestamp)
+            
+            if (!thumbSaved) return console.log('Error uploading thumb')
+            console.log('thumb saved!')
+
+            const avatar = imageToDataURI(image, AVATAR_SIZE)
+            
+            const response = await uploadAvatar(avatar, timestamp)
+            console.log('response', response)
+            const { images, profileImage } = response
+            
+            if (onUpload) onUpload(images, profileImage)
         }
 
         image.src = src
     }
 
-    const saveDataURI = async dataURI => {
+    const imageToDataURI = (image, maxSize) => {
+        
+        const canvas = document.createElement('canvas')
+            
+        const originalWidth = image.width
+        const originalHeight = image.height
+
+        if (originalHeight > maxSize) {
+            image.width *= maxSize / originalHeight
+            image.height = maxSize
+        }
+    
+        if (originalWidth > maxSize) {
+            image.height *= maxSize / originalWidth
+            image.width = maxSize
+        }
+    
+        canvas.width = image.width
+        canvas.height = image.height
+
+        const ctx = canvas.getContext('2d')
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(image, 0, 0, image.width, image.height)
+    
+        const dataURI = canvas.toDataURL('image/png;base64;')
+
+        return dataURI
+    }
+
+    const uploadThumb = async (thumb, timestamp) => {
         
         const { data } = await axios
-            .post('/api/upload/avatar', { _id: user._id, dataurl: dataURI }, { new: true })
+            .post('/api/upload/thumb', {
+                _id: user._id,
+                thumb,
+                timestamp,
+            }, { new: true })
         
-        if (!data.user) return console.log('Error saving dataURI', err)
+        if (!data.thumb) {
+            console.log('Error uploading thumbnail', err)
+            return false
+        }
+        console.log('thumb uploaded>>', data.thumb)
+        return true
+        // dispatch({ type: 'SET_USER', user: data.user })
+        
+        // if (onComplete) onComplete()
+    }
 
-        dispatch({ type: 'SET_USER', user: data.user })
+    const uploadAvatar = async (avatar, timestamp) => {
         
-        if (onComplete) onComplete()
+        const { data } = await axios
+            .post('/api/upload/avatar', {
+                _id: user._id,
+                avatar,
+                timestamp,
+            }, { new: true })
+        
+        if (!data) return false
+
+        console.log('avatar saved!', data)
+
+        const { images, profileImage } = data
+        console.log('images', images)
+        console.log('profileImage', profileImage)
+        return { images, profileImage }
     }
 
     const clearPreview = () => setPreview(null)

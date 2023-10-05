@@ -8,7 +8,7 @@ export const loadData = async user => {
     return { orders, vendors }
 }
 
-const getOrders = async user => {
+export const getOrders = async user => {
 
     const url = () => {
         switch (user.role) {
@@ -25,7 +25,7 @@ const getOrders = async user => {
     return data
 }
 
-const getVendors = async () => {
+export const getVendors = async () => {
     
     const { data } = await axios.get('/api/vendors')
 

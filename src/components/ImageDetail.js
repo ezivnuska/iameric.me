@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
     View,
@@ -8,9 +8,9 @@ import { Button } from 'antd'
 import axios from 'axios'
 import layout from '../styles/layout'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets/images' : '/assets/images'
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ done, image, width = 100, height = 100, resize = 'stretch' }) => {
+export default ({ onAvatarSet, onImageDeleted, image, width = 200, height = 200, resize = 'stretch' }) => {
 
     const {
         dispatch,
@@ -26,10 +26,11 @@ export default ({ done, image, width = 100, height = 100, resize = 'stretch' }) 
         
         console.log('image delete result: data:', data)
         
-        if (!data.user) return console.log('Error deleting image.')
+        if (!data) return console.log('Error deleting image.')
 
-        dispatch({ type: 'REMOVE_IMAGE', id: image._id })
+        dispatch({ type: 'REMOVE_IMAGE', id: data.id })
         // dispatch({ type: 'SET_USER', user: data.user })
+        onImageDeleted(data.id)
     }
 
     const setAvatar = async () => {
@@ -44,7 +45,7 @@ export default ({ done, image, width = 100, height = 100, resize = 'stretch' }) 
         
         dispatch({ type: 'SET_PROFILE_IMAGE', profileImage })
         
-        done()
+        onAvatarSet(profileImage)
     }
 
     return image ? (

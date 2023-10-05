@@ -21,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
 
     const {
         dispatch,
-        loaded,
+        ready,
         loading,
         state,
         status,
@@ -36,7 +36,7 @@ const HomeScreen = ({ navigation }) => {
     useEffect(() => {
         console.log('hello')
         checkForToken()
-        if (user && !loading && !loaded) getData()
+        if (user && !loading && !ready) getData()
     }, [])
     
     const checkForToken = async () => {
@@ -88,7 +88,7 @@ const HomeScreen = ({ navigation }) => {
     }, [user])
 
     const getData = async () => {
-        console.log('gettingData: loading, loaded', loading, loaded)
+        console.log('gettingData: loading, ready', loading, ready)
         // setLoading(true)
         await getOrders()
         await getVendors()
@@ -144,15 +144,15 @@ const HomeScreen = ({ navigation }) => {
     }
     
     useEffect(() => {
-        console.log('loaded', loaded ? 'TRUE' : 'FALSE')
-        if (loaded) {
-            console.log('data loaded')
+        console.log('ready', ready ? 'TRUE' : 'FALSE')
+        if (ready) {
+            console.log('data ready')
             if (user) {
                 console.log('advancing user')
                 advance()
             }
         }
-    }, [loaded])
+    }, [ready])
 
     const advance = async () => {
         console.log('ADVANCING')
@@ -174,8 +174,8 @@ const HomeScreen = ({ navigation }) => {
     }
 
     const renderScreen = () => {
-        console.log('loaded, user', loaded, user)
-        if (!loaded || !user) return 
+        console.log('ready, user', ready, user)
+        if (!ready || !user) return 
         else return <Validation />
     }
     
