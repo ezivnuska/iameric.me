@@ -8,6 +8,7 @@ import {
 import {
     Cart,
     ModalContainer,
+    ModalContent,
     PanelView,
 } from '.'
 import { ShoppingCartOutlined } from '@ant-design/icons'
@@ -48,17 +49,15 @@ const CartButton = () => {
                 {items.length}
             </Button>
 
-            <ModalContainer
-                animationType='slide'
-                transparent={false}
+            <ModalContent
                 visible={modalVisible}
-                closeModal={() => setModalVisible(false)}
+                onRequestClose={() => setModalVisible(false)}
                 label='Cart'
             >
                 <Cart
                     onSubmitOrder={onSubmitCart}
                 />
-            </ModalContainer>
+            </ModalContent>
 
         </View>
     )

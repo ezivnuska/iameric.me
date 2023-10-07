@@ -17,7 +17,9 @@ const FormInput = ({ label, onChange, ...props }) => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{
+            marginBottom: 5,
+        }}>
             
             {(label && label.length) ? <Text style={defaultStyles.label}>{label}</Text> : null}
             
@@ -37,9 +39,3 @@ const FormInput = ({ label, onChange, ...props }) => {
 }
 
 export default FormInput
-
-const styles = StyleSheet.create({
-    container: {
-        marginBottom: 5,
-    },
-})

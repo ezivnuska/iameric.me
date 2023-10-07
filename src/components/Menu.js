@@ -8,6 +8,7 @@ import {
 import {
     MenuItem,
     ModalContainer,
+    ModalContent,
     ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -30,8 +31,8 @@ const Menu = ({ vendor }) => {
     const addToCart = item => {
         setLoading(true)
         dispatch({ type: 'ADD_TO_CART', item, vendor: vendor._id })
-        setLoading(false)
         setFeatured(null)
+        setLoading(false)
     }
     
     return (
@@ -51,15 +52,13 @@ const Menu = ({ vendor }) => {
                     />
                 ) : <Text style={main.text}>No products to display.</Text>}
 
-            <ModalContainer
-                animationType='slide'
-                transparent={false}
+            <ModalContent
                 visible={featured}
-                closeModal={() => setFeatured(null)}
+                onRequestClose={() => setFeatured(null)}
                 label={featured && featured.title ? featured.title : null}
             >
                 <ProductDetails loading={loading} product={featured} onOrder={addToCart} />
-            </ModalContainer>
+            </ModalContent>
         </View>
     )
 }

@@ -215,8 +215,7 @@ export default ({ user, onUpload = null }) => {
         console.log('avatar saved!', data)
 
         const { images, profileImage } = data
-        console.log('images', images)
-        console.log('profileImage', profileImage)
+        
         return { images, profileImage }
     }
 
@@ -230,8 +229,6 @@ export default ({ user, onUpload = null }) => {
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
-                borderWidth: 1,
-                borderColor: 'red'
             }}
         >
             
@@ -245,7 +242,7 @@ export default ({ user, onUpload = null }) => {
                     scale={1.2}
                     rotate={0}
                     ref={ref => setEditor(ref)}
-                    style={{ borderWidth: 1, borderStyle: 'dashed' }}
+                    // style={{ borderWidth: 1, borderStyle: 'dashed' }}
                 />
             ) : (
                 <FileSelector
@@ -258,7 +255,8 @@ export default ({ user, onUpload = null }) => {
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
                 // alignContent: 'space-between',
-                borderWidth: 1,
+                // borderWidth: 1,
+                marginVertical: 15,
                 width: size,
             }}>
                 

@@ -76,7 +76,7 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
     }
 
     return (
-        <View style={main.form}>
+        <View style={[main.form, { width: '100%' }]}>
 
             <CategoryPicker
                 style={{ marginBottom: 10 }}

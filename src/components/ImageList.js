@@ -9,8 +9,8 @@ import {
     LoadingView,
 } from '.'
 
-const ImageList = ({ images, loading, path, setFeatured }) => {
-    console.log('ImageList:images:', images)
+export default ({ images, loading, path, setFeatured }) => {
+    
     const renderImages = () => (
         <View style={{
             display: 'flex',
@@ -51,5 +51,3 @@ const ImageList = ({ images, loading, path, setFeatured }) => {
         </View>
     )
 }
-
-export default ImageList

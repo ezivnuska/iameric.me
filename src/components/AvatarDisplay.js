@@ -11,6 +11,7 @@ import {
     ImageList,
     ImageUploader,
     ModalContainer,
+    ModalContent,
 } from '.'
 import {
     PlusCircleOutlined,
@@ -19,6 +20,7 @@ import main from '../styles/main'
 import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import { Button } from 'antd'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -29,6 +31,7 @@ const AvatarDisplay = () => {
         user,
     } = useContext(AppContext)
 
+    const [showModal, setShowModal] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
 
     const [featured, setFeatured] = useState(null)
@@ -55,7 +58,7 @@ const AvatarDisplay = () => {
             .get(`/api/user/images/${user._id}`)
         
         if (!data) return console.log('could not load user images')
-        console.log('images', data.images)
+        
         setImages(data.images)
         
         setLoading(false)
@@ -110,18 +113,16 @@ const AvatarDisplay = () => {
                 />
             ) : null}
             
-            <ModalContainer
-                animationType='slide'
-                transparent={false}
+            <ModalContent
                 visible={modalVisible}
-                closeModal={() => setModalVisible(false)}
-                label='Avatar Modal'
+                onRequestClose={() => setModalVisible(false)}
+                label='Upload an Image'
             >
                 {/* <AvatarModule onComplete={() => setModalVisible(false)} /> */}
                 <ImageUploader user={user} onUpload={onUpload} />
-            </ModalContainer>
+            </ModalContent>
 
-            <ModalContainer
+            {/* <ModalContainer
                 animationType='slide'
                 transparent={false}
                 visible={featured}
@@ -133,7 +134,19 @@ const AvatarDisplay = () => {
                     onImageDeleted={id => removeImage(id)}
                     onAvatarSet={avatar => updateAvatar(avatar)}
                 />
-            </ModalContainer>
+            </ModalContainer> */}
+
+            <ModalContent
+                visible={featured}
+                onRequestClose={() => setFeatured(null)}
+                label='Image Detail'
+            >
+                <ImageDetail
+                    image={featured}
+                    onImageDeleted={id => removeImage(id)}
+                    onAvatarSet={avatar => updateAvatar(avatar)}
+                />
+            </ModalContent>
         </View>
     )
 }

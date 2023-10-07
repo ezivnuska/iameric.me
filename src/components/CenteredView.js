@@ -1,25 +1,20 @@
 import React from 'react'
 import {
-    StyleSheet,
     View,
 } from 'react-native'
 
-const CenteredView = ({ children, ...props }) => (
-    <View style={[styles.container, props.style]}>
+export default  ({ children, ...props }) => (
+    <View
+        style={[{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            // borderWidth: 5,
+            // borderStyle: 'dashed',
+            // height: '80%',
+        }, props.style]}
+    >
         {children}
     </View>
 )
-
-export default CenteredView
-
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%',
-        width: '100%',
-        borderWidth: 1,
-        borderStyle: 'dashed',
-    },   
-})

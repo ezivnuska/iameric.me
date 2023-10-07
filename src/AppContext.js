@@ -3,7 +3,7 @@ import React, { createContext, useReducer } from 'react'
 const initialState = {
     cart: {
         vendor: null,
-        items: null,
+        items: [],
     },
     dims: null,
     loading: false,

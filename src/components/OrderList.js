@@ -217,16 +217,14 @@ const OrderList = ({ orders }) => {
             
             {(orders && orders.length) && renderOrders()}
 
-            <ModalContainer
-                animationType='slide'
-                transparent={false}
+            <ModalContent
                 visible={featured}
-                closeModal={() => setFeatured(null)}
+                onRequestClose={() => setFeatured(null)}
                 label='Order Details'
                 loading={loading}
             >
                 <OrderDetails order={featuredItem} />
-            </ModalContainer>
+            </ModalContent>
         </View>
     )
 }

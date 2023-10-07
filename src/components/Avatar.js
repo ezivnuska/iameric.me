@@ -11,7 +11,6 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const Avatar = ({ path, size = 100, ...props }) => {
     const { user } = useContext(AppContext)
     const [loading, setLoading] = useState(true)
-    console.log('Avatar loading path:', path)
     
     return (
         <View style={[styles.container, { height: size, width: size }]} {...props}>

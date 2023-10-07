@@ -7,6 +7,7 @@ import {
 import {
     ButtonPrimary,
     ModalContainer,
+    ModalContent,
     OrderDetails,
     OrderPreview,
 } from '.'
@@ -259,15 +260,14 @@ const OrderDisplay = () => {
                     ))}
                 </View>
             
-                <ModalContainer
-                    animationType='slide'
+                <ModalContent
                     transparent={false}
                     visible={featuredItem}
-                    closeModal={() => setFeaturedItem(null)}
+                    onRequestClose={() => setFeaturedItem(null)}
                     label='Order Details'
                 >
                     {featuredItem ? renderOrderProcessForm(featuredItem) : null}
-                </ModalContainer>
+                </ModalContent>
             </View>
         ) : null
     }

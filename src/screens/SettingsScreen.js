@@ -4,7 +4,9 @@ import {
     CenteredContent,
     CloseButton,
     LocationDisplay,
+    ModalContent,
     Screen,
+    View,
 } from '../components'
 import { AppContext } from '../AppContext'
 import { cleanStorage } from '../Auth'
@@ -38,7 +40,7 @@ const SettingsScreen = () => {
         <Screen>
 
             <CenteredContent>
-                    
+                
                 {(user.role !== 'driver') && <LocationDisplay details={user.location} />}
 
                 <AvatarDisplay />
@@ -49,7 +51,7 @@ const SettingsScreen = () => {
                 >
                     Sign Out
                 </Button>
-                    
+
                 {/*<DeleteAccountButton />*/}
 
             </CenteredContent>

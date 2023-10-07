@@ -54,7 +54,7 @@ export default ({ onAvatarSet, onImageDeleted, image, width = 200, height = 200,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
-                alignItems: 'center', 
+                alignItems: 'center',
             }}
         >
             <Image

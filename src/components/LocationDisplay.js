@@ -9,6 +9,7 @@ import {
     LocationForm,
     LocationDetails,
     ModalContainer,
+    ModalContent,
 } from '.'
 import {
     EditOutlined,
@@ -90,18 +91,19 @@ const LocationDisplay = ({ details }) => {
 
             {location ? <LocationDetails location={location} /> : null}
 
-            <ModalContainer
+            <ModalContent
                 animationType='slide'
                 transparent={false}
                 visible={modalVisible}
-                closeModal={() => setModalVisible(false)}
-                label={'Location Form'}
+                onRequestClose={() => setModalVisible(false)}
+                label={'Manage Location'}
             >
                 <LocationForm
                     location={location}
                     onSubmit={onSubmitAddress}
                 />
-            </ModalContainer>
+            </ModalContent>
+            
         </View>
     )
 }

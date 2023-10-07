@@ -97,7 +97,7 @@ const StartScreen = () => {
 
     return (
         <Screen>
-            <CenteredView style={{ height: '100%' }}>
+            <CenteredView>
                 <View style={styles.container}>
                     <View style={styles.experience}>
                         

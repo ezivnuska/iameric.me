@@ -9,6 +9,7 @@ import {
     AddButton,
     DefaultText,
     ModalContainer,
+    ModalContent,
     PanelView,
     ProductForm,
     ProductList,
@@ -89,12 +90,9 @@ const ProductDisplay = () => {
                 ) : <Text style={main.text}>No products to display.</Text>
             }
 
-            <ModalContainer
-                animationType='slide'
-                presentationStyle='fullScreen'
-                transparent={false}
+            <ModalContent
                 visible={featured}
-                closeModal={() => setFeatured(null)}
+                onRequestClose={() => setFeatured(null)}
                 label={`${featured && featured._id ? 'Edit' : 'Add'} Product`}
             >
                 <ProductForm
@@ -102,7 +100,7 @@ const ProductDisplay = () => {
                     onDelete={onDelete}
                     product={featured}
                 />
-            </ModalContainer>
+            </ModalContent>
         </View>
     )
 }

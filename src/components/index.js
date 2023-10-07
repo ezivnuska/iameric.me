@@ -36,6 +36,7 @@ import LoginMenu from './LoginMenu'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
 import ModalContainer from './ModalContainer'
+import ModalContent from './ModalContent'
 import OrderListContainer from './OrderListContainer'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
@@ -104,6 +105,7 @@ export {
     Menu,
     MenuItem,
     ModalContainer,
+    ModalContent,
     OrderListContainer,
     OrderList,
     OrderDetails,

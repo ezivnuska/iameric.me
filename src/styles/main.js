@@ -1,10 +1,7 @@
-import {
-    StyleSheet,
-} from 'react-native'
 import base from './base'
 import layout from './layout'
 
-export default StyleSheet.create({
+export default {
 	screenContainer: {
         flex: 1,
         width: '100%',
@@ -54,15 +51,14 @@ export default StyleSheet.create({
 		alignSelf: 'center',
 		paddingVertical: 20,
 		paddingHorizontal: 15,
-		minWidth: 350,
-        maxWidth: 450,
-        width: '100%',
 	},
 	form: {
 		// flex: 1,
 		// marginHorizontal: 'auto',
 		marginVertical: layout.verticalMargin,
-		width: '100%',
+		// width: '100%',
+		// borderWidth: 1,
+		// borderColor: 'red',
 	},
 	label: {
 		fontSize: base.textSize,
@@ -76,6 +72,7 @@ export default StyleSheet.create({
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc',
 		marginBottom: 10,
+		width: '100%',
 	},
 	input: {
 		flex: 1,
@@ -145,4 +142,4 @@ export default StyleSheet.create({
 		color: 'blue',
 		fontSize: 20,
 	},
-})
+}
