@@ -50,7 +50,7 @@ const DetailsScreen = ({ navigation, route }) => {
             ...vendor,
             products,
         })
-        dispatch({ type: 'SET_PRODUCTS', vendor: id, products })
+        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendor: id, products })
     }
 
     const getProducts = async () => {

@@ -219,10 +219,8 @@ app.post('/authenticate', async (req, res) => {
 
     if (!user) {
         console.log('Error saving user with updated token')
-        return
+        return res.status(200).json(null)
     }
-
-    console.log(`\n${user} authenticated.`)
 
     return res.status(200).json({ user: getSanitizedUser(user) })
 })
@@ -597,8 +595,6 @@ app.post(
     '/images/delete',
     async (req, res) => {
         const { _id } = req.body
-
-        console.log('attempting to remove image with _id:', _id)
         
         const deletedImage = await UserImage.
             findOneAndRemove({ _id })
@@ -610,16 +606,11 @@ app.post(
 
         if (!deletedImage) console.log('Could not find image to delete')
 
-        console.log('found image to delete:', deletedImage)
-
         const userPath = `${IMAGE_PATH}/${deletedImage.user.username}`
         const filenameToDelete = deletedImage.filename
 
         const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
         const pathToAvatar = `${userPath}/${filenameToDelete}`
-
-        console.log('removing thumb at path:', pathToThumb)
-        console.log('removing avatar at path:', pathToAvatar)
 
         const { images, profileImage } = deletedImage.user
 
@@ -638,8 +629,6 @@ app.post(
         if (!updatedUser) return res.status(200).json({
             error: 'Could not update user after image deletion.'
         })
-
-        console.log('user after deleting image:', updatedUser)
 
         await removeImage(pathToAvatar)
         await removeImage(pathToThumb)

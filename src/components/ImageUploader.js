@@ -11,7 +11,6 @@ import EXIF from 'exif-js'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const initialSize = 300
 
 export default ({ user, onComplete }) => {
@@ -27,13 +26,11 @@ export default ({ user, onComplete }) => {
     const [loading, setLoading] = useState(null)
 
     useEffect(() => {
-        if (!user || !user.profileImage) return
-        if (user.profileImage.filename) setPreview(`${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`)
-    }, [])
-
-    useEffect(() => {
+        
         if (!dims) return
+
         const dropzone = document.getElementById('dropzone')
+        
         if (dropzone) {
             const maxWidth = size
             const actualWidth = dropzone.offsetWidth
@@ -88,38 +85,6 @@ export default ({ user, onComplete }) => {
         }
     }
 
-    // const uploadImages = async src => {
-
-    //     const image = new Image()
-        
-    //     image.onload = async () => {
-    
-    //         const canvas = document.createElement('canvas')
-        
-    //         if (image.height > MAX_SIZE) {
-    //             image.width *= MAX_SIZE / image.height
-    //             image.height = MAX_SIZE
-    //         }
-        
-    //         if (image.width > MAX_SIZE) {
-    //             image.height *= MAX_SIZE / image.width
-    //             image.width = MAX_SIZE
-    //         }
-        
-    //         const ctx = canvas.getContext('2d')
-    //         canvas.width = image.width
-    //         canvas.height = image.height
-    //         ctx.clearRect(0, 0, canvas.width, canvas.height)
-    //         ctx.drawImage(image, 0, 0, image.width, image.height)
-        
-    //         const dataURL = canvas.toDataURL('image/png;base64;')
-
-    //         saveDataURI(dataURL)
-    //     }
-
-    //     image.src = src
-    // }
-
     const handleUpload = async src => {
         setLoading('Uploading...')
         const image = new Image()
@@ -127,11 +92,9 @@ export default ({ user, onComplete }) => {
             const timestamp = Date.now()
             const { imageURI, thumbURI } = imageToDataURIs(image)
             const id = await uploadImage(imageURI, timestamp)
-            console.log('id...', id)
             if (!id) setLoading(null)
             else {
-                const thumbId = await uploadImage(thumbURI, timestamp, 'thumb')
-                console.log(`\n${id}\n${thumbId}\n`)
+                await uploadImage(thumbURI, timestamp, 'thumb')
                 dispatch({ type: 'ADD_IMAGE', id })
                 setLoading(null)
             }
@@ -140,49 +103,10 @@ export default ({ user, onComplete }) => {
         image.src = src
     }
 
-    // const uploadImages = async src => {
-
-    //     setLoading('Loading Image...')
-
-    //     const image = new Image()
-        
-    //     const THUMB_SIZE = 100
-    //     const AVATAR_SIZE = 300
-
-    //     image.onload = async () => {
-            
-    //         setLoading('Uploading Thumbnail...')
-    //         const timestamp = Date.now()
-
-    //         const thumb = imageToDataURI(image, THUMB_SIZE)
-    //         const thumbSaved = await uploadThumb(thumb, timestamp)
-            
-    //         if (!thumbSaved) return console.log('Error uploading thumb')
-
-    //         setLoading('Uploading Image...')
-
-    //         const avatar = imageToDataURI(image, AVATAR_SIZE)
-    //         const response = await uploadAvatar(avatar, timestamp)
-            
-    //         const { images, profileImage } = response
-            
-    //         dispatch({ type: 'SET_USER_IMAGES', images })
-
-    //         if (profileImage) dispatch({ type: 'SET_PROFILE_IMAGE', profileImage })
-
-    //         if (onComplete) onComplete(images)
-    //     }
-
-    //     image.src = src
-    // }
-
-    // const getOrientation = (width, height) => width > height ? 'landscape' : 'portrait'
-
     const imageToDataURIs = image => {
         const canvas = document.createElement('canvas')
         
         const originalWidth = image.width
-        const originalHeight = image.height
 
         let imageWidth = image.width
         let imageHeight = image.height
@@ -192,8 +116,6 @@ export default ({ user, onComplete }) => {
         const IMAGE_WIDTH = 200
         const THUMB_WIDTH = 50
 
-        // const orientation = getOrientation(originalWidth, originalHeight)
-
         if (originalWidth > IMAGE_WIDTH) {
             imageWidth = IMAGE_WIDTH
             imageHeight *= IMAGE_WIDTH / originalWidth
@@ -201,26 +123,6 @@ export default ({ user, onComplete }) => {
 
         thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
         thumbHeight = imageWidth * (THUMB_WIDTH / imageWidth)
-
-        // if (orientation === 'landscape') {
-        // } else {
-        //     if (originalWidth > maxSize) {
-
-        //     }
-        // }
-
-        // if (image.height > maxSize) {
-        //     image.width *= maxSize / image.height
-        //     image.height = maxSize
-        // }
-    
-        // if (image.width > maxSize) {
-        //     image.height *= maxSize / image.width
-        //     image.width = maxSize
-        // }
-
-        // image.width = newWidth
-        // image.height = newHeight
     
         canvas.width = imageWidth
         canvas.height = imageHeight
@@ -256,42 +158,12 @@ export default ({ user, onComplete }) => {
         
         setLoading(null)
         
-        if (!data) return console.log(`Error uploading image.${type ? ` (${type})` : ''}`)
-        console.log('data from image upload...', data)
-        return data.id
-    }
-
-    const uploadThumb = async (thumb, timestamp) => {
-        
-        const { data } = await axios
-            .post('/api/upload/thumb', {
-                _id: user._id,
-                thumb,
-                timestamp,
-            }, { new: true })
-        
-        if (!data.thumb) {
-            console.log('Error uploading thumbnail', err)
-            return false
+        if (!data) {
+            console.log(`Error uploading image.${type ? ` (${type})` : ''}`)
+            return null
         }
         
-        return true
-    }
-
-    const uploadAvatar = async (avatar, timestamp) => {
-        
-        const { data } = await axios
-            .post('/api/upload/avatar', {
-                _id: user._id,
-                avatar,
-                timestamp,
-            }, { new: true })
-        
-        if (!data) return false
-
-        const { images, profileImage } = data
-
-        return { images, profileImage }
+        return data.id
     }
 
     const clearPreview = () => setPreview(null)
@@ -317,7 +189,6 @@ export default ({ user, onComplete }) => {
                     scale={1.2}
                     rotate={0}
                     ref={ref => setEditor(ref)}
-                    // style={{ borderWidth: 1, borderStyle: 'dashed' }}
                 />
             ) : (
                 <FileSelector
@@ -329,8 +200,6 @@ export default ({ user, onComplete }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
-                // alignContent: 'space-between',
-                // borderWidth: 1,
                 marginVertical: 15,
                 width: size,
             }}>

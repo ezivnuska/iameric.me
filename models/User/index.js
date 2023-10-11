@@ -43,6 +43,10 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'UserImage',
     }],
+    products: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+    }],
     location: {
         type: Schema.Types.ObjectId,
         ref: 'Location',

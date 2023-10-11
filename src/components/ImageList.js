@@ -71,14 +71,16 @@ export default ({ images, loading, user, setFeatured }) => loading
     ? <LoadingView label='Loading Images...' />
     : images && images.length
     ? (
-        <View style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            flexWrap: 'wrap',
-            gap: 10,
-            width: '100%',
-        }}>
+        <View
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                flexWrap: 'wrap',
+                gap: 10,
+                width: '100%',
+            }}
+        >
             {images.map((image, index) => (
                 <ImageButton
                     image={image}

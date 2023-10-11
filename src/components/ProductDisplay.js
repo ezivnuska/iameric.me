@@ -1,16 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import {
     AddButton,
-    DefaultText,
-    ModalContainer,
     ModalContent,
-    PanelView,
     ProductForm,
     ProductList,
 } from '.'
@@ -21,31 +17,12 @@ import main from '../styles/main'
 const ProductDisplay = () => {
 
     const {
-        dispatch,
-        state,
+        products,
     } = useContext(AppContext)
 
-    const { user } = state
-
-    const [items, setItems] = useState([])
+    const [items, setItems] = useState(products)
     const [loading, setLoading] = useState(false)
     const [featured, setFeatured] = useState(null)
-
-    useEffect(() => {
-        getProducts()
-    }, [])
-
-    const getProducts = async () => {
-        setLoading(true)
-        const { data } = await axios.
-            get(`/api/products/${user._id}`)
-        
-        if (!data) return console.log('Error getting products:')
-        
-        setLoading(false)
-
-        setItems(data.items)
-    }
 
     const onDelete = async id => {
         const { data } = await axios.

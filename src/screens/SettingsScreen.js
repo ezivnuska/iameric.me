@@ -21,17 +21,15 @@ const SettingsScreen = () => {
     } = useContext(AppContext)
 
     const signout = async () => {
+
+        dispatch({ type: 'SET_LOADING', loading: 'Signing Out.' })
         
         await cleanStorage()
-        
-        console.log('attempting sign out')
         
         const { data } = await axios.
             post('/api/signout', { _id: user._id })
         
         if (!data) return console.log('could not sign out user')
-            
-        console.log(`dispatching SIGNOUT for ${data.user.username}`)
         
         dispatch({ type: 'SIGNOUT' })
     }

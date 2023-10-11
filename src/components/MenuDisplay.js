@@ -48,7 +48,7 @@ const MenuDisplay = ({ vendorId }) => {
             return null
         }
         
-        dispatch({ type: 'SET_PRODUCTS', vendor: vendorId, products: data.items })
+        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendor: vendorId, products: data.items })
     }
 
     const removeItemById = id => {

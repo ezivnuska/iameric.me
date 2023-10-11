@@ -23,7 +23,9 @@ export default ({ onComplete, image, width = 200, height = 200, resize = 'stretc
     const [imageData, setImageData] = useState(null)
 
     useEffect(() => {
-        if (image && !image.filename) fetchImageData(image)
+        if (!image) return
+        if (!image.filename) fetchImageData(image)
+        else setImageData(image)
     }, [])
 
     const fetchImageData = async id => {

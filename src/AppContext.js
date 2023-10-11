@@ -8,6 +8,7 @@ const initialState = {
     dims: null,
     loading: false,
     orders: null,
+    products: null,
     profileId: null,
     user: null,
     users: null,
@@ -15,8 +16,8 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, loading, orders, profileId, user, users, vendors } = state
-
+    let { cart, dims, loading, orders, products, profileId, user, users, vendors } = state
+    
     switch(action.type) {
         case 'SET_DIMS':
             dims = action.dims
@@ -31,7 +32,12 @@ const reducer = (state = initialState, action) => {
             user.images = [...user.images, action.id]
             break
         case 'UPDATE_IMAGE':
-            user.images = user.images.map(image => image === action.image._id ? action.image : image)
+            user.images = user.images.map(image => {
+                if (typeof image === 'string' && image === action.image._id) {
+                    return action.image
+                }
+                return image
+            })
             break
         case 'REMOVE_IMAGE':
             user = {
@@ -43,12 +49,15 @@ const reducer = (state = initialState, action) => {
         case 'SET_VENDORS':
             vendors = action.vendors
             break
-        case 'SET_PRODUCTS':
+        case 'UPDATE_VENDOR_PRODUCTS':
             let index
             vendors.map((v, i) => {
                 if (v._id === action.vendor) index = i
             })
             vendors[index].products = action.products
+            break
+        case 'SET_PRODUCTS':
+            products = action.products
             break
         case 'SET_LOADING':
             loading = action.loading
@@ -180,7 +189,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, loading, orders, profileId, user, users, vendors }
+    return { cart, dims, loading, orders, products, profileId, user, users, vendors }
 }
 
 export const AppContext = createContext({
@@ -200,6 +209,7 @@ export const AppProvider = ({ children }) => {
             images: state.user ? state.user.images : null,
             loading: state.loading,
             orders: state.orders,
+            products: state.products,
             user: state.user,
             vendors: state.vendors,
         }}>

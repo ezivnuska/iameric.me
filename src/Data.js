@@ -48,9 +48,10 @@ export const checkStatus = async dispatch => {
     
     await AsyncStorage.setItem('userToken', token)
 
-    const { orders, vendors } = await loadData(user)
-
+    const { orders, products, vendors } = await loadData(user)
+    
     if (orders) dispatch({ type: 'SET_ORDERS', orders })
+    if (products) dispatch({ type: 'SET_PRODUCTS', products })
     if (vendors) dispatch({ type: 'SET_VENDORS', vendors })
 
     return user
@@ -64,35 +65,36 @@ export const connect = async (dispatch, type) => {
         vendor: { email: 'vendor@iameric.me', password: 'vendor' },
     }
     
-    dispatch({ type: 'SET_LOADING', loading: 'Connecting...' })
+    dispatch({ type: 'SET_LOADING', loading: `Connecting as ${type}...` })
     
     const { email, password } = creds[type]
-    
-    console.log(`connecting as ${type}`)
     
     const { data } = await axios.
         post('/api/signin', { email, password })
     
-    if (!data) return console.log('Error authenticating user')
+    if (!data) {
+        console.log('Error authenticating user')
+        return null
+    }
     
     await AsyncStorage.setItem('userToken', data.token)
-    
-    console.log(`${data.username} connected`)
 
-    const { orders, vendors } = await loadData(data)
+    const { orders, products, vendors } = await loadData(data)
 
     if (orders) dispatch({ type: 'SET_ORDERS', orders })
+    if (products) dispatch({ type: 'SET_PRODUCTS', products })
     if (vendors) dispatch({ type: 'SET_VENDORS', vendors })
 
     return data
 }
 
 export const loadData = async user => {
-    
-    const orders = await getOrders(user)
-    const vendors = await getVendors(user)
 
-    return { orders, vendors }
+    const orders = await getOrders(user)
+    const products = user.role === 'vendor' ? await getProducts(user) : null
+    const vendors = user.role === 'customer' ? await getVendors() : null
+
+    return { orders, products, vendors }
 }
 
 export const getOrders = async user => {
@@ -107,7 +109,10 @@ export const getOrders = async user => {
     
     const { data } = await axios.get(url())
     
-    if (!data) return console.log('could not get user orders')
+    if (!data) {
+        console.log('could not get user orders')
+        return null
+    }
 
     return data
 }
@@ -116,9 +121,24 @@ export const getVendors = async () => {
     
     const { data } = await axios.get('/api/vendors')
 
-    if (!data) return console.log('Error: could not get vendors')
+    if (!data) {
+        console.log('Error: could not get vendors')
+        return null
+    }
 
     return data.vendors
+}
+
+export const getProducts = async user => {
+    
+    const { data } = await axios.get(`/api/products/${user._id}`)
+    
+    if (!data) {
+        console.log('Error getting products:')
+        return null
+    }
+
+    return data.items
 }
 
 export const getImageDataById = async id => {
@@ -128,27 +148,31 @@ export const getImageDataById = async id => {
 }
 
 export const getData = async user => {
-    let array = []
-    switch (user.role) {
-        case 'customer': array = ['orders', 'vendors']; break
-        case 'vendor': array = ['orders', 'products']; break
-        case 'driver': array = ['orders']; break
-    }
+    // let array = []
+    // switch (user.role) {
+    //     case 'customer': array = ['orders', 'vendors']; break
+    //     case 'vendor': array = ['orders', 'products']; break
+    //     case 'driver': array = ['orders']; break
+    // }
+    
     let data = {}
+    
     if (user.role === 'customer') {
         const vendorResponse = await getVendors()
         data.vendors = vendorResponse
+    }
 
-        const orderResponse = await getOrders(user)
-        data.orders = orderResponse
-    }
     if (user.role === 'vendor') {
-        const orderResponse = await getOrders(user)
-        data.orders = orderResponse
+        const productResponse = await getProducts(user)
+        data.products = productResponse
     }
+
     if (user.role === 'driver') {
-        const orderResponse = await getOrders(user)
-        data.orders = orderResponse
+
     }
+    
+    const orderResponse = await getOrders(user)
+    data.orders = orderResponse
+
     return data
 }
