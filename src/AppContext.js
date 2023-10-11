@@ -9,15 +9,13 @@ const initialState = {
     loading: false,
     orders: null,
     profileId: null,
-    ready: false,
-    statuses: [],
     user: null,
     users: null,
     vendors: null,
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, ready, loading, orders, profileId, statuses, user, users, vendors } = state
+    let { cart, dims, loading, orders, profileId, user, users, vendors } = state
 
     switch(action.type) {
         case 'SET_DIMS':
@@ -29,13 +27,17 @@ const reducer = (state = initialState, action) => {
         case 'SET_USER_IMAGES':
             user.images = action.images
             break
+        case 'ADD_IMAGE':
+            user.images = [...user.images, action.id]
+            break
+        case 'UPDATE_IMAGE':
+            user.images = user.images.map(image => image === action.image._id ? action.image : image)
+            break
         case 'REMOVE_IMAGE':
-            console.log('removing image: user', user)
-            const updatedImages = user.images.filter(image => image._id !== action.id)
             user = {
                 ...user,
-                profileImage: user.profileImage !== action.id ? user.profileImage : null,
-                images: updatedImages,
+                profileImage: (user.profileImage !== action.id) ? user.profileImage : null,
+                images: user.images.filter(image => image._id !== action.id),
             }
             break
         case 'SET_VENDORS':
@@ -50,13 +52,7 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_LOADING':
             loading = action.loading
-            if (loading) ready = false
-            console.log('>>', loading)
-            break
-        case 'READY':
-            ready = true
-            loading = null
-            console.log('READY')
+            if (loading) console.log('>>', loading)
             break
         case 'SET_PROFILE_IMAGE':
             user = { ...user, profileImage: action.profileImage }
@@ -77,9 +73,7 @@ const reducer = (state = initialState, action) => {
             cart = { vendor: null, items: null }
             break
         case 'SET_ORDERS':
-            // console.log('setting orders', action.orders)
             orders = action.orders
-            // console.log('orders set', orders)
             break
         case 'ADD_ORDER':
             orders = [...orders, action.order]
@@ -174,12 +168,10 @@ const reducer = (state = initialState, action) => {
                 vendor: null,
                 items: [],
             }
-            ready = true
-            loading = false
+            loading = null
             orders = null
             products = null
             profileId = null
-            statuses = ['Signed Out']
             user = null
             users = null
             vendors = null
@@ -188,7 +180,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, ready, loading, orders, profileId, statuses, user, users, vendors }
+    return { cart, dims, loading, orders, profileId, user, users, vendors }
 }
 
 export const AppContext = createContext({
@@ -205,10 +197,9 @@ export const AppProvider = ({ children }) => {
             dispatch,
             cart: state.cart,
             dims: state.dims,
-            ready: state.ready,
+            images: state.user ? state.user.images : null,
             loading: state.loading,
             orders: state.orders,
-            status: state.statuses[state.statuses.length],
             user: state.user,
             vendors: state.vendors,
         }}>

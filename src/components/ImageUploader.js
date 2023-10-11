@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
-    FileSelector,
+    FileSelector, LoadingView,
 } from './'
 import ReactAvatarEditor from 'react-avatar-editor'
 import { Button } from 'antd'
@@ -14,7 +14,7 @@ import { AppContext } from '../AppContext'
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const initialSize = 300
 
-export default ({ user, onUpload = null }) => {
+export default ({ user, onComplete }) => {
 
     const {
         dims,
@@ -24,10 +24,9 @@ export default ({ user, onUpload = null }) => {
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [editor, setEditor] = useState(null)
-    const [dropping, setDropping] = useState(false)
+    const [loading, setLoading] = useState(null)
 
     useEffect(() => {
-        console.log('user', user)
         if (!user || !user.profileImage) return
         if (user.profileImage.filename) setPreview(`${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`)
     }, [])
@@ -46,7 +45,6 @@ export default ({ user, onUpload = null }) => {
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
     const handleDrop = async dataURI => {
-        setDropping(true)
         const reader = new FileReader()
         
         reader.onload = e => {
@@ -77,7 +75,6 @@ export default ({ user, onUpload = null }) => {
 
             ctx.drawImage(image, 0, 0)
             setPreview(canvas.toDataURL())
-            setDropping(false)
         }
 
         image.src = srcBase64
@@ -87,11 +84,11 @@ export default ({ user, onUpload = null }) => {
         if (editor) {
             const canvas = editor.getImage()
             const src = canvas.toDataURL('image/png;base64;')
-            loadPreview(src)
+            handleUpload(src)
         }
     }
 
-    // const loadPreview = async src => {
+    // const uploadImages = async src => {
 
     //     const image = new Image()
         
@@ -123,62 +120,145 @@ export default ({ user, onUpload = null }) => {
     //     image.src = src
     // }
 
-    const loadPreview = async src => {
-
+    const handleUpload = async src => {
+        setLoading('Uploading...')
         const image = new Image()
-        
-        const THUMB_SIZE = 100
-        const AVATAR_SIZE = 200
-
         image.onload = async () => {
-            
             const timestamp = Date.now()
-
-            const thumb = imageToDataURI(image, THUMB_SIZE)
-            const thumbSaved = await uploadThumb(thumb, timestamp)
-            
-            if (!thumbSaved) return console.log('Error uploading thumb')
-            console.log('thumb saved!')
-
-            const avatar = imageToDataURI(image, AVATAR_SIZE)
-            
-            const response = await uploadAvatar(avatar, timestamp)
-            console.log('response', response)
-            const { images, profileImage } = response
-            
-            if (onUpload) onUpload(images, profileImage)
+            const { imageURI, thumbURI } = imageToDataURIs(image)
+            const id = await uploadImage(imageURI, timestamp)
+            console.log('id...', id)
+            if (!id) setLoading(null)
+            else {
+                const thumbId = await uploadImage(thumbURI, timestamp, 'thumb')
+                console.log(`\n${id}\n${thumbId}\n`)
+                dispatch({ type: 'ADD_IMAGE', id })
+                setLoading(null)
+            }
+            onComplete(id)
         }
-
         image.src = src
     }
 
-    const imageToDataURI = (image, maxSize) => {
+    // const uploadImages = async src => {
+
+    //     setLoading('Loading Image...')
+
+    //     const image = new Image()
         
-        const canvas = document.createElement('canvas')
+    //     const THUMB_SIZE = 100
+    //     const AVATAR_SIZE = 300
+
+    //     image.onload = async () => {
             
+    //         setLoading('Uploading Thumbnail...')
+    //         const timestamp = Date.now()
+
+    //         const thumb = imageToDataURI(image, THUMB_SIZE)
+    //         const thumbSaved = await uploadThumb(thumb, timestamp)
+            
+    //         if (!thumbSaved) return console.log('Error uploading thumb')
+
+    //         setLoading('Uploading Image...')
+
+    //         const avatar = imageToDataURI(image, AVATAR_SIZE)
+    //         const response = await uploadAvatar(avatar, timestamp)
+            
+    //         const { images, profileImage } = response
+            
+    //         dispatch({ type: 'SET_USER_IMAGES', images })
+
+    //         if (profileImage) dispatch({ type: 'SET_PROFILE_IMAGE', profileImage })
+
+    //         if (onComplete) onComplete(images)
+    //     }
+
+    //     image.src = src
+    // }
+
+    // const getOrientation = (width, height) => width > height ? 'landscape' : 'portrait'
+
+    const imageToDataURIs = image => {
+        const canvas = document.createElement('canvas')
+        
         const originalWidth = image.width
         const originalHeight = image.height
 
-        if (originalHeight > maxSize) {
-            image.width *= maxSize / originalHeight
-            image.height = maxSize
+        let imageWidth = image.width
+        let imageHeight = image.height
+        let thumbWidth
+        let thumbHeight
+
+        const IMAGE_WIDTH = 200
+        const THUMB_WIDTH = 50
+
+        // const orientation = getOrientation(originalWidth, originalHeight)
+
+        if (originalWidth > IMAGE_WIDTH) {
+            imageWidth = IMAGE_WIDTH
+            imageHeight *= IMAGE_WIDTH / originalWidth
         }
+
+        thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
+        thumbHeight = imageWidth * (THUMB_WIDTH / imageWidth)
+
+        // if (orientation === 'landscape') {
+        // } else {
+        //     if (originalWidth > maxSize) {
+
+        //     }
+        // }
+
+        // if (image.height > maxSize) {
+        //     image.width *= maxSize / image.height
+        //     image.height = maxSize
+        // }
     
-        if (originalWidth > maxSize) {
-            image.height *= maxSize / originalWidth
-            image.width = maxSize
-        }
+        // if (image.width > maxSize) {
+        //     image.height *= maxSize / image.width
+        //     image.width = maxSize
+        // }
+
+        // image.width = newWidth
+        // image.height = newHeight
     
-        canvas.width = image.width
-        canvas.height = image.height
+        canvas.width = imageWidth
+        canvas.height = imageHeight
 
         const ctx = canvas.getContext('2d')
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(image, 0, 0, image.width, image.height)
+        ctx.drawImage(image, 0, 0, imageWidth, imageHeight)
     
-        const dataURI = canvas.toDataURL('image/png;base64;')
+        const imageURI = canvas.toDataURL('image/png;base64;')
+    
+        canvas.width = thumbWidth
+        canvas.height = thumbHeight
 
-        return dataURI
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(image, 0, 0, thumbWidth, thumbHeight)
+
+        const thumbURI = canvas.toDataURL('image/png;base64;')
+
+        return { imageURI, thumbURI }
+    }
+
+    const uploadImage = async (dataURI, timestamp, type = null) => {
+        
+        setLoading(`Uploading Image.${type ? ` (${type})` : ''}`)
+        
+        const { data } = await axios
+            .post(`/api/image/upload`, {
+                _id: user._id,
+                dataURI,
+                timestamp,
+                type,
+            })
+        
+        setLoading(null)
+        
+        if (!data) return console.log(`Error uploading image.${type ? ` (${type})` : ''}`)
+        console.log('data from image upload...', data)
+        return data.id
     }
 
     const uploadThumb = async (thumb, timestamp) => {
@@ -194,11 +274,8 @@ export default ({ user, onUpload = null }) => {
             console.log('Error uploading thumbnail', err)
             return false
         }
-        console.log('thumb uploaded>>', data.thumb)
-        return true
-        // dispatch({ type: 'SET_USER', user: data.user })
         
-        // if (onComplete) onComplete()
+        return true
     }
 
     const uploadAvatar = async (avatar, timestamp) => {
@@ -212,16 +289,14 @@ export default ({ user, onUpload = null }) => {
         
         if (!data) return false
 
-        console.log('avatar saved!', data)
-
         const { images, profileImage } = data
-        
+
         return { images, profileImage }
     }
 
     const clearPreview = () => setPreview(null)
 
-    return (
+    return !loading ? (
         <View
             id='dropzone'
             style={{
@@ -277,5 +352,7 @@ export default ({ user, onUpload = null }) => {
             </View>
 
         </View>
+    ) : (
+        <LoadingView label={loading} />
     )
 }

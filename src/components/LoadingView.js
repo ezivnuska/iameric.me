@@ -9,10 +9,17 @@ import {
 } from '.'
 import main from '../styles/main'
 
-const LoadingView = ({ label = null }) => (
+const LoadingView = ({ label = null, showActivity = null }) => (
     <CenteredView>
         <View>
-            <ActivityIndicator size='large' />
+            {showActivity ? (
+                <ActivityIndicator
+                    size='large'
+                    style={{
+                        marginVertical: 35,
+                    }}
+                />
+            ) : null}
             {label && <Text style={main.text}>{label}</Text>}
         </View>
     </CenteredView>

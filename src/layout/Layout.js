@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     Dimensions,
     SafeAreaView,
     ScrollView,
-    StyleSheet,
 } from 'react-native'
 import { Navigation } from '../navigators'
 import { AppContext } from '../AppContext'
 import {
-    CenteredView,
     Header,
     LoadingView,
 } from '../components'
@@ -19,7 +17,7 @@ let initialDims = {
     screen: Dimensions.get('screen'),
 }
 
-const Layout = () => {
+export default () => {
 
     const {
         dispatch,
@@ -39,34 +37,26 @@ const Layout = () => {
     }, [])
 
     return dims ? (
-        <SafeAreaView style={[
-            styles.layoutContainer,
-            {
+        <SafeAreaView
+            style={{
                 width: dims.window.width,
                 height: dims.window.height,
-            }
-        ]}>
+                backgroundColor: base.backgroundColor,
+            }}
+        >
             <Header />
-            <ScrollView
-                // style={{ borderWidth: 1, borderStyle: 'dashed', borderColor: 'red' }}//, height: dimensions.window.height - 50
-                // scrollEventThrottle={16}
-                // onScroll={Animated.event(
-                //     [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
-                //     { useNativeDriver: false }
-                // )}
-            >
+            <ScrollView>
                 <Navigation />
             </ScrollView>
         </SafeAreaView>
     ) : (
-        <LoadingView label='getting started...' />
+        <SafeAreaView
+            style={{
+                width: '100%',
+                paddingTop: 100,
+            }}
+        >
+            <LoadingView label='i am eric.' />
+        </SafeAreaView>
     )
 }
-
-export default Layout
-
-const styles = StyleSheet.create({
-    layoutContainer: {
-        backgroundColor: base.backgroundColor,
-    },
-})

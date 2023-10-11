@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import {
     ButtonPrimary,
-    ModalContainer,
+    ModalContent,
     OrderDetails,
     OrderPreview,
     PanelView,

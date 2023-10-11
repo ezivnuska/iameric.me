@@ -56,7 +56,7 @@ export default {
 		// flex: 1,
 		// marginHorizontal: 'auto',
 		marginVertical: layout.verticalMargin,
-		// width: '100%',
+		maxWidth: 350,
 		// borderWidth: 1,
 		// borderColor: 'red',
 	},

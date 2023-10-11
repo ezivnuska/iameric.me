@@ -7,7 +7,7 @@ import {
 import axios from 'axios'
 import defaultStyles from '../styles/main'
 import { AppContext } from '../AppContext'
-import { clearStorage } from '../Auth'
+import { clearStorage } from '../Data'
 
 const DeleteAccountButton = () => {
 

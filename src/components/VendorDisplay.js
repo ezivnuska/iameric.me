@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
     Text,
     View,
@@ -9,9 +9,8 @@ import {
     VendorList,
 } from '.'
 import { AppContext } from '../AppContext'
-import main from '../styles/main'
 
-const VendorDisplay = () => {
+export default () => {
 
     const {
         vendors,
@@ -28,5 +27,3 @@ const VendorDisplay = () => {
         </CenteredView>
     )
 }
-
-export default VendorDisplay

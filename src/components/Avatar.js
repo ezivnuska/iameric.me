@@ -1,48 +1,37 @@
-import React, { useContext, useState } from 'react'
+import React from 'react'
 import {
-    ActivityIndicator,
     Image,
-    StyleSheet,
     View,
 } from 'react-native'
-import { AppContext } from '../AppContext'
+
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const Avatar = ({ path, size = 100, ...props }) => {
-    const { user } = useContext(AppContext)
-    const [loading, setLoading] = useState(true)
-    
+const Avatar = ({ assetPath, size = 50, ...props }) => {
+
     return (
-        <View style={[styles.container, { height: size, width: size }]} {...props}>
+        <View
+            {...props}
+            style={{
+                height: size,
+                width: size
+            }}
+        >
             <Image
-                style={[
-                    styles.stretch,
-                    {
-                        width: size,
-                        height: loading ? 0 : size,
-                    }
-                ]}
-                onLoadEnd={() => setLoading(false)}
+                style={{
+                    width: size,
+                    height: size,
+                    resizeMode: 'stretch',
+                }}
+                // onLoadStart={() => setLoading(true)}
+                // onLoadEnd={() => setLoading(false)}
                 source={
-                    path
-                    ? `${IMAGE_PATH}/${path}`
-                    : `${IMAGE_PATH}/avatar-default.png`
+                    filename
+                    ? `${IMAGE_PATH}/${assetPath}`
+                    : `${IMAGE_PATH}/avatar-default-small.png`
                 }
             />
-            {loading && <ActivityIndicator size='small' />}
         </View>
     )
 }
 
 export default Avatar
-
-const styles = StyleSheet.create({
-    container: {
-    },
-    stretch: {
-        resizeMode: 'stretch',
-    },
-    background: {
-
-    },
-})

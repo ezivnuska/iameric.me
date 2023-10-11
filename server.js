@@ -31,7 +31,7 @@ const server = createServer(app)
 // const { createProxyMiddleware } = require('http-proxy-middleware')
 
 app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+app.use(express.json({ limit: '5mb' }))
 app.use(cors({
     origin: ['http://localhost:8080','https://iameric.me'],
 }))
@@ -135,7 +135,7 @@ const createUser = async ({ email, username }) => {
     
     await user.save()
 
-    console.log('New user created', user)
+    console.log('New user created', user.username)
     
     const newToken = createToken(user)
     
@@ -202,10 +202,11 @@ app.post('/authenticate', async (req, res) => {
         return res.status(406).json({ userFromToken, error: 'token expired' })
     }
 
-    const user = await User.
-        findOne({ _id: userFromToken._id }).
-        populate('profileImage', 'filename').
-        populate('location')
+    const user = await User
+        .findOne({ _id: userFromToken._id })
+        // .populate('profileImage', 'filename')
+        // .populate('location')
+        // .populate('images', 'filename')
 
     if (!user) {
         console.log('failed to refresh user token')
@@ -221,7 +222,7 @@ app.post('/authenticate', async (req, res) => {
         return
     }
 
-    console.log(`\nUser authenticated: ${user.username}`)
+    console.log(`\n${user} authenticated.`)
 
     return res.status(200).json({ user: getSanitizedUser(user) })
 })
@@ -409,35 +410,68 @@ app.get('/users/self/:id', async (req, res, next) => {
         .then(({ profileImage }) => res.json({ profileImage }))
 })
 
-const handleFileUpload = async (file, path, timestamp, dir = null) => {
+const handleFileUpload = async (file, path, filename) => {
+    // console.log('file', file)
     const regex = /^data:.+\/(.+);base64,(.*)$/
     const matches = file.match(regex)
+    // console.log('matches', matches)
     const ext = matches[1]
     const data = matches[2]
     const buffer = Buffer.from(data, 'base64')
-    console.log(`writing file to ${path}`)
-    const username = path.split('/').pop()
-    console.log(`username from path: ${username}`)
+
     let dirExists = fs.existsSync(path)
     if (!dirExists) mkdirp.sync(path)
     dirExists = fs.existsSync(path)
-    const filename = `${username}-${timestamp}.${ext}`
-    const filepath = `${path}${dir ? `/${dir}` : ''}`
-    dirExists = fs.existsSync(filepath)
     if (!dirExists) mkdirp.sync(filepath)
-    const fileToWrite = `${filepath}/${filename}`
+    // const nameOfFile = `${filename}.${ext}`
+    const fileToWrite = `${path}/${filename}`
     console.log('file to write:', fileToWrite)
-    let newFilename = `${filename}`
     try {
         fs.writeFile(fileToWrite, buffer, err => {
-            if (err) console.log('Error writing file:', err)
+            if (err) return console.log('Error writing file:', err)
+            console.log('file written:', fileToWrite)
         })
     } catch {
         console.log('CATCH: Error writing file.')
-        newFilename = null
+        return null
     }
-    return newFilename
+    return filename
 }
+
+app.post(
+    '/image/upload',
+    async (req, res) => {
+        const { _id, dataURI, timestamp, type } = req.body
+        const user = await User.findOne({ _id })
+        const assetPath = `${IMAGE_PATH}/${user.username}`
+        const thumbPath = type ? `${assetPath}/${type}` : null
+        const filename = `${user._id}${timestamp}.png`
+        
+        const uploadedFile = await handleFileUpload(dataURI, thumbPath || assetPath, filename)
+        if (!uploadedFile) return res.status(400).json({ error: `Error writing ${type || 'image'}` })
+
+        let image = await UserImage.findOne({ user: user._id, filename })
+        if (image) {
+            const images = [...user.images, image._id]
+            console.log('updated images...', images)
+            const userUpdated = await User
+                .findOneAndUpdate(
+                    { _id: user._id },
+                    { $set: { images } },
+                    { new: true },
+                )
+            
+            if (!userUpdated) return res.status(200).json({ error: `Error updating user images.` })    
+        } else {
+            console.log('Image does not exist')
+            image = new UserImage({ user: user._id, filename })
+            await image.save()
+            console.log('Image created', image)
+        }
+
+        return res.status(200).json({ id: image._id })
+    }
+)
 
 app.post(
     '/upload/avatar',
@@ -462,6 +496,7 @@ app.post(
             filename: avatarname,
         })
 
+
         await newImage.save()
         
         console.log('newImage', newImage)
@@ -485,11 +520,9 @@ app.post(
             console.log('Could not update user images/profileImage')
             return res.status(200).json(null)
         }
+        console.log('updatedUser', updatedUser)
 
         const { images, profileImage } = updatedUser
-
-        console.log('images', images)
-        console.log('profileImage', profileImage)
         
         return res.status(200).json({ images, profileImage, imageId: newImage._id })
 })
@@ -505,7 +538,6 @@ app.post(
         console.log('\nwriting thumb to path', path)
         const thumbname = await handleFileUpload(thumb, path, timestamp, 'thumb')
         console.log(`thumb written: ${path}/${thumbname}`)
-        console.log('thumbname', thumbname)
 
         if (!thumbname) {
             console.log('\nError: Cannot write thumb to path.')
@@ -569,8 +601,8 @@ app.post(
         console.log('attempting to remove image with _id:', _id)
         
         const deletedImage = await UserImage.
-            findOneAndRemove({ _id }).
-            populate({
+            findOneAndRemove({ _id })
+            .populate({
                 path: 'user',
                 select: 'username images',
                 populate: { path: 'images' },
@@ -607,6 +639,8 @@ app.post(
             error: 'Could not update user after image deletion.'
         })
 
+        console.log('user after deleting image:', updatedUser)
+
         await removeImage(pathToAvatar)
         await removeImage(pathToThumb)
 
@@ -630,7 +664,7 @@ app.get('/images/:id', async (req, res) => {
     const _id = req.params.id
     
     const image = await UserImage.findOne({ _id })
-    
+    if (!image) return res.status(200).json({ error: 'Error fetching image data.' })
     return res.status(200).json(image)
 })
 
@@ -649,7 +683,7 @@ app.get('/user/images/:id', async (req, res) => {
     
     const images = await UserImage
         .find({ user: _id })
-        .populate('user', 'username')
+        .populate('user', 'username images')
 
     return res.status(200).json({ images })
 })

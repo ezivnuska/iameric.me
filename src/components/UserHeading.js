@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import {
+    Image,
     StyleSheet,
     Text,
     View,
 } from 'react-native'
 import { Avatar } from '.'
-import axios from 'axios'
 import main from '../styles/main'
 
-const UserHeading = ({ user, ...props }) => {
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-    const { username } = user
-    const [path, setPath] = useState(user.profileImage ? `${user.username}/${user.profileImage.filename}` : 'avatar-default-small.png')
-
-    return (
-        <View style={[styles.container, main.paddedV]}>
-            <Avatar
-                style={styles.avatar}
-                path={path}
-                size={24}
+const UserHeading = ({ user }) => (
+    <View style={[styles.container, main.paddedV]}>
+        <View style={styles.avatar}>
+            <Image
+                style={{
+                    width: 24,
+                    height: 24,
+                    resizeMode: 'stretch',
+                }}
+                // onLoadStart={() => setLoading(true)}
+                // onLoadEnd={() => setLoading(false)}
+                source={
+                    (user.profileImage && user.profileImage.filename)
+                    ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+                    : `${IMAGE_PATH}/avatar-default-small.png`
+                }
             />
-            <View style={styles.title}>
-                <Text style={[main.subheading, { lineHeight: 24 }]}>{username}</Text>
-            </View>
         </View>
-    )
-}
+        <View style={styles.title}>
+            <Text style={[main.subheading, { lineHeight: 24 }]}>{user.username}</Text>
+        </View>
+    </View>
+)
 
 export default UserHeading
 

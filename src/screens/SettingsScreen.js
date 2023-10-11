@@ -9,7 +9,7 @@ import {
     View,
 } from '../components'
 import { AppContext } from '../AppContext'
-import { cleanStorage } from '../Auth'
+import { cleanStorage } from '../Data'
 import axios from 'axios'
 import { Button } from 'antd'
 

@@ -73,7 +73,7 @@ const DetailsScreen = ({ navigation, route }) => {
             source={
                 vendor.profileImage
                 ?
-                `${IMAGE_PATH}/${vendor.username}/avatar/${vendor.profileImage.filename}`
+                `${IMAGE_PATH}/${vendor.username}/${vendor.profileImage.filename}`
                 :
                 `${IMAGE_PATH}/avatar-default.png`
             }

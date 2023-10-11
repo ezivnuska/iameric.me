@@ -5,80 +5,50 @@ import {
     View,
 } from 'react-native'
 import {
-    ButtonPrimary,
     LoadingView,
     CenteredView,
     Screen,
 } from '../components'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
-import axios from 'axios'
 import { Button } from 'antd'
 import layout from '../styles/layout'
 import main from '../styles/main'
-import { getOrders, getVendors, loadData } from '../Data'
+import { checkStatus, connect } from '../Data'
 
 const StartScreen = () => {
-
-    const creds = {
-        customer: { email: 'customer@iameric.me', password: 'customer' },
-        driver: { email: 'driver@iameric.me', password: 'driver' },
-        vendor: { email: 'vendor@iameric.me', password: 'vendor' },
-    }
 
     const {
         dispatch,
         loading,
     } = useContext(AppContext)
 
-    const setLoading = value => dispatch({ type: 'SET_LOADING', loading: value })
+    useEffect(() => {
+        authenticate()
+    }, [])
 
-    const getData = async user => {
-
-        setLoading('Loading Orders...')
-        const orders = await getOrders(user)
-        setLoading('Orders Loaded.')
-        dispatch({ type: 'SET_ORDERS', orders })
-
-        if (user.role === 'customer') {
-            setLoading('Loading Vendors...')
-            const vendors = await getVendors()
-            setLoading('Vendors Loaded.')
-            dispatch({ type: 'SET_VENDORS', vendors })
-        }
-
-        setUser(user)
+    const authenticate = async () => {
         
-        dispatch({ type: 'READY' })
+        const response = await checkStatus(dispatch)
+        
+        if (response) setUser(response)
 
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
-    const connect = async type => {
+    const onConnect = async type => {
 
-        setLoading('Connecting...')
+        const response = await connect(dispatch, type)
         
-        const { email, password } = creds[type]
+        if (response) setUser(response)
+        else console.log(`Error connecting as ${type}.`)
         
-        console.log(`connecting as ${type}`)
-		
-        const response = await axios.
-            post('/api/signin', { email, password })
-        
-        const user = response.data
-
-        if (!user) return console.log('error authenticating user')
-        
-        await AsyncStorage.setItem('userToken', user.token)
-        
-        console.log(`${user.username} connected`)
-
-        await getData(user)
-
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const setUser = ({
         _id,
         email,
+        images,
         profileImage,
         role,
         username,
@@ -88,6 +58,7 @@ const StartScreen = () => {
             user: {
                 _id,
                 email,
+                images,
                 profileImage,
                 role,
                 username,
@@ -97,43 +68,46 @@ const StartScreen = () => {
 
     return (
         <Screen>
-            <CenteredView>
-                <View style={styles.container}>
-                    <View style={styles.experience}>
-                        
-                        <Text style={[main.text, styles.caption]}>
-                            Customer Experience
-                        </Text>
-                        
-                        <Button type='primary' onClick={() => connect('customer')}>
-                            Order Takeout
-                        </Button>
+            {!loading ? (
+                <CenteredView>
+                    <View style={styles.container}>
+                        <View style={styles.experience}>
+                            
+                            <Text style={[main.text, styles.caption]}>
+                                Customer Experience
+                            </Text>
+                            
+                            <Button type='primary' onClick={() => onConnect('customer')}>
+                                Order Takeout
+                            </Button>
 
+                        </View>
+
+                        <View style={styles.experience}>
+                            
+                            <Text style={[main.text, styles.caption]}>
+                                Vendor Experience
+                            </Text>
+
+                            <Button type='primary' onClick={() => onConnect('vendor')}>
+                                Make Sales
+                            </Button>
+                        </View>
+
+                        <View style={styles.experience}>
+                            
+                            <Text style={[main.text, styles.caption]}>
+                                Driver Experience
+                            </Text>
+
+                            <Button type='primary' onClick={() => onConnect('driver')}>
+                                Make Deliveries
+                            </Button>
+                        </View>
                     </View>
-
-                    <View style={styles.experience}>
-                        
-                        <Text style={[main.text, styles.caption]}>
-                            Vendor Experience
-                        </Text>
-
-                        <Button type='primary' onClick={() => connect('vendor')}>
-                            Make Sales
-                        </Button>
-                    </View>
-
-                    <View style={styles.experience}>
-                        
-                        <Text style={[main.text, styles.caption]}>
-                            Driver Experience
-                        </Text>
-
-                        <Button type='primary' onClick={() => connect('driver')}>
-                            Make Deliveries
-                        </Button>
-                    </View>
-                </View>
-            </CenteredView>
+                </CenteredView>
+            ) : <LoadingView label={loading} />}
+            
         </Screen>
     )
 }

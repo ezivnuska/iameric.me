@@ -6,20 +6,11 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import base from '../styles/base'
-import layout from '../styles/layout'
-import main from '../styles/main'
 
 export default ({ children, label, onRequestClose, ...props }) => {
 
     return (
-        <View style={{
-            // flex: 1,
-            // justifyContent: 'center',
-            // alignItems: 'center',
-            // marginTop: 22,
-            // width: '100%',
-        }}>
+        <View>
             <Modal
                 {...props}
                 animationType='slide'
@@ -32,10 +23,6 @@ export default ({ children, label, onRequestClose, ...props }) => {
                 <TouchableOpacity
                     onPress={onRequestClose}
                     style={{
-                        // flex: 1,
-                        // justifyContent: 'center',
-                        // alignItems: 'center',
-                        // marginTop: 22,
                         backgroundColor: '#000',
                         opacity: 0.65,
                         position: 'absolute',
@@ -50,10 +37,13 @@ export default ({ children, label, onRequestClose, ...props }) => {
                     style={{
                         flex: 3,
                         marginTop: 40,
-                        marginHorizontal: 5,
+                        marginHorizontal: 'auto',
                         backgroundColor: 'white',
                         borderTopLeftRadius: 25,
                         borderTopRightRadius: 25,
+                        width: 375,
+                        minWidth: 350,
+                        maxWidth: 375,
                     }}
                 >
                     {label && (

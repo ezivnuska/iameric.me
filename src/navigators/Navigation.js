@@ -7,43 +7,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
     DetailsScreen,
     FallbackScreen,
-    HomeScreen,
     SettingsScreen,
-    SplashScreen,
     StartScreen,
     UserScreen,
 } from '../screens'
-import { navigate, navigationRef } from './RootNavigation'
+import { navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
-
-// const AuthStack = createNativeStackNavigator()
-// const AuthStackScreen = ({ navigation, route }) => (
-//     <AuthStack.Navigator
-//         screenOptions={() => ({
-//             initialRouteName: 'auth',
-//             headerShown: false,
-//             // headerMode: 'screen',
-//             // header: () => <Header />,
-//         })}
-//     >
-//         <AuthStack.Screen
-//             name='auth'
-//             component={AuthScreen}
-//         />
-//     </AuthStack.Navigator>
-// )
 
 const Stack = createNativeStackNavigator()
 const StackScreen = ({ navigation, route }) => {
     
-    const { ready, loading, user } = useContext(AppContext)
-    
-    if (!ready) return <SplashScreen />
+    const { user } = useContext(AppContext)
 
     return (
         <Stack.Navigator
             screenOptions={() => ({
-                initialRouteName: 'Home',
+                initialRouteName: 'Start',
             })}
         >
             
@@ -80,7 +59,7 @@ const StackScreen = ({ navigation, route }) => {
     )
 }
 
-const Navigation = () => {
+export default () => {
 
     const [route, setRoute] = useState(null)
 
@@ -125,5 +104,3 @@ const Navigation = () => {
         </NavigationContainer>
     )
 }
-
-export default Navigation
