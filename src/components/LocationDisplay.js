@@ -38,21 +38,29 @@ const LocationDisplay = ({ details }) => {
 
     const [location, setLocation] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        getLocation()
+        console.log('user:location:', location)
+        if (!user.location) getLocation()
+        else if (!location) setLocation(user.location)
     }, [])
 
     const getLocation = async () => {
+        setLoading(true)
+        
         const { data } = await axios
             .get(`/api/user/location/${user._id}`)
 
         if (!data) {
             console.log('Error getting location:')
+            setLoading(false)
             return
         }
 
         setLocation(data.location || initialState)
+
+        setLoading(false)
     }
 
     const onSubmitAddress = async newLocation => {
@@ -79,6 +87,7 @@ const LocationDisplay = ({ details }) => {
                     <TouchableOpacity
                         style={styles.headerButton}
                         onPress={() => setModalVisible(true)}
+                        disabled={loading}
                     >
                         {location
                             ? <EditOutlined style={{ fontSize: 20 }} />
@@ -89,7 +98,11 @@ const LocationDisplay = ({ details }) => {
                 </View>
             </View>
 
-            {location ? <LocationDetails location={location} /> : null}
+            {
+                location
+                    ? <LocationDetails location={location} />
+                    : <Text style={{ color: '#aaa' }}>Loading Address...</Text>
+            }
 
             <ModalContent
                 animationType='slide'

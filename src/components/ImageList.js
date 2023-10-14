@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+    ActivityIndicator,
     Image,
     Text,
     TouchableOpacity,
@@ -16,6 +17,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const SimpleImage = ({ image, username }) => {
 
     const [imageData, setImageData] = useState(null)
+    const [loading, setLoading] = useState(null)
 
     useEffect(() => {
         if (typeof image === 'string') fetchImageData(image)
@@ -23,32 +25,52 @@ const SimpleImage = ({ image, username }) => {
     }, [])
 
     const fetchImageData = async id => {
+        setLoading(true)
         const data = await getImageDataById(id)
         setImageData(data)
+        setLoading(false)
     }
 
-    return imageData ? (
-        <Image
-            width={IMAGE_SIZE}
-            height={IMAGE_SIZE}
-            source={{ uri: `${IMAGE_PATH}/${username}/thumb/${imageData.filename}` }}
-            style={{
-                resizeMode: 'stretch',
-                width: IMAGE_SIZE,
-                height: IMAGE_SIZE,
-                borderWidth: 1,
-                borderColor: '#999',
-                shadowColor: '#000',
-                shadowOffset: {
-                    width: 0,
-                    height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-                elevation: 5,
-            }}
-        />
-    ) : null
+    return loading
+        ? <ActivityIndicator size='small' />
+        : imageData ? (
+            <Image
+                width={IMAGE_SIZE}
+                height={IMAGE_SIZE}
+                source={{ uri: `${IMAGE_PATH}/${username}/thumb/${imageData.filename}` }}
+                style={{
+                    resizeMode: 'stretch',
+                    width: IMAGE_SIZE,
+                    height: IMAGE_SIZE,
+                    borderWidth: 1,
+                    borderColor: '#999',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
+                }}
+            />
+        ) : <View
+                style={{
+                    width: IMAGE_SIZE,
+                    height: IMAGE_SIZE,
+                    borderWidth: 1,
+                    borderColor: '#999',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
+                    backgroundColor: '#ddd',
+                }}
+            />
 }
 
 const ImageButton = ({image, user, onPress, ...props}) => (
