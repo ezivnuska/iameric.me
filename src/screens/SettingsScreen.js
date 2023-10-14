@@ -6,6 +6,7 @@ import {
     LocationDisplay,
     ModalContent,
     Screen,
+    SignoutModule,
     View,
 } from '../components'
 import { AppContext } from '../AppContext'
@@ -20,19 +21,19 @@ const SettingsScreen = () => {
         user,
     } = useContext(AppContext)
 
-    const signout = async () => {
+    // const signout = async () => {
 
-        dispatch({ type: 'SET_LOADING', loading: 'Signing Out.' })
+    //     dispatch({ type: 'SET_LOADING', loading: 'Signing Out.' })
         
-        await cleanStorage()
+    //     await cleanStorage()
         
-        const { data } = await axios.
-            post('/api/signout', { _id: user._id })
+    //     const { data } = await axios.
+    //         post('/api/signout', { _id: user._id })
         
-        if (!data) return console.log('could not sign out user')
+    //     if (!data) return console.log('could not sign out user')
         
-        dispatch({ type: 'SIGNOUT' })
-    }
+    //     dispatch({ type: 'SIGNOUT' })
+    // }
 
     return (
         <Screen>
@@ -43,12 +44,14 @@ const SettingsScreen = () => {
 
                 <AvatarDisplay />
 
-                <Button
+                {/* <Button
                     onClick={signout}
                     style={{ marginTop: 10 }}
                 >
                     Sign Out
-                </Button>
+                </Button> */}
+
+                <SignoutModule />
 
                 {/*<DeleteAccountButton />*/}
 
