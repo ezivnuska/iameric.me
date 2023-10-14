@@ -1,17 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Text,
-    View,
 } from 'react-native'
 import {
-    LoadingView,
     OrderList,
-    PanelView,
 } from '.'
 import { AppContext } from '../AppContext'
 import main from '../styles/main'
 
-const OrderListContainer = () => {
+export default () => {
 
     const {
         user,
@@ -40,5 +37,3 @@ const OrderListContainer = () => {
         ? <OrderList orders={current} />
         : <Text style={[main.text, main.paddedV]}>No current or available orders.</Text>
 }
-
-export default OrderListContainer

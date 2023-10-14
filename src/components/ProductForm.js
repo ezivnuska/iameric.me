@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react'
 import {
-    Text,
     View
 } from 'react-native'
 import axios from 'axios'
@@ -10,7 +9,6 @@ import {
     ButtonPrimary,
     CategoryPicker,
     FormInput,
-    PanelView,
 } from '.'
 
 const ProductForm = ({ onComplete, onDelete, product = null }) => {

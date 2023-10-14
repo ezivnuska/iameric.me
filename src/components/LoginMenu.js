@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     StyleSheet,
     Text,
@@ -7,8 +7,6 @@ import {
 import {
     ButtonPrimary,
     LoadingView,
-    PanelView,
-    Screen,
 } from '.'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AppContext } from '../AppContext'
@@ -82,7 +80,7 @@ const LoginMenu = () => {
     }
 
     return (
-        <PanelView style={{ height: '100%' }}>
+        <View style={{ height: '100%' }}>
             {loading
                 ? <LoadingView label='Connecting...' />
                 : (
@@ -111,7 +109,7 @@ const LoginMenu = () => {
                     </View>
             )
         }
-        </PanelView>
+        </View>
     )
 }
 

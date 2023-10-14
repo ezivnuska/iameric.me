@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    ActivityIndicator,
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
@@ -10,7 +8,6 @@ import {
     ModalContent,
     OrderDetails,
     OrderPreview,
-    PanelView,
     TimeSelector,
 } from '.'
 import axios from 'axios'
@@ -18,7 +15,7 @@ import { AppContext } from '../AppContext'
 import moment from 'moment'
 import main from '../styles/main'
 
-const OrderList = ({ orders }) => {
+export default ({ orders }) => {
 
     const {
         dispatch,
@@ -26,7 +23,6 @@ const OrderList = ({ orders }) => {
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)
-    const [activeOrders, setActiveOrders] = useState(orders)
     const [featured, setFeatured] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
 
@@ -44,13 +40,6 @@ const OrderList = ({ orders }) => {
     const cancelOrder = async id => {
 
         deleteOrder(id)
-
-        // const order = await axios.
-        //     post(`/api/order/cancel/${featuredItem}`)
-        
-        // if (!order) console.log('Error confirming order')
-
-        // dispatch({ type: 'CANCEL_ORDER', id: featuredItem })
 
         setFeatured(null)
     }
@@ -228,5 +217,3 @@ const OrderList = ({ orders }) => {
         </View>
     )
 }
-
-export default OrderList

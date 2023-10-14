@@ -40,7 +40,6 @@ import OrderListContainer from './OrderListContainer'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
-import PanelView from './PanelView'
 import ProductDetails from './ProductDetails'
 import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
@@ -102,7 +101,6 @@ export {
     OrderList,
     OrderDetails,
     OrderPreview,
-    PanelView,
     ProductDetails,
     ProductDisplay,
     ProductForm,

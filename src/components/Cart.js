@@ -5,10 +5,6 @@ import {
     Text,
     View,
 } from 'react-native'
-import {
-    ButtonPrimary,
-    PanelView,
-} from '.'
 import { AppContext } from '../AppContext'
 import main from '../styles/main'
 import axios from 'axios'
@@ -18,7 +14,6 @@ const Cart = ({ onSubmitOrder }) => {
 
     const {
         dispatch,
-        state,
         user,
         cart,
     } = useContext(AppContext)

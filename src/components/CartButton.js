@@ -1,25 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import {
     Cart,
-    ModalContainer,
     ModalContent,
-    PanelView,
 } from '.'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 
-const CartButton = () => {
+export default () => {
 
     const {
-        dispatch,
         state,
     } = useContext(AppContext)
 
@@ -38,7 +32,9 @@ const CartButton = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{
+            marginRight: 15,
+        }}>
             <Button
                 type='primary'
                 icon={<ShoppingCartOutlined />}
@@ -62,11 +58,3 @@ const CartButton = () => {
         </View>
     )
 }
-
-export default CartButton
-
-const styles = StyleSheet.create({
-    container: {
-        marginRight: 15,
-    },
-})
