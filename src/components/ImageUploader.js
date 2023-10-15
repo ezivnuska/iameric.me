@@ -10,10 +10,11 @@ import { Button } from 'antd'
 import EXIF from 'exif-js'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
+import { dataURItoBlob, handleUpload, imageToDataURIs, uploadImage } from '../Upload'
 
 const initialSize = 300
 
-export default ({ user, onComplete }) => {
+export default ({ user, onImageUploaded }) => {
 
     const {
         dims,
@@ -41,24 +42,23 @@ export default ({ user, onComplete }) => {
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
-    const handleDrop = async dataURI => {
-        const reader = new FileReader()
+    const handleDrop = async uri => {
+        setLoading('Loading image preview...')
+        const blob = await dataURItoBlob(uri)
         
-        reader.onload = e => {
-            const image = e.target.result
-            const exif = EXIF.readFromBinaryFile(image)
-            handleOrientation(dataURI, exif ? exif.Orientation : null)
+        const reader = new FileReader()
+        reader.onload = ({ target }) => {
+            const exif = EXIF.readFromBinaryFile(target.result)
+            handleOrientation(uri, exif)
         }
-
-        const blob = await dataURItoBlob(dataURI)
         reader.readAsArrayBuffer(blob)
     }
 
     const handleOrientation = (srcBase64, srcOrientation) => {
+
         const image = new Image()
         image.onload = () => {
-            const width = image.width
-            const height = image.height
+            const { height, width } = image
             const canvas = document.createElement('canvas')
             const ctx = canvas.getContext('2d')
 
@@ -72,99 +72,125 @@ export default ({ user, onComplete }) => {
 
             ctx.drawImage(image, 0, 0)
             setPreview(canvas.toDataURL())
+            setLoading(null)
         }
 
         image.src = srcBase64
     }
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         if (editor) {
+            setLoading('Uploading image...')
             const canvas = editor.getImage()
             const src = canvas.toDataURL('image/png;base64;')
-            handleUpload(src)
-        }
-    }
+            // const id = await uploadImage(user._id, src)
+            let image = new Image()
 
-    const handleUpload = async src => {
-        setLoading('Uploading...')
-        const image = new Image()
-        image.onload = async () => {
-            const timestamp = Date.now()
-            const { imageURI, thumbURI } = imageToDataURIs(image)
-            const id = await uploadImage(imageURI, timestamp)
-            if (!id) setLoading(null)
-            else {
-                await uploadImage(thumbURI, timestamp, 'thumb')
-                dispatch({ type: 'ADD_IMAGE', id })
+            image.onload = async () => {
+                const timestamp = Date.now()
+                const { imageURI, thumbURI } = imageToDataURIs(image)
+                let id = await handleUpload(user._id, imageURI, timestamp)
+                console.log('image uploaded!', id)
+                if (!id) return null
+                else id = await handleUpload(user._id, thumbURI, timestamp, 'thumb')
+                console.log('thumb uploaded!', id)
                 setLoading(null)
+                onImageUploaded(id)
             }
-            onComplete(id)
+
+            image.src = src
+            // console.log('onSubmit:uploadImage:', id)
+            
+            // if (!id) {
+            //     console.log('no id returned from upload', id)
+            // }
+            // else {
+            //     console.log('id returned from upload', id)
+            //     dispatch({ type: 'ADD_IMAGE', id })
+            // }
         }
-        image.src = src
     }
 
-    const imageToDataURIs = image => {
-        const canvas = document.createElement('canvas')
+    // const handleUpload = async src => {
+    //     setLoading('Uploading...')
+    //     const image = new Image()
+    //     image.onload = async () => {
+    //         const timestamp = Date.now()
+    //         const { imageURI, thumbURI } = imageToDataURIs(image)
+    //         const id = await uploadImage(imageURI, timestamp)
+    //         if (!id) setLoading(null)
+    //         else {
+    //             await uploadImage(thumbURI, timestamp, 'thumb')
+    //             dispatch({ type: 'ADD_IMAGE', id })
+    //             setLoading(null)
+    //         }
+    //         onComplete(id)
+    //     }
+    //     image.src = src
+    // }
+
+    // const imageToDataURIs = image => {
+    //     const canvas = document.createElement('canvas')
         
-        const originalWidth = image.width
+    //     const originalWidth = image.width
 
-        let imageWidth = image.width
-        let imageHeight = image.height
-        let thumbWidth
-        let thumbHeight
+    //     let imageWidth = image.width
+    //     let imageHeight = image.height
+    //     let thumbWidth
+    //     let thumbHeight
 
-        const IMAGE_WIDTH = 200
-        const THUMB_WIDTH = 50
+    //     const IMAGE_WIDTH = 200
+    //     const THUMB_WIDTH = 50
 
-        if (originalWidth > IMAGE_WIDTH) {
-            imageWidth = IMAGE_WIDTH
-            imageHeight *= IMAGE_WIDTH / originalWidth
-        }
+    //     if (originalWidth > IMAGE_WIDTH) {
+    //         imageWidth = IMAGE_WIDTH
+    //         imageHeight *= IMAGE_WIDTH / originalWidth
+    //     }
 
-        thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
-        thumbHeight = imageWidth * (THUMB_WIDTH / imageWidth)
+    //     thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
+    //     thumbHeight = imageWidth * (THUMB_WIDTH / imageWidth)
     
-        canvas.width = imageWidth
-        canvas.height = imageHeight
+    //     canvas.width = imageWidth
+    //     canvas.height = imageHeight
 
-        const ctx = canvas.getContext('2d')
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(image, 0, 0, imageWidth, imageHeight)
+    //     const ctx = canvas.getContext('2d')
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    //     ctx.drawImage(image, 0, 0, imageWidth, imageHeight)
     
-        const imageURI = canvas.toDataURL('image/png;base64;')
+    //     const imageURI = canvas.toDataURL('image/png;base64;')
     
-        canvas.width = thumbWidth
-        canvas.height = thumbHeight
+    //     canvas.width = thumbWidth
+    //     canvas.height = thumbHeight
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(image, 0, 0, thumbWidth, thumbHeight)
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height)
+    //     ctx.drawImage(image, 0, 0, thumbWidth, thumbHeight)
 
-        const thumbURI = canvas.toDataURL('image/png;base64;')
+    //     const thumbURI = canvas.toDataURL('image/png;base64;')
 
-        return { imageURI, thumbURI }
-    }
+    //     return { imageURI, thumbURI }
+    // }
 
-    const uploadImage = async (dataURI, timestamp, type = null) => {
+    // const uploadImage = async (dataURI, timestamp, type = null) => {
         
-        setLoading(`Uploading Image.${type ? ` (${type})` : ''}`)
+    //     setLoading(`Uploading Image.${type ? ` (${type})` : ''}`)
         
-        const { data } = await axios
-            .post(`/api/image/upload`, {
-                _id: user._id,
-                dataURI,
-                timestamp,
-                type,
-            })
+    //     const { data } = await axios
+    //         .post(`/api/image/upload`, {
+    //             _id: user._id,
+    //             dataURI,
+    //             timestamp,
+    //             type,
+    //         })
         
-        setLoading(null)
+    //     setLoading(null)
         
-        if (!data) {
-            console.log(`Error uploading image.${type ? ` (${type})` : ''}`)
-            return null
-        }
+    //     if (!data) {
+    //         console.log(`Error uploading image.${type ? ` (${type})` : ''}`)
+    //         return null
+    //     }
         
-        return data.id
-    }
+    //     return data.id
+    // }
 
     const clearPreview = () => setPreview(null)
 
@@ -192,7 +218,7 @@ export default ({ user, onComplete }) => {
                 />
             ) : (
                 <FileSelector
-                    handleDrop={uri => handleDrop(uri)}
+                    handleDrop={handleDrop}
                 />
             )}
                 

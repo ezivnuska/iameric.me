@@ -12,7 +12,7 @@ import { getImageDataById } from '../Data'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ onComplete, image, width = 200, height = 200, resize = 'stretch' }) => {
+export default ({ onAvatarSet, onDelete, image, width = 200, height = 200, resize = 'stretch' }) => {
 
     const {
         dispatch,
@@ -24,7 +24,7 @@ export default ({ onComplete, image, width = 200, height = 200, resize = 'stretc
 
     useEffect(() => {
         if (!image) return
-        if (!image.filename) fetchImageData(image)
+        if (typeof image === 'string') fetchImageData(image)
         else setImageData(image)
     }, [])
 
@@ -34,8 +34,6 @@ export default ({ onComplete, image, width = 200, height = 200, resize = 'stretc
         setImageData(image)
     }
 
-    const isAvatar = () => user.profileImage && user.profileImage._id === image
-
     const deleteImage = async () => {
         
         setLoading('Deleting Image...')
@@ -43,13 +41,15 @@ export default ({ onComplete, image, width = 200, height = 200, resize = 'stretc
         const { data } = await axios
             .post('/api/images/delete', { _id: imageData._id })
         
-        if (!data) return console.log('Error deleting image.')
-        
-        dispatch({ type: 'REMOVE_IMAGE', id: data.id })
+        if (!data) {
+            console.log('Error deleting image.')
+            setLoading(null)
+            return null
+        }
         
         setLoading(null)
         
-        onComplete()
+        onDelete(data.id)
     }
 
     const setAvatar = async () => {
@@ -62,15 +62,25 @@ export default ({ onComplete, image, width = 200, height = 200, resize = 'stretc
                 imageId: imageData._id
             })
         
-        if (data) dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: data })
-        else console.log('Error setting profileImage.')
+        if (!data) {
+            console.log('Error setting profileImage.')
+            setLoading(null)
+            return
+        }
         
         setLoading(null)
         
-        onComplete()
+        onAvatarSet(data)
     }
 
-    return !loading ? (
+    const showAvatarButton = () => {
+        if (!user.profileImage) return true
+        if (typeof user.profileImage === 'string' && user.profileImage === imageData._id) return true
+        if (user.profileImage._id !== imageData._id) return true
+        return false
+    }
+
+    return imageData ? (
         <View
             style={{
                 display: 'flex',
@@ -80,13 +90,11 @@ export default ({ onComplete, image, width = 200, height = 200, resize = 'stretc
             }}
         >
             <Image
-                width='auto'
-                height='auto'
+                width={200}
+                height={200}
                 source={{
-                    uri: imageData
-                        ? `${IMAGE_PATH}/${user.username}/${imageData.filename}`
-                        : `${IMAGE_PATH}/avatar-default.png`
-                    }}
+                    uri: `${IMAGE_PATH}/${user.username}/${imageData.filename}`,
+                }}
                 style={{
                     resizeMode: resize,
                     width,
@@ -96,23 +104,32 @@ export default ({ onComplete, image, width = 200, height = 200, resize = 'stretc
                 }}
             />
 
-            {imageData ? (
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly',
-                        width: '100%',
-                        paddingVertical: layout.verticalPadding,
-                    }}
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    width: '100%',
+                    paddingVertical: layout.verticalPadding,
+                }}
+            >
+                {showAvatarButton() && (
+                    <Button
+                        onClick={setAvatar}
+                        disabled={loading}
+                    >
+                        Make Avatar
+                    </Button>
+                )}
+
+                <Button
+                    onClick={deleteImage}
+                    disabled={loading}
                 >
-                    {!isAvatar() && <Button onClick={setAvatar}>Make Avatar</Button>}
-                    <Button onClick={deleteImage}>Delete</Button>
-                </View>
-            ) : null}
+                    Delete
+                </Button>
+            </View>
 
         </View>
-    ) : (
-        <LoadingView label={loading} />
-    )
+    ) : null
 }

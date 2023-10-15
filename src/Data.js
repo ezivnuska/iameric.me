@@ -26,13 +26,13 @@ export const authenticate = async token => {
 
 export const checkStatus = async dispatch => {
         
-    dispatch({ type: 'SET_LOADING', loading: 'Checking Status...' })
+    dispatch({ type: 'SET_LOADING', loading: 'Checking status...' })
 
     const userToken = await AsyncStorage.getItem('userToken')
     
     if (!userToken) return null
     
-    dispatch({ type: 'SET_LOADING', loading: 'Verifying Token...' })
+    dispatch({ type: 'SET_LOADING', loading: 'Verifying token...' })
 
     const response = await authenticate(userToken)
 
@@ -42,7 +42,7 @@ export const checkStatus = async dispatch => {
         return null
     }
     
-    dispatch({ type: 'SET_LOADING', loading: 'Customer Verified. Saving Token...' })
+    dispatch({ type: 'SET_LOADING', loading: 'Loading data...' })
     
     const { token, ...user } = response
     
@@ -50,9 +50,18 @@ export const checkStatus = async dispatch => {
 
     const { orders, products, vendors } = await loadData(user)
     
-    if (orders) dispatch({ type: 'SET_ORDERS', orders })
-    if (products) dispatch({ type: 'SET_PRODUCTS', products })
-    if (vendors) dispatch({ type: 'SET_VENDORS', vendors })
+    if (orders) {
+        dispatch({ type: 'SET_LOADING', loading: 'Loading orders...' })
+        dispatch({ type: 'SET_ORDERS', orders })
+    }
+    if (products) {
+        dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })    
+        dispatch({ type: 'SET_PRODUCTS', products })
+    }
+    if (vendors) {
+        dispatch({ type: 'SET_LOADING', loading: 'Loading vendors...' })    
+        dispatch({ type: 'SET_VENDORS', vendors })
+    }
 
     return user
 }
@@ -143,7 +152,6 @@ export const getProducts = async user => {
 
 export const getImageDataById = async id => {
     const { data } = await axios.get(`/api/images/${id}`)
-    if (!data) return console.log('Error: could not get user profile image from id')
     return data
 }
 

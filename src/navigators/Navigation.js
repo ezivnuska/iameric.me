@@ -81,8 +81,8 @@ export default () => {
 
     const config = {
         screens: {
-            Start: '/',
-            Home: '/dashboard',
+            Start: '/splash',
+            Home: '/',
             Details: '/details/:id',
             Settings: '/settings',
         },

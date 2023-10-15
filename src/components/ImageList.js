@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     ActivityIndicator,
     Image,
@@ -10,30 +10,32 @@ import {
     LoadingView,
 } from '.'
 import { getImageDataById } from '../Data'
+import { AppContext } from '../AppContext'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const SimpleImage = ({ image, username }) => {
 
+    const { dispatch } = useContext(AppContext)
+
     const [imageData, setImageData] = useState(null)
-    const [loading, setLoading] = useState(null)
 
     useEffect(() => {
-        if (typeof image === 'string') fetchImageData(image)
-        else setImageData(image)
-    }, [])
+        if (image) {
+            if (typeof image === 'string') fetchImageData(image)
+            else setImageData(image)
+        }
+    }, [image])
 
     const fetchImageData = async id => {
-        setLoading(true)
         const data = await getImageDataById(id)
+        dispatch({ type: 'UPDATE_IMAGE', image: data })
         setImageData(data)
-        setLoading(false)
     }
 
-    return loading
-        ? <ActivityIndicator size='small' />
-        : imageData ? (
+    return (imageData && imageData.filename)
+        ? (
             <Image
                 width={IMAGE_SIZE}
                 height={IMAGE_SIZE}
@@ -54,7 +56,8 @@ const SimpleImage = ({ image, username }) => {
                     elevation: 5,
                 }}
             />
-        ) : <View
+        ) : (
+            <View
                 style={{
                     width: IMAGE_SIZE,
                     height: IMAGE_SIZE,
@@ -71,28 +74,20 @@ const SimpleImage = ({ image, username }) => {
                     backgroundColor: '#ddd',
                 }}
             />
+        )
 }
 
-const ImageButton = ({image, user, onPress, ...props}) => (
-    <TouchableOpacity
-        onPress={onPress}
-        style={{
-            // flex: 1,
-            flexBasis: 'auto',
-        }}
-        {...props}
-    >
-        <SimpleImage
-            username={user.username}
-            image={image}
-        />
-    </TouchableOpacity>
-)
+export default ({ images, user, onSelected }) => {
 
-export default ({ images, loading, user, setFeatured }) => loading
-    ? <LoadingView label='Loading Images...' />
-    : images && images.length
-    ? (
+    const [items, setItems] = useState(null)
+
+    useEffect(() => {
+        if (images) {
+            // if (items) console.log('ImageList: setting images >', images)
+            setItems(images)}
+    }, [images])
+
+    return items ? (
         <View
             style={{
                 display: 'flex',
@@ -103,14 +98,21 @@ export default ({ images, loading, user, setFeatured }) => loading
                 width: '100%',
             }}
         >
-            {images.map((image, index) => (
-                <ImageButton
-                    image={image}
+            {items.map((image, index) => (
+                <TouchableOpacity
+                    onPress={() => onSelected(image)}
+                    style={{
+                        // flex: 1,
+                        flexBasis: 'auto',
+                    }}
                     key={`image-${index}`}
-                    user={user}
-                    onPress={() => setFeatured(image)}
-                />
+                >
+                    <SimpleImage
+                        username={user.username}
+                        image={image}
+                    />
+                </TouchableOpacity>
             ))}
         </View>
-    )
-    : <Text>No images to display.</Text>
+    ) : null
+}

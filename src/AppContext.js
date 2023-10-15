@@ -32,18 +32,26 @@ const reducer = (state = initialState, action) => {
             user.images = [...user.images, action.id]
             break
         case 'UPDATE_IMAGE':
-            user.images = user.images.map(image => {
-                if (typeof image === 'string' && image === action.image._id) {
+            const updatedImages = user.images.map(image => {
+                if (
+                    (typeof image === 'string' && image === action.image._id) ||
+                    (image._id === action.image._id)
+                ) {
                     return action.image
-                }
-                return image
+                } else return image
             })
+            user.images = updatedImages
             break
         case 'REMOVE_IMAGE':
+            let imageIndex = user.images.findIndex(image => image._id === action.id)
+            const images = [
+                ...user.images.slice(0, imageIndex),
+                ...user.images.slice(imageIndex + 1),
+            ]
             user = {
                 ...user,
                 profileImage: (user.profileImage !== action.id) ? user.profileImage : null,
-                images: user.images.filter(image => image._id !== action.id),
+                images,
             }
             break
         case 'SET_VENDORS':
@@ -60,6 +68,8 @@ const reducer = (state = initialState, action) => {
             products = action.products
             break
         case 'SET_LOADING':
+            const wasLoading = loading
+            if (wasLoading && !action.loading) console.log('Loading stopped.')
             loading = action.loading
             if (loading) console.log('>>', loading)
             break

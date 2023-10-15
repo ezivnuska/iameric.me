@@ -107,7 +107,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 </CenteredContent>
                 
                 <CenteredContent>
-                    {renderVendorHeader()}
+                    {/* {renderVendorHeader()} */}
                 </CenteredContent>
 
                 <CenteredContent type='expanded'>

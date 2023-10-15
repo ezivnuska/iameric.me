@@ -194,7 +194,7 @@ app.post('/authenticate', async (req, res) => {
     
     const userFromToken = getDecodedUser(token)
     
-    console.log(`token found belonging to user ${userFromToken.username}\n`)
+    console.log(`\n${userFromToken.username} was previously connected.\n`)
     
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)
     if (expired) {
@@ -451,7 +451,6 @@ app.post(
         let image = await UserImage.findOne({ user: user._id, filename })
         if (image) {
             const images = [...user.images, image._id]
-            console.log('updated images...', images)
             const userUpdated = await User
                 .findOneAndUpdate(
                     { _id: user._id },
@@ -461,10 +460,8 @@ app.post(
             
             if (!userUpdated) return res.status(200).json({ error: `Error updating user images.` })    
         } else {
-            console.log('Image does not exist')
             image = new UserImage({ user: user._id, filename })
             await image.save()
-            console.log('Image created', image)
         }
 
         return res.status(200).json({ id: image._id })
@@ -650,11 +647,11 @@ app.post('/user/avatar', async (req, res) => {
 })
 
 app.get('/images/:id', async (req, res) => {
-    const _id = req.params.id
     
-    const image = await UserImage.findOne({ _id })
+    const image = await UserImage.findOne({ _id: req.params.id })
     if (!image) return res.status(200).json({ error: 'Error fetching image data.' })
-    return res.status(200).json(image)
+    const { _id, filename, user } = image
+    return res.status(200).json({ _id, filename, user })
 })
 
 app.get('/avatar/:id', async (req, res) => {
