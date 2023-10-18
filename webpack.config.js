@@ -7,6 +7,8 @@ const CopyPlugin = require("copy-webpack-plugin");
 const appDirectory = path.resolve(__dirname);
 const {presets} = require(`${appDirectory}/babel.config.js`);
 
+const isDebug = process.argv.includes('--mode=development');
+
 const compileNodeModules = [
   // Add every react-native package that needs compiling
   // 'react-native-gesture-handler',
@@ -105,7 +107,7 @@ module.exports = {
     }),
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      __DEV__: JSON.stringify(true),
+      __DEV__: isDebug,
     }),
     new CopyPlugin({
       patterns: [

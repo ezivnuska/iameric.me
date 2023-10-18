@@ -10,7 +10,7 @@ const SESSION_SECRET = process.env.JWT_SECRET || require('./config').JWT_SECRET
 const db = process.env.DB_CONNECTION_STRING || require('./config').DB_CONNECTION_STRING
 // const multer = require('multer')
 // const formidable = require('formidable')
-const fs = require('fs')
+const { existsSync, promises } = require('fs')
 const gm = require('gm')
 const { mkdirp } = require('mkdirp')
 const im = gm.subClass({ imageMagick: true })
@@ -408,65 +408,164 @@ app.get('/users/self/:id', async (req, res, next) => {
         .then(({ profileImage }) => res.json({ profileImage }))
 })
 
-const handleFileUpload = async (file, path, filename) => {
-    // console.log('file', file)
+const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
+    
     const regex = /^data:.+\/(.+);base64,(.*)$/
-    const matches = file.match(regex)
-    // console.log('matches', matches)
-    const ext = matches[1]
-    const data = matches[2]
-    const buffer = Buffer.from(data, 'base64')
 
-    let dirExists = fs.existsSync(path)
-    if (!dirExists) mkdirp.sync(path)
-    dirExists = fs.existsSync(path)
-    if (!dirExists) mkdirp.sync(filepath)
-    // const nameOfFile = `${filename}.${ext}`
-    const fileToWrite = `${path}/${filename}`
-    console.log('file to write:', fileToWrite)
+    const image = imageData.uri.match(regex)[2]
+    const imageBuffer = Buffer.from(image, 'base64')
+    // console.log('matches', matches)
+    // const ext = matches[1]
+    // const data = matches[2]
+    const thumb = thumbData.uri.match(regex)[2]
+    const thumbBuffer = Buffer.from(thumb, 'base64')
+
+    console.log('checking for existence of path:', path)
+    
+    let dirExists
     try {
-        fs.writeFile(fileToWrite, buffer, err => {
-            if (err) return console.log('Error writing file:', err)
-            console.log('file written:', fileToWrite)
-        })
-    } catch {
-        console.log('CATCH: Error writing file.')
+        dirExists = await promises.access(path)
+        console.log('directory exists:', path)
+    } catch (err) {
+        console.log('could not find existing directory:', err)
+    }
+
+    if (!dirExists) {
+        console.log('path not found. creating path:', path)
+        mkdirp.sync(path)
+
+        console.log('rechecking for existence of path:', path)
+    
+        try {
+            dirExists = await promises.access(path)
+            console.log('directory still does not exist:', path)
+        } catch (err) {
+            console.log('could not write path:', err)
+        }
+    }
+
+    // const nameOfFile = `${filename}.${ext}`
+    const imageFile = `${path}/${filename}`
+    console.log('file to write:', imageFile)
+
+    try {
+        await promises.writeFile(imageFile, imageBuffer)
+        console.log('image file uploaded to path:', imageFile)
+    } catch (err) {
+        console.log('Error writing file:', err)
         return null
     }
+
+    // repeated code
+
+    const thumbPath = `${path}/thumb`
+
+    console.log('checking for existence of thumb path:', thumbPath)
+    
+    try {
+        dirExists = await promises.access(thumbPath)
+        console.log('directory exists:', thumbPath)
+    } catch (err) {
+        console.log('could not find existing directory:', err)
+    }
+
+    if (!dirExists) {
+        console.log('path not found. creating thumb path:', thumbPath)
+        mkdirp.sync(thumbPath)
+        
+        console.log('rechecking for existence of thumb path:', thumbPath)
+    
+        try {
+            dirExists = await promises.access(thumbPath)
+            console.log('thumb directory exists:', thumbPath)
+        } catch (err) {
+            console.log('could not write thumb path:', err)
+        }
+    }
+
+    const thumbFile = `${thumbPath}/${filename}`
+    console.log('thumb file to write:', thumbFile)
+
+    try {
+        await promises.writeFile(thumbFile, thumbBuffer)
+        console.log('thumb file uploaded to path:', thumbFile)
+    } catch (err) {
+        console.log('Error writing thumb file:', err)
+        return null
+    }
+    console.log('returning uploaded image filename', filename)
     return filename
 }
 
 app.post(
     '/image/upload',
     async (req, res) => {
-        const { _id, dataURI, timestamp, type } = req.body
-        const user = await User.findOne({ _id })
-        const assetPath = `${IMAGE_PATH}/${user.username}`
-        const thumbPath = type ? `${assetPath}/${type}` : null
-        const filename = `${user._id}${timestamp}.png`
+        const { userId, imageData, thumbData } = req.body
+        const user = await User.findOne({ _id: userId })
+        const filename = `${user._id}-${Date.now()}.png`
+        const path = `${IMAGE_PATH}/${user.username}`
         
-        const uploadedFile = await handleFileUpload(dataURI, thumbPath || assetPath, filename)
-        if (!uploadedFile) return res.status(400).json({ error: `Error writing ${type || 'image'}` })
-
-        let image = await UserImage.findOne({ user: user._id, filename })
-        if (image) {
-            const images = [...user.images, image._id]
-            const userUpdated = await User
-                .findOneAndUpdate(
-                    { _id: user._id },
-                    { $set: { images } },
-                    { new: true },
-                )
-            
-            if (!userUpdated) return res.status(200).json({ error: `Error updating user images.` })    
-        } else {
-            image = new UserImage({ user: user._id, filename })
-            await image.save()
+        const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
+        if (!imagesUploaded) {
+            console.log('Error writing image/thumb.')
+            return res.status(400).json({ error: `Error writing image/thumb files.` })
         }
 
-        return res.status(200).json({ id: image._id })
+        // await saveUserImage(user, filename)
+
+
+        // let image = await UserImage.findOne({ user: user._id, filename })
+        // if (image) {
+        //     const images = [...user.images, image._id]
+        //     const userUpdated = await User
+        //         .findOneAndUpdate(
+        //             { _id: user._id },
+        //             { $set: { images } },
+        //             { new: true },
+        //         )
+            
+        //     if (!userUpdated) return res.status(200).json({ error: `Error updating user images.` })    
+        // } else {
+        //     image = new UserImage({ user: user._id, filename })
+        //     await image.save()
+        // }
+
+        return res.status(200).json({ filename })
     }
 )
+
+const saveUserImage = async (user, filename) => {
+    const image = new UserImage({ user: user._id, filename })
+    await image.save()
+    const userUpdated = await User
+        .findOneAndUpdate(
+            { _id: user._id },
+            {
+                $set: {
+                    images: [...user.images, image._id],
+                }
+            },
+            { new: true },
+        )
+    
+    if (!userUpdated) return null
+    return image
+    // let image = await UserImage.findOne({ user: userId, filename })
+    // if (image) {
+    //     const images = [...user.images, image._id]
+    //     const userUpdated = await User
+    //         .findOneAndUpdate(
+    //             { _id: user._id },
+    //             { $set: { images } },
+    //             { new: true },
+    //         )
+        
+    //     if (!userUpdated) return res.status(200).json({ error: `Error updating user images.` })    
+    // } else {
+    //     image = new UserImage({ user: userId, filename })
+    //     await image.save()
+    // }
+}
 
 app.post(
     '/upload/avatar',

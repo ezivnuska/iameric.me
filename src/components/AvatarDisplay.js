@@ -7,9 +7,10 @@ import {
 import {
     ImageDetail,
     ImageList,
-    ImageUploader,
+    NewImageUploader,
     LoadingView,
     ModalContent,
+    ImagePreview,
 } from '.'
 import {
     PlusCircleOutlined,
@@ -17,6 +18,7 @@ import {
 import main from '../styles/main'
 import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
+const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
 
 export default () => {
 
@@ -30,6 +32,11 @@ export default () => {
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
     const [items, setItems] = useState(null)
+    const [uploadedItems, setUploadedItems] = useState([])
+
+    useEffect(() => {
+        console.log('UploadedItems:', uploadedItems)
+    }, [uploadedItems])
 
     useEffect(() => {
         if (user.images) {
@@ -38,11 +45,13 @@ export default () => {
         }
     }, [user.images])
 
-    const onImageUploaded = id => {
+    const onImageUploaded = filename => {
         // console.log('image uploaded. current items:', items)
-        setItems([...items, id])
+        // setItems([...items, id])
         
-        dispatch({ type: 'ADD_IMAGE', id })
+        // dispatch({ type: 'ADD_IMAGE', id })
+
+        setUploadedItems([...uploadedItems, filename])
 
         setModalVisible(false)
     }
@@ -109,6 +118,21 @@ export default () => {
 
             </View>
 
+            {uploadedItems.length ? (
+                <View>
+                    {uploadedItems.map((item, index) => {
+                        const path = `${IMAGE_PATH}/${user.username}/thumb/${item}`
+                        console.log('>>preview', path)
+                        return (
+                            <ImagePreview
+                                key={`preview-${index}`}
+                                path={path}
+                            />
+                        )
+                    })}
+                </View>
+            ) : null}
+
             {(items && items.length) ? (
                 <ImageList
                     images={items}
@@ -122,8 +146,7 @@ export default () => {
                 onRequestClose={() => setModalVisible(false)}
                 label='Upload an Image'
             >
-                <ImageUploader
-                    user={user}
+                <NewImageUploader
                     onImageUploaded={onImageUploaded}
                 />
             </ModalContent>

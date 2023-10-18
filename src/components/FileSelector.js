@@ -10,7 +10,7 @@ import {
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
 
-const FileSelector = ({ handleDrop }) => {
+const FileSelector = ({ onImageSelected }) => {
 
   const openImagePickerAsync = async () => {
     console.log('opening image picker')
@@ -20,7 +20,7 @@ const FileSelector = ({ handleDrop }) => {
           return
       }
       let pickerResult = await ImagePicker.launchImageLibraryAsync()
-      if (!pickerResult.cancelled) {
+      if (!pickerResult.canceled) {
           const uploadResult = await FileSystem.uploadAsync('/api/upload/avatar', pickerResult.uri, {
               httpMethod: 'POST',
               // uploadType: FileSystemUploadType.MULTIPART,
@@ -28,7 +28,7 @@ const FileSelector = ({ handleDrop }) => {
           })
 
           console.log('uploadResult', uploadResult)
-          handleDrop(uploadResult.assets[0].uri)
+          onImageSelected(uploadResult.assets[0].uri)
       }
   }
 
@@ -52,11 +52,11 @@ const FileSelector = ({ handleDrop }) => {
         allowsEditing: false,
         quality: 1,
     })
-
+    console.log('result', result)
     if (result.canceled) return
-    
-    handleDrop(result.assets[0].uri)
-    
+    console.log('result.assets', result.assets)
+    const asset = result.assets[0]
+    onImageSelected(asset.uri)
   }
 
   return (
