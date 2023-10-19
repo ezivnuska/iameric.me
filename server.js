@@ -10,7 +10,7 @@ const SESSION_SECRET = process.env.JWT_SECRET || require('./config').JWT_SECRET
 const db = process.env.DB_CONNECTION_STRING || require('./config').DB_CONNECTION_STRING
 // const multer = require('multer')
 // const formidable = require('formidable')
-const { existsSync, promises } = require('fs')
+const { existsSync, promises, rm } = require('fs')
 const gm = require('gm')
 const { mkdirp } = require('mkdirp')
 const im = gm.subClass({ imageMagick: true })
@@ -414,18 +414,13 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
 
     const image = imageData.uri.match(regex)[2]
     const imageBuffer = Buffer.from(image, 'base64')
-    // console.log('matches', matches)
-    // const ext = matches[1]
-    // const data = matches[2]
+
     const thumb = thumbData.uri.match(regex)[2]
     const thumbBuffer = Buffer.from(thumb, 'base64')
-
-    console.log('checking for existence of path:', path)
     
     let dirExists
     try {
         dirExists = await promises.access(path)
-        console.log('directory exists:', path)
     } catch (err) {
         console.log('could not find existing directory:', err)
     }
@@ -433,24 +428,19 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
     if (!dirExists) {
         console.log('path not found. creating path:', path)
         mkdirp.sync(path)
-
-        console.log('rechecking for existence of path:', path)
     
         try {
             dirExists = await promises.access(path)
-            console.log('directory still does not exist:', path)
         } catch (err) {
             console.log('could not write path:', err)
+            return null
         }
     }
 
-    // const nameOfFile = `${filename}.${ext}`
     const imageFile = `${path}/${filename}`
-    console.log('file to write:', imageFile)
 
     try {
         await promises.writeFile(imageFile, imageBuffer)
-        console.log('image file uploaded to path:', imageFile)
     } catch (err) {
         console.log('Error writing file:', err)
         return null
@@ -459,12 +449,9 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
     // repeated code
 
     const thumbPath = `${path}/thumb`
-
-    console.log('checking for existence of thumb path:', thumbPath)
     
     try {
         dirExists = await promises.access(thumbPath)
-        console.log('directory exists:', thumbPath)
     } catch (err) {
         console.log('could not find existing directory:', err)
     }
@@ -472,28 +459,24 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
     if (!dirExists) {
         console.log('path not found. creating thumb path:', thumbPath)
         mkdirp.sync(thumbPath)
-        
-        console.log('rechecking for existence of thumb path:', thumbPath)
     
         try {
             dirExists = await promises.access(thumbPath)
-            console.log('thumb directory exists:', thumbPath)
         } catch (err) {
             console.log('could not write thumb path:', err)
+            return null
         }
     }
 
     const thumbFile = `${thumbPath}/${filename}`
-    console.log('thumb file to write:', thumbFile)
 
     try {
         await promises.writeFile(thumbFile, thumbBuffer)
-        console.log('thumb file uploaded to path:', thumbFile)
     } catch (err) {
         console.log('Error writing thumb file:', err)
         return null
     }
-    console.log('returning uploaded image filename', filename)
+    
     return filename
 }
 
@@ -684,8 +667,35 @@ app.post(
 //         }    
 // })
 
-const removeImage = async path => fs.rm(path, () => console.log('removed file at path', path))
-const removeAllImages = username => fs.rmSync(`${IMAGE_PATH}/${username}`, { recursive: true, force: true })
+const removeImage = async path => rm(path, () => console.log('removed file at path', path))
+const removeAllImages = username => rmSync(`${IMAGE_PATH}/${username}`, { recursive: true, force: true })
+const removeImageAndThumb = async (path, filename) => {
+    try {
+        await rm(`${path}/${filename}`, () => console.log('removed image:', `${path}/${filename}`))
+    } catch (err) {
+        console.log('Error deleting image')
+        return null
+    }
+    try {
+        await rm(`${path}/thumb/${filename}`, () => console.log('removed thumb:', `${path}/thumb/${filename}`))
+    } catch (err) {
+        console.log('Error deleting thumb')
+        return null
+    }
+
+    return true
+}
+
+app.post(
+    '/preview/delete',
+    async (req, res) => {
+        const { username, filename } = req.body
+        const path = `${IMAGE_PATH}/${username}`
+        const imagesDeleted = await removeImageAndThumb(path, filename)
+        if (!imagesDeleted) return res.status(200).json(null)
+        return res.status(200).json({ filename })
+    }
+)
 
 app.post(
     '/images/delete',

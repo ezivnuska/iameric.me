@@ -18,6 +18,7 @@ import {
 import main from '../styles/main'
 import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
+import axios from 'axios'
 const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
 
 export default () => {
@@ -67,6 +68,20 @@ export default () => {
         dispatch({ type: 'REMOVE_IMAGE', id })
         
         setFeatured(null)
+    }
+
+    const deletePreview = async filename => {
+        
+        const { data } = await axios.post(
+            '/api/preview/delete',
+            { username: user.username, filename }
+        )
+
+        if (!data) console.log('Error deleting preview')
+
+        console.log(`${data.filename} deleted.`)
+        
+        setUploadedItems([])
     }
 
     const onAvatarSet = profileImage => {
@@ -124,10 +139,18 @@ export default () => {
                         const path = `${IMAGE_PATH}/${user.username}/thumb/${item}`
                         console.log('>>preview', path)
                         return (
-                            <ImagePreview
-                                key={`preview-${index}`}
-                                path={path}
-                            />
+                            <TouchableOpacity
+                                onPress={() => deletePreview(item)}
+                                style={{
+                                    height: 50,
+                                    width: 50,
+                                }}
+                            >
+                                <ImagePreview
+                                    key={`preview-${index}`}
+                                    path={path}
+                                />
+                            </TouchableOpacity>
                         )
                     })}
                 </View>
