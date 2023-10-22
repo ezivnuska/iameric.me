@@ -26,6 +26,7 @@ import Heading from './Heading'
 import HoverableView from './HoverableView'
 import ImageDetail from './ImageDetail'
 import ImageList from './ImageList'
+import ImageLoader from './ImageLoader'
 import ImageUploader from './ImageUploader'
 import ImagePreview from './ImagePreview'
 import NewImageUploader from './NewImageUploader'
@@ -45,6 +46,7 @@ import OrderPreview from './OrderPreview'
 import ProductDetails from './ProductDetails'
 import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
+import ProductImageUploader from './ProductImageUploader'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import RolePicker from './RolePicker'
@@ -88,6 +90,7 @@ export {
     Heading,
     HoverableView,
     ImageDetail,
+    ImageLoader,
     ImagePreview,
     ImageList,
     ImageUploader,
@@ -108,6 +111,7 @@ export {
     ProductDetails,
     ProductDisplay,
     ProductForm,
+    ProductImageUploader,
     ProductList,
     ProductListItem,
     RolePicker,

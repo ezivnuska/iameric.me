@@ -45,7 +45,7 @@ const ProductDisplay = () => {
         setItems(products)
     }
 
-    const onModalSubmitted = item => {
+    const onProductFormSubmitted = item => {
         updateItems(item)
         setFeatured(null)
     }
@@ -73,7 +73,7 @@ const ProductDisplay = () => {
                 label={`${featured && featured._id ? 'Edit' : 'Add'} Product`}
             >
                 <ProductForm
-                    onComplete={onModalSubmitted}
+                    onComplete={onProductFormSubmitted}
                     onDelete={onDelete}
                     product={featured}
                 />

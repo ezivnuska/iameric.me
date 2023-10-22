@@ -7,8 +7,7 @@ import {
 import {
     ImageDetail,
     ImageList,
-    NewImageUploader,
-    LoadingView,
+    ImageUploader,
     ModalContent,
     ImagePreview,
 } from '.'
@@ -33,11 +32,6 @@ export default () => {
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
     const [items, setItems] = useState(null)
-    const [uploadedItems, setUploadedItems] = useState([])
-
-    useEffect(() => {
-        console.log('UploadedItems:', uploadedItems)
-    }, [uploadedItems])
 
     useEffect(() => {
         if (user.images) {
@@ -46,13 +40,14 @@ export default () => {
         }
     }, [user.images])
 
-    const onImageUploaded = filename => {
+    const onImageUploaded = image => {
         // console.log('image uploaded. current items:', items)
-        // setItems([...items, id])
+        setItems([...items, image])
         
-        // dispatch({ type: 'ADD_IMAGE', id })
+        dispatch({ type: 'ADD_IMAGE', image })
 
-        setUploadedItems([...uploadedItems, filename])
+        // TODO: PUT THIS IN W NEW IMAGE UPLOADER
+        // setUploadedItems([...uploadedItems, filename])
 
         setModalVisible(false)
     }
@@ -133,29 +128,6 @@ export default () => {
 
             </View>
 
-            {uploadedItems.length ? (
-                <View>
-                    {uploadedItems.map((item, index) => {
-                        const path = `${IMAGE_PATH}/${user.username}/thumb/${item}`
-                        console.log('>>preview', path)
-                        return (
-                            <TouchableOpacity
-                                onPress={() => deletePreview(item)}
-                                style={{
-                                    height: 50,
-                                    width: 50,
-                                }}
-                            >
-                                <ImagePreview
-                                    key={`preview-${index}`}
-                                    path={path}
-                                />
-                            </TouchableOpacity>
-                        )
-                    })}
-                </View>
-            ) : null}
-
             {(items && items.length) ? (
                 <ImageList
                     images={items}
@@ -169,7 +141,7 @@ export default () => {
                 onRequestClose={() => setModalVisible(false)}
                 label='Upload an Image'
             >
-                <NewImageUploader
+                <ImageUploader
                     onImageUploaded={onImageUploaded}
                 />
             </ModalContent>

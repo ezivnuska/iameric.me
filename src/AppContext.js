@@ -29,7 +29,7 @@ const reducer = (state = initialState, action) => {
             user.images = action.images
             break
         case 'ADD_IMAGE':
-            user.images = [...user.images, action.id]
+            user.images = [...user.images, action.image]
             break
         case 'UPDATE_IMAGE':
             const updatedImages = user.images.map(image => {
@@ -66,6 +66,9 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_PRODUCTS':
             products = action.products
+            break
+        case 'ADD_PRODUCT':
+            products = [...action.products, action.product]
             break
         case 'SET_LOADING':
             const wasLoading = loading

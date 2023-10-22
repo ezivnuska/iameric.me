@@ -8,6 +8,10 @@ const UserImageSchema = new Schema({
         ref: 'User',
         required: true,
     },
+    productId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+    },
     filename: {
         type: Schema.Types.String,
         required: true,

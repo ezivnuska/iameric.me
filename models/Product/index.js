@@ -25,6 +25,10 @@ const ProductSchema = new Schema({
     category: {
         type: Schema.Types.String,
     },
+    imageId: {
+        type: Schema.Types.ObjectId,
+        ref: 'UserImage',
+    },
 },
 {
     timestamps: true,

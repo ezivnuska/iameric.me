@@ -1,18 +1,47 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     View,
+    TouchableOpacity,
 } from 'react-native'
 import {
-    FileSelector, LoadingView,
-} from './'
+    FileSelector,
+    ImagePreview,
+    LoadingView,
+} from '.'
 import ReactAvatarEditor from 'react-avatar-editor'
 import { Button } from 'antd'
 import EXIF from 'exif-js'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { dataURItoBlob, handleUpload, imageToDataURIs, uploadImage } from '../Upload'
+const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
 
 const initialSize = 300
+
+const UploadedImageList = images => {
+    return (
+        <View>
+            {uploadedItems.map((item, index) => {
+                const path = `${IMAGE_PATH}/${user.username}/thumb/${item}`
+                console.log('>>preview', path)
+                return (
+                    <TouchableOpacity
+                        onPress={() => deletePreview(item)}
+                        style={{
+                            height: 50,
+                            width: 50,
+                        }}
+                    >
+                        <ImagePreview
+                            key={`preview-${index}`}
+                            path={path}
+                        />
+                    </TouchableOpacity>
+                )
+            })}
+        </View>
+    )
+}
 
 export default ({ onImageUploaded }) => {
 
@@ -26,7 +55,11 @@ export default ({ onImageUploaded }) => {
     const [preview, setPreview] = useState(null)
     const [editor, setEditor] = useState(null)
     const [loading, setLoading] = useState(null)
-    const [payload, setPayload] = useState(null)
+    const [uploadedItems, setUploadedItems] = useState([])
+
+    useEffect(() => {
+        console.log('UploadedItems:', uploadedItems)
+    }, [uploadedItems])
 
     useEffect(() => {
         
@@ -42,10 +75,14 @@ export default ({ onImageUploaded }) => {
         }
     }, [dims])
 
+    useEffect(() => {
+        console.log('image preview changed', preview)
+    }, [preview])
+
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
-    const handleDrop = async uri => {
-
+    const onImageSelected = async uri => {
+        
         setLoading('Loading image preview...')
         const blob = await dataURItoBlob(uri)
         
@@ -65,8 +102,9 @@ export default ({ onImageUploaded }) => {
             const canvas = document.createElement('canvas')
             const ctx = canvas.getContext('2d')
 
-            const filename = `${user._id}-${Date.now()}.png`
+            console.log('image loaded...', width, height)
 
+            const filename = `${user._id}-${Date.now()}.png`
 
             let imageWidth = width
             let imageHeight = height
@@ -92,14 +130,14 @@ export default ({ onImageUploaded }) => {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             ctx.drawImage(image, 0, 0, imageWidth, imageHeight)
 
-            const imageURI = canvas.toDataURL('image/png:base64;')
-
             const imageData = {
                 height: imageHeight,
                 width: imageWidth,
-                uri: imageURI,
+                uri: canvas.toDataURL('image/png:base64;'),
                 filename,
             }
+
+            console.log('imageData', imageData)
 
             thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
             thumbHeight = imageWidth * (THUMB_WIDTH / imageWidth)
@@ -110,14 +148,14 @@ export default ({ onImageUploaded }) => {
             ctx.clearRect(0, 0, canvas.width, canvas.height)
             ctx.drawImage(image, 0, 0, thumbWidth, thumbHeight)
 
-            const thumbURI = canvas.toDataURL('image/png:base64;')
-
             const thumbData = {
                 height: thumbHeight,
                 width: thumbWidth,
-                uri: thumbURI,
+                uri: canvas.toDataURL('image/png:base64;'),
                 filename,
             }
+
+            console.log('thumbData', thumbData)
 
             const payload = {
                 userId: user._id,
@@ -125,9 +163,7 @@ export default ({ onImageUploaded }) => {
                 thumbData,
             }
 
-            setPayload(payload)
-            setPreview(imageURI)
-            setLoading(null)
+            await uploadImageData(payload)
         }
 
         image.src = srcBase64
@@ -138,30 +174,26 @@ export default ({ onImageUploaded }) => {
         const { data } = await axios
             .post(`/api/image/upload`, payload)
 
-        setLoading(null)
-
+            
         if (!data) {
+            setLoading(null)
             console.log('Error uploading image/thumb')
             return null
         }
 
-        console.log('ImageUploader: image/thumb uploaded!', data)
+        console.log('image/thumb uploaded!', data)
 
-        return data
+        // else id = await handleUpload(user._id, thumbData.uri, timestamp, 'thumb')
+        // console.log('thumb uploaded!', id)
+
+        setPreview(data.filename)
+
+        setLoading(null)
+
+        onImageUploaded(data.filename)
     }
 
     const onSubmit = async () => {
-
-        if (!payload) {
-            console.log('no image data to submit.')
-            return
-        }
-
-        const { image } = await uploadImageData(payload)
-        
-        // setPreview(filename)
-
-        onImageUploaded(image)
         // if (editor) {
         //     setLoading('Uploading image...')
         //     const canvas = editor.getImage()
@@ -182,98 +214,8 @@ export default ({ onImageUploaded }) => {
         //     }
 
         //     image.src = src
-        //     // console.log('onSubmit:uploadImage:', id)
-            
-        //     // if (!id) {
-        //     //     console.log('no id returned from upload', id)
-        //     // }
-        //     // else {
-        //     //     console.log('id returned from upload', id)
-        //     //     dispatch({ type: 'ADD_IMAGE', id })
-        //     // }
         // }
     }
-
-    // const handleUpload = async src => {
-    //     setLoading('Uploading...')
-    //     const image = new Image()
-    //     image.onload = async () => {
-    //         const timestamp = Date.now()
-    //         const { imageURI, thumbURI } = imageToDataURIs(image)
-    //         const id = await uploadImage(imageURI, timestamp)
-    //         if (!id) setLoading(null)
-    //         else {
-    //             await uploadImage(thumbURI, timestamp, 'thumb')
-    //             dispatch({ type: 'ADD_IMAGE', id })
-    //             setLoading(null)
-    //         }
-    //         onComplete(id)
-    //     }
-    //     image.src = src
-    // }
-
-    // const imageToDataURIs = image => {
-    //     const canvas = document.createElement('canvas')
-        
-    //     const originalWidth = image.width
-
-    //     let imageWidth = image.width
-    //     let imageHeight = image.height
-    //     let thumbWidth
-    //     let thumbHeight
-
-    //     const IMAGE_WIDTH = 200
-    //     const THUMB_WIDTH = 50
-
-    //     if (originalWidth > IMAGE_WIDTH) {
-    //         imageWidth = IMAGE_WIDTH
-    //         imageHeight *= IMAGE_WIDTH / originalWidth
-    //     }
-
-    //     thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
-    //     thumbHeight = imageWidth * (THUMB_WIDTH / imageWidth)
-    
-    //     canvas.width = imageWidth
-    //     canvas.height = imageHeight
-
-    //     const ctx = canvas.getContext('2d')
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    //     ctx.drawImage(image, 0, 0, imageWidth, imageHeight)
-    
-    //     const imageURI = canvas.toDataURL('image/png;base64;')
-    
-    //     canvas.width = thumbWidth
-    //     canvas.height = thumbHeight
-
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height)
-    //     ctx.drawImage(image, 0, 0, thumbWidth, thumbHeight)
-
-    //     const thumbURI = canvas.toDataURL('image/png;base64;')
-
-    //     return { imageURI, thumbURI }
-    // }
-
-    // const uploadImage = async (dataURI, timestamp, type = null) => {
-        
-    //     setLoading(`Uploading Image.${type ? ` (${type})` : ''}`)
-        
-    //     const { data } = await axios
-    //         .post(`/api/image/upload`, {
-    //             _id: user._id,
-    //             dataURI,
-    //             timestamp,
-    //             type,
-    //         })
-        
-    //     setLoading(null)
-        
-    //     if (!data) {
-    //         console.log(`Error uploading image.${type ? ` (${type})` : ''}`)
-    //         return null
-    //     }
-        
-    //     return data.id
-    // }
 
     const clearPreview = () => setPreview(null)
 
@@ -287,21 +229,28 @@ export default ({ onImageUploaded }) => {
                 alignItems: 'center',
             }}
         >
+
+            {uploadedItems.length ? (
+                <UploadedImageList images={uploadedItems} />
+            ) : null}
             
             {preview ? (
-                <ReactAvatarEditor
-                    image={preview}
-                    width={size - 50}
-                    height={size - 50}
-                    border={25}
-                    color={[0, 0, 0, 0.2]}
-                    scale={1.2}
-                    rotate={0}
-                    ref={ref => setEditor(ref)}
+                // <ReactAvatarEditor
+                //     image={preview}
+                //     width={size - 50}
+                //     height={size - 50}
+                //     border={25}
+                //     color={[0, 0, 0, 0.2]}
+                //     scale={1.2}
+                //     rotate={0}
+                //     ref={ref => setEditor(ref)}
+                // />
+                <ImagePreview
+                    path={`${IMAGE_PATH}/${user.username}/thumb/${preview}`}
                 />
             ) : (
                 <FileSelector
-                    onImageSelected={handleDrop}
+                    onImageSelected={onImageSelected}
                 />
             )}
                 

@@ -22,20 +22,7 @@ const EntryListItem = ({ entry, onDelete, ...props }) => {
     
     const { user } = state
     const { userId, username, text } = entry
-    const [author, setAuthor] = useState({ userId, username })
-
-    const getSelf = () => {
-        axios
-            .get(`/api/users/self/${userId}`)
-            .then(({ data }) => {
-                if (data.profileImage) setAuthor({
-                    ...author,
-                    profileImage: data.profileImage,
-                })
-            })
-            .catch(err => console.log('Error getting author', err))
-    }
-    
+    const [author, setAuthor] = useState({ userId, username })    
     useEffect(() => {
         if (userId && !author.profileImage) {
             // getSelf()

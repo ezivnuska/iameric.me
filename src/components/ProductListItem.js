@@ -5,14 +5,20 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
+import { ImageLoader } from '.'
 // import { CloseCircleOutlined } from '@ant-design/icons'
 import main from '../styles/main'
 import { EditButton } from '.'
+import { AppContext } from '../AppContext'
 
+const IMAGE_SIZE = 50
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
-    const { _id, desc, price, title, vendorId, blurb, category } = item
+    const { _id, desc, price, title, vendorId, blurb, category, imageId } = item
     const [modalVisible, setModalVisible] = useState(false)
+
+    const { user } = useContext(AppContext)
 
     const onProductPressed = () => {
         onPress()
@@ -47,7 +53,11 @@ const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
                 </View>
                 <Text style={[main.text, styles.price]}>${price}</Text>
             </View>
-
+            {imageId ? (
+                <ImageLoader
+                    image={imageId}
+                />
+            ) : null}
             <Text style={[main.text, styles.blurb]}>{blurb}</Text>
             <Text style={[main.text, styles.desc]}>{desc}</Text>
         </View>

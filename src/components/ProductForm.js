@@ -1,15 +1,19 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
-    View
+    ImageLoader,
+    View,
 } from 'react-native'
-import axios from 'axios'
-import { AppContext } from '../AppContext'
-import main from '../styles/main'
 import {
     ButtonPrimary,
     CategoryPicker,
     FormInput,
+    ImagePreview,
+    NewImageUploader,
 } from '.'
+import axios from 'axios'
+import { AppContext } from '../AppContext'
+import main from '../styles/main'
+const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
 
 const ProductForm = ({ onComplete, onDelete, product = null }) => {
 
@@ -27,12 +31,19 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
     const [ blurb, setBlurb ] = useState(product ? product.blurb : '')
     const [ desc, setDesc ] = useState(product ? product.desc : '')
     const [ category, setCategory ] = useState(product ? product.category : '')
+    const [ filename, setFilename ] = useState(null)
 
     const onChangeTitle = value => setTitle(value)
     const onChangePrice = value => setPrice(value)
     const onChangeDesc = value => setDesc(value)
     const onChangeBlurb = value => setBlurb(value)
     const onChangeCategory = value => setCategory(value)
+
+    useEffect(() => {
+        console.log('ProductForm', product)
+        if (product && product.imageId)
+            setImageId(product.imageId)
+    }, [])
 
     const onSubmit = async () => {
 
@@ -45,6 +56,7 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
             blurb,
             desc,
             category,
+            filename,
         }
 
         if (product) newProduct = {
@@ -64,12 +76,18 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
             return
         }
 
+        const products = user.products || []
+        if (!product) dispatch({ type: 'ADD_PRODUCT', product: item })
+        else dispatch({ type: 'SET_PRODUCTS', products: [...products, item] })
+        dispatch({ type: 'ADD_IMAGE', image: item.imageId })
+
         setTitle('')
         setPrice('')
         setDesc('')
         setBlurb('')
         setCategory('')
-        
+        setFilename(null)
+
         onComplete(item)
     }
 
@@ -81,6 +99,25 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
                 label='Category'
                 onChange={onChangeCategory}
             />
+
+            {filename ? (
+                <ImagePreview
+                    path={`${IMAGE_PATH}/${user.username}/thumb/${filename}`}
+                />
+            ) : product && product.imageId ? (
+                <ImageLoader
+                    // style={{
+                    //     width: 50,
+                    //     height: 50,
+                    //     resizeMode: 'stretch',
+                    // }}
+                    image={product.imageId}
+                />
+            ) : (
+                <NewImageUploader
+                    onImageUploaded={name => setFilename(name)}
+                />
+            )}
             
             <FormInput
                 label='Name'

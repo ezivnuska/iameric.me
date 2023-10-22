@@ -141,7 +141,11 @@ export default ({ onImageUploaded }) => {
                 thumbData,
             }
 
-            await uploadImageData(payload)
+            const response = await uploadImageData(payload)
+            console.log('response', response)
+            setPreview(response)
+
+            onImageUploaded(response)
         }
 
         image.src = srcBase64
@@ -150,25 +154,18 @@ export default ({ onImageUploaded }) => {
     const uploadImageData = async payload => {
         
         const { data } = await axios
-            .post(`/api/image/upload`, payload)
+            .post(`/api/product/image/upload`, payload)
 
-            
+        setLoading(null)
+
         if (!data) {
-            setLoading(null)
             console.log('Error uploading image/thumb')
             return null
         }
 
-        console.log('image/thumb uploaded!', data)
+        console.log('NewImageUploader: image/thumb uploaded!', data)
 
-        // else id = await handleUpload(user._id, thumbData.uri, timestamp, 'thumb')
-        // console.log('thumb uploaded!', id)
-
-        setPreview(data.filename)
-
-        setLoading(null)
-
-        onImageUploaded(data.filename)
+        return data.filename
     }
 
     const onSubmit = async () => {
