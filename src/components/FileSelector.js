@@ -52,9 +52,9 @@ const FileSelector = ({ onImageSelected }) => {
         allowsEditing: false,
         quality: 1,
     })
-    console.log('result', result)
+    
     if (result.canceled) return
-    console.log('result.assets', result.assets)
+    
     const asset = result.assets[0]
     onImageSelected(asset.uri)
   }

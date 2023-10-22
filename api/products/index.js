@@ -1,6 +1,7 @@
 // MONGOose models
 const Product = require('../../models/Product')
 const User = require('../../models/User')
+const UserImage = require('../../models/UserImage')
 
 const addImageIdToVendorImages = async (imageId, vendorId) => {
 
@@ -57,7 +58,7 @@ const getSavedProductImage = async (filename, vendor) => {
     return image
 }
 
-const updateAndGetExistingProduct = async newData => {
+const updateAndGetExistingProduct = async ({ _id, ...newData }) => {
     
     // find and update existing document
     const updatedProduct = await Product
@@ -67,7 +68,7 @@ const updateAndGetExistingProduct = async newData => {
             { new: true },
         )
     
-        // then return it
+    // then return it
     return updatedProduct
 }
 
@@ -76,7 +77,7 @@ const createOrUpdateProduct = async (req, res) => {
     // pull data from request body
     const { _id, price, title, desc, vendor, blurb, category, filename } = req.body
     
-    // collect wanted data for new product
+    // collect needed data for new product in object
     const newProduct = { price, title, desc, vendor, blurb, category, filename }
 
     // reference to possible uploaded file attachment
@@ -86,19 +87,22 @@ const createOrUpdateProduct = async (req, res) => {
     if (filename) // if it does, then get and save a reference to the images id
         newImage = await getSavedProductImage(filename, vendor)
 
+    console.log('newImage', newImage)
+
     // create a reference to new product
     let product = null
 
     if (_id) {
         // if product already exists, update existing product
         product = await updateAndGetExistingProduct({
+            _id,
             price,
             vendor,
             title,
             desc,
             blurb,
             category,
-            imageId: newImage._id || null,
+            imageId: newImage ? newImage._id : null,
         })
     } else {
         // if product does not exist, create new product
@@ -106,7 +110,7 @@ const createOrUpdateProduct = async (req, res) => {
         console.log('creating new product')
         product = await Product.create({
             ...newProduct,
-            imageId: newImage._id || null,
+            imageId: newImage ? newImage._id : null,
         })
     }
 

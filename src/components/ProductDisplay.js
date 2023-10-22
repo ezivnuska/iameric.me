@@ -36,17 +36,18 @@ const ProductDisplay = () => {
         setItems(items.filter(item => item._id !== data.item._id))
     }
 
-    const updateItems = product => {
-        const products = items.map((item, index) => {
-            if (product._id === item._id) return product
-            else return item
-        })
+    const updateProducts = product => {
+        const updatedProducts = items.map(
+            item => product._id === item._id
+                ? product
+                : item
+            )
 
-        setItems(products)
+        setItems(updatedProducts)
     }
 
-    const onProductFormSubmitted = item => {
-        updateItems(item)
+    const onProductFormSubmitted = product => {
+        updateProducts(product)
         setFeatured(null)
     }
 

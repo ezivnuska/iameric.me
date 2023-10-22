@@ -70,6 +70,19 @@ const reducer = (state = initialState, action) => {
         case 'ADD_PRODUCT':
             products = [...action.products, action.product]
             break
+        case 'UPDATE_PRODUCT':
+            const currentProducts = user.products || []
+            let updatedProducts
+            if (currentProducts.length) {
+                const productIndex = currentProducts.findIndex(product => product._id === action.product._id)
+                updatedProducts = [
+                    ...currentProducts.slice(0, productIndex),
+                    action.product,
+                    ...currentProducts.slice(productIndex + 1),
+                ]
+            }
+            products = updatedProducts
+            break
         case 'SET_LOADING':
             const wasLoading = loading
             if (wasLoading && !action.loading) console.log('Loading stopped.')

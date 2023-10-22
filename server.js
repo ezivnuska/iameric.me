@@ -149,7 +149,7 @@ mongoose
         useUnifiedTopology: true,
         keepAlive: true,
     })
-    .then(() => console.log(`> MongoDB connected.\n\n* * * * * * * * * * * * * *\n\n*\tiameric.me\t  *\n\n* * * * * * * * * * * * * *`))
+    .then(() => console.log(`> MongoDB connected.\n\n* * * * * * * * * * * * * *\n\n*\tiameric.me\t  *\n\n* * * * * * * * * * * * * *\n\n`))
     .catch(err => console.log('Error connecting to database', err))
 
 server.listen(PORT, () => console.log(`\n\n\n> server listening on ${PORT}`))

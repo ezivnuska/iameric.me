@@ -4,6 +4,9 @@ const { promises, rm, rmSync } = require('fs')
 const { mkdirp } = require('mkdirp')
 const gm = require('gm')
 const im = gm.subClass({ imageMagick: true })
+
+const imagePath = process.env.IMAGE_PATH || require('../../config').IMAGE_PATH
+
 const getImagesByUserId = async (req, res) => {
     
     const images = await UserImage
@@ -24,11 +27,18 @@ const getProfileImageByUserId = async (req, res) => {
 
 const getImageWithUsernameByImageId = async (req, res) => {
     
+    console.log('fetching image data...')
+    
     const image = await UserImage
         .findOne({ _id: req.params.id })
         .populate('user', 'username')
+
+    console.log('finished fetching.', image)
     
-    if (!image) return res.status(200).json({ error: 'Error fetching image data.' })
+    if (!image) {
+        console.log('could not fetch image data.')
+        return res.status(200).json(null)
+    }
     
     const { _id, filename, user } = image
     
@@ -55,7 +65,7 @@ const removeImage = path => {
 }
 
 const removeAllImagesFilesByUsername = async username => await rmSync(
-    `${IMAGE_PATH}/${username}`,
+    `${imagePath}/${username}`,
     {
         recursive: true,
         force: true ,
@@ -83,7 +93,7 @@ const uploadAvatar = async (req, res) => {
     const { _id, avatar, timestamp } = req.body
     const user = await User.findOne({ _id })
 
-    const path = `${IMAGE_PATH}/${user.username}`
+    const path = `${imagePath}/${user.username}`
 
     console.log('\nwriting avatar to path', path)
     const avatarname = await handleFileUpload(avatar, path, timestamp)
@@ -143,7 +153,7 @@ const deleteImageById = async (req, res) => {
 
     if (!deletedImage) console.log('Could not find image to delete')
 
-    const userPath = `${IMAGE_PATH}/${deletedImage.user.username}`
+    const userPath = `${imagePath}/${deletedImage.user.username}`
     const filenameToDelete = deletedImage.filename
 
     const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
@@ -261,7 +271,7 @@ const uploadImage = async (req, res) => {
     
     const filename = `${userId}-${Date.now()}.png`
 
-    const path = `${IMAGE_PATH}/${user.username}`
+    const path = `${imagePath}/${user.username}`
     
     const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
     if (!imagesUploaded) {
@@ -327,9 +337,10 @@ const uploadProductImage = async (req, res) => {
     const { userId, imageData, thumbData } = req.body
     
     const user = await User.findOne({ _id: userId })
+    console.log('found user to update with new product image:', user)
     
     const filename = `${userId}-${Date.now()}.png`
-    const path = `${IMAGE_PATH}/${user.username}`
+    const path = `${imagePath}/${user.username}`
     
     const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
     if (!imagesUploaded) {
@@ -342,7 +353,7 @@ const uploadProductImage = async (req, res) => {
 
 const deletePreview = async (req, res) => {
     const { username, filename } = req.body
-    const path = `${IMAGE_PATH}/${username}`
+    const path = `${imagePath}/${username}`
     const imagesDeleted = await removeImageAndThumb(path, filename)
     if (!imagesDeleted) return res.status(200).json(null)
     return res.status(200).json({ filename })

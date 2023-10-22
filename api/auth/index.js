@@ -17,16 +17,25 @@ const getSanitizedUser = ({ _id, email, images, location, profileImage, role, us
     token,
 })
 
-const clearUserToken = async _id => {
-    
-    const user = await User
+const updateUserById = async (_id, data) => {
+    const updatedUser = await User
         .findOneAndUpdate(
             { _id },
-            { $set: {
-                token: null,
-            } },
+            { $set: data},
             { new: true },
         )
+    
+    if (!updatedUser) {
+        console.log('could not update user.')
+        return null
+    }
+
+    return updatedUser
+}
+
+const clearUserToken = async _id => {
+    
+    const user = await updateUserById(_id, { token: null })
     
     if (!user) {
         console.log('could not clear user token on sign out.')
@@ -102,7 +111,7 @@ const createUser = async ({ email, username }) => {
     
     user = await User
         .findOneAndUpdate(
-            { _id: newUser._id.toString() },
+            { _id: newUser._id },
             { $set: { token: newToken } },
             { new: true },
         )
@@ -173,10 +182,12 @@ const authenticate = async (req, res) => {
 
 const handleSignout = async (req, res) => {
     
-    const user = await User.
-        findOneAndUpdate({ _id: req.body._id }, { $set: { token: null, } }, { new: true })
+    const user = await updateUserById(req.body._id, { token: null })
 
-    if (!user) return res.status(200).json(null)
+    if (!user) {
+        console.log('could not update user.')
+        return res.status(200).json(null)
+    }
 
     console.log(`\nUser signed out: ${user.username}`)
 

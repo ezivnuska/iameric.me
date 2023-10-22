@@ -40,7 +40,7 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
     const onChangeCategory = value => setCategory(value)
 
     useEffect(() => {
-        console.log('ProductForm', product)
+        // console.log('ProductForm loading with product:', product)
         if (product && product.imageId)
             setImageId(product.imageId)
     }, [])
@@ -49,7 +49,7 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
 
         const { _id, role, username } = user
         
-        let newProduct = {
+        let productData = {
             vendor: _id,
             title,
             price,
@@ -59,27 +59,31 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
             filename,
         }
 
-        if (product) newProduct = {
-            ...newProduct,
+        if (product) productData = {
+            ...productData,
             _id: product._id,
         }
         
         setLoading(true)
 
-        const item = await axios.
-            post('/api/product', newProduct)
+        const { data } = await axios
+            .post('/api/product', productData)
 
         setLoading(false)
 
-        if (!item) {
+        if (!data) {
             console.log('Error saving product')
-            return
+            return null
         }
 
-        const products = user.products || []
-        if (!product) dispatch({ type: 'ADD_PRODUCT', product: item })
-        else dispatch({ type: 'SET_PRODUCTS', products: [...products, item] })
-        dispatch({ type: 'ADD_IMAGE', image: item.imageId })
+        if (!product) {
+            dispatch({ type: 'ADD_PRODUCT', product: data })
+        } else {
+            dispatch({ type: 'UPDATE_PRODUCT', product: data })
+        }
+        
+        if (data.imageId)
+            dispatch({ type: 'ADD_IMAGE', image: data.imageId })
 
         setTitle('')
         setPrice('')
@@ -88,7 +92,7 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
         setCategory('')
         setFilename(null)
 
-        onComplete(item)
+        onComplete(data)
     }
 
     return (

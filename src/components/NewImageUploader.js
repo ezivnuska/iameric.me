@@ -54,7 +54,7 @@ export default ({ onImageUploaded }) => {
     }, [dims])
 
     useEffect(() => {
-        console.log('image preview changed', preview)
+        // console.log('image preview changed', preview)
     }, [preview])
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
@@ -80,7 +80,7 @@ export default ({ onImageUploaded }) => {
             const canvas = document.createElement('canvas')
             const ctx = canvas.getContext('2d')
 
-            console.log('image loaded...', width, height)
+            console.log('image loaded. handling orientation...', width, height)
 
             const filename = `${user._id}-${Date.now()}.png`
 
@@ -142,7 +142,7 @@ export default ({ onImageUploaded }) => {
             }
 
             const response = await uploadImageData(payload)
-            console.log('response', response)
+            
             setPreview(response)
 
             onImageUploaded(response)
