@@ -6,7 +6,7 @@ const gm = require('gm')
 const im = gm.subClass({ imageMagick: true })
 
 const imagePath = process.env.IMAGE_PATH || require('../../config').IMAGE_PATH
-
+console.log('imagePath', imagePath)
 const getImagesByUserId = async (req, res) => {
     
     const images = await UserImage

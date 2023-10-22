@@ -9,12 +9,13 @@ const addImageIdToVendorImages = async (imageId, vendorId) => {
     const vendor = await User
         .findOne({ _id: vendorId })
 
+    const currentImages = vendor.image || []
     // update vendor (should be moved into try/catch)
     const updatedVendor = await User
         .findOneAndUpdate(
             { _id: vendor._id },
             { $set: {
-                images: [...vendor.images, imageId],
+                images: [...currentImages, imageId],
             } },
             { new: true },
         )
@@ -25,6 +26,8 @@ const addImageIdToVendorImages = async (imageId, vendorId) => {
         return null
     }
 
+    console.log('updated vendor images.', updatedVendor.images)
+
     return updatedVendor
 }
 
@@ -34,7 +37,7 @@ const saveProductImage = async (filename, userId) => {
     const image = new UserImage({ user: userId, filename })
     // save it, before continuing
     await image.save()
-
+    console.log('saved product image', image)
     const updatedVendor = await addImageIdToVendorImages(image._id, userId)
     
     return {
@@ -45,11 +48,13 @@ const saveProductImage = async (filename, userId) => {
 
 const getSavedProductImage = async (filename, vendor) => {
     
+    console.log('saving ProductImage:filename', filename)
     const {
         image,
         // user, // don't need this here, maybe should delete...
     } = await saveProductImage(filename, vendor)
 
+    console.log('getSavedProductImage', image)
     if (!image) {
         console.log(`Could not save ${filename}.`)
         return null
@@ -75,10 +80,10 @@ const updateAndGetExistingProduct = async ({ _id, ...newData }) => {
 const createOrUpdateProduct = async (req, res) => {
 
     // pull data from request body
-    const { _id, price, title, desc, vendor, blurb, category, filename } = req.body
+    const { _id, price, title, desc, vendor, blurb, category, imageId, filename } = req.body
     
     // collect needed data for new product in object
-    const newProduct = { price, title, desc, vendor, blurb, category, filename }
+    const newProduct = { price, title, desc, vendor, blurb, category, imageId }
 
     // reference to possible uploaded file attachment
     let newImage = null
@@ -87,7 +92,7 @@ const createOrUpdateProduct = async (req, res) => {
     if (filename) // if it does, then get and save a reference to the images id
         newImage = await getSavedProductImage(filename, vendor)
 
-    console.log('newImage', newImage)
+    console.log('createOrUpdateProduct:newImage', newImage)
 
     // create a reference to new product
     let product = null

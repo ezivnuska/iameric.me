@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 
 export default ({ path, ...props }) => {
-    
+    console.log('ImagePreview', path)
     return (
         <View
             style={{

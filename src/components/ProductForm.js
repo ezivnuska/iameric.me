@@ -1,22 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    ImageLoader,
     View,
 } from 'react-native'
 import {
     ButtonPrimary,
     CategoryPicker,
     FormInput,
+    ImageLoader,
     ImagePreview,
     NewImageUploader,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import main from '../styles/main'
+
 const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
 
-const ProductForm = ({ onComplete, onDelete, product = null }) => {
-
+export default ({ onComplete, onDelete, product = null }) => {
+    
     const {
         state,
         dispatch,
@@ -25,12 +26,13 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
     const { user } = state
 
     const [loading, setLoading] = useState(false)
-
-    const [ title, setTitle ] = useState(product ? product.title : '')
-    const [ price, setPrice ] = useState(product ? product.price : '')
-    const [ blurb, setBlurb ] = useState(product ? product.blurb : '')
-    const [ desc, setDesc ] = useState(product ? product.desc : '')
-    const [ category, setCategory ] = useState(product ? product.category : '')
+    const [ currentProduct, setCurrentProduct] = useState(null)
+    const [ title, setTitle ] = useState(product && product.title ? product.title : '')
+    const [ price, setPrice ] = useState(product && product.price ? product.price : '')
+    const [ blurb, setBlurb ] = useState(product && product.blurb ? product.blurb : '')
+    const [ desc, setDesc ] = useState(product && product.desc ? product.desc : '')
+    const [ category, setCategory ] = useState(product && product.category ? product.category : '')
+    const [ imageId, setImageId ] = useState(product && product.imageId ? product.imageId : null)
     const [ filename, setFilename ] = useState(null)
 
     const onChangeTitle = value => setTitle(value)
@@ -39,11 +41,31 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
     const onChangeBlurb = value => setBlurb(value)
     const onChangeCategory = value => setCategory(value)
 
+    const fetchImageById = async id => {
+
+        const imageData = await axios
+            .get(`/api/images/${id}`)
+
+        if (!imageData) {
+            console.log('could not fetch image data.')
+            return null
+        }
+        console.log('fetchedImageData:', imageData)
+        setFilename(imageData.filename)
+
+        return imageData
+    }
+
     useEffect(() => {
-        // console.log('ProductForm loading with product:', product)
-        if (product && product.imageId)
-            setImageId(product.imageId)
+        if (product && typeof product === 'object')
+            setCurrentProduct(product)
     }, [])
+
+    useEffect(() => {
+        if (currentProduct && currentProduct.imageId) {
+            fetchImageById(currentProduct.imageId)
+        }
+    }, [currentProduct])
 
     const onSubmit = async () => {
 
@@ -56,18 +78,21 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
             blurb,
             desc,
             category,
-            filename,
+            imageId,
         }
 
-        if (product) productData = {
+        if (currentProduct && currentProduct._id) productData = {
             ...productData,
-            _id: product._id,
+            _id: currentProduct._id,
         }
         
         setLoading(true)
 
         const { data } = await axios
-            .post('/api/product', productData)
+            .post('/api/product', {
+                ...productData,
+                filename,
+            })
 
         setLoading(false)
 
@@ -76,7 +101,7 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
             return null
         }
 
-        if (!product) {
+        if (!currentProduct) {
             dispatch({ type: 'ADD_PRODUCT', product: data })
         } else {
             dispatch({ type: 'UPDATE_PRODUCT', product: data })
@@ -104,24 +129,29 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
                 onChange={onChangeCategory}
             />
 
-            {filename ? (
-                <ImagePreview
-                    path={`${IMAGE_PATH}/${user.username}/thumb/${filename}`}
-                />
-            ) : product && product.imageId ? (
-                <ImageLoader
-                    // style={{
-                    //     width: 50,
-                    //     height: 50,
-                    //     resizeMode: 'stretch',
-                    // }}
-                    image={product.imageId}
-                />
-            ) : (
-                <NewImageUploader
-                    onImageUploaded={name => setFilename(name)}
-                />
-            )}
+            {filename
+                ? (
+                    <ImagePreview
+                        path={`${IMAGE_PATH}/${user.username}/thumb/${filename}`}
+                    />
+                )
+                : (currentProduct && currentProduct.imageId)
+                ? (
+                    <ImageLoader
+                        // style={{
+                        //     width: 50,
+                        //     height: 50,
+                        //     resizeMode: 'stretch',
+                        // }}
+                        image={currentProduct.imageId}
+                    />
+                )
+                : (
+                    <NewImageUploader
+                        onImageUploaded={name => setFilename(name)}
+                    />
+                )
+            }
             
             <FormInput
                 label='Name'
@@ -174,11 +204,9 @@ const ProductForm = ({ onComplete, onDelete, product = null }) => {
                 style={main.button}
                 label='Delete'
                 disabled={loading}
-                onPress={() => onDelete(product._id)}
+                onPress={() => onDelete(currentProduct._id)}
             />
 
         </View>
     )
 }
-
-export default ProductForm

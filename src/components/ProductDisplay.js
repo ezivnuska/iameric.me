@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     StyleSheet,
     Text,
@@ -20,9 +20,12 @@ const ProductDisplay = () => {
         products,
     } = useContext(AppContext)
 
-    const [items, setItems] = useState(products)
-    const [loading, setLoading] = useState(false)
+    const [items, setItems] = useState(null)
     const [featured, setFeatured] = useState(null)
+
+    useEffect(() => {
+        if (products) setItems(products)
+    }, [])
 
     const onDelete = async id => {
         const { data } = await axios.
@@ -30,24 +33,28 @@ const ProductDisplay = () => {
         
         if (!data) {
             console.log('Error deleting product')
-            return
+            return null
         }
 
         setItems(items.filter(item => item._id !== data.item._id))
+
+        return data
     }
 
-    const updateProducts = product => {
-        const updatedProducts = items.map(
+    const updateProducts = async product => {
+        const updatedProducts = await items.map(
             item => product._id === item._id
                 ? product
                 : item
             )
 
-        setItems(updatedProducts)
+        return updatedProducts
     }
 
-    const onProductFormSubmitted = product => {
-        updateProducts(product)
+    const onProductFormSubmitted = async product => {
+        
+        const updatedProducts = await updateProducts(product)
+        setItems(updatedProducts)
         setFeatured(null)
     }
 
@@ -58,9 +65,8 @@ const ProductDisplay = () => {
                 <AddButton iconStyle={styles.headerButton} onPress={() => setFeatured(true)} />
             </View>
 
-            {loading ?
-                <Text style={main.text}>Loading products...</Text> :
-                (items && items.length) ? (
+            {(items && items.length)
+                ? (
                     <ProductList
                         items={items}
                         onPress={item => setFeatured(item)}

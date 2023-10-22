@@ -17,7 +17,6 @@ export default ({ image }) => {
 
     useEffect(() => {
         if (image) {
-            console.log('SimpleImage: initial image data:', image)
             if (typeof image === 'string') fetchImageData(image)
             else setImageData(image)
         }
