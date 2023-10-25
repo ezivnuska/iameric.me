@@ -43,17 +43,23 @@ export default ({ onComplete, onDelete, product = null }) => {
 
     const fetchImageById = async id => {
 
-        const imageData = await axios
+        const { data } = await axios
             .get(`/api/images/${id}`)
 
-        if (!imageData) {
+        if (!data) {
             console.log('could not fetch image data.')
             return null
         }
-        console.log('fetchedImageData:', imageData)
-        setFilename(imageData.filename)
+        console.log('fetchedImageData:', data)
+        if (
+            (currentProduct && currentProduct.filename) &&
+            (currentProduct.filename !== data.filename)
+        ) {
+            console.log('setting filename for new image.', data)
+            setFilename(data.filename)
+        }
 
-        return imageData
+        console.log('done fetching image data.')
     }
 
     useEffect(() => {

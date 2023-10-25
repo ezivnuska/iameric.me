@@ -98,6 +98,10 @@ const createOrUpdateProduct = async (req, res) => {
     let product = null
 
     if (_id) {
+        const newImageId = newImage ? newImage._id : imageId
+        console.log('imageId', imageId)
+        console.log('newImage', newImage)
+        console.log('newImageId', newImageId)
         // if product already exists, update existing product
         product = await updateAndGetExistingProduct({
             _id,
@@ -107,7 +111,7 @@ const createOrUpdateProduct = async (req, res) => {
             desc,
             blurb,
             category,
-            imageId: newImage ? newImage._id : null,
+            imageId: newImageId,
         })
     } else {
         // if product does not exist, create new product
@@ -115,7 +119,7 @@ const createOrUpdateProduct = async (req, res) => {
         console.log('creating new product')
         product = await Product.create({
             ...newProduct,
-            imageId: newImage ? newImage._id : null,
+            imageId: newImage ? newImage._id : imageId,
         })
     }
 

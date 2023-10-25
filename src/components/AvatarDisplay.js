@@ -35,14 +35,15 @@ export default () => {
 
     useEffect(() => {
         if (user.images) {
-            // console.log('setting images', user.images)
+            console.log('setting images', user.images)
             setItems(user.images)
         }
     }, [user.images])
 
     const onImageUploaded = image => {
-        // console.log('image uploaded. current items:', items)
+        console.log('image uploaded. current items:', items)
         setItems([...items, image])
+        console.log('image uploaded. items set to:', items)
         
         dispatch({ type: 'ADD_IMAGE', image })
 
