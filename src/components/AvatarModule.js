@@ -12,7 +12,7 @@ import {
     CircleButton,
     FileSelector,
     StatusDisplay,
-} from './'
+} from '.'
 import {
     CloseCircleOutlined,
     ConsoleSqlOutlined,
@@ -26,7 +26,7 @@ import defaultStyles from '../styles/main'
 const windowDimensions = Dimensions.get('window')
 const screenDimensions = Dimensions.get('screen')
 
-const AvatarModule = ({ onComplete }) => {
+export default ({ onComplete }) => {
 
     const {
         state,
@@ -224,7 +224,6 @@ const AvatarModule = ({ onComplete }) => {
     )
 }
 
-export default AvatarModule
 
 const styles = StyleSheet.create({
     avatarDropzoneWrapper: {

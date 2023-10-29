@@ -2,7 +2,6 @@ import AddButton from './AddButton'
 // import AuthButton from './AuthButton'
 import AuthMenu from './AuthMenu'
 import Avatar from './Avatar'
-import AvatarDisplay from './AvatarDisplay'
 import AvatarModule from './AvatarModule'
 import BackButton from './BackButton'
 import Brand from './Brand'
@@ -25,6 +24,7 @@ import Header from './Header'
 import Heading from './Heading'
 import HoverableView from './HoverableView'
 import ImageDetail from './ImageDetail'
+import ImageModule from './ImageModule'
 import ImageList from './ImageList'
 import ImageLoader from './ImageLoader'
 import ImageUploader from './ImageUploader'
@@ -32,7 +32,7 @@ import ImagePreview from './ImagePreview'
 import NewImageUploader from './NewImageUploader'
 import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
-import LocationDisplay from './LocationDisplay'
+import LocationModule from './LocationModule'
 import LocationForm from './LocationForm'
 import LoginMenu from './LoginMenu'
 import Menu from './Menu'
@@ -67,7 +67,6 @@ export {
     AddButton,
     AuthMenu,
     Avatar,
-    AvatarDisplay,
     AvatarModule,
     BackButton,
     Brand,
@@ -91,13 +90,14 @@ export {
     HoverableView,
     ImageDetail,
     ImageLoader,
+    ImageModule,
     ImagePreview,
     ImageList,
     ImageUploader,
     NewImageUploader,
     LoadingView,
     LocationDetails,
-    LocationDisplay,
+    LocationModule,
     LocationForm,
     LoginMenu,
     Menu,

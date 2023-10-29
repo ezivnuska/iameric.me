@@ -6,16 +6,16 @@ import {
 } from 'react-native'
 import defaultStyles from '../styles/main'
 
-const CategoryPicker = ({ label, onChange, ...props }) => {
+const CategoryPicker = ({ label, onChange, initialCategory = 'main' }) => {
 
-    const [category, setCategory] = useState(null)
+    const [category, setCategory] = useState(initialCategory)
     
     useEffect(() => {
-        if (category) onChange(category)
+        if (category) onChange(category || 'main')
     }, [category])
     
     return (
-        <View {...props}>
+        <View>
             <Text style={defaultStyles.label}>{label}</Text>
             <Picker
                 value=''

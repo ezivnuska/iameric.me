@@ -20,6 +20,44 @@ import { AppContext } from '../AppContext'
 import axios from 'axios'
 const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
 
+const Header = ({ onPress }) => {
+    return (
+        <View
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                marginBottom: 15,
+            }}
+        >
+            
+            <Text style={main.heading}>Images &amp; Avatar</Text>
+            
+            <View
+                style={{
+                    flex: 1,
+                    flexGrow: 0,
+                    flexShrink: 0,
+                    flexBasis: 'auto',
+                }}
+            >
+                <TouchableOpacity
+                    style={{
+                        marginVertical: 4,
+                        marginHorizontal: 7,
+                    }}
+                    onPress={onPress}
+                >
+                    <PlusCircleOutlined
+                        style={{ fontSize: 22 }}
+                    />
+                </TouchableOpacity>
+            </View>
+
+        </View>
+    )
+}
+
 export default () => {
 
     const {
@@ -34,11 +72,9 @@ export default () => {
     const [items, setItems] = useState(null)
 
     useEffect(() => {
-        if (user.images) {
-            console.log('setting images', user.images)
-            setItems(user.images)
-        }
-    }, [user.images])
+        console.log('setting images', user.images)
+        setItems(user.images)
+    }, [])
 
     const onImageUploaded = image => {
         console.log('image uploaded. current items:', items)
@@ -53,7 +89,7 @@ export default () => {
         setModalVisible(false)
     }
 
-    const onDelete = id => {
+    const onDelete = (id, isProfileImage, isProductImage) => {
 
         // setItems(items.filter(item =>
         //     typeof item === 'string'
@@ -61,7 +97,8 @@ export default () => {
         //     : item._id !== id
         // ))
 
-        dispatch({ type: 'REMOVE_IMAGE', id })
+        if (isProfileImage) dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: null })
+        if (isProductImage) dispatch({ type: 'REMOVE_PRODUCT_IMAGE', imageId: id })
         
         setFeatured(null)
     }
@@ -80,11 +117,6 @@ export default () => {
         setUploadedItems([])
     }
 
-    const onAvatarSet = profileImage => {
-        dispatch({ type: 'SET_PROFILE_IMAGE', profileImage })
-        setFeatured(null)
-    }
-
     const onSelected = image => {
         // console.log(`selecting ${image._id} from items:`, items)
         const selectedItem = items.filter(item => item._id === image._id)[0]
@@ -93,41 +125,14 @@ export default () => {
     }
 
     return (
-        <View style={{ marginVertical: layout.verticalMargin }}>
+        <View
+            style={{
+                marginVertical: layout.verticalMargin,
+                // borderWidth: 1,
+            }}
+        >
                 
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    marginBottom: 15,
-                }}
-            >
-                
-                <Text style={main.heading}>Images &amp; Avatar</Text>
-                
-                <View
-                    style={{
-                        flex: 1,
-                        flexGrow: 0,
-                        flexShrink: 0,
-                        flexBasis: 'auto',
-                    }}
-                >
-                    <TouchableOpacity
-                        style={{
-                            marginVertical: 4,
-                            marginHorizontal: 7,
-                        }}
-                        onPress={() => setModalVisible(true)}
-                    >
-                        <PlusCircleOutlined
-                            style={{ fontSize: 22 }}
-                        />
-                    </TouchableOpacity>
-                </View>
-
-            </View>
+            <Header onPress={() => setModalVisible(true)} />
 
             {(items && items.length) ? (
                 <ImageList
@@ -154,7 +159,7 @@ export default () => {
             >
                 <ImageDetail
                     image={featured}
-                    onAvatarSet={onAvatarSet}
+                    closeModal={() => setFeatured(null)}
                     onDelete={onDelete}
                 />
             </ModalContent>

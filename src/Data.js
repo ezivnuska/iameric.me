@@ -151,9 +151,11 @@ export const getProducts = async user => {
 }
 
 export const getImageDataById = async id => {
+    // console.log('getting image data by id...')
     const { data } = await axios
-        .get(`/api/images/${id}`)
-
+        .get(`/api/image/${id}`)
+    
+    // console.log('image data:', data)
     return data
 }
 

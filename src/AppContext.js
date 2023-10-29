@@ -10,13 +10,14 @@ const initialState = {
     orders: null,
     products: null,
     profileId: null,
+    profileImage: null,
     user: null,
     users: null,
     vendors: null,
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, loading, orders, products, profileId, user, users, vendors } = state
+    let { cart, dims, loading, orders, products, profileId, profileImage, user, users, vendors } = state
     
     switch(action.type) {
         case 'SET_DIMS':
@@ -37,6 +38,7 @@ const reducer = (state = initialState, action) => {
                     (typeof image === 'string' && image === action.image._id) ||
                     (image._id === action.image._id)
                 ) {
+                    console.log('updating image:', action.image)
                     return action.image
                 } else return image
             })
@@ -48,10 +50,22 @@ const reducer = (state = initialState, action) => {
                 ...user.images.slice(0, imageIndex),
                 ...user.images.slice(imageIndex + 1),
             ]
+            user.images = images
+            
+            if (user.profileImage === action.id) {
+                profileImage = null
+                user.profileImage = null
+            }
+
+            break
+        case 'REMOVE_PRODUCT_IMAGE':
+            const newProducts = user.products.map(product => {
+                if (product.imageId === action.imageId) return { ...product, imageId: null }
+                else return product
+            })
             user = {
                 ...user,
-                profileImage: (user.profileImage !== action.id) ? user.profileImage : null,
-                images,
+                products: newProducts,
             }
             break
         case 'SET_VENDORS':
@@ -83,6 +97,21 @@ const reducer = (state = initialState, action) => {
             }
             products = updatedProducts
             break
+        case 'UPDATE_PRODUCT_IMAGE':
+            const userProducts = products || []
+            let updatedUserProducts
+            if (userProducts.length) {
+                 updatedUserProducts = userProducts.map(product => {
+                    if (product.imageId && product.imageId === action.imageId) {
+                        return {
+                            ...product,
+                            imageId: action.imageId,
+                        }
+                    } else return product
+                })
+            }
+            products = updatedUserProducts
+            break
         case 'SET_LOADING':
             const wasLoading = loading
             if (wasLoading && !action.loading) console.log('Loading stopped.')
@@ -90,7 +119,9 @@ const reducer = (state = initialState, action) => {
             if (loading) console.log('>>', loading)
             break
         case 'SET_PROFILE_IMAGE':
-            user = { ...user, profileImage: action.profileImage }
+            console.log('SET_PROFILE_IMAGE', action.profileImage)
+            user = { ...user, profileImage: action.profileImage ? action.profileImage._id : null }
+            profileImage = action.profileImage
             break
         case 'SET_USERS':
             users = action.users
@@ -238,6 +269,7 @@ export const AppProvider = ({ children }) => {
             products: state.products,
             user: state.user,
             vendors: state.vendors,
+            profileImage: state.profileImage,
         }}>
             {children}
         </AppContext.Provider>

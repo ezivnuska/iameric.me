@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import {
-    AvatarDisplay,
+    ImageModule,
     CenteredContent,
-    LocationDisplay,
+    LocationModule,
     Screen,
     SignoutModule,
 } from '../components'
@@ -19,9 +19,9 @@ export default () => {
 
             <CenteredContent>
                 
-                {(user.role !== 'driver') && <LocationDisplay details={user.location} />}
+                {(user && user.role !== 'driver') && <LocationModule details={user.location} />}
 
-                <AvatarDisplay />
+                <ImageModule />
 
                 <SignoutModule />
 

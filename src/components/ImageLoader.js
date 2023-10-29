@@ -19,16 +19,22 @@ export default ({ image }) => {
         if (image) {
             if (typeof image === 'string') fetchImageData(image)
             else setImageData(image)
+        } else {
+            if (imageData) {
+                setImageData(null)
+            }
         }
     }, [image])
 
     const fetchImageData = async id => {
+
         const data = await getImageDataById(id)
+        
         dispatch({ type: 'UPDATE_IMAGE', image: data })
         setImageData(data)
     }
 
-    return (imageData && imageData.filename)
+    return imageData
         ? (
             <Image
                 width={IMAGE_SIZE}

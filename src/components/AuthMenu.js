@@ -14,6 +14,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import layout from '../styles/layout'
 import { getImageDataById } from '../Data'
+import DefaultAvatar from '../images/avatar-default-small.png'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -37,28 +38,43 @@ const SettingsButton = ({ label }) => (
         </Text>
     </TouchableOpacity>
 )
+
 const AuthMenu = () => {
     
     const {
         dispatch,
         cart,
         user,
+        profileImage,
     } = useContext(AppContext)
 
     const { items } = cart
 
+    const [ avatar, setAvatar ] = useState(profileImage)
+
     const fetchImageData = async id => {
+        console.log('auth menu getting image data...')
+        
         const imageData = await getImageDataById(id)
+        console.log('auth menu got image data:')
+        setAvatar(imageData)
         dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: imageData })
     }
 
     useEffect(() => {
-        if (user && user.profileImage && !user.profileImage.filename) {
-            fetchImageData(user.profileImage)
+        if (profileImage) {
+            if (!avatar || avatar._id !== profileImage._id)
+                setAvatar(profileImage)
         }
-    }, [user])
+         else {
+            if (user && user.profileImage && typeof user.profileImage === 'string')  {
+                fetchImageData(user.profileImage)
+            }
+        }
+        
+    }, [profileImage])
 
-    const renderAvatar = () => (
+    const renderAvatar = () => avatar ? (
         <Image
             style={{
                 width: 24,
@@ -67,11 +83,11 @@ const AuthMenu = () => {
             }}
             // onLoadStart={() => setLoading(true)}
             // onLoadEnd={() => setLoading(false)}
-            source={
-                (user.profileImage && user.profileImage.filename)
-                ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
-                : `${IMAGE_PATH}/avatar-default-small.png`
-            }
+            source={`${IMAGE_PATH}/${user.username}/${avatar.filename}`}
+        />
+    ) : (
+        <Image
+            source={DefaultAvatar}
         />
     )
 

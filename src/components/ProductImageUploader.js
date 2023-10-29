@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    Image,
     View,
     TouchableOpacity,
 } from 'react-native'
 import {
     FileSelector,
-    ImagePreview,
+    // ImagePreview,
     LoadingView,
 } from '.'
 import ReactAvatarEditor from 'react-avatar-editor'
@@ -22,8 +23,6 @@ const UploadedImageList = images => {
     return (
         <View>
             {uploadedItems.map((item, index) => {
-                const path = `${IMAGE_PATH}/${user.username}/thumb/${item}`
-                console.log('>>preview', path)
                 return (
                     <TouchableOpacity
                         onPress={() => deletePreview(item)}
@@ -32,9 +31,9 @@ const UploadedImageList = images => {
                             width: 50,
                         }}
                     >
-                        <ImagePreview
+                        <Image
                             key={`preview-${index}`}
-                            path={path}
+                            path={`${IMAGE_PATH}/${user.username}/thumb/${item}`}
                         />
                     </TouchableOpacity>
                 )

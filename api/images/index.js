@@ -1,3 +1,4 @@
+const Product = require('../../models/Product')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
 const { promises, rm, rmSync } = require('fs')
@@ -7,6 +8,17 @@ const im = gm.subClass({ imageMagick: true })
 
 const imagePath = process.env.IMAGE_PATH || require('../../config').IMAGE_PATH
 console.log('imagePath', imagePath)
+
+const getImageIdFromFilename = async (req, res) => {
+    const { name } = req.params
+    const image = await UserImage
+        .find({ filename: name })
+
+    console.log('got image from filename', name)
+
+    return res.status(200).json({ image })
+}
+
 const getImagesByUserId = async (req, res) => {
     
     const images = await UserImage
@@ -27,13 +39,9 @@ const getProfileImageByUserId = async (req, res) => {
 
 const getImageWithUsernameByImageId = async (req, res) => {
     
-    console.log('fetching image data...')
-    
     const image = await UserImage
         .findOne({ _id: req.params.id })
         .populate('user', 'username')
-
-    console.log('finished fetching.', image)
     
     if (!image) {
         console.log('could not fetch image data.')
@@ -42,7 +50,9 @@ const getImageWithUsernameByImageId = async (req, res) => {
     
     const { _id, filename, user } = image
     
-    return res.status(200).json({ _id, filename, user })
+    const data = { _id, filename, user }
+    
+    return res.status(200).json(data)
 }
 
 const updateProfileImage = async (req, res) => {
@@ -60,9 +70,7 @@ const updateProfileImage = async (req, res) => {
     return res.status(200).json(user.profileImage)
 }
 
-const removeImage = path => {
-    return rm(path, () => console.log('removed file at path', path))
-}
+const removeImage = path => rm(path, () => console.log('removed file at path', path))
 
 const removeAllImagesFilesByUsername = async username => await rmSync(
     `${imagePath}/${username}`,
@@ -142,9 +150,45 @@ const uploadAvatar = async (req, res) => {
 }
 
 const deleteImageById = async (req, res) => {
+
+    const { imageId, isProductImage, isProfileImage } = req.body
+
+    // remove the image from the user images
+    const removedImageId = await removeImageFromUserImages(imageId)
+    console.log('\n removedImageId', removedImageId)
+    if (!removedImageId) {
+        // stop here.
+        console.log('Could not find image in user.images to remove.')
+        return null
+    }
+    console.log('image removed from user images.')
+    
+    // check to see if it is a product image
+    if (isProductImage) {
+        const productImage = await findAndRemoveImageFromProduct(imageId)
+        if (!productImage) {
+            // stop here.
+            console.log('error removing product image.')
+            return null
+        }
+        console.log('image removed from user product.')
+    }
+
+    // remove profile image reference to image
+
+    if (isProfileImage) {
+        const profileImage = await clearUserProfileImage(imageId)
+        if (!profileImage) {
+            console.log('error clearing profile image reference to image.')
+            return null
+        }
+        console.log('profile image reference removed from user.')
+    }
+
+    // then we can delete the user image model and delete the files
     
     const deletedImage = await UserImage
-        .findOneAndRemove({ _id: req.body._id })
+        .findOneAndRemove({ _id: imageId })
         .populate({
             path: 'user',
             select: 'username images',
@@ -167,7 +211,7 @@ const deleteImageById = async (req, res) => {
         findOneAndUpdate({ _id: deletedImage.user._id },
         {
             $set: {
-                profileImage: profileImage !== _id ? profileImage : null,
+                profileImage: profileImage !== imageId ? profileImage : null,
                 images: updatedImages,
             }
         },
@@ -178,17 +222,84 @@ const deleteImageById = async (req, res) => {
     })
 
     const product = await Product
-        .findOne({ imageId: _id })
+        .findOne({ imageId })
     
     if (product) {
         product.imageId = null
         await product.save()
     }
 
-    await removeImage(pathToAvatar)
-    await removeImage(pathToThumb)
+    removeImage(pathToAvatar)
+    removeImage(pathToThumb)
 
     return res.status(200).json({ id: deletedImage._id })
+}
+
+const clearUserProfileImage = async imageId => {
+    const user = await getUserFromImageId(imageId)
+    if (user.profileImage === imageId) {
+        user.profileImage = null
+        await user.save()
+    }
+    return imageId
+}
+
+const findAndRemoveImageFromProduct = async imageId => {
+
+    const user = await getUserFromImageId(imageId)
+    if (user && user.products) {
+        let productFound = false
+        const products = user.products.map(product => {
+            if (product.imageId === imageId) {
+                productFound = true
+                return {
+                    ...product,
+                    imageId: null,
+                }
+            }
+            return product
+        })
+
+        if (productFound) {
+            user.products = products
+            await user.save()
+        }
+    }
+
+    return imageId
+}
+
+const getUserFromImageId = async imageId => {
+    const image = await UserImage.findOne({ _id: imageId })
+    if (!image) {
+        console.log('Could not find image to remove.')
+        return null
+    }
+    const user = await User.findOne({ _id: image.user })
+    if (!user) {
+        console.log('could not find user referenced in image model.')
+        return null
+    }
+    return user
+}
+
+const removeImageFromUserImages = async imageId => {
+
+    const user = await getUserFromImageId(imageId)
+    const { images } = user
+
+    const imageExists = images.filter(img => img._id === imageId).length
+
+    if (imageExists) {
+        // remove image
+        console.log('\nuser images before image removal', images)
+        const newImages = images.filter(img => img._id !== imageId)
+        console.log('\nuser images after image removal', newImages)
+        user.images = newImages
+        await user.save()
+    }
+
+    return imageId
 }
 
 const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
@@ -364,6 +475,7 @@ module.exports = {
     deletePreview,
     getImagesByUserId,
     getImageWithUsernameByImageId,
+    getImageIdFromFilename,
     getProfileImageByUserId,
     handleFileUpload,
     removeAllImagesFilesByUsername,

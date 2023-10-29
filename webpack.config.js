@@ -71,7 +71,8 @@ module.exports = {
   output: {
     path: path.resolve(appDirectory, 'dist'),
     publicPath: '/',
-    filename: 'iameric.bundle.js',
+    filename: '[name].bundle.js',
+    clean: true,
   },
   resolve: {
     extensions: [
@@ -109,14 +110,14 @@ module.exports = {
     new webpack.DefinePlugin({
       __DEV__: isDebug,
     }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: './assets',
-          to: './assets',
-        }
-      ],
-    }),
+    // new CopyPlugin({
+    //   patterns: [
+    //     {
+    //       from: './assets',
+    //       to: './assets',
+    //     }
+    //   ],
+    // }),
   ],
   devtool: 'source-map',
   devServer: {

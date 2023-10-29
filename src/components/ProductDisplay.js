@@ -20,12 +20,12 @@ const ProductDisplay = () => {
         products,
     } = useContext(AppContext)
 
-    const [items, setItems] = useState(null)
+    const [items, setItems] = useState(products)
     const [featured, setFeatured] = useState(null)
 
     useEffect(() => {
         if (products) setItems(products)
-    }, [])
+    }, [products])
 
     const onDelete = async id => {
         const { data } = await axios.
@@ -42,17 +42,18 @@ const ProductDisplay = () => {
     }
 
     const updateProducts = async product => {
-        const updatedProducts = await items.map(
-            item => product._id === item._id
-                ? product
-                : item
-            )
+        const updatedProducts = []
+        items.map(item => {
+            if (product._id === item._id) {
+                updatedProducts.push(product)
+            } else updatedProducts.push(item)
+        })
 
         return updatedProducts
     }
 
     const onProductFormSubmitted = async product => {
-        
+        console.log('ProductForm submitted', product)
         const updatedProducts = await updateProducts(product)
         setItems(updatedProducts)
         setFeatured(null)
@@ -82,7 +83,7 @@ const ProductDisplay = () => {
                 <ProductForm
                     onComplete={onProductFormSubmitted}
                     onDelete={onDelete}
-                    product={featured}
+                    existingProduct={featured}
                 />
             </ModalContent>
         </View>

@@ -12,7 +12,7 @@ import { getImageDataById } from '../Data'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ onAvatarSet, onDelete, image, width = 200, height = 200, resize = 'stretch' }) => {
+export default ({ closeModal, onDelete, image, width = 200, height = 200, resize = 'stretch' }) => {
 
     const {
         dispatch,
@@ -29,17 +29,55 @@ export default ({ onAvatarSet, onDelete, image, width = 200, height = 200, resiz
     }, [])
 
     const fetchImageData = async id => {
+
         const image = await getImageDataById(id)
+        
         dispatch({ type: 'UPDATE_IMAGE', image })
         setImageData(image)
     }
 
+    const isImageProfileImage = id => {
+        let imageId = null
+        const { profileImage } = user
+        let profileImageId = null
+        if (profileImage) profileImageId = user.profileImage._id || profileImage
+        else return null
+        
+        if (profileImageId && profileImageId === id) imageId === profileImageId
+        else return null
+            
+        return imageId
+    }
+
+    const isImageProductImage = (id, products) => {
+        let imageId = null
+        products.map(product => {
+            if (product.imageId === id) imageId = product.imageId
+        })
+        return imageId
+    }
+
     const deleteImage = async () => {
+
+        const imageId = imageData._id
+
+        dispatch({ type: 'REMOVE_IMAGE', id: imageId })
+
+        const isProfileImage = isImageProfileImage(imageId)
+        let isProductImage = null
+
+        if (user.role === 'vendor' && user.products) {
+            isProductImage = isImageProductImage(imageId, user.products)
+        }
         
         setLoading('Deleting Image...')
 
         const { data } = await axios
-            .post('/api/images/delete', { _id: imageData._id })
+            .post('/api/images/delete', {
+                imageId: imageData._id,
+                isProductImage,
+                isProfileImage,
+            })
         
         if (!data) {
             console.log('Error deleting image.')
@@ -49,7 +87,7 @@ export default ({ onAvatarSet, onDelete, image, width = 200, height = 200, resiz
         
         setLoading(null)
         
-        onDelete(data.id)
+        onDelete(data.id, isProfileImage, isProductImage)
     }
 
     const setAvatar = async () => {
@@ -70,7 +108,9 @@ export default ({ onAvatarSet, onDelete, image, width = 200, height = 200, resiz
         
         setLoading(null)
         
-        onAvatarSet(data)
+        dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: data })
+
+        closeModal()
     }
 
     const showAvatarButton = () => {

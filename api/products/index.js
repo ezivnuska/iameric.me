@@ -9,7 +9,7 @@ const addImageIdToVendorImages = async (imageId, vendorId) => {
     const vendor = await User
         .findOne({ _id: vendorId })
 
-    const currentImages = vendor.image || []
+    const currentImages = vendor.images || []
     // update vendor (should be moved into try/catch)
     const updatedVendor = await User
         .findOneAndUpdate(
@@ -42,19 +42,19 @@ const saveProductImage = async (filename, userId) => {
     
     return {
         image,
-        user: updatedVendor, // possibly unnecessary.
+        products: updatedVendor.products,
     }
 }
 
-const getSavedProductImage = async (filename, vendor) => {
+const saveAndReturnNewProductImage = async (filename, vendor) => {
     
     console.log('saving ProductImage:filename', filename)
     const {
         image,
-        // user, // don't need this here, maybe should delete...
+        products, // don't need this here, maybe should delete...
     } = await saveProductImage(filename, vendor)
 
-    console.log('getSavedProductImage', image)
+    console.log('saveAndReturnNewProductImage', image)
     if (!image) {
         console.log(`Could not save ${filename}.`)
         return null
@@ -63,65 +63,60 @@ const getSavedProductImage = async (filename, vendor) => {
     return image
 }
 
-const updateAndGetExistingProduct = async ({ _id, ...newData }) => {
-    
-    // find and update existing document
-    const updatedProduct = await Product
-        .findOneAndUpdate(
-            { _id },
-            { $set: newData },
-            { new: true },
-        )
-    
-    // then return it
-    return updatedProduct
-}
-
 const createOrUpdateProduct = async (req, res) => {
 
-    // pull data from request body
+    // pull data from request
     const { _id, price, title, desc, vendor, blurb, category, imageId, filename } = req.body
+    console.log('product shit...', req.body)
+    // use data to create a starting reference to new product
+    let product = {
+        price,
+        vendor,
+        title,
+        desc,
+        blurb,
+        category,
+        // imageId: newImageId,
+    }
+
+    // if request includes a reference to (already) uploaded file...
+    if (filename) {
+        console.log('filename detected', filename)
+        const newImage = await saveAndReturnNewProductImage(filename, vendor)
+        product = {
+            ...product,
+            imageId: newImage ? newImage._id : imageId,
+        }
+        
+    }
     
-    // collect needed data for new product in object
-    const newProduct = { price, title, desc, vendor, blurb, category, imageId }
-
-    // reference to possible uploaded file attachment
-    let newImage = null
-
-    // does the request include a reference to an uploaded file?
-    if (filename) // if it does, then get and save a reference to the images id
-        newImage = await getSavedProductImage(filename, vendor)
-
-    console.log('createOrUpdateProduct:newImage', newImage)
-
-    // create a reference to new product
-    let product = null
-
+    // if product already exists, update existing product
     if (_id) {
-        const newImageId = newImage ? newImage._id : imageId
-        console.log('imageId', imageId)
-        console.log('newImage', newImage)
-        console.log('newImageId', newImageId)
-        // if product already exists, update existing product
-        product = await updateAndGetExistingProduct({
-            _id,
-            price,
-            vendor,
-            title,
-            desc,
-            blurb,
-            category,
-            imageId: newImageId,
-        })
+        // find and update existing document
+        product = await Product
+            .findOneAndUpdate(
+                { _id },
+                { $set: { ...product } },
+                { new: true },
+            )
     } else {
         // if product does not exist, create new product
         // don't forget possible new image reference
         console.log('creating new product')
-        product = await Product.create({
-            ...newProduct,
-            imageId: newImage ? newImage._id : imageId,
-        })
+        product = await Product.create({ ...product })
     }
+    
+    // collect needed data for new product in object
+    // const newProduct = { price, title, desc, vendor, blurb, category, imageId }
+
+
+    // does the request include a reference to an uploaded file?
+    // if (filename) {// if it does, then get and save a reference to the images id
+    //     console.log('filename detected', filename)
+    //     newImage = await saveAndReturnNewProductImage(filename, vendor)
+    // }
+
+    // console.log('createOrUpdateProduct:newImage', newImage)
 
     // if product creation failed
     if (!product) {

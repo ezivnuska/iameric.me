@@ -61,8 +61,9 @@ export default ({ onImageUploaded }) => {
 
     const onImageSelected = async uri => {
         
-        setLoading('Loading image preview...')
+        setLoading('Loading image preview...', uri)
         const blob = await dataURItoBlob(uri)
+        console.log('Loaded blob', blob)
         
         const reader = new FileReader()
         reader.onload = ({ target }) => {
@@ -73,8 +74,8 @@ export default ({ onImageUploaded }) => {
     }
 
     const handleOrientation = async (srcBase64, srcOrientation) => {
-
         const image = new Image()
+        console.log('orientation:loading..')
         image.onload = async () => {
             const { height, width } = image
             const canvas = document.createElement('canvas')
@@ -141,17 +142,13 @@ export default ({ onImageUploaded }) => {
                 thumbData,
             }
 
-            const response = await uploadImageData(payload)
-            
-            setPreview(response)
-
-            onImageUploaded(response)
+            uploadImage(payload)
         }
 
         image.src = srcBase64
     }
 
-    const uploadImageData = async payload => {
+    const uploadImage = async payload => {
         
         const { data } = await axios
             .post(`/api/product/image/upload`, payload)
@@ -165,7 +162,9 @@ export default ({ onImageUploaded }) => {
 
         console.log('NewImageUploader: image/thumb uploaded!', data)
 
-        return data.filename
+        setPreview(data.filename)
+
+        onImageUploaded(data.filename)
     }
 
     const onSubmit = async () => {
@@ -219,6 +218,14 @@ export default ({ onImageUploaded }) => {
                 <ImagePreview
                     path={`${IMAGE_PATH}/${user.username}/thumb/${preview}`}
                 />
+                // <Image
+                //     style={{
+                //         width: 50,
+                //         height: 50,
+                //         resizeMode: 'stretch',
+                //     }}
+                //     source={`${IMAGE_PATH}/${user.username}/thumb/${preview}`}
+                // />
             ) : (
                 <FileSelector
                     onImageSelected={onImageSelected}

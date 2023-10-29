@@ -28,6 +28,7 @@ const {
     deletePreview,
     getImagesByUserId,
     getImageWithUsernameByImageId,
+    getImageIdFromFilename,
     getProfileImageByUserId,
     updateProfileImage,
     uploadAvatar,
@@ -116,7 +117,7 @@ app.get(    '/products/:vendor',        getProductsByVendorId)
 
 // images
 app.post(   '/user/avatar',             updateProfileImage)
-app.get(    '/images/:id',              getImageWithUsernameByImageId)
+app.get(    '/image/:id',               getImageWithUsernameByImageId)
 app.get(    '/avatar/:id',              getProfileImageByUserId)
 app.get(    '/user/images/:id',         getImagesByUserId)
 app.post(   '/upload/avatar',           uploadAvatar)
@@ -124,6 +125,7 @@ app.post(   '/images/delete',           deleteImageById)
 app.post(   '/image/upload',            uploadImage)
 app.post(   '/product/image/upload',    uploadProductImage)
 app.post(   '/preview/delete',          deletePreview)
+app.get(    '/images/:name',            getImageIdFromFilename)
 
 // orders
 app.get(    '/orders/:id',              getOrdersByUserId)
