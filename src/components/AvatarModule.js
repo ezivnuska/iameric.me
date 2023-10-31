@@ -11,6 +11,7 @@ import ReactAvatarEditor from 'react-avatar-editor'
 import {
     CircleButton,
     FileSelector,
+    Preview,
     StatusDisplay,
 } from '.'
 import {
@@ -176,6 +177,19 @@ export default ({ onComplete }) => {
     
         image.src = srcBase64
     }
+
+    // const reactAvatarEditor = () => (
+    //     <ReactAvatarEditor
+    //         image={preview}
+    //         width={size - 50}
+    //         height={size - 50}
+    //         border={25}
+    //         color={[0, 0, 0, 0.2]}
+    //         scale={1.2}
+    //         rotate={0}
+    //         ref={ref => setEditorRef(ref)}
+    //     />
+    // )
     
     return (
         <View
@@ -191,17 +205,11 @@ export default ({ onComplete }) => {
                         handleDrop={uri => handleDrop(uri)}
                     />
                 ) : (
-                    <ReactAvatarEditor
-                        image={preview}
-                        width={size - 50}
-                        height={size - 50}
-                        border={25}
-                        color={[0, 0, 0, 0.2]}
-                        scale={1.2}
-                        rotate={0}
-                        ref={ref => setEditorRef(ref)}
+                    <Preview
+                        dataURL={preview}
                     />
                 )}
+                    
             </View>
 
             <View style={styles.controls}>

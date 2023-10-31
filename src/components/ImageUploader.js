@@ -3,9 +3,11 @@ import {
     View,
 } from 'react-native'
 import {
-    FileSelector, LoadingView,
+    FileSelector,
+    LoadingView,
+    Preview,
 } from './'
-import ReactAvatarEditor from 'react-avatar-editor'
+// import ReactAvatarEditor from 'react-avatar-editor'
 import { Button } from 'antd'
 import EXIF from 'exif-js'
 import axios from 'axios'
@@ -42,96 +44,312 @@ export default ({ onImageUploaded }) => {
         }
     }, [dims])
 
+    // useEffect(() => {
+    //     console.log('preview', preview)
+    // }, [preview])
+
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
+
+    const createImage = url =>
+        new Promise((resolve, reject) => {
+            const image = new Image()
+            image.addEventListener('load', () => resolve(image))
+            image.addEventListener('error', error => reject(error))
+            image.setAttribute('crossOrigin', 'anonymous')
+            image.src = url
+        })
+    
+    const exportFromCanvas = async (
+        canvas,
+        qualityReductionFactor,
+    ) => {
+        return new Promise(resolve => {
+            canvas.toBlob(
+                file => {
+                    resolve(URL.createObjectURL(file))
+                },
+                'image/jpeg',
+                qualityReductionFactor
+            )
+        })
+    }
+
+    const getRadianAngle = degreeValue => {
+        return (degreeValue * Math.PI) / 180
+    }
+
+    const SIZE_REDUCTION_FACTOR = 0.125
+    const QUALITY_REDUCTION_FACTOR = 0.4
+
+    const useCanvasImage = (
+        reductionFactor = SIZE_REDUCTION_FACTOR,
+        qualityReductionFactor = QUALITY_REDUCTION_FACTOR,
+        ) => {
+        const getImage = async (
+            imageSrc, 
+            pixelCrop = null, 
+            rotation = 0
+        ) => {
+            const image = await createImage(imageSrc)
+            const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')
+        
+            if (!pixelCrop) {
+                pixelCrop = {
+                    width: image.width,
+                    height: image.height,
+                    x: 0,
+                    y: 0,
+                }
+            }
+
+            const safeArea = Math.max(image.width, image.height)
+        
+            canvas.width = safeArea
+            canvas.height = safeArea
+        
+            ctx.translate(
+                safeArea * reductionFactor,
+                safeArea * reductionFactor
+            )
+
+            ctx.rotate(getRadianAngle(rotation))
+            
+            ctx.translate(
+                -safeArea * reductionFactor,
+                -safeArea * reductionFactor
+            )
+            ctx.drawImage(
+                image,
+                safeArea * reductionFactor - image.width * reductionFactor,
+                safeArea * reductionFactor - image.height * reductionFactor
+            )
+        
+            const data = ctx.getImageData(0, 0, safeArea, safeArea)
+        
+            canvas.width = pixelCrop.width
+            canvas.height = pixelCrop.height
+        
+            ctx.putImageData(
+                data,
+                0 -
+                    safeArea * reductionFactor +
+                    image.width * reductionFactor -
+                    pixelCrop.x,
+                0 -
+                    safeArea * reductionFactor +
+                    image.height * reductionFactor -
+                    pixelCrop.y
+            )
+
+            const exported = await exportFromCanvas(
+                canvas,
+                qualityReductionFactor,
+            )
+            console.log('exported', exported)
+            return exported
+        }
+      
+        return { getImage }
+    }
+
+    // const onDrop = uri => {
+
+    // }
+
+    // const handleDroppedFile = async file => {
+        
+    //     const { getImage } = useCanvasImage()
+    //     const blob = await dataURItoBlob(file)
+
+    //     const reader = new FileReader()
+    //     reader.onload = async ({ target }) => {
+    //         if (target) {
+                
+    //             const image = await getImage(target.result)
+                
+    //             setPreview(image)
+    //         }
+    //     }
+    //     reader.readAsDataURL(blob)
+    // }
 
     const handleDrop = async uri => {
 
-        setLoading('Loading image preview...')
         const blob = await dataURItoBlob(uri)
         
         const reader = new FileReader()
         reader.onload = ({ target }) => {
             const exif = EXIF.readFromBinaryFile(target.result)
-            handleOrientation(uri, exif)
+            loadImage(uri, exif)
         }
         reader.readAsArrayBuffer(blob)
     }
 
-    const handleOrientation = async (srcBase64, srcOrientation) => {
-
+    const loadImage = async (src, exif) => {
         const image = new Image()
         image.onload = async () => {
-            const { height, width } = image
-            const canvas = document.createElement('canvas')
-            const ctx = canvas.getContext('2d')
-
-            const filename = `${user._id}-${Date.now()}.png`
-
-
-            let imageWidth = width
-            let imageHeight = height
-            let thumbWidth
-            let thumbHeight
-
-            if (srcOrientation > 4 && srcOrientation < 9) {
-                imageWidth = height
-                imageHeight = width
-            }
-
-            const MAX_WIDTH = 200
-            const THUMB_WIDTH = 50
-
-            if (imageWidth > MAX_WIDTH) {
-                imageWidth = MAX_WIDTH
-                imageHeight *= MAX_WIDTH / width
-            }
-
-            canvas.width = imageWidth
-            canvas.height = imageHeight
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            ctx.drawImage(image, 0, 0, imageWidth, imageHeight)
-
-            const imageURI = canvas.toDataURL('image/png:base64;')
-
-            const imageData = {
-                height: imageHeight,
-                width: imageWidth,
-                uri: imageURI,
-                filename,
-            }
-
-            thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
-            thumbHeight = imageWidth * (THUMB_WIDTH / imageWidth)
-
-            canvas.width = thumbWidth
-            canvas.height = thumbHeight
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
-            ctx.drawImage(image, 0, 0, thumbWidth, thumbHeight)
-
-            const thumbURI = canvas.toDataURL('image/png:base64;')
-
-            const thumbData = {
-                height: thumbHeight,
-                width: thumbWidth,
-                uri: thumbURI,
-                filename,
-            }
-
-            const payload = {
-                userId: user._id,
-                imageData,
-                thumbData,
-            }
-
+            const payload = await handleImageData(image, exif)
+            const { imageData } = payload
+            const { uri, height, width } = imageData
             setPayload(payload)
-            setPreview(imageURI)
+            setPreview({
+                uri,
+                height,
+                width,
+            })
             setLoading(null)
         }
-
-        image.src = srcBase64
+        image.src = src
     }
+
+    const handleImageData = async (image, srcOrientation) => {
+        
+        const { height, width } = image
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+
+        const filename = `${user._id}-${Date.now()}.png`
+
+        let imageWidth = width
+        let imageHeight = height
+        let thumbWidth
+        let thumbHeight
+
+        if (srcOrientation > 4 && srcOrientation < 9) {
+            imageWidth = height
+            imageHeight = width
+        }
+
+        const MAX_WIDTH = 340
+        const THUMB_WIDTH = 50
+
+        if (imageWidth >= MAX_WIDTH) {
+            imageWidth = MAX_WIDTH
+            imageHeight *= MAX_WIDTH / width
+        }
+
+        canvas.width = imageWidth
+        canvas.height = imageHeight
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+
+        const imageURI = canvas.toDataURL('image/png:base64;')
+
+        const imageData = {
+            height: imageHeight,
+            width: imageWidth,
+            uri: imageURI,
+            filename,
+        }
+
+        thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
+        thumbHeight = imageHeight * (THUMB_WIDTH / imageWidth)
+
+        canvas.width = thumbWidth
+        canvas.height = thumbHeight
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+
+        const thumbURI = canvas.toDataURL('image/png:base64;')
+
+        const thumbData = {
+            height: thumbHeight,
+            width: thumbWidth,
+            uri: thumbURI,
+            filename,
+        }
+
+        const payload = {
+            userId: user._id,
+            imageData,
+            thumbData,
+        }
+
+        return payload
+    }
+
+    // const handleOrientation = async (srcBase64, srcOrientation) => {
+
+    //     const image = new Image()
+    //     image.onload = async () => {
+    //         const { height, width } = image
+    //         const canvas = document.createElement('canvas')
+    //         const ctx = canvas.getContext('2d')
+
+    //         const filename = `${user._id}-${Date.now()}.png`
+
+    //         let imageWidth = width
+    //         let imageHeight = height
+    //         let thumbWidth
+    //         let thumbHeight
+
+    //         if (srcOrientation > 4 && srcOrientation < 9) {
+    //             imageWidth = height
+    //             imageHeight = width
+    //         }
+
+    //         const MAX_WIDTH = 300
+    //         const THUMB_WIDTH = 50
+
+    //         if (imageWidth >= MAX_WIDTH) {
+    //             imageWidth = MAX_WIDTH
+    //             imageHeight *= MAX_WIDTH / width
+    //         }
+
+    //         canvas.width = imageWidth
+    //         canvas.height = imageHeight
+
+    //         ctx.clearRect(0, 0, canvas.width, canvas.height)
+    //         ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+
+    //         const imageURI = canvas.toDataURL('image/png:base64;')
+
+    //         const imageData = {
+    //             height: imageHeight,
+    //             width: imageWidth,
+    //             uri: imageURI,
+    //             filename,
+    //         }
+
+    //         thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
+    //         thumbHeight = imageHeight * (THUMB_WIDTH / imageWidth)
+
+    //         canvas.width = thumbWidth
+    //         canvas.height = thumbHeight
+
+    //         ctx.clearRect(0, 0, canvas.width, canvas.height)
+    //         ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+
+    //         const thumbURI = canvas.toDataURL('image/png:base64;')
+
+    //         const thumbData = {
+    //             height: thumbHeight,
+    //             width: thumbWidth,
+    //             uri: thumbURI,
+    //             filename,
+    //         }
+
+    //         const payload = {
+    //             userId: user._id,
+    //             imageData,
+    //             thumbData,
+    //         }
+    //         console.log('imageURI....', imageURI)
+    //         console.log('typeof imageURI....', typeof imageURI)
+    //         setPayload(payload)
+    //         setPreview({
+    //             uri: imageData.uri,
+    //             height: imageData.height,
+    //             width: imageData.width,
+    //         })
+    //         setLoading(null)
+    //     }
+
+    //     image.src = srcBase64
+    // }
 
     const uploadImageData = async payload => {
         
@@ -275,6 +493,19 @@ export default ({ onImageUploaded }) => {
     //     return data.id
     // }
 
+    // const reactAvatarEditor = () => (
+    //     <ReactAvatarEditor
+    //         image={preview}
+    //         width={size - 50}
+    //         height={size - 50}
+    //         border={25}
+    //         color={[0, 0, 0, 0.2]}
+    //         scale={1.2}
+    //         rotate={0}
+    //         ref={ref => setEditor(ref)}
+    //     />
+    // )
+
     const clearPreview = () => setPreview(null)
 
     return !loading ? (
@@ -289,15 +520,10 @@ export default ({ onImageUploaded }) => {
         >
             
             {preview ? (
-                <ReactAvatarEditor
-                    image={preview}
-                    width={size - 50}
-                    height={size - 50}
-                    border={25}
-                    color={[0, 0, 0, 0.2]}
-                    scale={1.2}
-                    rotate={0}
-                    ref={ref => setEditor(ref)}
+                <Preview
+                    height={preview.height}
+                    width={preview.width}
+                    imageURI={preview.uri}
                 />
             ) : (
                 <FileSelector
@@ -314,7 +540,7 @@ export default ({ onImageUploaded }) => {
             }}>
                 
                 <Button
-                    disabled={!editor}
+                    disabled={!preview}
                     onClick={onSubmit}
                 >
                     Upload

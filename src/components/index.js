@@ -43,6 +43,7 @@ import OrderListContainer from './OrderListContainer'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
+import Preview from './Preview'
 import ProductDetails from './ProductDetails'
 import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
@@ -108,6 +109,7 @@ export {
     OrderList,
     OrderDetails,
     OrderPreview,
+    Preview,
     ProductDetails,
     ProductDisplay,
     ProductForm,
