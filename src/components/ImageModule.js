@@ -70,13 +70,23 @@ export default () => {
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
     const [items, setItems] = useState(null)
+    const [upload, setUpload] = useState(null)
 
     useEffect(() => {
         console.log('setting images', user.images)
         setItems(user.images)
     }, [])
 
+    useEffect(() => {
+        if (upload) {
+            uploadImageData(upload)
+        }
+    }, [upload])
+
     const onImageUploaded = image => {
+        
+        setUpload(null)
+
         console.log('image uploaded. current items:', items)
         setItems([...items, image])
         console.log('image uploaded. items set to:', items)
@@ -117,11 +127,36 @@ export default () => {
         setUploadedItems([])
     }
 
+    const onImageSelected = payload => {
+        console.log('image selected', payload.imageData.filename)
+        
+        setUpload(payload)
+        // const { uri, height, width } = data.imageData
+    }
+
     const onSelected = image => {
         // console.log(`selecting ${image._id} from items:`, items)
         const selectedItem = items.filter(item => item._id === image._id)[0]
         // console.log('selected item', selectedItem)
         setFeatured(selectedItem)
+    }
+
+    const uploadImageData = async () => {
+        
+        const { data } = await axios
+            .post(`/api/image/upload`, upload)
+
+        setLoading(null)
+
+        if (!data) {
+            console.log('Error uploading image/thumb')
+            return null
+        }
+
+        console.log('ImageUploader: image/thumb uploaded!', data)
+        
+        onImageUploaded(data.image)
+        return data
     }
 
     return (
@@ -148,7 +183,7 @@ export default () => {
                 label='Upload an Image'
             >
                 <ImageUploader
-                    onImageUploaded={onImageUploaded}
+                    onImageSelected={onImageSelected}
                 />
             </ModalContent>
 

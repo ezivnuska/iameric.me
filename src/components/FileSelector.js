@@ -13,13 +13,16 @@ import * as FileSystem from 'expo-file-system'
 const FileSelector = ({ onImageSelected }) => {
 
   const openImagePickerAsync = async () => {
-    console.log('opening image picker')
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    
+      let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+
       if (permissionResult.granted === false) {
           alert('Permission to access camera roll is required!')
           return
       }
+
       let pickerResult = await ImagePicker.launchImageLibraryAsync()
+      
       if (!pickerResult.canceled) {
           const uploadResult = await FileSystem.uploadAsync('/api/upload/avatar', pickerResult.uri, {
               httpMethod: 'POST',

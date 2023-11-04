@@ -16,7 +16,7 @@ import { dataURItoBlob, handleUpload, imageToDataURIs, uploadImage } from '../Up
 
 const initialSize = 300
 
-export default ({ onImageUploaded }) => {
+export default ({ onImageSelected }) => {
 
     const {
         dims,
@@ -176,13 +176,13 @@ export default ({ onImageUploaded }) => {
 
     const handleDrop = async uri => {
 
-        const blob = await dataURItoBlob(uri)
-        
         const reader = new FileReader()
         reader.onload = ({ target }) => {
             const exif = EXIF.readFromBinaryFile(target.result)
             loadImage(uri, exif)
         }
+
+        const blob = await dataURItoBlob(uri)
         reader.readAsArrayBuffer(blob)
     }
 
@@ -190,31 +190,37 @@ export default ({ onImageUploaded }) => {
         const image = new Image()
         image.onload = async () => {
             const payload = await handleImageData(image, exif)
-            const { imageData } = payload
-            const { uri, height, width } = imageData
             setPayload(payload)
-            setPreview({
-                uri,
-                height,
-                width,
-            })
+
+            const { uri, height, width } = payload.imageData
+            setPreview({ uri, height, width })
+            
             setLoading(null)
         }
         image.src = src
     }
 
     const handleImageData = async (image, srcOrientation) => {
+        const userId = user._id
+        const imageData = await getImageData(image, srcOrientation)
+        const thumbData = await getThumbData(image, srcOrientation)
+        const filename = `${userId}-${Date.now()}.png`
+
+        return {
+            imageData: { ...imageData, filename },
+            thumbData: { ...thumbData, filename },
+            userId,
+        }
+    }
+
+    const getImageData = async (image, srcOrientation) => {
         
         const { height, width } = image
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
 
-        const filename = `${user._id}-${Date.now()}.png`
-
         let imageWidth = width
         let imageHeight = height
-        let thumbWidth
-        let thumbHeight
 
         if (srcOrientation > 4 && srcOrientation < 9) {
             imageWidth = height
@@ -222,7 +228,6 @@ export default ({ onImageUploaded }) => {
         }
 
         const MAX_WIDTH = 340
-        const THUMB_WIDTH = 50
 
         if (imageWidth >= MAX_WIDTH) {
             imageWidth = MAX_WIDTH
@@ -237,38 +242,47 @@ export default ({ onImageUploaded }) => {
 
         const imageURI = canvas.toDataURL('image/png:base64;')
 
-        const imageData = {
+        return {
             height: imageHeight,
             width: imageWidth,
             uri: imageURI,
-            filename,
+        }
+    }
+
+    const getThumbData = async (image, srcOrientation) => {
+        
+        const { height, width } = image
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+
+        let imageWidth = width
+        let imageHeight = height
+
+        if (srcOrientation > 4 && srcOrientation < 9) {
+            imageWidth = height
+            imageHeight = width
         }
 
-        thumbWidth = imageWidth * (THUMB_WIDTH / imageWidth)
-        thumbHeight = imageHeight * (THUMB_WIDTH / imageWidth)
+        const THUMB_WIDTH = 50
 
-        canvas.width = thumbWidth
-        canvas.height = thumbHeight
+        if (imageWidth >= THUMB_WIDTH) {
+            imageWidth = THUMB_WIDTH
+            imageHeight *= THUMB_WIDTH / width
+        }
+
+        canvas.width = imageWidth
+        canvas.height = imageHeight
 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
 
-        const thumbURI = canvas.toDataURL('image/png:base64;')
+        const imageURI = canvas.toDataURL('image/png:base64;')
 
-        const thumbData = {
-            height: thumbHeight,
-            width: thumbWidth,
-            uri: thumbURI,
-            filename,
+        return {
+            height: imageHeight,
+            width: imageWidth,
+            uri: imageURI,
         }
-
-        const payload = {
-            userId: user._id,
-            imageData,
-            thumbData,
-        }
-
-        return payload
     }
 
     // const handleOrientation = async (srcBase64, srcOrientation) => {
@@ -351,22 +365,22 @@ export default ({ onImageUploaded }) => {
     //     image.src = srcBase64
     // }
 
-    const uploadImageData = async payload => {
+    // const uploadImageData = async payload => {
         
-        const { data } = await axios
-            .post(`/api/image/upload`, payload)
+    //     const { data } = await axios
+    //         .post(`/api/image/upload`, payload)
 
-        setLoading(null)
+    //     setLoading(null)
 
-        if (!data) {
-            console.log('Error uploading image/thumb')
-            return null
-        }
+    //     if (!data) {
+    //         console.log('Error uploading image/thumb')
+    //         return null
+    //     }
 
-        console.log('ImageUploader: image/thumb uploaded!', data)
+    //     console.log('ImageUploader: image/thumb uploaded!', data)
 
-        return data
-    }
+    //     return data
+    // }
 
     const onSubmit = async () => {
 
@@ -375,11 +389,13 @@ export default ({ onImageUploaded }) => {
             return
         }
 
-        const { image } = await uploadImageData(payload)
+        // const { image } = await uploadImageData(payload)
         
         // setPreview(filename)
 
-        onImageUploaded(image)
+        // onImageUploaded(image)
+
+        onImageSelected(payload)
         // if (editor) {
         //     setLoading('Uploading image...')
         //     const canvas = editor.getImage()
