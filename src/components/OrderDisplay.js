@@ -26,7 +26,7 @@ const OrderDisplay = () => {
     const [featuredItem, setFeaturedItem] = useState(null)
 
     useEffect(() => {
-        getOrders()
+        // getOrders()
     }, [])
 
     const getFeaturedItem = id => {
@@ -61,13 +61,13 @@ const OrderDisplay = () => {
         
         setLoading(false)
 
-        if (!data.orders) console.log('no orders found')
+        if (!data.orderIds) console.log('no orders found')
 
-        dispatch({ type: 'SET_ORDERS', orders: data.orders })
+        dispatch({ type: 'SET_ORDERS', orders: data.orderIds })
 
-        const orders = relevantOrders(data.orders)
+        // const orders = relevantOrders(data.orderIds)
         
-        setItems(orders)
+        setItems(orderIds)
     }
 
     const removeOrder = id => {

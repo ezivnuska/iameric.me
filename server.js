@@ -19,6 +19,7 @@ const {
 
 const {
     getAllUsers,
+    getAllVendorIds,
     getAllVendors,
     getUserById,
 } = require('./api/users')
@@ -39,6 +40,8 @@ const {
 const {
     createOrUpdateProduct,
     deleteProductById,
+    getProductById,
+    getProductIdsByVendorId,
     getProductsByVendorId,
 } = require('./api/products')
 
@@ -54,6 +57,7 @@ const {
     createOrder,
     deleteOrderByOrderId,
     getAllOrders,
+    getOrderIdsByUserId,
     getOrdersByCustomerId,
     getOrdersByDriverId,
     getOrdersByUserId,
@@ -78,7 +82,7 @@ const server = createServer(app)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ limit: '5mb' }))
 app.use(cors({
-    origin: ['http://localhost:8080', 'https://iameric.me'],
+    origin: ['https://localhost:8080', 'https://iameric.me'],
 }))
 app.use(express.static('dist'))
 app.use('/assets', express.static('./assets'))
@@ -98,7 +102,7 @@ app.post(   '/unsubscribe',            closeAccount)
 
 // users
 app.get(    '/users',                   getAllUsers)
-app.get(    '/vendors',                 getAllVendors)
+app.get(    '/vendors',                 getAllVendorIds)
 app.get(    '/users/:id',               getUserById)
 
 // entries
@@ -113,7 +117,8 @@ app.get(    '/user/location/:userId',   getLocationByUserId)
 // products
 app.post(   '/product',                 createOrUpdateProduct)
 app.delete( '/products/delete',         deleteProductById)
-app.get(    '/products/:vendor',        getProductsByVendorId)
+app.get(    '/products/:vendor',        getProductIdsByVendorId)
+app.get(    '/product/:id',             getProductById)
 
 // images
 app.post(   '/user/avatar',             updateProfileImage)
@@ -128,7 +133,7 @@ app.post(   '/preview/delete',          deletePreview)
 app.get(    '/images/:name',            getImageIdFromFilename)
 
 // orders
-app.get(    '/orders/:id',              getOrdersByUserId)
+app.get(    '/orders/:id',              getOrderIdsByUserId)
 app.get(    '/orders',                  getAllOrders)
 app.get(    '/orders/customer/:id',     getOrdersByCustomerId)
 app.get(    '/orders/driver/:id',       getOrdersByDriverId)

@@ -12,7 +12,7 @@ import { getImageDataById } from '../Data'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ closeModal, onDelete, image, width = 200, height = 200, resize = 'stretch' }) => {
+export default ({ closeModal, onDelete, imageData, width = 200, height = 200, resize = 'stretch' }) => {
 
     const {
         dispatch,
@@ -20,33 +20,26 @@ export default ({ closeModal, onDelete, image, width = 200, height = 200, resize
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
-    const [imageData, setImageData] = useState(null)
+    const [image, setImage] = useState(null)
 
     useEffect(() => {
-        if (!image) return
-        if (typeof image === 'string') fetchImageData(image)
-        else setImageData(image)
+        if (imageData) {
+            if (typeof imageData === 'string') fetchImageData(imageData)
+            else setImage(imageData)
+        }
     }, [])
 
     const fetchImageData = async id => {
 
-        const image = await getImageDataById(id)
-        
-        dispatch({ type: 'UPDATE_IMAGE', image })
-        setImageData(image)
+        const data = await getImageDataById(id)
+        console.log('ImageDetail:UPDATE_IMAGE:', data)
+        dispatch({ type: 'UPDATE_IMAGE', image: data })
+        setImage(data)
     }
 
     const isImageProfileImage = id => {
-        let imageId = null
-        const { profileImage } = user
-        let profileImageId = null
-        if (profileImage) profileImageId = user.profileImage._id || profileImage
-        else return null
-        
-        if (profileImageId && profileImageId === id) imageId === profileImageId
-        else return null
-            
-        return imageId
+        if (!user.profileImage) return null
+        return user.profileImage === id ? true : false
     }
 
     const isImageProductImage = (id, products) => {
@@ -59,13 +52,13 @@ export default ({ closeModal, onDelete, image, width = 200, height = 200, resize
 
     const deleteImage = async () => {
 
-        const imageId = imageData._id
+        const imageId = image._id
 
         dispatch({ type: 'REMOVE_IMAGE', id: imageId })
 
         const isProfileImage = isImageProfileImage(imageId)
-        let isProductImage = null
 
+        let isProductImage = null
         if (user.role === 'vendor' && user.products) {
             isProductImage = isImageProductImage(imageId, user.products)
         }
@@ -74,7 +67,7 @@ export default ({ closeModal, onDelete, image, width = 200, height = 200, resize
 
         const { data } = await axios
             .post('/api/images/delete', {
-                imageId: imageData._id,
+                imageId,
                 isProductImage,
                 isProfileImage,
             })
@@ -84,6 +77,8 @@ export default ({ closeModal, onDelete, image, width = 200, height = 200, resize
             setLoading(null)
             return null
         }
+
+        console.log('deleted image:data:', data)
         
         setLoading(null)
         
@@ -97,7 +92,7 @@ export default ({ closeModal, onDelete, image, width = 200, height = 200, resize
         const { data } = await axios
             .post('/api/user/avatar', {
                 userId: user._id,
-                imageId: imageData._id
+                imageId: image._id,
             })
         
         if (!data) {
@@ -115,12 +110,12 @@ export default ({ closeModal, onDelete, image, width = 200, height = 200, resize
 
     const showAvatarButton = () => {
         if (!user.profileImage) return true
-        if (typeof user.profileImage === 'string' && user.profileImage === imageData._id) return true
-        if (user.profileImage._id !== imageData._id) return true
+        if (typeof user.profileImage === 'string' && user.profileImage === image._id) return true
+        if (user.profileImage._id !== image._id) return true
         return false
     }
 
-    return imageData ? (
+    return image ? (
         <View
             style={{
                 display: 'flex',
@@ -133,7 +128,7 @@ export default ({ closeModal, onDelete, image, width = 200, height = 200, resize
                 width={200}
                 height={200}
                 source={{
-                    uri: `${IMAGE_PATH}/${user.username}/${imageData.filename}`,
+                    uri: `${IMAGE_PATH}/${user.username}/${image.filename}`,
                 }}
                 style={{
                     resizeMode: resize,

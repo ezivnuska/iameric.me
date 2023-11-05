@@ -9,37 +9,39 @@ import { AppContext } from '../AppContext'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ image }) => {
+export default ({ imageData }) => {
 
-    const { dispatch } = useContext(AppContext)
+    const { dispatch, user } = useContext(AppContext)
 
-    const [imageData, setImageData] = useState(null)
+    const [image, setImage] = useState(null)
 
     useEffect(() => {
-        if (image) {
-            if (typeof image === 'string') fetchImageData(image)
-            else setImageData(image)
-        } else {
-            if (imageData) {
-                setImageData(null)
-            }
+        console.log('imageData:', imageData)
+        if (imageData) {
+            if (typeof imageData === 'string') fetchImageData(imageData)
+            else setImage(imageData)
         }
+    }, [])
+
+    useEffect(() => {
+        console.log('>>> image >>>', image)
     }, [image])
 
     const fetchImageData = async id => {
+        console.log('fetching image data for id', id)
 
         const data = await getImageDataById(id)
-        
+        console.log('ImageLoader:UPDATE_IMAGE:', data)
         dispatch({ type: 'UPDATE_IMAGE', image: data })
-        setImageData(data)
+        setImage(data)
     }
 
-    return imageData
+    return image
         ? (
             <Image
                 width={IMAGE_SIZE}
                 height={IMAGE_SIZE}
-                source={{ uri: `${IMAGE_PATH}/${imageData.user.username}/thumb/${imageData.filename}` }}
+                source={{ uri: `${IMAGE_PATH}/${user.username}/thumb/${image.filename}` }}
                 style={{
                     resizeMode: 'stretch',
                     width: IMAGE_SIZE,

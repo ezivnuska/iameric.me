@@ -18,6 +18,7 @@ import main from '../styles/main'
 import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import { getImagesByUserId } from '../../api/images'
 const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
 
 const Header = ({ onPress }) => {
@@ -73,17 +74,53 @@ export default () => {
     const [upload, setUpload] = useState(null)
 
     useEffect(() => {
-        console.log('setting images', user.images)
-        setItems(user.images)
+        // console.log('setting images', user.images)
+        // setItems(user.images)
+        getImageData()
     }, [])
 
+    const getImageData = async () => {
+        const { data } = await axios.get(`/api/user/images/${user._id}`)
+        console.log('images got.', data)
+        if (!data) {
+            console.log('no images found.')
+            return null
+        }
+        setItems(data.images)
+        dispatch({ type: 'SET_USER_IMAGES', images: data.images })
+    }
+
     useEffect(() => {
+        console.log('upload value:', upload)
         if (upload) {
+            console.log('value confirmed. uploading.')
             uploadImageData(upload)
         }
     }, [upload])
 
+    const uploadImageData = async imageData => {
+        
+        setLoading('Uploading Image...')
+
+        const { data } = await axios
+            .post(`/api/image/upload`, imageData)
+
+        setLoading(null)
+
+        if (!data) {
+            console.log('Error uploading image/thumb')
+            return null
+        }
+
+        console.log('ImageUploader: image/thumb uploaded!', data)
+        
+        onImageUploaded(data)
+        return data
+    }
+
     const onImageUploaded = image => {
+
+        console.log('image uploaded', image)
         
         setUpload(null)
 
@@ -101,11 +138,11 @@ export default () => {
 
     const onDelete = (id, isProfileImage, isProductImage) => {
 
-        // setItems(items.filter(item =>
-        //     typeof item === 'string'
-        //     ? item !== id
-        //     : item._id !== id
-        // ))
+        setItems(items.filter(item =>
+            typeof item === 'string'
+            ? item !== id
+            : item._id !== id
+        ))
 
         if (isProfileImage) dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: null })
         if (isProductImage) dispatch({ type: 'REMOVE_PRODUCT_IMAGE', imageId: id })
@@ -135,28 +172,14 @@ export default () => {
     }
 
     const onSelected = image => {
-        // console.log(`selecting ${image._id} from items:`, items)
-        const selectedItem = items.filter(item => item._id === image._id)[0]
+        console.log(`selecting image from items:`, items)
+        console.log(`selecting ${image} from items:`, items)
+        const selectedItem = items.filter(item => {
+            console.log('item:', item)
+            return item === image._id || item._id === image._id
+        })[0]
         // console.log('selected item', selectedItem)
         setFeatured(selectedItem)
-    }
-
-    const uploadImageData = async () => {
-        
-        const { data } = await axios
-            .post(`/api/image/upload`, upload)
-
-        setLoading(null)
-
-        if (!data) {
-            console.log('Error uploading image/thumb')
-            return null
-        }
-
-        console.log('ImageUploader: image/thumb uploaded!', data)
-        
-        onImageUploaded(data.image)
-        return data
     }
 
     return (
@@ -193,7 +216,7 @@ export default () => {
                 label='Image Detail'
             >
                 <ImageDetail
-                    image={featured}
+                    imageData={featured}
                     closeModal={() => setFeatured(null)}
                     onDelete={onDelete}
                 />

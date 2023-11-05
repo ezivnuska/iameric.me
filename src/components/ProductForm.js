@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
+    Pressable,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -9,7 +11,7 @@ import {
     FormInput,
     ImageLoader,
     // ImagePreview,
-    NewImageUploader,
+    ImageUploader,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
@@ -28,15 +30,17 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
 
     const [loading, setLoading] = useState(false)
     // const [ product, setProduct ] = useState(null)
-    const [ title, setTitle ] = useState('')
-    const [ price, setPrice ] = useState('')
-    const [ blurb, setBlurb ] = useState('')
-    const [ desc, setDesc ] = useState('')
-    const [ category, setCategory ] = useState('')
+    const [ title, setTitle ] = useState(existingProduct ? existingProduct.title : '')
+    const [ price, setPrice ] = useState(existingProduct ? existingProduct.price : '')
+    const [ blurb, setBlurb ] = useState(existingProduct ? existingProduct.blurb : '')
+    const [ desc, setDesc ] = useState(existingProduct ? existingProduct.desc : '')
+    const [ category, setCategory ] = useState(existingProduct ? existingProduct.category : 'main')
     // const [ image, setImage ] = useState(null)
-    const [ imageId, setImageId ] = useState(null)
-    const [ filename, setFilename ] = useState(null)
-    const [ path, setPath ] = useState(null)
+    const [ imageId, setImageId ] = useState(existingProduct ? existingProduct.imageId : null)
+    // const [ filename, setFilename ] = useState(null)
+    // const [ path, setPath ] = useState(null)
+    const [ attachment, setAttachment ] = useState(null)
+    const [ showSelector, setShowSelector ] = useState(false)
 
     const onChangeTitle = value => setTitle(value)
     const onChangePrice = value => setPrice(value)
@@ -47,69 +51,16 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
     useEffect(() => {
         // if editing, set initial form vars
         if (existingProduct) {
-            console.log('form initiated with existing product:', existingProduct.title)
-
-            setTitle(existingProduct.title || '')
-            setPrice(existingProduct.price || '')
-            setBlurb(existingProduct.blurb || '')
-            setDesc(existingProduct.desc || '')
-            setCategory(existingProduct.category || '')
-            setImageId(existingProduct.imageId)
+            console.log('form initiated with existing product:', existingProduct)
         }
 
     }, [])
 
-    useEffect(() => {
-        if (user) {
-            if (!path) setPath(`${IMAGE_PATH}/${user.username}/thumb/`)
-        }
-    }, [user])
-
-    const getImageIdFromFilename = async name => {
-        console.log('name...', name)
-        const { data } = await axios
-            .get(`/api/images/${name}`)
-
-        if (!data) {
-            console.log('could not fetch image data.')
-            return null
-        }
-        console.log('fetchedImageData:', data)
-        
-        setImageId(data._id)
-    }
-    
-    const fetchImageById = async id => {
-
-        const { data } = await axios
-            .get(`/api/images/${id}`)
-
-        if (!data) {
-            console.log('could not fetch image data.')
-            return null
-        }
-        console.log('fetchedImageData:', data)
-        if (existingProduct) {
-            if (existingProduct.filename && existingProduct.filename !== data.filename) {
-                setImageId(data.imageId)
-                setFilename(data.filename)
-            }
-        }
-        
-        if (
-            (existingProduct && existingProduct.filename) &&
-            (existingProduct.filename !== data.filename)
-        ) {
-            console.log('setting filename for new image.', data)
-            setFilename(data.filename)
-        }
-
-        console.log('done fetching image data.')
-    }
-
     const onSubmit = async () => {
+        
+        setLoading(true)
 
-        const { _id, role, username } = user
+        const { _id } = user
         
         let productData = {
             vendor: _id,
@@ -121,17 +72,17 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
             imageId,
         }
 
-        if (existingProduct && existingProduct._id) productData = {
-            ...productData,
-            _id: existingProduct._id,
+        if (existingProduct && existingProduct._id) {
+            productData = {
+                ...productData,
+                _id: existingProduct._id,
+            }
         }
 
-        if (filename) productData = {
+        if (attachment) productData = {
             ...productData,
-            filename,
+            attachment,
         }
-        
-        setLoading(true)
 
         const { data } = await axios
             .post('/api/product', productData)
@@ -157,15 +108,66 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
         setDesc('')
         setBlurb('')
         setCategory('')
-        setFilename(null)
+        // setFilename(null)
+        setImageId(null)
+        setAttachment(null)
 
         onComplete(data)
     }
 
-    const onImageUploaded = name => {
-        console.log('filename set after image upload', name)
-        setFilename(name)
+    // const onImageUploaded = name => {
+    //     console.log('filename set after image upload', name)
+    //     setFilename(name)
+    // }
+    
+    const onImageSelected = payload => {
+        console.log('image selected', payload.imageData.filename)
+        setImageId(null)
+        // setFilename(null)
+        setUpload(payload)
+        setShowSelector(false)
+        // const { uri, height, width } = data.imageData
     }
+
+    const renderCurrentImage = () => {
+        const styles = {
+            width: 50,
+            height: 50,
+            resizeMode: 'stretch',
+        }
+        return (
+            <View>
+                <View>
+                    {imageId ? (
+                        <ImageLoader
+                            imageData={imageId}
+                        />
+                    ) : attachment ? (
+                        <Image
+                            style={styles}
+                            source={{ uri: attachment.thumbData.uri }}
+                        />
+                    ) : null}
+                </View>
+                <Pressable onPress={() => setShowSelector(true)}>
+                    <Text>Upload New Image</Text>
+                </Pressable>
+            </View>
+        )
+    }
+
+    const renderImageModule = () => (
+        <View>
+            {!showSelector
+                ? renderCurrentImage()
+                : (
+                    <ImageUploader
+                        onImageSelected={onImageSelected}
+                    />
+                )
+            }
+        </View>
+    )
 
     return (
         <View style={[main.form, { width: '100%' }]}>
@@ -177,37 +179,7 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
                 category={category}
             />
 
-            {path && filename
-                ? (
-                    // <ImagePreview
-                    //     path={`${IMAGE_PATH}/${user.username}/thumb/${filename}`}
-                    // />
-                    <Image
-                        style={{
-                            width: 50,
-                            height: 50,
-                            resizeMode: 'stretch',
-                        }}
-                        source={`${path}/${filename}`}
-                    />
-                )
-                : (existingProduct && existingProduct.imageId)
-                ? (
-                    <ImageLoader
-                        // style={{
-                        //     width: 50,
-                        //     height: 50,
-                        //     resizeMode: 'stretch',
-                        // }}
-                        image={existingProduct.imageId}
-                    />
-                )
-                : (
-                    <NewImageUploader
-                        onImageUploaded={onImageUploaded}
-                    />
-                )
-            }
+            {renderImageModule()}
             
             <FormInput
                 label='Name'

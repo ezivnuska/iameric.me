@@ -89,7 +89,7 @@ export default () => {
     }
 
     const linking = {
-        prefixes: ['http://iameric.me/', 'iameric.me', 'localhost:8080'],
+        prefixes: ['https://iameric.me/', 'iameric.me', 'localhost:8080'],
         config,
     }
 

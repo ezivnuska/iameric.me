@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
@@ -14,17 +13,25 @@ import { AppContext } from '../AppContext'
 import axios from 'axios'
 import main from '../styles/main'
 
-const ProductDisplay = () => {
+export default () => {
 
     const {
+        dispatch,
         products,
     } = useContext(AppContext)
 
-    const [items, setItems] = useState(products)
+    // const [items, setItems] = useState(null)
     const [featured, setFeatured] = useState(null)
 
     useEffect(() => {
-        if (products) setItems(products)
+        console.log('products on load:', products)
+        if (!products) {
+            console.log('no products:', products)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (products) console.log('products changed:', products)
     }, [products])
 
     const onDelete = async id => {
@@ -36,40 +43,58 @@ const ProductDisplay = () => {
             return null
         }
 
-        setItems(items.filter(item => item._id !== data.item._id))
-
+        // setItems(items.filter(item => item._id !== data.item._id))
+        dispatch({ type: 'REMOVE_PRODUCT', productId: id})
+        
         return data
     }
 
-    const updateProducts = async product => {
-        const updatedProducts = []
-        items.map(item => {
-            if (product._id === item._id) {
-                updatedProducts.push(product)
-            } else updatedProducts.push(item)
-        })
+    // const updateProducts = async product => {
+    //     const updatedProducts = []
+    //     items.map(item => {
+    //         if (product._id === item._id) {
+    //             updatedProducts.push(product)
+    //         } else updatedProducts.push(item)
+    //     })
 
-        return updatedProducts
-    }
+    //     return updatedProducts
+    // }
 
-    const onProductFormSubmitted = async product => {
-        console.log('ProductForm submitted', product)
-        const updatedProducts = await updateProducts(product)
-        setItems(updatedProducts)
+    const onProductFormSubmitted = async productData => {
+        dispatch({ type: 'UPDATE_PRODUCT', productData })
+        console.log('ProductForm submitted', productData)
+        // const updatedProducts = await updateProducts(product)
+        // setItems(updatedProducts)
         setFeatured(null)
     }
 
     return (
         <View>
-            <View style={styles.displayHeader}>
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                }}
+            >
                 <Text style={[main.heading, main.paddedV]}>Products</Text>
-                <AddButton iconStyle={styles.headerButton} onPress={() => setFeatured(true)} />
+                <AddButton
+                    iconStyle={{
+                        flex: 1,
+                        flexGrow: 0,
+                        flexShrink: 1,
+                        flexBasis: 'auto',
+                        marginHorizontal: 7,
+                    }}
+                    onPress={() => setFeatured(true)}
+                />
             </View>
 
-            {(items && items.length)
+            {(products && products.length)
                 ? (
                     <ProductList
-                        items={items}
+                        productIds={products}
                         onPress={item => setFeatured(item)}
                     />
                 ) : <Text style={main.text}>No products to display.</Text>
@@ -89,29 +114,3 @@ const ProductDisplay = () => {
         </View>
     )
 }
-
-export default ProductDisplay
-
-const styles = StyleSheet.create({
-    container: {
-        // paddingVertical: 10,
-        // paddingHorizontal: 10,
-    },
-    displayHeader: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    title: {
-        fontSize: 24,
-    },
-    headerButton: {
-        // marginVertical: 4,
-        flex: 1,
-        flexGrow: 0,
-        flexShrink: 1,
-        flexBasis: 'auto',
-        marginHorizontal: 7,
-    },
-})

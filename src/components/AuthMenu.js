@@ -50,7 +50,7 @@ const AuthMenu = () => {
 
     const { items } = cart
 
-    const [ avatar, setAvatar ] = useState(profileImage)
+    const [ avatar, setAvatar ] = useState(null)
 
     const fetchImageData = async id => {
         console.log('auth menu getting image data...')
@@ -63,10 +63,10 @@ const AuthMenu = () => {
 
     useEffect(() => {
         if (profileImage) {
+            console.log('profileImage', profileImage)
             if (!avatar || avatar._id !== profileImage._id)
                 setAvatar(profileImage)
-        }
-         else {
+        } else {
             if (user && user.profileImage && typeof user.profileImage === 'string')  {
                 fetchImageData(user.profileImage)
             }
@@ -74,7 +74,7 @@ const AuthMenu = () => {
         
     }, [profileImage])
 
-    const renderAvatar = () => avatar ? (
+    const renderAvatar = () => profileImage ? (
         <Image
             style={{
                 width: 24,
@@ -83,7 +83,7 @@ const AuthMenu = () => {
             }}
             // onLoadStart={() => setLoading(true)}
             // onLoadEnd={() => setLoading(false)}
-            source={`${IMAGE_PATH}/${user.username}/${avatar.filename}`}
+            source={`${IMAGE_PATH}/${user.username}/${profileImage.filename}`}
         />
     ) : (
         <Image

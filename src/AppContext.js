@@ -6,6 +6,7 @@ const initialState = {
         items: [],
     },
     dims: null,
+    images: [],
     loading: false,
     orders: null,
     products: null,
@@ -33,16 +34,11 @@ const reducer = (state = initialState, action) => {
             user.images = [...user.images, action.image]
             break
         case 'UPDATE_IMAGE':
-            const updatedImages = user.images.map(image => {
-                if (
-                    (typeof image === 'string' && image === action.image._id) ||
-                    (image._id === action.image._id)
-                ) {
-                    console.log('updating image:', action.image)
+            user.images = user.images.map(image => {
+                if (action.image._id === image || action.image._id === image._id) {
                     return action.image
                 } else return image
             })
-            user.images = updatedImages
             break
         case 'REMOVE_IMAGE':
             let imageIndex = user.images.findIndex(image => image._id === action.id)
@@ -79,23 +75,25 @@ const reducer = (state = initialState, action) => {
             vendors[index].products = action.products
             break
         case 'SET_PRODUCTS':
-            products = action.products
+            products = action.productIds
             break
         case 'ADD_PRODUCT':
             products = [...action.products, action.product]
             break
         case 'UPDATE_PRODUCT':
-            const currentProducts = user.products || []
-            let updatedProducts
-            if (currentProducts.length) {
-                const productIndex = currentProducts.findIndex(product => product._id === action.product._id)
-                updatedProducts = [
-                    ...currentProducts.slice(0, productIndex),
-                    action.product,
-                    ...currentProducts.slice(productIndex + 1),
+            if (!products) products = []
+            if (products.length) {
+                const i = products.findIndex(product => {
+                    const id = product._id || product
+                    return id === action.productData._id
+                })
+                if (i <= -1) return
+                products = [
+                    ...products.slice(0, i),
+                    action.productData,
+                    ...products.slice(i + 1),
                 ]
             }
-            products = updatedProducts
             break
         case 'UPDATE_PRODUCT_IMAGE':
             const userProducts = products || []
@@ -111,6 +109,10 @@ const reducer = (state = initialState, action) => {
                 })
             }
             products = updatedUserProducts
+            break
+        case 'REMOVE_PRODUCT':
+            if (!products) return
+            products = products.filter(productId => productId !== action.productId)
             break
         case 'SET_LOADING':
             const wasLoading = loading
@@ -139,7 +141,8 @@ const reducer = (state = initialState, action) => {
             cart = { vendor: null, items: null }
             break
         case 'SET_ORDERS':
-            orders = action.orders
+            orders = action.orderIds
+            console.log('orders set', orders)
             break
         case 'ADD_ORDER':
             orders = [...orders, action.order]

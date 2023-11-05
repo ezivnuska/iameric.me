@@ -2,6 +2,7 @@
 const Product = require('../../models/Product')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
+const { uploadProductImage } = require('../../api/images')
 
 const addImageIdToVendorImages = async (imageId, vendorId) => {
 
@@ -66,8 +67,8 @@ const saveAndReturnNewProductImage = async (filename, vendor) => {
 const createOrUpdateProduct = async (req, res) => {
 
     // pull data from request
-    const { _id, price, title, desc, vendor, blurb, category, imageId, filename } = req.body
-    console.log('product shit...', req.body)
+    const { _id, price, title, desc, vendor, blurb, category, imageId, attachment } = req.body
+    console.log('create or update product: _id, attachment:', _id, attachment)
     // use data to create a starting reference to new product
     let product = {
         price,
@@ -76,16 +77,16 @@ const createOrUpdateProduct = async (req, res) => {
         desc,
         blurb,
         category,
-        // imageId: newImageId,
+        imageId,
     }
 
     // if request includes a reference to (already) uploaded file...
-    if (filename) {
-        console.log('filename detected', filename)
-        const newImage = await saveAndReturnNewProductImage(filename, vendor)
+    if (attachment) {
+        const { image } = await uploadProductImage(attachment)
+        console.log('image uploaded successfuly. adding to product.')
         product = {
             ...product,
-            imageId: newImage ? newImage._id : imageId,
+            imageId: image._id,
         }
         
     }
@@ -129,6 +130,21 @@ const createOrUpdateProduct = async (req, res) => {
     return res.status(200).json(product)
 }
 
+const getProductIdsByVendorId = async (req, res) => {
+    const products = await Product
+        .find({ vendor: req.params.vendor })
+        
+    if (!products) {
+        console.log('Error getting products')
+        return res.status(400).json(null)
+    }
+
+    const productIds = products.map(product => product._id)
+    
+    // TODO: fix this...
+    return res.status(200).json({ productIds })
+}
+
 const getProductsByVendorId = async (req, res) => {
     
     const products = await Product
@@ -142,6 +158,21 @@ const getProductsByVendorId = async (req, res) => {
 
     // TODO: fix this...
     return res.status(200).json({ items: products })
+}
+
+const getProductById = async (req, res) => {
+    
+    const product = await Product
+        .findOne({ _id: req.params.id })
+        // .populate('vendor')
+    
+    if (!product) {
+        console.log('Error getting product.')
+        return res.status(200).json(null)
+    }
+
+    // TODO: fix this...
+    return res.status(200).json(product)
 }
 
 const deleteProductById = async (req, res) => {
@@ -161,5 +192,7 @@ const deleteProductById = async (req, res) => {
 module.exports = {
     createOrUpdateProduct,
     deleteProductById,
+    getProductById,
+    getProductIdsByVendorId,
     getProductsByVendorId,
 }

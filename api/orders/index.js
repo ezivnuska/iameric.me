@@ -22,6 +22,28 @@ const getSanitizedOrders = orders => {
     }))
 }
 
+const getOrderIdsByUserId = async (req, res) => {
+    const { id } = req.params
+    
+    let orders = await Order
+        .find({
+            $or: [
+                { customer: id },
+                { driver: id },
+                { vendor: id }
+            ]
+        })
+    
+    if (!orders) {
+        console.log('no orders to be found.')
+        return res.status(200).json(null)
+    }
+
+    const orderIds = orders.map(order => order._id)
+
+    return res.status(200).json({orderIds})
+}
+
 const getOrdersByUserId = async (req, res) => {
     
     const { id } = req.params
@@ -52,7 +74,9 @@ const getOrdersByUserId = async (req, res) => {
         return res.json(400).json(null)
     }
 
+    console.log('unsanitized orders', orders)
     orders = getSanitizedOrders(orders)
+    console.log('sanitized orders', orders)
 
     return res.status(200).json(orders)
 }
@@ -456,6 +480,7 @@ module.exports = {
     createOrder,
     deleteOrderByOrderId,
     getAllOrders,
+    getOrderIdsByUserId,
     getOrdersByCustomerId,
     getOrdersByDriverId,
     getOrdersByUserId,

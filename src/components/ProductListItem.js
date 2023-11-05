@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import {
+    ActivityIndicator,
     Image,
     StyleSheet,
     Text,
@@ -12,15 +13,18 @@ import main from '../styles/main'
 import { EditButton } from '.'
 import { AppContext } from '../AppContext'
 import { getImageDataById } from '../Data'
+import axios from 'axios'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
+export default ({ productId, onDelete, onPress, ...props }) => {
 
-    const { _id, desc, price, title, vendorId, blurb, category, imageId } = item
+    // const { _id, desc, price, title, vendorId, blurb, category, imageId } = productId
     // const [modalVisible, setModalVisible] = useState(false)
-    const [productImage, setProductImage] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [product, setProduct] = useState(null)
+    const [image, setImage] = useState(null)
 
     const {
         dispatch,
@@ -28,35 +32,32 @@ const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
     } = useContext(AppContext)
 
     useEffect(() => {
-        if (!item.imageId && productImage) setProductImage(null)
-        if (
-            (!productImage && item.imageId)
-            ||
-            (productImage && productImage._id !== item.imageId)
-        ) {
-            fetchImageData(item.imageId)
+        if (productId) {
+            fetchProductData(productId)
         }
-    }, [item])
- 
-    // const onProductPressed = () => {
-    //     onPress()
-    // }
+    }, [])
 
-    // const onComplete = () => {
-    //     update()
-    //     // setModalVisible(false)
-    // }
+    const fetchProductData = async id => {
+        console.log('fetching product data for id,', id)
+        const { data } = await axios.get(`/api/product/${id}`)
+        if (!data) console.log('could not fetch product data.')
+        console.log('product data got:', data)
+        setProduct(data)
+    }
 
-    // const deleteItem = id => {
-    //     onDelete(id)
-    //     // setModalVisible(false)
-    // }
+    useEffect(() => {
+        if (product) {
+            if (product.imageId && !image) fetchImageData(product.imageId)
+            if (product.imageId && product.imageId !== image._id) setImage(product.imageId)
+        }
+        
+    }, [product])
 
     const fetchImageData = async id => {
         
         const imageData = await getImageDataById(id)
 
-        setProductImage(imageData)
+        setImage(imageData)
         dispatch({ type: 'UPDATE_PRODUCT_IMAGE', imageId: id })
     }
 
@@ -69,45 +70,48 @@ const ProductListItem = ({ item, onDelete, update, onPress, ...props }) => {
                 paddingVertical: 10,
             }}
         >
-            <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-            }}>
-                <View style={styles.main}>
-                    <Text style={[main.text, styles.title]}>{title} <EditButton onPress={onPress} /></Text>
+            {product ? (
+                <View>
+                    <View style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                    }}>
+                        <View style={styles.main}>
+                            <Text style={[main.text, styles.title]}>{product.title} <EditButton onPress={onPress} /></Text>
+                        </View>
+                        <Text style={[main.text, styles.price]}>${product.price}</Text>
+                    </View>
+                    {image ? (
+                        <Image
+                            width={IMAGE_SIZE}
+                            height={IMAGE_SIZE}
+                            source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
+                            style={{
+                                resizeMode: 'stretch',
+                                width: IMAGE_SIZE,
+                                height: IMAGE_SIZE,
+                                borderWidth: 1,
+                                borderColor: '#999',
+                                shadowColor: '#000',
+                                shadowOffset: {
+                                    width: 0,
+                                    height: 2,
+                                },
+                                shadowOpacity: 0.25,
+                                shadowRadius: 4,
+                                elevation: 5,
+                            }}
+                        />
+                    ) : null}
+                    <Text style={[main.text, styles.blurb]}>{product.blurb}</Text>
+                    <Text style={[main.text, styles.desc]}>{product.desc}</Text>
                 </View>
-                <Text style={[main.text, styles.price]}>${price}</Text>
-            </View>
-            {productImage ? (
-                <Image
-                    width={IMAGE_SIZE}
-                    height={IMAGE_SIZE}
-                    source={{ uri: `${IMAGE_PATH}/${productImage.user.username}/thumb/${productImage.filename}` }}
-                    style={{
-                        resizeMode: 'stretch',
-                        width: IMAGE_SIZE,
-                        height: IMAGE_SIZE,
-                        borderWidth: 1,
-                        borderColor: '#999',
-                        shadowColor: '#000',
-                        shadowOffset: {
-                            width: 0,
-                            height: 2,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 4,
-                        elevation: 5,
-                    }}
-                />
-            ) : null}
-            <Text style={[main.text, styles.blurb]}>{blurb}</Text>
-            <Text style={[main.text, styles.desc]}>{desc}</Text>
+            ) : <ActivityIndicator />}
+            
         </View>
     )
 }
-
-export default ProductListItem
 
 const styles = StyleSheet.create({
     title: {

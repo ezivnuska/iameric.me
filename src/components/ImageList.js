@@ -21,7 +21,7 @@ export default ({ images, user, onSelected }) => {
 
     useEffect(() => {
         if (images) {
-            // if (items) console.log('ImageList: setting images >', images)
+            console.log('ImageList: setting images >', images)
             setItems(images)}
     }, [images])
 
@@ -46,7 +46,7 @@ export default ({ images, user, onSelected }) => {
                     key={`image-${index}`}
                 >
                     <ImageLoader
-                        image={image}
+                        imageData={image}
                     />
                 </TouchableOpacity>
             ))}

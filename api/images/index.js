@@ -3,8 +3,8 @@ const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
 const { promises, rm, rmSync } = require('fs')
 const { mkdirp } = require('mkdirp')
-const gm = require('gm')
-const im = gm.subClass({ imageMagick: true })
+// const gm = require('gm')
+// const im = gm.subClass({ imageMagick: true })
 
 const imagePath = process.env.IMAGE_PATH || require('../../config').IMAGE_PATH
 console.log('imagePath', imagePath)
@@ -23,7 +23,7 @@ const getImagesByUserId = async (req, res) => {
     
     const images = await UserImage
         .find({ user: req.params.id })
-        .populate('user', 'username images')
+        .populate('user', 'username')
 
     return res.status(200).json({ images })
 }
@@ -38,7 +38,7 @@ const getProfileImageByUserId = async (req, res) => {
 }
 
 const getImageWithUsernameByImageId = async (req, res) => {
-    
+    console.log('getting image data and username by id', req.params.id)
     const image = await UserImage
         .findOne({ _id: req.params.id })
         .populate('user', 'username')
@@ -150,10 +150,11 @@ const uploadAvatar = async (req, res) => {
 }
 
 const deleteImageById = async (req, res) => {
-
     const { imageId, isProductImage, isProfileImage } = req.body
+    console.log('deleteImageById:', imageId)
 
     // remove the image from the user images
+    console.log('\n removing image by id:', imageId)
     const removedImageId = await removeImageFromUserImages(imageId)
     console.log('\n removedImageId', removedImageId)
     if (!removedImageId) {
@@ -189,37 +190,35 @@ const deleteImageById = async (req, res) => {
     
     const deletedImage = await UserImage
         .findOneAndRemove({ _id: imageId })
-        .populate({
-            path: 'user',
-            select: 'username images',
-            populate: { path: 'images' },
-        })
+        // .populate({
+            // path: 'user',
+            // select: '_id',
+            // populate: { path: 'images' },
+        // })
+    
+    console.log('deleted image:', deletedImage)
 
     if (!deletedImage) console.log('Could not find image to delete')
+    
+    const user = await User
+        .findOne({ _id: deletedImage.user })
+    
+    console.log('user fetched for image and profile update', user)
 
-    const userPath = `${imagePath}/${deletedImage.user.username}`
+    if (!user) {
+        console.log('could not find user to update after image deletion.')
+        return res.status(200).json(null)
+    }
+
+    const userPath = `${imagePath}/${user.username}`
     const filenameToDelete = deletedImage.filename
 
     const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
     const pathToAvatar = `${userPath}/${filenameToDelete}`
 
-    const { images, profileImage } = deletedImage.user
-
-    const updatedImages = images.filter(imageId => imageId !== _id)
-    
-    const updatedUser = await User.
-        findOneAndUpdate({ _id: deletedImage.user._id },
-        {
-            $set: {
-                profileImage: profileImage !== imageId ? profileImage : null,
-                images: updatedImages,
-            }
-        },
-        { new: true })
-    
-    if (!updatedUser) return res.status(200).json({
-        error: 'Could not update user after image deletion.'
-    })
+    if (user.images) user.images = user.images.filter(id => id !== imageId)
+    if (user.profileImage === imageId) user.profileImage = null
+    await user.save()
 
     const product = await Product
         .findOne({ imageId })
@@ -270,11 +269,13 @@ const findAndRemoveImageFromProduct = async imageId => {
 }
 
 const getUserFromImageId = async imageId => {
+    console.log('getting user from image id:', imageId)
     const image = await UserImage.findOne({ _id: imageId })
     if (!image) {
         console.log('Could not find image to remove.')
         return null
     }
+    console.log('image found:', image)
     const user = await User.findOne({ _id: image.user })
     if (!user) {
         console.log('could not find user referenced in image model.')
@@ -286,9 +287,23 @@ const getUserFromImageId = async imageId => {
 const removeImageFromUserImages = async imageId => {
 
     const user = await getUserFromImageId(imageId)
+    
+    if (!user) {
+        console.log('no user found.')
+        return null
+    }
+
+    console.log('removeImageFromUserImages:user:', user)
+    
     const { images } = user
 
+    if (!images) {
+        console.log('no user images')
+        return null
+    }
+    
     const imageExists = images.filter(img => img._id === imageId).length
+    console.log(imageExists ? 'image exists' : 'could not find image to remove.')
 
     if (imageExists) {
         // remove image
@@ -374,9 +389,9 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
     return filename
 }
 
-const uploadImage = async (req, res) => {
-
-    const { userId, imageData, thumbData } = req.body
+const uploadProductImage = async payload => {
+    console.log('uploading product image...')
+    const { userId, imageData, thumbData } = payload
     
     const user = await User.findOne({ _id: userId })
     
@@ -385,81 +400,66 @@ const uploadImage = async (req, res) => {
     const path = `${imagePath}/${user.username}`
     
     const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
+    
+    if (!imagesUploaded) {
+        console.log('Error writing image/thumb.')
+        return null
+    }
+
+    const data = await saveUserImage(user, filename)
+    console.log('uploadProductImage: return data:', data)
+    if (!data) {
+        console.log('Error saving UserImage to User Images')
+        return null
+    }
+
+    return data
+}
+
+const uploadImage = async (req, res) => {
+    console.log('/api/image/upload')
+    const { userId, imageData, thumbData } = req.body
+    
+    const user = await User.findOne({ _id: userId })
+    console.log('found user:', user)
+    
+    const filename = `${userId}-${Date.now()}.png`
+
+    const path = `${imagePath}/${user.username}`
+    
+    const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
+
     if (!imagesUploaded) {
         console.log('Error writing image/thumb.')
         return res.status(200).json(null)
     }
 
-    const data = await saveUserImage(user, filename)
+    const { image } = await saveUserImage(user, filename)
+    console.log('saveUserImage result: data:', image._id)
 
-    if (!data) {
+    if (!image) {
         console.log('Error saving UserImage to User Images')
         return res.status(200).json(null)
     }
+    
+    user.images = [...user.images, image._id]
+    await user.save()
 
-    return res.status(200).json(data)
+    return res.status(200).json(image)
 }
 
 const saveUserImage = async (userId, filename) => {
     
     const image = new UserImage({ user: userId, filename })
     await image.save()
-    
-    const user = await User
-        .findOne({ _id: userId })
-
-    const userUpdated = await User
-        .findOneAndUpdate(
-            { _id: user._id },
-            { $set: {
-                images: [...user.images, image._id]
-            } },
-            { new: true },
-        )
-    
-    if (!userUpdated) {
-        console.log('could not add new image to user images.')
-    }
 
     return {
-        image,
-        user: userUpdated,
+        image: {
+            _id: image._id,
+            filename: image.filename,
+            user: image.user._id,
+        }
     }
-    
-    // let image = await UserImage.findOne({ user: userId, filename })
-    // if (image) {
-    //     const images = [...user.images, image._id]
-    //     const userUpdated = await User
-    //         .findOneAndUpdate(
-    //             { _id: user._id },
-    //             { $set: { images } },
-    //             { new: true },
-    //         )
-        
-    //     if (!userUpdated) return res.status(200).json({ error: `Error updating user images.` })    
-    // } else {
-    //     image = new UserImage({ user: userId, filename })
-    //     await image.save()
-    // }
-}
-
-const uploadProductImage = async (req, res) => {
-    
-    const { userId, imageData, thumbData } = req.body
-    
-    const user = await User.findOne({ _id: userId })
-    console.log('found user to update with new product image:', user)
-    
-    const filename = `${userId}-${Date.now()}.png`
-    const path = `${imagePath}/${user.username}`
-    
-    const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
-    if (!imagesUploaded) {
-        console.log('Error writing image/thumb.')
-        return res.status(400).json({ error: `Error writing image/thumb files.` })
-    }
-
-    return res.status(200).json({ filename })
 }
 
 const deletePreview = async (req, res) => {

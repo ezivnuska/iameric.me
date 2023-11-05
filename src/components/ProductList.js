@@ -6,17 +6,17 @@ import {
     ProductListItem,
 } from '.'
 
-const ProductList = ({ deleteItem, items, onPress, update }) => (
+const ProductList = ({ deleteItem, productIds, onPress, update }) => (
     <FlatList
-        data={items}
+        data={productIds}
         listKey={() => 'products'}
-        keyExtractor={item => `product-${item._id}`}
+        keyExtractor={id => `product-${id}`}
         renderItem={({ item }) => (
             <ProductListItem
-                item={item}
-                key={item => `product-${item._id}`}
+                productId={item}
+                key={item => `product-${item}`}
                 update={update}
-                onDelete={() => deleteItem(item._id)}
+                onDelete={() => deleteItem(item)}
                 onPress={() => onPress(item)}
             />
         )} 

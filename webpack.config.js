@@ -75,6 +75,7 @@ module.exports = {
     clean: true,
   },
   resolve: {
+    // modules: ['node_modules'],
     extensions: [
       '.web.tsx',
       '.web.ts',
@@ -108,7 +109,11 @@ module.exports = {
     }),
     // new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
-      __DEV__: isDebug,
+      // 'process.env': JSON.stringify(process.env),
+      '__DEV__': isDebug,
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
     }),
     // new CopyPlugin({
     //   patterns: [
