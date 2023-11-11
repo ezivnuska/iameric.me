@@ -43,7 +43,6 @@ import Preview from './Preview'
 import ProductDetails from './ProductDetails'
 import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
-import ProductImageUploader from './ProductImageUploader'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import RolePicker from './RolePicker'
@@ -105,7 +104,6 @@ export {
     ProductDetails,
     ProductDisplay,
     ProductForm,
-    ProductImageUploader,
     ProductList,
     ProductListItem,
     RolePicker,

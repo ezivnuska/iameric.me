@@ -15,7 +15,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import main from '../styles/main'
 
-const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default  ({ onComplete, onDelete, existingProduct = null }) => {
     
