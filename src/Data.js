@@ -139,7 +139,7 @@ export const getVendors = async dispatch => {
         return null
     }
 
-    return data.vendorIds
+    return data.vendors
 }
 
 export const getProducts = async (dispatch, userId) => {

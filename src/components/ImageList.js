@@ -1,16 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-    ActivityIndicator,
     Image,
-    Text,
     TouchableOpacity,
     View,
 } from 'react-native'
-import {
-    ImageLoader,
-} from '.'
-import { getImageDataById } from '../Data'
-import { AppContext } from '../AppContext'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -21,7 +14,6 @@ export default ({ images, user, onSelected }) => {
 
     useEffect(() => {
         if (images) {
-            // console.log('ImageList: setting images >', images)
             setItems(images)}
     }, [images])
 

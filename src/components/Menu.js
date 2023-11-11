@@ -7,7 +7,6 @@ import {
 } from 'react-native'
 import {
     MenuItem,
-    ModalContainer,
     ModalContent,
     ProductDetails,
 } from '.'

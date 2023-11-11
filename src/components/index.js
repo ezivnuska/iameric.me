@@ -26,7 +26,6 @@ import HoverableView from './HoverableView'
 import ImageDetail from './ImageDetail'
 import ImageModule from './ImageModule'
 import ImageList from './ImageList'
-import ImageLoader from './ImageLoader'
 import ImageUploader from './ImageUploader'
 import ImagePreview from './ImagePreview'
 import LoadingView from './LoadingView'
@@ -36,7 +35,6 @@ import LocationForm from './LocationForm'
 import LoginMenu from './LoginMenu'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
-import ModalContainer from './ModalContainer'
 import ModalContent from './ModalContent'
 import OrderListContainer from './OrderListContainer'
 import OrderList from './OrderList'
@@ -89,7 +87,6 @@ export {
     Heading,
     HoverableView,
     ImageDetail,
-    ImageLoader,
     ImageModule,
     ImagePreview,
     ImageList,
@@ -101,7 +98,6 @@ export {
     LoginMenu,
     Menu,
     MenuItem,
-    ModalContainer,
     ModalContent,
     OrderListContainer,
     OrderList,

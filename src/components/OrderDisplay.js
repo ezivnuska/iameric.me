@@ -6,7 +6,6 @@ import {
 } from 'react-native'
 import {
     ButtonPrimary,
-    ModalContainer,
     ModalContent,
     OrderDetails,
     OrderPreview,
@@ -64,13 +63,6 @@ const OrderDisplay = () => {
     const cancelOrder = async () => {
 
         deleteOrder(featuredItem)
-
-        // const order = await axios.
-        //     post(`/api/order/cancel/${featuredItem}`)
-        
-        // if (!order) console.log('Error confirming order')
-
-        // dispatch({ type: 'CANCEL_ORDER', id: featuredItem })
 
         setFeaturedItem(null)
     }

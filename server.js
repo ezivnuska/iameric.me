@@ -102,7 +102,7 @@ app.post(   '/unsubscribe',            closeAccount)
 
 // users
 app.get(    '/users',                   getAllUsers)
-app.get(    '/vendors',                 getAllVendorIds)
+app.get(    '/vendors',                 getAllVendors)
 app.get(    '/users/:id',               getUserById)
 
 // entries

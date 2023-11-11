@@ -153,35 +153,79 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
         // const { uri, height, width } = data.imageData
     }
 
-    const renderCurrentImage = () => {
-        const styles = {
-            width: 50,
-            height: 50,
-            resizeMode: 'stretch',
-        }
-        return (
-            <View>
-                {(image || attachment) ? (
-                    <Image
-                        style={styles}
-                        source={{
-                            uri: image
-                                ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
-                                : attachment
-                                    ? attachment.thumbData.uri
-                                    : null
-                        }}
-                    />
-                ) : null}
+    const onAttachmentCancelled = () => {
+        setImage(existingProduct.image || null)
+        setAttachment(null)
+        setShowSelector(false)
+    }
+
+    const setImageForDeletion = () => {
+        setImage(null)
+        setShowSelector(true)
+    }
+
+    const renderImage = () => {
+        const uri = image
+            ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
+            : attachment
+                ? attachment.thumbData.uri
+                : null
+        
+        return uri ? (
+            <Image
+                style={{
+                    width: 50,
+                    height: 50,
+                    resizeMode: 'stretch',
+                }}
+                source={{
+                    uri: image
+                        ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
+                        : attachment
+                            ? attachment.thumbData.uri
+                            : null
+                }}
+            />
+        ) : null
+    }
+
+    const renderControl = () => {
+        if (image) {
+            return (
+                <Pressable
+                    onPress={setImageForDeletion}
+                    disabled={loading}
+                >
+                    <Text>Remove Image</Text>
+                </Pressable>
+            )    
+        } else if (attachment) {
+            return (
+                <Pressable
+                    onPress={onAttachmentCancelled}
+                    disabled={loading}
+                >
+                    <Text>Remove Attachment</Text>
+                </Pressable>
+            )
+        } else {
+            return (
                 <Pressable
                     onPress={() => setShowSelector(true)}
                     disabled={loading}
                 >
                     <Text>Upload New Image</Text>
                 </Pressable>
-            </View>
-        )
+            )
+        }
     }
+
+    const renderCurrentImage = () => (
+        <View>
+            {renderImage()}
+            {renderControl()}
+        </View>
+    )
 
     const renderImageModule = () => (
         <View>
