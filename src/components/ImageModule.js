@@ -67,27 +67,27 @@ export default () => {
 
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState([])
-    // const [upload, setUpload] = useState(null)
+    const [items, setItems] = useState()
 
     useEffect(() => {
         getImageData()
     }, [])
 
     const getImageData = async () => {
+        
+        setLoading(true)
+        
         const { data } = await axios.get(`/api/user/images/${user._id}`)
+        
         if (!data) {
             console.log('no images found.')
             return null
         }
+        
         setItems(data.images)
-    }
 
-    // useEffect(() => {
-    //     if (upload) {
-    //         uploadImageData(upload)
-    //     }
-    // }, [upload])
+        setLoading(false)
+    }
 
     const uploadImageData = async imageData => {
 
@@ -110,7 +110,7 @@ export default () => {
     const onImageUploaded = image => {
         
         // setUpload(null)
-        setItems([...items, image])
+        setItems(items ? [...items, image] : [image])
 
         setModalVisible(false)
     }
@@ -150,13 +150,15 @@ export default () => {
 
             {loading
                 ? <Text>Loading...</Text>
-                : (
+                : items
+                ? (
                     <ImageList
                         images={items}
                         username={user.username}
                         onSelected={onSelected}
                     />
                 )
+                : <Text>No images to display.</Text>
             }
             
             <ModalContent
