@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    ActivityIndicator,
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
 import {
-    Cart,
     Menu,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -17,8 +14,6 @@ export default ({ vendorId }) => {
     
     const {
         dispatch,
-        state,
-        cart,
         vendors,
     } = useContext(AppContext)
 
@@ -47,15 +42,17 @@ export default ({ vendorId }) => {
             console.log('Error loading menu items', err)
             return null
         }
+
+        setProducts(data.products)
         
-        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendorId, products: data.items })
+        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendorId, products: data.products })
     }
 
     return (
         <View style={styles.container}>
             {
-                (vendor && vendor.products && vendor.products.length)
-                    ? <Menu vendor={vendorId} items={vendor.products} />
+                products
+                    ? <Menu products={products} />
                     : <Text style={main.text}>No products to display.</Text>
             }
         </View>

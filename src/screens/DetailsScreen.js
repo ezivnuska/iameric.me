@@ -40,27 +40,6 @@ const DetailsScreen = ({ navigation, route }) => {
         setVendor(v)
     }
 
-    useEffect(() => {
-        if (!vendor) return
-        if (!vendor.products) getProducts()
-    }, [vendor])
-
-    const updateProducts = products => {
-        setVendor({
-            ...vendor,
-            products,
-        })
-        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendor: id, products })
-    }
-
-    const getProducts = async () => {
-        setLoading('DetailsScreen:Loading products...')
-        const { data } = await axios.get(`/api/products/${id}`)
-        if (!data.items) return console.log('oops... could not get vendor products')
-        updateProducts(data.items)
-        setLoading(null)
-    }
-
     // TODO: clean this.
     const renderVendorAvatar = () => (
         <Image
@@ -106,9 +85,9 @@ const DetailsScreen = ({ navigation, route }) => {
                     {renderVendorAvatar()}
                 </CenteredContent>
                 
-                <CenteredContent>
-                    {/* {renderVendorHeader()} */}
-                </CenteredContent>
+                {/* <CenteredContent>
+                    {renderVendorHeader()}
+                </CenteredContent> */}
 
                 <CenteredContent type='expanded'>
                     <Menu vendor={vendor} />

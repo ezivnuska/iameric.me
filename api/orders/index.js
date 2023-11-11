@@ -22,33 +22,33 @@ const getSanitizedOrders = orders => {
     }))
 }
 
-const getOrderIdsByUserId = async (req, res) => {
-    const { id } = req.params
+// const getOrderIdsByUserId = async (req, res) => {
+//     const { id } = req.params
     
-    let orders = await Order
-        .find({
-            $or: [
-                { customer: id },
-                { driver: id },
-                { vendor: id }
-            ]
-        })
+//     let orders = await Order
+//         .find({
+//             $or: [
+//                 { customer: id },
+//                 { driver: id },
+//                 { vendor: id }
+//             ]
+//         })
     
-    if (!orders) {
-        console.log('no orders to be found.')
-        return res.status(200).json(null)
-    }
+//     if (!orders) {
+//         console.log('no orders to be found.')
+//         return res.status(200).json(null)
+//     }
 
-    const orderIds = orders.map(order => order._id)
+//     const orderIds = orders.map(order => order._id)
 
-    return res.status(200).json({orderIds})
-}
+//     return res.status(200).json({orderIds})
+// }
 
 const getOrdersByUserId = async (req, res) => {
     
     const { id } = req.params
     
-    let orders = await Order
+    const orders = await Order
         .find({
             $or: [
                 { customer: id },
@@ -68,17 +68,17 @@ const getOrdersByUserId = async (req, res) => {
             populate: { path: 'location' }
         })
         .populate('driver', 'username')
-
+    
     if (!orders) {
         console.log('Error getting orders by id')
         return res.json(400).json(null)
     }
 
-    console.log('unsanitized orders', orders)
-    orders = getSanitizedOrders(orders)
-    console.log('sanitized orders', orders)
+    // console.log('unsanitized orders', response)
+    const sanitizedOrders = getSanitizedOrders(orders)
+    // console.log('sanitized orders', sanitizedOrders)
 
-    return res.status(200).json(orders)
+    return res.status(200).json({ orders: sanitizedOrders })
 }
 
 const getAllOrders = async (req, res) => {
@@ -105,7 +105,7 @@ const getAllOrders = async (req, res) => {
 
     orders = getSanitizedOrders(orders)
 
-    return res.status(200).json(orders)
+    return res.status(200).json({ orders })
 }
 
 const getOrdersByCustomerId = async (req, res) => {
@@ -145,8 +145,8 @@ const getOrdersByDriverId = async (req, res) => {
                 { status: { $eq: 1 } },
             ],
         })
-        .populate('items', 'price title').
-        populate({
+        .populate('items', 'price title')
+        .populate({
             path: 'customer',
             select: 'username location',
             populate: { path: 'location' }
@@ -480,7 +480,7 @@ module.exports = {
     createOrder,
     deleteOrderByOrderId,
     getAllOrders,
-    getOrderIdsByUserId,
+    // getOrderIdsByUserId,
     getOrdersByCustomerId,
     getOrdersByDriverId,
     getOrdersByUserId,

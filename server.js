@@ -57,7 +57,7 @@ const {
     createOrder,
     deleteOrderByOrderId,
     getAllOrders,
-    getOrderIdsByUserId,
+    // getOrderIdsByUserId,
     getOrdersByCustomerId,
     getOrdersByDriverId,
     getOrdersByUserId,
@@ -133,7 +133,7 @@ app.post(   '/preview/delete',          deletePreview)
 app.get(    '/images/:name',            getImageIdFromFilename)
 
 // orders
-app.get(    '/orders/:id',              getOrderIdsByUserId)
+app.get(    '/orders/:id',              getOrdersByUserId)
 app.get(    '/orders',                  getAllOrders)
 app.get(    '/orders/customer/:id',     getOrdersByCustomerId)
 app.get(    '/orders/driver/:id',       getOrdersByDriverId)

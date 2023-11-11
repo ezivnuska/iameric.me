@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import defaultStyles from '../styles/main'
 
-const CategoryPicker = ({ label, onChange, initialCategory = 'main' }) => {
+const CategoryPicker = ({ label, onChange, initialCategory = 'main', disabled = null }) => {
 
     const [category, setCategory] = useState(initialCategory)
     
@@ -23,6 +23,7 @@ const CategoryPicker = ({ label, onChange, initialCategory = 'main' }) => {
                 selectedValue={category}
                 onValueChange={(value, index) => setCategory(value)}
                 itemStyle={{ backgroundColor: "grey", color: "blue", fontFamily: "Ebrima", fontSize: 17 }}
+                enabled={!disabled}
             >
                 <Picker.Item label='Main' value='main' />
                 <Picker.Item label='Sides' value='vendor' />

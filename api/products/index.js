@@ -88,7 +88,7 @@ const getProductsByVendorId = async (req, res) => {
     }
 
     // TODO: fix this...
-    return res.status(200).json({ items: products })
+    return res.status(200).json({ products })
 }
 
 const getProductById = async (req, res) => {

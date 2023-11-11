@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     FlatList,
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
@@ -12,8 +11,9 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import main from '../styles/main'
+import axios from 'axios'
 
-const Menu = ({ vendor }) => {
+export default ({ vendor }) => {
 
     const {
         dispatch,
@@ -21,11 +21,23 @@ const Menu = ({ vendor }) => {
 
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState(null)
+    const [products, setProducts] = useState(null)
 
     useEffect(() => {
-        if (vendor.products) setItems(vendor.products)
+        getProducts()
     }, [])
+
+    const getProducts = async () => {
+        setLoading('Menu: Loading products...')
+        const { data } = await axios.get(`/api/products/${vendor._id}`)
+        setLoading(null)
+        if (!data) {
+            console.log('oops... could not get vendor products')
+            return
+        }
+        setProducts(data.products)
+        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendor: vendor._id, products: data.products })
+    }
 
     const addToCart = item => {
         setLoading(true)
@@ -35,17 +47,23 @@ const Menu = ({ vendor }) => {
     }
     
     return (
-        <View stye={styles.container}>
-            {(items && items.length)
+        <View
+            style={{
+                height: '100%',
+                marginTop: 10,
+            }}
+        >
+            {(products && products.length)
                 ? (
                     <FlatList
-                        data={items}
+                        data={products}
                         keyExtractor={item => `product-${item._id}`}
                         // style={styles.list}
                         renderItem={({ item }) => (
                             <MenuItem
                                 item={item}
                                 onPress={() => setFeatured(item)}
+                                username={vendor.username}
                             />
                         )}
                     />
@@ -61,23 +79,3 @@ const Menu = ({ vendor }) => {
         </View>
     )
 }
-
-export default Menu
-
-const styles = StyleSheet.create({
-    container: {
-        height: '100%',
-        borderWidth: 1,
-        backgroundColor: 'blue',
-    },
-    heading: {
-        fontSize: 20,
-        fontWeight: 600,
-        marginBottom: 10,
-    },
-    list: {
-        borderWidth: 1,
-        borderColor: 'blue',
-        backgroundColor: 'pink',
-    },
-})

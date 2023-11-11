@@ -125,7 +125,7 @@ export const getOrders = async (dispatch, user) => {
         return null
     }
 
-    return data.orderIds
+    return data.orders
 }
 
 export const getVendors = async dispatch => {
@@ -153,7 +153,7 @@ export const getProducts = async (dispatch, userId) => {
         return null
     }
 
-    return data.items
+    return data.products
 }
 
 export const getImageDataById = async id => {

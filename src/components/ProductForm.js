@@ -220,17 +220,15 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
         }
     }
 
-    const renderCurrentImage = () => (
-        <View>
-            {renderImage()}
-            {renderControl()}
-        </View>
-    )
-
     const renderImageModule = () => (
         <View>
             {!showSelector
-                ? renderCurrentImage()
+                ? (
+                    <View>
+                        {renderImage()}
+                        {renderControl()}
+                    </View>
+                )
                 : (
                     <ImageUploader
                         onImageSelected={onImageSelected}
@@ -249,6 +247,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 label='Category'
                 onChange={onChangeCategory}
                 category={category}
+                disabled={loading}
             />
 
             {renderImageModule()}
@@ -262,6 +261,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 autoCapitalize='true'
                 keyboardType='default'
                 style={main.input}
+                disabled={loading}
             />
 
             <FormInput
@@ -271,6 +271,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 placeholder='0.00'
                 keyboardType='decimal-pad'
                 style={main.input}
+                disabled={loading}
             />
 
             <FormInput
@@ -281,6 +282,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 keyboardType='default'
                 multiline
                 style={[main.input, main.textArea]}
+                disabled={loading}
             />
 
             <FormInput
@@ -291,6 +293,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 keyboardType='default'
                 multiline
                 style={[main.input, main.textArea]}
+                disabled={loading}
             />
 
             <ButtonPrimary

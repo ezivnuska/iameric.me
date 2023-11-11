@@ -97,7 +97,7 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_LOADING':
             const wasLoading = loading
-            if (wasLoading && !action.loading) console.log('Loading stopped.')
+            if (wasLoading && !action.loading) console.log('Done loading.')
             loading = action.loading
             if (loading) console.log('>>', loading)
             break
