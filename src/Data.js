@@ -88,11 +88,11 @@ export const connect = async (dispatch, type) => {
     
     await AsyncStorage.setItem('userToken', data.token)
 
-    const { orderIds, productIds, vendorIds } = await loadData(data, dispatch)
+    const { orders, products, vendors } = await loadData(data, dispatch)
 
-    if (orderIds) dispatch({ type: 'SET_ORDERS', orderIds })
-    if (productIds) dispatch({ type: 'SET_PRODUCTS', productIds })
-    if (vendorIds) dispatch({ type: 'SET_VENDORS', vendorIds })
+    if (orders) dispatch({ type: 'SET_ORDERS', orders })
+    if (products) dispatch({ type: 'SET_PRODUCTS', products })
+    if (vendors) dispatch({ type: 'SET_VENDORS', vendors })
 
     return data
 }

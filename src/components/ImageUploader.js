@@ -62,13 +62,10 @@ export default ({ onImageSelected, showSubmit = true }) => {
         const image = new Image()
         image.onload = async () => {
             const data = await handleImageData(image, exif)
-            // console.log('PAYLOAD', data)
-            // setPayload(data)
             
             const { uri, height, width } = data.imageData
             setPreview({ uri, height, width })
             
-            console.log('PAYLOAD', data)
             onImageSelected(data)
             
             setLoading(null)

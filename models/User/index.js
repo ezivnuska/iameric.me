@@ -39,10 +39,6 @@ const UserSchema = new Schema({
     token: {
         type: Schema.Types.String,
     },
-    products: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-    }],
     location: {
         type: Schema.Types.ObjectId,
         ref: 'Location',

@@ -10,7 +10,6 @@ const initialState = {
     loading: false,
     orders: [],
     products: [],
-    profileId: null,
     profileImage: null,
     user: null,
     users: null,
@@ -18,7 +17,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, loading, orders, products, profileId, profileImage, user, users, vendors } = state
+    let { cart, dims, loading, orders, products, profileImage, user, users, vendors } = state
     
     switch(action.type) {
         case 'SET_DIMS':
@@ -28,8 +27,7 @@ const reducer = (state = initialState, action) => {
             user = action.user
             break
         case 'REMOVE_IMAGE':
-            if (user.profileImage === action.id) {
-                profileImage = null
+            if (user.profileImage._id === action.id) {
                 user.profileImage = null
             }
             break
@@ -104,15 +102,10 @@ const reducer = (state = initialState, action) => {
             if (loading) console.log('>>', loading)
             break
         case 'SET_PROFILE_IMAGE':
-            console.log('SET_PROFILE_IMAGE', action.profileImage)
-            user = { ...user, profileImage: action.profileImage ? action.profileImage._id : null }
-            profileImage = action.profileImage
+            user = { ...user, profileImage: action.profileImage }
             break
         case 'SET_USERS':
             users = action.users
-            break
-        case 'SET_FEATURED_USER':
-            profileId = action.id
             break
         case 'ADD_TO_CART':
             cart = {
@@ -231,7 +224,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, loading, orders, products, profileId, profileImage, user, users, vendors }
+    return { cart, dims, loading, orders, products, profileImage, user, users, vendors }
 }
 
 export const AppContext = createContext({
@@ -253,7 +246,6 @@ export const AppProvider = ({ children }) => {
             products: state.products,
             user: state.user,
             vendors: state.vendors,
-            profileImage: state.profileImage,
         }}>
             {children}
         </AppContext.Provider>

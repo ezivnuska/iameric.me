@@ -21,7 +21,7 @@ const getImagesByUserId = async (req, res) => {
     
     const images = await UserImage
         .find({ user: req.params.id })
-        .populate('user', 'username')
+        // .populate('user', 'username')
 
     return res.status(200).json({ images })
 }
@@ -258,15 +258,9 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
     const thumb = thumbData.uri.match(regex)[2]
     const thumbBuffer = Buffer.from(thumb, 'base64')
     
-    let dirExists
-    try {
-        dirExists = await promises.access(path)
-    } catch (err) {
-        console.log('could not find existing directory:', err)
-    }
-
+    let dirExists = await promises.access(path)
     if (!dirExists) {
-        console.log('path not found. creating path:', path)
+        console.log('could not find existing image directory. creating path:', path)
         mkdirp.sync(path)
     
         try {
@@ -290,14 +284,10 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
 
     const thumbPath = `${path}/thumb`
     
-    try {
-        dirExists = await promises.access(thumbPath)
-    } catch (err) {
-        console.log('could not find existing directory:', err)
-    }
-
+    
+    dirExists = await promises.access(thumbPath)
     if (!dirExists) {
-        console.log('path not found. creating thumb path:', thumbPath)
+        console.log('could not find existing thumb directory. creating path:', thumbPath)
         mkdirp.sync(thumbPath)
     
         try {

@@ -91,9 +91,7 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
     }
 
     const showAvatarButton = () => {
-        if (!user.profileImage) return true
-        if (typeof user.profileImage === 'string' && user.profileImage === imageData._id) return true
-        if (user.profileImage._id !== imageData._id) return true
+        if (!user.profileImage || user.profileImage._id !== imageData._id) return true
         return false
     }
 

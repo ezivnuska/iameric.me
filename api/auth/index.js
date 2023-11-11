@@ -63,9 +63,9 @@ const getDecodedUser = token => jwt.decode(token, SESSION_SECRET)
 const handleSignin = async (req, res) => {
     const { email, password } = req.body
     
-    const user = await User.
-        findOne({ email })
-        // .populate('profileImage', 'filename')
+    const user = await User
+        .findOne({ email })
+        .populate('profileImage', 'filename')
 
     if (!user)
         return res.status(406).json({ invalid: 'email', msg: 'No user found with that email.' })
@@ -158,6 +158,7 @@ const authenticate = async (req, res) => {
 
     const user = await User
         .findOne({ _id: userFromToken._id })
+        .populate('profileImage', 'filename')
 
     if (!user) {
         console.log('failed to refresh user token')

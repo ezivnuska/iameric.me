@@ -131,10 +131,8 @@ export default () => {
         setUpload(payload)
     }
 
-    const onSelected = image => {
-        const selectedItem = items.filter(item => {
-            return item === image._id || item._id === image._id
-        })[0]
+    const onSelected = imageId => {
+        const selectedItem = items.filter(item => item._id === imageId)[0]
 
         setFeatured(selectedItem)
     }
@@ -155,7 +153,7 @@ export default () => {
                     ? (
                         <ImageList
                             images={items}
-                            user={user}
+                            username={user.username}
                             onSelected={onSelected}
                         />
                     ) : <Text>No images to display.</Text>

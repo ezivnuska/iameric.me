@@ -22,12 +22,7 @@ const EntryListItem = ({ entry, onDelete, ...props }) => {
     
     const { user } = state
     const { userId, username, text } = entry
-    const [author, setAuthor] = useState({ userId, username })    
-    useEffect(() => {
-        if (userId && !author.profileImage) {
-            // getSelf()
-        }
-    }, [userId, user])
+    const [author, setAuthor] = useState({ userId, username })
 
     return (
         <View style={styles.container} {...props}>

@@ -8,7 +8,7 @@ import {
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, user, onSelected }) => (
+export default ({ images, username, onSelected }) => (
     <View
         style={{
             display: 'flex',
@@ -21,7 +21,7 @@ export default ({ images, user, onSelected }) => (
     >
         {images.map((image, index) => (
             <TouchableOpacity
-                onPress={() => onSelected(image)}
+                onPress={() => onSelected(image._id)}
                 style={{
                     // flex: 1,
                     flexBasis: 'auto',
@@ -31,7 +31,7 @@ export default ({ images, user, onSelected }) => (
                 <Image
                     width={IMAGE_SIZE}
                     height={IMAGE_SIZE}
-                    source={{ uri: `${IMAGE_PATH}/${user.username}/thumb/${image.filename}` }}
+                    source={{ uri: `${IMAGE_PATH}/${username}/thumb/${image.filename}` }}
                     style={{
                         resizeMode: 'stretch',
                         width: IMAGE_SIZE,
