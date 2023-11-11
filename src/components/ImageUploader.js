@@ -16,7 +16,7 @@ import { dataURItoBlob, handleUpload, imageToDataURIs, uploadImage } from '../Up
 
 const initialSize = 300
 
-export default ({ onImageSelected }) => {
+export default ({ onImageSelected, showSubmit = true }) => {
 
     const {
         dims,
@@ -61,11 +61,15 @@ export default ({ onImageSelected }) => {
     const loadImage = async (src, exif) => {
         const image = new Image()
         image.onload = async () => {
-            const payload = await handleImageData(image, exif)
-            setPayload(payload)
-
-            const { uri, height, width } = payload.imageData
+            const data = await handleImageData(image, exif)
+            // console.log('PAYLOAD', data)
+            // setPayload(data)
+            
+            const { uri, height, width } = data.imageData
             setPreview({ uri, height, width })
+            
+            console.log('PAYLOAD', data)
+            onImageSelected(data)
             
             setLoading(null)
         }
@@ -164,7 +168,7 @@ export default ({ onImageSelected }) => {
             return
         }
 
-        onImageSelected(payload)
+        console.log('image selected', payload)
     }
 
     const clearPreview = () => setPreview(null)
@@ -200,12 +204,14 @@ export default ({ onImageSelected }) => {
                 width: size,
             }}>
                 
-                <Button
-                    disabled={!preview}
-                    onClick={onSubmit}
-                >
-                    Select/Upload
-                </Button>
+                {showSubmit ? (
+                    <Button
+                        disabled={!preview}
+                        onClick={onSubmit}
+                    >
+                        Select/Upload
+                    </Button>
+                ) : null}
 
                 <Button
                     disabled={!preview}

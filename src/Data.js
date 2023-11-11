@@ -48,19 +48,19 @@ export const checkStatus = async dispatch => {
     
     await AsyncStorage.setItem('userToken', token)
 
-    const { orderIds, productIds, vendorIds } = await loadData(user, dispatch)
+    const { orders, products, vendors } = await loadData(user, dispatch)
     
-    if (orderIds) {
+    if (orders) {
         // dispatch({ type: 'SET_LOADING', loading: 'Loading orders...' })
-        dispatch({ type: 'SET_ORDERS', orderIds })
+        dispatch({ type: 'SET_ORDERS', orders })
     }
-    if (productIds) {
+    if (products) {
         // dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
-        dispatch({ type: 'SET_PRODUCTS', productIds })
+        dispatch({ type: 'SET_PRODUCTS', products })
     }
-    if (vendorIds) {
+    if (vendors) {
         // dispatch({ type: 'SET_LOADING', loading: 'Loading vendors...' })
-        dispatch({ type: 'SET_VENDORS', vendorIds })
+        dispatch({ type: 'SET_VENDORS', vendors })
     }
 
     return user
@@ -99,14 +99,11 @@ export const connect = async (dispatch, type) => {
 
 export const loadData = async (user, dispatch) => {
 
-    const orderIds = await getOrders(dispatch, user)
-    console.log('orderIds:', orderIds)
-    const productIds = user.role === 'vendor' ? await getProducts(dispatch, user) : null
-    console.log('productIds:', productIds)
-    const vendorIds = user.role === 'customer' ? await getVendors(dispatch) : null
-    console.log('vendorIds:', vendorIds)
+    const orders = await getOrders(dispatch, user)
+    const products = user.role === 'vendor' ? await getProducts(dispatch, user._id) : null
+    const vendors = user.role === 'customer' ? await getVendors(dispatch) : null
 
-    return { orderIds, productIds, vendorIds }
+    return { orders, products, vendors }
 }
 
 export const getOrders = async (dispatch, user) => {
@@ -145,38 +142,29 @@ export const getVendors = async dispatch => {
     return data.vendorIds
 }
 
-export const getProducts = async (dispatch, user) => {
+export const getProducts = async (dispatch, userId) => {
 
     dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
     
-    const { data } = await axios.get(`/api/products/${user._id}`)
+    const { data } = await axios.get(`/api/products/${userId}`)
     
     if (!data) {
         console.log('Error getting products:')
         return null
     }
 
-    return data.productIds
+    return data.items
 }
 
 export const getImageDataById = async id => {
-    console.log('getting image data by id...')
+    
     const { data } = await axios
         .get(`/api/image/${id}`)
-        .populate('user', 'username')
-    
-    console.log('image data by id:', data)
     
     return data
 }
 
 export const getData = async (dispatch, user) => {
-    // let array = []
-    // switch (user.role) {
-    //     case 'customer': array = ['orders', 'vendors']; break
-    //     case 'vendor': array = ['orders', 'products']; break
-    //     case 'driver': array = ['orders']; break
-    // }
     
     let data = {}
     

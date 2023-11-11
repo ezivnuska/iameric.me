@@ -19,7 +19,7 @@ export default () => {
 
             <CenteredContent>
                 
-                {(user && user.role !== 'driver') && <LocationModule details={user.location} />}
+                {(user && user.role !== 'driver') && <LocationModule userId={user._id} />}
 
                 <ImageModule />
 

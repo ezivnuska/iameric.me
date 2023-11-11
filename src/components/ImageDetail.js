@@ -17,50 +17,33 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
     const {
         dispatch,
         user,
+        products,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
-    const [image, setImage] = useState(null)
 
-    useEffect(() => {
-        if (imageData) {
-            if (typeof imageData === 'string') fetchImageData(imageData)
-            else setImage(imageData)
-        }
-    }, [])
+    const isImageProfileImage = id => user.profileImage === id
 
-    const fetchImageData = async id => {
-
-        const data = await getImageDataById(id)
-        console.log('ImageDetail:UPDATE_IMAGE:', data)
-        dispatch({ type: 'UPDATE_IMAGE', image: data })
-        setImage(data)
-    }
-
-    const isImageProfileImage = id => {
-        if (!user.profileImage) return null
-        return user.profileImage === id ? true : false
-    }
-
-    const isImageProductImage = (id, products) => {
-        let imageId = null
+    const isImageProductImage = id => {
+        let response = false
         products.map(product => {
-            if (product.imageId === id) imageId = product.imageId
+            if (!product.image) return false
+            if (product.image === id || product.image._id === id) response = true
         })
-        return imageId
+        return response
     }
 
     const deleteImage = async () => {
 
-        const imageId = image._id
+        const imageId = imageData._id
 
         dispatch({ type: 'REMOVE_IMAGE', id: imageId })
 
         const isProfileImage = isImageProfileImage(imageId)
 
         let isProductImage = null
-        if (user.role === 'vendor' && user.products) {
-            isProductImage = isImageProductImage(imageId, user.products)
+        if (user.role === 'vendor') {
+            isProductImage = isImageProductImage(imageId, products)
         }
         
         setLoading('Deleting Image...')
@@ -71,18 +54,17 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
                 isProductImage,
                 isProfileImage,
             })
+
+        setLoading(null)
         
         if (!data) {
             console.log('Error deleting image.')
-            setLoading(null)
             return null
         }
-
-        console.log('deleted image:data:', data)
         
         setLoading(null)
         
-        onDelete(data.id, isProfileImage, isProductImage)
+        onDelete(data.imageId, isProfileImage, isProductImage)
     }
 
     const setAvatar = async () => {
@@ -92,7 +74,7 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
         const { data } = await axios
             .post('/api/user/avatar', {
                 userId: user._id,
-                imageId: image._id,
+                imageId: imageData._id,
             })
         
         if (!data) {
@@ -110,12 +92,12 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
 
     const showAvatarButton = () => {
         if (!user.profileImage) return true
-        if (typeof user.profileImage === 'string' && user.profileImage === image._id) return true
-        if (user.profileImage._id !== image._id) return true
+        if (typeof user.profileImage === 'string' && user.profileImage === imageData._id) return true
+        if (user.profileImage._id !== imageData._id) return true
         return false
     }
 
-    return image ? (
+    return imageData ? (
         <View
             style={{
                 display: 'flex',
@@ -128,7 +110,7 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
                 width={200}
                 height={200}
                 source={{
-                    uri: `${IMAGE_PATH}/${user.username}/${image.filename}`,
+                    uri: `${IMAGE_PATH}/${user.username}/${imageData.filename}`,
                 }}
                 style={{
                     resizeMode: resize,

@@ -29,7 +29,6 @@ import ImageList from './ImageList'
 import ImageLoader from './ImageLoader'
 import ImageUploader from './ImageUploader'
 import ImagePreview from './ImagePreview'
-import NewImageUploader from './NewImageUploader'
 import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
 import LocationModule from './LocationModule'
@@ -60,7 +59,7 @@ import TimeSelector from './TimeSelector'
 import UserListItem from './UserListItem'
 import UserHeading from './UserHeading'
 import UserList from './UserList'
-import UserProfile from './UserProfile'
+// import UserProfile from './UserProfile'
 import VendorDisplay from './VendorDisplay'
 import VendorList from './VendorList'
 
@@ -95,7 +94,6 @@ export {
     ImagePreview,
     ImageList,
     ImageUploader,
-    NewImageUploader,
     LoadingView,
     LocationDetails,
     LocationModule,
@@ -126,7 +124,7 @@ export {
     UserListItem,
     UserHeading,
     UserList,
-    UserProfile,
+    // UserProfile,
     VendorDisplay,
     VendorList,
 }

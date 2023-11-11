@@ -1,26 +1,20 @@
 import React from 'react'
-import {
-    FlatList,
-} from 'react-native'
-import {
-    ProductListItem,
-} from '.'
+import { FlatList } from 'react-native'
+import { ProductListItem } from '.'
 
-const ProductList = ({ deleteItem, productIds, onPress, update }) => (
+export default ({ deleteItem, products, onPress, update }) => (
     <FlatList
-        data={productIds}
+        data={products}
         listKey={() => 'products'}
-        keyExtractor={id => `product-${id}`}
+        keyExtractor={(item, index) => 'key' + index}
         renderItem={({ item }) => (
             <ProductListItem
-                productId={item}
-                key={item => `product-${item}`}
+                product={item}
+                key={item => `product-${item._id}`}
                 update={update}
-                onDelete={() => deleteItem(item)}
+                onDelete={() => deleteItem(item._id)}
                 onPress={() => onPress(item)}
             />
         )} 
     />
 )
-
-export default ProductList

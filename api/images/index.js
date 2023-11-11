@@ -7,14 +7,12 @@ const { mkdirp } = require('mkdirp')
 // const im = gm.subClass({ imageMagick: true })
 
 const imagePath = process.env.IMAGE_PATH || require('../../config').IMAGE_PATH
-console.log('imagePath', imagePath)
+console.log('API:images >> imagePath', imagePath)
 
 const getImageIdFromFilename = async (req, res) => {
     const { name } = req.params
     const image = await UserImage
         .find({ filename: name })
-
-    console.log('got image from filename', name)
 
     return res.status(200).json({ image })
 }
@@ -38,7 +36,7 @@ const getProfileImageByUserId = async (req, res) => {
 }
 
 const getImageWithUsernameByImageId = async (req, res) => {
-    console.log('getting image data and username by id', req.params.id)
+    
     const image = await UserImage
         .findOne({ _id: req.params.id })
         .populate('user', 'username')
@@ -72,7 +70,7 @@ const updateProfileImage = async (req, res) => {
 
 const removeImage = path => rm(path, () => console.log('removed file at path', path))
 
-const removeAllImagesFilesByUsername = async username => await rmSync(
+const removeAllImagesFilesByUsername = async username => rmSync(
     `${imagePath}/${username}`,
     {
         recursive: true,
@@ -123,46 +121,17 @@ const uploadAvatar = async (req, res) => {
     
     console.log('newImage', newImage)
 
-    const updatedUser = await User.
-        findOneAndUpdate({ _id: user._id }, { $set: {
-            profileImage: user.profileImage ? user.profileImage : newImage._id,
-            images: [
-                ...user.images,
-                newImage._id
-            ],
-        } }, { new: true })
-        .populate('profileImage', 'filename')
-        .populate({
-            path: 'images',
-            select: 'filename',
-            // populate: { path: 'images' },
-        })
+    user.profileImage = newImage
+    await user.save()
 
-    if (!updatedUser) {
-        console.log('Could not update user images/profileImage')
-        return res.status(200).json(null)
-    }
-    console.log('updatedUser', updatedUser)
-
-    const { images, profileImage } = updatedUser
+    const { profileImage } = user
     
-    return res.status(200).json({ images, profileImage, imageId: newImage._id })
+    return res.status(200).json({ profileImage, imageId: newImage._id })
 }
 
 const deleteImageById = async (req, res) => {
     const { imageId, isProductImage, isProfileImage } = req.body
     console.log('deleteImageById:', imageId)
-
-    // remove the image from the user images
-    console.log('\n removing image by id:', imageId)
-    const removedImageId = await removeImageFromUserImages(imageId)
-    console.log('\n removedImageId', removedImageId)
-    if (!removedImageId) {
-        // stop here.
-        console.log('Could not find image in user.images to remove.')
-        return null
-    }
-    console.log('image removed from user images.')
     
     // check to see if it is a product image
     if (isProductImage) {
@@ -190,20 +159,13 @@ const deleteImageById = async (req, res) => {
     
     const deletedImage = await UserImage
         .findOneAndRemove({ _id: imageId })
-        // .populate({
-            // path: 'user',
-            // select: '_id',
-            // populate: { path: 'images' },
-        // })
-    
-    console.log('deleted image:', deletedImage)
 
     if (!deletedImage) console.log('Could not find image to delete')
     
     const user = await User
         .findOne({ _id: deletedImage.user })
     
-    console.log('user fetched for image and profile update', user)
+    // console.log('user fetched for image and profile update', user)
 
     if (!user) {
         console.log('could not find user to update after image deletion.')
@@ -216,22 +178,21 @@ const deleteImageById = async (req, res) => {
     const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
     const pathToAvatar = `${userPath}/${filenameToDelete}`
 
-    if (user.images) user.images = user.images.filter(id => id !== imageId)
     if (user.profileImage === imageId) user.profileImage = null
     await user.save()
 
     const product = await Product
-        .findOne({ imageId })
+        .findOne({ image: imageId })
     
     if (product) {
-        product.imageId = null
+        product.image = null
         await product.save()
     }
 
     removeImage(pathToAvatar)
     removeImage(pathToThumb)
 
-    return res.status(200).json({ id: deletedImage._id })
+    return res.status(200).json({ imageId })
 }
 
 const clearUserProfileImage = async imageId => {
@@ -249,11 +210,11 @@ const findAndRemoveImageFromProduct = async imageId => {
     if (user && user.products) {
         let productFound = false
         const products = user.products.map(product => {
-            if (product.imageId === imageId) {
+            if (product.image === imageId) {
                 productFound = true
                 return {
                     ...product,
-                    imageId: null,
+                    image: null,
                 }
             }
             return product
@@ -269,52 +230,22 @@ const findAndRemoveImageFromProduct = async imageId => {
 }
 
 const getUserFromImageId = async imageId => {
-    console.log('getting user from image id:', imageId)
+    
     const image = await UserImage.findOne({ _id: imageId })
+    
     if (!image) {
         console.log('Could not find image to remove.')
         return null
     }
-    console.log('image found:', image)
+    
     const user = await User.findOne({ _id: image.user })
+    
     if (!user) {
         console.log('could not find user referenced in image model.')
         return null
     }
+
     return user
-}
-
-const removeImageFromUserImages = async imageId => {
-
-    const user = await getUserFromImageId(imageId)
-    
-    if (!user) {
-        console.log('no user found.')
-        return null
-    }
-
-    console.log('removeImageFromUserImages:user:', user)
-    
-    const { images } = user
-
-    if (!images) {
-        console.log('no user images')
-        return null
-    }
-    
-    const imageExists = images.filter(img => img._id === imageId).length
-    console.log(imageExists ? 'image exists' : 'could not find image to remove.')
-
-    if (imageExists) {
-        // remove image
-        console.log('\nuser images before image removal', images)
-        const newImages = images.filter(img => img._id !== imageId)
-        console.log('\nuser images after image removal', newImages)
-        user.images = newImages
-        await user.save()
-    }
-
-    return imageId
 }
 
 const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
@@ -390,7 +321,7 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
 }
 
 const uploadProductImage = async payload => {
-    console.log('uploading product image...')
+    
     const { userId, imageData, thumbData } = payload
     
     const user = await User.findOne({ _id: userId })
@@ -399,15 +330,17 @@ const uploadProductImage = async payload => {
 
     const path = `${imagePath}/${user.username}`
     
-    const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
+    const uploadFilename = await handleFileUpload({ imageData, thumbData }, path, filename)
     
-    if (!imagesUploaded) {
+    if (!uploadFilename) {
         console.log('Error writing image/thumb.')
         return null
     }
 
-    const data = await saveUserImage(user, filename)
-    console.log('uploadProductImage: return data:', data)
+    console.log('uploadFilename:', uploadFilename)
+
+    const data = await saveUserImage(user, uploadFilename)
+    
     if (!data) {
         console.log('Error saving UserImage to User Images')
         return null
@@ -417,11 +350,10 @@ const uploadProductImage = async payload => {
 }
 
 const uploadImage = async (req, res) => {
-    console.log('/api/image/upload')
+    
     const { userId, imageData, thumbData } = req.body
     
     const user = await User.findOne({ _id: userId })
-    console.log('found user:', user)
     
     const filename = `${userId}-${Date.now()}.png`
 
@@ -435,15 +367,11 @@ const uploadImage = async (req, res) => {
     }
 
     const { image } = await saveUserImage(user, filename)
-    console.log('saveUserImage result: data:', image._id)
 
     if (!image) {
         console.log('Error saving UserImage to User Images')
         return res.status(200).json(null)
     }
-    
-    user.images = [...user.images, image._id]
-    await user.save()
 
     return res.status(200).json(image)
 }

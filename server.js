@@ -116,8 +116,8 @@ app.get(    '/user/location/:userId',   getLocationByUserId)
 
 // products
 app.post(   '/product',                 createOrUpdateProduct)
-app.delete( '/products/delete',         deleteProductById)
-app.get(    '/products/:vendor',        getProductIdsByVendorId)
+app.delete( '/products/delete/:id',     deleteProductById)
+app.get(    '/products/:vendor',        getProductsByVendorId)
 app.get(    '/product/:id',             getProductById)
 
 // images

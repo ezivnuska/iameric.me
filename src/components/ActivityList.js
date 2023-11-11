@@ -7,7 +7,7 @@ import {
 import { ActivityListItem } from './'
 
 const ActivityList = ({ activities, ...props }) => {
-    console.log('activities', activities)
+    
     return (
         <View style={styles.container} {...props}>
             <FlatList

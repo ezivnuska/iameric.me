@@ -9,8 +9,6 @@ import {
     ButtonPrimary,
     CategoryPicker,
     FormInput,
-    ImageLoader,
-    // ImagePreview,
     ImageUploader,
 } from '.'
 import axios from 'axios'
@@ -19,24 +17,22 @@ import main from '../styles/main'
 
 const IMAGE_PATH = __DEV__ ? 'https://www.iameric.me/assets' : '/assets'
 
-export default ({ onComplete, onDelete, existingProduct = null }) => {
+export default  ({ onComplete, onDelete, existingProduct = null }) => {
     
     const {
-        state,
+        user,
         dispatch,
     } = useContext(AppContext)
 
-    const { user } = state
-
     const [loading, setLoading] = useState(false)
     // const [ product, setProduct ] = useState(null)
-    const [ title, setTitle ] = useState(existingProduct ? existingProduct.title : '')
-    const [ price, setPrice ] = useState(existingProduct ? existingProduct.price : '')
-    const [ blurb, setBlurb ] = useState(existingProduct ? existingProduct.blurb : '')
-    const [ desc, setDesc ] = useState(existingProduct ? existingProduct.desc : '')
-    const [ category, setCategory ] = useState(existingProduct ? existingProduct.category : 'main')
+    const [ title, setTitle ] = useState()
+    const [ price, setPrice ] = useState()
+    const [ blurb, setBlurb ] = useState()
+    const [ desc, setDesc ] = useState()
+    const [ category, setCategory ] = useState()
     // const [ image, setImage ] = useState(null)
-    const [ imageId, setImageId ] = useState(existingProduct ? existingProduct.imageId : null)
+    const [ image, setImage ] = useState(null)
     // const [ filename, setFilename ] = useState(null)
     // const [ path, setPath ] = useState(null)
     const [ attachment, setAttachment ] = useState(null)
@@ -51,13 +47,40 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
     useEffect(() => {
         // if editing, set initial form vars
         if (existingProduct) {
-            console.log('form initiated with existing product:', existingProduct)
+            setFormData(existingProduct)
         }
-
     }, [])
 
+    // useEffect(() => {
+    //     console.log('attachment changed', attachment)
+    //     if (attachment) {
+    //         console.log('attachment set', attachment)
+    //     }
+    // }, [attachment])
+
+    const getProductData = async () => {
+        setLoading(true)
+        const { data } = await axios.get(`/api/product/${existingProduct}`)
+        if (!data) {
+            return null
+        }
+        setFormData(data)
+        setLoading(false)
+    }
+
+    const setFormData = data => {
+        const { title, price, blurb, desc, category } = data
+        setTitle(data.title)
+        setPrice(data.price)
+        setBlurb(data.blurb)
+        setDesc(data.desc)
+        setCategory(data.category)
+        // if (typeof image === '')
+        setImage(data.image)
+    }
+
     const onSubmit = async () => {
-        
+        // console.log('attachment on submit', attachment)
         setLoading(true)
 
         const { _id } = user
@@ -69,21 +92,24 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
             blurb,
             desc,
             category,
-            imageId,
+            image,
         }
 
-        if (existingProduct && existingProduct._id) {
+        if (existingProduct) {
             productData = {
                 ...productData,
                 _id: existingProduct._id,
             }
         }
 
-        if (attachment) productData = {
-            ...productData,
-            attachment,
+        if (attachment) {
+            productData = {
+                ...productData,
+                attachment,
+            }
         }
 
+        // console.log('product data after attachment', productData)
         const { data } = await axios
             .post('/api/product', productData)
 
@@ -93,15 +119,12 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
             console.log('Error saving product', data)
             return null
         }
-
+        console.log('Product Form: data:', data)
         if (!existingProduct) {
             dispatch({ type: 'ADD_PRODUCT', product: data })
         } else {
             dispatch({ type: 'UPDATE_PRODUCT', product: data })
         }
-        
-        if (data.imageId)
-            dispatch({ type: 'ADD_IMAGE', image: data.imageId })
 
         setTitle('')
         setPrice('')
@@ -109,7 +132,7 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
         setBlurb('')
         setCategory('')
         // setFilename(null)
-        setImageId(null)
+        setImage(null)
         setAttachment(null)
 
         onComplete(data)
@@ -121,10 +144,11 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
     // }
     
     const onImageSelected = payload => {
-        console.log('image selected', payload.imageData.filename)
-        setImageId(null)
+        // console.log('image selected', payload)
+        setImage(null)
         // setFilename(null)
-        setUpload(payload)
+        // console.log('setting attachment...', payload)
+        setAttachment(payload)
         setShowSelector(false)
         // const { uri, height, width } = data.imageData
     }
@@ -137,19 +161,22 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
         }
         return (
             <View>
-                <View>
-                    {imageId ? (
-                        <ImageLoader
-                            imageData={imageId}
-                        />
-                    ) : attachment ? (
-                        <Image
-                            style={styles}
-                            source={{ uri: attachment.thumbData.uri }}
-                        />
-                    ) : null}
-                </View>
-                <Pressable onPress={() => setShowSelector(true)}>
+                {(image || attachment) ? (
+                    <Image
+                        style={styles}
+                        source={{
+                            uri: image
+                                ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
+                                : attachment
+                                    ? attachment.thumbData.uri
+                                    : null
+                        }}
+                    />
+                ) : null}
+                <Pressable
+                    onPress={() => setShowSelector(true)}
+                    disabled={loading}
+                >
                     <Text>Upload New Image</Text>
                 </Pressable>
             </View>
@@ -163,6 +190,7 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
                 : (
                     <ImageUploader
                         onImageSelected={onImageSelected}
+                        showSubmit={false}
                     />
                 )
             }
@@ -183,7 +211,7 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
             
             <FormInput
                 label='Name'
-                value={title}
+                value={title || ''}
                 onChangeText={onChangeTitle}
                 placeholder='product name'
                 textContentType='default'
@@ -194,7 +222,7 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
 
             <FormInput
                 label='Price'
-                value={price}
+                value={price || ''}
                 onChangeText={onChangePrice}
                 placeholder='0.00'
                 keyboardType='decimal-pad'
@@ -203,7 +231,7 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
 
             <FormInput
                 label='Blurb'
-                value={blurb}
+                value={blurb || ''}
                 onChangeText={onChangeBlurb}
                 placeholder='blurb'
                 keyboardType='default'
@@ -213,7 +241,7 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
 
             <FormInput
                 label='Description'
-                value={desc}
+                value={desc || ''}
                 onChangeText={onChangeDesc}
                 placeholder='description'
                 keyboardType='default'
@@ -232,7 +260,7 @@ export default ({ onComplete, onDelete, existingProduct = null }) => {
                 style={main.button}
                 label='Delete'
                 disabled={loading}
-                onPress={() => onDelete(existingProduct._id)}
+                onPress={onDelete}
             />
 
         </View>

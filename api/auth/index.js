@@ -6,10 +6,9 @@ const {
 } = require('../images')
 const SESSION_SECRET = process.env.JWT_SECRET || require('../../config').JWT_SECRET
 
-const getSanitizedUser = ({ _id, email, images, location, profileImage, role, username, token }) => ({
+const getSanitizedUser = ({ _id, email, location, profileImage, role, username, token }) => ({
     _id,
     email,
-    images,
     location,
     profileImage,
     role,
@@ -159,9 +158,6 @@ const authenticate = async (req, res) => {
 
     const user = await User
         .findOne({ _id: userFromToken._id })
-        // .populate('profileImage', 'filename')
-        // .populate('location')
-        // .populate('images', 'filename')
 
     if (!user) {
         console.log('failed to refresh user token')

@@ -54,7 +54,7 @@ const DetailsScreen = ({ navigation, route }) => {
     }
 
     const getProducts = async () => {
-        setLoading('Loading products...')
+        setLoading('DetailsScreen:Loading products...')
         const { data } = await axios.get(`/api/products/${id}`)
         if (!data.items) return console.log('oops... could not get vendor products')
         updateProducts(data.items)

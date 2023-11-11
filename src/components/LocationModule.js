@@ -26,35 +26,35 @@ const initialState = {
     zip: '',
 }
 
-export default ({ details }) => {
+export default ({ userId }) => {
 
-    const {
-        user,
-    } = useContext(AppContext)
+    // const {
+    //     user,
+    // } = useContext(AppContext)
 
-    const [location, setLocation] = useState(details)
+    const [location, setLocation] = useState()
     const [modalVisible, setModalVisible] = useState(false)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        console.log('user:location:', location)
-        if (!user.location) getLocation()
-        else if (!location) setLocation(user.location)
+        // console.log('user:location:', location)
+        getLocation()
+        // else if (!location) setLocation(user.location)
     }, [])
 
     const getLocation = async () => {
         setLoading(true)
         
-        const { data } = await axios
-            .get(`/api/user/location/${user._id}`)
+        const response = await axios
+            .get(`/api/user/location/${userId}`)
 
-        if (!data) {
+        if (!response) {
             console.log('Error getting location:')
             setLoading(false)
             return
         }
 
-        setLocation(data.location || initialState)
+        setLocation(response.location || initialState)
 
         setLoading(false)
     }

@@ -39,10 +39,6 @@ const UserSchema = new Schema({
     token: {
         type: Schema.Types.String,
     },
-    images: [{
-        type: Schema.Types.ObjectId,
-        ref: 'UserImage',
-    }],
     products: [{
         type: Schema.Types.ObjectId,
         ref: 'Product',

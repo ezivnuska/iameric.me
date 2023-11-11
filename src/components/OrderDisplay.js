@@ -25,10 +25,6 @@ const OrderDisplay = () => {
     const [items, setItems] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
 
-    useEffect(() => {
-        // getOrders()
-    }, [])
-
     const getFeaturedItem = id => {
         return items.filter((order, index) => order._id === id)[0]
     }
@@ -52,22 +48,6 @@ const OrderDisplay = () => {
                 })
             break
         }
-    }
-
-    const getOrders = async () => {
-        setLoading(true)
-        
-        const { data } = await axios.get('/api/orders')
-        
-        setLoading(false)
-
-        if (!data.orderIds) console.log('no orders found')
-
-        dispatch({ type: 'SET_ORDERS', orders: data.orderIds })
-
-        // const orders = relevantOrders(data.orderIds)
-        
-        setItems(orderIds)
     }
 
     const removeOrder = id => {

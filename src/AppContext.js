@@ -8,8 +8,8 @@ const initialState = {
     dims: null,
     images: [],
     loading: false,
-    orders: null,
-    products: null,
+    orders: [],
+    products: [],
     profileId: null,
     profileImage: null,
     user: null,
@@ -27,83 +27,67 @@ const reducer = (state = initialState, action) => {
         case 'SET_USER':
             user = action.user
             break
-        case 'SET_USER_IMAGES':
-            user.images = action.images
-            break
-        case 'ADD_IMAGE':
-            user.images = [...user.images, action.image]
-            break
-        case 'UPDATE_IMAGE':
-            user.images = user.images.map(image => {
-                if (action.image._id === image || action.image._id === image._id) {
-                    return action.image
-                } else return image
-            })
-            break
         case 'REMOVE_IMAGE':
-            let imageIndex = user.images.findIndex(image => image._id === action.id)
-            const images = [
-                ...user.images.slice(0, imageIndex),
-                ...user.images.slice(imageIndex + 1),
-            ]
-            user.images = images
-            
             if (user.profileImage === action.id) {
                 profileImage = null
                 user.profileImage = null
             }
-
             break
         case 'REMOVE_PRODUCT_IMAGE':
-            const newProducts = user.products.map(product => {
-                if (product.imageId === action.imageId) return { ...product, imageId: null }
+            products = products.map(product => {
+                if (product.image && product.image._id === action.imageId) return { ...product, image: null }
                 else return product
             })
-            user = {
-                ...user,
-                products: newProducts,
-            }
             break
         case 'SET_VENDORS':
             vendors = action.vendors
             break
         case 'UPDATE_VENDOR_PRODUCTS':
-            let index
-            vendors.map((v, i) => {
-                if (v._id === action.vendor) index = i
+            vendors = vendors.map((v, i) => {
+                if (v._id === action.vendorId) {
+                    v.products = action.products
+                }
+                return v
             })
-            vendors[index].products = action.products
             break
         case 'SET_PRODUCTS':
-            products = action.productIds
+            products = action.products
             break
         case 'ADD_PRODUCT':
-            products = [...action.products, action.product]
+            products = [...products, action.product]
             break
         case 'UPDATE_PRODUCT':
             if (!products) products = []
             if (products.length) {
-                const i = products.findIndex(product => {
-                    const id = product._id || product
-                    return id === action.productData._id
-                })
+                const i = products.findIndex(product => product._id === action.product._id)
                 if (i <= -1) return
                 products = [
                     ...products.slice(0, i),
-                    action.productData,
+                    action.product,
                     ...products.slice(i + 1),
                 ]
             }
+            break
+        case 'SET_PRODUCT_IMAGE_DATA':
+            const i = products.findIndex(product => product._id === action.productId)
+            if (i <= -1) return
+            const updatedProduct = products[i]
+            updatedProduct.image = action.imageData
+            products = [
+                ...products.slice(0, i),
+                updatedProduct,
+                ...products.slice(i + 1),
+            ]
             break
         case 'UPDATE_PRODUCT_IMAGE':
             const userProducts = products || []
             let updatedUserProducts
             if (userProducts.length) {
                  updatedUserProducts = userProducts.map(product => {
-                    if (product.imageId && product.imageId === action.imageId) {
+                    if (product.image && product.image !== action.imageId) {
                         return {
                             ...product,
-                            imageId: action.imageId,
+                            image: action.imageId,
                         }
                     } else return product
                 })
@@ -111,8 +95,7 @@ const reducer = (state = initialState, action) => {
             products = updatedUserProducts
             break
         case 'REMOVE_PRODUCT':
-            if (!products) return
-            products = products.filter(productId => productId !== action.productId)
+            products = products.filter(product => product._id !== action.productId)
             break
         case 'SET_LOADING':
             const wasLoading = loading
@@ -141,8 +124,7 @@ const reducer = (state = initialState, action) => {
             cart = { vendor: null, items: null }
             break
         case 'SET_ORDERS':
-            orders = action.orderIds
-            console.log('orders set', orders)
+            orders = action.orders
             break
         case 'ADD_ORDER':
             orders = [...orders, action.order]
@@ -249,7 +231,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, loading, orders, products, profileId, user, users, vendors }
+    return { cart, dims, loading, orders, products, profileId, profileImage, user, users, vendors }
 }
 
 export const AppContext = createContext({
@@ -266,7 +248,6 @@ export const AppProvider = ({ children }) => {
             dispatch,
             cart: state.cart,
             dims: state.dims,
-            images: state.user ? state.user.images : null,
             loading: state.loading,
             orders: state.orders,
             products: state.products,

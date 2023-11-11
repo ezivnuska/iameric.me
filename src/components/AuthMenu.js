@@ -55,10 +55,12 @@ const AuthMenu = () => {
     const fetchImageData = async id => {
         console.log('auth menu getting image data...')
         
-        const imageData = await getImageDataById(id)
-        console.log('auth menu got image data:')
-        setAvatar(imageData)
-        dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: imageData })
+        const { data } = await axios
+            .get(`/api/image/${id}`)
+        
+        setAvatar(data)
+        
+        dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: data })
     }
 
     useEffect(() => {
