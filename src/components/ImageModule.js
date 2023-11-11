@@ -67,7 +67,7 @@ export default () => {
 
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState(null)
+    const [items, setItems] = useState([])
     // const [upload, setUpload] = useState(null)
 
     useEffect(() => {
@@ -110,7 +110,6 @@ export default () => {
     const onImageUploaded = image => {
         
         // setUpload(null)
-
         setItems([...items, image])
 
         setModalVisible(false)
@@ -151,14 +150,13 @@ export default () => {
 
             {loading
                 ? <Text>Loading...</Text>
-                : (items && items.length)
-                    ? (
-                        <ImageList
-                            images={items}
-                            username={user.username}
-                            onSelected={onSelected}
-                        />
-                    ) : <Text>No images to display.</Text>
+                : (
+                    <ImageList
+                        images={items}
+                        username={user.username}
+                        onSelected={onSelected}
+                    />
+                )
             }
             
             <ModalContent

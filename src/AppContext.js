@@ -27,7 +27,7 @@ const reducer = (state = initialState, action) => {
             user = action.user
             break
         case 'REMOVE_IMAGE':
-            if (user.profileImage._id === action.id) {
+            if (user.profileImage && user.profileImage._id === action.id) {
                 user.profileImage = null
             }
             break
