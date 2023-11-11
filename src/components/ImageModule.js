@@ -68,7 +68,7 @@ export default () => {
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
     const [items, setItems] = useState(null)
-    const [upload, setUpload] = useState(null)
+    // const [upload, setUpload] = useState(null)
 
     useEffect(() => {
         getImageData()
@@ -83,18 +83,20 @@ export default () => {
         setItems(data.images)
     }
 
-    useEffect(() => {
-        if (upload) {
-            uploadImageData(upload)
-        }
-    }, [upload])
+    // useEffect(() => {
+    //     if (upload) {
+    //         uploadImageData(upload)
+    //     }
+    // }, [upload])
 
     const uploadImageData = async imageData => {
+
+        setLoading(true)
 
         const { data } = await axios
             .post(`/api/image/upload`, imageData)
 
-        setLoading(null)
+        setLoading(false)
 
         if (!data) {
             console.log('Error uploading image/thumb')
@@ -107,7 +109,7 @@ export default () => {
 
     const onImageUploaded = image => {
         
-        setUpload(null)
+        // setUpload(null)
 
         setItems([...items, image])
 
@@ -128,7 +130,7 @@ export default () => {
 
     const onImageSelected = payload => {
         
-        setUpload(payload)
+        uploadImageData(payload)
     }
 
     const onSelected = imageId => {
