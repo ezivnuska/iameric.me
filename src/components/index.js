@@ -14,7 +14,6 @@ import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
 import CircleButton from './CircleButton'
 import DeleteAccountButton from './DeleteAccountButton'
-import Dropzone from './Dropzone'
 import EditButton from './EditButton'
 import FileSelector from './FileSelector'
 import FormInput from './FormInput'
@@ -77,7 +76,6 @@ export {
     CenteredView,
     CircleButton,
     DeleteAccountButton,
-    Dropzone,
     EditButton,
     FileSelector,
     FormInput,
