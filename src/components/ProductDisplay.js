@@ -80,7 +80,7 @@ export default () => {
 
     const onProductFormSubmitted = async productData => {
         dispatch({ type: 'UPDATE_PRODUCT', product: productData })
-        console.log('product form submitted', productData)
+        // console.log('product form submitted', productData)
         const updatedProducts = await updateProducts(productData)
         setItems(updatedProducts)
         closeModal()
