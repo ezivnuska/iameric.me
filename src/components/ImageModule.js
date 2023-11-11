@@ -149,13 +149,17 @@ export default () => {
                 
             <Header onPress={() => setModalVisible(true)} />
 
-            {(items && items.length) ? (
-                <ImageList
-                    images={items}
-                    user={user}
-                    onSelected={onSelected}
-                />
-            ) : <Text>No images to display.</Text>}
+            {loading
+                ? <Text>Loading...</Text>
+                : (items && items.length)
+                    ? (
+                        <ImageList
+                            images={items}
+                            user={user}
+                            onSelected={onSelected}
+                        />
+                    ) : <Text>No images to display.</Text>
+            }
             
             <ModalContent
                 visible={modalVisible}

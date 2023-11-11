@@ -45,34 +45,38 @@ export default ({ userId }) => {
     const getLocation = async () => {
         setLoading(true)
         
-        const response = await axios
-            .get(`/api/user/location/${userId}`)
+        const { data } = await axios
+            .get(`/api/location/${userId}`)
+        
+        setLoading(false)
 
-        if (!response) {
-            console.log('Error getting location:')
-            setLoading(false)
+        if (!data) {
+            console.log('Error getting location.')
             return
         }
 
-        setLocation(response.location || initialState)
-
-        setLoading(false)
+        setLocation(data.location)
     }
 
     const onSubmitAddress = async newLocation => {
-        setModalVisible(false)
-        const address = await axios
+        setLoading(true)
+
+        const { data } = await axios
             .post('/api/location', newLocation)
-            .then(({ data }) => data.location)
-            .catch(err => {
-                console.log('Error saving location', err)
-                return null
-            })
         
-        if (address) setLocation(address)
+        setLoading(false)
+        
+        if (!data) {
+            console.log('Error saving location', err)
+            return
+        }
+        
+        setLocation(data.location)
+
+        setModalVisible(false)
     }
 
-    const renderLocationDetails = location => location
+    const renderLocationDetails = () => location
         ? <LocationDetails location={location} />
         : <Text style={{ color: '#aaa' }}>Loading Address...</Text>
 

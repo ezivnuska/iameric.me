@@ -112,7 +112,7 @@ app.delete( '/entry/delete',            deleteEntryById)
 
 // location
 app.post(   '/location',                createOrUpdateLocation)
-app.get(    '/user/location/:userId',   getLocationByUserId)
+app.get(    '/location/:userId',        getLocationByUserId)
 
 // products
 app.post(   '/product',                 createOrUpdateProduct)

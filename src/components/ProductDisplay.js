@@ -119,7 +119,7 @@ export default () => {
                     <ProductList
                         products={items}
                         onPress={item => {
-                            console.log('item featured>>', item)
+                            console.log(`showing details for ${item.title}`)
                             setFeatured(item)
                         }}
                     />
