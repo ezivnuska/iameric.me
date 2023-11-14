@@ -68,24 +68,21 @@ export default () => {
     useEffect(() => {
         // const filteredItems = matchProductsToItems()
         if (!items) setItems(products)
-        if (products && items) {
-            let changed = false
-            let updatedItems = items
-            if (products.length !== items.length) {
-                setItems(products)
-            } else {
-                updatedItems = products.map((prod, index) => {
-                    const item = items[index]
-                    if (prod._id === item._id) {
-                        if (item.image._id !== prod.image._id) {
-                            return prod
-                        } else return item
-                    }
-                })
-                setItems(updatedItems)
-            }
+        else if (products && products.length !== items.length) {
+            setItems(products)
+        } else if (products) {
+            const updatedItems = products.map((prod, index) => {
+                const item = items[index]
+                if (prod._id === item._id) {
+                    if ((prod.image && item.image) && (item.image._id !== prod.image._id)) {
+                        return prod
+                    } else if (prod.image && !item.image) {
+                        return prod
+                    } else return item
+                }
+            })
+            setItems(updatedItems)
         }
-        // else fetchProducts()
     }, [products])
 
     const onDelete = async id => {

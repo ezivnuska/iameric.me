@@ -18,7 +18,7 @@ export default ({ onSelect, products, imageId }) => (
                 style={{
                     padding: 10,
                 }}
-                disabled={imageId === item.image._id}
+                disabled={item.image && imageId === item.image._id}
             >
                 <Text>{item.title}</Text>
             </Pressable>

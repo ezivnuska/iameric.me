@@ -34,7 +34,7 @@ export default ({ product, onDelete, onPress, ...props }) => {
                     justifyContent: 'flex-start',
                 }}
             >
-                {product ? (
+                {product.image ? (
                     <View
                         style={{
                             paddingRight: 10,
