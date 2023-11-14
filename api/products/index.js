@@ -85,8 +85,6 @@ const addImageIdToProduct = async (req, res) => {
             { new: true },
         )
         .populate('image', 'filename')
-    
-    console.log('updatedProduct', data)
 
     if (!data) {
         console.log('no updated product')

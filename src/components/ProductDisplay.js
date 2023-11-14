@@ -30,29 +30,62 @@ export default () => {
         if (products) {
             setItems(products)
         } else {
-            fetchProductData(user._id)
+            fetchProducts()
         }
     }, [])
+
+    const fetchProducts = async () => {
+        const newProducts = await getProducts(dispatch, user._id)
+        console.log('new products', newProducts)
+        setItems(newProducts)
+    }
 
     useEffect(() => {
         if (featured) setShowModal(true)
         else setShowModal(false)
     }, [featured])
 
-    useEffect(() => {
-        if (products && items) {
-            const updatedItems = products.map((prod, index) => {
-                const item = items[index]
-                if (prod._id === item._id) {
-                    if (item.image._id !== prod.image._id) {
-                        return prod
-                    } else return item
-                }
-            })
-            setItems(updatedItems)
-        } else if (products) {
-            setItems(products)
+    const matchProductsToItems = async () =>  {
+        if (!items || items.length !== products.length) {
+            fetchProducts()
+            return
         }
+        console.log('items/products', items, products)
+        console.log('items/products:length', items.length, products.length)
+        const returnArray = products.map((p, i) => {
+            const item = items[i]
+            console.log('item.image._id', item.image._id)
+            console.log('p.image._id', p.image._id)
+            if (item.image._id !== p.image._id) {
+                console.log('found image to update')
+                return p
+            }
+            return item
+        })
+        return returnArray
+    }
+
+    useEffect(() => {
+        // const filteredItems = matchProductsToItems()
+        if (!items) setItems(products)
+        if (products && items) {
+            let changed = false
+            let updatedItems = items
+            if (products.length !== items.length) {
+                setItems(products)
+            } else {
+                updatedItems = products.map((prod, index) => {
+                    const item = items[index]
+                    if (prod._id === item._id) {
+                        if (item.image._id !== prod.image._id) {
+                            return prod
+                        } else return item
+                    }
+                })
+                setItems(updatedItems)
+            }
+        }
+        // else fetchProducts()
     }, [products])
 
     const onDelete = async id => {

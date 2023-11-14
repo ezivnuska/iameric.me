@@ -120,7 +120,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
             console.log('Error saving product', data)
             return null
         }
-        // console.log('Product Form: data:', data)
+        
         if (!existingProduct) {
             dispatch({ type: 'ADD_PRODUCT', product: data })
         } else {
