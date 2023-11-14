@@ -104,6 +104,7 @@ export default () => {
         }
         
         onImageUploaded(data)
+        
         return data
     }
 
@@ -125,11 +126,6 @@ export default () => {
         if (isProductImage) dispatch({ type: 'REMOVE_PRODUCT_IMAGE', imageId: id })
         
         setFeatured(null)
-    }
-
-    const onImageSelected = payload => {
-        
-        uploadImageData(payload)
     }
 
     const onSelected = imageId => {
@@ -167,7 +163,7 @@ export default () => {
                 label='Upload an Image'
             >
                 <ImageUploader
-                    onImageSelected={onImageSelected}
+                    onImageSelected={uploadImageData}
                 />
             </ModalContent>
 

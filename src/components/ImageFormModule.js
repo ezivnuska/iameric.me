@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    Text,
     View,
 } from 'react-native'
 import {
     FileSelector,
+    ImageWithURI,
     LoadingView,
     Preview,
-} from './'
+} from '.'
 // import ReactAvatarEditor from 'react-avatar-editor'
 import { Button } from 'antd'
 import EXIF from 'exif-js'
@@ -16,7 +18,7 @@ import { dataURItoBlob, handleUpload, imageToDataURIs, uploadImage } from '../Up
 
 const initialSize = 300
 
-export default ({ onImageSelected, showSubmit = true }) => {
+export default ({ onImageSelected, removeImage, uri }) => {
 
     const {
         dims,
@@ -29,20 +31,21 @@ export default ({ onImageSelected, showSubmit = true }) => {
     const [editor, setEditor] = useState(null)
     const [loading, setLoading] = useState(null)
     const [payload, setPayload] = useState(null)
-
-    useEffect(() => {
+    
+    const [attachment, setAttachment] = useState(null)
+    // useEffect(() => {
         
-        if (!dims) return
+    //     if (!dims) return
 
-        const dropzone = document.getElementById('dropzone')
+    //     const dropzone = document.getElementById('dropzone')
         
-        if (dropzone) {
-            const maxWidth = size
-            const actualWidth = dropzone.offsetWidth
-            const width = actualWidth > maxWidth ? maxWidth : actualWidth
-            setSize(width)
-        }
-    }, [dims])
+    //     if (dropzone) {
+    //         const maxWidth = size
+    //         const actualWidth = dropzone.offsetWidth
+    //         const width = actualWidth > maxWidth ? maxWidth : actualWidth
+    //         setSize(width)
+    //     }
+    // }, [dims])
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
@@ -67,7 +70,8 @@ export default ({ onImageSelected, showSubmit = true }) => {
             
             setPreview({ uri, height, width })
             
-            setPayload(data)
+            // setPayload(data)
+            onImageSelected(data)
             
             setLoading(false)
         }
@@ -176,45 +180,84 @@ export default ({ onImageSelected, showSubmit = true }) => {
         setPreview(null)
     }
 
-    return !loading ? (
+    const renderImage = () => uri ? (
         <View
-            id='dropzone'
             style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
+                paddingRight: 10,
+            }}
+        >
+            <Image
+                source={{ uri }}
+                style={{
+                    width: 50,
+                    height: 50,
+                    resizeMode: 'stretch',
+                }}
+            />
+        </View>
+    ) : null
+
+    const renderControls = () => (
+        <View
+            style={{
+                borderWidth: 1,
+                borderStyle: 'dotted',
             }}
         >
             
-            {preview ? (
-                <Preview
-                    height={preview.height}
-                    width={preview.width}
-                    imageURI={preview.uri}
-                />
-            ) : (
-                <FileSelector
-                    onImageSelected={handleDrop}
-                />
-            )}
+            {uri ? (
+                <Button
+                    type='primary'
+                    size='small'
+                    onClick={removeImage}
+                    >
+                    <Text>Remove Image</Text>
+                </Button>
+            ) : null}
+
+            <FileSelector
+                onImageSelected={handleDrop}
+            />
+        </View>
+    )
+
+    return (
+        <View
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+            }}
+        >
+            
+            {uri ? (
+                <View style={{ paddingRight: 10 }}>
+                    <ImageWithURI
+                        source={{ uri }}
+                        style={{
+                            width: 50,
+                            height: 50,
+                            resizeMode: 'stretch',
+                        }}
+                    />
+                </View>
+            ) : null}
                 
-            <View style={{
+            {renderControls()}
+
+            {/* <View style={{
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
                 marginVertical: 15,
                 width: size,
             }}>
-                
-                {showSubmit ? (
-                    <Button
-                        disabled={!preview || !payload}
-                        onClick={onSubmit}
-                    >
-                        Select/Upload
-                    </Button>
-                ) : null}
+                <Button
+                    disabled={!preview || !payload}
+                    onClick={onSubmit}
+                >
+                    Select/Upload
+                </Button>
 
                 <Button
                     disabled={!preview || !payload}
@@ -223,10 +266,8 @@ export default ({ onImageSelected, showSubmit = true }) => {
                     Clear
                 </Button>
 
-            </View>
+            </View> */}
 
         </View>
-    ) : (
-        <LoadingView label={loading} />
     )
 }

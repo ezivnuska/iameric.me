@@ -23,10 +23,12 @@ import Header from './Header'
 import Heading from './Heading'
 import HoverableView from './HoverableView'
 import ImageDetail from './ImageDetail'
+import ImageFormModule from './ImageFormModule'
 import ImageModule from './ImageModule'
 import ImageList from './ImageList'
 import ImageUploader from './ImageUploader'
 import ImagePreview from './ImagePreview'
+import ImageWithURI from './ImageWithURI'
 import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
 import LocationModule from './LocationModule'
@@ -84,10 +86,12 @@ export {
     Heading,
     HoverableView,
     ImageDetail,
+    ImageFormModule,
     ImageModule,
     ImagePreview,
     ImageList,
     ImageUploader,
+    ImageWithURI,
     LoadingView,
     LocationDetails,
     LocationModule,

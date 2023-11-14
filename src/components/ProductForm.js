@@ -9,8 +9,10 @@ import {
     ButtonPrimary,
     CategoryPicker,
     FormInput,
+    ImageFormModule,
     ImageUploader,
 } from '.'
+import { Button } from 'antd'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import main from '../styles/main'
@@ -75,7 +77,6 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
         setBlurb(data.blurb)
         setDesc(data.desc)
         setCategory(data.category)
-        // if (typeof image === '')
         setImage(data.image)
     }
 
@@ -145,26 +146,51 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
     
     const onImageSelected = payload => {
         // console.log('image selected', payload)
-        setImage(null)
+        // setImage(null)
         // setFilename(null)
         // console.log('setting attachment...', payload)
         setAttachment(payload)
-        setShowSelector(false)
+        // setShowSelector(false)
         // const { uri, height, width } = data.imageData
     }
 
+    const removeImage = () => {
+        if (attachment) {
+            setAttachment(null)
+        } else if (image) setImageForDeletion()
+    }
+
     const onAttachmentCancelled = () => {
-        setImage(existingProduct.image || null)
+        // setImage(existingProduct.image || null)
         setAttachment(null)
-        setShowSelector(false)
+        // setShowSelector(false)
     }
 
     const setImageForDeletion = () => {
         setImage(null)
-        setShowSelector(true)
+        // setShowSelector(true)
     }
 
+    const renderImageFormModule = () => {
+        
+        const uri = attachment
+            ? attachment.thumbData.uri
+            : image
+                ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
+                :  null
+
+        return (
+            <ImageFormModule
+                // onImageUpdated={onImageUpdated}
+                onImageSelected={onImageSelected}
+                removeImage={removeImage}
+                uri={uri}
+            />
+        )
+    }
+    
     const renderImage = () => {
+        
         const uri = image
             ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
             : attachment
@@ -172,61 +198,72 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 : null
         
         return uri ? (
-            <Image
+            <View
                 style={{
-                    width: 50,
-                    height: 50,
-                    resizeMode: 'stretch',
+                    paddingRight: 10,
                 }}
-                source={{
-                    uri: image
-                        ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
-                        : attachment
-                            ? attachment.thumbData.uri
-                            : null
-                }}
-            />
+            >
+                <Image
+                    source={{ uri }}
+                    style={{
+                        width: 50,
+                        height: 50,
+                        resizeMode: 'stretch',
+                    }}
+                />
+            </View>
         ) : null
     }
 
-    const renderControl = () => {
-        if (image) {
-            return (
-                <Pressable
-                    onPress={setImageForDeletion}
-                    disabled={loading}
-                >
+    const renderControls = () => (
+        <View
+            style={{
+                borderWidth: 1,
+                borderStyle: 'dotted',
+            }}
+        >
+            
+            {image ? (
+                <Button
+                    type='primary'
+                    size='small'
+                    onClick={setImageForDeletion}
+                    >
                     <Text>Remove Image</Text>
-                </Pressable>
-            )    
-        } else if (attachment) {
-            return (
+                </Button>
+            ) : attachment ? (
                 <Pressable
-                    onPress={onAttachmentCancelled}
-                    disabled={loading}
+                onPress={onAttachmentCancelled}
+                disabled={loading}
                 >
                     <Text>Remove Attachment</Text>
                 </Pressable>
-            )
-        } else {
-            return (
-                <Pressable
-                    onPress={() => setShowSelector(true)}
-                    disabled={loading}
-                >
-                    <Text>Upload New Image</Text>
-                </Pressable>
-            )
-        }
-    }
+            ) : (
+                <ImageUploader
+                    onImageSelected={onImageSelected}
+                    showSubmit={false}
+                />
+            )}
+        </View>
+    )
 
     const renderImageModule = () => (
-        <View>
-            {!showSelector
+        <View
+            style={{
+                marginVertical: 10,
+            }}
+        >
+            {true
                 ? (
-                    <View>
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                        }}
+                    >
                         {renderImage()}
-                        {renderControl()}
+                        {renderControls()}
                     </View>
                 )
                 : (
@@ -250,7 +287,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 disabled={loading}
             />
 
-            {renderImageModule()}
+            {renderImageFormModule()}
             
             <FormInput
                 label='Name'

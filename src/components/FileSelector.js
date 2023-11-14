@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
+import { Button } from 'antd'
 
 const FileSelector = ({ onImageSelected }) => {
 
@@ -61,6 +62,16 @@ const FileSelector = ({ onImageSelected }) => {
     const asset = result.assets[0]
     onImageSelected(asset.uri)
   }
+
+  return (
+    <Button
+      type='primary'
+      size='small'
+      onClick={handlePress}
+    >
+      <Text style={styles.selectButtonTitle}>Pick an image</Text>
+    </Button>
+  )
 
   return (
     <View
