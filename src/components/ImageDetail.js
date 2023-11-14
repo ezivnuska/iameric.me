@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
+    Text,
     View,
 } from 'react-native'
-import { LoadingView } from '.'
+import { ProductSelector } from '.'
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
 import axios from 'axios'
 import layout from '../styles/layout'
-import { getImageDataById } from '../Data'
+import main from '../styles/main'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -21,6 +22,7 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
+    // const [showProductSelector, setShowProductSelector] = useState(false)
 
     const isImageProfileImage = id => user.profileImage === id
 
@@ -32,6 +34,10 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
         })
         return response
     }
+
+    // useEffect(() => {
+    //     console.log('imageData', imageData)
+    // }, [imageData])
 
     const deleteImage = async () => {
 
@@ -95,6 +101,30 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
         return false
     }
 
+    const setProductImage = async productId => {
+        
+        setLoading(true)
+        
+        // setShowProductSelector(false)
+
+        const { data } = await axios
+            .post('/api/product/image', {
+                productId,
+                imageId: imageData._id,
+            })
+
+        setLoading(false)
+        
+        if (!data) {
+            console.log('Error setting image id for product.')
+            return null
+        }
+
+        dispatch({ type: 'UPDATE_PRODUCT_IMAGE', productId, image: data.image })
+        
+        closeModal()
+    }
+
     return imageData ? (
         <View
             style={{
@@ -105,14 +135,14 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
             }}
         >
             <Image
-                width={200}
-                height={200}
+                // width={200}
+                // height={200}
                 source={{
                     uri: `${IMAGE_PATH}/${user.username}/${imageData.filename}`,
                 }}
                 style={{
-                    resizeMode: resize,
-                    width,
+                    resizeMode: 'center',
+                    width: '100%',
                     height,
                     borderWidth: 1,
                     marginVertical: layout.verticalMargin,
@@ -143,7 +173,20 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
                 >
                     Delete
                 </Button>
+
             </View>
+
+            {imageData && (
+                <View>
+                    <Text style={main.heading}>Add to Product</Text>
+                    
+                    <ProductSelector
+                        onSelect={setProductImage}
+                        products={products}
+                        imageId={imageData._id}
+                    />
+                </View>
+            )}
 
         </View>
     ) : null

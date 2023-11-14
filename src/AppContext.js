@@ -17,7 +17,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, loading, orders, products, profileImage, user, users, vendors } = state
+    let { cart, dims, loading, orders, products, productsUpdated, profileImage, user, users, vendors } = state
     
     switch(action.type) {
         case 'SET_DIMS':
@@ -66,31 +66,15 @@ const reducer = (state = initialState, action) => {
                 ]
             }
             break
-        case 'SET_PRODUCT_IMAGE_DATA':
-            const i = products.findIndex(product => product._id === action.productId)
-            if (i <= -1) return
-            const updatedProduct = products[i]
-            updatedProduct.image = action.imageData
-            products = [
-                ...products.slice(0, i),
-                updatedProduct,
-                ...products.slice(i + 1),
-            ]
-            break
         case 'UPDATE_PRODUCT_IMAGE':
-            const userProducts = products || []
-            let updatedUserProducts
-            if (userProducts.length) {
-                 updatedUserProducts = userProducts.map(product => {
-                    if (product.image && product.image !== action.imageId) {
-                        return {
-                            ...product,
-                            image: action.imageId,
-                        }
-                    } else return product
-                })
-            }
-            products = updatedUserProducts
+            products = products.map(product => {
+                if (product._id === action.productId) {
+                    return {
+                        ...product,
+                        image: action.image,
+                    }
+                } else return product
+            })
             break
         case 'REMOVE_PRODUCT':
             products = products.filter(product => product._id !== action.productId)

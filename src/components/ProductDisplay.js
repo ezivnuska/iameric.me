@@ -18,8 +18,8 @@ export default () => {
 
     const {
         dispatch,
-        products,
         user,
+        products,
     } = useContext(AppContext)
 
     const [items, setItems] = useState(null)
@@ -29,17 +29,10 @@ export default () => {
     useEffect(() => {
         if (products) {
             setItems(products)
-        } else if (!items) {
+        } else {
             fetchProductData(user._id)
         }
     }, [])
-
-    const fetchProductData = async userId => {
-        const items = await getProducts(dispatch, userId)
-        if (!items) console.log('could not fetch products.')
-        setItems(items)
-        dispatch({ type: 'SET_PRODUCTS', products: items })
-    }
 
     useEffect(() => {
         if (featured) setShowModal(true)
@@ -47,7 +40,17 @@ export default () => {
     }, [featured])
 
     useEffect(() => {
-        if (products) {
+        if (products && items) {
+            const updatedItems = products.map((prod, index) => {
+                const item = items[index]
+                if (prod._id === item._id) {
+                    if (item.image._id !== prod.image._id) {
+                        return prod
+                    } else return item
+                }
+            })
+            setItems(updatedItems)
+        } else if (products) {
             setItems(products)
         }
     }, [products])

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -34,7 +34,7 @@ export default ({ product, onDelete, onPress, ...props }) => {
                     justifyContent: 'flex-start',
                 }}
             >
-                {product.image ? (
+                {product ? (
                     <View
                         style={{
                             paddingRight: 10,

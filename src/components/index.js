@@ -47,6 +47,7 @@ import ProductDisplay from './ProductDisplay'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
+import ProductSelector from './ProductSelector'
 import RolePicker from './RolePicker'
 import Screen from './Screen'
 import SignInForm from './SignInForm'
@@ -110,6 +111,7 @@ export {
     ProductForm,
     ProductList,
     ProductListItem,
+    ProductSelector,
     RolePicker,
     Screen,
     SimpleLink,

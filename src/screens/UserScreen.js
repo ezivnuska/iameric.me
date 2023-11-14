@@ -26,8 +26,7 @@ export default ({ navigation, route }) => {
         const detail = await AsyncStorage.getItem('detail')
 
         if (route) {
-            if (detail) navigate(route, { id: detail })
-            else navigate(route)
+            navigate(route)
         }
     }
 
@@ -48,7 +47,7 @@ export default ({ navigation, route }) => {
             user.role === 'vendor'
             ?
             (<CenteredContent>
-                <ProductDisplay user={user} />
+                <ProductDisplay />
             </CenteredContent>)
             :
             null

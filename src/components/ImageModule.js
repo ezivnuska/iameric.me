@@ -29,7 +29,7 @@ const Header = ({ onPress }) => {
             }}
         >
             
-            <Text style={main.heading}>Images &amp; Avatar</Text>
+            <Text style={main.heading}>Images</Text>
             
             <View
                 style={{

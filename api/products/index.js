@@ -76,6 +76,26 @@ const getProductIdsByVendorId = async (req, res) => {
     return res.status(200).json({ productIds })
 }
 
+const addImageIdToProduct = async (req, res) => {
+    const { productId, imageId } = req.body
+    const data = await Product
+        .findOneAndUpdate(
+            { _id: productId },
+            { $set: { image: imageId } },
+            { new: true },
+        )
+        .populate('image', 'filename')
+    
+    console.log('updatedProduct', data)
+
+    if (!data) {
+        console.log('no updated product')
+        return res.status(200).json(null)
+    }
+    
+    return res.status(200).json(data)
+}
+
 const getProductsByVendorId = async (req, res) => {
     
     const products = await Product
@@ -121,6 +141,7 @@ const deleteProductById = async (req, res) => {
 
 // only allow access to these methods
 module.exports = {
+    addImageIdToProduct,
     createOrUpdateProduct,
     deleteProductById,
     getProductById,

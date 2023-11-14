@@ -43,6 +43,7 @@ const {
     getProductById,
     getProductIdsByVendorId,
     getProductsByVendorId,
+    addImageIdToProduct,
 } = require('./api/products')
 
 const {
@@ -118,6 +119,7 @@ app.get(    '/location/:userId',        getLocationByUserId)
 app.post(   '/product',                 createOrUpdateProduct)
 app.delete( '/products/delete/:id',     deleteProductById)
 app.get(    '/products/:vendor',        getProductsByVendorId)
+app.post(   '/product/image',           addImageIdToProduct)
 app.get(    '/product/:id',             getProductById)
 
 // images

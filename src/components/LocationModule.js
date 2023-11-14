@@ -13,7 +13,6 @@ import {
     EditOutlined,
     PlusCircleOutlined,
 } from '@ant-design/icons'
-import { AppContext } from '../AppContext'
 import axios from 'axios'
 import main from '../styles/main'
 import layout from '../styles/layout'
@@ -32,7 +31,7 @@ export default ({ userId }) => {
     //     user,
     // } = useContext(AppContext)
 
-    const [location, setLocation] = useState()
+    const [location, setLocation] = useState(initialState)
     const [modalVisible, setModalVisible] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -89,48 +88,27 @@ export default ({ userId }) => {
             }}
         >
                 
-            <Text style={[main.subheading, { marginBottom: 5 }]}>Address</Text>
+            <Text style={[main.heading, { marginBottom: 5 }]}>Address</Text>
             
-            <View
+            <TouchableOpacity
                 style={{
                     flex: 1,
                     flexGrow: 0,
                     flexShrink: 1,
                     flexBasis: 'auto',
+                    marginVertical: 4,
+                    marginHorizontal: 7,
                 }}
+                onPress={() => setModalVisible(true)}
+                disabled={loading}
             >
-                {renderButton()}
-            </View>
+                {location
+                    ? <EditOutlined style={{ fontSize: 22 }} />
+                    : <PlusCircleOutlined style={{ fontSize: 22 }} />
+                }
+                
+            </TouchableOpacity>
         </View>
-    )
-
-    const renderButton = () => (
-        <TouchableOpacity
-            style={{ marginHorizontal: 7 }}
-            onPress={() => setModalVisible(true)}
-            disabled={loading}
-        >
-            {location
-                ? <EditOutlined style={{ fontSize: 20 }} />
-                : <PlusCircleOutlined style={{ fontSize: 20 }} />
-            }
-            
-        </TouchableOpacity>
-    )
-
-    const renderModal = () => (
-        <ModalContent
-            animationType='slide'
-            transparent={false}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
-            label={'Manage Location'}
-        >
-            <LocationForm
-                location={location}
-                onSubmit={onSubmitAddress}
-            />
-        </ModalContent>
     )
 
     return (
@@ -140,7 +118,18 @@ export default ({ userId }) => {
 
             {renderLocationDetails()}
 
-            {renderModal()}
+            <ModalContent
+                animationType='slide'
+                transparent={false}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+                label={'Manage Location'}
+            >
+                <LocationForm
+                    location={location}
+                    onSubmit={onSubmitAddress}
+                />
+            </ModalContent>
             
         </View>
     )
