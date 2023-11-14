@@ -26,7 +26,8 @@ export default ({ navigation, route }) => {
         const detail = await AsyncStorage.getItem('detail')
 
         if (route) {
-            navigate(route)
+            if (detail) navigate(route, { id: detail })
+            else navigate(route)
         }
     }
 
