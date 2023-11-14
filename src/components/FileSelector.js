@@ -65,32 +65,14 @@ const FileSelector = ({ onImageSelected }) => {
 
   return (
     <Button
-      type='primary'
+      // type='primary'
       size='small'
       onClick={handlePress}
     >
-      <Text style={styles.selectButtonTitle}>Pick an image</Text>
+      <Text
+        // style={styles.selectButtonTitle}
+      >Pick Image</Text>
     </Button>
-  )
-
-  return (
-    <View
-      style={[
-        styles.flex,
-        styles.centerContainer,
-        // { backgroundColor: '#0f0' }
-      ]}
-    >
-        <TouchableOpacity
-            onPress={handlePress}
-            style={[
-              styles.selectButtonContainer,
-                // { backgroundColor: '#00f' }
-            ]}
-        >
-        <Text style={styles.selectButtonTitle}>Pick an image</Text>
-      </TouchableOpacity>
-    </View>
   )
 }
 

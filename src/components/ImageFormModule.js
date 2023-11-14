@@ -198,19 +198,22 @@ export default ({ onImageSelected, removeImage, uri }) => {
     ) : null
 
     const renderControls = () => (
-        <View
-            style={{
-                borderWidth: 1,
-                borderStyle: 'dotted',
-            }}
-        >
+        <View style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: 50,
+            // borderWidth: 1,
+            // borderStyle: 'dotted',
+            // borderColor: '#ccc',
+        }}>
             
             {uri ? (
                 <Button
-                    type='primary'
+                    // type='primary'
                     size='small'
                     onClick={removeImage}
-                    >
+                >
                     <Text>Remove Image</Text>
                 </Button>
             ) : null}
@@ -227,6 +230,7 @@ export default ({ onImageSelected, removeImage, uri }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
+                marginVertical: 10,
             }}
         >
             
