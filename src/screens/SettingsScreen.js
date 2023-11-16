@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import {
+    EntryModule,
     ImageModule,
     CenteredContent,
     LocationModule,
@@ -19,9 +20,12 @@ export default () => {
 
             <CenteredContent>
                 
-                {(user && user.role !== 'driver') && <LocationModule userId={user._id} />}
+                {(user && user.role !== 'driver') &&
+                    <LocationModule userId={user._id} />}
 
                 <ImageModule />
+
+                <EntryModule />
 
                 <SignoutModule />
 

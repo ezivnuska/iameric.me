@@ -1,19 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    ActivityIndicator,
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
 import {
     EntryList,
     FeedbackForm,
-} from './'
+} from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 import defaultStyles from '../styles/main'
 
-const EntryDisplay = () => {
+export default () => {
     
     const {
         dispatch,
@@ -21,18 +19,17 @@ const EntryDisplay = () => {
     } = useContext(AppContext)
 
     const { entries, user } = state
-    const [items, setItems] = useState(entries || [])
+    const [items, setItems] = useState(entries)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        getEntries()
+        if (!items) getEntries()
+        else if (entries) setItems(entries)
     }, [])
 
     useEffect(() => {
         if (entries) setItems(entries)
     }, [entries])
-    
-    const updateStatus = text => dispatch({ type: 'SET_STATUS', status: text })
 
     const getEntries = async () => {
         console.log('loading entries...')
@@ -46,7 +43,6 @@ const EntryDisplay = () => {
             })
             .catch(err => {
                 console.log('Error loading entries', err)
-                dispatch({ type: 'SET_STATUS', status: 'Error loading entries.' })
             })
     }
 
@@ -71,11 +67,10 @@ const EntryDisplay = () => {
             .delete('/api/entry/delete', { data: { id } })
             .then(({ data }) => {
                 // const { entry } = data
-                updateStatus('Entry deleted.')
+                console.log('Entry deleted.')
             })
             .catch(err => {
                 console.log('Error deleting entry', err)
-                updateStatus('Error deleting entry.')
             })
     }
 
@@ -85,27 +80,22 @@ const EntryDisplay = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <View
+            style={{
+                marginTop: 10,
+                marginBottom: 20,
+            }}
+        >
             <FeedbackForm
                 addEntry={addEntry}
-                updateStatus={updateStatus}
             />
-            <Text style={defaultStyles.heading}>Feedback</Text>
-            {items && (
+            <Text style={defaultStyles.heading}>Comments</Text>
+            {items && items.length ? (
                 <EntryList
-                    items={items}
+                    entries={items}
                     deleteItem={deleteItem}
                 />
-            )}
+            ) : <Text>No comments yet.</Text>}
         </View>
     )
 }
-
-export default EntryDisplay
-
-const styles = StyleSheet.create({
-    container: {
-        // borderWidth: 1,
-        // borderColor: 'blue',
-    },
-})

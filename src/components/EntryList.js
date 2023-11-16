@@ -1,16 +1,13 @@
 import React from 'react'
 import {
     FlatList,
-    StyleSheet,
-    View,
 } from 'react-native'
 import { EntryListItem } from '../components'
 
-const EntryList = ({ deleteItem, items }) => (
+export default ({ deleteItem, entries }) => (
     <FlatList
-        style={styles.list}
-        data={items}
-        keyExtractor={(item, index) => index}
+        data={entries}
+        keyExtractor={(item, index) => `${index}-entry-${item._id}`}
         renderItem={({ item }) => (
             <EntryListItem
                 entry={item}
@@ -19,11 +16,3 @@ const EntryList = ({ deleteItem, items }) => (
         )} 
     />
 )
-
-export default EntryList
-
-const styles = StyleSheet.create({
-    list: {
-
-    },
-})

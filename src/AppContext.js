@@ -10,6 +10,7 @@ const initialState = {
     loading: false,
     orders: [],
     products: [],
+    entries: null,
     profileImage: null,
     user: null,
     users: null,
@@ -17,7 +18,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, loading, orders, products, productsUpdated, profileImage, user, users, vendors } = state
+    let { cart, dims, entries, loading, orders, products, productsUpdated, profileImage, user, users, vendors } = state
     
     switch(action.type) {
         case 'SET_DIMS':
@@ -99,6 +100,12 @@ const reducer = (state = initialState, action) => {
             break
         case 'CLEAR_CART':
             cart = { vendor: null, items: null }
+            break
+        case 'NEW_ENTRY':
+            entries = [...entries, action.entry]
+            break
+        case 'SET_ENTRIES':
+            entries = action.entries
             break
         case 'SET_ORDERS':
             orders = action.orders
@@ -188,14 +195,12 @@ const reducer = (state = initialState, action) => {
         case 'REMOVE_ORDER':
             orders = orders.filter(order => order._id != action.id)
         break
-        case 'SET_STATUS':
-            statuses.push(action.status)
-        break
         case 'SIGNOUT':
             cart = {
                 vendor: null,
                 items: [],
             }
+            entries = null
             loading = null
             orders = null
             products = null
@@ -208,7 +213,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, loading, orders, products, profileImage, user, users, vendors }
+    return { cart, dims, entries, loading, orders, products, profileImage, user, users, vendors }
 }
 
 export const AppContext = createContext({
@@ -230,6 +235,7 @@ export const AppProvider = ({ children }) => {
             products: state.products,
             user: state.user,
             vendors: state.vendors,
+            entries: state.entries,
         }}>
             {children}
         </AppContext.Provider>

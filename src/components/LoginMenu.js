@@ -37,7 +37,6 @@ const LoginMenu = () => {
     } = useContext(AppContext)
 
     const setLoading = value => dispatch({ type: 'SET_LOADING', loading: value })
-    const setStatus = value => dispatch({ type: 'SET_STATUS', status: value })
 
     const connect = async type => {
 
@@ -55,8 +54,6 @@ const LoginMenu = () => {
         if (!user) console.log('Could not authenticate user.')
         
         await AsyncStorage.setItem('userToken', user.token)
-        
-        setStatus('User token set')
         
         console.log(`${user.username} connected`)
 

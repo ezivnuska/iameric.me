@@ -15,6 +15,10 @@ import CenteredView from './CenteredView'
 import CircleButton from './CircleButton'
 import DeleteAccountButton from './DeleteAccountButton'
 import EditButton from './EditButton'
+import EntryModule from './EntryModule'
+import EntryList from './EntryList'
+import EntryListItem from './EntryListItem'
+import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormInput from './FormInput'
 import FormInputStatusIcon from './FormInputStatusIcon'
@@ -79,6 +83,10 @@ export {
     CircleButton,
     DeleteAccountButton,
     EditButton,
+    EntryModule,
+    EntryList,
+    EntryListItem,
+    FeedbackForm,
     FileSelector,
     FormInput,
     FormInputStatusIcon,

@@ -23,6 +23,7 @@ export default {
 		paddingHorizontal: layout.horizontalPadding,
     },
     heading: {
+		marginBottom: 10,
         fontSize: base.headingSize,
 		fontWeight: base.headingWeight,
 		color: base.primaryTextColor,

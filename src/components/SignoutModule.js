@@ -25,10 +25,8 @@ export default () => {
 
         setLoading('Signing out...')
         
-        await cleanStorage()
-        
         const { data } = await axios.
-            post('/api/signout', { _id: user._id })
+        post('/api/signout', { _id: user._id })
         
         if (!data) {
             console.log('could not sign out user')
@@ -36,6 +34,8 @@ export default () => {
             return
         }
         
+        await cleanStorage()
+
         dispatch({ type: 'SIGNOUT' })
     }
 

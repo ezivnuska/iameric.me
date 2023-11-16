@@ -1,5 +1,6 @@
 import { createNavigationContainerRef } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { cleanStorage } from '../Data'
 
 export const navigationRef = createNavigationContainerRef()
 
@@ -10,6 +11,8 @@ export const navigate = async (name, params) => {
                 .setItem('route', name)
                 .then(() => null)
                 .catch(err => alert('Error saving route name while navigating:', err))
+        } else {
+            // cleanStorage()
         }
         navigationRef.navigate(name, params)
     }
