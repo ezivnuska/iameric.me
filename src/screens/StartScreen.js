@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     StyleSheet,
     Text,
@@ -7,7 +7,9 @@ import {
 import {
     LoadingView,
     CenteredView,
+    ModalContent,
     Screen,
+    SignUpForm,
 } from '../components'
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
@@ -21,6 +23,8 @@ const StartScreen = () => {
         dispatch,
         loading,
     } = useContext(AppContext)
+
+    const [showSignUpModal, setShowSignUpModal] = useState(false)
 
     useEffect(() => {
         authenticate()
@@ -70,44 +74,45 @@ const StartScreen = () => {
         <Screen>
             {!loading ? (
                 <CenteredView>
+                    
                     <View style={styles.container}>
-                        <View style={styles.experience}>
+                        <View style={styles.experiences}>
+                            <View style={styles.experience}>
+                                <Button type='primary' onClick={() => onConnect('customer')}>
+                                    Order
+                                </Button>
+                            </View>
+                            <View style={styles.experience}>
+                                <Button type='primary' onClick={() => onConnect('vendor')}>
+                                    Sell
+                                </Button>
+                            </View>
+                            <View style={styles.experience}>
+                                <Button type='primary' onClick={() => onConnect('driver')}>
+                                    Deliver
+                                </Button>
+                            </View>
                             
-                            <Text style={[main.text, styles.caption]}>
-                                Customer Experience
-                            </Text>
-                            
-                            <Button type='primary' onClick={() => onConnect('customer')}>
-                                Order Takeout
-                            </Button>
-
                         </View>
-
-                        <View style={styles.experience}>
-                            
-                            <Text style={[main.text, styles.caption]}>
-                                Vendor Experience
-                            </Text>
-
-                            <Button type='primary' onClick={() => onConnect('vendor')}>
-                                Make Sales
-                            </Button>
-                        </View>
-
-                        <View style={styles.experience}>
-                            
-                            <Text style={[main.text, styles.caption]}>
-                                Driver Experience
-                            </Text>
-
-                            <Button type='primary' onClick={() => onConnect('driver')}>
-                                Make Deliveries
+                        <View style={styles.signup}>
+                            <Button type='primary' onClick={() => setShowSignUpModal(true)}>
+                                Sign Up
                             </Button>
                         </View>
                     </View>
+
                 </CenteredView>
             ) : <LoadingView label={loading} />}
-            
+
+            <ModalContent
+                visible={showSignUpModal}
+                onRequestClose={() => setShowSignUpModal(false)}
+                label='Sign Up'
+            >
+                <SignUpForm
+                    setUser={setUser}
+                />
+            </ModalContent>
         </Screen>
     )
 }
@@ -118,21 +123,43 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         height: '100%',
-        // width: 250,
+        width: '100%',
         // marginTop: 20,
         marginHorizontal: 'auto',
     },
-    experience: {
+    experiences: {
         // flex: 1,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        height: 100,
+        width: '100%',
+        // marginTop: 20,
+        // marginHorizontal: 'auto',
+    },
+    experience: {
+        flex: 1,
         marginHorizontal: 'auto',
         paddingHorizontal: layout.horizontalPadding,
         paddingVertical: layout.verticalPadding,
-        width: 200,
-        minWidth: 300,
-        maxWidth: 400,
+        // width: 200,
+        // minWidth: 300,
+        // maxWidth: 400,
+        backgroundColor: '#ddd',
+        borderRadius: 12,
+    },
+    signup: {
+        flexBasis: 'auto',
+        marginHorizontal: 'auto',
+        paddingHorizontal: layout.horizontalPadding,
+        paddingVertical: layout.verticalPadding,
+        // width: 200,
+        // minWidth: 300,
+        // maxWidth: 400,
         backgroundColor: '#ddd',
         borderRadius: 12,
     },

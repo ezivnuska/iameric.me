@@ -72,7 +72,7 @@ const SignUpForm = ({ setUser }) => {
 					await AsyncStorage
 						.setItem('userToken', data.user.token)
 						.then(() => {
-							dispatch({ type: 'SET_USER', user: data.user })
+							setUser(data.user)
 						})
 						.catch(err => console.log('Signin Error:', err))
 					setUser(data.user)
