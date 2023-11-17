@@ -10,6 +10,7 @@ import {
     ModalContent,
     Screen,
     SignUpForm,
+    SignInForm,
 } from '../components'
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
@@ -25,6 +26,7 @@ const StartScreen = () => {
     } = useContext(AppContext)
 
     const [showSignUpModal, setShowSignUpModal] = useState(false)
+    const [showSignInModal, setShowSignInModal] = useState(false)
 
     useEffect(() => {
         authenticate()
@@ -94,10 +96,17 @@ const StartScreen = () => {
                             </View>
                             
                         </View>
-                        <View style={styles.signup}>
-                            <Button type='primary' onClick={() => setShowSignUpModal(true)}>
-                                Sign Up
-                            </Button>
+                        <View style={styles.authButtons}>
+                            <View style={styles.authButton}>
+                                <Button type='primary' onClick={() => setShowSignUpModal(true)}>
+                                    Sign Up
+                                </Button>
+                            </View>
+                            <View style={styles.authButton}>
+                                <Button type='primary' onClick={() => setShowSignInModal(true)}>
+                                    Sign In
+                                </Button>
+                            </View>
                         </View>
                     </View>
 
@@ -113,6 +122,16 @@ const StartScreen = () => {
                     setUser={setUser}
                 />
             </ModalContent>
+
+            <ModalContent
+                visible={showSignInModal}
+                onRequestClose={() => setShowSignInModal(false)}
+                label='Sign In'
+            >
+                <SignInForm
+                    setUser={setUser}
+                />
+            </ModalContent>
         </Screen>
     )
 }
@@ -125,13 +144,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        height: '100%',
-        width: '100%',
+        height: '20%',
+        width: '90%',
         // marginTop: 20,
         marginHorizontal: 'auto',
     },
     experiences: {
-        // flex: 1,
+        flex: 1,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
@@ -152,8 +171,20 @@ const styles = StyleSheet.create({
         backgroundColor: '#ddd',
         borderRadius: 12,
     },
-    signup: {
-        flexBasis: 'auto',
+    authButtons: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        height: 100,
+        width: '100%',
+        // marginTop: 20,
+        // marginHorizontal: 'auto',
+    },
+    authButton: {
+        flex: 1,
+        // flexBasis: 'auto',
         marginHorizontal: 'auto',
         paddingHorizontal: layout.horizontalPadding,
         paddingVertical: layout.verticalPadding,
