@@ -28,7 +28,10 @@ export default ({ navigation, route }) => {
 
         if (route) {
             if (detail) navigate(route, { id: detail })
-            else navigate(route)
+            else {
+                await AsyncStorage.removeItem('detail')
+                navigate(route)
+            }
         }
     }
 

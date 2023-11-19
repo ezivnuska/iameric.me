@@ -230,6 +230,7 @@ export const AppProvider = ({ children }) => {
             state,
             dispatch,
             cart: state.cart,
+            customers: usersByRole('customer'),
             dims: state.dims,
             loading: state.loading,
             orders: state.orders,

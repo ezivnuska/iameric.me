@@ -8,7 +8,7 @@ import main from '../styles/main'
 
 export default ({ path = 'Home' }) => (
     <TouchableOpacity
-        onPress={() => navigate(path, { detail: null })}
+        onPress={() => navigate(path)}
     >
         <Text style={[main.text, main.paddedV]}>
             &lt; Back

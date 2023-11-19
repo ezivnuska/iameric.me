@@ -30,9 +30,9 @@ const FilterButton = ({ active, label, press, type }) => (
     </Pressable>
 )
 
-export default ({ users }) => {
+export default ({ users, role = null }) => {
 
-    const [type, setType] = useState(null)
+    const [type, setType] = useState(role)
     const [listItems, setListItems] = useState(users)
     const [allUsers] = useState(users)
 

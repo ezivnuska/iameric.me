@@ -6,7 +6,7 @@ import {
 import { Button } from 'antd'
 import {
     UserModule,
-    VendorModule,
+    VendorSelector,
 } from '.'
 
 export default () => {
@@ -14,7 +14,7 @@ export default () => {
 
     const renderContent = () => {
         switch(content) {
-            case 'vendor-list': return <VendorModule />; break
+            case 'vendor-list': return <VendorSelector />; break
             case 'user-list': return <UserModule />; break
             default: return null
         }

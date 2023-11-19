@@ -70,12 +70,15 @@ export default () => {
     const saveRoute = async () => {
         const { name, params } = route
 
-        if (name === 'Start') return
-        
-        const detail = params ? params.id : null
+        if (name === 'Start') {
+            await AsyncStorage.removeItem('route')
+            await AsyncStorage.removeItem('detail')
+            return
+        }
         
         await AsyncStorage.setItem('route', name)
-        await AsyncStorage.setItem('detail', detail)
+        
+        if (params && params.id) await AsyncStorage.setItem('detail', params.id)
     }
 
     const config = {
