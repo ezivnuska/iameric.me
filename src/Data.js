@@ -1,8 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-
-export const cleanStorage = () => AsyncStorage.multiRemove(['userToken', 'route', 'detail'])
-export const clearStorage = () => AsyncStorage.multiRemove(['userToken', 'route', 'detail', 'email'])
+import { cleanStorage, clearStorage } from './utils/storage'
 
 const storeToken = async token => await AsyncStorage.setItem('userToken', token)
 
@@ -42,26 +40,9 @@ export const checkStatus = async dispatch => {
         return null
     }
     
-    dispatch({ type: 'SET_LOADING', loading: 'Loading data...' })
-    
     const { token, ...user } = response
     
     await AsyncStorage.setItem('userToken', token)
-
-    const { orders, products, vendors } = await loadData(user, dispatch)
-    
-    if (orders) {
-        // dispatch({ type: 'SET_LOADING', loading: 'Loading orders...' })
-        dispatch({ type: 'SET_ORDERS', orders })
-    }
-    if (products) {
-        // dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
-        dispatch({ type: 'SET_PRODUCTS', products })
-    }
-    if (vendors) {
-        // dispatch({ type: 'SET_LOADING', loading: 'Loading vendors...' })
-        dispatch({ type: 'SET_VENDORS', vendors })
-    }
 
     return user
 }
@@ -88,72 +69,7 @@ export const connect = async (dispatch, type) => {
     
     await AsyncStorage.setItem('userToken', data.token)
 
-    const { orders, products, vendors } = await loadData(data, dispatch)
-
-    if (orders) dispatch({ type: 'SET_ORDERS', orders })
-    if (products) dispatch({ type: 'SET_PRODUCTS', products })
-    if (vendors) dispatch({ type: 'SET_VENDORS', vendors })
-
     return data
-}
-
-export const loadData = async (user, dispatch) => {
-
-    const orders = await getOrders(dispatch, user)
-    const products = user.role === 'vendor' ? await getProducts(dispatch, user._id) : null
-    const vendors = user.role === 'customer' ? await getVendors(dispatch) : null
-
-    return { orders, products, vendors }
-}
-
-export const getOrders = async (dispatch, user) => {
-
-    dispatch({ type: 'SET_LOADING', loading: 'Checking orders...' })
-
-    const url = () => {
-        switch (user.role) {
-            case 'customer':
-            case 'vendor': return `/api/orders/${user._id}`
-            case 'driver': return  `/api/orders`
-        }
-    }
-    
-    const { data } = await axios.get(url())
-    
-    if (!data) {
-        console.log('could not get user orders')
-        return null
-    }
-
-    return data.orders
-}
-
-export const getVendors = async dispatch => {
-    
-    dispatch({ type: 'SET_LOADING', loading: 'Loading vendors...' })
-    
-    const { data } = await axios.get('/api/vendors')
-
-    if (!data) {
-        console.log('Error: could not get vendors')
-        return null
-    }
-
-    return data.vendors
-}
-
-export const getProducts = async (dispatch, userId) => {
-
-    dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
-    
-    const { data } = await axios.get(`/api/products/${userId}`)
-    
-    if (!data) {
-        console.log('Error getting products:')
-        return null
-    }
-
-    return data.products
 }
 
 export const getImageDataById = async id => {
@@ -161,29 +77,5 @@ export const getImageDataById = async id => {
     const { data } = await axios
         .get(`/api/image/${id}`)
     
-    return data
-}
-
-export const getData = async (dispatch, user) => {
-    
-    let data = {}
-    
-    if (user.role === 'customer') {
-        const vendorResponse = await getVendors(dispatch)
-        data.vendors = vendorResponse
-    }
-
-    if (user.role === 'vendor') {
-        const productResponse = await getProducts(dispatch, user)
-        data.products = productResponse
-    }
-
-    if (user.role === 'driver') {
-
-    }
-    
-    const orderResponse = await getOrders(dispatch, user)
-    data.orders = orderResponse
-
     return data
 }

@@ -75,8 +75,7 @@ export default () => {
         const detail = params ? params.id : null
         
         await AsyncStorage.setItem('route', name)
-
-        if (detail) await AsyncStorage.setItem('detail', detail)
+        await AsyncStorage.setItem('detail', detail)
     }
 
     const config = {

@@ -2,10 +2,11 @@ import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../AppContext'
 import {
     CenteredContent,
+    CustomerHome,
+    DriverHome,
     OrderListContainer,
-    ProductDisplay,
     Screen,
-    VendorDisplay,
+    VendorHome,
 } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
@@ -31,6 +32,15 @@ export default ({ navigation, route }) => {
         }
     }
 
+    const renderContent = role => {
+        switch (role) {
+            case 'customer': return <CustomerHome />; break 
+            case 'vendor': return <VendorHome />; break
+            case 'driver': return <DriverHome />; break
+            default: return null
+        }
+    }
+
     return (
         <Screen>
 
@@ -38,21 +48,9 @@ export default ({ navigation, route }) => {
                 <OrderListContainer />
             </CenteredContent>
 
-            {
-            user.role === 'customer'
-            ?
-            (<CenteredContent>
-                <VendorDisplay />
-            </CenteredContent>)
-            :
-            user.role === 'vendor'
-            ?
-            (<CenteredContent>
-                <ProductDisplay />
-            </CenteredContent>)
-            :
-            null
-            }
+            <CenteredContent>
+                {renderContent(user.role)}
+            </CenteredContent>
 
         </Screen>
     )

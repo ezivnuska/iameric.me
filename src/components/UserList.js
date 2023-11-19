@@ -9,7 +9,7 @@ import {
 } from '.'
 import { navigate } from '../navigators/RootNavigation'
 
-export default ({ onItemPressed, users }) => {
+export default ({ users }) => {
 
     const [items, setItems] = useState([])
     const [feature, setFeature] = useState(null)
@@ -18,12 +18,6 @@ export default ({ onItemPressed, users }) => {
     useEffect(() => {
         if (users) setItems(users)
     }, [users])
-
-    const onPress = user => {
-        setFeature(user)
-        
-        navigate('Details', { user })
-    }
 
     return (
         <View
@@ -41,7 +35,6 @@ export default ({ onItemPressed, users }) => {
                 renderItem={({ item }) => (
                     <UserListItem
                         user={item}
-                        onPress={onPress}
                     />
                 )} 
             />

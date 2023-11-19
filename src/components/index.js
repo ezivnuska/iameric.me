@@ -13,7 +13,9 @@ import CategoryPicker from './CategoryPicker'
 import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
 import CircleButton from './CircleButton'
+import CustomerHome from './CustomerHome'
 import DeleteAccountButton from './DeleteAccountButton'
+import DriverHome from './DriverHome'
 import EditButton from './EditButton'
 import EntryModule from './EntryModule'
 import EntryList from './EntryList'
@@ -47,7 +49,7 @@ import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
-import ProductDisplay from './ProductDisplay'
+import ProductModule from './ProductModule'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
@@ -61,9 +63,12 @@ import SimpleLink from './SimpleLink'
 import TimeSelector from './TimeSelector'
 import UserListItem from './UserListItem'
 import UserHeading from './UserHeading'
+import UserFilter from './UserFilter'
 import UserList from './UserList'
+import UserModule from './UserModule'
 // import UserProfile from './UserProfile'
-import VendorDisplay from './VendorDisplay'
+import VendorHome from './VendorHome'
+import VendorModule from './VendorModule'
 import VendorList from './VendorList'
 
 export {
@@ -81,7 +86,9 @@ export {
     CenteredContent,
     CenteredView,
     CircleButton,
+    CustomerHome,
     DeleteAccountButton,
+    DriverHome,
     EditButton,
     EntryModule,
     EntryList,
@@ -115,7 +122,7 @@ export {
     OrderPreview,
     Preview,
     ProductDetails,
-    ProductDisplay,
+    ProductModule,
     ProductForm,
     ProductList,
     ProductListItem,
@@ -129,8 +136,11 @@ export {
     TimeSelector,
     UserListItem,
     UserHeading,
+    UserFilter,
     UserList,
+    UserModule,
     // UserProfile,
-    VendorDisplay,
+    VendorHome,
+    VendorModule,
     VendorList,
 }

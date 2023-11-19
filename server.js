@@ -19,7 +19,7 @@ const {
 
 const {
     getAllUsers,
-    getAllVendorIds,
+    // getAllVendorIds,
     getAllVendors,
     getUserById,
 } = require('./api/users')

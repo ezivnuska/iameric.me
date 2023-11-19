@@ -1,15 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Text,
     View,
 } from 'react-native'
-import main from '../styles/main'
+import { Button } from 'antd'
+import {
+    UserModule,
+    VendorModule,
+} from '.'
 
-const DriverHome = () => (
-    <View>
-        <Text style={main.text}>No available orders.</Text>
-        <Text style={main.text}>Check back later.</Text>
-    </View>
-)
+export default () => {
+    const [content, setContent] = useState(null)
 
-export default DriverHome
+    const renderContent = () => {
+        switch(content) {
+            case 'vendor-list': return <VendorModule />; break
+            case 'user-list': return <UserModule />; break
+            default: return null
+        }
+    }
+
+    const renderOptions = () => content
+        ? (
+            <Button onClick={() => setContent(null)}>
+                <Text>Back</Text>
+            </Button>
+        ) : (
+            <>
+
+                {content !== 'vendor-list' && (
+                    <Button onClick={() => setContent('vendor-list')}>
+                        <Text>Show Vendors</Text>
+                    </Button>
+                )}
+
+                {content !== 'user-list' && (
+                    <Button onClick={() => setContent('user-list')}>
+                        <Text>Show Users</Text>
+                    </Button>
+                )}
+
+            </>
+        )
+
+    return (
+        <View>
+            
+            {renderOptions()}
+
+            {renderContent()}
+        </View>
+    )
+}

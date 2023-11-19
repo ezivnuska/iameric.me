@@ -7,7 +7,7 @@ import {
     ModalContent,
 } from '.'
 import { Button } from 'antd'
-import { cleanStorage } from '../Data'
+import { cleanStorage } from '../utils/storage'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 

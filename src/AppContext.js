@@ -6,19 +6,18 @@ const initialState = {
         items: [],
     },
     dims: null,
+    entries: null,
     images: [],
     loading: false,
     orders: [],
     products: [],
-    entries: null,
     profileImage: null,
     user: null,
     users: null,
-    vendors: null,
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, entries, loading, orders, products, productsUpdated, profileImage, user, users, vendors } = state
+    let { cart, dims, entries, loading, orders, products, productsUpdated, profileImage, user, users } = state
     
     switch(action.type) {
         case 'SET_DIMS':
@@ -38,11 +37,8 @@ const reducer = (state = initialState, action) => {
                 else return product
             })
             break
-        case 'SET_VENDORS':
-            vendors = action.vendors
-            break
         case 'UPDATE_VENDOR_PRODUCTS':
-            vendors = vendors.map((v, i) => {
+            users = users.map((v, i) => {
                 if (v._id === action.vendorId) {
                     v.products = action.products
                 }
@@ -56,8 +52,8 @@ const reducer = (state = initialState, action) => {
             products = [...products, action.product]
             break
         case 'UPDATE_PRODUCT':
-            if (!products) products = []
-            if (products.length) {
+            if (!products) products = [action.product]
+            else {
                 const i = products.findIndex(product => product._id === action.product._id)
                 if (i <= -1) return
                 products = [
@@ -77,8 +73,8 @@ const reducer = (state = initialState, action) => {
                 } else return product
             })
             break
-        case 'REMOVE_PRODUCT':
-            products = products.filter(product => product._id !== action.productId)
+        case 'DELETE_PRODUCT':
+            products = products.filter(product => product._id !== action.id)
             break
         case 'SET_LOADING':
             const wasLoading = loading
@@ -106,6 +102,9 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_ENTRIES':
             entries = action.entries
+            break
+        case 'DELETE_ENTRY':
+            entries = entries.filter(entry => entry._id !== action.id)
             break
         case 'SET_ORDERS':
             orders = action.orders
@@ -207,13 +206,12 @@ const reducer = (state = initialState, action) => {
             profileId = null
             user = null
             users = null
-            vendors = null
         break
         default:
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, entries, loading, orders, products, profileImage, user, users, vendors }
+    return { cart, dims, entries, loading, orders, products, profileImage, user, users }
 }
 
 export const AppContext = createContext({
@@ -221,8 +219,11 @@ export const AppContext = createContext({
     dispatch: null,
 })
 
+
 export const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
+    
+    const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
     
     return (
         <AppContext.Provider value={{
@@ -234,7 +235,8 @@ export const AppProvider = ({ children }) => {
             orders: state.orders,
             products: state.products,
             user: state.user,
-            vendors: state.vendors,
+            users: state.users,
+            vendors: usersByRole('vendor'),
             entries: state.entries,
         }}>
             {children}

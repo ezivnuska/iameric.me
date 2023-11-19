@@ -3,10 +3,11 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import { UserHeading } from '.'
+import { navigate } from '../navigators/RootNavigation'
 
 export default ({ user, onPress }) => (
     <TouchableOpacity
-        onPress={() => onPress(user._id)}
+        onPress={() => navigate('Details', { id: user._id })}
         style={{ borderBottomWidth: 1 }}
     >
         <UserHeading user={user} />

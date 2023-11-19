@@ -8,18 +8,14 @@ import {
 import { navigate } from '../navigators/RootNavigation'
 import { AppContext } from '../AppContext'
 
-export default () => {
-
-    const {
-        vendors,
-    } = useContext(AppContext)
-
-    return (vendors && vendors.length)
+export default ({ users }) => {
+    console.log('users', users)
+    return (users && users.length)
         ? (
             <FlatList
-                data={vendors}
-                listKey={() => 'vendors'}
-                keyExtractor={item => 'vendor' + item._id}
+                data={users}
+                listKey={() => 'user-list'}
+                keyExtractor={item => 'user' + item._id}
                 renderItem={({ item }) => (
                     <UserListItem
                         user={item}

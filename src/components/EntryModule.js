@@ -8,76 +8,57 @@ import {
     FeedbackForm,
 } from '.'
 import { AppContext } from '../AppContext'
-import axios from 'axios'
 import defaultStyles from '../styles/main'
+import { deleteEntryWithId, loadEntries } from '../utils/data'
 
 export default () => {
     
     const {
         dispatch,
-        state,
+        entries,
     } = useContext(AppContext)
 
-    const { entries, user } = state
-    const [items, setItems] = useState(entries)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        if (!items) getEntries()
-        else if (entries) setItems(entries)
+        if (!entries) init()
     }, [])
 
-    useEffect(() => {
-        if (entries) setItems(entries)
-    }, [entries])
-
-    const getEntries = async () => {
-        console.log('loading entries...')
+    const init = async () => {
         setLoading(true)
-        await axios
-            .get('/api/entries')
-            .then(({ data }) => {
-                console.log('entries loaded.')
-                setLoading(false)
-                dispatch({ type: 'SET_ENTRIES', entries: data.entries })
-            })
-            .catch(err => {
-                console.log('Error loading entries', err)
-            })
-    }
 
-    const removeItemById = id => {
-        let indexToRemove = null
-        items.map((item, i) => {
-            if (item._id === id) indexToRemove = i
-        })
-        if (indexToRemove === null) return
+        const entriesLoaded = await loadEntries()
         
-        const updatedEntries = items.filter((item, i) => {
-            return i !== indexToRemove
-        })
-        
-        dispatch({ type: 'SET_ENTRIES', entries: updatedEntries })
-        setItems(updatedEntries)
+        if (entriesLoaded) {
+            dispatch({ type: 'SET_ENTRIES', entries: entriesLoaded })
+        }
+
+        setLoading(false)
     }
 
-    const deleteItem = id => {
-        removeItemById(id)
-        axios
-            .delete('/api/entry/delete', { data: { id } })
-            .then(({ data }) => {
-                // const { entry } = data
-                console.log('Entry deleted.')
-            })
-            .catch(err => {
-                console.log('Error deleting entry', err)
-            })
+    const removeItemById = async id => {
+
+        setLoading(true)
+
+        const entryDeleted = await deleteEntryWithId(id)
+
+        if (entryDeleted) {
+            dispatch({ type: 'DELETE_ENTRY', id: entryDeleted._id })
+        }
+
+        setLoading(false)
     }
 
-    const addEntry = entry => {
-        // setItems({ entry, ...items })
-        dispatch({ type: 'NEW_ENTRY', entry })
-    }
+    const renderEntryList = () => loading
+        ? <Text>Loading...</Text>
+        : entries
+            ? (
+                <EntryList
+                    entries={entries}
+                    deleteItem={removeItemById}
+                />
+            )
+            : <Text>No entries to display.</Text>
 
     return (
         <View
@@ -87,15 +68,13 @@ export default () => {
             }}
         >
             <FeedbackForm
-                addEntry={addEntry}
+                addEntry={entry => dispatch({ type: 'NEW_ENTRY', entry })}
             />
+            
             <Text style={defaultStyles.heading}>Comments</Text>
-            {items && items.length ? (
-                <EntryList
-                    entries={items}
-                    deleteItem={deleteItem}
-                />
-            ) : <Text>No comments yet.</Text>}
+            
+            {renderEntryList()}
+
         </View>
     )
 }

@@ -2,8 +2,9 @@ const User = require('../../models/User')
 
 const getAllUsers = async (req, res) => {
     
-    const users = await User.
-        find({})
+    const users = await User
+        .find({})
+        .populate('profileImage', 'filename')
     
     if (!users) {
         console.log('Could not fetch users')
@@ -48,7 +49,7 @@ const getAllVendors = async (req, res) => {
         profileImage: profileImage || null,
         username,
     }))
-
+    
     return res.json({ vendors })
 }
 

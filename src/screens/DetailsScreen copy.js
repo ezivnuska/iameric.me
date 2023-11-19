@@ -23,65 +23,41 @@ const DetailsScreen = ({ navigation, route }) => {
 
     const {
         dispatch,
-        vendors,
         users,
     } = useContext(AppContext)
 
     const { id } = route.params
 
     const [loading, setLoading] = useState(null)
-    const [vendor, setVendor] = useState(null)
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        if (users) getUser()
-        else getUsers()
+        getUser()
     }, [])
-
-    useEffect(() => {
-        if (users) getUser()
-    }, [users])
 
     const getUser = () => {
         const u = users.filter(u => u._id === id)[0]
         setUser(u)
     }
 
-    const getUsers = async () => {
-        const { data } = await axios
-            .get('/api/users')
-        
-        if (!data) {
-            console.log('could not get all users.')
-            return
-        }
-
-        dispatch({ type: 'SET_USERS', users: data.users })
-    }
-
     // TODO: clean this.
-    const renderUserAvatar = () => {
-        console.log('user.profileImage', user.profileImage)
-        const source = user.profileImage && user.profileImage.filename
-            ?
-            `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
-            :
-            `${IMAGE_PATH}/avatar-default.png`
-        console.log('source', source)
-        return (
-            <Image
-                style={{
-                    width: '100%',
-                    height: 200,
-                    backgroundColor: '#ccc',
-                    resizeMode: 'contain',
-                }}
-                source={
-                    source
-                }
-            />
-        )
-    }
+    const renderAvatar = () => (
+        <Image
+            style={{
+                width: '100%',
+                height: 200,
+                backgroundColor: '#ccc',
+                resizeMode: 'contain',
+            }}
+            source={
+                user.profileImage
+                ?
+                `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+                :
+                `${IMAGE_PATH}/avatar-default.png`
+            }
+        />
+    )
 
     const renderVendorHeader = () => (
         <View style={main.paddedV}>
@@ -106,7 +82,7 @@ const DetailsScreen = ({ navigation, route }) => {
                 </CenteredContent>
                 
                 <CenteredContent type='full'>
-                    {renderUserAvatar()}
+                    {renderAvatar()}
                 </CenteredContent>
                 
                 {/* <CenteredContent>
@@ -121,7 +97,7 @@ const DetailsScreen = ({ navigation, route }) => {
             </>)
             :
             (<CenteredContent>
-                <Text style={[main.text, main.padded]}>Could not load user data.</Text>
+                <Text style={[main.text, main.padded]}>Could not load vendor...</Text>
             </CenteredContent>)
             }
             
