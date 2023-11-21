@@ -64,19 +64,18 @@ export default () => {
     const [route, setRoute] = useState(null)
 
     useEffect(() => {
-        if (route) saveRoute()
+        if (route) handleRouteChange()
+        
     }, [route])
 
-    const saveRoute = async () => {
+    const handleRouteChange = async () => {
         const { name, params } = route
-
-        if (name === 'Start') {
+        
+        if (name !== 'Start') await AsyncStorage.setItem('route', name)
+        else {
             await AsyncStorage.removeItem('route')
-            await AsyncStorage.removeItem('detail')
             return
         }
-        
-        await AsyncStorage.setItem('route', name)
         
         if (params && params.id) await AsyncStorage.setItem('detail', params.id)
     }

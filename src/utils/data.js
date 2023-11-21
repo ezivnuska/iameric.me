@@ -122,3 +122,21 @@ export const deleteOrderWithId = async id => {
 
     return data.order
 }
+
+/**
+ * 
+ * @param id
+ * @returns 
+ */
+
+export const getLocationWithUserId = async id => {
+
+    const { data } = await axios.get(`/api/location/${id}`)
+
+    if (!data) {
+        console.log('could not get location data.')
+        return null
+    }
+
+    return data.location
+}

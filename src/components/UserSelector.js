@@ -11,8 +11,8 @@ import { loadUsers } from '../utils/data'
 export default () => {
 
     const {
-        dispatch,
         customers,
+        dispatch,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)

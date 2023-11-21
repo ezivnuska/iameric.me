@@ -38,7 +38,7 @@ const SignUpForm = ({ setUser }) => {
 	}, [])
 
 	useEffect(() => {
-		if (user) navigate('Home')
+		// if (user) navigate('Home')
 	}, [user])
 
 	const initForm = async () => {
@@ -63,29 +63,17 @@ const SignUpForm = ({ setUser }) => {
 	const sendData = async user => {
 		setLoading(true)
 		storeEmail(user.email)
-		axios
-			.post('/api/signup', user)
-			.then(async ({ data }) => {
-				console.log('data', data)
-				if (data.user) {
-					console.log('Sign up successful.')
-					await AsyncStorage
-						.setItem('userToken', data.user.token)
-						.then(() => {
-							setUser(data.user)
-						})
-						.catch(err => console.log('Signin Error:', err))
-					setUser(data.user)
-				} else {
-					console.log('Sign up failed to create user.')
-				}
-				setLoading(false)
-			})
-			.catch(err => {
-				console.log('Error signing up.')
-				setLoading(false)
-				console.log('Error signing up new user.', err)
-			})
+		const { data } = await axios.post('/api/signup', user)
+		
+		if (!data) {
+			console.log('Sign up failed to create user.')
+			return
+		}
+		await AsyncStorage.setItem('userToken', data.user.token)
+
+		setUser(data.user)
+
+		setLoading(false)
 	}
 
 	const onSubmit = () => {

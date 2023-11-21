@@ -18,18 +18,22 @@ export default () => {
     return (
         <Screen>
 
-            <CenteredContent>
-                
-                {(user && user.role !== 'driver') &&
-                    <LocationModule userId={user._id} />}
+            {user && (
+                <CenteredContent>
+                    
+                    {
+                        user.role !== 'driver' &&
+                        <LocationModule />
+                    }
 
-                <ImageModule />
+                    <ImageModule />
 
-                <EntryModule />
+                    <EntryModule />
 
-                <SignoutModule />
+                    <SignoutModule />
 
-            </CenteredContent>
+                </CenteredContent>
+            )}
 
         </Screen>
     )

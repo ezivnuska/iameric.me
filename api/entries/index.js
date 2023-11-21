@@ -29,7 +29,7 @@ const getEntries = async (req, res) => {
 const deleteEntryById = async (req, res) => {
     
     const entry = await Entry
-        .findByIdAndDelete(req.body.id)
+        .findByIdAndDelete(req.params.id)
     
     if (!entry) {
         console.log('error deleting entry.')

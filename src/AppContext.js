@@ -224,14 +224,15 @@ export const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
     
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
-    
+    const otherUsersByRole = role => state.users ? usersByRole(role).filter(u => u._id !== state.user._id) : null
     return (
         <AppContext.Provider value={{
             state,
             dispatch,
             cart: state.cart,
-            customers: usersByRole('customer'),
+            customers: otherUsersByRole('customer'),
             dims: state.dims,
+            drivers: otherUsersByRole('driver'),
             loading: state.loading,
             orders: state.orders,
             products: state.products,

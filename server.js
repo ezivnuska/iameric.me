@@ -109,7 +109,7 @@ app.get(    '/users/:id',               getUserById)
 // entries
 app.post(   '/entry',                   createEntry)
 app.get(    '/entries',                 getEntries)
-app.delete( '/entry/delete',            deleteEntryById)
+app.delete( '/entry/delete/:id',        deleteEntryById)
 
 // location
 app.post(   '/location',                createOrUpdateLocation)

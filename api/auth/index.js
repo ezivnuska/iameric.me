@@ -86,20 +86,20 @@ const handleSignin = async (req, res) => {
     return res.status(200).json(sanitizedUser)
 }
 
-const createUser = async ({ email, username }) => {
+const createUser = async (email, username, password, role) => {
     
     let user = await User.findOne({ email })
-    
+    console.log('user', user)
     if (user) {
-        console.log('A user with that email already exists.')
-        return res.status(200).json({ success: false })
+        console.log('user with that email already exists.')
+        return res.status(200).json(null)
     }
 
-    user = await User.create({ username, email })
+    user = await User.create({ username, email, password, role })
 
     if (!user) {
         console.log(`Error creating user: ${username}, ${email}`)
-        return null
+        return res.status(200).json(null)
     }
     
     await user.save()
@@ -110,7 +110,7 @@ const createUser = async ({ email, username }) => {
     
     user = await User
         .findOneAndUpdate(
-            { _id: newUser._id },
+            { _id: user._id },
             { $set: { token: newToken } },
             { new: true },
         )
@@ -126,17 +126,36 @@ const createUser = async ({ email, username }) => {
     return user
 }
 
-const handleSignup = async (req, res) => {
+const getHashedPassword = password => {
+    let hashedPW = null
     
-    return bcrypt.hash(req.body.password, 10, async (err, hashedPW) => {
-        
-        if (err) return res.status(406).json({ success: false })
+    console.log('hashedPW', hashedPW)
+    return hashedPW
+}
 
-        const user = await createUser({...req.body, password: hashedPW})
-
-        if (!user) return res.status(406).json({ success: false })
-
-        return res.status(200).json({ user })
+const handleSignup = async (req, res) => {
+    const { email, password, username, role } = req.body
+    console.log('password', password)
+    await bcrypt.genSalt(10, async (err, salt) => {
+        console.log('salt', salt)
+        await bcrypt.hash(password, salt, async (err, hash) => {
+            if (err) {
+                console.log('error with hash', err)
+                return
+            }
+            
+            if (!hash) {
+                console.log('problem with hash')
+                return null
+            }
+            const user = await createUser(email, username, hash, role)
+            console.log('user', user)
+            if (!user) {
+                console.log('problem with user')
+                return res.status(200).json(null)
+            }
+            return res.status(200).json({ user })
+        })
     })
 }
 

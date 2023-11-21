@@ -17,6 +17,7 @@ import { Button } from 'antd'
 import layout from '../styles/layout'
 import main from '../styles/main'
 import { checkStatus, connect } from '../Data'
+import { navigate } from '../navigators/RootNavigation'
 
 const StartScreen = () => {
 
@@ -29,23 +30,27 @@ const StartScreen = () => {
     const [showSignInModal, setShowSignInModal] = useState(false)
 
     useEffect(() => {
-        authenticate()
+        init()
     }, [])
 
-    const authenticate = async () => {
+    const init = async () => {
         
-        const response = await checkStatus(dispatch)
+        const verifiedUser = await checkStatus()
         
-        if (response) setUser(response)
+        if (!verifiedUser) {
+            console.log('could not verify user.')
+        } else {
+            setUser(verifiedUser)
+        }
 
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const onConnect = async type => {
 
-        const response = await connect(dispatch, type)
+        const { token, ...user } = await connect(type)
         
-        if (response) setUser(response)
+        if (user) setUser(user)
         else console.log(`Error connecting as ${type}.`)
         
         dispatch({ type: 'SET_LOADING', loading: null })

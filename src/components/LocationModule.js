@@ -16,6 +16,8 @@ import {
 import axios from 'axios'
 import main from '../styles/main'
 import layout from '../styles/layout'
+import { AppContext } from '../AppContext'
+import { getLocationWithUserId } from '../utils/data'
 
 const initialState = {
     address1: '',
@@ -25,36 +27,46 @@ const initialState = {
     zip: '',
 }
 
-export default ({ userId }) => {
+export default () => {
 
-    // const {
-    //     user,
-    // } = useContext(AppContext)
+    const {
+        user,
+    } = useContext(AppContext)
 
-    const [location, setLocation] = useState(initialState)
+    const [location, setLocation] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
+    const [loaded, setLoaded] = useState(false)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        // console.log('user:location:', location)
-        getLocation()
-        // else if (!location) setLocation(user.location)
+        getLocationData(user._id)
     }, [])
 
-    const getLocation = async () => {
+    useEffect(() => {
+        // if (user && !loading && !loaded) {
+        //     getLocationData(user._id)
+        // }
+    }, [user])
+
+    useEffect(() => {
+        if (!loading) setLoaded(true)
+        else setLoaded(false)
+    }, [loading])
+
+    const getLocationData = async userId => {
+
         setLoading(true)
-        
-        const { data } = await axios
-            .get(`/api/location/${userId}`)
+
+        const locationData = await getLocationWithUserId(userId)
         
         setLoading(false)
-
-        if (!data) {
-            console.log('Error getting location.')
+        
+        if (!locationData) {
+            console.log('could not get location data.')
             return
         }
 
-        setLocation(data.location)
+        setLocation(locationData)
     }
 
     const onSubmitAddress = async newLocation => {
@@ -75,9 +87,11 @@ export default ({ userId }) => {
         setModalVisible(false)
     }
 
-    const renderLocationDetails = () => location
-        ? <LocationDetails location={location} />
-        : <Text style={{ color: '#aaa' }}>Loading Address...</Text>
+    const renderLocationDetails = () => loading
+        ? <Text style={{ color: '#aaa' }}>Loading Address...</Text>
+        : location
+            ? <LocationDetails location={location} />
+            : <Text style={{ color: '#aaa' }}>Add your location.</Text>
 
     const renderHeader = () => (
         <View
@@ -126,7 +140,7 @@ export default ({ userId }) => {
                 label={'Manage Location'}
             >
                 <LocationForm
-                    location={location}
+                    location={location || initialState}
                     onSubmit={onSubmitAddress}
                 />
             </ModalContent>

@@ -10,6 +10,7 @@ import {
 } from '../components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
+import { getRoute } from '../utils/storage'
 
 export default ({ navigation, route }) => {
 
@@ -23,16 +24,10 @@ export default ({ navigation, route }) => {
 
     const checkRoute = async () => {
 
-        const route = await AsyncStorage.getItem('route')
-        const detail = await AsyncStorage.getItem('detail')
-
-        if (route) {
-            if (detail) navigate(route, { id: detail })
-            else {
-                await AsyncStorage.removeItem('detail')
-                navigate(route)
-            }
-        }
+        const routeData = await getRoute()
+        if (!routeData) return
+        if (routeData.detail) navigate(routeData.route, { id: routeData.detail })
+        else navigate(routeData.route)
     }
 
     const renderContent = role => {

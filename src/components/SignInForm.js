@@ -14,6 +14,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles/main'
+import { signin } from '../Data'
 
 const SignInForm = ({ setUser }) => {
 
@@ -43,7 +44,8 @@ const SignInForm = ({ setUser }) => {
 		const user = await axios
 			.post('/api/signin', { email, password })
 			.then(({ data }) => data)
-			console.log('signin data', data)
+		
+			console.log('signin data', user)
 		if (!user) {
 			console.log('Error authenitcating user')
 			return null
@@ -53,27 +55,6 @@ const SignInForm = ({ setUser }) => {
 		setUser(user)
 		setPassword('')
 	}
-	// const authenticateUser = async () => {
-	// 	setLoading(true)
-	// 	const user = await verifyUser()
-	// 	if (!user) return console.log('Error authenitcating user')
-	// 	console.log('user authenitcated')
-	// 	setLoading(false)
-	// 	storeEmail(email)
-	// 	setUser(user)
-	// 	setPassword('')
-	// }
-
-	const verifyUser = async () => await axios
-		.post('/api/signin', { email, password })
-		.then(({ data }) => {
-			console.log('user verified-->', data)
-			return data
-		})
-		.catch(err => {
-			console.log('Error signing in.', err)
-			return null
-		})
 
 	const storeEmail = async email => {
 		try {
@@ -100,8 +81,16 @@ const SignInForm = ({ setUser }) => {
 		
 		if (!email.length || !password.length)
 		console.log('Email and password are required.')
-		
-		authenticateUser()
+		setLoading(true)
+		const connectedUser = await signin(email, password)
+		if (!connectedUser) {
+			console.log('Error authenticating user')
+			return null
+		}
+		setLoading(false)
+		storeEmail(email)
+		setUser(connectedUser)
+		setPassword('')
 	}
 
 	const isValidEmail = () =>  email.match(

@@ -46,8 +46,8 @@ const getLocationByUserId = async (req, res) => {
         .findOne({ userId })
 
     if (!location) {
-        console.log('Error getting user location')
-        return res.json(null)
+        console.log('No user location found.')
+        return res.json({ location: null })
     }
 
     return res.json({ location })

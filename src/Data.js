@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { cleanStorage, clearStorage } from './utils/storage'
+import { navigate } from './navigators/RootNavigation'
 
 const storeToken = async token => await AsyncStorage.setItem('userToken', token)
 
@@ -22,40 +23,34 @@ export const authenticate = async token => {
     return user
 }
 
-export const checkStatus = async dispatch => {
-        
-    dispatch({ type: 'SET_LOADING', loading: 'Checking status...' })
+export const checkStatus = async () => {
 
     const userToken = await AsyncStorage.getItem('userToken')
     
     if (!userToken) return null
     
-    dispatch({ type: 'SET_LOADING', loading: 'Verifying token...' })
-
-    const response = await authenticate(userToken)
-
-    if (!response) {
+    const userVerified = await authenticate(userToken)
+    
+    if (!userVerified) {
         console.log('could not authenticate; cleaning local storage...')
         await cleanStorage()
         return null
     }
     
-    const { token, ...user } = response
+    const { token, ...user } = userVerified
     
     await AsyncStorage.setItem('userToken', token)
 
-    return user
+    return userVerified
 }
 
-export const connect = async (dispatch, type) => {
+export const connect = async type => {
 
     const creds = {
         customer: { email: 'customer@iameric.me', password: 'customer' },
         driver: { email: 'driver@iameric.me', password: 'driver' },
         vendor: { email: 'vendor@iameric.me', password: 'vendor' },
     }
-    
-    dispatch({ type: 'SET_LOADING', loading: `Connecting as ${type}...` })
     
     const { email, password } = creds[type]
     
@@ -66,7 +61,23 @@ export const connect = async (dispatch, type) => {
         console.log('Error authenticating user')
         return null
     }
+    console.log('setting user token', data)
+    await AsyncStorage.setItem('userToken', data.token)
+
+    return data
+}
+
+export const signin = async (email, password) => {
     
+    const { data } = await axios.
+        post('/api/signin', { email, password })
+    
+    if (!data) {
+        console.log('Error authenticating user')
+        return null
+    }
+    console.log('signin successful. setting user token.', data)
+
     await AsyncStorage.setItem('userToken', data.token)
 
     return data
