@@ -12,7 +12,6 @@ import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
 import CircleButton from './CircleButton'
 import CustomerHome from './CustomerHome'
-import CustomerList from './CustomerList'
 import DeleteAccountButton from './DeleteAccountButton'
 import DriverHome from './DriverHome'
 import EditButton from './EditButton'
@@ -67,7 +66,6 @@ import UserSelector from './UserSelector'
 // import UserProfile from './UserProfile'
 import VendorHome from './VendorHome'
 import VendorSelector from './VendorSelector'
-import VendorList from './VendorList'
 
 export {
     AddButton,
@@ -84,7 +82,6 @@ export {
     CenteredView,
     CircleButton,
     CustomerHome,
-    CustomerList,
     DeleteAccountButton,
     DriverHome,
     EditButton,
@@ -139,5 +136,4 @@ export {
     // UserProfile,
     VendorHome,
     VendorSelector,
-    VendorList,
 }

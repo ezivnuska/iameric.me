@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import { AppContext } from '../AppContext'
 import {
-    CustomerList,
+    UserList,
 } from '.'
 import { loadUsers } from '../utils/data'
 
@@ -36,6 +36,6 @@ export default () => {
     return loading
         ? <Text>Loading users...</Text>
         : customers
-            ? <CustomerList users={customers} />
+            ? <UserList users={customers} />
             : <Text>No users to display.</Text>
 }

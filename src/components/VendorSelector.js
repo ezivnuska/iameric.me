@@ -3,7 +3,7 @@ import {
     Text,
 } from 'react-native'
 import {
-    VendorList,
+    UserList,
 } from '.'
 import { AppContext } from '../AppContext'
 import { loadUsers } from '../utils/data'
@@ -37,6 +37,6 @@ export default () => {
     return loading
         ? <Text>Loading...</Text>
         : vendors
-            ? <VendorList users={vendors} />
+            ? <UserList users={vendors} />
             : <Text>No Available Vendors</Text>
 }

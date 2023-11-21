@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from 'react'
 import {
     FlatList,
+    Pressable,
     View,
 } from 'react-native'
-
 import {
-    UserListItem,
+    UserHeading,
 } from '.'
 import { navigate } from '../navigators/RootNavigation'
+
+
+const UserListItem = ({ user }) => (
+    <Pressable
+        user={user}
+        onPress={() => navigate('Details', { id: user._id })}
+    >
+        <UserHeading user={user} />
+    </Pressable>
+)
 
 export default ({ users }) => {
 
     const [items, setItems] = useState([])
-    const [feature, setFeature] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
         if (users) setItems(users)
@@ -26,9 +34,6 @@ export default ({ users }) => {
             }}
         >
             <FlatList
-                style={{
-                    paddingVertical: 3,
-                }}
                 data={items}
                 listKey={() => 'users'}
                 keyExtractor={(item, index) => 'user' + index}
