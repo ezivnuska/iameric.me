@@ -6,6 +6,9 @@ import {
 import defaultStyles from '../styles/main'
 
 const LocationDetails = ({ location }) => {
+    console.log('location.....', location)
+    if (!location) return null
+    
     const { address1, address2, city, state, zip } = location
     
     return (

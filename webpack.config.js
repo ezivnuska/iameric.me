@@ -134,12 +134,12 @@ module.exports = {
     ],
     alias: {
       'react-native$': 'react-native-web',
-      screens: path.resolve(__dirname, './src/screens'),
-      components: path.resolve(__dirname, './src/components'),
-      navigators: path.resolve(__dirname, './src/navigators'),
-      layout: path.resolve(__dirname, './src/layout'),
-      styles: path.resolve(__dirname, './src/styles'),
-      images: path.resolve(__dirname, './assets'),
+      'screens': path.resolve(__dirname, './src/screens'),
+      'components': path.resolve(__dirname, './src/components'),
+      'navigators': path.resolve(__dirname, './src/navigators'),
+      'layout': path.resolve(__dirname, './src/layout'),
+      'styles': path.resolve(__dirname, './src/styles'),
+      'images': path.resolve(__dirname, './assets'),
     },
   },
   module: {

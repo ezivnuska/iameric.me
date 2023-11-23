@@ -11,14 +11,14 @@ import { loadUsers } from '../utils/data'
 export default () => {
 
     const {
-        customers,
+        drivers,
         dispatch,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        if (!customers) init()
+        if (!drivers) init()
     }, [])
 
     const init = async () => {
@@ -36,7 +36,7 @@ export default () => {
 
     return loading
         ? <Text>Loading users...</Text>
-        : customers
-            ? <UserList users={customers} />
+        : drivers
+            ? <UserList users={drivers} />
             : <Text>No users to display.</Text>
 }

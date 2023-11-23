@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
@@ -12,38 +11,51 @@ import {
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
+import { loadUserOrders } from '../utils/data'
 
-const OrderDisplay = () => {
+export default () => {
     
     const {
         dispatch,
         user,
+        orders,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
 
+    useEffect(() => {
+        if (!orders) getOrders()
+    }, [])
+
+    const getOrders = async () => {
+        setLoading(true)
+        const orders = await loadUserOrders(user._id)
+        setLoading(false)
+        if (!orders) return
+        dispatch({ type: 'SET_ORDERS', orders })
+    }
+
     const getFeaturedItem = id => {
-        return items.filter((order, index) => order._id === id)[0]
+        return orders.filter((order, index) => order._id === id)[0]
     }
 
     const relevantOrders = orders => {
         switch(user.role) {
             case 'driver':
-                return orders.filter(item => {
-                    return item.status == 1 || (item.driver && item.driver._id == user._id)
-                })
+                return orders.filter(item => 
+                    (item.status > 0 && item.status < 6) &&
+                    (item.driver && item.driver._id == user._id)
+                )
             break
             case 'customer':
                 return orders.filter(item => {
-                    console.log('customer, user', item.customer._id, user._id)
-                    return item.customer._id == user._id
+                    return item.customer._id == user._id && item.status < 6
                 })
             break
             case 'vendor':
                 return orders.filter(item => {
-                    return item.vendor._id == user._id
+                    return item.vendor._id == user._id && item.status < 6
                 })
             break
         }
@@ -72,7 +84,7 @@ const OrderDisplay = () => {
             ...getItemById(id),
             status: 1,
         }
-        setItems(items.map(i => (i._id == id) ? item : i))
+        setItems(orders.map(i => (i._id == id) ? item : i))
 
         setFeaturedItem(null)
     }
@@ -93,7 +105,7 @@ const OrderDisplay = () => {
         setOrderConfirmed(order._id)
     }
 
-    const getItemById = id => items.filter(item => item._id == id)[0]
+    const getItemById = id => orders.filter(item => item._id == id)[0]
 
     const setOrderAccepted = id => {
         const item = {
@@ -101,7 +113,7 @@ const OrderDisplay = () => {
             status: 2,
         }
         
-        setItems(items.map(i => i._id == id ? item : i))
+        setItems(orders.map(i => i._id == id ? item : i))
     }
 
     const acceptDelivery = async () => {
@@ -126,7 +138,7 @@ const OrderDisplay = () => {
             status: 2,
         }
         console.log('item picked up', item)
-        setItems(items.map(i => i._id == id ? item : i))
+        setItems(orders.map(i => i._id == id ? item : i))
 
         setFeaturedItem(null)
     }
@@ -165,7 +177,7 @@ const OrderDisplay = () => {
     }
 
     const renderOrderProcessButton = status => {
-        
+        console.log('status', status)
         switch (user.role) {
             case 'customer':
                 return <ButtonPrimary label='Cancel Order' onPress={cancelOrder} disabled={loading} />
@@ -203,7 +215,7 @@ const OrderDisplay = () => {
 
     const renderOrderProcessForm = id => {
         const order = getFeaturedItem(id)
-        
+        console.log('renderOrderProcessForm', order)
         return (
             <View>
                 <OrderDetails order={order} />
@@ -218,12 +230,22 @@ const OrderDisplay = () => {
 
     const renderOrders = () => {
         if (loading) return <Text>Loading Orders...</Text>
-        if (!items || !items.length) return null
-        const orders = relevantOrders(items)
-        return (orders && orders.length) ? (
+        if (!orders || !orders.length) return null
+        const items = relevantOrders(orders)
+        console.log('rel orders', items)
+        
+        return (items && items.length) ? (
             <View>
-                <View style={styles.list}>
-                    {orders.map((order, index) => (
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        columnGap: '3%',
+                        flexWrap: 'wrap',
+                    }}
+                >
+                    {items.map((order, index) => (
                         <OrderPreview
                             key={`order-preview-${index}`}
                             onPress={() => onPress(order)}
@@ -241,36 +263,14 @@ const OrderDisplay = () => {
                     {featuredItem ? renderOrderProcessForm(featuredItem) : null}
                 </ModalContent>
             </View>
-        ) : null
+        ) : <Text>No active orders.</Text>
     }
 
     return (
-        <View style={styles.container}>
+        <View style={{
+            marginVertical: 10,
+        }}>
             {renderOrders()}
         </View>
     )
 }
-
-export default OrderDisplay
-
-const styles = StyleSheet.create({
-    container: {
-
-    },
-    heading: {
-        marginBottom: 10,
-        fontSize: 18,
-        lineHeight: 22,
-        fontWeight: 600,
-    },
-    list: {
-        // borderWidth: 1,
-        // borderStyle: 'dashed',
-        // borderColor: 'green',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        columnGap: '3%',
-        flexWrap: 'wrap',
-    },
-})

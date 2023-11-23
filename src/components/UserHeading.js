@@ -1,18 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     Image,
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
-import { Avatar } from '.'
 import main from '../styles/main'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const UserHeading = ({ user }) => (
-    <View style={[styles.container, main.paddedV]}>
-        <View style={styles.avatar}>
+export default ({ user }) => (
+    <View
+        style={[
+            {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+            },
+            main.paddedV
+        ]}
+    >
+        <View
+            style={{
+                flexBasis: 'auto',
+                marginRight: 10,
+            }}
+        >
             <Image
                 style={{
                     width: 24,
@@ -28,25 +40,13 @@ const UserHeading = ({ user }) => (
                 }
             />
         </View>
-        <View style={styles.title}>
+
+        <View
+            style={{
+                flexBasis: 'auto',
+            }}
+        >
             <Text style={[main.subheading, { lineHeight: 24 }]}>{user.username}</Text>
         </View>
     </View>
 )
-
-export default UserHeading
-
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-    },
-    avatar: {
-        flexBasis: 'auto',
-        marginRight: 10,
-    },
-    title: {
-        flexBasis: 'auto',
-    },
-})

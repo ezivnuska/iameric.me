@@ -14,6 +14,7 @@ import CircleButton from './CircleButton'
 import CustomerHome from './CustomerHome'
 import DeleteAccountButton from './DeleteAccountButton'
 import DriverHome from './DriverHome'
+import DriverSelector from './DriverSelector'
 import EditButton from './EditButton'
 import EntryModule from './EntryModule'
 import EntryList from './EntryList'
@@ -23,7 +24,6 @@ import FileSelector from './FileSelector'
 import FormInput from './FormInput'
 import FormInputStatusIcon from './FormInputStatusIcon'
 import Header from './Header'
-import Heading from './Heading'
 import HoverableView from './HoverableView'
 import ImageDetail from './ImageDetail'
 import ImageFormModule from './ImageFormModule'
@@ -42,6 +42,7 @@ import ModalContent from './ModalContent'
 import OrderListContainer from './OrderListContainer'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
+import OrderModule from './OrderModule'
 import OrderPreview from './OrderPreview'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
@@ -84,6 +85,7 @@ export {
     CustomerHome,
     DeleteAccountButton,
     DriverHome,
+    DriverSelector,
     EditButton,
     EntryModule,
     EntryList,
@@ -93,7 +95,6 @@ export {
     FormInput,
     FormInputStatusIcon,
     Header,
-    Heading,
     HoverableView,
     ImageDetail,
     ImageFormModule,
@@ -112,6 +113,7 @@ export {
     OrderListContainer,
     OrderList,
     OrderDetails,
+    OrderModule,
     OrderPreview,
     Preview,
     ProductDetails,

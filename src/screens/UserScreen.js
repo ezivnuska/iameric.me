@@ -42,9 +42,9 @@ export default ({ navigation, route }) => {
     return (
         <Screen>
 
-            <CenteredContent>
+            {/* <CenteredContent>
                 <OrderListContainer />
-            </CenteredContent>
+            </CenteredContent> */}
 
             <CenteredContent>
                 {renderContent(user.role)}

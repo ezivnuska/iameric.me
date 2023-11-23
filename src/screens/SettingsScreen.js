@@ -23,7 +23,7 @@ export default () => {
                     
                     {
                         user.role !== 'driver' &&
-                        <LocationModule />
+                        <LocationModule userId={user._id} />
                     }
 
                     <ImageModule />

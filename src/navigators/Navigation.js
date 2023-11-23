@@ -80,18 +80,34 @@ export default () => {
         if (params && params.id) await AsyncStorage.setItem('detail', params.id)
     }
 
-    const config = {
-        screens: {
-            Start: '/splash',
-            Home: '/',
-            Details: '/details/:id',
-            Settings: '/settings',
-        },
-    }
+    // const linking = {
+    //     prefixes: ['https://iameric.me/', 'iameric.me', 'localhost:8080'],
+    //     config,
+    // }
 
+    /**
+     * Linking Configuration
+     */
+    
     const linking = {
-        prefixes: ['https://iameric.me/', 'iameric.me', 'localhost:8080'],
-        config,
+        // Prefixes accepted by the navigation container, should match the added schemes
+        prefixes: ['myapp://'],
+        // Route config to map uri paths to screens
+        config: {
+            // Initial route name to be added to the stack before any further navigation,
+            // should match one of the available screens
+            initialRouteName: 'Home',
+            screens: {
+                // myapp://home -> HomeScreen
+                Home: 'home',
+                // myapp://details/1 -> DetailsScreen with param id: 1
+                Details: "details/:id",
+                // Start: '/splash',
+                // Home: '/',
+                // Details: '/details/:id',
+                Settings: 'settings',
+            },
+        },
     }
 
     return (

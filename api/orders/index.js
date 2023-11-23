@@ -54,7 +54,7 @@ const getOrdersByUserId = async (req, res) => {
                 { customer: id },
                 { driver: id },
                 { vendor: id }
-            ]
+            ],
         })
         .populate('items', 'price title')
         .populate({

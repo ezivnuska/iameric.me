@@ -61,7 +61,7 @@ export const connect = async type => {
         console.log('Error authenticating user')
         return null
     }
-    console.log('setting user token', data)
+    
     await AsyncStorage.setItem('userToken', data.token)
 
     return data

@@ -27,11 +27,11 @@ const initialState = {
     zip: '',
 }
 
-export default () => {
+export default ({ userId }) => {
 
-    const {
-        user,
-    } = useContext(AppContext)
+    // const {
+    //     user,
+    // } = useContext(AppContext)
 
     const [location, setLocation] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
@@ -39,19 +39,23 @@ export default () => {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        getLocationData(user._id)
+        getLocationData(userId)
     }, [])
 
-    useEffect(() => {
-        // if (user && !loading && !loaded) {
-        //     getLocationData(user._id)
-        // }
-    }, [user])
+    // useEffect(() => {
+    //     // if (user && !loading && !loaded) {
+    //     //     getLocationData(user._id)
+    //     // }
+    // }, [user])
 
-    useEffect(() => {
-        if (!loading) setLoaded(true)
-        else setLoaded(false)
-    }, [loading])
+    // useEffect(() => {
+    //     if (!loading) setLoaded(true)
+    //     else setLoaded(false)
+    // }, [loading])
+
+    // useEffect(() => {
+    //     if (location) console.log('location', location)
+    // }, [location])
 
     const getLocationData = async userId => {
 
@@ -59,12 +63,13 @@ export default () => {
 
         const locationData = await getLocationWithUserId(userId)
         
-        setLoading(false)
-        
+        console.log('locationData', locationData)
         if (!locationData) {
             console.log('could not get location data.')
             return
         }
+
+        setLoading(false)
 
         setLocation(locationData)
     }
@@ -82,16 +87,10 @@ export default () => {
             return
         }
         
-        setLocation(data.location)
+        // setLocation(data.location)
 
         setModalVisible(false)
     }
-
-    const renderLocationDetails = () => loading
-        ? <Text style={{ color: '#aaa' }}>Loading Address...</Text>
-        : location
-            ? <LocationDetails location={location} />
-            : <Text style={{ color: '#aaa' }}>Add your location.</Text>
 
     const renderHeader = () => (
         <View
@@ -130,7 +129,10 @@ export default () => {
             
             {renderHeader()}
 
-            {renderLocationDetails()}
+            {location
+                ? <LocationDetails location={location} />
+                : <Text style={{ color: '#aaa' }}>Add your location.</Text>
+            }
 
             <ModalContent
                 animationType='slide'

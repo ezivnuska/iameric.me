@@ -24,11 +24,11 @@ export const loadUsers = async () => {
  *  
  */
 
-export const loadProducts = async () => {
+export const loadProducts = async vendorId => {
 
-    const { data } = await axios.get('/api/products')
+    const { data } = await axios.get(`/api/products/${vendorId}`)
     
-    if (!data.products) {
+    if (!data) {
         console.log('could not load products.')
         return null
     }
@@ -104,6 +104,18 @@ export const loadOrders = async () => {
     const { data } = await axios.get('/api/orders')
 
     if (!data.orders) {
+        console.log('could not load orders.')
+        return null
+    }
+
+    return data.orders
+}
+
+export const loadUserOrders = async userId => {
+
+    const { data } = await axios.get(`/api/orders/user/${userId}`)
+
+    if (!data) {
         console.log('could not load orders.')
         return null
     }

@@ -25,7 +25,6 @@ const Header = ({ onPress }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
-                marginBottom: 15,
             }}
         >
             
@@ -67,7 +66,7 @@ export default () => {
 
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState()
+    const [items, setItems] = useState(null)
 
     useEffect(() => {
         getImageData()
@@ -146,15 +145,15 @@ export default () => {
 
             {loading
                 ? <Text>Loading...</Text>
-                : items
-                ? (
-                    <ImageList
-                        images={items}
-                        username={user.username}
-                        onSelected={onSelected}
-                    />
-                )
-                : <Text>No images to display.</Text>
+                : (items && items.length)
+                    ? (
+                        <ImageList
+                            images={items}
+                            username={user.username}
+                            onSelected={onSelected}
+                        />
+                    )
+                    : <Text>No images to display.</Text>
             }
             
             <ModalContent

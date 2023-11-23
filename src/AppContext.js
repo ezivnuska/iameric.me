@@ -7,17 +7,17 @@ const initialState = {
     },
     dims: null,
     entries: null,
-    images: [],
+    images: null,
     loading: false,
-    orders: [],
-    products: [],
+    orders: null,
+    products: null,
     profileImage: null,
     user: null,
     users: null,
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, entries, loading, orders, products, productsUpdated, profileImage, user, users } = state
+    let { cart, dims, entries, loading, orders, products, profileImage, user, users } = state
     
     switch(action.type) {
         case 'SET_DIMS':
@@ -107,6 +107,7 @@ const reducer = (state = initialState, action) => {
             entries = entries.filter(entry => entry._id !== action.id)
             break
         case 'SET_ORDERS':
+            console.log('setting orders', action.orders)
             orders = action.orders
             break
         case 'ADD_ORDER':
@@ -225,6 +226,7 @@ export const AppProvider = ({ children }) => {
     
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
     const otherUsersByRole = role => state.users ? usersByRole(role).filter(u => u._id !== state.user._id) : null
+    
     return (
         <AppContext.Provider value={{
             state,

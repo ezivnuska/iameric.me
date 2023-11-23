@@ -5,6 +5,7 @@ import {
     View,
 } from 'react-native'
 import {
+    OrderListContainer,
     UserSelector,
     VendorSelector,
 } from '.'
@@ -14,11 +15,16 @@ const Tab = ({ active, label, press, type }) => (
         onPress={() => press(type)}
         style={{ flex: 1 }}
     >
-        <Text style={{
-            paddingVertical: 10,
-            textAlign: 'center',
-            backgroundColor: active ? '#0af' : '#fff'
-        }}>{label}</Text>
+        <Text
+            style={{
+                paddingVertical: 10,
+                textAlign: 'center',
+                backgroundColor: active ? '#0af' : '#fff',
+            }}
+        >
+            {label}
+        </Text>
+
     </Pressable>
 )
 
@@ -34,7 +40,7 @@ export default () => {
         }
     }
 
-    const renderOptions = () => (
+    const renderTabs = () => (
         <View
             style={{
                 display: 'flex',
@@ -61,8 +67,10 @@ export default () => {
 
     return (
         <View>
+
+            <OrderListContainer />
             
-            {renderOptions()}
+            {renderTabs()}
 
             {renderContent()}
         </View>

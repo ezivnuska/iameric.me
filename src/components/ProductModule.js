@@ -36,7 +36,7 @@ export default () => {
     const init = async () => {
         setLoading(true)
 
-        const productsLoaded = await loadProducts(productsLoaded)
+        const productsLoaded = await loadProducts(user._id)
         
         if (productsLoaded) {
             dispatch({ type: 'SET_PRODUCTS', products: productsLoaded })

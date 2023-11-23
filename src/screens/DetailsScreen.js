@@ -6,9 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
-    BackButton,
     CenteredContent,
-    Heading,
     Menu,
     Screen,
     LoadingView,
@@ -17,7 +15,7 @@ import {
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 import main from '../styles/main'
-import { goBack } from '../navigators/RootNavigation'
+import { navigationRef } from '../navigators/RootNavigation'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { loadUsers } from '../utils/data'
 
@@ -35,14 +33,28 @@ const DetailsScreen = ({ navigation, route }) => {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        if (!users) init()
+
+        if (!route.params.id) navigationRef.goBack()
+        
+        if (!users) fetchUsers()
+
     }, [])
     
     useEffect(() => {
         if (users) getDetails(route.params.id)
     }, [users])
 
-    const init = async () => {
+    const getUserDetailsWithId = id => users.filter(u => u._id === id)[0]
+
+    const getDetails = async id => {
+        const userDetails = await getUserDetailsWithId(id)
+        if (userDetails) {
+            setUser(userDetails)
+        }
+    }
+
+    const fetchUsers = async () => {
+
         setLoading(true)
             
         const loadedUsers = await loadUsers(loadedUsers)
@@ -52,15 +64,6 @@ const DetailsScreen = ({ navigation, route }) => {
         }
 
         setLoading(false)
-    }
-
-    const getUserDetailsWithId = id => users.filter(u => u._id === id)[0]
-
-    const getDetails = async id => {
-        const userDetails = await getUserDetailsWithId(id)
-        if (userDetails) {
-            setUser(userDetails)
-        }
     }
 
     // TODO: clean this.
@@ -98,13 +101,18 @@ const DetailsScreen = ({ navigation, route }) => {
                 : user
                     ? (
                         <>
-                            <CenteredContent>
-                                <Pressable
-                                    onPress={goBack}
+                            <Pressable
+                                onPress={() => navigationRef.goBack()}
+                            >
+                                <Text
+                                    style={{
+                                        paddingVertical: 10,
+                                        paddingHorizontal: 15,
+                                    }}
                                 >
-                                    <Text>&lt; Back</Text>
-                                </Pressable>
-                            </CenteredContent>
+                                    &lt; Back
+                                </Text>
+                            </Pressable>
                             
                             <CenteredContent type='full'>
                                 {renderUserAvatar()}
@@ -115,9 +123,7 @@ const DetailsScreen = ({ navigation, route }) => {
                             </CenteredContent> */}
 
                             {user.role === 'vendor' && (
-                                <CenteredContent type='expanded'>
-                                    <Menu vendor={user} />
-                                </CenteredContent>
+                                <Menu vendor={user} />
                             )}
                         </>
                     )

@@ -17,31 +17,57 @@ export default ({ vendor }) => {
 
     const {
         dispatch,
+        vendors,
     } = useContext(AppContext)
 
-    const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
-    const [products, setProducts] = useState(null)
+    const [items, setItems] = useState(false)
+    const [featured, setFeatured] = useState(null)
 
     useEffect(() => {
-        getProducts()
+        // const vendorItems = fetchItemsWithVendorId(vendor._id)
+        // console.log('vendorItems', vendorItems)
+        init()
     }, [])
 
+    // const fetchItemsWithVendorId = id => {
+    //     if (!vendors) return null
+    //     const vendor = vendors.filter(v => v._id === id)[0]
+    //     if (!vendor.products) getProducts()
+    //     else setItems(vendor.products)
+    // }
+
+    // useEffect(() => {
+    //     console.log('vendor changed', vendor)
+    //     if (vendor) getProducts()
+    // }, [vendor])
+    
+    const init = async () => {
+        getProducts()
+    }
+
     const getProducts = async () => {
-        setLoading('Menu: Loading products...')
+        
+        setLoading(true)
+        
         const { data } = await axios.get(`/api/products/${vendor._id}`)
-        setLoading(null)
+        
+        setLoading(false)
+
         if (!data) {
-            console.log('oops... could not get vendor products')
+            console.log('could not get vendor products')
             return
         }
-        setProducts(data.products)
-        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendor: vendor._id, products: data.products })
+        
+        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendorId: vendor._id, products: data.products })
     }
 
     const addToCart = item => {
+
         setLoading(true)
+        
         dispatch({ type: 'ADD_TO_CART', item, vendor: vendor._id })
+        
         setFeatured(null)
         setLoading(false)
     }
@@ -50,24 +76,29 @@ export default ({ vendor }) => {
         <View
             style={{
                 height: '100%',
-                marginTop: 10,
+                marginVertical: 10,
+                marginHorizontal: 15,
             }}
         >
-            {(products && products.length)
-                ? (
-                    <FlatList
-                        data={products}
-                        keyExtractor={item => `product-${item._id}`}
-                        // style={styles.list}
-                        renderItem={({ item }) => (
-                            <MenuItem
-                                item={item}
-                                onPress={() => setFeatured(item)}
-                                username={vendor.username}
-                            />
-                        )}
-                    />
-                ) : <Text style={main.text}>No products to display.</Text>}
+            {loading
+                ? <Text>Loading menu...</Text>
+                : (vendor.products && vendor.products.length)
+                    ? (
+                        <FlatList
+                            data={vendor.products}
+                            keyExtractor={item => `product-${item._id}`}
+                            // style={styles.list}
+                            renderItem={({ item }) => (
+                                <MenuItem
+                                    item={item}
+                                    onPress={() => setFeatured(item)}
+                                    username={vendor.username}
+                                />
+                            )}
+                        />
+                    )
+                    : <Text style={main.text}>No products to display.</Text>
+            }
 
             <ModalContent
                 visible={featured}
