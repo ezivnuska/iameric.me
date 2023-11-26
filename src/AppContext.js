@@ -26,6 +26,9 @@ const reducer = (state = initialState, action) => {
         case 'SET_USER':
             user = action.user
             break
+        case 'UPDATE_LOCATION':
+            user.location = action.location
+            break
         case 'REMOVE_IMAGE':
             if (user.profileImage && user.profileImage._id === action.id) {
                 user.profileImage = null
@@ -196,6 +199,7 @@ const reducer = (state = initialState, action) => {
             orders = orders.filter(order => order._id != action.id)
         break
         case 'SIGNOUT':
+            console.log('signing out...')
             cart = {
                 vendor: null,
                 items: [],
@@ -225,7 +229,7 @@ export const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
     
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
-    const otherUsersByRole = role => state.users ? usersByRole(role).filter(u => u._id !== state.user._id) : null
+    const otherUsersByRole = role => (state.users && state.user) ? usersByRole(role).filter(u => u._id !== state.user._id) : null
     
     return (
         <AppContext.Provider value={{

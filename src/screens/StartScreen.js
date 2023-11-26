@@ -11,7 +11,7 @@ import {
     Screen,
     SignUpForm,
     SignInForm,
-} from '../components'
+} from '@components'
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
 import layout from '../styles/layout'
@@ -135,6 +135,7 @@ const StartScreen = () => {
             >
                 <SignInForm
                     setUser={setUser}
+                    onComplete={() => setShowSignInModal(false)}
                 />
             </ModalContent>
         </Screen>

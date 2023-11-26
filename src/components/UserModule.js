@@ -3,10 +3,11 @@ import {
     View,
     Text,
 } from 'react-native'
-// import axios from 'axios'
-// import UserList from './UserList'
 import { AppContext } from '../AppContext'
-import UserFilter from './UserFilter'
+import {
+    EntryModule,
+    UserFilter,
+} from '.'
 import { loadUsers } from '../utils/data'
 
 export default () => {
@@ -14,6 +15,7 @@ export default () => {
     const {
         dispatch,
         users,
+        user,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)
@@ -34,9 +36,11 @@ export default () => {
         setLoading(false)
     }
 
+    const otherUsers = () => users.filter(u => u._id !== user._id)
+
     return loading
         ? <Text>Loading users...</Text>
         : users
-            ? <UserFilter users={users} />
+            ? <UserFilter users={otherUsers().map(({ _id, username, profileImage, role }) => ({ _id, username, profileImage, role }))} />
             : <Text>No users to display.</Text>
 }

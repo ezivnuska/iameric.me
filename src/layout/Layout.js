@@ -9,7 +9,7 @@ import { AppContext } from '../AppContext'
 import {
     Header,
     LoadingView,
-} from '../components'
+} from '@components'
 import base from '../styles/base'
 
 let initialDims = {

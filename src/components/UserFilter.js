@@ -11,9 +11,18 @@ import { navigate } from '../navigators/RootNavigation'
 const UserFilterListItem = ({ user }) => (
     <Pressable
         onPress={() => navigate('Details', { id: user._id })}
-        style={{ borderBottomWidth: 1 }}
+        style={{
+            paddingTop: 3,
+            paddingBottom: 5,
+            marginBottom: 5,
+            borderBottomWidth: 1
+        }}
     >
-        <UserHeading user={user} />
+        <UserHeading
+            filename={(user.profileImage && user.profileImage.filename) ? user.profileImage.filename : null}
+            username={user.username}
+            onPress={() => navigate('Details', { id: user._id })}
+        />
     </Pressable>
 )
 
@@ -34,19 +43,22 @@ export default ({ users, role = null }) => {
 
     const [type, setType] = useState(role)
     const [listItems, setListItems] = useState(users)
-    const [allUsers] = useState(users)
 
     useEffect(() => {
-        setListItems(allUsers)
+        if (!listItems) setListItems(users)
     }, [])
+
+    // useEffect(() => {
+    //     console.log('listItems:', listItems)
+    // }, [listItems])
 
     useEffect(() => {
         if (type) filterUsersByType()
-        else setListItems(allUsers)
+        else setListItems(users)
     }, [type])
 
     const filterUsersByType = () => {
-        const filteredUsers = allUsers.filter(user => user.role === type)
+        const filteredUsers = users.filter(user => user.role === type)
         setListItems(filteredUsers)
     }
     

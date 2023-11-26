@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    Pressable,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import {
@@ -29,9 +29,9 @@ const initialState = {
 
 export default ({ userId }) => {
 
-    // const {
-    //     user,
-    // } = useContext(AppContext)
+    const {
+        dispatch,
+    } = useContext(AppContext)
 
     const [location, setLocation] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
@@ -42,34 +42,17 @@ export default ({ userId }) => {
         getLocationData(userId)
     }, [])
 
-    // useEffect(() => {
-    //     // if (user && !loading && !loaded) {
-    //     //     getLocationData(user._id)
-    //     // }
-    // }, [user])
-
-    // useEffect(() => {
-    //     if (!loading) setLoaded(true)
-    //     else setLoaded(false)
-    // }, [loading])
-
-    // useEffect(() => {
-    //     if (location) console.log('location', location)
-    // }, [location])
-
     const getLocationData = async userId => {
 
         setLoading(true)
 
         const locationData = await getLocationWithUserId(userId)
         
-        console.log('locationData', locationData)
+        setLoading(false)
         if (!locationData) {
             console.log('could not get location data.')
             return
         }
-
-        setLoading(false)
 
         setLocation(locationData)
     }
@@ -86,8 +69,10 @@ export default ({ userId }) => {
             console.log('Error saving location', err)
             return
         }
+
+        dispatch({ type: 'UPDATE_LOCATION', location: data.location })
         
-        // setLocation(data.location)
+        setLocation(data.location)
 
         setModalVisible(false)
     }
@@ -103,7 +88,7 @@ export default ({ userId }) => {
                 
             <Text style={[main.heading, { marginBottom: 5 }]}>Address</Text>
             
-            <TouchableOpacity
+            <Pressable
                 style={{
                     flex: 1,
                     flexGrow: 0,
@@ -120,7 +105,7 @@ export default ({ userId }) => {
                     : <PlusCircleOutlined style={{ fontSize: 22 }} />
                 }
                 
-            </TouchableOpacity>
+            </Pressable>
         </View>
     )
 

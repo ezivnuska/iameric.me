@@ -1,32 +1,26 @@
 import React from 'react'
 import {
     FlatList,
-    Pressable,
 } from 'react-native'
 import {
     UserHeading,
 } from '.'
 import { navigate } from '../navigators/RootNavigation'
 
-
-const UserListItem = ({ user }) => (
-    <Pressable
-        user={user}
-        onPress={() => navigate('Details', { id: user._id })}
-    >
-        <UserHeading user={user} />
-    </Pressable>
-)
-
 export default ({ users }) => (
     <FlatList
         data={users}
         listKey={() => 'users'}
         keyExtractor={(item, index) => 'user' + index}
-        renderItem={({ item }) => (
-            <UserListItem
-                user={item}
-            />
-        )} 
+        renderItem={({ item }) => {
+            const { _id, profileImage, username } = item
+            return (
+                <UserHeading
+                    username={username}
+                    filename={profileImage && profileImage.filename ? profileImage.filename : null}
+                    onPress={() => navigate('Details', { id: _id })}
+                />
+            )
+        }} 
     />
 )

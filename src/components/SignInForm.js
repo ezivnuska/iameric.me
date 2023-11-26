@@ -16,7 +16,7 @@ import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles/main'
 import { signin } from '../Data'
 
-const SignInForm = ({ setUser }) => {
+const SignInForm = ({ setUser, onComplete }) => {
 
     const {
         state,
@@ -91,6 +91,7 @@ const SignInForm = ({ setUser }) => {
 		storeEmail(email)
 		setUser(connectedUser)
 		setPassword('')
+		onComplete()
 	}
 
 	const isValidEmail = () =>  email.match(

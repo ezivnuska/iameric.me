@@ -10,14 +10,15 @@ import {
     SettingsScreen,
     StartScreen,
     UserScreen,
+    UsersScreen,
 } from '../screens'
-import { navigationRef } from './RootNavigation'
+import { navigationRef, navigate } from './RootNavigation'
 import { AppContext } from '../AppContext'
+import { getSavedRoute } from '../utils/storage'
+import { checkStatus } from '../Data'
 
 const Stack = createNativeStackNavigator()
-const StackScreen = ({ navigation, route }) => {
-    
-    const { user } = useContext(AppContext)
+const StackScreen = ({ user }) => {
 
     return (
         <Stack.Navigator
@@ -25,35 +26,39 @@ const StackScreen = ({ navigation, route }) => {
                 initialRouteName: 'Start',
             })}
         >
-            
-            {user ? (
-                <>
-                    <Stack.Screen
-                        name='Home'
-                        component={UserScreen}
-                        options={{ title: 'Home' }}
-                    />
+            <Stack.Screen
+                name='Start'
+                component={StartScreen}
+                options={{ title: 'Welcome' }}
+            />
 
-                    <Stack.Screen
-                        name='Details'
-                        component={DetailsScreen}
-                        options={{ title: 'Details' }}
-                    />
+            <Stack.Screen
+                name='Home'
+                options={{ title: 'Home' }}
+            >
+                {(props) => <UserScreen {...props} user={user} />}
+            </Stack.Screen>
 
-                    <Stack.Screen
-                        name='Settings'
-                        component={SettingsScreen}
-                        options={{ title: 'Settings' }}
-                    />
-                </>
-            ) : (
-                <Stack.Screen
-                    name='Start'
-                    component={StartScreen}
-                    options={{ title: 'Welcome' }}
-                />
-            )}
+            <Stack.Screen
+                name='Details'
+                options={{ title: 'Details' }}
+            >
+                {(props) => <DetailsScreen {...props} user={user} />}
+            </Stack.Screen>
 
+            <Stack.Screen
+                name='Settings'
+                options={{ title: 'Settings' }}
+            >
+                {(props) => <SettingsScreen {...props} user={user} />}
+            </Stack.Screen>
+
+            <Stack.Screen
+                name='Forum'
+                options={{ title: 'Forum' }}
+            >
+                {(props) => <UsersScreen {...props} user={user} />}
+            </Stack.Screen>
             
         </Stack.Navigator>
     )
@@ -61,29 +66,38 @@ const StackScreen = ({ navigation, route }) => {
 
 export default () => {
 
-    const [route, setRoute] = useState(null)
+    const {
+        dispatch,
+        user,
+    } = useContext(AppContext)
 
-    useEffect(() => {
-        if (route) handleRouteChange()
-        
-    }, [route])
+    const checkRoute = async () => {
+        // console.log('checking route...')
+        const routeData = await getSavedRoute()
+        // console.log('route data:', routeData)
 
-    const handleRouteChange = async () => {
-        const { name, params } = route
-        
-        if (name !== 'Start') await AsyncStorage.setItem('route', name)
-        else {
-            await AsyncStorage.removeItem('route')
+        if (!routeData) {
+            console.log('navigating home')
+            navigate('Home')
             return
         }
         
-        if (params && params.id) await AsyncStorage.setItem('detail', params.id)
+        
+        if (routeData.detail)
+            navigate(routeData.route, { id: routeData.detail })
+        else navigate(routeData.route)
     }
+    
+    useEffect(() => {
+        if (user) checkRoute()
+        else verifyUser()
+    }, [user])
 
-    // const linking = {
-    //     prefixes: ['https://iameric.me/', 'iameric.me', 'localhost:8080'],
-    //     config,
-    // }
+    const verifyUser = async () => {
+        const verifiedUser = await checkStatus()
+        if (!verifiedUser) navigate('Start')
+        else dispatch({ type: 'SET_USER', user: verifiedUser })
+    }
 
     /**
      * Linking Configuration
@@ -96,16 +110,18 @@ export default () => {
         config: {
             // Initial route name to be added to the stack before any further navigation,
             // should match one of the available screens
-            initialRouteName: 'Home',
+            initialRouteName: 'Start',
             screens: {
+                Start: '',
                 // myapp://home -> HomeScreen
-                Home: 'home',
+                Home: 'secure',
                 // myapp://details/1 -> DetailsScreen with param id: 1
-                Details: "details/:id",
+                Details: 'details/:id',
                 // Start: '/splash',
                 // Home: '/',
                 // Details: '/details/:id',
                 Settings: 'settings',
+                Forum: 'forum',
             },
         },
     }
@@ -115,9 +131,23 @@ export default () => {
             ref={navigationRef}
             linking={linking}
             fallback={<FallbackScreen />}
-            onStateChange={() => setRoute(navigationRef.getCurrentRoute())}
+            // onStateChange={async () => {
+            //     const currentRoute = navigationRef.getCurrentRoute()
+            //     console.log('STATE_CHANGE, currentRoute:', currentRoute)
+                
+            //     const prevRoute = await AsyncStorage.getItem('route')
+            //     console.log('Saving current route as prev route:', prevRoute)
+
+            //         await AsyncStorage.setItem('prevRoute', prevRoute)
+            //         console.log('setting route???', currentRoute.name)
+            //         await AsyncStorage.setItem('route', currentRoute.name)
+
+            //         if (currentRoute.params && currentRoute.params.id) await AsyncStorage.setItem('detail', currentRoute.params.id)
+            //         await AsyncStorage.multiRemove(['prevRoute', 'route', 'detail'])
+            //     }
+            // }
         >
-            <StackScreen />
+            <StackScreen user={user} />
         </NavigationContainer>
     )
 }

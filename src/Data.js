@@ -41,7 +41,9 @@ export const checkStatus = async () => {
     
     await AsyncStorage.setItem('userToken', token)
 
-    return userVerified
+    // console.log('returning user', user)
+
+    return user
 }
 
 export const connect = async type => {

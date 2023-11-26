@@ -1,51 +1,77 @@
 import { createNavigationContainerRef } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { cleanStorage } from '@utils/storage'
 
 export const navigationRef = createNavigationContainerRef()
 
 export const goBack = async () => {
+    
     if (navigationRef.isReady()) {
-        
         const currentRoute = await AsyncStorage.getItem('route')
-        const prevRoute = await AsyncStorage.getItem('prevRoute')
-        
-        if (currentRoute && currentRoute === 'Details') {
-            await AsyncStorage.multiRemove(['prevRoute', 'detail'])
+        if (currentRoute === 'Details') {
+            await AsyncStorage.removeItem('detail')
         }
 
-        if (!prevRoute) {
-            console.log('nowhere to go back to.')
-            return
+        const prevRoute = await AsyncStorage.getItem('prevRoute')
+        
+        if (prevRoute) {
+            navigate(prevRoute)
+        } else {
+            navigate('Home')
         }
-        const routes = navigationRef.getCurrentRoute()
-        const state = navigationRef.getState()
-        console.log('state', state)
-        console.log('routes', routes)
-        console.log('going back to prevRoute', prevRoute)
-        navigationRef.navigate(prevRoute)
     }
 }
 
 export const navigate = async (name, params) => {
     
     if (navigationRef.isReady()) {
-
-        const currentRoute = await AsyncStorage.getItem('route')
-        
-        if (name === 'Start') {
-            await AsyncStorage.multiRemove(['detail', 'prevRoute', 'route'])
-        } else {
-            
-            if (currentRoute && currentRoute !== 'Details') {
-                await AsyncStorage.setItem('prevRoute', currentRoute)
+        const route = await AsyncStorage.getItem('route')
+        if (route && route !== 'Details') {
+            if (route !== name && name === 'Details') {
+                await AsyncStorage.setItem('prevRoute', route)
             }
-            
-            await AsyncStorage.setItem('route', name)
+        } else {
+            await AsyncStorage.multiRemove(['prevRoute', 'detail'])
         }
+
+        await AsyncStorage.setItem('route', name)
+        if (name === 'Details' && params && params.id) {
+            await AsyncStorage.setItem('detail', params.id)
+        } else await AsyncStorage.removeItem('detail')
+        // const nextRoute = name
+        // let currentSavedRoute = await AsyncStorage.getItem('route')
+        // if (nextRoute !== 'Home') {
         
-        if (name !== currentRoute) {
-            console.log(`navigating to ${name} from ${currentRoute}`)
-            navigationRef.navigate(name, params)
-        }
+        //     if (currentSavedRoute) {
+        //         await AsyncStorage.setItem('prevRoute', currentSavedRoute)
+        //     }
+
+        //     console.log('current saved route, now prevRoute:', currentSavedRoute)
+
+        //     if (nextRoute === currentSavedRoute) return null
+
+        //     console.log(`navigating from ${currentSavedRoute} to ${nextRoute}`)
+        //     console.log('setting next route', nextRoute)
+        //     await AsyncStorage.setItem('route', nextRoute)
+
+        //     if (params && params.id)
+        //         await AsyncStorage.setItem('detail', params.id)
+        //     else await AsyncStorage.removeItem('detail')
+            
+        //     if (nextRoute === 'Start') {
+        //         console.log('navigating to Start. cleaning storage...')
+        //         await cleanStorage()
+        //     }
+        // } else {
+        //     await AsyncStorage.setItem('route', nextRoute)
+        //     if (currentSavedRoute) {
+        //         await AsyncStorage.setItem('prevRoute', currentSavedRoute)
+        //         const detail = await AsyncStorage.getItem('detail')
+        //         if (detail) AsyncStorage.removeItem('detail')
+        //     }
+        // }
+
+        navigationRef.navigate(name, params)
+        
     }
 }

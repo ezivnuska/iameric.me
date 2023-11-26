@@ -1,107 +1,110 @@
 import React, { useEffect, useContext, useState } from 'react'
 import {
     ActivityIndicator,
-    Dimensions,
-    StyleSheet,
     Text,
-    TouchableOpacity,
+    Pressable,
     View,
 } from 'react-native'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import defaultStyles from '../styles/main'
 import { AppContext } from '../AppContext'
 import UserHeading from './UserHeading'
-import axios from 'axios'
+import { navigate } from '../navigators/RootNavigation'
 
-const EntryListItem = ({ entry, onDelete, ...props }) => {
+export default ({ entry, onDelete, ...props }) => {
     
     const {
         state,
         dispatch,
+        users,
     } = useContext(AppContext)
     
     const { user } = state
     const { userId, username, text } = entry
-    const [author, setAuthor] = useState({ userId, username })
+    const [ author, setAuthor ] = useState({ userId, username })
+    const [ filename, setFilename ] = useState(null)
 
+    const getFilename = () => {
+        const selectedUser = users.filter(u => u._id === userId)[0]
+        if (!selectedUser ||
+            !selectedUser.profileImage ||
+            !selectedUser.profileImage.filename) {
+            return null
+        } else {
+            return selectedUser.profileImage.filename
+        }
+    }
+
+    useEffect(() => {
+        if (users && !filename) {
+            const avatarFilename = getFilename()
+            if (avatarFilename) setFilename(avatarFilename)
+        }
+    }, [users])
+        
     return (
-        <View style={styles.container} {...props}>
+        <View
+            {...props}
+            style={{
+                display: 'flex',
+                marginBottom: 5,
+            }}
+        >
             {author ? (
                 <View>
-                    <View style={styles.flexContainer}>
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                        }}
+                    >
                         
                         <UserHeading
-                            userId={userId}
                             username={username}
-                            user={author}
-                            styleProps={styles.userHeading}
+                            filename={filename}
+                            onPress={() => navigate('Details', { id: userId })}
+                            styleProps={{
+                                flex: 1,
+                                flexBasis: 'auto',
+                                flexGrow: 1,
+                            }}
                         />
 
                         {userId === user._id ? (
-                            <View style={styles.aside}>
-                                <TouchableOpacity
-                                    style={styles.iconDelete}
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexBasis: 'auto',
+                                    flexShrink: 1,
+                                    flexGrow: 0,
+                                    alignContent: 'center',
+                                }}
+                            >
+                                <Pressable
+                                    style={{
+                                        marginLeft: 5,
+                                        marginRight: 2,
+                                        paddingTop: 5,
+                                    }}
                                     onPress={() => onDelete(entry._id)}
                                 >
                                     <CloseCircleOutlined />
-                                </TouchableOpacity>
+                                </Pressable>
                             </View>
                         ) : null}
                     </View>
-                    <View style={styles.textContainer}>
-                        <Text style={[defaultStyles.text, styles.text]}>{text}</Text>
+                    <View
+                        style={{
+                            paddingBottom: 5,
+                            borderBottomWidth: 1,
+                            borderBottomColor: '#ccc',
+                        }}
+                    >
+                        <Text style={[defaultStyles.text, { width: '90%' }]}>{text}</Text>
                     </View>
                 </View>
             ) : <ActivityIndicator size='small' />}
         </View>
     )
 }
-export default EntryListItem
-
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        marginBottom: 5,
-        paddingBottom: 10,
-    },
-    flexContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    setForDeletion: {
-        opacity: .3,
-    },
-    userHeading: {
-        flex: 1,
-        flexBasis: 'auto',
-        flexGrow: 1,
-    },
-    username: {
-        fontSize: 16,
-        lineHeight: 24,
-        fontWeight: 700,
-        marginTop: 2, 
-        color: '#999',
-    },
-    textContainer: {
-        paddingVertical: 5,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    text: {
-        width: '90%',
-    },
-    aside: {
-        flex: 1,
-        flexBasis: 'auto',
-        flexShrink: 1,
-        flexGrow: 0,
-        alignContent: 'center',
-    },
-    iconDelete: {
-        marginLeft: 5,
-        marginRight: 2,
-        paddingTop: 5,
-    },
-})

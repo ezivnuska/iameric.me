@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
 import {
-    EntryModule,
     ImageModule,
     CenteredContent,
     LocationModule,
-    Screen,
+    SecureScreen,
     SignoutModule,
-} from '../components'
+} from '@components'
 import { AppContext } from '../AppContext'
 
 export default () => {
@@ -16,9 +15,9 @@ export default () => {
     } = useContext(AppContext)
 
     return (
-        <Screen>
-
-            {user && (
+        <SecureScreen>
+            
+            {user ? (
                 <CenteredContent>
                     
                     {
@@ -28,13 +27,11 @@ export default () => {
 
                     <ImageModule />
 
-                    <EntryModule />
-
                     <SignoutModule />
 
                 </CenteredContent>
-            )}
+            ) : null}
 
-        </Screen>
+        </SecureScreen>
     )
 }

@@ -7,7 +7,7 @@ const FallbackScreen = ({ route, ...props }) => {
 
     useEffect(() => {
         console.log('FallbackScreen: navigating to auth')
-        navigate('auth')
+        //navigate('auth')
     }, [])
 
     return (

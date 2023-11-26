@@ -7,9 +7,10 @@ import {
     ModalContent,
 } from '.'
 import { Button } from 'antd'
-import { cleanStorage } from '../utils/storage'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
+import { navigate } from '@navigators/RootNavigation'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default () => {
 
@@ -33,8 +34,10 @@ export default () => {
             setLoading(false)
             return
         }
-        
-        await cleanStorage()
+
+        // navigate('Start')
+
+        await AsyncStorage.removeItem('userToken')
 
         dispatch({ type: 'SIGNOUT' })
     }

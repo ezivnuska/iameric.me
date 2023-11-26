@@ -8,14 +8,14 @@ import {
 import {
     CenteredContent,
     Menu,
-    Screen,
+    SecureScreen,
     LoadingView,
     LocationDetails,
-} from '../components'
+} from '@components'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 import main from '../styles/main'
-import { navigationRef } from '../navigators/RootNavigation'
+import { navigationRef, goBack } from '../navigators/RootNavigation'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { loadUsers } from '../utils/data'
 
@@ -25,31 +25,30 @@ const DetailsScreen = ({ navigation, route }) => {
 
     const {
         dispatch,
-        vendors,
         users,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
-    const [user, setUser] = useState(null)
+    const [userDetails, setUserDetails] = useState(null)
 
     useEffect(() => {
 
-        if (!route.params.id) navigationRef.goBack()
+        if (!route.params || !route.params.id) goBack()
         
         if (!users) fetchUsers()
 
     }, [])
     
     useEffect(() => {
-        if (users) getDetails(route.params.id)
+        if (users && route.params && route.params.id) getDetails(route.params.id)
     }, [users])
 
     const getUserDetailsWithId = id => users.filter(u => u._id === id)[0]
 
     const getDetails = async id => {
-        const userDetails = await getUserDetailsWithId(id)
-        if (userDetails) {
-            setUser(userDetails)
+        const details = await getUserDetailsWithId(id)
+        if (details) {
+            setUserDetails(details)
         }
     }
 
@@ -68,41 +67,37 @@ const DetailsScreen = ({ navigation, route }) => {
 
     // TODO: clean this.
     const renderUserAvatar = () => {
-        const source = user.profileImage && user.profileImage.filename
-            ?
-            `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
-            :
+        const filename = userDetails.profileImage && userDetails.profileImage.filename ? userDetails.profileImage.filename : null
+        const source = filename ?
+            `${IMAGE_PATH}/${userDetails.username}/${filename}` :
             `${IMAGE_PATH}/avatar-default.png`
         
         return (
             <Image
+                source={source}
                 style={{
                     width: '100%',
                     height: 200,
                     backgroundColor: '#ccc',
                     resizeMode: 'contain',
                 }}
-                source={
-                    source
-                }
             />
         )
     }
 
     return (
-        <Screen>
+        <SecureScreen>
             
             {loading
                 ? (
                     <CenteredContent>
                         <LoadingView label={loading} />
                     </CenteredContent>
-                )
-                : user
+                ) : userDetails
                     ? (
                         <>
                             <Pressable
-                                onPress={() => navigationRef.goBack()}
+                                onPress={() => goBack()}
                             >
                                 <Text
                                     style={{
@@ -122,19 +117,15 @@ const DetailsScreen = ({ navigation, route }) => {
                                 {renderVendorHeader()}
                             </CenteredContent> */}
 
-                            {user.role === 'vendor' && (
-                                <Menu vendor={user} />
+                            {userDetails.role === 'vendor' && (
+                                <Menu vendor={userDetails} />
                             )}
                         </>
                     )
-                    : (
-                        <CenteredContent>
-                            <Text style={[main.text, main.padded]}>Could not load user data.</Text>
-                        </CenteredContent>
-                    )
+                    : null
             }
             
-        </Screen>
+        </SecureScreen>
     )
 }
 

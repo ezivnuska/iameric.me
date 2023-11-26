@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
 import {
     Image,
+    Pressable,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import {
@@ -15,25 +15,30 @@ import DefaultAvatar from '../images/avatar-default-small.png'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const SettingsButton = ({ label }) => (
-    <TouchableOpacity
-        onPress={() => navigate('Settings')}
+const Button = ({ label, onPress, children = null }) => (
+    <Pressable
+        onPress={onPress}
         style={{
             flex: 1,
+            flexGrow: 0,
             flexShrink: 0,
-            flexShrink: 1,
             flexBasis: 'auto',
-            marginHorizontal: layout.horizontalPadding,
+            marginLeft: layout.horizontalPadding,
             padding: 5,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
         }}
     >
+        {children}
+
         <Text style={{
             color: '#fff',
             fontWeight: 700,
         }}>
             {label}
         </Text>
-    </TouchableOpacity>
+    </Pressable>
 )
 
 export default () => {
@@ -51,6 +56,7 @@ export default () => {
                 width: 24,
                 height: 24,
                 resizeMode: 'stretch',
+                marginRight: 10,
             }}
             // onLoadStart={() => setLoading(true)}
             // onLoadEnd={() => setLoading(false)}
@@ -71,11 +77,20 @@ export default () => {
             height: '100%',
         }}>
 
+            <Button
+                label='Forum'
+                onPress={() => navigate('Forum')}
+            />
+
             {items && items.length ? <CartButton /> : null}
 
-            {renderAvatar()}
+            <Button
+                label={user.username}
+                onPress={() => navigate('Settings')}
+            >
+                {renderAvatar()}
+            </Button>    
 
-            <SettingsButton label={user.username} />
         </View>
     ) : null
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import {
     FlatList,
 } from 'react-native'
-import { EntryListItem } from '../components'
+import { EntryListItem } from '@components'
 
 export default ({ deleteItem, entries }) => (
     <FlatList

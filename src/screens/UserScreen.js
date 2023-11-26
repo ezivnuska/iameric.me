@@ -1,34 +1,25 @@
 import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../AppContext'
 import {
+    Text,
+} from 'react-native'
+import {
     CenteredContent,
     CustomerHome,
     DriverHome,
     OrderListContainer,
-    Screen,
+    SecureScreen,
     VendorHome,
-} from '../components'
+} from '@components'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigators/RootNavigation'
 import { getRoute } from '../utils/storage'
 
-export default ({ navigation, route }) => {
+export default () => {
 
     const {
         user,
     } = useContext(AppContext)
-
-    useEffect(() => {
-        checkRoute()
-    }, [])
-
-    const checkRoute = async () => {
-
-        const routeData = await getRoute()
-        if (!routeData) return
-        if (routeData.detail) navigate(routeData.route, { id: routeData.detail })
-        else navigate(routeData.route)
-    }
 
     const renderContent = role => {
         switch (role) {
@@ -39,8 +30,8 @@ export default ({ navigation, route }) => {
         }
     }
 
-    return (
-        <Screen>
+    return user ? (
+        <SecureScreen>
 
             {/* <CenteredContent>
                 <OrderListContainer />
@@ -50,6 +41,6 @@ export default ({ navigation, route }) => {
                 {renderContent(user.role)}
             </CenteredContent>
 
-        </Screen>
-    )
+        </SecureScreen>
+    ) : <Text>No user yet.</Text>
 }
