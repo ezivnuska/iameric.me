@@ -41,12 +41,13 @@ export default () => {
         setLoading(true)
 
         const entryDeleted = await deleteEntryWithId(id)
-
+        
+        setLoading(false)
+        
         if (entryDeleted) {
             dispatch({ type: 'DELETE_ENTRY', id: entryDeleted._id })
         }
 
-        setLoading(false)
     }
 
     const renderEntryList = () => loading

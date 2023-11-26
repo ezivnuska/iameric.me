@@ -3,25 +3,20 @@ import {
     Image,
     Pressable,
     Text,
-    View,
 } from 'react-native'
 import {
     CenteredContent,
     Menu,
     SecureScreen,
     LoadingView,
-    LocationDetails,
 } from '@components'
 import { AppContext } from '../AppContext'
-import axios from 'axios'
-import main from '../styles/main'
-import { navigationRef, goBack } from '../navigators/RootNavigation'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { goBack } from '../navigators/RootNavigation'
 import { loadUsers } from '../utils/data'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const DetailsScreen = ({ navigation, route }) => {
+export default ({ route }) => {
 
     const {
         dispatch,
@@ -128,5 +123,3 @@ const DetailsScreen = ({ navigation, route }) => {
         </SecureScreen>
     )
 }
-
-export default DetailsScreen
