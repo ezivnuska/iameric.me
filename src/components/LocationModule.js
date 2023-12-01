@@ -13,8 +13,8 @@ import {
     EditOutlined,
     PlusCircleOutlined,
 } from '@ant-design/icons'
+import { Button } from 'antd'
 import axios from 'axios'
-import main from '../styles/main'
 import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
 import { getLocationWithUserId } from '../utils/data'
@@ -83,29 +83,37 @@ export default ({ userId }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
+                alignItems: 'center',
             }}
         >
-                
-            <Text style={[main.heading, { marginBottom: 5 }]}>Address</Text>
-            
-            <Pressable
+            <Text
                 style={{
                     flex: 1,
                     flexGrow: 0,
-                    flexShrink: 1,
                     flexBasis: 'auto',
-                    marginVertical: 4,
-                    marginHorizontal: 7,
+                    fontSize: 24,
+                    fontWeight: 700,
+                    lineHeight: 32,
                 }}
-                onPress={() => setModalVisible(true)}
-                disabled={loading}
             >
-                {location
-                    ? <EditOutlined style={{ fontSize: 22 }} />
-                    : <PlusCircleOutlined style={{ fontSize: 22 }} />
-                }
-                
-            </Pressable>
+                Address
+            </Text>
+            
+            <View style={{
+                flex: 1,
+                flexGrow: 0,
+                flexShrink: 1,
+                flexBasis: 'auto',
+                paddingHorizontal: 10,
+            }}>
+                <Button
+                    size='small'
+                    shape='circle'
+                    icon={location ? <EditOutlined /> : <PlusCircleOutlined />}
+                    onClick={() => setModalVisible(true)}
+                    disabled={loading}
+                />
+            </View>
         </View>
     )
 

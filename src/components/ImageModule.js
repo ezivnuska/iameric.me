@@ -11,9 +11,9 @@ import {
     ModalContent,
 } from '.'
 import {
-    PlusCircleOutlined,
+    PlusOutlined,
 } from '@ant-design/icons'
-import main from '../styles/main'
+import { Button } from 'antd'
 import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
@@ -25,30 +25,39 @@ const Header = ({ onPress }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
+                alignItems: 'center',
+                marginBottom: 10,
             }}
         >
             
-            <Text style={main.heading}>Images</Text>
-            
+            <Text
+                style={{
+                    flex: 1,
+                    flexGrow: 0,
+                    flexBasis: 'auto',
+                    fontSize: 24,
+                    fontWeight: 700,
+                    lineHeight: 32,
+                }}
+            >
+                Images
+            </Text>
+
             <View
                 style={{
                     flex: 1,
                     flexGrow: 0,
-                    flexShrink: 0,
+                    flexShrink: 1,
                     flexBasis: 'auto',
+                    paddingHorizontal: 10,
                 }}
             >
-                <TouchableOpacity
-                    style={{
-                        marginVertical: 4,
-                        marginHorizontal: 7,
-                    }}
-                    onPress={onPress}
-                >
-                    <PlusCircleOutlined
-                        style={{ fontSize: 22 }}
-                    />
-                </TouchableOpacity>
+                <Button
+                    size='small'
+                    shape='circle'
+                    icon={<PlusOutlined />}
+                    onClick={onPress}
+                />
             </View>
 
         </View>
@@ -134,12 +143,7 @@ export default () => {
     }
 
     return (
-        <View
-            style={{
-                marginVertical: layout.verticalMargin,
-                // borderWidth: 1,
-            }}
-        >
+        <View style={{ paddingBottom: 15 }}>
                 
             <Header onPress={() => setModalVisible(true)} />
 

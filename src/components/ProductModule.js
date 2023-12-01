@@ -4,7 +4,6 @@ import {
     View,
 } from 'react-native'
 import {
-    AddButton,
     ModalContent,
     ProductForm,
     ProductList,
@@ -14,8 +13,8 @@ import {
     deleteProductWithId,
     loadProducts,
 } from '../utils/data'
-import axios from 'axios'
-import main from '../styles/main'
+import { PlusOutlined } from '@ant-design/icons'
+import { Button } from 'antd'
 
 export default () => {
 
@@ -86,17 +85,32 @@ export default () => {
                     alignItems: 'center',
                 }}
             >
-                <Text style={[main.heading, main.paddedV]}>Products</Text>
-                <AddButton
-                    iconStyle={{
-                        flex: 1,
-                        flexGrow: 0,
-                        flexShrink: 1,
-                        flexBasis: 'auto',
-                        marginHorizontal: 7,
-                    }}
-                    onPress={() => setShowModal(true)}
-                />
+                <Text style={[{
+                    flex: 1,
+                    flexGrow: 0,
+                    // flexShrink: 1,
+                    flexBasis: 'auto',
+                    fontSize: 24,
+                    fontWeight: 700,
+                    lineHeight: 32,
+                }]}>Products</Text>
+
+                <View style={{
+                    flex: 1,
+                    flexGrow: 0,
+                    flexShrink: 1,
+                    flexBasis: 'auto',
+                    paddingHorizontal: 10,
+                }}>
+                    <Button
+                        size='small'
+                        shape='circle'
+                        icon={<PlusOutlined />}
+                        onClick={() => setShowModal(true)}
+                        disabled={loading}
+                    />
+                </View>
+                
             </View>
 
             {loading

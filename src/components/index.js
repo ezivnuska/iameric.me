@@ -1,4 +1,3 @@
-import AddButton from './AddButton'
 import AuthMenu from './AuthMenu'
 import Avatar from './Avatar'
 import AvatarModule from './AvatarModule'
@@ -70,7 +69,6 @@ import VendorHome from './VendorHome'
 import VendorSelector from './VendorSelector'
 
 export {
-    AddButton,
     AuthMenu,
     Avatar,
     AvatarModule,
