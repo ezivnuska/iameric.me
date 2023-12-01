@@ -1,12 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     StyleSheet,
-    Text,
     View,
 } from 'react-native'
 import {
-    LoadingView,
-    CenteredView,
     ModalContent,
     Screen,
     SignUpForm,
@@ -14,46 +11,35 @@ import {
 } from '@components'
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
-import layout from '../styles/layout'
-import main from '../styles/main'
-import { checkStatus, connect } from '../Data'
-import { navigate } from '../navigators/RootNavigation'
+import { connect } from '../Data'
+import { navigate } from 'src/navigators/RootNavigation'
 
-const StartScreen = () => {
+export default () => {
 
     const {
         dispatch,
-        loading,
+        user,
     } = useContext(AppContext)
 
     const [showSignUpModal, setShowSignUpModal] = useState(false)
     const [showSignInModal, setShowSignInModal] = useState(false)
 
     useEffect(() => {
-        init()
-    }, [])
-
-    const init = async () => {
-        
-        const verifiedUser = await checkStatus()
-        
-        if (!verifiedUser) {
-            console.log('could not verify user.')
-        } else {
-            setUser(verifiedUser)
-        }
-
-        dispatch({ type: 'SET_LOADING', loading: null })
-    }
+        // console.log('start screen here.', user)
+        if (user) navigate('Home')
+    }, [user])
 
     const onConnect = async type => {
 
-        const { token, ...user } = await connect(type)
+        dispatch({ type: 'SET_LOADING', loading: 'connecting' })
         
-        if (user) setUser(user)
-        else console.log(`Error connecting as ${type}.`)
+        const connectedUser = await connect(type)
         
         dispatch({ type: 'SET_LOADING', loading: null })
+
+        if (connectedUser) setUser(connectedUser)
+        else console.log(`Error connecting as ${type}.`)
+        
     }
 
     const setUser = ({
@@ -79,44 +65,46 @@ const StartScreen = () => {
 
     return (
         <Screen>
-            {!loading ? (
-                <CenteredView>
-                    
-                    <View style={styles.container}>
-                        <View style={styles.experiences}>
-                            <View style={styles.experience}>
-                                <Button type='primary' onClick={() => onConnect('customer')}>
-                                    Order
-                                </Button>
-                            </View>
-                            <View style={styles.experience}>
-                                <Button type='primary' onClick={() => onConnect('vendor')}>
-                                    Sell
-                                </Button>
-                            </View>
-                            <View style={styles.experience}>
-                                <Button type='primary' onClick={() => onConnect('driver')}>
-                                    Deliver
-                                </Button>
-                            </View>
-                            
-                        </View>
-                        <View style={styles.authButtons}>
-                            <View style={styles.authButton}>
-                                <Button type='primary' onClick={() => setShowSignUpModal(true)}>
-                                    Sign Up
-                                </Button>
-                            </View>
-                            <View style={styles.authButton}>
-                                <Button type='primary' onClick={() => setShowSignInModal(true)}>
-                                    Sign In
-                                </Button>
-                            </View>
-                        </View>
-                    </View>
-
-                </CenteredView>
-            ) : <LoadingView label={loading} />}
+            <View style={styles.buttons}>
+                <Button
+                    style={styles.button}
+                    type='primary'
+                    onClick={() => onConnect('customer')}
+                >
+                    Order
+                </Button>
+                <Button
+                    type='primary'
+                    onClick={() => onConnect('vendor')}
+                    style={styles.button}
+                >
+                    Sell
+                </Button>
+                <Button
+                    type='primary'
+                    onClick={() => onConnect('driver')}
+                    style={styles.button}
+                >
+                    Deliver
+                </Button>
+                
+            </View>
+            <View style={styles.buttons}>
+                <Button
+                    type='primary'
+                    onClick={() => setShowSignUpModal(true)}
+                    style={styles.button}
+                >
+                    Sign Up
+                </Button>
+                <Button
+                    type='primary'
+                    onClick={() => setShowSignInModal(true)}
+                    style={styles.button}
+                >
+                    Sign In
+                </Button>
+            </View>
 
             <ModalContent
                 visible={showSignUpModal}
@@ -142,67 +130,22 @@ const StartScreen = () => {
     )
 }
 
-export default StartScreen
-
 const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        height: '20%',
-        width: '90%',
-        // marginTop: 20,
-        marginHorizontal: 'auto',
-    },
-    experiences: {
-        flex: 1,
+    buttons: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        height: 100,
         width: '100%',
-        // marginTop: 20,
-        // marginHorizontal: 'auto',
+        minWidth: 375,
+        maxWidth: 375,
+        paddingVertical: 20,
     },
-    experience: {
+    button: {
         flex: 1,
-        marginHorizontal: 'auto',
-        paddingHorizontal: layout.horizontalPadding,
-        paddingVertical: layout.verticalPadding,
-        // width: 200,
-        // minWidth: 300,
-        // maxWidth: 400,
-        backgroundColor: '#ddd',
+        flexBasis: 'auto',
+        flexGrow: 0,
+        flexShrink: 0,
         borderRadius: 12,
-    },
-    authButtons: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        height: 100,
-        width: '100%',
-        // marginTop: 20,
-        // marginHorizontal: 'auto',
-    },
-    authButton: {
-        flex: 1,
-        // flexBasis: 'auto',
-        marginHorizontal: 'auto',
-        paddingHorizontal: layout.horizontalPadding,
-        paddingVertical: layout.verticalPadding,
-        // width: 200,
-        // minWidth: 300,
-        // maxWidth: 400,
-        backgroundColor: '#ddd',
-        borderRadius: 12,
-    },
-    caption: {
-        fontWeight: 700,
-        textAlign: 'center',
-        marginBottom: layout.verticalMargin,
     },
 })

@@ -9,21 +9,14 @@ import { UserHeading } from '.'
 import { navigate } from '../navigators/RootNavigation'
 
 const UserFilterListItem = ({ user }) => (
-    <Pressable
-        onPress={() => navigate('Details', { id: user._id })}
-        style={{
-            paddingTop: 3,
-            paddingBottom: 5,
-            marginBottom: 5,
-            borderBottomWidth: 1
+    <UserHeading
+        filename={(user.profileImage && user.profileImage.filename) ? user.profileImage.filename : null}
+        username={user.username}
+        onPress={() => {
+            console.log('user filter list item pushed, user', user)
+            navigate('Details', { id: user._id })
         }}
-    >
-        <UserHeading
-            filename={(user.profileImage && user.profileImage.filename) ? user.profileImage.filename : null}
-            username={user.username}
-            onPress={() => navigate('Details', { id: user._id })}
-        />
-    </Pressable>
+    />
 )
 
 const FilterButton = ({ active, label, press, type }) => (

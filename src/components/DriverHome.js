@@ -10,7 +10,7 @@ import {
 export default () => {
 
     return (
-        <View>
+        <View style={{ borderWidth: 1 }}>
             
             <OrderListContainer />
 

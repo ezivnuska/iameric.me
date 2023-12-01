@@ -16,9 +16,10 @@ import { navigationRef, navigate } from './RootNavigation'
 import { AppContext } from '../AppContext'
 import { getSavedRoute } from '../utils/storage'
 import { checkStatus } from '../Data'
+import { Text } from 'react-native'
 
 const Stack = createNativeStackNavigator()
-const StackScreen = ({ user }) => {
+const StackScreen = () => {
 
     return (
         <Stack.Navigator
@@ -36,28 +37,28 @@ const StackScreen = ({ user }) => {
                 name='Home'
                 options={{ title: 'Home' }}
             >
-                {(props) => <UserScreen {...props} user={user} />}
+                {(props) => <UserScreen {...props} />}
             </Stack.Screen>
 
             <Stack.Screen
                 name='Details'
                 options={{ title: 'Details' }}
             >
-                {(props) => <DetailsScreen {...props} user={user} />}
+                {(props) => <DetailsScreen {...props} />}
             </Stack.Screen>
 
             <Stack.Screen
                 name='Settings'
                 options={{ title: 'Settings' }}
             >
-                {(props) => <SettingsScreen {...props} user={user} />}
+                {(props) => <SettingsScreen {...props} />}
             </Stack.Screen>
 
             <Stack.Screen
                 name='Forum'
                 options={{ title: 'Forum' }}
             >
-                {(props) => <UsersScreen {...props} user={user} />}
+                {(props) => <UsersScreen {...props} />}
             </Stack.Screen>
             
         </Stack.Navigator>
@@ -69,34 +70,76 @@ export default () => {
     const {
         dispatch,
         user,
+        loading,
     } = useContext(AppContext)
 
     const checkRoute = async () => {
+        let nextRoute = null
+        let nextParams = null
         // console.log('checking route...')
+        dispatch({ type: 'SET_LOADING', loading: 'checking for last route' })
         const routeData = await getSavedRoute()
-        // console.log('route data:', routeData)
+        console.log('route data:', routeData)
+        dispatch({ type: 'SET_LOADING', loading: null })
 
         if (!routeData) {
             console.log('navigating home')
-            navigate('Home')
-            return
+            nextRoute = 'Home'
+            // navigate('Home')
+            // return
         }
+
+        if (routeData.route) nextRoute = routeData.route
+
+        if (routeData.route === 'Details') {
+            if (routeData.detail) {
+                nextParams = { id: routeData.detail }
+                // return navigate(routeData.route, { id: routeData.detail })
+            }
+        }
+
+        navigate(nextRoute, nextParams)
         
-        
-        if (routeData.detail)
-            navigate(routeData.route, { id: routeData.detail })
-        else navigate(routeData.route)
+        // if (routeData.detail) {
+        //     console.log('here I am')
+        //     navigate(routeData.route, { id: routeData.detail })
+        // }
+        // else {
+        //     console.log('yo yo')
+        //     navigate(routeData.route)
+        // }
     }
-    
+
     useEffect(() => {
-        if (user) checkRoute()
-        else verifyUser()
-    }, [user])
+        // console.log('INITIALIZE')
+        if (!user) verifyUser()
+        else if (!loading) checkRoute()
+    }, [])
+
+    // useEffect(() => {
+    //     // console.log('LOADING', loading)
+    //     if (!loading) console.log('done loading')
+    // }, [loading])
+    
+    // useEffect(() => {
+    //     console.log('Navigation:user changed', user)
+    //     if (user) checkRoute()
+    //     else verifyUser()
+    // }, [user])
 
     const verifyUser = async () => {
+        dispatch({ type: 'SET_LOADING', loading: 'Navigation: verifying user...' })
         const verifiedUser = await checkStatus()
-        if (!verifiedUser) navigate('Start')
-        else dispatch({ type: 'SET_USER', user: verifiedUser })
+        // console.log('verifiedUser', verifiedUser)
+        dispatch({ type: 'SET_LOADING', loading: null })
+        
+        if (verifiedUser) {
+            dispatch({ type: 'SET_USER', user: verifiedUser })
+        } else {
+            // console.log('no verified user')
+            navigate('Start')
+        }
+        
     }
 
     /**
@@ -138,16 +181,15 @@ export default () => {
             //     const prevRoute = await AsyncStorage.getItem('route')
             //     console.log('Saving current route as prev route:', prevRoute)
 
-            //         await AsyncStorage.setItem('prevRoute', prevRoute)
-            //         console.log('setting route???', currentRoute.name)
-            //         await AsyncStorage.setItem('route', currentRoute.name)
+            //     await AsyncStorage.setItem('prevRoute', prevRoute)
+            //     console.log('setting route???', currentRoute.name)
+            //     await AsyncStorage.setItem('route', currentRoute.name)
 
-            //         if (currentRoute.params && currentRoute.params.id) await AsyncStorage.setItem('detail', currentRoute.params.id)
-            //         await AsyncStorage.multiRemove(['prevRoute', 'route', 'detail'])
-            //     }
-            // }
+            //     if (currentRoute.params && currentRoute.params.id) await AsyncStorage.setItem('detail', currentRoute.params.id)
+            //     // await AsyncStorage.multiRemove(['prevRoute', 'route', 'detail'])
+            // }}
         >
-            <StackScreen user={user} />
+            <StackScreen />
         </NavigationContainer>
     )
 }

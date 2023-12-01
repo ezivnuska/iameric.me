@@ -6,7 +6,7 @@ import { navigate } from './navigators/RootNavigation'
 const storeToken = async token => await AsyncStorage.setItem('userToken', token)
 
 export const authenticate = async token => {
-    
+    // console.log('DATA:authenticating')
     const { data } = await axios.
         post('/api/authenticate', { token })
     
@@ -24,7 +24,7 @@ export const authenticate = async token => {
 }
 
 export const checkStatus = async () => {
-
+    // console.log('DATA:checking status')
     const userToken = await AsyncStorage.getItem('userToken')
     
     if (!userToken) return null

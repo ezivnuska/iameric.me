@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import {
     ImageModule,
-    CenteredContent,
+    CenteredView,
     LocationModule,
     SecureScreen,
     SignoutModule,
@@ -14,24 +14,22 @@ export default () => {
         user,
     } = useContext(AppContext)
 
-    return (
+    return user ? (
         <SecureScreen>
-            
-            {user ? (
-                <CenteredContent>
-                    
-                    {
-                        user.role !== 'driver' &&
-                        <LocationModule userId={user._id} />
-                    }
 
-                    <ImageModule />
+            <>
+                
+                {
+                    user && user.role !== 'driver' &&
+                    <LocationModule userId={user._id} />
+                }
 
-                    <SignoutModule />
+                <ImageModule />
 
-                </CenteredContent>
-            ) : null}
+                <SignoutModule />
+
+            </>
 
         </SecureScreen>
-    )
+    ) : null
 }

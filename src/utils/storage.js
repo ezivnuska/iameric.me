@@ -5,7 +5,8 @@ export const clearStorage = async () => await AsyncStorage.multiRemove(['userTok
 
 export const getSavedRoute = async () => {
     const route = await AsyncStorage.getItem('route')
-    if (!route || route === 'Start') return null
+    // if (!route || route === 'Start') return null
+    const prevRoute = await AsyncStorage.getItem('prevRoute')
     const detail = await AsyncStorage.getItem('detail')
-    return { route, detail }
+    return { prevRoute, route, detail }
 }

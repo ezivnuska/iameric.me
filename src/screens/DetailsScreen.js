@@ -5,7 +5,6 @@ import {
     Text,
 } from 'react-native'
 import {
-    CenteredContent,
     Menu,
     SecureScreen,
     LoadingView,
@@ -35,8 +34,12 @@ export default ({ route }) => {
     }, [])
     
     useEffect(() => {
-        if (users && route.params && route.params.id) getDetails(route.params.id)
+        if (users && (route.params && route.params.id)) getDetails(route.params.id)
     }, [users])
+
+    useEffect(() => {
+        if (users && (route.params && route.params.id) && (route.params && route.params.id)) getDetails(route.params.id)
+    }, [route.params])
 
     const getUserDetailsWithId = id => users.filter(u => u._id === id)[0]
 
@@ -84,11 +87,8 @@ export default ({ route }) => {
         <SecureScreen>
             
             {loading
-                ? (
-                    <CenteredContent>
-                        <LoadingView label={loading} />
-                    </CenteredContent>
-                ) : userDetails
+                ? <LoadingView label={loading} />
+                : userDetails
                     ? (
                         <>
                             <Pressable
@@ -103,14 +103,10 @@ export default ({ route }) => {
                                     &lt; Back
                                 </Text>
                             </Pressable>
-                            
-                            <CenteredContent type='full'>
-                                {renderUserAvatar()}
-                            </CenteredContent>
-                            
-                            {/* <CenteredContent>
-                                {renderVendorHeader()}
-                            </CenteredContent> */}
+
+                            <Text>{userDetails.username}</Text>
+
+                            {renderUserAvatar()}
 
                             {userDetails.role === 'vendor' && (
                                 <Menu vendor={userDetails} />

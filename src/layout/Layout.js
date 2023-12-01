@@ -25,7 +25,7 @@ export default () => {
     } = useContext(AppContext)
 
     useEffect(() => {
-        
+        // console.log('initial dims', initialDims)
         dispatch({ type: 'SET_DIMS', dims: initialDims })
 
         const subscription = Dimensions.addEventListener(
@@ -35,6 +35,11 @@ export default () => {
 
         return () => subscription.remove()
     }, [])
+
+    // useEffect(() => {
+    //     console.log('dims changed', dims)
+        
+    // }, [dims])
 
     return dims ? (
         <SafeAreaView

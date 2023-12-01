@@ -4,7 +4,7 @@ import {
     Text,
 } from 'react-native'
 import {
-    CenteredContent,
+    CenteredView,
     CustomerHome,
     DriverHome,
     OrderListContainer,
@@ -37,9 +37,9 @@ export default () => {
                 <OrderListContainer />
             </CenteredContent> */}
 
-            <CenteredContent>
+            {/* <CenteredView> */}
                 {renderContent(user.role)}
-            </CenteredContent>
+            {/* </CenteredView> */}
 
         </SecureScreen>
     ) : <Text>No user yet.</Text>

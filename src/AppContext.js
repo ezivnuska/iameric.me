@@ -80,10 +80,8 @@ const reducer = (state = initialState, action) => {
             products = products.filter(product => product._id !== action.id)
             break
         case 'SET_LOADING':
-            const wasLoading = loading
-            if (wasLoading && !action.loading) console.log('Done loading.')
             loading = action.loading
-            if (loading) console.log('>>', loading)
+            // if (loading) console.log('>>', loading)
             break
         case 'SET_PROFILE_IMAGE':
             user = { ...user, profileImage: action.profileImage }

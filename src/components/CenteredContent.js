@@ -15,18 +15,18 @@ const CenteredContent = ({ children, type, ...props }) => {
     const styles = ({
         margin: {
             width: dims.window.width,
-            maxWidth: 400,
+            maxWidth: 375,
             marginHorizontal: 'auto',
             paddingHorizontal: layout.horizontalPadding,
         },
         full: {
             width: dims.window.width,
-            maxWidth: 400,
+            maxWidth: 375,
             marginHorizontal: 'auto',
         },
         expanded: {
             width: dims.window.width - layout.horizontalMargin,
-            maxWidth: 400,
+            maxWidth: 375,
             marginHorizontal: 'auto',
         },
     })

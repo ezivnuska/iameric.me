@@ -36,11 +36,15 @@ export default () => {
         setLoading(false)
     }
 
-    const otherUsers = () => users.filter(u => u._id !== user._id)
+    const otherUsers = () => user ? users.filter(({ _id, username, profileImage, role }) => {
+        if (_id !== user._id) {
+            return ({ _id, username, profileImage, role })
+        }
+    }) : null
 
     return loading
         ? <Text>Loading users...</Text>
         : users
-            ? <UserFilter users={otherUsers().map(({ _id, username, profileImage, role }) => ({ _id, username, profileImage, role }))} />
+            ? <UserFilter users={otherUsers()} />
             : <Text>No users to display.</Text>
 }
