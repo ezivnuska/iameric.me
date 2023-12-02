@@ -11,12 +11,12 @@ export default ({ children }) => {
         user,
     } = useContext(AppContext)
 
-    // useEffect(() => {
-    //     if (!user) {
-    //         console.log('Secure Screen. Not secure. Need to go home.')
-    //         navigate('Start')
-    //     }
-    // }, [user])
+    useEffect(() => {
+        if (!user) {
+            console.log('Secure Screen. Not secure. Need to go home.')
+            navigate('Start')
+        }
+    }, [user])
 
     return user ? (
         <Screen>

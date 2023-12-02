@@ -51,6 +51,7 @@ export default () => {
     return (
         <View>
             <Button
+                type='default'
                 onClick={() => setModalVisible(true)}
             >
                 Sign Out

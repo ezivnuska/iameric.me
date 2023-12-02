@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
@@ -20,9 +19,6 @@ export default ({ children }) => {
                 maxWidth: 375,
                 marginHorizontal: 'auto',
                 marginVertical: 20,
-                // borderWidth: 1,
-                // borderStyle: 'dashed',
-                // borderColor: 'red',
             }}
         >
             {children}

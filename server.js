@@ -19,6 +19,7 @@ const {
 
 const {
     getAllUsers,
+    getNumberOfOnlineUsers,
     // getAllVendorIds,
     getAllVendors,
     getUserById,
@@ -103,6 +104,7 @@ app.post(   '/unsubscribe',            closeAccount)
 
 // users
 app.get(    '/users',                   getAllUsers)
+app.get(    '/users/online',            getNumberOfOnlineUsers)
 app.get(    '/vendors',                 getAllVendors)
 app.get(    '/users/:id',               getUserById)
 

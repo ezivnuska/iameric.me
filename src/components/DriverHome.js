@@ -7,15 +7,12 @@ import {
     OrderListContainer,
 } from '.'
 
-export default () => {
+export default () => (
+    <View>
+        
+        <OrderListContainer />
 
-    return (
-        <View style={{ borderWidth: 1 }}>
-            
-            <OrderListContainer />
+        <DriverSelector />
 
-            <DriverSelector />
-
-        </View>
-    )
-}
+    </View>
+)

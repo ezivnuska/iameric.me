@@ -78,7 +78,7 @@ export const signin = async (email, password) => {
         console.log('Error authenticating user')
         return null
     }
-    console.log('signin successful. setting user token.', data)
+    console.log('signin successful. setting user token.')
 
     await AsyncStorage.setItem('userToken', data.token)
 

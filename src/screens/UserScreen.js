@@ -30,7 +30,7 @@ export default () => {
         }
     }
 
-    return user ? (
+    return (
         <SecureScreen>
 
             {/* <CenteredContent>
@@ -38,9 +38,9 @@ export default () => {
             </CenteredContent> */}
 
             {/* <CenteredView> */}
-                {renderContent(user.role)}
+                {user && renderContent(user.role)}
             {/* </CenteredView> */}
 
         </SecureScreen>
-    ) : <Text>No user yet.</Text>
+    )
 }

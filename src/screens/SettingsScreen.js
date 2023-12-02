@@ -7,6 +7,7 @@ import {
     SignoutModule,
 } from '@components'
 import { AppContext } from '../AppContext'
+import { UserDetails } from 'src/components'
 
 export default () => {
 
@@ -18,11 +19,9 @@ export default () => {
         <SecureScreen>
 
             <>
-                
-                {
-                    user && user.role !== 'driver' &&
-                    <LocationModule userId={user._id} />
-                }
+                <UserDetails user={user} />
+
+                {user.role !== 'driver' && <LocationModule userId={user._id} />}
 
                 <ImageModule />
 

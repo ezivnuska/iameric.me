@@ -157,7 +157,7 @@ export default () => {
             screens: {
                 Start: '',
                 // myapp://home -> HomeScreen
-                Home: 'secure',
+                Home: 'home',
                 // myapp://details/1 -> DetailsScreen with param id: 1
                 Details: 'details/:id',
                 // Start: '/splash',

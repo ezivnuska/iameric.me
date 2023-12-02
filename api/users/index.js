@@ -8,10 +8,23 @@ const getAllUsers = async (req, res) => {
     
     if (!users) {
         console.log('Could not fetch users')
-        return res.json(null)
+        return res.status(200).json(null)
     }
 
     return res.status(200).json({ users })
+}
+
+const getNumberOfOnlineUsers = async (req, res) => {
+    
+    const users = await User
+        .find({ 'token': { $ne: null } })
+    
+    if (!users) {
+        console.log('Could not fetch number of online users')
+        return res.status(200).json(null)
+    }
+
+    return res.status(200).json({ userCount: users.length })
 }
 
 const getAllVendorIds = async (req, res) => {
@@ -70,6 +83,7 @@ const getUserById = async (req, res, next) => {
 
 module.exports = {
     getAllUsers,
+    getNumberOfOnlineUsers,
     getAllVendorIds,
     getAllVendors,
     getUserById,

@@ -64,7 +64,7 @@ import UserFilter from './UserFilter'
 import UserList from './UserList'
 import UserModule from './UserModule'
 import UserSelector from './UserSelector'
-// import UserProfile from './UserProfile'
+import UserDetails from './UserDetails'
 import VendorHome from './VendorHome'
 import VendorSelector from './VendorSelector'
 
@@ -135,7 +135,7 @@ export {
     UserList,
     UserModule,
     UserSelector,
-    // UserProfile,
+    UserDetails,
     VendorHome,
     VendorSelector,
 }

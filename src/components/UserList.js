@@ -1,6 +1,7 @@
 import React from 'react'
 import {
     FlatList,
+    View,
 } from 'react-native'
 import {
     UserHeading,
@@ -13,13 +14,23 @@ export default ({ users }) => (
         listKey={() => 'users'}
         keyExtractor={(item, index) => 'user' + index}
         renderItem={({ item }) => {
-            const { _id, profileImage, username } = item
+            const { _id, profileImage, username, token } = item
+            const online = !!token
             return (
-                <UserHeading
-                    username={username}
-                    filename={profileImage && profileImage.filename ? profileImage.filename : null}
-                    onPress={() => navigate('Details', { id: _id })}
-                />
+                <View
+                    style={{
+                        paddingTop: 7,
+                        paddingBottom: 4,
+                        borderBottomWidth: 1,
+                    }}
+                >
+                    <UserHeading
+                        online={online}
+                        username={username}
+                        filename={profileImage && profileImage.filename ? profileImage.filename : null}
+                        onPress={() => navigate('Details', { id: _id })}
+                    />
+                </View>
             )
         }} 
     />

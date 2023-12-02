@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -13,6 +13,7 @@ import { navigate } from '../navigators/RootNavigation'
 import layout from '../styles/layout'
 import DefaultAvatar from '../images/avatar-default-small.png'
 import { DownOutlined } from '@ant-design/icons'
+import axios from 'axios'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -106,10 +107,7 @@ export default () => {
             height: '100%',
         }}>
 
-            <Button
-                label='Forum'
-                onPress={() => navigate('Forum')}
-            />
+            <ForumButton />
 
             {items && items.length ? <CartButton /> : null}
 
@@ -117,4 +115,29 @@ export default () => {
 
         </View>
     ) : null
+}
+
+const ForumButton = () => {
+
+    const [numUsers, setNumUsers] = useState(null)
+
+    useEffect(() => {
+        getOnlineUserCount()
+    }, [])
+
+    const getOnlineUserCount = async () => {
+        const { data } = await axios.get('/api/users/online')
+        if (!data) {
+            console.log('could not get user count')
+            return
+        }
+        setNumUsers(data.userCount)
+    }
+
+    return (
+        <Button
+            label={`Forum • ${numUsers ? numUsers : '1'}`}
+            onPress={() => navigate('Forum')}
+        />
+    )
 }

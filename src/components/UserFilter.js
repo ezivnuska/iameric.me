@@ -10,12 +10,10 @@ import { navigate } from '../navigators/RootNavigation'
 
 const UserFilterListItem = ({ user }) => (
     <UserHeading
+        online={user.token !== null}
         filename={(user.profileImage && user.profileImage.filename) ? user.profileImage.filename : null}
         username={user.username}
-        onPress={() => {
-            console.log('user filter list item pushed, user', user)
-            navigate('Details', { id: user._id })
-        }}
+        onPress={() => navigate('Details', { id: user._id })}
     />
 )
 
@@ -24,11 +22,15 @@ const FilterButton = ({ active, label, press, type }) => (
         onPress={() => press(type)}
         style={{ flex: 1 }}
     >
-        <Text style={{
-            paddingVertical: 10,
-            textAlign: 'center',
-            backgroundColor: active ? '#0af' : '#fff'
-        }}>{label}</Text>
+        <Text
+            style={{
+                paddingVertical: 10,
+                textAlign: 'center',
+                backgroundColor: active ? '#0af' : '#fff'
+            }}
+        >
+            {label}
+        </Text>
     </Pressable>
 )
 
@@ -40,10 +42,6 @@ export default ({ users, role = null }) => {
     useEffect(() => {
         if (!listItems) setListItems(users)
     }, [])
-
-    // useEffect(() => {
-    //     console.log('listItems:', listItems)
-    // }, [listItems])
 
     useEffect(() => {
         if (type) filterUsersByType()
