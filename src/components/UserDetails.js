@@ -16,7 +16,10 @@ export default ({ user }) => {
                 username={user.username}
                 filename={user.profileImage && user.profileImage.filename ? user.profileImage.filename : null}
             />
-            <Text style={main.subheading}>{user.role}</Text>
+            
+            <View style={{ marginVertical: 5 }}>
+                <Text style={main.text}>Role: {user.role}</Text>
+            </View>
         </View>
     )
 }

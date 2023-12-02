@@ -33,7 +33,7 @@ export default () => {
 
     return (
         <View style={{
-            marginRight: 15,
+            marginHorizontal: 5,
         }}>
             <Button
                 type='primary'

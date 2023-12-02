@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     NavigationContainer,
 } from '@react-navigation/native'
@@ -12,11 +12,10 @@ import {
     UserScreen,
     UsersScreen,
 } from '../screens'
-import { navigationRef, navigate } from './RootNavigation'
+import { checkRoute, navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
-import { getSavedRoute } from '../utils/storage'
-import { checkStatus } from '../Data'
-import { Text } from 'react-native'
+import { cleanStorage } from '../utils/storage'
+import { authenticate } from '../Data'
 
 const Stack = createNativeStackNavigator()
 const StackScreen = () => {
@@ -70,76 +69,34 @@ export default () => {
     const {
         dispatch,
         user,
-        loading,
     } = useContext(AppContext)
-
-    const checkRoute = async () => {
-        let nextRoute = null
-        let nextParams = null
-        // console.log('checking route...')
-        dispatch({ type: 'SET_LOADING', loading: 'checking for last route' })
-        const routeData = await getSavedRoute()
-        console.log('route data:', routeData)
-        dispatch({ type: 'SET_LOADING', loading: null })
-
-        if (!routeData) {
-            console.log('navigating home')
-            nextRoute = 'Home'
-            // navigate('Home')
-            // return
-        }
-
-        if (routeData.route) nextRoute = routeData.route
-
-        if (routeData.route === 'Details') {
-            if (routeData.detail) {
-                nextParams = { id: routeData.detail }
-                // return navigate(routeData.route, { id: routeData.detail })
-            }
-        }
-
-        navigate(nextRoute, nextParams)
-        
-        // if (routeData.detail) {
-        //     console.log('here I am')
-        //     navigate(routeData.route, { id: routeData.detail })
-        // }
-        // else {
-        //     console.log('yo yo')
-        //     navigate(routeData.route)
-        // }
-    }
-
-    useEffect(() => {
-        // console.log('INITIALIZE')
-        if (!user) verifyUser()
-        else if (!loading) checkRoute()
-    }, [])
-
-    // useEffect(() => {
-    //     // console.log('LOADING', loading)
-    //     if (!loading) console.log('done loading')
-    // }, [loading])
     
-    // useEffect(() => {
-    //     console.log('Navigation:user changed', user)
-    //     if (user) checkRoute()
-    //     else verifyUser()
-    // }, [user])
+    useEffect(() => {
+        if (user) checkRoute()
+        else verifyUser()
+    }, [user])
 
     const verifyUser = async () => {
         dispatch({ type: 'SET_LOADING', loading: 'Navigation: verifying user...' })
-        const verifiedUser = await checkStatus()
-        // console.log('verifiedUser', verifiedUser)
-        dispatch({ type: 'SET_LOADING', loading: null })
+        const userToken = await AsyncStorage.getItem('userToken')
         
-        if (verifiedUser) {
-            dispatch({ type: 'SET_USER', user: verifiedUser })
-        } else {
-            // console.log('no verified user')
-            navigate('Start')
+        if (!userToken) {
+            await cleanStorage()
+            dispatch({ type: 'SET_LOADING', loading: null })
+            return
+        }
+
+        const verifiedUser = await authenticate(userToken)
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
+
+        if (!verifiedUser) {
+            await cleanStorage()
+            return
         }
         
+        AsyncStorage.setItem('userToken', verifiedUser.token)
+        dispatch({ type: 'SET_USER', user: verifiedUser })
     }
 
     /**

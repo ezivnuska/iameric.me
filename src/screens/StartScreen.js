@@ -12,7 +12,7 @@ import {
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
 import { connect } from '../Data'
-import { navigate } from 'src/navigators/RootNavigation'
+import { checkRoute } from '../navigators/RootNavigation'
 
 export default () => {
 
@@ -25,8 +25,7 @@ export default () => {
     const [showSignInModal, setShowSignInModal] = useState(false)
 
     useEffect(() => {
-        // console.log('start screen here.', user)
-        if (user) navigate('Home')
+        if (user) checkRoute()
     }, [user])
 
     const onConnect = async type => {

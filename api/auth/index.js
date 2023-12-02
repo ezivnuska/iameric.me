@@ -126,13 +126,6 @@ const createUser = async (email, username, password, role) => {
     return user
 }
 
-const getHashedPassword = password => {
-    let hashedPW = null
-    
-    console.log('hashedPW', hashedPW)
-    return hashedPW
-}
-
 const handleSignup = async (req, res) => {
     const { email, password, username, role } = req.body
     console.log('password', password)
@@ -167,6 +160,7 @@ const authenticate = async (req, res) => {
     
     const userFromToken = getDecodedUser(token)
     
+    console.log('user from token:', userFromToken)
     console.log(`\n${userFromToken.username} was previously connected.\n`)
     
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)

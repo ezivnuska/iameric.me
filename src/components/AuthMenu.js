@@ -44,22 +44,27 @@ const Button = ({ label, onPress, children = null }) => (
     </Pressable>
 )
 
-const UserButton = ({ user }) => (
-    <Pressable
-        onPress={() => navigate('Settings')}
-        style={{
-            flex: 1,
-            flexGrow: 0,
-            flexShrink: 0,
-            flexBasis: 'auto',
-            marginLeft: 10,
-            // padding: 5,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-        }}
-    >
-        {user.profileImage ? (
+const UserButton = ({ user }) => {
+    
+    const getSource = () => user.profileImage
+        ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+        : `${IMAGE_PATH}/avatar-default-small.png`
+    
+    return (
+        <Pressable
+            onPress={() => navigate('Settings')}
+            style={{
+                flex: 1,
+                flexGrow: 0,
+                flexShrink: 0,
+                flexBasis: 'auto',
+                marginLeft: 5,
+                // padding: 5,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+            }}
+        >
             <Image
                 style={{
                     width: 24,
@@ -69,25 +74,21 @@ const UserButton = ({ user }) => (
                 }}
                 // onLoadStart={() => setLoading(true)}
                 // onLoadEnd={() => setLoading(false)}
-                source={`${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`}
+                source={getSource()}
             />
-        ) : (
-            <Image
-                source={DefaultAvatar}
-            />
-        )}
-
-        <Text style={{
-            color: '#fff',
-            fontWeight: 700,
-            lineHeight: 32,
-        }}>
-            {user.username}
-        </Text>
-
-        <DownOutlined style={{ color: '#fff', marginLeft: 7 }} />
-    </Pressable>
-)
+    
+            <Text style={{
+                color: '#fff',
+                fontWeight: 700,
+                lineHeight: 32,
+            }}>
+                {user.username}
+            </Text>
+    
+            <DownOutlined style={{ color: '#fff', marginLeft: 7 }} />
+        </Pressable>
+    )
+}
 
 export default () => {
     
@@ -107,9 +108,9 @@ export default () => {
             height: '100%',
         }}>
 
-            <ForumButton />
-
             {items && items.length ? <CartButton /> : null}
+
+            <ForumButton />
 
             <UserButton user={user} />
 
@@ -138,6 +139,7 @@ const ForumButton = () => {
         <Button
             label={`Forum • ${numUsers ? numUsers : '1'}`}
             onPress={() => navigate('Forum')}
+            style={{ marginHorizontal: 5 }}
         />
     )
 }
