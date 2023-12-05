@@ -53,7 +53,7 @@ export const connect = async type => {
     
     const { data } = await axios.
         post('/api/signin', { email, password })
-    
+    console.log('DATA', data)
     if (!data) {
         console.log('Error authenticating user')
         return null
