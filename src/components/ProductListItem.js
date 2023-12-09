@@ -24,23 +24,22 @@ export default ({ product, onDelete, onPress, ...props }) => {
             style={{
                 borderBottomWidth: 1,
                 borderBottomColor: '#ccc',
-                paddingVertical: 10,
+                paddingBottom: 10,
             }}
         >
             <View
                 style={{
+
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'flex-start',
+                    // justifyContent: 'space-between',
                 }}
             >
                 {product.image ? (
                     <View
                         style={{
-                            paddingRight: 10,
                             marginBottom: 10,
-                            flexBasis: 'auto',
-                            flexGrow: 0,
+                            flexBasis: IMAGE_SIZE + 10,
                         }}
                     >
                         <Image
@@ -68,9 +67,9 @@ export default ({ product, onDelete, onPress, ...props }) => {
 
                 <View
                     style={{
-                        // width: '100%',
                         flexBasis: 'auto',
                         flexGrow: 1,
+                        flexShrink: 1,
                     }}
                 >
                     <View style={{
@@ -86,6 +85,7 @@ export default ({ product, onDelete, onPress, ...props }) => {
                                 fontWeight: 700,
                                 flexBasis: 'auto',
                                 flexGrow: 1,
+                                flexBasis: '80%',
                             }
                         ]}>
                             {product.title}
@@ -94,13 +94,11 @@ export default ({ product, onDelete, onPress, ...props }) => {
                         <Text style={[
                             main.text,
                             {
-                                flex: 1,
                                 flexBasis: '20%',
                                 textAlign: 'right',
                                 fontSize: 18,
                                 fontWeight: 700,
                                 color: '#666',
-                                flexBasis: 'auto',
                                 flexGrow: 0,
                             }
                         ]}>
@@ -109,11 +107,10 @@ export default ({ product, onDelete, onPress, ...props }) => {
 
                     </View>
                     <Text style={main.text}>{product.blurb}</Text>
+                    <Text style={main.text}>{product.desc}</Text>
                 </View>
-                
             </View>
-            <Text style={main.text}>{product.desc}</Text>
-
+            
             
         </Pressable>
     )

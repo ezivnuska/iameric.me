@@ -176,7 +176,7 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
 
             </View>
 
-            {imageData && (
+            {imageData && user.role === 'vendor' && (
                 <View>
                     <Text style={main.heading}>Add to Product</Text>
                     

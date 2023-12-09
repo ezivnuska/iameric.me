@@ -4,6 +4,7 @@
 .env
 dist/
 config/
+.htaccess
 
 # Xcode
 #

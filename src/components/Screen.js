@@ -18,7 +18,9 @@ export default ({ children }) => {
                 minWidth: 375,
                 maxWidth: 375,
                 marginHorizontal: 'auto',
-                marginVertical: 20,
+                paddingVertical: 20,
+                backgroundColor: '#fff',
+                paddingHorizontal: 10,
             }}
         >
             {children}

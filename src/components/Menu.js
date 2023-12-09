@@ -77,7 +77,6 @@ export default ({ vendor }) => {
             style={{
                 height: '100%',
                 marginVertical: 10,
-                marginHorizontal: 15,
             }}
         >
             {loading

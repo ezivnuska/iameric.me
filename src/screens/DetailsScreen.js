@@ -96,8 +96,7 @@ export default ({ route }) => {
                             >
                                 <Text
                                     style={{
-                                        paddingVertical: 10,
-                                        paddingHorizontal: 15,
+                                        marginBottom: 10,
                                     }}
                                 >
                                     &lt; Back
@@ -105,6 +104,7 @@ export default ({ route }) => {
                             </Pressable>
 
                             <Text>{userDetails.username}</Text>
+                            <Text>{userDetails.email}</Text>
 
                             {renderUserAvatar()}
 

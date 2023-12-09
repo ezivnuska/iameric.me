@@ -1,5 +1,8 @@
 import React, { useContext } from 'react'
 import {
+    View,
+} from 'react-native'
+import {
     ImageModule,
     CenteredView,
     LocationModule,
@@ -18,16 +21,35 @@ export default () => {
     return user ? (
         <SecureScreen>
 
-            <>
-                <UserDetails user={user} />
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    height: '100%',
+                }}
+            >
+                <View
+                    style={{
+                        flexGrow: 1,
+                    }}
+                >
+                    <UserDetails user={user} />
 
-                {user.role !== 'driver' && <LocationModule userId={user._id} />}
+                    {user.role !== 'driver' && <LocationModule userId={user._id} />}
 
-                <ImageModule />
-
-                <SignoutModule />
-
-            </>
+                    <ImageModule />    
+                </View>
+                
+                <View
+                    style={{
+                        flexBasis: 'auto',
+                        flexGrow: 0,
+                    }}
+                >
+                    <SignoutModule />
+                </View>
+            </View>
 
         </SecureScreen>
     ) : null

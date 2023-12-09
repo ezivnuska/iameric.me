@@ -1,4 +1,4 @@
-const backgroundColor = '#fff'
+const backgroundColor = '#ccc'
 const primaryTextColor = '#000'
 const secondaryTextColor = '#333'
 const headerBGColor = '#000'

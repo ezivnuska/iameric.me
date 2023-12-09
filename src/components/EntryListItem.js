@@ -24,6 +24,12 @@ export default ({ entry, onDelete, ...props }) => {
     const [ author, setAuthor ] = useState({ userId, username })
     const [ filename, setFilename ] = useState(null)
 
+    const getUserFromUsers = () => users ? users.filter(u => u._id === userId)[0] : null
+    const isUserOnline = () => {
+        const currentUser = users ? users.filter(u => u._id === userId)[0] : null
+        if (currentUser) return currentUser.token !== null
+    }
+
     const getFilename = () => {
         const selectedUser = users.filter(u => u._id === userId)[0]
         if (!selectedUser ||
@@ -61,6 +67,7 @@ export default ({ entry, onDelete, ...props }) => {
                     >
                         
                         <UserHeading
+                            online={isUserOnline(userId)}
                             username={username}
                             filename={filename}
                             onPress={() => navigate('Details', { id: userId })}

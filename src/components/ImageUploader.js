@@ -16,7 +16,7 @@ import { dataURItoBlob, handleUpload, imageToDataURIs, uploadImage } from '../Up
 
 const initialSize = 300
 
-export default ({ onImageSelected, showSubmit = true }) => {
+export default ({ onImageSelected }) => {
 
     const {
         dims,
@@ -198,32 +198,33 @@ export default ({ onImageSelected, showSubmit = true }) => {
                     onImageSelected={handleDrop}
                 />
             )}
-                
-            <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginVertical: 15,
-                width: size,
-            }}>
-                
-                {showSubmit ? (
+            
+            {preview || payload ? (
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        marginVertical: 15,
+                        width: size,
+                    }}
+                >
                     <Button
                         disabled={!preview || !payload}
                         onClick={onSubmit}
                     >
                         Select/Upload
                     </Button>
-                ) : null}
 
-                <Button
-                    disabled={!preview || !payload}
-                    onClick={clearPreview}
-                >
-                    Clear
-                </Button>
+                    <Button
+                        disabled={!preview || !payload}
+                        onClick={clearPreview}
+                    >
+                        Clear
+                    </Button>
 
-            </View>
+                </View>
+            ) : null}
 
         </View>
     ) : (

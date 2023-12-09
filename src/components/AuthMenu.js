@@ -106,6 +106,7 @@ export default () => {
             alignItems: 'center',
             justifyContent: 'flex-end',
             height: '100%',
+            paddingRight: 15,
         }}>
 
             {items && items.length ? <CartButton /> : null}

@@ -118,7 +118,9 @@ export default () => {
 
     const onImageUploaded = image => {
         
-        // setUpload(null)
+        // may want to assign first image to profile image?
+        // console.log('image uploaded', image)
+        
         setItems(items ? [...items, image] : [image])
 
         setModalVisible(false)

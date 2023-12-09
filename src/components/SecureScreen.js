@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Screen,
 } from '@components'
@@ -11,12 +11,20 @@ export default ({ children }) => {
         user,
     } = useContext(AppContext)
 
+    const [secure, setSecure] = useState(false)
+
     useEffect(() => {
-        if (!user) {
+        if (secure && !user) {
             console.log('Secure Screen. Not secure. Need to go home.')
-            navigate('Start')
+            setSecure(false)
+        } else if (!secure) {
+            setSecure(true)
         }
     }, [user])
+
+    useContext(() => {
+        if (!secure) navigate('Start')
+    }, [secure])
 
     return user ? (
         <Screen>

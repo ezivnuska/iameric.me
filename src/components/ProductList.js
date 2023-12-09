@@ -15,6 +15,9 @@ export default ({ deleteItem, products, onPress, update }) => (
                 onDelete={() => deleteItem(item._id)}
                 onPress={() => onPress(item)}
             />
-        )} 
+        )}
+        style={{
+            marginVertical: 10,
+        }}
     />
 )

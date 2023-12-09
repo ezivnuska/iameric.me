@@ -13,6 +13,15 @@ import { navigate } from '@navigators/RootNavigation'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cleanStorage } from '../utils/storage'
 
+const ButtonItem = props => (
+    <Button
+        {...props}
+        style={{
+            marginBottom: 10,
+        }}
+    />
+)
+
 export default () => {
 
     const {
@@ -51,7 +60,7 @@ export default () => {
     return (
         <View>
             <Button
-                type='default'
+                danger
                 onClick={() => setModalVisible(true)}
             >
                 Sign Out
@@ -60,24 +69,26 @@ export default () => {
             <ModalContent
                 visible={modalVisible}
                 onRequestClose={validateClose}
+                label='Sign Out'
             >
                 {
                     loading
                         ? <LoadingView label={loading} />
                         : (
                             <View>
-                                <Button
+                                <ButtonItem
                                     type='primary'
+                                    danger
                                     onClick={signout}
                                 >
                                     Sign Out
-                                </Button>
+                                </ButtonItem>
                                 
-                                <Button
+                                <ButtonItem
                                     onClick={() => setModalVisible(false)}
                                 >
                                     Cancel
-                                </Button>
+                                </ButtonItem>
                             </View>
                         )
                 }
