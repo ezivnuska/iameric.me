@@ -1,22 +1,27 @@
 import {
     Platform,
 } from 'react-native'
-import * as ImagePicker from 'expo-image-picker'
-import * as FileSystem from 'expo-file-system'
+import {
+    launchImageLibraryAsync,
+    requestMediaLibraryPermissionsAsync,
+} from 'expo-image-picker'
+import {
+    uploadAsync,
+} from 'expo-file-system'
 
 export const openImagePickerAsync = async () => {
     
-    let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync()
+    let permissionResult = await requestMediaLibraryPermissionsAsync()
 
     if (permissionResult.granted === false) {
         alert('Permission to access camera roll is required!')
         return null
     }
 
-    let pickerResult = await ImagePicker.launchImageLibraryAsync()
+    let pickerResult = await launchImageLibraryAsync()
     
     if (!pickerResult.canceled) {
-        const uploadResult = await FileSystem.uploadAsync('/api/upload/avatar', pickerResult.uri, {
+        const uploadResult = await uploadAsync('/api/upload/avatar', pickerResult.uri, {
             httpMethod: 'POST',
             // uploadType: FileSystemUploadType.MULTIPART,
             fieldName: 'file'
@@ -39,16 +44,21 @@ export const openImageSelector = async () => {
     //   }
     // }
     
-    const data = await ImagePicker.launchImageLibraryAsync({
+    const data = await launchImageLibraryAsync({
         allowsEditing: false,
         quality: 1,
     })
-
-    if (!data) return null
-
-    const { canceled, assets } = data
     
-    if (canceled) return null
-    
-    return assets[0].uri
+    if (!data || data.canceled) return null
+
+    return data.assets[0].uri
   }
+
+ export const openFileSelector = async () => {
+    let uri = null
+    
+    if (Platform.OS === 'web') uri = await openImageSelector()
+    else uri = await openImagePickerAsync()
+
+    return(uri)
+}

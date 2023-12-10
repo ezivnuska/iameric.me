@@ -219,7 +219,7 @@ export default ({ onImageSelected, removeImage, uri }) => {
             ) : null}
 
             <FileSelector
-                onImageSelected={handleDrop}
+                onSelected={handleDrop}
             />
         </View>
     )

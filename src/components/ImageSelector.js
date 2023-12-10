@@ -11,7 +11,7 @@ import {
 import { Button } from 'antd'
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
-import { openImageSelector, openImagePickerAsync } from 'src/utils/images'
+import { openFileSelector } from 'src/utils/images'
 
 const initialSize = 300
 
@@ -48,16 +48,6 @@ export default ({ onSelected }) => {
     useEffect(() => {
         openFileSelector()
     }, [])
-
-    const openFileSelector = async () => {
-        let uri = null
-        
-        if (Platform.OS === 'web') uri = await openImageSelector()
-        else uri = await openImagePickerAsync()
-
-        if (uri) handleSelectedImage(uri)
-        else onSelected(null)
-    }
 
     const handleSelectedImage = async uri => {
         const reader = new FileReader()

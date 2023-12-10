@@ -1,21 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import {
     ImageDetail,
     ImageList,
     ImageSelector,
-    ModalContent,
     PopUpModal,
 } from '.'
 import {
     PlusOutlined,
 } from '@ant-design/icons'
 import { Button } from 'antd'
-import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 
@@ -99,11 +96,12 @@ export default () => {
     }
 
     const uploadImageData = async imageData => {
-        console.log('uploadImageData', imageData)
         if (!imageData) {
             setModalVisible(false)
             return null
         }
+
+        console.log('uploading image', imageData)
 
         setLoading(true)
 
@@ -117,17 +115,7 @@ export default () => {
             return null
         }
         
-        onImageUploaded(data)
-        
-        return data
-    }
-
-    const onImageUploaded = image => {
-        
-        // may want to assign first image to profile image?
-        // console.log('image uploaded', image)
-        
-        setItems(items ? [...items, image] : [image])
+        setItems(items ? [...items, data] : [data])
 
         setModalVisible(false)
     }
@@ -176,18 +164,18 @@ export default () => {
                     onSelected={uploadImageData}
                 />
             </PopUpModal>
-
-            <ModalContent
+            
+            <PopUpModal
                 visible={featured}
-                onRequestClose={() => setFeatured(null)}
-                label='Image Detail'
+                onRequestClose={() => setFeatured(false)}
             >
                 <ImageDetail
                     imageData={featured}
-                    closeModal={() => setFeatured(null)}
+                    closeModal={() => setFeatured(false)}
                     onDelete={onDelete}
                 />
-            </ModalContent>
+            </PopUpModal>
+
         </View>
     )
 }
