@@ -1,5 +1,6 @@
 import { createNavigationContainerRef } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { cleanStorage } from 'src/utils/storage'
 
 export const navigationRef = createNavigationContainerRef()
 
@@ -47,7 +48,12 @@ const handleRouteChange = async (currentRoute, nextRoute, params) => {
         await AsyncStorage.setItem('prevRoute', currentRoute)
     }
     
-    await AsyncStorage.setItem('route', nextRoute)
+    if (nextRoute === 'Start') {
+        await AsyncStorage.removeItem('route')
+        await cleanStorage()
+    } else {
+        await AsyncStorage.setItem('route', nextRoute)
+    }
 }
 
 export const navigate = async (nextRoute, params) => {

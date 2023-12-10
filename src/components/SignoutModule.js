@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
     LoadingView,
-    ModalContent,
+    PopUpModal,
 } from '.'
 import { Button } from 'antd'
 import axios from 'axios'
@@ -66,10 +66,9 @@ export default () => {
                 Sign Out
             </Button>
 
-            <ModalContent
+            <PopUpModal
                 visible={modalVisible}
                 onRequestClose={validateClose}
-                label='Sign Out'
             >
                 {
                     loading
@@ -92,7 +91,7 @@ export default () => {
                             </View>
                         )
                 }
-            </ModalContent>
+            </PopUpModal>
         </View>
     )
 }

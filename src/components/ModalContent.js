@@ -8,10 +8,10 @@ import {
     View,
 } from 'react-native'
 
-export default ({ children, label, onRequestClose, ...props }) => (
+export default ({ children, label, onRequestClose, animationType = 'slide', ...props }) => (
     <Modal
         {...props}
-        animationType='slide'
+        animationType={animationType}
         transparent={true}
         onRequestClose={onRequestClose}
         style={{

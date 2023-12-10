@@ -7,8 +7,9 @@ import {
 import {
     ImageDetail,
     ImageList,
-    ImageUploader,
+    ImageSelector,
     ModalContent,
+    PopUpModal,
 } from '.'
 import {
     PlusOutlined,
@@ -98,6 +99,11 @@ export default () => {
     }
 
     const uploadImageData = async imageData => {
+        console.log('uploadImageData', imageData)
+        if (!imageData) {
+            setModalVisible(false)
+            return null
+        }
 
         setLoading(true)
 
@@ -162,15 +168,14 @@ export default () => {
                     : <Text>No images to display.</Text>
             }
             
-            <ModalContent
+            <PopUpModal
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
-                label='Upload an Image'
             >
-                <ImageUploader
-                    onImageSelected={uploadImageData}
+                <ImageSelector
+                    onSelected={uploadImageData}
                 />
-            </ModalContent>
+            </PopUpModal>
 
             <ModalContent
                 visible={featured}

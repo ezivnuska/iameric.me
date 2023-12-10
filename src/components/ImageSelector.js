@@ -1,22 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    Platform,
     View,
 } from 'react-native'
 import {
-    FileSelector,
+    // FileSelector,
     LoadingView,
     Preview,
-} from './'
-// import ReactAvatarEditor from 'react-avatar-editor'
+} from '.'
 import { Button } from 'antd'
 import EXIF from 'exif-js'
-import axios from 'axios'
 import { AppContext } from '../AppContext'
-import { dataURItoBlob, handleUpload, imageToDataURIs, uploadImage } from '../Upload'
+import { openImageSelector, openImagePickerAsync } from 'src/utils/images'
 
 const initialSize = 300
 
-export default ({ onImageSelected }) => {
+export default ({ onSelected }) => {
 
     const {
         dims,
@@ -46,11 +45,27 @@ export default ({ onImageSelected }) => {
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
-    const handleDrop = async uri => {
+    useEffect(() => {
+        openFileSelector()
+    }, [])
 
+    const openFileSelector = async () => {
+        let uri = null
+        
+        if (Platform.OS === 'web') uri = await openImageSelector()
+        else uri = await openImagePickerAsync()
+
+        if (uri) handleSelectedImage(uri)
+        else onSelected(null)
+    }
+
+    const handleSelectedImage = async uri => {
         const reader = new FileReader()
+        // console.log('reading selected uri')
         reader.onload = ({ target }) => {
             const exif = EXIF.readFromBinaryFile(target.result)
+            // console.log('selected uri read')
+            // console.log('loading selected uri with exif data')
             loadImage(uri, exif)
         }
 
@@ -60,12 +75,11 @@ export default ({ onImageSelected }) => {
 
     const loadImage = async (src, exif) => {
         const image = new Image()
+        // console.log('loading image')
         image.onload = async () => {
             const data = await handleImageData(image, exif)
-            
-            const { uri, height, width } = data.imageData
-            
-            setPreview({ uri, height, width })
+            // console.log('image loaded')
+            // console.log('image data', data)
             
             setPayload(data)
             
@@ -73,6 +87,19 @@ export default ({ onImageSelected }) => {
         }
         image.src = src
     }
+
+    useEffect(() => {
+        // console.log('setting payload', payload)
+        if (payload) {
+            const { uri, height, width } = payload.imageData
+            // console.log('setting preview', payload.imageData)
+            setPreview({ uri, height, width })
+        } else if (preview) {
+            setPreview(null)
+
+            onSelected(null)
+        }
+    }, [payload])
 
     const handleImageData = async (image, srcOrientation) => {
         const userId = user._id
@@ -166,14 +193,12 @@ export default ({ onImageSelected }) => {
             return
         }
 
-        setLoading(true)
-        
-        onImageSelected(payload)
-    }
-
-    const clearPreview = () => {
+        // setLoading(true)
+        const { imageData, thumbData, userId } = payload
         setPayload(null)
-        setPreview(null)
+
+        onSelected({ imageData, thumbData, userId })
+
     }
 
     return !loading ? (
@@ -189,17 +214,22 @@ export default ({ onImageSelected }) => {
             
             {preview ? (
                 <Preview
-                    height={preview.height}
                     width={preview.width}
-                    imageURI={preview.uri}
+                    height={preview.height}
+                    uri={preview.uri}
                 />
-            ) : (
-                <FileSelector
-                    onImageSelected={handleDrop}
-                />
-            )}
+            ) : null}
+
+            {/* (
+                <Button
+            //         size='small'
+            //         onClick={handleSelectedImage}
+            //     >
+            //         Pick an Image
+            //     </Button>
+            // ) */}
             
-            {preview || payload ? (
+            {preview ? (
                 <View
                     style={{
                         display: 'flex',
@@ -207,20 +237,31 @@ export default ({ onImageSelected }) => {
                         justifyContent: 'space-evenly',
                         marginVertical: 15,
                         width: size,
+                        // backgroundColor: 'red',
                     }}
                 >
                     <Button
-                        disabled={!preview || !payload}
+                        disabled={loading}
                         onClick={onSubmit}
                     >
-                        Select/Upload
+                        Upload
                     </Button>
 
                     <Button
-                        disabled={!preview || !payload}
-                        onClick={clearPreview}
+                        disabled={loading}
+                        onClick={() => {
+                            // setPayload(null)
+                            openFileSelector()
+                        }}
                     >
-                        Clear
+                        Change
+                    </Button>
+
+                    <Button
+                        disabled={loading}
+                        onClick={() => setPayload(null)}
+                    >
+                        Cancel
                     </Button>
 
                 </View>

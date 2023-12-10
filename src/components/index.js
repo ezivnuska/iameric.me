@@ -28,7 +28,7 @@ import ImageDetail from './ImageDetail'
 import ImageFormModule from './ImageFormModule'
 import ImageModule from './ImageModule'
 import ImageList from './ImageList'
-import ImageUploader from './ImageUploader'
+import ImageSelector from './ImageSelector'
 import ImagePreview from './ImagePreview'
 import ImageWithURI from './ImageWithURI'
 import LoadingView from './LoadingView'
@@ -43,6 +43,7 @@ import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderModule from './OrderModule'
 import OrderPreview from './OrderPreview'
+import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
 import ProductModule from './ProductModule'
@@ -100,7 +101,7 @@ export {
     ImageModule,
     ImagePreview,
     ImageList,
-    ImageUploader,
+    ImageSelector,
     ImageWithURI,
     LoadingView,
     LocationDetails,
@@ -114,6 +115,7 @@ export {
     OrderDetails,
     OrderModule,
     OrderPreview,
+    PopUpModal,
     Preview,
     ProductDetails,
     ProductModule,
