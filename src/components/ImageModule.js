@@ -143,17 +143,16 @@ export default () => {
                 
             <Header onPress={() => setModalVisible(true)} />
 
-            {loading
-                ? <Text>Loading...</Text>
-                : (items && items.length)
-                    ? (
-                        <ImageList
-                            images={items}
-                            username={user.username}
-                            onSelected={onSelected}
-                        />
-                    )
-                    : <Text>No images to display.</Text>
+            {(items && items.length)
+                ? (
+                    <ImageList
+                        loading={loading}
+                        images={items}
+                        username={user.username}
+                        onSelected={onSelected}
+                    />
+                )
+                : <Text>No images to display.</Text>
             }
             
             <PopUpModal

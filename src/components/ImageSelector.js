@@ -46,8 +46,13 @@ export default ({ onSelected }) => {
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
     useEffect(() => {
-        openFileSelector()
+        init()
     }, [])
+
+    const init = async () => {
+        const uri = await openFileSelector()
+        if (uri) handleSelectedImage(uri)
+    }
 
     const handleSelectedImage = async uri => {
         const reader = new FileReader()

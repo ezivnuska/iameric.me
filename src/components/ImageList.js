@@ -9,7 +9,7 @@ import {
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, username, onSelected }) => (
+export default ({ images,loading, username, onSelected }) => (
     <View
         style={{
             display: 'flex',
@@ -18,6 +18,7 @@ export default ({ images, username, onSelected }) => (
             flexWrap: 'wrap',
             gap: 10,
             width: '100%',
+            opacity: loading ? 0.5 : 1.0,
         }}
     >
         {images.map((image, index) => (
