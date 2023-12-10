@@ -68,9 +68,7 @@ export default () => {
                 marginBottom: 20,
             }}
         >
-            <FeedbackForm
-                addEntry={entry => dispatch({ type: 'NEW_ENTRY', entry })}
-            />
+            <FeedbackForm />
             
             <Text style={defaultStyles.heading}>Comments</Text>
             

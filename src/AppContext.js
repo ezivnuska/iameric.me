@@ -108,7 +108,6 @@ const reducer = (state = initialState, action) => {
             entries = entries.filter(entry => entry._id !== action.id)
             break
         case 'SET_ORDERS':
-            console.log('setting orders', action.orders)
             orders = action.orders
             break
         case 'ADD_ORDER':

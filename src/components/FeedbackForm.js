@@ -14,7 +14,7 @@ import {
     FormInput,
 } from '.'
 
-const FeedbackForm = ({ addEntry }) => {
+const FeedbackForm = () => {
 
     const {
         state,
@@ -26,19 +26,19 @@ const FeedbackForm = ({ addEntry }) => {
 
     const onChangeEntry = value => setEntry(value)
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         const { username, _id } = user
         const newEntry = { username, userId: _id, text: entry }
-        addEntry(newEntry)
         
-        axios
-            .post('/api/entry', newEntry)
-            .then(({ data }) => {
-                setEntry('')
-            })
-            .catch(err => {
-                console.log('Error saving entry', err)
-            })
+        const { data } = await axios.post('/api/entry', newEntry)
+        
+        if (!data) {
+            console.log('Error saving entry.')
+            return
+        }
+        
+        dispatch({ type: 'NEW_ENTRY', entry: data.entry })
+        setEntry('')
     }
 
     return (
