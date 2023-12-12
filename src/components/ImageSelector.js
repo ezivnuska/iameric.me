@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Platform,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -208,11 +209,17 @@ export default ({ onSelected }) => {
         >
             
             {preview ? (
-                <Preview
-                    width={preview.width}
-                    height={preview.height}
-                    uri={preview.uri}
-                />
+                <View
+                    style={{
+                        marginBottom: 15,
+                    }}
+                >
+                    <Preview
+                        width={preview.width}
+                        height={preview.height}
+                        uri={preview.uri}
+                    />
+                </View>
             ) : null}
 
             {/* (
@@ -230,7 +237,6 @@ export default ({ onSelected }) => {
                         display: 'flex',
                         flexDirection: 'row',
                         justifyContent: 'space-evenly',
-                        marginVertical: 15,
                         width: size,
                         // backgroundColor: 'red',
                     }}
@@ -260,7 +266,7 @@ export default ({ onSelected }) => {
                     </Button>
 
                 </View>
-            ) : null}
+            ) : <Text style={{ color: '#fff' }}>Select an image.</Text>}
 
         </View>
     ) : (

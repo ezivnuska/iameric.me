@@ -10,17 +10,8 @@ import { Button } from 'antd'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '@navigators/RootNavigation'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+// import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cleanStorage } from '../utils/storage'
-
-const ButtonItem = props => (
-    <Button
-        {...props}
-        style={{
-            marginBottom: 10,
-        }}
-    />
-)
 
 export default () => {
 
@@ -63,7 +54,7 @@ export default () => {
                 danger
                 onClick={() => setModalVisible(true)}
             >
-                Sign Out
+                Disconnect
             </Button>
 
             <PopUpModal
@@ -72,22 +63,28 @@ export default () => {
             >
                 {
                     loading
-                        ? <LoadingView label={loading} />
+                        ? <LoadingView label={loading} showActivity />
                         : (
-                            <View>
-                                <ButtonItem
-                                    type='primary'
+                            <View
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-around',
+                                }}
+                            >
+                                <Button
+                                    // type='primary'
                                     danger
                                     onClick={signout}
                                 >
-                                    Sign Out
-                                </ButtonItem>
+                                    Disconnect
+                                </Button>
                                 
-                                <ButtonItem
+                                <Button
                                     onClick={() => setModalVisible(false)}
                                 >
-                                    Cancel
-                                </ButtonItem>
+                                    Stay Connected
+                                </Button>
                             </View>
                         )
                 }

@@ -4,18 +4,31 @@ import {
     Text,
     View,
 } from 'react-native'
-import main from '../styles/main'
+// import main from '../styles/main'
 
 export default ({ label = null, showActivity = null }) => (
-    <View>
+    <View
+        style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+        }}
+    >
         {showActivity ? (
             <ActivityIndicator
-                size='large'
-                style={{
-                    marginVertical: 35,
-                }}
+                size='small'
             />
         ) : null}
-        {label && <Text style={main.text}>{label}</Text>}
+
+        {label ? (
+            <Text
+                style={{
+                    color: '#fff',
+                }}
+            >
+                {label}
+            </Text>
+        ) : null}
+
     </View>
 )

@@ -42,20 +42,21 @@ export default ({ children, onRequestClose, ...props }) => (
 
             <View
                 style={{
-                    maxWidth: 375,
-                    minWidth: 375,
-                    width: 375,
+                    width: 360,
+                    minWidth: 360,
+                    maxWidth: 360,
                     maxHeight: '90%',
                     marginHorizontal: 'auto',
-                    // backgroundColor: '#ccc',
-
+                    backgroundColor: '#666',
+                    borderRadius: 10,
                     flexBasis: 'auto',
                 }}
             >   
                 <ScrollView
                     style={{
                         width: '100%',
-                        padding: 15,
+                        paddingVertical: 15,
+                        paddingHorizontal: 20,
                         // backgroundColor: '#f00',
                     }}
                 >

@@ -323,7 +323,8 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
 const uploadProductImage = async payload => {
     
     const { userId, imageData, thumbData } = payload
-    
+    const { height, width } = imageData
+
     const user = await User.findOne({ _id: userId })
     
     const filename = `${userId}-${Date.now()}.png`
@@ -339,7 +340,7 @@ const uploadProductImage = async payload => {
 
     console.log('uploadFilename:', uploadFilename)
 
-    const data = await saveUserImage(user, uploadFilename)
+    const data = await saveUserImage(user, uploadFilename, height, width)
     
     if (!data) {
         console.log('Error saving UserImage to User Images')
@@ -352,6 +353,7 @@ const uploadProductImage = async payload => {
 const uploadImage = async (req, res) => {
     
     const { userId, imageData, thumbData } = req.body
+    const { height, width } = imageData
     
     const user = await User.findOne({ _id: userId })
     
@@ -366,7 +368,7 @@ const uploadImage = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    const { image } = await saveUserImage(user, filename)
+    const { image } = await saveUserImage(user, filename, height, width)
 
     if (!image) {
         console.log('Error saving UserImage to User Images')
@@ -376,16 +378,18 @@ const uploadImage = async (req, res) => {
     return res.status(200).json(image)
 }
 
-const saveUserImage = async (userId, filename) => {
+const saveUserImage = async (userId, filename, height, width) => {
     
-    const image = new UserImage({ user: userId, filename })
+    const image = new UserImage({ user: userId, filename, height, width })
     await image.save()
 
     return {
         image: {
             _id: image._id,
             filename: image.filename,
+            height,
             user: image.user._id,
+            width,
         }
     }
 }

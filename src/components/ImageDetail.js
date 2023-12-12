@@ -13,7 +13,7 @@ import main from '../styles/main'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ closeModal, onDelete, imageData, width = 200, height = 200, resize = 'stretch' }) => {
+export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
 
     const {
         dispatch,
@@ -35,9 +35,9 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
         return response
     }
 
-    // useEffect(() => {
-    //     console.log('imageData', imageData)
-    // }, [imageData])
+    useEffect(() => {
+        console.log('imageData', imageData)
+    }, [imageData])
 
     const deleteImage = async () => {
 
@@ -135,17 +135,17 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
             }}
         >
             <Image
-                // width={200}
-                // height={200}
+                // width={width}
+                // height={height}
                 source={{
                     uri: `${IMAGE_PATH}/${user.username}/${imageData.filename}`,
                 }}
                 style={{
-                    resizeMode: 'center',
-                    width: '100%',
-                    height,
+                    resizeMode: 'contain',
+                    width: imageData.width,
+                    height: imageData.height,
                     borderWidth: 1,
-                    marginVertical: layout.verticalMargin,
+                    marginBottom: 15,
                 }}
             />
 
@@ -176,9 +176,11 @@ export default ({ closeModal, onDelete, imageData, width = 200, height = 200, re
 
             </View>
 
-            {imageData && user.role === 'vendor' && (
+            {imageData &&
+            user.role === 'vendor' &&
+            (products && products.length) && (
                 <View>
-                    <Text style={main.heading}>Add to Product</Text>
+                    <Text style={{ color: '#fff' }}>Make product image:</Text>
                     
                     <ProductSelector
                         onSelect={setProductImage}

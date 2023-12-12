@@ -20,6 +20,14 @@ const UserImageSchema = new Schema({
         type: Schema.Types.String,
         // required: true,
     },
+    height: {
+        type: Schema.Types.Number,
+        required: true,
+    },
+    width: {
+        type: Schema.Types.Number,
+        required: true,
+    },
 },
 {
     timestamps: true,
