@@ -12,6 +12,7 @@ import {
 export const openImagePickerAsync = async () => {
     
     let permissionResult = await requestMediaLibraryPermissionsAsync()
+    console.log('permission result', permissionResult)
 
     if (permissionResult.granted === false) {
         alert('Permission to access camera roll is required!')
@@ -48,6 +49,8 @@ export const openImageSelector = async () => {
         allowsEditing: false,
         quality: 1,
     })
+
+    console.log('data from image selector', data)
     
     if (!data || data.canceled) return null
 

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
     Platform,
     Text,
+    Pressable,
     View,
 } from 'react-native'
 import {
@@ -27,7 +28,8 @@ export default ({ onSelected }) => {
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [editor, setEditor] = useState(null)
-    const [loading, setLoading] = useState(null)
+    const [loading, setLoading] = useState('Loading...')
+    const [open, setOpen] = useState(false)
     const [payload, setPayload] = useState(null)
 
     useEffect(() => {
@@ -47,12 +49,28 @@ export default ({ onSelected }) => {
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
     useEffect(() => {
-        init()
+        initFileSelector()
     }, [])
 
-    const init = async () => {
+    const setOpenValue = value => {
+        setOpen(value)
+        if (value) setLoading('Waiting for image...')
+        else setLoading(null)
+    }
+
+    // useEffect(() => {
+    //     if (open) setLoading('Waiting for image...')
+    //     else if (loading) setLoading('Working...')
+    //     else setLoading(null)
+    // }, [open])
+
+    const initFileSelector = async () => {
+        setLoading('Select an image.')
+        setOpenValue(true)
         const uri = await openFileSelector()
+        setOpenValue(false)
         if (uri) handleSelectedImage(uri)
+        else setLoading(false)
     }
 
     const handleSelectedImage = async uri => {
@@ -66,6 +84,7 @@ export default ({ onSelected }) => {
         }
 
         const blob = await dataURItoBlob(uri)
+        setLoading('Processing selected image...')
         reader.readAsArrayBuffer(blob)
     }
 
@@ -77,9 +96,10 @@ export default ({ onSelected }) => {
             // console.log('image loaded')
             // console.log('image data', data)
             
+            setLoading(null)
+
             setPayload(data)
             
-            setLoading(false)
         }
         image.src = src
     }
@@ -231,43 +251,50 @@ export default ({ onSelected }) => {
             //     </Button>
             // ) */}
             
-            {preview ? (
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly',
-                        width: size,
-                        // backgroundColor: 'red',
-                    }}
-                >
+            
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    width: size,
+                    // backgroundColor: 'red',
+                }}
+            >
+                {preview ? (
+                    <>
+                        <Button
+                            disabled={loading}
+                            onClick={onSubmit}
+                        >
+                            Upload
+                        </Button>
+
+                        <Button
+                            disabled={loading}
+                            onClick={initFileSelector}
+                        >
+                            Change
+                        </Button>
+
+                        <Button
+                            disabled={loading}
+                            onClick={() => setPayload(null)}
+                        >
+                            Cancel
+                        </Button>
+                    </>
+
+                ) : (
                     <Button
                         disabled={loading}
-                        onClick={onSubmit}
+                        onClick={initFileSelector}
                     >
-                        Upload
+                        Select an image.
                     </Button>
+                )}
 
-                    <Button
-                        disabled={loading}
-                        onClick={() => {
-                            // setPayload(null)
-                            openFileSelector()
-                        }}
-                    >
-                        Change
-                    </Button>
-
-                    <Button
-                        disabled={loading}
-                        onClick={() => setPayload(null)}
-                    >
-                        Cancel
-                    </Button>
-
-                </View>
-            ) : <Text style={{ color: '#fff' }}>Select an image.</Text>}
-
+            </View>
         </View>
     ) : (
         <LoadingView label={loading} />

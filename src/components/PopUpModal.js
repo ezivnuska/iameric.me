@@ -35,7 +35,7 @@ export default ({ children, onRequestClose, ...props }) => (
                     left: 0,
 
                     backgroundColor: '#000',
-                    opacity: 0.8,
+                    // opacity: 0.9,
                 }}
                 onPress={onRequestClose}
             />
@@ -47,8 +47,11 @@ export default ({ children, onRequestClose, ...props }) => (
                     maxWidth: 360,
                     maxHeight: '90%',
                     marginHorizontal: 'auto',
-                    backgroundColor: '#666',
-                    borderRadius: 10,
+                    // backgroundColor: '#666',
+                    // borderRadius: 10,
+                    // borderWidth: 1,
+                    // borderColor: '#ddd',
+                    // borderStyle: 'dotted',
                     flexBasis: 'auto',
                 }}
             >   
