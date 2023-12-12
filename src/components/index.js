@@ -1,6 +1,5 @@
 import AuthMenu from './AuthMenu'
 import Avatar from './Avatar'
-import AvatarModule from './AvatarModule'
 import Brand from './Brand'
 import ButtonPrimary from './ButtonPrimary'
 import Cart from './Cart'
@@ -72,7 +71,6 @@ import VendorSelector from './VendorSelector'
 export {
     AuthMenu,
     Avatar,
-    AvatarModule,
     Brand,
     ButtonPrimary,
     Cart,

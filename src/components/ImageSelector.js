@@ -290,13 +290,18 @@ export default ({ onSelected }) => {
                         disabled={loading}
                         onClick={initFileSelector}
                     >
-                        Select an image.
+                        {loading}
                     </Button>
                 )}
 
             </View>
         </View>
     ) : (
-        <LoadingView label={loading} />
+        <Button
+            disabled={loading}
+            onClick={initFileSelector}
+        >
+            <Text style={{ color: '#fff' }}>Select an image...</Text>
+        </Button>
     )
 }
