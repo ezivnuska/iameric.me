@@ -6,7 +6,6 @@ import {
     View,
 } from 'react-native'
 import {
-	ButtonPrimary,
 	FormInput,
 } from '.'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -15,6 +14,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles/main'
 import { signin } from '../Data'
+import { Button } from 'antd'
 
 const SignInForm = ({ setUser, onComplete }) => {
 
@@ -103,7 +103,7 @@ const SignInForm = ({ setUser, onComplete }) => {
 					
 			<View style={defaultStyles.form}>
 
-            	<Text style={defaultStyles.title}>Sign In</Text>
+            	<Text style={[defaultStyles.title, { color: '#fff', textAlign: 'center' }]}>Sign In</Text>
 
 				<FormInput
 					label='Email'
@@ -127,11 +127,13 @@ const SignInForm = ({ setUser, onComplete }) => {
 					style={defaultStyles.input}
 				/>
 
-				<ButtonPrimary
+				<Button
+					type='primary'
 					disabled={loading}
-					label={loading ? 'Signing in...' : 'Sign In'}
-					onPress={onSubmit}
-				/>
+					onClick={onSubmit}
+				>
+					<Text style={{ color: '#fff' }}>Connect</Text>
+				</Button>
 
 			</View>
 

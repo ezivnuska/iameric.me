@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    ModalContent,
+    PopUpModal,
     Screen,
     SignUpForm,
     SignInForm,
@@ -105,26 +105,24 @@ export default () => {
                 </Button>
             </View>
 
-            <ModalContent
+            <PopUpModal
                 visible={showSignUpModal}
                 onRequestClose={() => setShowSignUpModal(false)}
-                label='Sign Up'
             >
                 <SignUpForm
                     setUser={setUser}
                 />
-            </ModalContent>
+            </PopUpModal>
 
-            <ModalContent
+            <PopUpModal
                 visible={showSignInModal}
                 onRequestClose={() => setShowSignInModal(false)}
-                label='Sign In'
             >
                 <SignInForm
                     setUser={setUser}
                     onComplete={() => setShowSignInModal(false)}
                 />
-            </ModalContent>
+            </PopUpModal>
         </Screen>
     )
 }

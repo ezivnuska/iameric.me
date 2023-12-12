@@ -8,7 +8,8 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles/main'
-import { ButtonPrimary, FormInput, RolePicker } from '.'
+import { FormInput, RolePicker } from '.'
+import { Button } from 'antd'
 
 const SignUpForm = ({ setUser }) => {
 
@@ -95,7 +96,7 @@ const SignUpForm = ({ setUser }) => {
 
 			<View style={defaultStyles.form}>
 
-				<Text style={defaultStyles.title}>Sign Up</Text>
+				<Text style={[defaultStyles.title, { textAlign: 'center', color: '#fff' }]}>Sign Up</Text>
 
 				<RolePicker
 					value={role}
@@ -148,11 +149,13 @@ const SignUpForm = ({ setUser }) => {
 					style={defaultStyles.input}
 				/>
 
-				<ButtonPrimary
+				<Button
+					type='primary'
 					disabled={loading}
-					label={loading ? 'Signing Up' : 'Sign Up'}
 					onPress={onSubmit}
-				/>
+				>
+					<Text style={{ color: '#fff' }}>{loading ? 'Signing Up' : 'Sign Up'}</Text>
+				</Button>
 
 			</View>
 
