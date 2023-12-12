@@ -35,7 +35,7 @@ export default ({ images,loading, username, onSelected }) => (
                     height={IMAGE_SIZE}
                     source={{ uri: `${IMAGE_PATH}/${username}/thumb/${image.filename}` }}
                     style={{
-                        resizeMode: 'center',
+                        resizeMode: 'cover',
                         width: IMAGE_SIZE,
                         height: IMAGE_SIZE,
                         borderWidth: 1,

@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    Pressable,
+    // Pressable,
     Text,
     View,
 } from 'react-native'
 import {
     LocationForm,
     LocationDetails,
-    ModalContent,
+    // ModalContent,
+    PopUpModal,
 } from '.'
 import {
     EditOutlined,
@@ -84,6 +85,7 @@ export default ({ userId }) => {
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
+                marginBottom: 5,
             }}
         >
             <Text
@@ -127,18 +129,15 @@ export default ({ userId }) => {
                 : <Text style={{ color: '#aaa' }}>Add your location.</Text>
             }
 
-            <ModalContent
-                animationType='slide'
-                transparent={false}
+            <PopUpModal
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
-                label={'Manage Location'}
             >
                 <LocationForm
                     location={location || initialState}
                     onSubmit={onSubmitAddress}
                 />
-            </ModalContent>
+            </PopUpModal>
             
         </View>
     )

@@ -17,23 +17,20 @@ const FormInput = ({ label, onChange, ...props }) => {
     }
 
     return (
-        <View style={{
-            marginBottom: 5,
-        }}>
+        <View
+            style={defaultStyles.inputContainer}
+        >
             
-            {(label && label.length) ? <Text style={defaultStyles.label}>{label}</Text> : null}
-            
-            <View style={defaultStyles.inputContainer}>
+            {(label && label.length) ? <Text style={defaultStyles.darkFormLabel}>{label}</Text> : null}
                 
-                <TextInput
-                    style={[defaultStyles.input]}
-                    // onBlur={onBlur}
-                    onChangeText={onChangeText}
-                    value={inputValue}
-                    {...props}
-                />
+            <TextInput
+                style={[defaultStyles.input, { flexShrink: 0 }]}
+                // onBlur={onBlur}
+                onChangeText={onChangeText}
+                value={inputValue}
+                {...props}
+            />
 
-            </View>
         </View>
     )
 }

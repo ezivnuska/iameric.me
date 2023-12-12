@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    Text,
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles/main'
 import {
-    ButtonPrimary,
     FormInput,
 } from '.'
+import { Button } from 'antd'
 
-const LocationForm = ({ onSubmit, location }) => {
+export default ({ onSubmit, location }) => {
 
     const context = useContext(AppContext)
 
@@ -20,20 +21,34 @@ const LocationForm = ({ onSubmit, location }) => {
     const [ city, setCity ] = useState(location.city)
     const [ state, setState ] = useState(location.state)
     const [ zip, setZip ] = useState(location.zip)
+    const [ dirty, setDirty ] = useState(false)
 
-    const onChangeAddressLine1 = value => setAddress1(value)
-    const onChangeAddressLine2 = value => setAddress2(value)
-    const onChangeCity = value => setCity(value)
-    const onChangeState = value => setState(value)
-    const onChangeZip = value => setZip(value)
+    // const onChangeAddressLine1 = value => setAddress1(value)
+    // const onChangeAddressLine2 = value => setAddress2(value)
+    // const onChangeCity = value => setCity(value)
+    // const onChangeState = value => setState(value)
+    // const onChangeZip = value => setZip(value)
 
-    const setLocation = () => {
-        setAddress1(location.address1)
-        setAddress2(location.address2)
-        setCity(location.city)
-        setState(location.state)
-        setZip(location.zip)
+    const onChange = (name, value) => {
+        if (value !== location[name]) setDirty(true)
+        else setDirty(false)
+
+        switch(name) {
+            case 'address1': setAddress1(value); break
+            case 'address2': setAddress2(value); break
+            case 'city': setCity(value); break
+            case 'state': setState(value); break
+            case 'zip': setZip(value); break
+        }
     }
+
+    // const setLocation = () => {
+    //     setAddress1(location.address1)
+    //     setAddress2(location.address2)
+    //     setCity(location.city)
+    //     setState(location.state)
+    //     setZip(location.zip)
+    // }
     
     // useEffect(() => {
     //     setLocation()
@@ -64,7 +79,7 @@ const LocationForm = ({ onSubmit, location }) => {
             <FormInput
                 label='Address'
                 value={address1}
-                onChangeText={onChangeAddressLine1}
+                onChangeText={value => onChange('address1', value)}
                 placeholder='address1'
                 textContentType='streetAddressLine1'
                 autoCapitalize='words'
@@ -73,42 +88,45 @@ const LocationForm = ({ onSubmit, location }) => {
             />
             
             <FormInput
-                label=''
                 value={address2}
-                onChangeText={onChangeAddressLine2}
-                placeholder='address2'
+                onChangeText={value => onChange('address2', value)}
+                placeholder='Ste/Apt'
                 textContentType='streetAddressLine2'
                 autoCapitalize='words'
                 keyboardType='default'
                 style={defaultStyles.input}
             />
             
-            <FormInput
-                label='City'
-                value={city}
-                onChangeText={onChangeCity}
-                placeholder='city'
-                textContentType='addressCity'
-                autoCapitalize='words'
-                keyboardType='default'
-                style={defaultStyles.input}
-            />
-            
-            <FormInput
-                label='State'
-                value={state}
-                onChangeText={onChangeState}
-                placeholder='state'
-                textContentType='addressState'
-                autoCapitalize='none'
-                keyboardType='default'
-                style={defaultStyles.input}
-            />
+            <View
+                style={defaultStyles.formColumns}
+            >
+                <FormInput
+                    label='City'
+                    value={city}
+                    onChangeText={value => onChange('city', value)}
+                    placeholder='city'
+                    textContentType='addressCity'
+                    autoCapitalize='words'
+                    keyboardType='default'
+                    style={defaultStyles.input}
+                />
+                
+                <FormInput
+                    label='State'
+                    value={state}
+                    onChangeText={value => onChange('state', value)}
+                    placeholder='state'
+                    textContentType='addressState'
+                    autoCapitalize='none'
+                    keyboardType='default'
+                    style={[defaultStyles.input, { width: 100 }]}
+                />
+            </View>
             
             <FormInput
                 label='Zip'
                 value={zip}
-                onChangeText={onChangeZip}
+                onChangeText={value => onChange('zip', value)}
                 placeholder='zip'
                 textContentType='postalCode'
                 autoCapitalize='none'
@@ -116,14 +134,14 @@ const LocationForm = ({ onSubmit, location }) => {
                 style={defaultStyles.input}
             />
 
-            <ButtonPrimary
-                label='Add Location'
-                disabled={!isValid()}
-                onPress={submitForm}
-            />
+            <Button
+                type={dirty ? 'primary' : 'dashed'}
+                disabled={!dirty || !isValid()}
+                onClick={submitForm}
+            >
+                <Text style={{ color: dirty ? '#fff' : '#aaa' }}>Update Location</Text>
+            </Button>
 
         </View>
     )
 }
-
-export default LocationForm

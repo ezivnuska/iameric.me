@@ -35,10 +35,6 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
         return response
     }
 
-    useEffect(() => {
-        console.log('imageData', imageData)
-    }, [imageData])
-
     const deleteImage = async () => {
 
         const imageId = imageData._id

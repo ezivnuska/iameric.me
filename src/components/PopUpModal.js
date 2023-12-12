@@ -55,8 +55,7 @@ export default ({ children, onRequestClose, ...props }) => (
                 <ScrollView
                     style={{
                         width: '100%',
-                        paddingVertical: 15,
-                        paddingHorizontal: 20,
+                        padding: 10,
                         // backgroundColor: '#f00',
                     }}
                 >
