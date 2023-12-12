@@ -30,7 +30,7 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
         let response = false
         products.map(product => {
             if (!product.image) return false
-            if (product.image === id || product.image._id === id) response = true
+            if (product.image === id || product.image._id === id) response = product
         })
         return response
     }
@@ -45,7 +45,7 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
 
         let isProductImage = null
         if (user.role === 'vendor') {
-            isProductImage = isImageProductImage(imageId, products)
+            isProductImage = isImageProductImage(imageId)
         }
         
         setLoading('Deleting Image...')
@@ -174,9 +174,21 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
 
             {imageData &&
             user.role === 'vendor' &&
-            (products && products.length) && (
-                <View>
-                    <Text style={{ color: '#fff' }}>Make product image:</Text>
+            (products && products.length) ? (
+                <View style={{ 
+                    width: '100%',
+                    // borderWidth: 1,
+                    // borderColor: 'yellow',
+                    // backgroundColor: 'orange',
+                }}>
+                    <Text
+                        style={{
+                            color: '#fff',
+                            marginVertical: 7,
+                        }}
+                    >
+                        Make product image:
+                    </Text>
                     
                     <ProductSelector
                         onSelect={setProductImage}
@@ -184,7 +196,7 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
                         imageId={imageData._id}
                     />
                 </View>
-            )}
+            ) : null}
 
         </View>
     ) : null
