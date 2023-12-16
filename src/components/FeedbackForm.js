@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     // StyleSheet,
     Text,
@@ -10,11 +10,12 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles/main'
 import {
-    ButtonPrimary,
+    // ButtonPrimary,
+    FormButton,
     FormInput,
 } from '.'
 
-const FeedbackForm = () => {
+const FeedbackForm = ({ onComplete }) => {
 
     const {
         state,
@@ -25,7 +26,7 @@ const FeedbackForm = () => {
     const [ entry, setEntry ] = useState('')
 
     const onChangeEntry = value => setEntry(value)
-
+    
     const onSubmit = async () => {
         const { username, _id } = user
         const newEntry = { username, userId: _id, text: entry }
@@ -34,15 +35,27 @@ const FeedbackForm = () => {
         
         if (!data) {
             console.log('Error saving entry.')
+            onComplete()
             return
         }
         
         dispatch({ type: 'NEW_ENTRY', entry: data.entry })
         setEntry('')
+        onComplete()
+    }
+
+    const onEnter = e => {
+        if (e.code === 'Enter') {
+            if (entry.length) onSubmit()
+            else onComplete()
+        }
     }
 
     return (
-        <View style={defaultStyles.form}>
+        <View
+            style={defaultStyles.form}
+            onKeyPress={onEnter}
+        >
             
             <FormInput
                 label='Leave a comment'
@@ -53,12 +66,14 @@ const FeedbackForm = () => {
                 autoCapitalize='sentences'
                 keyboardType='default'
                 style={defaultStyles.input}
+                onKeyPress={onEnter}
             />
 
-            <ButtonPrimary
+            <FormButton
                 label='Send'
-                disabled={!entry.length}
-                onPress={onSubmit}
+                dirty={entry.length}
+                valid={entry.length}
+                onClick={onSubmit}
             />
 
         </View>
