@@ -6,6 +6,7 @@ import {
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles/main'
 import {
+    FormButton,
     FormInput,
 } from '.'
 import { Button } from 'antd'
@@ -134,13 +135,12 @@ export default ({ onSubmit, location }) => {
                 style={defaultStyles.input}
             />
 
-            <Button
-                type={dirty ? 'primary' : 'dashed'}
-                disabled={!dirty || !isValid()}
+            <FormButton
+                label='Update Location'
+                dirty={dirty}
+                valid={!dirty || !isValid()}
                 onClick={submitForm}
-            >
-                <Text style={{ color: dirty ? '#fff' : '#aaa' }}>Update Location</Text>
-            </Button>
+            />
 
         </View>
     )

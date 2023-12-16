@@ -14,21 +14,16 @@ export default ({ children }) => {
     const [secure, setSecure] = useState(false)
 
     useEffect(() => {
-        if (secure && !user) {
-            console.log('Secure Screen. Not secure. Need to go home.')
-            setSecure(false)
-        } else if (!secure) {
-            setSecure(true)
-        }
+        setSecure(user !== null)
     }, [user])
 
-    useContext(() => {
-        if (!secure) navigate('Start')
+    useEffect(() => {
+        if (!secure && !user) navigate('Start')
     }, [secure])
 
-    return user ? (
+    return secure && (
         <Screen>
             {children}
         </Screen>
-    ) : null
+    )
 }

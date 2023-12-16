@@ -50,6 +50,7 @@ export default ({ userId }) => {
         const locationData = await getLocationWithUserId(userId)
         
         setLoading(false)
+
         if (!locationData) {
             console.log('could not get location data.')
             return
@@ -101,6 +102,7 @@ export default ({ userId }) => {
                 Address
             </Text>
             
+            
             <View style={{
                 flex: 1,
                 flexGrow: 0,
@@ -111,7 +113,7 @@ export default ({ userId }) => {
                 <Button
                     size='small'
                     shape='circle'
-                    icon={location ? <EditOutlined /> : <PlusCircleOutlined />}
+                    icon={loading ? null : location ? <EditOutlined /> : <PlusCircleOutlined />}
                     onClick={() => setModalVisible(true)}
                     disabled={loading}
                 />

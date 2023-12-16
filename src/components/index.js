@@ -19,6 +19,7 @@ import EntryList from './EntryList'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
+import FormButton from './FormButton'
 import FormInput from './FormInput'
 import FormInputStatusIcon from './FormInputStatusIcon'
 import Header from './Header'
@@ -90,6 +91,7 @@ export {
     EntryListItem,
     FeedbackForm,
     FileSelector,
+    FormButton,
     FormInput,
     FormInputStatusIcon,
     Header,

@@ -12,12 +12,8 @@ import { openFileSelector } from '../utils/images'
 
 export default ({ onSelected }) => {
 
-  const onCancel = () => {
-    console.log('trying to cancel from FileSelector component')
-  }
-
   const handlePress = async () => {
-    const uri = await openFileSelector(onCancel)
+    const uri = await openFileSelector()
     onSelected(uri)
   }
 

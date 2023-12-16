@@ -28,8 +28,7 @@ export default ({ onSelected }) => {
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [editor, setEditor] = useState(null)
-    const [loading, setLoading] = useState('Loading...')
-    const [open, setOpen] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [payload, setPayload] = useState(null)
 
     useEffect(() => {
@@ -52,12 +51,6 @@ export default ({ onSelected }) => {
         initFileSelector()
     }, [])
 
-    const setOpenValue = value => {
-        setOpen(value)
-        if (value) setLoading('Waiting for image...')
-        else setLoading(null)
-    }
-
     // useEffect(() => {
     //     if (open) setLoading('Waiting for image...')
     //     else if (loading) setLoading('Working...')
@@ -65,12 +58,8 @@ export default ({ onSelected }) => {
     // }, [open])
 
     const initFileSelector = async () => {
-        setLoading('Select an image.')
-        setOpenValue(true)
         const uri = await openFileSelector()
-        setOpenValue(false)
         if (uri) handleSelectedImage(uri)
-        else setLoading(false)
     }
 
     const handleSelectedImage = async uri => {
@@ -217,7 +206,7 @@ export default ({ onSelected }) => {
 
     }
 
-    return !loading ? (
+    return (
         <View
             id='dropzone'
             style={{
@@ -255,53 +244,60 @@ export default ({ onSelected }) => {
             <View
                 style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
                     justifyContent: 'space-evenly',
                     width: size,
                     // backgroundColor: 'red',
                 }}
             >
                 {preview ? (
-                    <>
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            width: size,
+                            // backgroundColor: 'red',
+                        }}
+                    >
                         <Button
+                            size='large'
+                            type='primary'
                             disabled={loading}
                             onClick={onSubmit}
+                            style={{
+                                color: '#fff',
+                                backgroundColor: '#161',
+                            }}
                         >
                             Upload
                         </Button>
 
                         <Button
+                            size='large'
                             disabled={loading}
                             onClick={initFileSelector}
                         >
                             Change
                         </Button>
-
-                        <Button
-                            disabled={loading}
-                            onClick={() => setPayload(null)}
-                        >
-                            Cancel
-                        </Button>
-                    </>
+                    </View>
 
                 ) : (
                     <Button
+                        size='large'
+                        type='primary'
                         disabled={loading}
                         onClick={initFileSelector}
+                        style={{
+                            color: '#fff',
+                            backgroundColor: '#161',
+                        }}
                     >
-                        {loading}
+                        Select Image
                     </Button>
                 )}
 
             </View>
         </View>
-    ) : (
-        <Button
-            disabled={loading}
-            onClick={initFileSelector}
-        >
-            <Text style={{ color: '#fff' }}>Select an image...</Text>
-        </Button>
     )
 }

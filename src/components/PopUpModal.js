@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
+import { Button } from 'antd'
 
 export default ({ children, onRequestClose, ...props }) => (
     <Modal
@@ -35,7 +36,7 @@ export default ({ children, onRequestClose, ...props }) => (
                     left: 0,
 
                     backgroundColor: '#000',
-                    // opacity: 0.9,
+                    opacity: 0.9,
                 }}
                 onPress={onRequestClose}
             />
@@ -54,7 +55,7 @@ export default ({ children, onRequestClose, ...props }) => (
                     // borderStyle: 'dotted',
                     flexBasis: 'auto',
                 }}
-            >   
+            >
                 <ScrollView
                     style={{
                         width: '100%',
@@ -64,7 +65,16 @@ export default ({ children, onRequestClose, ...props }) => (
                 >
                     {children}
                 </ScrollView>
+                <Button
+                    size='large'
+                    type='text'
+                    onClick={onRequestClose}
+                    style={{ color: '#eee' }}
+                >
+                    Cancel
+                </Button>
             </View>
+            
         </View>
 
     </Modal>

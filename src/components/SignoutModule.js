@@ -37,11 +37,9 @@ export default () => {
         
         await cleanStorage()
         
-        dispatch({ type: 'SIGNOUT' })
-        
         setLoading(false)
 
-        navigate('Start')
+        dispatch({ type: 'SIGNOUT' })
     }
 
     const validateClose = () => {
@@ -51,10 +49,11 @@ export default () => {
     return (
         <View>
             <Button
+                size='large'
                 danger
                 onClick={() => setModalVisible(true)}
             >
-                Disconnect
+                Sign Out
             </Button>
 
             <PopUpModal
@@ -68,22 +67,17 @@ export default () => {
                             <View
                                 style={{
                                     display: 'flex',
-                                    flexDirection: 'row',
+                                    flexDirection: 'column',
                                     justifyContent: 'space-around',
                                 }}
                             >
                                 <Button
-                                    // type='primary'
+                                    size='large'
+                                    type='primary'
                                     danger
                                     onClick={signout}
                                 >
-                                    Disconnect
-                                </Button>
-                                
-                                <Button
-                                    onClick={() => setModalVisible(false)}
-                                >
-                                    Stay Connected
+                                    Sign Out
                                 </Button>
                             </View>
                         )

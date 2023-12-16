@@ -53,7 +53,7 @@ export default ({ vendor }) => {
         const { data } = await axios.get(`/api/products/${vendor._id}`)
         
         setLoading(false)
-
+        
         if (!data) {
             console.log('could not get vendor products')
             return

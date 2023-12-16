@@ -12,7 +12,7 @@ import {
 export const openImagePickerAsync = async () => {
     
     let permissionResult = await requestMediaLibraryPermissionsAsync()
-
+    
     if (permissionResult.granted === false) {
         alert('Permission to access camera roll is required!')
         return null
@@ -27,7 +27,7 @@ export const openImagePickerAsync = async () => {
             fieldName: 'file'
         })
 
-        return uploadResult
+        return uploadResult.assets[0].uri
     }
 
     return pickerResult
@@ -51,14 +51,14 @@ export const openImageSelector = async () => {
     
     if (!data) return null
 
-    return data
+    return data.assets[0].uri
   }
 
  export const openFileSelector = async () => {
-    let image = null
+    let uri = null
     
-    if (Platform.OS === 'web') image = await openImageSelector()
-    else image = await openImagePickerAsync()
-
-    return(image.assets[0].uri)
+    if (Platform.OS === 'web') uri = await openImageSelector()
+    else uri = await openImagePickerAsync()
+    
+    return(uri)
 }
