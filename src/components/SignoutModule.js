@@ -67,7 +67,7 @@ export default () => {
             >
                 {
                     loading
-                        ? <LoadingView label={loading} showActivity />
+                        ? <LoadingView label={loading} />
                         : (
                             <View
                                 style={{
