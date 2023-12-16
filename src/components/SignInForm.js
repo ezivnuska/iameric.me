@@ -128,11 +128,13 @@ const SignInForm = ({ setUser, onComplete }) => {
 				/>
 
 				<Button
+					size='large'
 					type='primary'
 					disabled={loading}
 					onClick={onSubmit}
+					style={{ color: '#fff' }}
 				>
-					<Text style={{ color: '#fff' }}>Connect</Text>
+					Connect
 				</Button>
 
 			</View>

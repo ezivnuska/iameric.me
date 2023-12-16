@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import {
+    ScrollView,
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
@@ -23,7 +24,9 @@ export default ({ children }) => {
                 paddingHorizontal: 10,
             }}
         >
-            {children}
+            <ScrollView>
+                {children}
+            </ScrollView>
         </View>
     )
 }

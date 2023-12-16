@@ -31,17 +31,51 @@ export default ({ onSubmit, location }) => {
     // const onChangeZip = value => setZip(value)
 
     const onChange = (name, value) => {
-        if (value !== location[name]) setDirty(true)
-        else setDirty(false)
-
         switch(name) {
-            case 'address1': setAddress1(value); break
-            case 'address2': setAddress2(value); break
-            case 'city': setCity(value); break
-            case 'state': setState(value); break
-            case 'zip': setZip(value); break
+            case 'address1': {
+                setDirty(value !== location.address1)
+                setAddress1(value)
+            }
+            break
+            case 'address2': {
+                setDirty(value !== location.address2)
+                setAddress2(value)
+            }
+            break
+            case 'city': {
+                setDirty(value !== location.city)
+                setCity(value)
+            }
+            break
+            case 'state': {
+                setDirty(value !== location.state)
+                setState(value)
+            }
+            break
+            case 'zip': {
+                setDirty(value !== location.zip)
+                setZip(value)
+            }
+            break
         }
     }
+
+    // const onChange = (name, value) => {
+    //     console.log('value', value)
+    //     console.log(`location.${name}`, location)
+    //     const prop = `${location[name]}`
+    //     console.log('prop', prop)
+    //     if (value !== prop) setDirty(true)
+    //     else setDirty(false)
+
+    //     switch(name) {
+    //         case 'address1': setAddress1(value); break
+    //         case 'address2': setAddress2(value); break
+    //         case 'city': setCity(value); break
+    //         case 'state': setState(value); break
+    //         case 'zip': setZip(value); break
+    //     }
+    // }
 
     // const setLocation = () => {
     //     setAddress1(location.address1)
@@ -67,6 +101,7 @@ export default ({ onSubmit, location }) => {
 
     const isValid = () => {
         return (
+            dirty &&
             address1.length &&
             city.length &&
             state.length &&
@@ -138,7 +173,7 @@ export default ({ onSubmit, location }) => {
             <FormButton
                 label='Update Location'
                 dirty={dirty}
-                valid={!dirty || !isValid()}
+                valid={isValid()}
                 onClick={submitForm}
             />
 

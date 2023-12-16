@@ -145,58 +145,62 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
                 }}
             />
 
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    width: '100%',
-                    paddingVertical: layout.verticalPadding,
-                }}
-            >
-                {showAvatarButton() && (
-                    <Button
-                        onClick={setAvatar}
-                        disabled={loading}
-                    >
-                        Make Avatar
-                    </Button>
-                )}
-
-                <Button
-                    onClick={deleteImage}
-                    disabled={loading}
-                >
-                    Delete
-                </Button>
-
-            </View>
-
-            {imageData &&
-            user.role === 'vendor' &&
-            (products && products.length) ? (
-                <View style={{ 
-                    width: '100%',
-                    // borderWidth: 1,
-                    // borderColor: 'yellow',
-                    // backgroundColor: 'orange',
-                }}>
-                    <Text
+            {!loading && (
+                <>
+                    <View
                         style={{
-                            color: '#fff',
-                            marginVertical: 7,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            width: '100%',
+                            paddingVertical: layout.verticalPadding,
                         }}
                     >
-                        Make product image:
-                    </Text>
-                    
-                    <ProductSelector
-                        onSelect={setProductImage}
-                        products={products}
-                        imageId={imageData._id}
-                    />
-                </View>
-            ) : null}
+                        {showAvatarButton() && (
+                            <Button
+                                onClick={setAvatar}
+                                disabled={loading}
+                            >
+                                Make Avatar
+                            </Button>
+                        )}
+
+                        <Button
+                            onClick={deleteImage}
+                            disabled={loading}
+                        >
+                            Delete
+                        </Button>
+
+                    </View>
+
+                    {imageData &&
+                    user.role === 'vendor' &&
+                    (products && products.length) ? (
+                        <View style={{ 
+                            width: '100%',
+                            // borderWidth: 1,
+                            // borderColor: 'yellow',
+                            // backgroundColor: 'orange',
+                        }}>
+                            <Text
+                                style={{
+                                    color: '#fff',
+                                    marginVertical: 7,
+                                }}
+                            >
+                                Make product image:
+                            </Text>
+                            
+                            <ProductSelector
+                                onSelect={setProductImage}
+                                products={products}
+                                imageId={imageData._id}
+                            />
+                        </View>
+                    ) : null}
+                </>
+            )}
 
         </View>
     ) : null

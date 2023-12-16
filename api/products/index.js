@@ -98,7 +98,8 @@ const getProductsByVendorId = async (req, res) => {
     
     const products = await Product
         .find({ vendor: req.params.vendor })
-        .populate('image', 'filename')
+        .populate('image', 'filename height width')
+        .populate('vendor', 'username')
     
     if (!products) {
         console.log('Error getting products')

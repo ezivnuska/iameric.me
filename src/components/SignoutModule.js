@@ -38,7 +38,7 @@ export default () => {
         await cleanStorage()
         
         setLoading(false)
-
+        
         dispatch({ type: 'SIGNOUT' })
     }
 
@@ -47,8 +47,13 @@ export default () => {
     }
 
     return (
-        <View>
+        <View
+            style={{
+                marginTop: 50,
+            }}
+        >
             <Button
+                type='dashed'
                 size='large'
                 danger
                 onClick={() => setModalVisible(true)}

@@ -6,16 +6,14 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles/main'
 import { FormInput, RolePicker } from '.'
 import { Button } from 'antd'
 
-const SignUpForm = ({ setUser }) => {
+export default ({ setUser }) => {
 
 	const {
         state,
-        dispatch,
     } = useContext(AppContext)
 
 	const { user } = state
@@ -150,11 +148,13 @@ const SignUpForm = ({ setUser }) => {
 				/>
 
 				<Button
+					size='large'
 					type='primary'
 					disabled={loading}
-					onPress={onSubmit}
+					onClick={onSubmit}
+					style={{ color: '#fff' }}
 				>
-					<Text style={{ color: '#fff' }}>{loading ? 'Signing Up' : 'Sign Up'}</Text>
+					{loading ? 'Signing Up' : 'Sign Up'}
 				</Button>
 
 			</View>
@@ -162,5 +162,3 @@ const SignUpForm = ({ setUser }) => {
 		</View>
 	)
 }
-
-export default SignUpForm

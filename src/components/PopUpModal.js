@@ -64,15 +64,15 @@ export default ({ children, onRequestClose, ...props }) => (
                     }}
                 >
                     {children}
+                    <Button
+                        size='large'
+                        type='text'
+                        onClick={onRequestClose}
+                        style={{ color: '#eee' }}
+                        >
+                        Cancel
+                    </Button>
                 </ScrollView>
-                <Button
-                    size='large'
-                    type='text'
-                    onClick={onRequestClose}
-                    style={{ color: '#eee' }}
-                >
-                    Cancel
-                </Button>
             </View>
             
         </View>

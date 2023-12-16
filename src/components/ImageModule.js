@@ -81,7 +81,7 @@ export default () => {
 
     const getImageData = async () => {
         
-        setLoading(true)
+        setLoading('Getting image data...')
         
         const { data } = await axios.get(`/api/user/images/${user._id}`)
         
@@ -103,7 +103,7 @@ export default () => {
 
         console.log('uploading image', imageData)
 
-        setLoading(true)
+        setLoading('Uploading image...')
 
         const { data } = await axios
             .post(`/api/image/upload`, imageData)
@@ -122,14 +122,18 @@ export default () => {
 
     const onDelete = (id, isProfileImage, isProductImage) => {
 
+        setLoading('Deleting image...')
+
         const filteredItems = items.filter(item => item._id !== id)
 
         setItems(filteredItems)
 
         if (isProfileImage) dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: null })
         if (isProductImage) dispatch({ type: 'REMOVE_PRODUCT_IMAGE', imageId: id })
-        
+
         setFeatured(null)
+        
+        setLoading(null)
     }
 
     const onSelected = imageId => {
@@ -143,17 +147,16 @@ export default () => {
                 
             <Header onPress={() => setModalVisible(true)} />
 
-            {(items && items.length)
-                ? (
-                    <ImageList
-                        loading={loading}
-                        images={items}
-                        username={user.username}
-                        onSelected={onSelected}
-                    />
-                )
-                : <Text>No images to display.</Text>
-            }
+            {loading ? (
+                <Text>{loading}</Text>
+            ) : (items && items.length) ? (
+                <ImageList
+                    loading={loading}
+                    images={items}
+                    username={user.username}
+                    onSelected={onSelected}
+                />
+            ) : <Text>No images to display.</Text>}
             
             <PopUpModal
                 visible={modalVisible}

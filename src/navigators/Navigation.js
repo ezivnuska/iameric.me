@@ -12,7 +12,7 @@ import {
     UserScreen,
     UsersScreen,
 } from '../screens'
-import { checkRoute, navigationRef } from './RootNavigation'
+import { checkRoute, navigate, navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
 import { cleanStorage } from '../utils/storage'
 import { authenticate } from '../Data'
@@ -77,12 +77,14 @@ export default () => {
     }, [user])
 
     const verifyUser = async () => {
+        
         dispatch({ type: 'SET_LOADING', loading: 'Navigation: verifying user...' })
         const userToken = await AsyncStorage.getItem('userToken')
         
         if (!userToken) {
             await cleanStorage()
             dispatch({ type: 'SET_LOADING', loading: null })
+            navigate('Start')
             return
         }
 
@@ -92,6 +94,7 @@ export default () => {
 
         if (!verifiedUser) {
             await cleanStorage()
+            navigate('Start')
             return
         }
         

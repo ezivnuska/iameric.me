@@ -4,7 +4,6 @@ import {
 } from 'react-native'
 import {
     ImageModule,
-    CenteredView,
     LocationModule,
     SecureScreen,
     SignoutModule,
@@ -25,30 +24,19 @@ export default () => {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    height: '100%',
+                    justifyContent: 'flex-start',
                 }}
             >
-                <View
-                    style={{
-                        flexGrow: 1,
-                    }}
-                >
+                <View>
                     <UserDetails user={user} />
 
                     {user.role !== 'driver' && <LocationModule userId={user._id} />}
 
                     <ImageModule />    
                 </View>
-                
-                <View
-                    style={{
-                        flexBasis: 'auto',
-                        flexGrow: 0,
-                    }}
-                >
-                    <SignoutModule />
-                </View>
+
+                <SignoutModule />
+
             </View>
 
         </SecureScreen>

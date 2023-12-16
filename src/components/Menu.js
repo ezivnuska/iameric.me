@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import {
     MenuItem,
-    ModalContent,
+    PopUpModal,
     ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -99,13 +99,12 @@ export default ({ vendor }) => {
                     : <Text style={main.text}>No products to display.</Text>
             }
 
-            <ModalContent
+            <PopUpModal
                 visible={featured}
                 onRequestClose={() => setFeatured(null)}
-                label={featured && featured.title ? featured.title : null}
             >
                 <ProductDetails loading={loading} product={featured} onOrder={addToCart} />
-            </ModalContent>
+            </PopUpModal>
         </View>
     )
 }
