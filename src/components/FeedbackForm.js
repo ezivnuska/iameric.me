@@ -33,14 +33,11 @@ const FeedbackForm = ({ onComplete }) => {
         
         const { data } = await axios.post('/api/entry', newEntry)
         
-        if (!data) {
-            console.log('Error saving entry.')
-            onComplete()
-            return
-        }
+        if (data) {
+            dispatch({ type: 'NEW_ENTRY', entry: data.entry })
+            setEntry('')
+        } else console.log('Error submitting feedback')
         
-        dispatch({ type: 'NEW_ENTRY', entry: data.entry })
-        setEntry('')
         onComplete()
     }
 

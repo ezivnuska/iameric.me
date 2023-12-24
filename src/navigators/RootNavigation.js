@@ -15,14 +15,17 @@ export const goBack = async () => {
 }
 
 export const checkRoute = async () => {
+    console.log('checking route...')
     const savedRoute = await AsyncStorage.getItem('route')
     const detail = await AsyncStorage.getItem('detail')
     
     if (savedRoute && savedRoute !== 'Start') {
+        console.log('savedRoute found', savedRoute)
         if (savedRoute === 'Details' && detail) {
             navigate(savedRoute, { id: detail })
             return
         }
+        console.log('navigating to savedRoute', savedRoute)
         navigate(savedRoute)
         return
     }

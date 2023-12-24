@@ -10,3 +10,14 @@ export const getLastRoute = async () => {
     const detail = await AsyncStorage.getItem('detail')
     return { prevRoute, route, detail }
 }
+
+export const storeEmail = async email => {
+    try {
+        await AsyncStorage.setItem('email', email)
+    } catch (err) {
+        console.log('Error storing email.', err)
+    }
+}
+
+export const getSavedEmail = async () => await AsyncStorage.getItem('email')
+

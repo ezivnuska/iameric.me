@@ -1,61 +1,105 @@
 import React, { useContext, useState } from 'react'
 import {
-    StyleSheet,
+    LoadingView,
     Text,
     TouchableOpacity,
+    View,
 } from 'react-native'
+import {
+    PopUpModal,
+} from '.'
 import axios from 'axios'
 import defaultStyles from '../styles/main'
 import { AppContext } from '../AppContext'
 import { clearStorage } from '../utils/storage'
+import { Button } from 'antd'
+import { unsubscribe } from '../Data'
+import { navigate } from '../navigators/RootNavigation'
 
-const DeleteAccountButton = () => {
+export default ({ id }) => {
 
     const {
-        state,
+        // state,
         dispatch,
+        // user,
     } = useContext(AppContext)
 
-    const { user } = state
     const [loading, setLoading] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
 
-    const handlePress = async () => {
-        setLoading(true)
-        await axios
-			.post('/api/unsubscribe', { _id: user._id })
-			.then(async ({ data }) => {
-				setLoading(false)
-                await clearStorage()
-				dispatch({ type: 'SIGNOUT' })
-			})
-			.catch(err => {
-				setLoading(false)
-				console.log('Error deleting account.', err)
-			})
+    const deleteAccount = async () => {
+        setLoading('Deleting account...')
+        await clearStorage()
+        const response = await unsubscribe(id)
+        console.log('deleteAccount response:', response)
+        setLoading(null)
+
+        if (response && response.success) {
+            console.log('Successfully deleted account.')
+        } else if (response && response.msg) {
+            console.log('Unsub Error:', response.msg)
+        } else {
+            console.log('Error deleting account.')
+        }
     }
 
     return (
-        <TouchableOpacity
-            style={[defaultStyles.button, styles.container]}
-            onPress={handlePress}
-            disabled={loading}
+        <View
+            style={{
+                marginTop: 20,
+            }}
         >
-            <Text style={[defaultStyles.buttonLabel, loading ? defaultStyles.buttonLabelDisabled : null]}>
-                Unsubscribe
+            <Text
+                style={{
+                    fontWeight: 700,
+                }}
+            >
+                Delete Account
             </Text>
+            <Text
+                style={{
+                    marginVertical: 10,
+                }}
+            >
+                We hate to see you go. 
+                Deleting your account 
+                will permantly remove 
+                all images and data.
+            </Text>
+
+            <Button
+                size='large'
+                onClick={() => setModalVisible(true)}
+                disabled={loading}
+            >
+                Delete Account
+            </Button>
+
+            <PopUpModal
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+            >
+                {!loading && (
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-around',
+                            }}
+                        >
+                            <Button
+                                size='large'
+                                type='primary'
+                                danger
+                                onClick={deleteAccount}
+                            >
+                                Delete Account
+                            </Button>
+                        </View>
+                    )
+                }
+            </PopUpModal>
             
-        </TouchableOpacity>
+        </View>
     )
 }
-
-export default DeleteAccountButton
-
-const styles = StyleSheet.create({
-    container: {
-        // display: 'flex',
-        // flexDirection: 'row',
-        // justifyContent: 'center',
-        // borderWidth: 1,
-        // borderColor: 'red',
-    },
-})

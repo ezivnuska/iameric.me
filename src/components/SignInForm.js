@@ -1,107 +1,120 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	Text,
-	TextInput,
-	TouchableOpacity,
     View,
 } from 'react-native'
 import {
 	FormInput,
 } from '.'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import axios from 'axios'
-import { AppContext } from '../AppContext'
-import { navigate } from '../navigators/RootNavigation'
 import defaultStyles from '../styles/main'
 import { signin } from '../Data'
+import { isValidEmail } from '../utils/tools'
+import { storeEmail, getSavedEmail } from '../utils/storage'
 import { Button } from 'antd'
 
-const SignInForm = ({ setUser, onComplete }) => {
+const SignInForm = ({ onComplete, setUser }) => {
 
-    const {
-        state,
-        dispatch,
-    } = useContext(AppContext)
-
-	const [formReady, setFormReady] = useState(false)
     const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [loading, setLoading] = useState(false)
-	const [invalid, setInvalid] = useState(null)
+	const [errors, setErrors] = useState([])
+	const [errorMessage, setErrorMessage] = useState(null)
 
 	useEffect(() => {
 		initForm()
 	}, [])
 
+	useEffect(() => {
+		validateForm()
+	}, [email, password])
+
+	const addError = value => {
+		if (!hasError(value)) setErrors([ ...errors, value ])
+	}
+
+	const removeError = value => {
+		if (hasError(value)) setErrors(errors.filter(item => item !== value))
+	}
+
 	const initForm = async () => {
-		const storedEmail = await AsyncStorage.getItem('email')
-		if (storedEmail) setEmail(storedEmail)
-		setFormReady(true)
+		const savedEmail = await getSavedEmail()
+		if (savedEmail) setEmail(savedEmail)
 	}
 
-	const authenticateUser = async () => {
-		setLoading(true)
-		const user = await axios
-			.post('/api/signin', { email, password })
-			.then(({ data }) => data)
-		
-			console.log('signin data', user)
-		if (!user) {
-			console.log('Error authenitcating user')
-			return null
-		}
-		setLoading(false)
-		storeEmail(email)
-		setUser(user)
-		setPassword('')
+	const hasError = value => {
+		const errorFound = errors.filter(error => error === value)
+		return errorFound.length > 0
 	}
 
-	const storeEmail = async email => {
-		try {
-			await AsyncStorage.setItem('email', email)
-		} catch (err) {
-			console.log('Error storing email.', err)
-		}
-	}
-
-	const validateEmail = async email => await axios
-		.post('/api/user/get', { email })
-		.then(({ data }) => {
-			const { err, msg, user } = data
-			if (err) console.log('Error getting user from email.', err)
-			if (!user) console.log('Could not find user with email:', email)
-			return user !== null
-		})
-		.catch(err => {
-			console.log('Error getting user', err)
+	const validateForm = () => {
+		if (!email.length || !isValidEmail(email)) {
+			if (!email.length) setErrorMessage('Email is required.')
+			else if (!isValidEmail(email)) setErrorMessage('Email is invalid.')
 			return false
-		})
-	
-	const onSubmit = async () => {
-		
-		if (!email.length || !password.length)
-		console.log('Email and password are required.')
-		setLoading(true)
-		const connectedUser = await signin(email, password)
-		if (!connectedUser) {
-			console.log('Error authenticating user')
-			return null
+		} else {
+			removeError('email')
+			setErrorMessage(null)
 		}
-		setLoading(false)
-		storeEmail(email)
-		setUser(connectedUser)
-		setPassword('')
-		onComplete()
+		if (!password.length) {
+			setErrorMessage('Password is required.')
+			return false
+		} else {
+			removeError('password')
+			setErrorMessage(null)
+		}
+
+		return true
 	}
 
-	const isValidEmail = () =>  email.match(
-		/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-	)
+	const isValid = () => {
+		let valid = true
+		if (
+			!email.length ||
+			!password.length
+		) {
+			valid = false
+		}
+
+		return valid
+	}
+
+	const handleError = ({ invalidField, msg }) => {
+		addError(invalidField)
+		setErrorMessage(msg)
+	}
+	
+	const submitData = async () => {
+		if (!isValid()) {
+			return console.log('Could not verifiy credentials.')
+		}
+
+		storeEmail(email)
+		setLoading(true)
+
+		const response = await signin(email, password)
+		
+		if (response && response.error) {
+			handleError(response)
+		} else if (response) {
+			setUser(response)
+			onComplete()
+		} else {
+			console.log('Error authenticating user')
+		}
+
+		setLoading(false)
+	}
+
+	const onEnter = e => {
+		if (e.code === 'Enter') submitData()
+	}
 
     return (
         <View style={defaultStyles.formContainer}>
 					
-			<View style={defaultStyles.form}>
+			<View
+				style={defaultStyles.form}
+			>
 
             	<Text style={[defaultStyles.title, { color: '#fff', textAlign: 'center' }]}>Sign In</Text>
 
@@ -114,6 +127,8 @@ const SignInForm = ({ setUser, onComplete }) => {
 					autoCapitalize='none'
 					keyboardType='email-address'
 					style={defaultStyles.input}
+					invalid={hasError('email')}
+					onKeyPress={onEnter}
 				/>
 
 				<FormInput
@@ -125,16 +140,28 @@ const SignInForm = ({ setUser, onComplete }) => {
 					autoCapitalize='none'
 					secureTextEntry={true}
 					style={defaultStyles.input}
+					invalid={hasError('password')}
+					onKeyPress={onEnter}
 				/>
+
+				{errorMessage && (
+					<Text
+						style={{
+							color: '#f00',
+							marginBottom: 15,
+					}}>
+						{errorMessage}
+					</Text>
+				)}
 
 				<Button
 					size='large'
 					type='primary'
-					disabled={loading}
-					onClick={onSubmit}
+					disabled={loading || !isValid() || errors.length}
+					onClick={submitData}
 					style={{ color: '#fff' }}
 				>
-					Connect
+					{loading ? 'Signing In' : 'Sign In'}
 				</Button>
 
 			</View>

@@ -1,8 +1,10 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../../models/User')
+const UserImage = require('../../models/UserImage')
+const Entry = require('../../models/Entry')
 const {
-    removeAllImagesFilesByUsername,
+    removeAllImageFilesByUsername,
 } = require('../images')
 const SESSION_SECRET = process.env.JWT_SECRET || require('../../config').JWT_SECRET
 
@@ -68,12 +70,12 @@ const handleSignin = async (req, res) => {
         .populate('profileImage', 'filename')
 
     if (!user)
-        return res.status(406).json({ invalid: 'email', msg: 'No user found with that email.' })
+        return res.status(200).json({ error: true, invalidField: 'email', msg: 'No user found with that email.' })
     
     const passwordsMatch = await bcrypt.compare(password, user.password)
 
     if (!passwordsMatch)
-        return res.status(406).json({ invalid: 'password', msg: 'Could not verify user.' })
+        return res.status(200).json({ error: true, invalidField: 'password', msg: 'Incorrect password.' })
 
     user.token = createToken(user)
 
@@ -92,14 +94,14 @@ const createUser = async (email, username, password, role) => {
     console.log('user', user)
     if (user) {
         console.log('user with that email already exists.')
-        return res.status(200).json(null)
+        return res.status(200).json({ error: true, msg: 'Email already in use.'})
     }
 
     user = await User.create({ username, email, password, role })
 
     if (!user) {
         console.log(`Error creating user: ${username}, ${email}`)
-        return res.status(200).json(null)
+        return null
     }
     
     await user.save()
@@ -129,23 +131,23 @@ const createUser = async (email, username, password, role) => {
 const handleSignup = async (req, res) => {
     const { email, password, username, role } = req.body
     console.log('password', password)
-    await bcrypt.genSalt(10, async (err, salt) => {
+    bcrypt.genSalt(10, async (err, salt) => {
         console.log('salt', salt)
-        await bcrypt.hash(password, salt, async (err, hash) => {
+        bcrypt.hash(password, salt, async (err, hash) => {
             if (err) {
                 console.log('error with hash', err)
-                return
+                return res.status(200).json({ error: true, msg: err })
             }
             
             if (!hash) {
                 console.log('problem with hash')
-                return null
+                return res.status(200).json({ error: true, msg: 'Problem with hash.' })
             }
             const user = await createUser(email, username, hash, role)
-            console.log('user', user)
+            console.log('new user created:', user)
             if (!user) {
                 console.log('problem with user')
-                return res.status(200).json(null)
+                return res.status(200).json({ error: true, msg: 'Could not create new user.' })
             }
             return res.status(200).json({ user })
         })
@@ -204,44 +206,52 @@ const handleSignout = async (req, res) => {
     return res.status(200).json({ user })
 }
 
-const closeAccount = async (req, res) => {
-    const { _id } = req.body
-    const deletedEntry = await Entry
-        .deleteOne({ userId: _id })
+const deleteAccount = async (req, res) => {
+    const { id } = req.body
+
+    console.log(`\ndeleting account: ${id}`)
+
+    const deletedEntries = await Entry.deleteMany({ userId: id })
+    console.log('deletedEntries', deletedEntries)
     
-    if (!deletedEntry) {
+    if (!deletedEntries) {
         console.log('could not delete entries.')
+    } else {
+        console.log(`deleted ${deletedEntries.deletedCount} entries`)
     }
 
-    const deletedImages = await UserImage
-        .deleteMany({ user: _id })
-
+    const deletedImages = await UserImage.deleteMany({ user: id })
+    console.log(`deletedImages: ${deletedImages}`)
     if (!deletedImages) {
         console.log('could not delete images.')
     } else {
         console.log(`deleted ${deletedImages.deletedCount} images`)
     }
 
-    const deletedUser = await User
-        .deleteOne({ _id })
-    
+    const deletedUser = await User.deleteOne({ id })
+    console.log(`deletedUser: ${deletedUser}`)
     if (!deletedUser) {
         console.log('Error deleting user.')
+        return res.status(200).json({
+            success: false,
+            msg: 'Error closing account.'
+        })
     }
-
     
     console.log('User deleted.', deletedUser)
     
-    await removeAllImagesFilesByUsername(deletedUser.username)
+    const removed = removeAllImageFilesByUsername(deletedUser.username)
 
-    res.status(200).json({
+    console.log('image files removed', removed)
+    return res.status(200).json({
+        success: true,
         msg: 'Account closed.'
     })
 }
 
 module.exports = {
     authenticate,
-    closeAccount,
+    deleteAccount,
     handleSignin,
     handleSignout,
     handleSignup,

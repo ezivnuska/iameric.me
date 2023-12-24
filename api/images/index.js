@@ -70,7 +70,7 @@ const updateProfileImage = async (req, res) => {
 
 const removeImage = path => rm(path, () => console.log('removed file at path', path))
 
-const removeAllImagesFilesByUsername = async username => await rmSync(
+const removeAllImageFilesByUsername = username => rmSync(
     `${imagePath}/${username}`,
     {
         recursive: true,
@@ -410,7 +410,7 @@ module.exports = {
     getImageIdFromFilename,
     getProfileImageByUserId,
     handleFileUpload,
-    removeAllImagesFilesByUsername,
+    removeAllImageFilesByUsername,
     removeImage,
     removeImageAndThumb,
     saveUserImage,

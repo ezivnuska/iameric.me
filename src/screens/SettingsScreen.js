@@ -1,15 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     View,
 } from 'react-native'
 import {
+    DeleteAccountButton,
     ImageModule,
     LocationModule,
     SecureScreen,
     SignoutModule,
+    UserDetails,
 } from '@components'
 import { AppContext } from '../AppContext'
-import { UserDetails } from 'src/components'
 
 export default () => {
 
@@ -17,10 +18,18 @@ export default () => {
         user,
     } = useContext(AppContext)
 
-    return user ? (
+    useEffect(() => {
+        console.log('user on load', user)
+    }, [])
+
+    useEffect(() => {
+        console.log('user changed', user)
+    }, [user])
+
+    return (
         <SecureScreen>
 
-            <View
+            {user && <View
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -36,9 +45,10 @@ export default () => {
                 </View>
 
                 <SignoutModule />
+                <DeleteAccountButton id={user._id} />
 
-            </View>
+            </View>}
 
         </SecureScreen>
-    ) : null
+    )
 }

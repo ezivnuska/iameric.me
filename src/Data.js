@@ -71,11 +71,41 @@ export const signin = async (email, password) => {
     
     if (!data) {
         console.log('Error authenticating user')
-        return null
+    } else if (!data.error) {
+        await AsyncStorage.setItem('userToken', data.token)
+        console.log('signin successful')
     }
-    console.log('signin successful. setting user token.')
 
-    await AsyncStorage.setItem('userToken', data.token)
+    return data
+}
+
+export const signup = async (email, password, role, username) => {
+    
+    const { data } = await axios.
+        post('/api/signup', { email, password, role, username })
+    
+    if (!data) {
+        console.log('Error authenticating user')
+        return null
+    } else {
+        await AsyncStorage.setItem('userToken', data.token)
+        console.log('signup successful')
+    }
+
+    return data
+}
+
+export const unsubscribe = async id => {
+    
+    const { data } = await axios.
+        post('/api/unsubscribe', { id })
+    
+    if (!data) {
+        console.log('Error closing user account.')
+        return null
+    } else {
+        console.log('Account closed.')
+    }
 
     return data
 }

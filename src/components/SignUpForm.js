@@ -1,22 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	Text,
 	View,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-import { AppContext } from '../AppContext'
 import defaultStyles from '../styles/main'
 import { FormInput, RolePicker } from '.'
 import { Button } from 'antd'
+import { isValidEmail } from '../utils/tools'
+import { signup } from '../Data'
+import { storeEmail, getSavedEmail } from '../utils/storage'
 
-export default ({ setUser }) => {
-
-	const {
-        state,
-    } = useContext(AppContext)
-
-	const { user } = state
+export default ({ onComplete, setUser }) => {
 	
 	const [email, setEmail] = useState('')
 	const [username, setUsername] = useState('')
@@ -24,8 +20,9 @@ export default ({ setUser }) => {
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
 	const [loading, setLoading] = useState(false)
-	const [formReady, setFormReady] = useState(false)
-
+	const [errors, setErrors] = useState([])
+	const [errorMessage, setErrorMessage] = useState(null)
+	
 	const onChangeRole = value => setRole(value)
 	const onChangeEmail = value => setEmail(value)
 	const onChangeUsername = value => setUsername(value)
@@ -37,68 +34,143 @@ export default ({ setUser }) => {
 	}, [])
 
 	useEffect(() => {
-		// if (user) navigate('Home')
-	}, [user])
+		validateForm()
+	}, [email, username, password, confirmPassword])
+
+	useEffect(() => {
+		if (email.length && !isValidEmail(email)) addError('email')
+		else removeError('email')
+	}, [email])
+
+	useEffect(() => {
+		if (
+			(password.length && confirmPassword.length) &&
+			(password !== confirmPassword)
+		) addError('password')
+		else removeError('password')
+	}, [password, confirmPassword])
+
+	const addError = value => {
+		if (!hasError(value)) setErrors([ ...errors, value ])
+	}
+
+	const removeError = value => {
+		if (hasError(value)) setErrors(errors.filter(item => item !== value))
+	}
 
 	const initForm = async () => {
-		const localEmail = await getEmailFromStorage()
-		if (localEmail) setEmail(localEmail)
-		setFormReady(true)
+		const savedEmail = await getSavedEmail()
+		if (savedEmail) setEmail(savedEmail)
 	}
 
-	const getEmailFromStorage = async () =>
-		await AsyncStorage
-			.getItem('email')
-			.then(localEmail => localEmail)
+	const hasError = value => {
+		const errorFound = errors.filter(error => error === value)
+		return errorFound.length > 0
+	}
 
-	const storeEmail = async email => {
-		try {
-			await AsyncStorage.setItem('email', email)
-		} catch (err) {
-			console.log('Error storing email.', err)
+	const validateForm = () => {
+		if (!email.length || !isValidEmail(email)) {
+			if (!email.length) setErrorMessage('Email is required.')
+			else if (!isValidEmail(email)) setErrorMessage('Email is invalid.')
+			return false
+		} else {
+			removeError('email')
+			setErrorMessage(null)
 		}
+		if (!username.length) {
+			setErrorMessage('Username is required.')
+			return false
+		}
+		if (!password.length) {
+			setErrorMessage('Password is required.')
+			return false
+		} else {
+			removeError('password')
+			setErrorMessage(null)
+		}
+		if (!confirmPassword.length) {
+			setErrorMessage('Password confirmation required.')
+			return false
+		} else {
+			removeError('password')
+			setErrorMessage(null)
+		}
+		if (password !== confirmPassword) {
+			setErrorMessage('Passwords do not match.')
+			return false
+		} else {
+			removeError('password')
+			setErrorMessage(null)
+		}
+
+		return true
 	}
 
-	const sendData = async user => {
+	const isValid = () => {
+		let valid = true
+		if (
+			!email.length ||
+			!username.length ||
+			!password.length ||
+			!confirmPassword.length
+		) {
+			console.log('All fields are required.')
+			valid = false
+		}
+
+		if (password !== confirmPassword) {
+			console.log('Passwords do not match')
+			valid = false
+		}
+
+		return valid
+	}
+
+	const handleError = ({ invalidField, msg }) => {
+		addError(invalidField)
+		setErrorMessage(msg)
+	}
+
+	const submitData = async () => {
+
+		if (!isValid()) {
+			return console.log('Could not verify form data.')
+		}
+
+		storeEmail(email)
 		setLoading(true)
-		storeEmail(user.email)
-		const { data } = await axios.post('/api/signup', user)
 		
-		if (!data) {
-			console.log('Sign up failed to create user.')
-			return
+		const response = await signup(email, password, role, username)
+		
+		if (response && response.error) {
+			handleError(response)
+		} else if (response) {
+			setUser(response)
+			onComplete()
+		} else {
+			console.log('Error signing up new user')
 		}
-		await AsyncStorage.setItem('userToken', data.user.token)
-
-		setUser(data.user)
 
 		setLoading(false)
 	}
 
-	const onSubmit = () => {
-		
-		if (!email.length || !password.length || !confirmPassword.length)
-		return console.log('Email and password required.')
-		
-		if (!username.length) return console.log('Username is required.')
+	const onEnter = e => {
+        if (e.code === 'Enter') submitData()
+    }
 
-		if (password !== confirmPassword)
-		return console.log('Passwords do not match')
-		
-		sendData({ email, username, password, role })
-	}
-
-	return (
-				
+	return (			
 		<View style={defaultStyles.formContainer}>
 
-			<View style={defaultStyles.form}>
+			<View
+				style={defaultStyles.form}
+			>
 
 				<Text style={[defaultStyles.title, { textAlign: 'center', color: '#fff' }]}>Sign Up</Text>
 
 				<RolePicker
 					value={role}
 					onChange={onChangeRole}
+					onKeyPress={onEnter}
 				/>
 
 				<FormInput
@@ -110,6 +182,8 @@ export default ({ setUser }) => {
 					autoCapitalize='none'
 					keyboardType='email-address'
 					style={defaultStyles.input}
+					invalid={hasError('email')}
+					onKeyPress={onEnter}
 				/>
 
 				<FormInput
@@ -121,6 +195,7 @@ export default ({ setUser }) => {
 					autoCapitalize='none'
 					keyboardType='default'
 					style={defaultStyles.input}
+					onKeyPress={onEnter}
 				/>
 
 				<FormInput
@@ -133,6 +208,8 @@ export default ({ setUser }) => {
 					keyboardType='default'
 					secureTextEntry={true}
 					style={defaultStyles.input}
+					invalid={hasError('password')}
+					onKeyPress={onEnter}
 				/>
 
 				<FormInput
@@ -145,13 +222,25 @@ export default ({ setUser }) => {
 					keyboardType='default'
 					secureTextEntry={true}
 					style={defaultStyles.input}
+					invalid={hasError('password')}
+					onKeyPress={onEnter}
 				/>
+
+				{errorMessage && (
+					<Text
+						style={{
+							color: '#f00',
+							marginBottom: 15,
+					}}>
+						{errorMessage}
+					</Text>
+				)}
 
 				<Button
 					size='large'
 					type='primary'
 					disabled={loading}
-					onClick={onSubmit}
+					onClick={submitData}
 					style={{ color: '#fff' }}
 				>
 					{loading ? 'Signing Up' : 'Sign Up'}

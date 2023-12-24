@@ -11,7 +11,7 @@ const PORT = process.env.PORT || require('./config').PORT
 
 const {
     authenticate,
-    closeAccount,
+    deleteAccount,
     handleSignin,
     handleSignout,
     handleSignup,
@@ -100,7 +100,7 @@ app.post(   '/signin',                 handleSignin)
 app.post(   '/signup',                 handleSignup)
 app.post(   '/authenticate',           authenticate)
 app.post(   '/signout',                handleSignout)
-app.post(   '/unsubscribe',            closeAccount)
+app.post(   '/unsubscribe',            deleteAccount)
 
 // users
 app.get(    '/users',                   getAllUsers)

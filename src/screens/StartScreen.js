@@ -13,6 +13,7 @@ import { AppContext } from '../AppContext'
 import { Button } from 'antd'
 import { connect } from '../Data'
 import { checkRoute } from '../navigators/RootNavigation'
+import { navigate } from '../navigators/RootNavigation'
 
 export default () => {
 
@@ -25,7 +26,11 @@ export default () => {
     const [showSignInModal, setShowSignInModal] = useState(false)
 
     useEffect(() => {
-        if (user) checkRoute()
+        if (user) {
+            // console.log('StartScreen:user', user)
+            // checkRoute()
+            navigate('Home')
+        }
     }, [user])
 
     const onConnect = async type => {
@@ -111,6 +116,7 @@ export default () => {
             >
                 <SignUpForm
                     setUser={setUser}
+                    onComplete={() => setShowSignUpModal(false)}
                 />
             </PopUpModal>
 

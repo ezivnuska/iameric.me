@@ -72,11 +72,18 @@ export default () => {
     } = useContext(AppContext)
     
     useEffect(() => {
-        if (user) checkRoute()
-        else verifyUser()
-    }, [user])
+        init()
+    }, [])
 
-    const verifyUser = async () => {
+    const init = async () => {
+        const oldUser = await checkUser()
+        if (oldUser) {
+            console.log('NAVIGATION:checkRoute')
+            checkRoute()
+        }
+    }
+
+    const checkUser = async () => {
         
         dispatch({ type: 'SET_LOADING', loading: 'Navigation: verifying user...' })
         const userToken = await AsyncStorage.getItem('userToken')
@@ -84,8 +91,7 @@ export default () => {
         if (!userToken) {
             await cleanStorage()
             dispatch({ type: 'SET_LOADING', loading: null })
-            navigate('Start')
-            return
+            return null
         }
 
         const verifiedUser = await authenticate(userToken)
@@ -94,12 +100,13 @@ export default () => {
 
         if (!verifiedUser) {
             await cleanStorage()
-            navigate('Start')
-            return
+            return null
         }
         
         AsyncStorage.setItem('userToken', verifiedUser.token)
         dispatch({ type: 'SET_USER', user: verifiedUser })
+
+        return verifiedUser
     }
 
     /**

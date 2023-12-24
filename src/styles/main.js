@@ -70,7 +70,7 @@ export default {
 		marginBottom: 7,
 	},
 	inputContainer: {
-		borderBottomWidth: 1,
+		borderBottomWidth: 2,
 		borderBottomColor: '#ccc',
 		marginBottom: 10,
 		paddingBottom: 2,
