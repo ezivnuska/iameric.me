@@ -79,6 +79,7 @@ const SignInForm = ({ onComplete }) => {
 	}
 
 	const handleError = ({ invalidField, msg }) => {
+		console.log('handleError', msg)
 		addError(invalidField)
 		setErrorMessage(msg)
 	}
@@ -91,14 +92,15 @@ const SignInForm = ({ onComplete }) => {
 		storeEmail(email)
 		setLoading(true)
 
-		const response = await signin(email, password)
-		
-		if (!response) {
-			console.log('Error authenticating user')
-		} else if (response.error) {
-			handleError(response)
+		const data = await signin(email, password)
+		console.log('data', data)
+		if (!data) {
+			setErrorMessage('Error authenticating user')
+		} else if (data.error) {
+			console.log('Error:msg:', data.msg)
+			setErrorMessage(data.msg)
 		} else {
-			onComplete(response.user)
+			onComplete(data)
 		}
 
 		setLoading(false)

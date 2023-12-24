@@ -24,6 +24,7 @@ const FeedbackForm = ({ onComplete }) => {
 
     const { user } = state
     const [ entry, setEntry ] = useState('')
+    const [ loading, setLoading ] = useState(false)
 
     const onChangeEntry = value => setEntry(value)
     
@@ -31,12 +32,16 @@ const FeedbackForm = ({ onComplete }) => {
         const { username, _id } = user
         const newEntry = { username, userId: _id, text: entry }
         
+        setLoading(true)
+        
         const { data } = await axios.post('/api/entry', newEntry)
         
         if (data) {
             dispatch({ type: 'NEW_ENTRY', entry: data.entry })
             setEntry('')
         } else console.log('Error submitting feedback')
+
+        setLoading(false)
         
         onComplete()
     }
@@ -71,6 +76,7 @@ const FeedbackForm = ({ onComplete }) => {
                 dirty={entry.length}
                 valid={entry.length}
                 onClick={onSubmit}
+                disabled={loading}
             />
 
         </View>

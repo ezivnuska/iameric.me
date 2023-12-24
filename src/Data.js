@@ -35,7 +35,7 @@ export const checkStatus = async () => {
     }
     
     const { token, ...user } = userVerified
-    console.log('setUserToken', token)
+    // console.log('setUserToken', token)
     await setUserToken(token)
 
     return user
@@ -54,9 +54,9 @@ export const connect = async type => {
     const { data } = await axios.
         post('/api/signin', { email, password })
     
-    console.log('connect-->', data)
+    // console.log('connect-->', data)
     if (data && data.user) {
-        console.log('setUserToken', data.user.token)
+        // console.log('setUserToken', data.user.token)
         await setUserToken(data.user.token)
     } else if (data && data.error) {
         console.log('Error authenticating user', data.msg)
@@ -77,16 +77,15 @@ export const signin = async (email, password) => {
     if (!data) {
         console.log('Error: No data returned when authenticating user')
         return null
-    } else if (data.error) {
-        console.log('Error: No data returned when authenticating user')
-        return null
-    } else {
-        console.log('setUserToken', data.token)
-        await setUserToken(data.token)
+    } else if (data.user) {
+        await setUserToken(data.user.token)
         console.log('signin successful')
+    } else {
+        console.log('Error: No data returned when authenticating user')
+        return data
     }
 
-    return data
+    return data.user
 }
 
 export const signup = async (email, password, role, username) => {
