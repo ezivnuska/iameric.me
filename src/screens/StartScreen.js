@@ -28,18 +28,23 @@ export default () => {
     const onConnect = async type => {
         
         const connectedUser = await connect(type)
-
-        if (connectedUser) setUser(connectedUser)
-        else console.log(`Error connecting as ${type}.`)
-        
+        // console.log('connectedUser', connectedUser)
+        if (!connectedUser) {
+            console.log('Error: Could not connect user.')
+            return
+        } else {
+            setUser(connectedUser)
+            return
+        }
     }
 
-    const setUser = ({
+    const setUser = async ({
         _id,
         email,
         images,
         profileImage,
         role,
+        token,
         username,
     }) => {
         dispatch({
@@ -50,18 +55,21 @@ export default () => {
                 images,
                 profileImage,
                 role,
+                token,
                 username,
-            }
+            },
         })
         dispatch({ type: 'SET_VERIFIED', verified: true })
         dispatch({ type: 'SET_LOADING', loading: false })
         navigate('Secure')
     }
 
-    const onModalClosed = () => {
+    const onModalClosed = response => {
+        // console.log('closing modal, setting user', response)
+        setUser(response)
         if (showSignUpModal) setShowSignUpModal(false)
         if (showSignInModal) setShowSignInModal(false)
-        if (loading) dispatch({ type: 'SET_LOADING', loading: 'false' })
+        // if (loading) dispatch({ type: 'SET_LOADING', loading: 'false' })
     }
 
     return (
@@ -112,7 +120,6 @@ export default () => {
                 onRequestClose={() => setShowSignUpModal(false)}
             >
                 <SignUpForm
-                    setUser={setUser}
                     onComplete={onModalClosed}
                 />
             </PopUpModal>
@@ -122,7 +129,6 @@ export default () => {
                 onRequestClose={() => setShowSignInModal(false)}
             >
                 <SignInForm
-                    setUser={setUser}
                     onComplete={onModalClosed}
                 />
             </PopUpModal>

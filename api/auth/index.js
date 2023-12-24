@@ -64,10 +64,12 @@ const getDecodedUser = token => jwt.decode(token, SESSION_SECRET)
 
 const handleSignin = async (req, res) => {
     const { email, password } = req.body
+    console.log('email', email)
     
     const user = await User
         .findOne({ email })
         .populate('profileImage', 'filename')
+    console.log('user', user)
 
     if (!user)
         return res.status(200).json({ error: true, invalidField: 'email', msg: 'No user found with that email.' })
@@ -85,30 +87,27 @@ const handleSignin = async (req, res) => {
 
     console.log(`\nUser signed in: ${user.username}`)
     
-    return res.status(200).json(sanitizedUser)
+    return res.status(200).json({ user: sanitizedUser })
 }
 
 const createUser = async (email, username, password, role) => {
     
     let user = await User.findOne({ email })
-    console.log('user', user)
+    console.log('user exists', user)
     if (user) {
         console.log('user with that email already exists.')
         return res.status(200).json({ error: true, msg: 'Email already in use.'})
+    } else {
+        user = await User.create({ username, email, password, role })
     }
-
-    user = await User.create({ username, email, password, role })
 
     if (!user) {
         console.log(`Error creating user: ${username}, ${email}`)
         return null
     }
-    
-    await user.save()
-
-    console.log('New user created', user.username)
-    
+    console.log('user exists', user)
     const newToken = createToken(user)
+    console.log('newTOken', newToken)
     
     user = await User
         .findOneAndUpdate(
@@ -123,15 +122,13 @@ const createUser = async (email, username, password, role) => {
         return null
     }
 
-    console.log(`User created: ${user.username}`)
-
     return user
 }
 
 const handleSignup = async (req, res) => {
     const { email, password, username, role } = req.body
     console.log('password', password)
-    bcrypt.genSalt(10, async (err, salt) => {
+    return bcrypt.genSalt(10, async (err, salt) => {
         console.log('salt', salt)
         bcrypt.hash(password, salt, async (err, hash) => {
             if (err) {
@@ -144,12 +141,14 @@ const handleSignup = async (req, res) => {
                 return res.status(200).json({ error: true, msg: 'Problem with hash.' })
             }
             const user = await createUser(email, username, hash, role)
-            console.log('new user created:', user)
+
             if (!user) {
                 console.log('problem with user')
                 return res.status(200).json({ error: true, msg: 'Could not create new user.' })
+            } else {
+                console.log('new user created:', user)
+                return res.status(200).json({ user })
             }
-            return res.status(200).json({ user })
         })
     })
 }
@@ -161,6 +160,8 @@ const authenticate = async (req, res) => {
     console.log('authenticating saved token...')
     
     const userFromToken = getDecodedUser(token)
+
+    if (!userFromToken) return res.status(200).json(null)
     
     console.log('user from token:', userFromToken)
     console.log(`\n${userFromToken.username} was previously connected.\n`)

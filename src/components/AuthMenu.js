@@ -94,12 +94,14 @@ export default () => {
     
     const {
         cart,
+        loading,
         user,
+        verified,
     } = useContext(AppContext)
 
     const { items } = cart
 
-    return user ? (
+    return (verified && user && !loading) ? (
         <View style={{
             display: 'flex',
             flexDirection: 'row',

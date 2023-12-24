@@ -14,7 +14,6 @@ import base from '../styles/base'
 export default () => {
     
     const {
-        // state,
         user,
     } = useContext(AppContext)
     
@@ -42,7 +41,7 @@ export default () => {
                         flexBasis: 'auto',
                     }}
                 >
-                    <Brand onPress={() => navigate(user ? 'Home' : 'Start')} />
+                    <Brand onPress={() => navigate('Splash')} />
                 </View>
 
                 <View

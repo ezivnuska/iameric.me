@@ -21,3 +21,8 @@ export const storeEmail = async email => {
 
 export const getSavedEmail = async () => await AsyncStorage.getItem('email')
 
+export const setUserToken = async token => {
+    return await AsyncStorage.setItem('userToken', token)
+}
+export const getUserToken = async () => await AsyncStorage.getItem('userToken')
+

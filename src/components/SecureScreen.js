@@ -23,8 +23,7 @@ export default ({ children }) => {
 
     const checkUser = async () => {
         const token = await AsyncStorage.getItem('userToken')
-        if (!token) navigate('Start')
-        else {
+        if (token) {
             const verifiedUser = await authenticate(token)
             if (!verifiedUser) navigate('Start')
             else {
@@ -33,6 +32,9 @@ export default ({ children }) => {
                 dispatch({ type: 'SET_LOADING', loading: false })
                 navigate('Secure')
             }
+        } else {
+            dispatch({ type: 'SET_LOADING', loading: false })
+            navigate('Start')
         }
     } 
 

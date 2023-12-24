@@ -12,7 +12,7 @@ import { isValidEmail } from '../utils/tools'
 import { signup } from '../Data'
 import { storeEmail, getSavedEmail } from '../utils/storage'
 
-export default ({ onComplete, setUser }) => {
+export default ({ onComplete }) => {
 	
 	const [email, setEmail] = useState('')
 	const [username, setUsername] = useState('')
@@ -140,13 +140,12 @@ export default ({ onComplete, setUser }) => {
 		storeEmail(email)
 		setLoading(true)
 		
-		const response = await signup(email, password, role, username)
-		
-		if (response && response.error) {
-			handleError(response)
-		} else if (response) {
-			setUser(response)
-			onComplete()
+		const { data } = await signup(email, password, role, username)
+		console.log('signup response', data)
+		if (data && data.user) {
+			onComplete(data.user)
+		} else if (data) {
+			handleError(data)
 		} else {
 			console.log('Error signing up new user')
 		}

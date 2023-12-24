@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-import { cleanStorage, clearStorage } from './utils/storage'
+import { cleanStorage, clearStorage, getUserToken, setUserToken } from './utils/storage'
 
 export const authenticate = async token => {
     
@@ -15,14 +15,14 @@ export const authenticate = async token => {
     
     const { user } = data
     
-    await AsyncStorage.setItem('userToken', user.token)
+    await setUserToken(user.token)
     
     return user
 }
 
 export const checkStatus = async () => {
     
-    const userToken = await AsyncStorage.getItem('userToken')
+    const userToken = await getUserToken('userToken')
     
     if (!userToken) return null
     
@@ -35,8 +35,8 @@ export const checkStatus = async () => {
     }
     
     const { token, ...user } = userVerified
-    
-    await AsyncStorage.setItem('userToken', token)
+    console.log('setUserToken', token)
+    await setUserToken(token)
 
     return user
 }
@@ -53,15 +53,20 @@ export const connect = async type => {
     
     const { data } = await axios.
         post('/api/signin', { email, password })
-        
-    if (!data) {
-        console.log('Error authenticating user')
+    
+    console.log('connect-->', data)
+    if (data && data.user) {
+        console.log('setUserToken', data.user.token)
+        await setUserToken(data.user.token)
+    } else if (data && data.error) {
+        console.log('Error authenticating user', data.msg)
+        return null
+    } else {
+        console.log('error connecting user.')
         return null
     }
     
-    await AsyncStorage.setItem('userToken', data.token)
-
-    return data
+    return data.user
 }
 
 export const signin = async (email, password) => {
@@ -70,9 +75,14 @@ export const signin = async (email, password) => {
         post('/api/signin', { email, password })
     
     if (!data) {
-        console.log('Error authenticating user')
-    } else if (!data.error) {
-        await AsyncStorage.setItem('userToken', data.token)
+        console.log('Error: No data returned when authenticating user')
+        return null
+    } else if (data.error) {
+        console.log('Error: No data returned when authenticating user')
+        return null
+    } else {
+        console.log('setUserToken', data.token)
+        await setUserToken(data.token)
         console.log('signin successful')
     }
 
@@ -81,18 +91,18 @@ export const signin = async (email, password) => {
 
 export const signup = async (email, password, role, username) => {
     
-    const { data } = await axios.
+    const newUser = await axios.
         post('/api/signup', { email, password, role, username })
     
-    if (!data) {
+    if (!newUser) {
         console.log('Error authenticating user')
         return null
     } else {
-        await AsyncStorage.setItem('userToken', data.token)
+        await setUserToken(newUser.token)
         console.log('signup successful')
     }
 
-    return data
+    return newUser
 }
 
 export const unsubscribe = async id => {

@@ -12,7 +12,7 @@ import { isValidEmail } from '../utils/tools'
 import { storeEmail, getSavedEmail } from '../utils/storage'
 import { Button } from 'antd'
 
-const SignInForm = ({ onComplete, setUser }) => {
+const SignInForm = ({ onComplete }) => {
 
     const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -93,13 +93,12 @@ const SignInForm = ({ onComplete, setUser }) => {
 
 		const response = await signin(email, password)
 		
-		if (response && response.error) {
-			handleError(response)
-		} else if (response) {
-			setUser(response)
-			onComplete()
-		} else {
+		if (!response) {
 			console.log('Error authenticating user')
+		} else if (response.error) {
+			handleError(response)
+		} else {
+			onComplete(response.user)
 		}
 
 		setLoading(false)

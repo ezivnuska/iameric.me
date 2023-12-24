@@ -18,6 +18,7 @@ import { navigate } from '../navigators/RootNavigation'
 import { authenticate } from '../Data'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { CenteredView } from 'src/components'
+import { setUserToken } from '../utils/storage'
 
 export default ({ navigation }) => {
     
@@ -51,7 +52,8 @@ export default ({ navigation }) => {
                 navigation.navigate('Start')
             } else {
                 // if token verified...
-                AsyncStorage.setItem('userToken', verifiedUser.token)
+                console.log('setUserToken', verifiedUser.token)
+                await setUserToken(verifiedUser.token)
 
                 dispatch({ type: 'SET_USER', user: verifiedUser })
 
