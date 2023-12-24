@@ -212,7 +212,6 @@ const deleteAccount = async (req, res) => {
     console.log(`\ndeleting account: ${id}`)
 
     const deletedEntries = await Entry.deleteMany({ userId: id })
-    console.log('deletedEntries', deletedEntries)
     
     if (!deletedEntries) {
         console.log('could not delete entries.')
@@ -221,15 +220,15 @@ const deleteAccount = async (req, res) => {
     }
 
     const deletedImages = await UserImage.deleteMany({ user: id })
-    console.log(`deletedImages: ${deletedImages}`)
+    
     if (!deletedImages) {
         console.log('could not delete images.')
     } else {
         console.log(`deleted ${deletedImages.deletedCount} images`)
     }
 
-    const deletedUser = await User.deleteOne({ id })
-    console.log(`deletedUser: ${deletedUser}`)
+    const deletedUser = await User.findOneAndDelete({ _id: id })
+    
     if (!deletedUser) {
         console.log('Error deleting user.')
         return res.status(200).json({
@@ -238,11 +237,9 @@ const deleteAccount = async (req, res) => {
         })
     }
     
-    console.log('User deleted.', deletedUser)
-    
-    const removed = removeAllImageFilesByUsername(deletedUser.username)
+    const imagesRemoved = removeAllImageFilesByUsername(deletedUser.username)
+    if (imagesRemoved) console.log('Image files removed.')
 
-    console.log('image files removed', removed)
     return res.status(200).json({
         success: true,
         msg: 'Account closed.'

@@ -31,15 +31,18 @@ export default ({ id }) => {
         setLoading('Deleting account...')
         await clearStorage()
         const response = await unsubscribe(id)
-        console.log('deleteAccount response:', response)
+        // console.log('deleteAccount response:', response)
         setLoading(null)
 
         if (response && response.success) {
             console.log('Successfully deleted account.')
+            dispatch({ type: 'SIGNOUT' })
         } else if (response && response.msg) {
             console.log('Unsub Error:', response.msg)
-        } else {
+        } else if (!response) {
             console.log('Error deleting account.')
+        } else {
+            // console.log('account deletion response: ', response)
         }
     }
 

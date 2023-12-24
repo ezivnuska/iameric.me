@@ -81,7 +81,7 @@ export default () => {
 
     const getImageData = async () => {
         
-        setLoading('Getting image data...')
+        // setLoading('Getting image data...')
         
         const { data } = await axios.get(`/api/user/images/${user._id}`)
         
@@ -101,7 +101,7 @@ export default () => {
             return null
         }
 
-        console.log('uploading image', imageData)
+        // console.log('uploading image', imageData)
 
         setLoading('Uploading image...')
 

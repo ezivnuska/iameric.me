@@ -70,13 +70,22 @@ const updateProfileImage = async (req, res) => {
 
 const removeImage = path => rm(path, () => console.log('removed file at path', path))
 
-const removeAllImageFilesByUsername = username => rmSync(
-    `${imagePath}/${username}`,
-    {
-        recursive: true,
-        force: true ,
+const removeAllImageFilesByUsername = username => {
+    let imagesRemoved = false
+    try {
+        rmSync(
+            `${imagePath}/${username}`,
+            {
+                recursive: true,
+                force: true ,
+            }
+        )
+        imagesRemoved = true
+    } catch (e) {
+        console.log(`Warning: Error deleting image directory '/assets${username}'`)
     }
-)
+    return imagesRemoved
+}
 
 const removeImageAndThumb = async (filename, path) => {
     try {

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    StyleSheet,
     View,
 } from 'react-native'
 import {
@@ -12,7 +11,7 @@ import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 import base from '../styles/base'
 
-const Header = () => {
+export default () => {
     
     const {
         // state,
@@ -22,13 +21,35 @@ const Header = () => {
     return (
         <CenteredContent type='full' style={{ backgroundColor: base.headerBGColor }}>
             
-            <View style={styles.container}>
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'stretch',
+                    width: '100%',
+                    minWidth: 300,
+                    maxWidth: 900,
+                    marginHorizontal: 'auto',
+                    height: 50,
+                    minHeight: 50,
+                    maxHeight: 50,
+                }}
+            >
                 
-                <View style={styles.brand}>
+                <View
+                    style={{
+                        flexBasis: 'auto',
+                    }}
+                >
                     <Brand onPress={() => navigate(user ? 'Home' : 'Start')} />
                 </View>
 
-                <View style={styles.auth}>
+                <View
+                    style={{
+                        flexBasis: 'auto',
+                    }}
+                >
                     <AuthMenu />
                 </View>
             </View>
@@ -36,33 +57,3 @@ const Header = () => {
         </CenteredContent>
     )
 }
-
-export default Header
-
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'stretch',
-        width: '100%',
-        minWidth: 300,
-        maxWidth: 900,
-        marginHorizontal: 'auto',
-        height: 50,
-        minHeight: 50,
-        maxHeight: 50,
-    },
-    brand: {
-        // flex: 1,
-        // flexGrow: 1,
-        // flexShrink: 0,
-        flexBasis: 'auto',
-    },
-    auth: {
-        // flex: 1,
-        // flexGrow: 0,
-        // flexShrink: 0,
-        flexBasis: 'auto',
-    },
-})
