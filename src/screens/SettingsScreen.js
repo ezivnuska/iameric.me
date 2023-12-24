@@ -18,13 +18,13 @@ export default () => {
         user,
     } = useContext(AppContext)
 
-    useEffect(() => {
-        console.log('user on load', user)
-    }, [])
+    // useEffect(() => {
+    //     console.log('user on load', user)
+    // }, [])
 
-    useEffect(() => {
-        console.log('user changed', user)
-    }, [user])
+    // useEffect(() => {
+    //     console.log('user changed', user)
+    // }, [user])
 
     return (
         <SecureScreen>

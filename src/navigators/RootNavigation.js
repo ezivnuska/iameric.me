@@ -29,7 +29,7 @@ export const checkRoute = async () => {
         navigate(savedRoute)
         return
     }
-    navigate('Home')
+    // navigate('Home')
 }
 
 const handleRouteChange = async (currentRoute, nextRoute, params) => {
@@ -63,9 +63,9 @@ export const navigate = async (nextRoute, params) => {
 
     if (navigationRef.isReady()) {
         
-        const { name } = navigationRef.getCurrentRoute()
+        // const { name } = navigationRef.getCurrentRoute()
 
-        if (nextRoute !== name) await handleRouteChange(name, nextRoute, params)
+        // if (nextRoute !== name) await handleRouteChange(name, nextRoute, params)
 
         if (params && params.id)
             navigationRef.navigate(nextRoute, params)

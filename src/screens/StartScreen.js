@@ -12,34 +12,22 @@ import {
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
 import { connect } from '../Data'
-import { checkRoute } from '../navigators/RootNavigation'
+// import { checkRoute } from '../navigators/RootNavigation'
 import { navigate } from '../navigators/RootNavigation'
 
 export default () => {
 
     const {
         dispatch,
-        user,
+        loading,
     } = useContext(AppContext)
 
     const [showSignUpModal, setShowSignUpModal] = useState(false)
     const [showSignInModal, setShowSignInModal] = useState(false)
 
-    useEffect(() => {
-        if (user) {
-            // console.log('StartScreen:user', user)
-            // checkRoute()
-            navigate('Home')
-        }
-    }, [user])
-
     const onConnect = async type => {
-
-        dispatch({ type: 'SET_LOADING', loading: 'connecting' })
         
         const connectedUser = await connect(type)
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
 
         if (connectedUser) setUser(connectedUser)
         else console.log(`Error connecting as ${type}.`)
@@ -65,6 +53,15 @@ export default () => {
                 username,
             }
         })
+        dispatch({ type: 'SET_VERIFIED', verified: true })
+        dispatch({ type: 'SET_LOADING', loading: false })
+        navigate('Secure')
+    }
+
+    const onModalClosed = () => {
+        if (showSignUpModal) setShowSignUpModal(false)
+        if (showSignInModal) setShowSignInModal(false)
+        if (loading) dispatch({ type: 'SET_LOADING', loading: 'false' })
     }
 
     return (
@@ -116,7 +113,7 @@ export default () => {
             >
                 <SignUpForm
                     setUser={setUser}
-                    onComplete={() => setShowSignUpModal(false)}
+                    onComplete={onModalClosed}
                 />
             </PopUpModal>
 
@@ -126,7 +123,7 @@ export default () => {
             >
                 <SignInForm
                     setUser={setUser}
-                    onComplete={() => setShowSignInModal(false)}
+                    onComplete={onModalClosed}
                 />
             </PopUpModal>
         </Screen>
