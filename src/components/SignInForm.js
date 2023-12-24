@@ -93,7 +93,7 @@ const SignInForm = ({ onComplete }) => {
 		setLoading(true)
 
 		const data = await signin(email, password)
-		console.log('data', data)
+		// console.log('data', data)
 		if (!data) {
 			setErrorMessage('Error authenticating user')
 		} else if (data.error) {
