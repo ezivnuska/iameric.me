@@ -94,6 +94,7 @@ export default ({ onSubmit, location }) => {
     // }, [location])
 
     const submitForm = () => {
+        if (!isValid()) return
         const { _id, username } = user
         const newLocation = { userId: _id, username, address1, address2, city, state, zip }
         onSubmit(newLocation)
@@ -109,6 +110,10 @@ export default ({ onSubmit, location }) => {
         )
     }
 
+	const onEnter = e => {
+		if (e.code === 'Enter') submitForm()
+	}
+
     return (
         <View style={defaultStyles.form}>
             
@@ -121,6 +126,7 @@ export default ({ onSubmit, location }) => {
                 autoCapitalize='words'
                 keyboardType='default'
                 style={defaultStyles.input}
+                onKeyPress={onEnter}
             />
             
             <FormInput
@@ -131,6 +137,7 @@ export default ({ onSubmit, location }) => {
                 autoCapitalize='words'
                 keyboardType='default'
                 style={defaultStyles.input}
+                onKeyPress={onEnter}
             />
             
             <View
@@ -145,6 +152,7 @@ export default ({ onSubmit, location }) => {
                     autoCapitalize='words'
                     keyboardType='default'
                     style={defaultStyles.input}
+					onKeyPress={onEnter}
                 />
                 
                 <FormInput
@@ -156,6 +164,7 @@ export default ({ onSubmit, location }) => {
                     autoCapitalize='none'
                     keyboardType='default'
                     style={[defaultStyles.input, { width: 100 }]}
+					onKeyPress={onEnter}
                 />
             </View>
             
@@ -168,6 +177,7 @@ export default ({ onSubmit, location }) => {
                 autoCapitalize='none'
                 keyboardType='default'
                 style={defaultStyles.input}
+                onKeyPress={onEnter}
             />
 
             <FormButton

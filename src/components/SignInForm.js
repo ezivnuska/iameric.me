@@ -145,15 +145,14 @@ const SignInForm = ({ onComplete }) => {
 					onKeyPress={onEnter}
 				/>
 
-				{errorMessage && (
-					<Text
-						style={{
-							color: '#f00',
-							marginBottom: 15,
-					}}>
-						{errorMessage}
-					</Text>
-				)}
+				
+				<Text
+					style={{
+						color: '#f00',
+						marginBottom: 15,
+				}}>
+					{errorMessage || ' '}
+				</Text>
 
 				<Button
 					size='large'

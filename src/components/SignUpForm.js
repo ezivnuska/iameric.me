@@ -141,7 +141,7 @@ export default ({ onComplete }) => {
 		setLoading(true)
 		
 		const { data } = await signup(email, password, role, username)
-		console.log('signup response', data)
+		
 		if (data && data.user) {
 			onComplete(data.user)
 		} else if (data) {
@@ -225,15 +225,13 @@ export default ({ onComplete }) => {
 					onKeyPress={onEnter}
 				/>
 
-				{errorMessage && (
-					<Text
-						style={{
-							color: '#f00',
-							marginBottom: 15,
-					}}>
-						{errorMessage}
-					</Text>
-				)}
+				<Text
+					style={{
+						color: '#f00',
+						marginBottom: 15,
+				}}>
+					{errorMessage || ' '}
+				</Text>
 
 				<Button
 					size='large'

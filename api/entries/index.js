@@ -3,15 +3,14 @@ const Entry = require('../../models/Entry')
 const createEntry = async (req, res) => {
     
     const { username, userId, text } = req.body
-    const newEntry = await Entry
-        .create({ username, userId, text })
-        .then(result => {
-            return res.json({
-                entry: result,
-            })
-        })
-    
-    return newEntry
+    const entry = await Entry.create({ username, userId, text })
+
+    if (!entry) {
+        console.log('Problem creating entry.')
+        return res.status(200).json(null)
+    } else {
+        return res.json({ entry })
+    }
 }
 
 const getEntries = async (req, res) => {

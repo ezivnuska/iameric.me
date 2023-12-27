@@ -1,8 +1,9 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const Entry = require('../../models/Entry')
+const Location = require('../../models/Location')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
-const Entry = require('../../models/Entry')
 const {
     removeAllImageFilesByUsername,
 } = require('../images')
@@ -218,6 +219,13 @@ const deleteAccount = async (req, res) => {
         console.log('could not delete entries.')
     } else {
         console.log(`deleted ${deletedEntries.deletedCount} entries`)
+    }
+
+    const deletedLocation = await Location.deleteOne({ userId: id })
+    if (!deletedLocation) {
+        console.log('could not delete user location.')
+    } else {
+        console.log(`deleted ${deletedLocation.deletedCount} location`)
     }
 
     const deletedImages = await UserImage.deleteMany({ user: id })
