@@ -10,24 +10,27 @@ import {
     LoadingView,
 } from '@components'
 import { AppContext } from '../AppContext'
-import { goBack } from '../navigators/RootNavigation'
+// import { goBack, navigate } from '../navigators/RootNavigation'
 import { loadUsers } from '../utils/data'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ route }) => {
+export default ({ navigation, route }) => {
 
     const {
         dispatch,
+        loading,
         users,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(null)
+    // const [loading, setLoading] = useState(null)
     const [userDetails, setUserDetails] = useState(null)
 
     useEffect(() => {
 
-        if (!route.params || !route.params.id) goBack()
+        if (!route.params || !route.params.id)
+            console.log('missing required id param')
+            // goBack()
         
         if (!users) fetchUsers()
 
@@ -52,15 +55,15 @@ export default ({ route }) => {
 
     const fetchUsers = async () => {
 
-        setLoading(true)
-            
+        dispatch({ type: 'SET_LOADING', loading: 'Loading users...' })
+
         const loadedUsers = await loadUsers(loadedUsers)
         
         if (loadedUsers) {
             dispatch({ type: 'SET_USERS', users: loadedUsers })
         }
 
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     // TODO: clean this.
@@ -84,15 +87,15 @@ export default ({ route }) => {
     }
 
     return (
-        <SecureScreen>
+        <SecureScreen navigation={navigation}>
             
             {loading
-                ? <LoadingView label={loading} />
+                ? <LoadingView />
                 : userDetails
                     ? (
                         <>
                             <Pressable
-                                onPress={() => goBack()}
+                                onPress={() => navigation.navigate('UserList')}
                             >
                                 <Text
                                     style={{

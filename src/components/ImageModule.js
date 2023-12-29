@@ -62,11 +62,10 @@ const Header = ({ onPress }) => {
     )
 }
 
-export default () => {
+export default ({ user }) => {
 
     const {
         dispatch,
-        user,
     } = useContext(AppContext)
 
     const [modalVisible, setModalVisible] = useState(false)
@@ -76,12 +75,16 @@ export default () => {
     const [items, setItems] = useState(null)
 
     useEffect(() => {
-        getImageData()
+        if (user) getImageData()
     }, [])
+
+    useEffect(() => {
+        if (user && !loading && !items) getImageData()
+    }, [user])
 
     const getImageData = async () => {
         
-        // setLoading('Getting image data...')
+        setLoading(true)
         
         const { data } = await axios.get(`/api/user/images/${user._id}`)
         
@@ -147,16 +150,17 @@ export default () => {
                 
             <Header onPress={() => setModalVisible(true)} />
 
-            {loading ? (
-                <Text>{loading}</Text>
-            ) : (items && items.length) ? (
-                <ImageList
-                    loading={loading}
-                    images={items}
-                    username={user.username}
-                    onSelected={onSelected}
-                />
-            ) : <Text>No images to display.</Text>}
+            {loading
+                ? <Text>Loading images...</Text>
+                : (items && items.length)
+                    ? (
+                        <ImageList
+                            loading={loading}
+                            images={items}
+                            username={user.username}
+                            onSelected={onSelected}
+                        />
+                    ) : <Text>No images to display.</Text>}
             
             <PopUpModal
                 visible={modalVisible}

@@ -5,7 +5,6 @@ import {
 } from 'react-native'
 import { AppContext } from '../AppContext'
 import {
-    EntryModule,
     UserFilter,
 } from '.'
 import { loadUsers } from '../utils/data'
@@ -42,9 +41,24 @@ export default () => {
         }
     }) : null
 
-    return loading
-        ? <Text>Loading users...</Text>
-        : users
-            ? <UserFilter users={otherUsers()} />
-            : <Text>No users to display.</Text>
+    return (
+        <View>
+            <Text
+                style={{
+                    fontSize: 24,
+                    fontWeight: 700,
+                    lineHeight: 32,
+                    marginBottom: 10,
+                }}
+            >
+                Users
+            </Text>
+
+            {loading
+                ? <Text>Loading users...</Text>
+                : users
+                    ? <UserFilter users={otherUsers()} />
+                    : <Text>No users to display.</Text>}
+        </View>
+    )
 }

@@ -9,7 +9,6 @@ import {
     CartButton,
 } from '.'
 import { AppContext } from '../AppContext'
-import { navigate } from '../navigators/RootNavigation'
 import layout from '../styles/layout'
 import DefaultAvatar from '../images/avatar-default-small.png'
 import { DownOutlined } from '@ant-design/icons'
@@ -44,7 +43,7 @@ const Button = ({ label, onPress, children = null }) => (
     </Pressable>
 )
 
-const UserButton = ({ user }) => {
+const UserButton = ({ onPress, user }) => {
     
     const getSource = () => user.profileImage
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
@@ -52,7 +51,7 @@ const UserButton = ({ user }) => {
     
     return (
         <Pressable
-            onPress={() => navigate('Settings')}
+            onPress={onPress}
             style={{
                 flex: 1,
                 flexGrow: 0,
@@ -90,7 +89,7 @@ const UserButton = ({ user }) => {
     )
 }
 
-export default () => {
+export default ({ onPress }) => {
     
     const {
         cart,
@@ -113,9 +112,9 @@ export default () => {
 
             {items && items.length ? <CartButton /> : null}
 
-            <ForumButton />
+            {/* <ForumButton /> */}
 
-            <UserButton user={user} />
+            <UserButton onPress={onPress} user={user} />
 
         </View>
     ) : null

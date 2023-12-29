@@ -9,7 +9,7 @@ import {
 import { Button } from 'antd'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-import { navigate } from '@navigators/RootNavigation'
+// import { navigate } from '@navigators/RootNavigation'
 // import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cleanStorage } from '../utils/storage'
 
@@ -17,15 +17,15 @@ export default () => {
 
     const {
         dispatch,
+        loading,
         user,
     } = useContext(AppContext)
 
     const [modalVisible, setModalVisible] = useState(false)
-    const [loading, setLoading] = useState(null)
 
     const signout = async () => {
 
-        setLoading('Signing out...')
+        dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
         
         const { data } = await axios
             .post('/api/signout', { _id: user._id })
@@ -37,7 +37,7 @@ export default () => {
         
         await cleanStorage()
         
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
         
         dispatch({ type: 'SIGNOUT' })
     }
@@ -67,7 +67,7 @@ export default () => {
             >
                 {
                     loading
-                        ? <LoadingView label={loading} />
+                        ? <LoadingView />
                         : (
                             <View
                                 style={{

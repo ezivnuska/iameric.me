@@ -1,34 +1,40 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     ActivityIndicator,
     Text,
     View,
 } from 'react-native'
 // import main from '../styles/main'
+import { AppContext } from '../AppContext'
 
-export default ({ label = null, showActivity = null }) => (
-    <View
-        style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-        }}
-    >
-        {showActivity ? (
+export default () => {
+
+    const {
+        loading,
+    } = useContext(AppContext)
+
+    return (
+        <View
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+            }}
+        >
             <ActivityIndicator
                 size='small'
             />
-        ) : null}
 
-        {label ? (
-            <Text
-                style={{
-                    color: '#fff',
-                }}
-            >
-                {label}
-            </Text>
-        ) : null}
+            {loading ? (
+                <Text
+                    style={{
+                        color: '#fff',
+                    }}
+                >
+                    {loading}
+                </Text>
+            ) : null}
 
-    </View>
-)
+        </View>
+    )
+}

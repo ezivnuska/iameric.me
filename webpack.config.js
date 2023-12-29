@@ -14,6 +14,7 @@ const isDebug = process.argv.includes('--mode=development');
 const compileNodeModules = [
   // Add every react-native package that needs compiling
   // 'react-native-gesture-handler',
+  'react-native-vector-icons',
 ].map(moduleName => path.resolve(appDirectory, `node_modules/${moduleName}`));
 
 const babelLoaderConfiguration = {
@@ -40,19 +41,15 @@ const babelLoaderConfiguration = {
       ],
     },
   }],
-};
+}
 
 const svgLoaderConfiguration = {
   test: /\.svg$/,
-  use: [
-    {
-      loader: '@svgr/webpack',
-    },
-  ],
-};
+  loader: '@svgr/webpack',
+}
 
 const imageLoaderConfiguration = {
-  test: /\.(gif|jpe?g|png)$/,
+  test: /\.(gif|svg|jpe?g|png)$/,
   use: {
     loader: 'url-loader',
     options: {
@@ -63,7 +60,7 @@ const imageLoaderConfiguration = {
 }
 
 const fileLoaderConfiguration = {
-  test: /\.(gif|svg|jpe?g|png)$/,
+  test: /\.(gif|jpe?g|png)$/,
   use: {
     loader: 'file-loader',
     options: {
@@ -72,6 +69,19 @@ const fileLoaderConfiguration = {
     },
   },
 }
+
+// const styleLoaderConfig = {
+//   test: /\.(sa|sc|c)ss$/,
+//   use: ['style-loader', 'css-loader', 'sass-loader'],
+//   type: 'fonts',
+// }
+
+const iconLoaderConfiguration = {
+  test: /\.ttf$/,
+  loader: 'file-loader',
+  include: path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
+}
+
 
 let plugins = [
   new HtmlWebpackPlugin({
@@ -91,8 +101,8 @@ let plugins = [
   // new CopyPlugin({
   //   patterns: [
   //     {
-  //       from: './assets',
-  //       to: './assets',
+  //       from: 'src/fonts/style.css',
+  //       to: 'fonts/style.css',
   //     }
   //   ],
   // }),
@@ -124,22 +134,21 @@ module.exports = {
   resolve: {
     // modules: ['node_modules'],
     extensions: [
+      '.mjs',
       '.web.tsx',
-      '.web.ts',
       '.tsx',
+      '.web.ts',
       '.ts',
       '.web.jsx',
+      '.jsx',
       '.web.js',
       '.js',
+      '.css',
+      '.json',
     ],
     alias: {
       'react-native$': 'react-native-web',
-      // 'screens': path.resolve(__dirname, './src/screens'),
-      // 'components': path.resolve(__dirname, './src/components'),
-      // 'navigators': path.resolve(__dirname, './src/navigators'),
-      // 'layout': path.resolve(__dirname, './src/layout'),
-      // 'styles': path.resolve(__dirname, './src/styles'),
-      // 'images': path.resolve(__dirname, './assets'),
+      // 'react-native-vector-icons': 'react-native-vector-icons/dist',
     },
   },
   module: {
@@ -148,6 +157,9 @@ module.exports = {
       fileLoaderConfiguration,
       imageLoaderConfiguration,
       svgLoaderConfiguration,
+      iconLoaderConfiguration,
+      // fontLoaderConfiguration,
+      // styleLoaderConfig,
     ],
   },
   plugins,

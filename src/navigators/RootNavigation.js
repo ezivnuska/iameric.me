@@ -21,7 +21,7 @@ export const checkRoute = async () => {
     
     if (savedRoute && savedRoute !== 'Start') {
         console.log('savedRoute found', savedRoute)
-        if (savedRoute === 'Details' && detail) {
+        if (savedRoute === 'User' && detail) {
             navigate(savedRoute, { id: detail })
             return
         }
@@ -34,7 +34,7 @@ export const checkRoute = async () => {
 
 const handleRouteChange = async (currentRoute, nextRoute, params) => {
     
-    if (nextRoute !== 'Details') {
+    if (nextRoute !== 'User') {
         await AsyncStorage.removeItem('detail')
     } else {
         if (params && params.id)
@@ -43,8 +43,8 @@ const handleRouteChange = async (currentRoute, nextRoute, params) => {
     
     if (
         currentRoute === 'Start' ||
-        currentRoute === 'Details' ||
-        nextRoute !== 'Details'
+        currentRoute === 'User' ||
+        nextRoute !== 'User'
     ) {
         await AsyncStorage.removeItem('prevRoute')
     } else {
@@ -60,16 +60,17 @@ const handleRouteChange = async (currentRoute, nextRoute, params) => {
 }
 
 export const navigate = async (nextRoute, params) => {
-
+    // console.log('navigating', nextRoute)
     if (navigationRef.isReady()) {
         
         // const { name } = navigationRef.getCurrentRoute()
 
         // if (nextRoute !== name) await handleRouteChange(name, nextRoute, params)
-
-        if (params && params.id)
-            navigationRef.navigate(nextRoute, params)
-        else
-            navigationRef.navigate(nextRoute)
+        navigationRef.navigate(nextRoute, params)
+        return
+        // if (params && params.id)
+        //     navigationRef.navigate(nextRoute, params)
+        // else
+        //     navigationRef.navigate(nextRoute)
     }
 }

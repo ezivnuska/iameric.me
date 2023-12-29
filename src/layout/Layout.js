@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import {
     Dimensions,
     SafeAreaView,
-    ScrollView,
+    View,
 } from 'react-native'
 import { Navigation } from '../navigators'
 import { AppContext } from '../AppContext'
@@ -47,21 +47,37 @@ export default () => {
                 width: dims.window.width,
                 height: dims.window.height,
                 backgroundColor: base.backgroundColor,
+                // borderWidth: 2,
+                // borderStyle: 'dashed',
+                // borderColor: 'green',
             }}
         >
             <Header />
-            <ScrollView>
+            <View
+                style={{
+                    height: dims.window.height - 50,
+                    width: dims.window.width,
+                    maxWidth: 375,
+                    marginHorizontal: 'auto',
+                    // borderWidth: 2,
+                    // borderStyle: 'dashed',
+                    // borderColor: 'purple',
+                }}
+            >
                 <Navigation />
-            </ScrollView>
+            </View>
         </SafeAreaView>
     ) : (
         <SafeAreaView
             style={{
                 width: '100%',
                 paddingTop: 100,
+                // borderWidth: 2,
+                // borderStyle: 'dashed',
+                // borderColor: 'purple',
             }}
         >
-            <LoadingView label='i am eric.' />
+            <LoadingView />
         </SafeAreaView>
     )
 }

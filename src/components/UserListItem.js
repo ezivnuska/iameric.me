@@ -7,7 +7,7 @@ import { navigate } from '../navigators/RootNavigation'
 
 export default ({ user, onPress }) => (
     <TouchableOpacity
-        onPress={() => navigate('Details', { id: user._id })}
+        onPress={() => navigate('User', { id: user._id })}
         style={{ borderBottomWidth: 1 }}
     >
         <UserHeading user={user} />

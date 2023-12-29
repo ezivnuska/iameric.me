@@ -16,6 +16,11 @@ export default () => {
     const {
         user,
     } = useContext(AppContext)
+
+    const onBrandClicked = () => {
+        if (user) navigate('Secure', { screen: 'Users' })
+        else navigate('Splash')
+    }
     
     return (
         <CenteredContent type='full' style={{ backgroundColor: base.headerBGColor }}>
@@ -41,7 +46,7 @@ export default () => {
                         flexBasis: 'auto',
                     }}
                 >
-                    <Brand onPress={() => navigate('Splash')} />
+                    <Brand onPress={onBrandClicked} />
                 </View>
 
                 <View
@@ -49,7 +54,11 @@ export default () => {
                         flexBasis: 'auto',
                     }}
                 >
-                    <AuthMenu />
+                    <AuthMenu
+                        onPress={() => navigate('Secure', {
+                            screen: 'Settings',
+                        })
+                    } />
                 </View>
             </View>
 

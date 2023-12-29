@@ -1,61 +1,106 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
     NavigationContainer,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import {
     DetailsScreen,
     FallbackScreen,
+    ForumScreen,
+    ImagesScreen,
     SettingsScreen,
     SplashScreen,
     StartScreen,
-    UserScreen,
     UsersScreen,
 } from '../screens'
-import { checkRoute, navigate, navigationRef } from './RootNavigation'
+import { navigationRef } from './RootNavigation'
 import { AppContext } from '../AppContext'
-import { cleanStorage } from '../utils/storage'
-import { authenticate } from '../Data'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import Icon from 'react-native-vector-icons/Ionicons'
 
-const SecureStack = createNativeStackNavigator()
+const SecureStack = createBottomTabNavigator()
 const SecureStackScreen = () => {
-
     return (
         <SecureStack.Navigator
-            screenOptions={() => ({
-                initialRouteName: 'Home',
-            })}
+            initialRouteName='Users'
+            screenOptions={{
+                headerShown: false,
+                tabBarShowLabel: false,
+                tabBarActiveTintColor: '#fff',
+                tabBarLabelStyle: { fontSize: 18 },
+                tabBarStyle: { backgroundColor: '#000' },
+            }}
         >
             <SecureStack.Screen
-                name='Home'
-                options={{ title: 'Home' }}
-            >
-                {(props) => <UserScreen {...props} />}
-            </SecureStack.Screen>
-
-            <SecureStack.Screen
-                name='Details'
-                options={{ title: 'Details' }}
-            >
-                {(props) => <DetailsScreen {...props} />}
-            </SecureStack.Screen>
-
-            <SecureStack.Screen
-                name='Settings'
-                options={{ title: 'Settings' }}
-            >
-                {(props) => <SettingsScreen {...props} />}
-            </SecureStack.Screen>
+                name='Users'
+                component={UsersStackScreen}
+                options={{
+                    tabBarLabel: 'Users',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='people-circle-outline' size={size} color={color} />
+                    ),
+                }}
+            />
 
             <SecureStack.Screen
                 name='Forum'
-                options={{ title: 'Forum' }}
-            >
-                {(props) => <UsersScreen {...props} />}
-            </SecureStack.Screen>
+                component={ForumScreen}
+                options={{
+                    tabBarLabel: 'Forum',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='chatbubble-outline' size={size} color={color} />
+                    ),
+                }}
+            />
             
+            <SecureStack.Screen
+                name='Settings'
+                component={SettingsScreen}
+                options={{
+                    tabBarLabel: 'Settings',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='cog' size={size} color={color} />
+                    ),
+                }}
+            />
+
+            <SecureStack.Screen
+                name='Images'
+                component={ImagesScreen}
+                options={{
+                    tabBarLabel: 'Images',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='images-outline' size={size} color={color} />
+                    ),
+                }}
+            />
+
         </SecureStack.Navigator>
+    )
+}
+const UsersStack = createNativeStackNavigator()
+const UsersStackScreen = () => {
+
+    return (
+        <UsersStack.Navigator
+            screenOptions={() => ({
+                initialRouteName: 'UserList',
+                headerShown: false,
+            })}
+        >
+            <UsersStack.Screen
+                name='UserList'
+                component={UsersScreen}
+                options={{ title: 'UserList' }}
+            />
+
+            <UsersStack.Screen
+                name='User'
+                component={DetailsScreen}
+                options={{ title: 'User' }}
+            />
+            
+        </UsersStack.Navigator>
     )
 }
 
@@ -64,6 +109,7 @@ const AuthStackScreen = () => (
     <AuthStack.Navigator
         screenOptions={() => ({
             initialRouteName: 'Splash',
+            headerShown: false,
         })}
     >
         <AuthStack.Screen
@@ -81,7 +127,7 @@ const AuthStackScreen = () => (
         <AuthStack.Screen
             name='Secure'
             component={SecureStackScreen}
-            options={{ title: 'Secure' }}
+            options={{ title: 'iameric' }}
         />
         
     </AuthStack.Navigator>
@@ -94,13 +140,19 @@ const config = {
         Secure: {
             path: '',
             screens: {
-                Home: 'home',
-                Details: 'details/:id',
-                Settings: 'settings',
+                Users: {
+                    path: 'users',
+                    screens: {
+                        UserList: '',
+                        User: 'user/:id',
+                        Images: 'images',
+                        Settings: 'settings',
+                    }
+                },
                 Forum: 'forum',
             },
         },
-    }
+    },
 }
 
 const linking = {
@@ -112,96 +164,18 @@ export default () => {
 
     const {
         dispatch,
-        // loading,
-        // user,
+        loading,
+        user,
         // verified,
     } = useContext(AppContext)
     
-    useEffect(() => {
-        dispatch({ type: 'SET_LOADING', loading: 'Initializing...' })
-        // init()
-        // console.log('hello world')
-    }, [])
+    // useEffect(() => {
+    //     if (!user) initialize(dispatch)
+    // }, [])
 
-    // const init = async () => {
-    //     const oldUser = await checkUser()
-    //     if (oldUser) {
-    //         console.log('NAVIGATION:checkRoute')
-    //         checkRoute()
-    //     }
-    // }
-
-    // const linking = {
-    //     prefixes: ['iameric://'],
-    //     config: verified ? {
-    //         initialRouteName: 'Home',
-    //         screens: {
-    //             Home: 'home',
-    //             Details: 'details/:id',
-    //             Settings: 'settings',
-    //             Forum: 'forum',
-    //         },
-    //     } : {
-    //         initialRouteName: 'Start',
-    //         screens: {
-    //             Start: '',
-    //         },
-    //     },
-    // }
-
-    // const checkUser = async () => {
-        
-    //     dispatch({ type: 'SET_LOADING', loading: 'Navigation: verifying user...' })
-    //     const userToken = await AsyncStorage.getItem('userToken')
-        
-    //     if (!userToken) {
-    //         await cleanStorage()
-    //         dispatch({ type: 'SET_LOADING', loading: null })
-    //         return null
-    //     }
-
-    //     const verifiedUser = await authenticate(userToken)
-        
-    //     dispatch({ type: 'SET_LOADING', loading: null })
-
-    //     if (!verifiedUser) {
-    //         await cleanStorage()
-    //         return null
-    //     }
-        
-    //     AsyncStorage.setItem('userToken', verifiedUser.token)
-    //     dispatch({ type: 'SET_USER', user: verifiedUser })
-
-    //     return verifiedUser
-    // }
-
-    /**
-     * Linking Configuration
-     */
-    
-    // const linking = {
-    //     // Prefixes accepted by the navigation container, should match the added schemes
-    //     prefixes: ['myapp://'],
-    //     // Route config to map uri paths to screens
-    //     config: {
-    //         // Initial route name to be added to the stack before any further navigation,
-    //         // should match one of the available screens
-    //         initialRouteName: 'Splash',
-    //         screens: {
-    //             Splash: '/splash',
-    //             Start: '',
-    //             // myapp://home -> HomeScreen
-    //             Home: 'home',
-    //             // myapp://details/1 -> DetailsScreen with param id: 1
-    //             Details: 'details/:id',
-    //             // Start: '/splash',
-    //             // Home: '/',
-    //             // Details: '/details/:id',
-    //             Settings: 'settings',
-    //             Forum: 'forum',
-    //         },
-    //     },
-    // }
+    // useEffect(() => {
+    //     if (!loading && !user) initialize(dispatch)
+    // }, [loading])
 
     return (
         <NavigationContainer
@@ -209,20 +183,6 @@ export default () => {
             linking={linking}
             fallback={<FallbackScreen />}
             // onStateChange={async state => {
-            //     // const currentRoute = navigationRef.getCurrentRoute()
-            //     // console.log('STATE_CHANGE, currentRoute:', currentRoute)
-
-            //     console.log('STATE_CHANGE, state:', state)
-                
-            // //     const prevRoute = await AsyncStorage.getItem('route')
-            // //     console.log('Saving current route as prev route:', prevRoute)
-
-            // //     await AsyncStorage.setItem('prevRoute', prevRoute)
-            // //     console.log('setting route???', currentRoute.name)
-            // //     await AsyncStorage.setItem('route', currentRoute.name)
-
-            // //     if (currentRoute.params && currentRoute.params.id) await AsyncStorage.setItem('detail', currentRoute.params.id)
-            // //     // await AsyncStorage.multiRemove(['prevRoute', 'route', 'detail'])
             // }}
         >
             <AuthStackScreen />

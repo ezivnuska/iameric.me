@@ -70,7 +70,7 @@ export default ({ entry, onDelete, ...props }) => {
                             online={isUserOnline(userId)}
                             username={username}
                             filename={filename}
-                            onPress={() => navigate('Details', { id: userId })}
+                            onPress={() => navigate('User', { id: userId })}
                             styleProps={{
                                 flex: 1,
                                 flexBasis: 'auto',
@@ -78,7 +78,7 @@ export default ({ entry, onDelete, ...props }) => {
                             }}
                         />
 
-                        {userId === user._id ? (
+                        {(userId === user._id || user.role === 'admin') ? (
                             <View
                                 style={{
                                     flex: 1,

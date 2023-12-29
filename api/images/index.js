@@ -7,7 +7,7 @@ const { mkdirp } = require('mkdirp')
 // const im = gm.subClass({ imageMagick: true })
 
 const imagePath = process.env.IMAGE_PATH || require('../../config').IMAGE_PATH
-console.log('API:images >> imagePath', imagePath)
+// console.log('API:images >> imagePath', imagePath)
 
 const getImageIdFromFilename = async (req, res) => {
     const { name } = req.params

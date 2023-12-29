@@ -1,46 +1,55 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
+    LoadingView,
     Screen,
 } from '@components'
 import { AppContext } from '../AppContext'
-import { navigate } from '@navigators/RootNavigation'
-import { authenticate } from 'src/Data'
+import { authenticate } from '../Data'
+import { setUserToken } from '../utils/storage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import LoadingView from './LoadingView'
+import { initialize } from '../utils/auth'
 
-export default ({ children }) => {
+export default ({ children, navigation }) => {
 
     const {
         dispatch,
+        loading,
         user,
     } = useContext(AppContext)
 
     useEffect(() => {
         if (!user) {
-            checkUser()
+            // console.log('not verified')
+            // initialize(dispatch)
+            navigation.navigate('Start')
         }
     }, [user])
 
-    const checkUser = async () => {
-        const token = await AsyncStorage.getItem('userToken')
-        if (token) {
-            const verifiedUser = await authenticate(token)
-            if (!verifiedUser) navigate('Start')
-            else {
-                dispatch({ type: 'SET_VERIFIED', verified: true })
-                dispatch({ type: 'SET_USER', user: verifiedUser })
-                dispatch({ type: 'SET_LOADING', loading: false })
-                navigate('Secure')
-            }
-        } else {
-            dispatch({ type: 'SET_LOADING', loading: false })
-            navigate('Start')
-        }
-    } 
+    // const checkUser = async () => {
+    //     dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })
+    //     const token = await AsyncStorage.getItem('userToken')
+    //     if (token) {
+    //         const verifiedUser = await authenticate(token)
+    //         if (verifiedUser) {
+    //             dispatch({ type: 'SET_VERIFIED', verified: true })
+    //             dispatch({ type: 'SET_USER', user: verifiedUser })
+    //             // navigate('Secure')
+    //             setSecureUser(verifiedUser)
+    //         } else {
+    //             navigation.navigate('Start')
+    //         }
+    //     }
+    //     dispatch({ type: 'SET_LOADING', loading: null })
+    // } 
 
-    return user ? (
+    return (
         <Screen>
-            {children}
+            {loading
+                ? <LoadingView />
+                : user
+                    ? children
+                    : null
+            }
         </Screen>
-    ) : <LoadingView label='Loading user...' />
+    )
 }

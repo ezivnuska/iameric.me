@@ -13,7 +13,7 @@ const UserFilterListItem = ({ user }) => (
         online={user.token !== null}
         filename={(user.profileImage && user.profileImage.filename) ? user.profileImage.filename : null}
         username={user.username}
-        onPress={() => navigate('Details', { id: user._id })}
+        onPress={() => navigate('User', { id: user._id })}
     />
 )
 
@@ -93,7 +93,7 @@ export default ({ users, role = null }) => {
     return (
         <View>
             
-            {renderFilterButtons()}
+            {/* {renderFilterButtons()} */}
 
             <FlatList
                 data={listItems}

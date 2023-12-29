@@ -16,7 +16,7 @@ import {
     PlusCircleOutlined,
 } from '@ant-design/icons'
 
-export default () => {
+export default ({ navigation }) => {
     
     const {
         dispatch,
@@ -44,29 +44,17 @@ export default () => {
 
     const removeItemById = async id => {
 
-        // setLoading(true)
+        setLoading(true)
 
         const entryDeleted = await deleteEntryWithId(id)
         
-        // setLoading(false)
         
         if (entryDeleted) {
             dispatch({ type: 'DELETE_ENTRY', id: entryDeleted._id })
         }
-
+        
+        setLoading(false)
     }
-
-    const renderEntryList = () => loading
-        ? <Text>Loading...</Text>
-        : entries
-            ? (
-                <EntryList
-                    entries={entries}
-                    deleteItem={removeItemById}
-                />
-            )
-            : <Text>No entries to display.</Text>
-    
     
     const renderHeader = () => (
         <View
@@ -75,7 +63,7 @@ export default () => {
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
-                marginBottom: 5,
+                marginBottom: 10,
             }}
         >
             <Text
@@ -111,16 +99,20 @@ export default () => {
     )
 
     return (
-        <View
-            style={{
-                marginTop: 10,
-                marginBottom: 20,
-            }}
-        >
+        <View>
             
             {renderHeader()}
             
-            {renderEntryList()}
+            {loading
+                ? <Text>Loading Entries...</Text>
+                : entries && entries.length
+                    ? (
+                        <EntryList
+                            entries={entries}
+                            deleteItem={removeItemById}
+                        />
+                    )
+                    : <Text>No entries yet.</Text>}
 
             <PopUpModal
                 visible={modalVisible}

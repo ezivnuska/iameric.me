@@ -13,17 +13,47 @@ import { AppContext } from '../AppContext'
 import { Button } from 'antd'
 import { connect } from '../Data'
 // import { checkRoute } from '../navigators/RootNavigation'
-import { navigate } from '../navigators/RootNavigation'
+// import { navigate } from '../navigators/RootNavigation'
+import { initialize } from '../utils/auth'
 
-export default () => {
+export default ({ navigation }) => {
 
     const {
         dispatch,
         loading,
+        user,
     } = useContext(AppContext)
 
     const [showSignUpModal, setShowSignUpModal] = useState(false)
     const [showSignInModal, setShowSignInModal] = useState(false)
+
+    // useEffect(() => {
+    //     // if (!user && !loading) initialize(dispatch)
+    // }, [])
+
+    useEffect(() => {
+        start()
+    }, [])
+
+    useEffect(() => {
+        if (user) {
+            navigation.navigate('Secure', {
+                screen: 'Tabs',
+                params: {
+                    screen: 'Users',
+                },
+            })
+        }
+    }, [user])
+
+    const start = async () => {
+        const verified = await initialize(dispatch)
+        if (verified) {
+            dispatch({ type: 'SET_USER', user: verified })
+            dispatch({ type: 'SET_VERIFIED', verified: true })
+        }
+        dispatch({ type: 'SET_LOADING', loading: null })
+    }
 
     const onConnect = async type => {
         
@@ -60,8 +90,13 @@ export default () => {
             },
         })
         dispatch({ type: 'SET_VERIFIED', verified: true })
-        dispatch({ type: 'SET_LOADING', loading: false })
-        navigate('Secure')
+        dispatch({ type: 'SET_LOADING', loading: null })
+        navigation.navigate('Secure', {
+            screen: 'Tabs',
+            params: {
+                screen: 'Users',
+            },
+        })
     }
 
     const onModalClosed = response => {

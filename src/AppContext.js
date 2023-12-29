@@ -8,7 +8,7 @@ const initialState = {
     dims: null,
     entries: null,
     images: null,
-    loading: false,
+    loading: null,
     orders: null,
     products: null,
     profileImage: null,
