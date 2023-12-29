@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    FormInput,
     PopUpModal,
 } from '.'
 import axios from 'axios'
@@ -21,13 +22,15 @@ export default ({ id }) => {
     const {
         // state,
         dispatch,
-        // user,
+        user,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
+    const [confirmationText, setConfirmationText] = useState('')
 
     const deleteAccount = async () => {
+        if (!isValid()) return
         setLoading('Deleting account...')
         await clearStorage()
         const response = await unsubscribe(id)
@@ -45,6 +48,14 @@ export default ({ id }) => {
             // console.log('account deletion response: ', response)
         }
     }
+
+    const onEnter = e => {
+        if (e.code === 'Enter') {
+            deleteAccount()
+        }
+    }
+
+    const isValid = () => confirmationText === user.username
 
     return (
         <View
@@ -90,11 +101,24 @@ export default ({ id }) => {
                                 justifyContent: 'space-around',
                             }}
                         >
+                            <FormInput
+                                // label='Leave a comment'
+                                value={confirmationText}
+                                onChangeText={value => setConfirmationText(value)}
+                                placeholder='username'
+                                textContentType='none'
+                                autoCapitalize='none'
+                                keyboardType='default'
+                                style={defaultStyles.input}
+                                onKeyPress={onEnter}
+                            />
+
                             <Button
                                 size='large'
                                 type='primary'
                                 danger
                                 onClick={deleteAccount}
+                                disabled={!isValid()}
                             >
                                 Delete Account
                             </Button>
