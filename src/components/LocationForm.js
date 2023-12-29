@@ -23,6 +23,7 @@ export default ({ onSubmit, location }) => {
     const [ state, setState ] = useState(location.state)
     const [ zip, setZip ] = useState(location.zip)
     const [ dirty, setDirty ] = useState(false)
+    const [ loading, setLoading ] = useState(false)
 
     // const onChangeAddressLine1 = value => setAddress1(value)
     // const onChangeAddressLine2 = value => setAddress2(value)
@@ -60,38 +61,9 @@ export default ({ onSubmit, location }) => {
         }
     }
 
-    // const onChange = (name, value) => {
-    //     console.log('value', value)
-    //     console.log(`location.${name}`, location)
-    //     const prop = `${location[name]}`
-    //     console.log('prop', prop)
-    //     if (value !== prop) setDirty(true)
-    //     else setDirty(false)
-
-    //     switch(name) {
-    //         case 'address1': setAddress1(value); break
-    //         case 'address2': setAddress2(value); break
-    //         case 'city': setCity(value); break
-    //         case 'state': setState(value); break
-    //         case 'zip': setZip(value); break
-    //     }
-    // }
-
-    // const setLocation = () => {
-    //     setAddress1(location.address1)
-    //     setAddress2(location.address2)
-    //     setCity(location.city)
-    //     setState(location.state)
-    //     setZip(location.zip)
-    // }
-    
     // useEffect(() => {
-    //     setLocation()
+        
     // }, [])
-
-    // useEffect(() => {
-    //     setLocation()
-    // }, [location])
 
     const submitForm = () => {
         if (!isValid()) return

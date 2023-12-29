@@ -53,7 +53,7 @@ export default ({ entry, onDelete, ...props }) => {
             {...props}
             style={{
                 display: 'flex',
-                marginBottom: 5,
+                marginBottom: 10,
             }}
         >
             {author ? (

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    // Pressable,
+    Pressable,
     Text,
     View,
 } from 'react-native'
@@ -126,9 +126,17 @@ export default ({ userId }) => {
             
             {renderHeader()}
 
-            {location
-                ? <LocationDetails location={location} />
-                : <Text style={{ color: '#aaa' }}>Add your location.</Text>
+            {loading
+                ? <Text>Loading location...</Text>
+                : location
+                    ? <LocationDetails location={location} />
+                    : (
+                        <Pressable
+                            onPress={() => setModalVisible(true)}
+                        >
+                            <Text style={{ color: '#aaa' }}>Add your location.</Text>
+                        </Pressable>
+                    )
             }
 
             <PopUpModal

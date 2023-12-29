@@ -5,11 +5,11 @@ export default ({ dirty, valid, label, ...props }) => (
     <Button
         {...props}
         size='large'
-        type={dirty ? 'primary' : 'dashed'}
+        type={dirty ? 'primary' : 'default'}
         disabled={!dirty || !valid}
         style={{
-            color: dirty ? '#fff' : '#777',
-            backgroundColor: dirty ? '#161' : '#333',
+            color: dirty ? '#fff' : '#fff',
+            backgroundColor: dirty ? '#161' : '#ccc',
         }}
     >
         {label}

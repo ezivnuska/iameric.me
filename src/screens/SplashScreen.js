@@ -31,12 +31,17 @@ export default ({ navigation }) => {
     }, [user])
 
     const start = async () => {
+        dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })
         const verified = await initialize(dispatch)
         
         if (verified) {
             dispatch({ type: 'SET_USER', user: verified })
             dispatch({ type: 'SET_VERIFIED', verified: true })
+        } else {
+            navigation.navigate('Start')
         }
+
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     return (

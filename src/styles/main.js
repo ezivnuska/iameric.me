@@ -56,6 +56,7 @@ export default {
 	form: {
 		// borderWidth: 1,
 		// borderColor: 'red',
+		marginBottom: 20,
 	},
 	formColumns: {
 		display: 'flex',

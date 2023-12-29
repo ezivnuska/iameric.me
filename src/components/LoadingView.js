@@ -13,7 +13,7 @@ export default () => {
         loading,
     } = useContext(AppContext)
 
-    return (
+    return loading ? (
         <View
             style={{
                 display: 'flex',
@@ -21,20 +21,18 @@ export default () => {
                 justifyContent: 'center',
             }}
         >
-            <ActivityIndicator
+            {/* <ActivityIndicator
                 size='small'
-            />
+            /> */}
 
-            {loading ? (
-                <Text
-                    style={{
-                        color: '#fff',
-                    }}
-                >
-                    {loading}
-                </Text>
-            ) : null}
+            <Text
+                style={{
+                    color: '#fff',
+                }}
+            >
+                {loading}
+            </Text>
 
         </View>
-    )
+    ) : null
 }

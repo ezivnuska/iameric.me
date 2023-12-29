@@ -74,13 +74,14 @@ export default ({ navigation }) => {
                     fontSize: 24,
                     fontWeight: 700,
                     lineHeight: 32,
+                    // marginBottom: 10,
                 }}
             >
                 Feedback
             </Text>
             
             
-            <View style={{
+            {/* <View style={{
                 flex: 1,
                 flexGrow: 0,
                 flexShrink: 1,
@@ -94,7 +95,7 @@ export default ({ navigation }) => {
                     onClick={() => setModalVisible(true)}
                     disabled={loading}
                 />
-            </View>
+            </View> */}
         </View>
     )
 
@@ -102,13 +103,15 @@ export default ({ navigation }) => {
         <View>
             
             {renderHeader()}
+
+            <FeedbackForm />
             
             {loading
                 ? <Text>Loading Entries...</Text>
                 : entries && entries.length
                     ? (
                         <EntryList
-                            entries={entries}
+                            entries={entries.reverse()}
                             deleteItem={removeItemById}
                         />
                     )

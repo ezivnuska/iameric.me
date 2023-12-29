@@ -23,7 +23,6 @@ export const initialize = async dispatch => {
             await setUserToken(verifiedUser.token)
             
         }
-        dispatch({ type: 'SET_LOADING', loading: null })
         
         return verifiedUser
 

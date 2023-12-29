@@ -56,9 +56,9 @@ export default () => {
                 >
                     <AuthMenu
                         onPress={() => navigate('Secure', {
-                            screen: 'Settings',
-                        })
-                    } />
+                            screen: 'Settings'
+                        })}
+                    />
                 </View>
             </View>
 

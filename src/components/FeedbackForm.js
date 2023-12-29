@@ -15,7 +15,7 @@ import {
     FormInput,
 } from '.'
 
-const FeedbackForm = ({ onComplete }) => {
+export default () => {
 
     const {
         state,
@@ -42,8 +42,6 @@ const FeedbackForm = ({ onComplete }) => {
         } else console.log('Error submitting feedback')
 
         setLoading(false)
-        
-        onComplete()
     }
 
     const onEnter = e => {
@@ -60,7 +58,7 @@ const FeedbackForm = ({ onComplete }) => {
         >
             
             <FormInput
-                label='Leave a comment'
+                // label='Leave a comment'
                 value={entry}
                 onChangeText={onChangeEntry}
                 placeholder='say something...'
@@ -82,9 +80,3 @@ const FeedbackForm = ({ onComplete }) => {
         </View>
     )
 }
-
-export default FeedbackForm
-
-// const styles = StyleSheet.create({
-
-// })

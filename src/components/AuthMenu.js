@@ -83,8 +83,7 @@ const UserButton = ({ onPress, user }) => {
             }}>
                 {user.username}
             </Text>
-    
-            <DownOutlined style={{ color: '#fff', marginLeft: 7 }} />
+            
         </Pressable>
     )
 }
@@ -118,30 +117,4 @@ export default ({ onPress }) => {
 
         </View>
     ) : null
-}
-
-const ForumButton = () => {
-
-    const [numUsers, setNumUsers] = useState(null)
-
-    useEffect(() => {
-        getOnlineUserCount()
-    }, [])
-
-    const getOnlineUserCount = async () => {
-        const { data } = await axios.get('/api/users/online')
-        if (!data) {
-            console.log('could not get user count')
-            return
-        }
-        setNumUsers(data.userCount)
-    }
-
-    return (
-        <Button
-            label={`Forum • ${numUsers ? numUsers : '1'}`}
-            onPress={() => navigate('Forum')}
-            style={{ marginHorizontal: 5 }}
-        />
-    )
 }
