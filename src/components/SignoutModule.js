@@ -13,6 +13,7 @@ import { AppContext } from '../AppContext'
 // import { navigate } from '@navigators/RootNavigation'
 // import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cleanStorage } from '../utils/storage'
+import classes from '../styles/classes'
 
 export default () => {
 
@@ -53,22 +54,24 @@ export default () => {
                 marginTop: 20,
             }}
         >
-            <Text
-                style={{
-                    fontWeight: 700,
-                    marginBottom: 5,
-                }}
-            >
-                Sign Out
-            </Text>
+            <View style={{ marginBottom: 5 }}>
+                
+                <Text style={classes.headerSecondary}>
+                    Sign Out
+                </Text>
 
-            <Text
-                style={{
-                    marginBottom: 15,
-                }}
-            >
-                See you next time!
-            </Text>
+                <Text
+                    style={[
+                        classes.textDefault,
+                        {
+                            marginBottom: 15,
+                        },
+                    ]}
+                >
+                    See you next time!
+                </Text>
+
+            </View>
 
             <Button
                 size='large'

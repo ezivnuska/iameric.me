@@ -13,6 +13,7 @@ import { AppContext } from '../AppContext'
 import { clearStorage } from '../utils/storage'
 import { Button } from 'antd'
 import { unsubscribe } from '../Data'
+import classes from '../styles/classes'
 
 export default ({ id }) => {
 
@@ -65,18 +66,23 @@ export default ({ id }) => {
             }}
         >
             <Text
-                style={{
-                    fontWeight: 700,
-                    marginBottom: 5,
-                }}
+                style={[
+                    classes.headerSecondary,
+                    {
+                        marginBottom: 5,
+                    }
+                ]}
             >
                 Delete Account
             </Text>
             
             <Text
-                style={{
-                    marginBottom: 15,
-                }}
+                style={[
+                    classes.textDefault,
+                    {
+                        marginBottom: 15,
+                    },
+                ]}
             >
                 We hate to see you go. 
                 Deleting your account 

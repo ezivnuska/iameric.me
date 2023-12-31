@@ -3,7 +3,7 @@ import {
     Text,
     View,
 } from 'react-native'
-import defaultStyles from '../styles/main'
+import classes from '../styles/classes'
 
 const LocationDetails = ({ location }) => {
     
@@ -13,8 +13,8 @@ const LocationDetails = ({ location }) => {
     
     return (
         <View>
-            <Text style={defaultStyles.text}>{address1}{address2.length ? `, ${address2}` : null}</Text>
-            <Text style={defaultStyles.text}>{`${city}, ${state} ${zip}`}</Text>
+            <Text style={classes.textDefault}>{address1}{address2.length ? `, ${address2}` : null}</Text>
+            <Text style={classes.textDefault}>{`${city}, ${state} ${zip}`}</Text>
         </View>
     )
 }

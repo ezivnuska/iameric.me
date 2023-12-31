@@ -5,20 +5,21 @@ import {
     View,
 } from 'react-native'
 import {
+    LoadingView,
     LocationForm,
     LocationDetails,
-    // ModalContent,
     PopUpModal,
 } from '.'
 import {
     EditOutlined,
     PlusCircleOutlined,
 } from '@ant-design/icons'
-import { Button } from 'antd'
+import Icon from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
 import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
 import { getLocationWithUserId } from '../utils/data'
+import classes from '../styles/classes'
 
 const initialState = {
     address1: '',
@@ -36,7 +37,6 @@ export default ({ userId }) => {
 
     const [location, setLocation] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
-    const [loaded, setLoaded] = useState(false)
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -90,34 +90,36 @@ export default ({ userId }) => {
             }}
         >
             <Text
-                style={{
-                    flex: 1,
-                    flexGrow: 0,
-                    flexBasis: 'auto',
-                    fontSize: 24,
-                    fontWeight: 700,
-                    lineHeight: 32,
-                }}
+                style={[
+                    classes.headerSecondary,
+                    {
+                        flex: 1,
+                        flexGrow: 0,
+                        flexBasis: 'auto',
+                    },
+                ]}
             >
                 Address
             </Text>
             
             
-            <View style={{
-                flex: 1,
-                flexGrow: 0,
-                flexShrink: 1,
-                flexBasis: 'auto',
-                paddingHorizontal: 10,
-            }}>
-                <Button
-                    size='small'
-                    shape='circle'
-                    icon={loading ? null : location ? <EditOutlined /> : <PlusCircleOutlined />}
-                    onClick={() => setModalVisible(true)}
-                    disabled={loading}
-                />
-            </View>
+            <Pressable
+                style={{
+                    flexBasis: 'auto',
+                    paddingHorizontal: 10,
+                }}
+                onPress={() => setModalVisible(true)}
+                disabled={loading}
+            >
+                {location
+                    ? (
+                        <Icon name='create-outline' size={32} color='#fff' />
+                    ) : (
+                        <Icon name='add-outline' size={32} color='#fff' />
+                    )
+                }
+                
+            </Pressable>
         </View>
     )
 
@@ -127,14 +129,14 @@ export default ({ userId }) => {
             {renderHeader()}
 
             {loading
-                ? <Text>Loading location...</Text>
+                ? <LoadingView label='Loading location...' />
                 : location
                     ? <LocationDetails location={location} />
                     : (
                         <Pressable
                             onPress={() => setModalVisible(true)}
                         >
-                            <Text style={{ color: '#aaa' }}>Add your location.</Text>
+                            <Text style={classes.textDefault}>Add your location.</Text>
                         </Pressable>
                     )
             }

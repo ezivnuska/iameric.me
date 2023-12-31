@@ -9,6 +9,13 @@ export default {
         lineHeight: sizes.headerPrimary + 4,
         color: colors.headerPrimary,
     },
+    headerSecondary: {
+        marginBottom: 5,
+        fontSize: sizes.headerSecondary,
+        fontWeight: 700,
+        lineHeight: sizes.headerSecondary + 4,
+        color: colors.headerSecondary,
+    },
     textDefault: {
         fontSize: sizes.textDefault,
         fontWeight: 300,
