@@ -9,7 +9,7 @@ import { setUserToken } from '../utils/storage'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { initialize } from '../utils/auth'
 
-export default ({ children, navigation }) => {
+export default ({ children, navigation, ...props }) => {
 
     const {
         dispatch,
@@ -43,7 +43,7 @@ export default ({ children, navigation }) => {
     // } 
 
     return (
-        <Screen>
+        <Screen style={props.style || {}}>
             {loading
                 ? <LoadingView />
                 : user

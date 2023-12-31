@@ -7,7 +7,8 @@ import {
 } from 'react-native'
 import main from '../styles/main'
 import { ThunderboltOutlined } from '@ant-design/icons'
-import DefaultAvatar from '../images/avatar-default-small.png'
+// import DefaultAvatar from '../images/avatar-default-small.png'
+import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -49,7 +50,7 @@ export default ({ online, username, filename, onPress = null }) => {
                     flexBasis: 'auto',
                 }}
             >
-                <Text style={[main.subheading, { lineHeight: 32 }]}>{username} {online && <ThunderboltOutlined style={{ color: 'green' }} />}</Text>
+                <Text style={classes.userHeading}>{username} {online && <ThunderboltOutlined style={{ color: 'green' }} />}</Text>
             </View>
         </Pressable>
     )

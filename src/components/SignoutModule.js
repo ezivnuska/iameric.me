@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
 import {
+    Text,
     View,
 } from 'react-native'
 import {
@@ -49,14 +50,31 @@ export default () => {
     return (
         <View
             style={{
-                marginTop: 50,
+                marginTop: 20,
             }}
         >
+            <Text
+                style={{
+                    fontWeight: 700,
+                    marginBottom: 5,
+                }}
+            >
+                Sign Out
+            </Text>
+
+            <Text
+                style={{
+                    marginBottom: 15,
+                }}
+            >
+                See you next time!
+            </Text>
+
             <Button
-                type='dashed'
                 size='large'
-                danger
+                type='default'
                 onClick={() => setModalVisible(true)}
+                disabled={loading}
             >
                 Sign Out
             </Button>
@@ -65,27 +83,27 @@ export default () => {
                 visible={modalVisible}
                 onRequestClose={validateClose}
             >
-                {
-                    loading
-                        ? <LoadingView />
-                        : (
-                            <View
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-around',
-                                }}
+                {!loading
+                    ? (
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-around',
+                            }}
+                        >
+                            <Button
+                                size='large'
+                                type='primary'
+                                danger
+                                onClick={signout}
                             >
-                                <Button
-                                    size='large'
-                                    type='primary'
-                                    danger
-                                    onClick={signout}
-                                >
-                                    Sign Out
-                                </Button>
-                            </View>
-                        )
+                                Sign Out
+                            </Button>
+                        </View>
+                    ) : (
+                        <LoadingView />
+                    )
                 }
             </PopUpModal>
         </View>

@@ -4,8 +4,9 @@ import {
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
+import colors from '../styles/colors'
 
-export default ({ children }) => {
+export default ({ children, ...props }) => {
 
     const {
         dims,
@@ -13,25 +14,19 @@ export default ({ children }) => {
 
     return (
         <View
-            style={{
-                // height: '100%',
-                height: dims ? dims.window.height - 50 : '100%',
-                width: '100%',
-                // minWidth: 375,
-                // maxWidth: 375,
-                // marginHorizontal: 'auto',
-                // paddingVertical: 20,
-                backgroundColor: '#fff',
-                paddingHorizontal: 15,
-            }}
+            style={[
+                {
+                    height: dims ? dims.window.height - 50 : '100%',
+                    width: '100%',
+                    paddingHorizontal: 15,
+                    backgroundColor: colors.backgroundDefault,
+                },
+            ]}
         >
             <ScrollView
                 style={{
                     height: '100%',
                     paddingTop: 10,
-                    // borderWidth: 2,
-                    // borderStyle: 'dotted',
-                    // borderColor: 'blue',
                 }}
             >
                 <View

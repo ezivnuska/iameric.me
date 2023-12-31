@@ -6,15 +6,10 @@ import {
 import {
     EntryList,
     FeedbackForm,
-    PopUpModal,
 } from '.'
 import { AppContext } from '../AppContext'
-import defaultStyles from '../styles/main'
 import { deleteEntryWithId, loadEntries } from '../utils/data'
-import { Button } from 'antd'
-import {
-    PlusCircleOutlined,
-} from '@ant-design/icons'
+import classes from '../styles/classes'
 
 export default ({ navigation }) => {
     
@@ -23,7 +18,7 @@ export default ({ navigation }) => {
         entries,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
 
     useEffect(() => {
@@ -31,7 +26,7 @@ export default ({ navigation }) => {
     }, [])
 
     const init = async () => {
-        setLoading(true)
+        setLoading('Loading entries...')
 
         const entriesLoaded = await loadEntries()
         
@@ -39,15 +34,14 @@ export default ({ navigation }) => {
             dispatch({ type: 'SET_ENTRIES', entries: entriesLoaded })
         }
 
-        setLoading(false)
+        setLoading(null)
     }
 
     const removeItemById = async id => {
 
-        setLoading(true)
+        setLoading('Deleting entry...')
 
         const entryDeleted = await deleteEntryWithId(id)
-        
         
         if (entryDeleted) {
             dispatch({ type: 'DELETE_ENTRY', id: entryDeleted._id })
@@ -55,76 +49,26 @@ export default ({ navigation }) => {
         
         setLoading(false)
     }
-    
-    const renderHeader = () => (
-        <View
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginBottom: 10,
-            }}
-        >
-            <Text
-                style={{
-                    flex: 1,
-                    flexGrow: 0,
-                    flexBasis: 'auto',
-                    fontSize: 24,
-                    fontWeight: 700,
-                    lineHeight: 32,
-                    // marginBottom: 10,
-                }}
-            >
-                Feedback
-            </Text>
-            
-            
-            {/* <View style={{
-                flex: 1,
-                flexGrow: 0,
-                flexShrink: 1,
-                flexBasis: 'auto',
-                paddingHorizontal: 10,
-            }}>
-                <Button
-                    size='small'
-                    // shape='circle'
-                    icon={loading ? null : <PlusCircleOutlined />}
-                    onClick={() => setModalVisible(true)}
-                    disabled={loading}
-                />
-            </View> */}
-        </View>
-    )
 
     return (
         <View>
             
-            {renderHeader()}
+            <Text style={classes.pageTitle}>
+                Forum
+            </Text>
 
             <FeedbackForm />
             
-            {loading
-                ? <Text>Loading Entries...</Text>
-                : entries && entries.length
-                    ? (
-                        <EntryList
-                            entries={entries.reverse()}
-                            deleteItem={removeItemById}
-                        />
-                    )
-                    : <Text>No entries yet.</Text>}
-
-            <PopUpModal
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <FeedbackForm
-                    onComplete={() => setModalVisible(false)}
-                />
-            </PopUpModal>
+            {entries && entries.length
+                ? (
+                    <EntryList
+                        entries={entries.reverse()}
+                        deleteItem={removeItemById}
+                    />
+                ) : (
+                    <Text style={classes.textDefault}>No entries yet.</Text>
+                )
+            }
 
         </View>
     )

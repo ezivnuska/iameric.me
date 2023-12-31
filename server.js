@@ -159,7 +159,6 @@ mongoose
     .connect(db, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
-        keepAlive: true,
     })
     .then(() => console.log(`> MongoDB connected.\n\n* * * * * * * * * * * * * *\n\n*\tiameric.me\t  *\n\n* * * * * * * * * * * * * *\n\n`))
     .catch(err => console.log('Error connecting to database', err))

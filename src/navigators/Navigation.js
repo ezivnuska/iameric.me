@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     NavigationContainer,
 } from '@react-navigation/native'
@@ -14,7 +14,6 @@ import {
     UsersScreen,
 } from '../screens'
 import { navigationRef } from './RootNavigation'
-import { AppContext } from '../AppContext'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -135,8 +134,8 @@ const AuthStackScreen = () => (
 
 const config = {
     screens: {
-        Splash: 'welcome',
-        Start: 'connect',
+        Splash: 'splash',
+        Start: 'start',
         Secure: {
             path: '',
             screens: {
@@ -145,11 +144,11 @@ const config = {
                     screens: {
                         UserList: '',
                         User: 'user/:id',
-                        Images: 'images',
-                        Settings: 'settings',
-                    }
+                    },
                 },
                 Forum: 'forum',
+                Images: 'images',
+                Settings: 'settings',
             },
         },
     },
@@ -160,32 +159,13 @@ const linking = {
     config,
 }
 
-export default () => {
-
-    const {
-        dispatch,
-        loading,
-        user,
-        // verified,
-    } = useContext(AppContext)
-    
-    // useEffect(() => {
-    //     if (!user) initialize(dispatch)
-    // }, [])
-
-    // useEffect(() => {
-    //     if (!loading && !user) initialize(dispatch)
-    // }, [loading])
-
-    return (
-        <NavigationContainer
-            ref={navigationRef}
-            linking={linking}
-            fallback={<FallbackScreen />}
-            // onStateChange={async state => {
-            // }}
-        >
-            <AuthStackScreen />
-        </NavigationContainer>
-    )
-}
+export default () => (
+    <NavigationContainer
+        ref={navigationRef}
+        linking={linking}
+        fallback={<FallbackScreen />}
+        // onStateChange={async state => {}}
+    >
+        <AuthStackScreen />
+    </NavigationContainer>
+)

@@ -1,26 +1,22 @@
 import React, { useContext, useState } from 'react'
 import {
-    LoadingView,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import {
     FormInput,
+    LoadingView,
     PopUpModal,
 } from '.'
-import axios from 'axios'
 import defaultStyles from '../styles/main'
 import { AppContext } from '../AppContext'
 import { clearStorage } from '../utils/storage'
 import { Button } from 'antd'
 import { unsubscribe } from '../Data'
-import { navigate } from '../navigators/RootNavigation'
 
 export default ({ id }) => {
 
     const {
-        // state,
         dispatch,
         user,
     } = useContext(AppContext)
@@ -30,22 +26,27 @@ export default ({ id }) => {
     const [confirmationText, setConfirmationText] = useState('')
 
     const deleteAccount = async () => {
+
         if (!isValid()) return
+        
         setLoading('Deleting account...')
+        
         await clearStorage()
+        
         const response = await unsubscribe(id)
-        // console.log('deleteAccount response:', response)
+        
         setLoading(null)
 
-        if (response && response.success) {
-            console.log('Successfully deleted account.')
-            dispatch({ type: 'SIGNOUT' })
-        } else if (response && response.msg) {
-            console.log('Unsub Error:', response.msg)
-        } else if (!response) {
-            console.log('Error deleting account.')
+        if (response) {
+
+            if (response.success) {
+                console.log('Successfully deleted account.')
+                dispatch({ type: 'SIGNOUT' })
+            } else if (response.msg) {
+                console.log('Error unsubscribing:', response.msg)
+            }
         } else {
-            // console.log('account deletion response: ', response)
+            console.log('Error deleting account.')
         }
     }
 
@@ -66,13 +67,15 @@ export default ({ id }) => {
             <Text
                 style={{
                     fontWeight: 700,
+                    marginBottom: 5,
                 }}
             >
                 Delete Account
             </Text>
+            
             <Text
                 style={{
-                    marginVertical: 10,
+                    marginBottom: 15,
                 }}
             >
                 We hate to see you go. 
@@ -83,6 +86,8 @@ export default ({ id }) => {
 
             <Button
                 size='large'
+                type='primary'
+                danger
                 onClick={() => setModalVisible(true)}
                 disabled={loading}
             >
@@ -93,7 +98,7 @@ export default ({ id }) => {
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
             >
-                {!loading && (
+                {!loading ? (
                         <View
                             style={{
                                 display: 'flex',
@@ -123,10 +128,11 @@ export default ({ id }) => {
                                 Delete Account
                             </Button>
                         </View>
+                    ) : (
+                        <LoadingView label={loading} />
                     )
                 }
             </PopUpModal>
-            
         </View>
     )
 }

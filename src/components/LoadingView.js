@@ -1,19 +1,18 @@
 import React, { useContext } from 'react'
 import {
-    ActivityIndicator,
+    // ActivityIndicator,
     Text,
     View,
 } from 'react-native'
-// import main from '../styles/main'
 import { AppContext } from '../AppContext'
 
-export default () => {
+export default ({ label = null }) => {
 
     const {
         loading,
     } = useContext(AppContext)
 
-    return loading ? (
+    return (
         <View
             style={{
                 display: 'flex',
@@ -30,9 +29,9 @@ export default () => {
                     color: '#fff',
                 }}
             >
-                {loading}
+                {label || loading || 'Loading...'}
             </Text>
 
         </View>
-    ) : null
+    )
 }

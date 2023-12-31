@@ -91,12 +91,12 @@ export default ({ navigation }) => {
         })
         dispatch({ type: 'SET_VERIFIED', verified: true })
         dispatch({ type: 'SET_LOADING', loading: null })
-        navigation.navigate('Secure', {
-            screen: 'Tabs',
-            params: {
-                screen: 'Users',
-            },
-        })
+        // navigation.navigate('Secure', {
+        //     screen: 'Tabs',
+        //     params: {
+        //         screen: 'Users',
+        //     },
+        // })
     }
 
     const onModalClosed = response => {

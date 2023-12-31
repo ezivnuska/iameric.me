@@ -1,0 +1,25 @@
+import colors from './colors'
+import sizes from './sizes'
+
+export default {
+    pageTitle: {
+        marginBottom: 10,
+        fontSize: sizes.headerPrimary,
+        fontWeight: 700,
+        lineHeight: sizes.headerPrimary + 4,
+        color: colors.headerPrimary,
+    },
+    textDefault: {
+        fontSize: sizes.textDefault,
+        fontWeight: 300,
+        lineHeight: sizes.textDefault + 8,
+        color: colors.textDefault,
+        letterSpacing: 0.5,
+    },
+    userHeading: {
+        fontSize: sizes.userTitle,
+        fontWeight: 700,
+        lineHeight: 32,
+        color: colors.userTitle,
+    },
+}

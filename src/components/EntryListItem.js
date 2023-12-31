@@ -5,17 +5,16 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { CloseCircleOutlined } from '@ant-design/icons'
-import defaultStyles from '../styles/main'
-import { AppContext } from '../AppContext'
 import UserHeading from './UserHeading'
+import Icon from 'react-native-vector-icons/Ionicons'
+import classes from '../styles/classes'
+import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 
 export default ({ entry, onDelete, ...props }) => {
     
     const {
         state,
-        dispatch,
         users,
     } = useContext(AppContext)
     
@@ -25,6 +24,7 @@ export default ({ entry, onDelete, ...props }) => {
     const [ filename, setFilename ] = useState(null)
 
     const getUserFromUsers = () => users ? users.filter(u => u._id === userId)[0] : null
+
     const isUserOnline = () => {
         const currentUser = users ? users.filter(u => u._id === userId)[0] : null
         if (currentUser) return currentUser.token !== null
@@ -42,6 +42,10 @@ export default ({ entry, onDelete, ...props }) => {
     }
 
     useEffect(() => {
+        console.log('entry', entry)
+    }, [])
+
+    useEffect(() => {
         if (users && !filename) {
             const avatarFilename = getFilename()
             if (avatarFilename) setFilename(avatarFilename)
@@ -53,11 +57,10 @@ export default ({ entry, onDelete, ...props }) => {
             {...props}
             style={{
                 display: 'flex',
-                marginBottom: 10,
             }}
         >
             {author ? (
-                <View>
+                <View style={{ paddingTop: 10 }}>
                     <View
                         style={{
                             display: 'flex',
@@ -96,19 +99,20 @@ export default ({ entry, onDelete, ...props }) => {
                                     }}
                                     onPress={() => onDelete(entry._id)}
                                 >
-                                    <CloseCircleOutlined />
+                                    <Icon name='trash-outline' size={20} color='#fff' />
                                 </Pressable>
                             </View>
                         ) : null}
                     </View>
                     <View
                         style={{
-                            paddingBottom: 5,
-                            borderBottomWidth: 1,
-                            borderBottomColor: '#ccc',
+                            paddingTop: 7,
+                            paddingBottom: 10,
+                            borderBottomWidth: 0.5,
+                            borderBottomColor: '#666',
                         }}
                     >
-                        <Text style={[defaultStyles.text, { width: '90%' }]}>{text}</Text>
+                        <Text style={classes.textDefault}>{text}</Text>
                     </View>
                 </View>
             ) : <ActivityIndicator size='small' />}
