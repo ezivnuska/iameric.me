@@ -3,7 +3,7 @@ import sizes from './sizes'
 
 export default {
     pageTitle: {
-        marginBottom: 10,
+        marginBottom: 15,
         fontSize: sizes.headerPrimary,
         fontWeight: 700,
         lineHeight: sizes.headerPrimary + 4,

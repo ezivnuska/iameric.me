@@ -1,16 +1,13 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
     Text,
 } from 'react-native'
 import {
-    DeleteAccountButton,
     ImageModule,
-    LocationModule,
     SecureScreen,
-    SignoutModule,
-    UserDetails,
 } from '@components'
 import { AppContext } from '../AppContext'
+import classes from '../styles/classes'
 
 export default ({ navigation }) => {
 
@@ -18,16 +15,13 @@ export default ({ navigation }) => {
         user,
     } = useContext(AppContext)
 
-    // useEffect(() => {
-    //     console.log('user on load', user)
-    // }, [])
-
-    // useEffect(() => {
-    //     console.log('user changed', user)
-    // }, [user])
-
     return (
         <SecureScreen navigation={navigation}>
+            
+            <Text style={classes.pageTitle}>
+                Images
+            </Text>
+            
             {user
                 ? <ImageModule user={user} />
                 : <Text>No user</Text>

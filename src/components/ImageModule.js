@@ -9,58 +9,8 @@ import {
     ImageSelector,
     PopUpModal,
 } from '.'
-import {
-    PlusOutlined,
-} from '@ant-design/icons'
-import { Button } from 'antd'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-
-const Header = ({ onPress }) => {
-    return (
-        <View
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginBottom: 10,
-            }}
-        >
-            
-            <Text
-                style={{
-                    flex: 1,
-                    flexGrow: 0,
-                    flexBasis: 'auto',
-                    fontSize: 24,
-                    fontWeight: 700,
-                    lineHeight: 32,
-                }}
-            >
-                Images
-            </Text>
-
-            <View
-                style={{
-                    flex: 1,
-                    flexGrow: 0,
-                    flexShrink: 1,
-                    flexBasis: 'auto',
-                    paddingHorizontal: 10,
-                }}
-            >
-                <Button
-                    size='small'
-                    shape='circle'
-                    icon={<PlusOutlined />}
-                    onClick={onPress}
-                />
-            </View>
-
-        </View>
-    )
-}
 
 export default ({ user }) => {
 
@@ -148,7 +98,7 @@ export default ({ user }) => {
     return (
         <View style={{ paddingBottom: 15 }}>
                 
-            <Header onPress={() => setModalVisible(true)} />
+            {/* <Header onPress={() => setModalVisible(true)} /> */}
 
             {loading
                 ? <Text>Loading images...</Text>
@@ -159,6 +109,7 @@ export default ({ user }) => {
                             images={items}
                             username={user.username}
                             onSelected={onSelected}
+                            onAddImage={() => setModalVisible(true)}
                         />
                     ) : <Text>No images to display.</Text>}
             

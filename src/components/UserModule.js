@@ -8,6 +8,7 @@ import {
     UserFilter,
 } from '.'
 import { loadUsers } from '../utils/data'
+import classes from '../styles/classes'
 
 export default () => {
 
@@ -43,14 +44,8 @@ export default () => {
 
     return (
         <View>
-            <Text
-                style={{
-                    fontSize: 24,
-                    fontWeight: 700,
-                    lineHeight: 32,
-                    marginBottom: 10,
-                }}
-            >
+            
+            <Text style={classes.pageTitle}>
                 Users
             </Text>
 
