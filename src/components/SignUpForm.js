@@ -22,12 +22,6 @@ export default ({ onComplete }) => {
 	const [loading, setLoading] = useState(false)
 	const [errors, setErrors] = useState([])
 	const [errorMessage, setErrorMessage] = useState(null)
-	
-	const onChangeRole = value => setRole(value)
-	const onChangeEmail = value => setEmail(value)
-	const onChangeUsername = value => setUsername(value)
-	const onChangePassword = value => setPassword(value)
-	const onChangeConfirmPassword = value => setConfirmPassword(value)
 
 	useEffect(() => {
 		initForm()
@@ -118,6 +112,11 @@ export default ({ onComplete }) => {
 			valid = false
 		}
 
+		if (!isValidEmail(email)) {
+			console.log('No a valid email address.')
+			valid = false
+		}
+
 		if (password !== confirmPassword) {
 			console.log('Passwords do not match')
 			valid = false
@@ -168,14 +167,14 @@ export default ({ onComplete }) => {
 
 				<RolePicker
 					value={role}
-					onChange={onChangeRole}
+					onChange={value => setRole(value)}
 					onKeyPress={onEnter}
 				/>
 
 				<FormInput
 					label='Email'
 					value={email}
-					onChangeText={onChangeEmail}
+					onChange={value => setEmail(value)}
 					placeholder='email'
 					textContentType='emailAddress'
 					autoCapitalize='none'
@@ -188,7 +187,7 @@ export default ({ onComplete }) => {
 				<FormInput
 					label='Username'
 					value={username}
-					onChangeText={onChangeUsername}
+					onChange={value => setUsername(value)}
 					placeholder='username'
 					textContentType='none'
 					autoCapitalize='none'
@@ -200,7 +199,7 @@ export default ({ onComplete }) => {
 				<FormInput
 					label='Password'
 					value={password}
-					onChangeText={onChangePassword}
+					onChange={value => setPassword(value)}
 					placeholder='password'
 					textContentType='password'
 					autoCapitalize='none'
@@ -214,7 +213,7 @@ export default ({ onComplete }) => {
 				<FormInput
 					label='Confirm Password'
 					value={confirmPassword}
-					onChangeText={onChangeConfirmPassword}
+					onChange={value => setConfirmPassword(value)}
 					placeholder='password again'
 					textContentType='password'
 					autoCapitalize='none'
@@ -236,7 +235,7 @@ export default ({ onComplete }) => {
 				<Button
 					size='large'
 					type='primary'
-					disabled={loading}
+					disabled={loading || !isValid() || errors.length}
 					onClick={submitData}
 					style={{ color: '#fff' }}
 				>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     StyleSheet,
 	Text,
@@ -12,6 +12,11 @@ const FormInput = ({ label, onChange, invalid = false, ...props }) => {
     const [inputValue, setInputValue] = useState('')
     const [dirty, setDirty] = useState(false)
 
+    // useEffect(() => {
+    //     console.log('label', label)
+    //     console.log('invalid', invalid)
+    // }, [invalid])
+
     const onChangeText = value => {
         setInputValue(value)
         setDirty(true)
@@ -21,6 +26,10 @@ const FormInput = ({ label, onChange, invalid = false, ...props }) => {
     const styles = {
         borderBottomColor: !dirty ? '#fff' : invalid ? '#f00' : '#1f1',
     }
+
+    console.log('dirty', dirty)
+    console.log('invalid', invalid)
+    console.log('styles', styles)
 
     return (
         <View

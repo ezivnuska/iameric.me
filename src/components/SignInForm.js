@@ -28,6 +28,11 @@ const SignInForm = ({ onComplete }) => {
 		validateForm()
 	}, [email, password])
 
+	useEffect(() => {
+		if (email.length && !isValidEmail(email)) addError('email')
+		else removeError('email')
+	}, [email])
+
 	const addError = value => {
 		if (!hasError(value)) setErrors([ ...errors, value ])
 	}
@@ -75,6 +80,10 @@ const SignInForm = ({ onComplete }) => {
 			valid = false
 		}
 
+		if (!isValidEmail(email)) {
+			valid = false
+		}
+
 		return valid
 	}
 
@@ -92,15 +101,14 @@ const SignInForm = ({ onComplete }) => {
 		storeEmail(email)
 		setLoading(true)
 
-		const data = await signin(email, password)
+		const { data } = await signin(email, password)
 		// console.log('data', data)
-		if (!data) {
-			setErrorMessage('Error authenticating user')
-		} else if (data.error) {
-			console.log('Error:msg:', data.msg)
-			setErrorMessage(data.msg)
+		if (data && data.user) {
+			onComplete(data.user)
+		} else if (data) {
+			handleError(data)
 		} else {
-			onComplete(data)
+			console.log('Error authenticating user')
 		}
 
 		setLoading(false)
