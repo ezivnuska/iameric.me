@@ -85,7 +85,7 @@ export const signin = async (email, password) => {
         return data
     }
 
-    return data.user
+    return data
 }
 
 export const signup = async (email, password, role, username) => {

@@ -27,10 +27,6 @@ const FormInput = ({ label, onChange, invalid = false, ...props }) => {
         borderBottomColor: !dirty ? '#fff' : invalid ? '#f00' : '#1f1',
     }
 
-    console.log('dirty', dirty)
-    console.log('invalid', invalid)
-    console.log('styles', styles)
-
     return (
         <View
             style={[defaultStyles.inputContainer, styles]}

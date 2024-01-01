@@ -12,6 +12,7 @@ import {
 import { AppContext } from '../AppContext'
 // import { goBack, navigate } from '../navigators/RootNavigation'
 import { loadUsers } from '../utils/data'
+import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -96,18 +97,17 @@ export default ({ navigation, route }) => {
                         <>
                             <Pressable
                                 onPress={() => navigation.navigate('UserList')}
+                                style={{
+                                    paddingBottom: 10,
+                                }}
                             >
-                                <Text
-                                    style={{
-                                        marginBottom: 10,
-                                    }}
-                                >
+                                <Text style={classes.textDefault}>
                                     &lt; Back
                                 </Text>
                             </Pressable>
 
-                            <Text>{userDetails.username}</Text>
-                            <Text>{userDetails.email}</Text>
+                            <Text style={classes.textDefault}>{userDetails.username}</Text>
+                            <Text style={classes.textDefault}>{userDetails.email}</Text>
 
                             {renderUserAvatar()}
 
