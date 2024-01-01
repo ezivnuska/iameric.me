@@ -13,6 +13,8 @@ import layout from '../styles/layout'
 import DefaultAvatar from '../images/avatar-default-small.png'
 import { DownOutlined } from '@ant-design/icons'
 import axios from 'axios'
+import Icon from 'react-native-vector-icons/Ionicons'
+import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -99,7 +101,7 @@ export default ({ onPress }) => {
 
     const { items } = cart
 
-    return (verified && user && !loading) ? (
+    return (
         <View style={{
             display: 'flex',
             flexDirection: 'row',
@@ -109,12 +111,35 @@ export default ({ onPress }) => {
             paddingRight: 15,
         }}>
 
-            {items && items.length ? <CartButton /> : null}
+            {(verified && user && !loading) ? (
+                <View>
+                    {items && items.length ? <CartButton /> : null}
 
-            {/* <ForumButton /> */}
+                    <UserButton onPress={onPress} user={user} />
+                </View>
+            ) : (
+                <Pressable
+                    onPress={onPress}
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
 
-            <UserButton onPress={onPress} user={user} />
+                    }}
+                >
+                    <Icon
+                        name='log-in-outline'
+                        size={24}
+                        color='#fff'
+                        style={{ marginRight: 5 }}
+                    />
 
+                    <Text style={classes.textDefault}>
+                        Sign In
+                    </Text>
+                    
+                </Pressable>
+            )}
+            
         </View>
-    ) : null
+    )
 }
