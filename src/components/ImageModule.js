@@ -11,6 +11,7 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import classes from '../styles/classes'
 
 export default ({ user }) => {
 
@@ -101,17 +102,17 @@ export default ({ user }) => {
             {/* <Header onPress={() => setModalVisible(true)} /> */}
 
             {loading
-                ? <Text>Loading images...</Text>
-                : (items && items.length)
-                    ? (
-                        <ImageList
-                            loading={loading}
-                            images={items}
-                            username={user.username}
-                            onSelected={onSelected}
-                            onAddImage={() => setModalVisible(true)}
-                        />
-                    ) : <Text>No images to display.</Text>}
+                ? <Text style={classes.textDefault}>Loading images...</Text>
+                : (
+                    <ImageList
+                        loading={loading}
+                        images={items}
+                        username={user.username}
+                        onSelected={onSelected}
+                        onAddImage={() => setModalVisible(true)}
+                    />
+                )
+            }
             
             <PopUpModal
                 visible={modalVisible}

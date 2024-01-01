@@ -42,10 +42,6 @@ export default ({ entry, onDelete, ...props }) => {
     }
 
     useEffect(() => {
-        console.log('entry', entry)
-    }, [])
-
-    useEffect(() => {
         if (users && !filename) {
             const avatarFilename = getFilename()
             if (avatarFilename) setFilename(avatarFilename)

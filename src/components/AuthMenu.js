@@ -7,6 +7,8 @@ import {
 } from 'react-native'
 import {
     CartButton,
+    PopUpModal,
+    SignInForm,
 } from '.'
 import { AppContext } from '../AppContext'
 import layout from '../styles/layout'
@@ -17,33 +19,6 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-
-const Button = ({ label, onPress, children = null }) => (
-    <Pressable
-        onPress={onPress}
-        style={{
-            flex: 1,
-            flexGrow: 0,
-            flexShrink: 0,
-            flexBasis: 'auto',
-            marginHorizontal: 10,
-            // padding: 5,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-        }}
-    >
-        {children}
-
-        <Text style={{
-            color: '#fff',
-            fontWeight: 700,
-            lineHeight: 32,
-        }}>
-            {label}
-        </Text>
-    </Pressable>
-)
 
 const UserButton = ({ onPress, user }) => {
     
@@ -94,12 +69,54 @@ export default ({ onPress }) => {
     
     const {
         cart,
+        dispatch,
         loading,
         user,
         verified,
     } = useContext(AppContext)
 
     const { items } = cart
+
+    const [showSignInModal, setShowSignInModal] = useState(false)
+
+    const setUser = async ({
+        _id,
+        email,
+        images,
+        profileImage,
+        role,
+        token,
+        username,
+    }) => {
+        dispatch({
+            type: 'SET_USER',
+            user: {
+                _id,
+                email,
+                images,
+                profileImage,
+                role,
+                token,
+                username,
+            },
+        })
+        dispatch({ type: 'SET_VERIFIED', verified: true })
+        dispatch({ type: 'SET_LOADING', loading: null })
+        // navigation.navigate('Secure', {
+        //     screen: 'Tabs',
+        //     params: {
+        //         screen: 'Users',
+        //     },
+        // })
+    }
+
+    const onModalClosed = response => {
+        // console.log('closing modal, setting user', response)
+        setUser(response)
+        // if (showSignUpModal) setShowSignUpModal(false)
+        if (showSignInModal) setShowSignInModal(false)
+        // if (loading) dispatch({ type: 'SET_LOADING', loading: 'false' })
+    }
 
     return (
         <View style={{
@@ -119,7 +136,7 @@ export default ({ onPress }) => {
                 </View>
             ) : (
                 <Pressable
-                    onPress={onPress}
+                    onPress={() => setShowSignInModal(true)}
                     style={{
                         display: 'flex',
                         flexDirection: 'row',
@@ -139,6 +156,15 @@ export default ({ onPress }) => {
                     
                 </Pressable>
             )}
+
+            <PopUpModal
+                visible={showSignInModal}
+                onRequestClose={() => setShowSignInModal(false)}
+            >
+                <SignInForm
+                    onComplete={onModalClosed}
+                />
+            </PopUpModal>
             
         </View>
     )

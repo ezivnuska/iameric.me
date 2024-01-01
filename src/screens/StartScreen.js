@@ -7,13 +7,10 @@ import {
     PopUpModal,
     Screen,
     SignUpForm,
-    SignInForm,
 } from '@components'
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
 import { connect } from '../Data'
-// import { checkRoute } from '../navigators/RootNavigation'
-// import { navigate } from '../navigators/RootNavigation'
 import { initialize } from '../utils/auth'
 
 export default ({ navigation }) => {
@@ -27,10 +24,6 @@ export default ({ navigation }) => {
     const [showSignUpModal, setShowSignUpModal] = useState(false)
     const [showSignInModal, setShowSignInModal] = useState(false)
 
-    // useEffect(() => {
-    //     // if (!user && !loading) initialize(dispatch)
-    // }, [])
-
     useEffect(() => {
         start()
     }, [])
@@ -38,10 +31,7 @@ export default ({ navigation }) => {
     useEffect(() => {
         if (user) {
             navigation.navigate('Secure', {
-                screen: 'Tabs',
-                params: {
-                    screen: 'Users',
-                },
+                screen: 'Users',
             })
         }
     }, [user])
@@ -141,13 +131,6 @@ export default ({ navigation }) => {
                 >
                     Sign Up
                 </Button>
-                <Button
-                    type='primary'
-                    onClick={() => setShowSignInModal(true)}
-                    style={styles.button}
-                >
-                    Sign In
-                </Button>
             </View>
 
             <PopUpModal
@@ -155,15 +138,6 @@ export default ({ navigation }) => {
                 onRequestClose={() => setShowSignUpModal(false)}
             >
                 <SignUpForm
-                    onComplete={onModalClosed}
-                />
-            </PopUpModal>
-
-            <PopUpModal
-                visible={showSignInModal}
-                onRequestClose={() => setShowSignInModal(false)}
-            >
-                <SignInForm
                     onComplete={onModalClosed}
                 />
             </PopUpModal>

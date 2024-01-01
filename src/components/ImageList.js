@@ -21,7 +21,7 @@ export default ({ images, loading, username, onSelected, onAddImage }) => (
             opacity: loading ? 0.5 : 1.0,
         }}
     >
-        {images.map((image, index) => (
+        {images && images.map((image, index) => (
             <Pressable
                 onPress={() => onSelected(image._id)}
                 style={{
@@ -75,7 +75,7 @@ export default ({ images, loading, username, onSelected, onAddImage }) => (
                 elevation: 5,
                 backgroundColor: '#000',
             }}
-            key={images.length}
+            key={images ? images.length : '0'}
         >
             <View
                 style={{
