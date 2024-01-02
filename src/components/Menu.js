@@ -5,42 +5,30 @@ import {
     View,
 } from 'react-native'
 import {
+    LoadingView,
     MenuItem,
     PopUpModal,
     ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
-import main from '../styles/main'
+// import main from '../styles/main'
+import classes from '../styles/classes'
 import axios from 'axios'
 
 export default ({ vendor }) => {
 
     const {
         dispatch,
-        vendors,
+        // vendors,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
-    const [items, setItems] = useState(false)
+    const [loading, setLoading] = useState(null)
+    // const [items, setItems] = useState(false)
     const [featured, setFeatured] = useState(null)
 
     useEffect(() => {
-        // const vendorItems = fetchItemsWithVendorId(vendor._id)
-        // console.log('vendorItems', vendorItems)
         init()
     }, [])
-
-    // const fetchItemsWithVendorId = id => {
-    //     if (!vendors) return null
-    //     const vendor = vendors.filter(v => v._id === id)[0]
-    //     if (!vendor.products) getProducts()
-    //     else setItems(vendor.products)
-    // }
-
-    // useEffect(() => {
-    //     console.log('vendor changed', vendor)
-    //     if (vendor) getProducts()
-    // }, [vendor])
     
     const init = async () => {
         getProducts()
@@ -48,11 +36,11 @@ export default ({ vendor }) => {
 
     const getProducts = async () => {
         
-        setLoading(true)
+        setLoading('Loading menu...')
         
         const { data } = await axios.get(`/api/products/${vendor._id}`)
         
-        setLoading(false)
+        setLoading(null)
         
         if (!data) {
             console.log('could not get vendor products')
@@ -64,12 +52,12 @@ export default ({ vendor }) => {
 
     const addToCart = item => {
 
-        setLoading(true)
+        // setLoading(true)
         
         dispatch({ type: 'ADD_TO_CART', item, vendor: vendor._id })
         
         setFeatured(null)
-        setLoading(false)
+        // setLoading(false)
     }
     
     return (
@@ -80,7 +68,7 @@ export default ({ vendor }) => {
             }}
         >
             {loading
-                ? <Text>Loading menu...</Text>
+                ? <LoadingView label={loading} />
                 : (vendor.products && vendor.products.length)
                     ? (
                         <FlatList
@@ -96,7 +84,7 @@ export default ({ vendor }) => {
                             )}
                         />
                     )
-                    : <Text style={main.text}>No products to display.</Text>
+                    : <Text style={classes.textDefault}>No products to display.</Text>
             }
 
             <PopUpModal

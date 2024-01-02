@@ -8,10 +8,13 @@ import {
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
+    MenuScreen,
     SettingsScreen,
     SplashScreen,
     StartScreen,
     UsersScreen,
+    VendorScreen,
+    VendorsScreen,
 } from '../screens'
 import { navigationRef } from './RootNavigation'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -21,7 +24,7 @@ const SecureStack = createBottomTabNavigator()
 const SecureStackScreen = () => {
     return (
         <SecureStack.Navigator
-            initialRouteName='Users'
+            initialRouteName='Vendors'
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
@@ -30,6 +33,17 @@ const SecureStackScreen = () => {
                 tabBarStyle: { backgroundColor: '#000' },
             }}
         >
+            <SecureStack.Screen
+                name='Vendors'
+                component={VendorsStackScreen}
+                options={{
+                    tabBarLabel: 'Vendors',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='fast-food-outline' size={size} color={color} />
+                    ),
+                }}
+            />
+
             <SecureStack.Screen
                 name='Users'
                 component={UsersStackScreen}
@@ -103,6 +117,64 @@ const UsersStackScreen = () => {
     )
 }
 
+// const VendorStack = createNativeStackNavigator()
+// const VendorStackScreen = () => {
+
+//     return (
+//         <VendorStack.Navigator
+//             screenOptions={() => ({
+//                 initialRouteName: 'Vendor',
+//                 headerShown: false,
+//             })}
+//         >
+//             <VendorStack.Screen
+//                 name='Vendor'
+//                 component={VendorScreen}
+//                 options={{ title: 'Vendor' }}
+//             />
+
+//             <VendorStack.Screen
+//                 name='Menu'
+//                 component={MenuScreen}
+//                 options={{ title: 'Menu' }}
+//             />
+            
+//         </VendorStack.Navigator>
+//     )
+// }
+
+const VendorsStack = createNativeStackNavigator()
+const VendorsStackScreen = () => {
+
+    return (
+        <VendorsStack.Navigator
+            screenOptions={() => ({
+                initialRouteName: 'VendorList',
+                headerShown: false,
+            })}
+        >
+            <VendorsStack.Screen
+                name='VendorList'
+                component={VendorsScreen}
+                options={{ title: 'Vendors' }}
+            />
+
+            <VendorsStack.Screen
+                name='Vendor'
+                component={VendorScreen}
+                options={{ title: 'Vendor' }}
+            />
+            
+            {/* <VendorsStack.Screen
+                name='VendorDetails'
+                component={VendorStackScreen}
+                options={{ title: 'Vendor' }}
+            /> */}
+            
+        </VendorsStack.Navigator>
+    )
+}
+
 const AuthStack = createNativeStackNavigator()
 const AuthStackScreen = () => (
     <AuthStack.Navigator
@@ -143,7 +215,14 @@ const config = {
                     path: 'users',
                     screens: {
                         UserList: '',
-                        User: 'user/:id',
+                        User: '/:id',
+                    },
+                },
+                Vendors: {
+                    path: 'vendors',
+                    screens: {
+                        VendorList: '',
+                        Vendor: '/:id',
                     },
                 },
                 Forum: 'forum',

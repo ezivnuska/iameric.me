@@ -22,10 +22,7 @@ export default ({ navigation }) => {
     useEffect(() => {
         if (user) {
             navigation.navigate('Secure', {
-                screen: 'Tabs',
-                params: {
-                    screen: 'Users',
-                },
+                screen: 'Vendors',
             })
         }
     }, [user])

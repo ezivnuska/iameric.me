@@ -129,7 +129,14 @@ export default ({ onPress }) => {
         }}>
 
             {(verified && user && !loading) ? (
-                <View>
+                <View style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    height: '100%',
+                    paddingRight: 15,
+                }}>
                     {items && items.length ? <CartButton /> : null}
 
                     <UserButton onPress={onPress} user={user} />

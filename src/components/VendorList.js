@@ -28,7 +28,7 @@ export default ({ users }) => (
                         online={online}
                         username={username}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
-                        onPress={() => navigate('User', { id: _id })}
+                        onPress={() => navigate('Vendor', { id: _id })}
                     />
                 </View>
             )

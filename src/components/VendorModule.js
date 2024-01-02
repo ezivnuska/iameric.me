@@ -6,7 +6,7 @@ import {
 import { AppContext } from '../AppContext'
 import {
     LoadingView,
-    UserList,
+    VendorList,
 } from '.'
 import { loadUsers } from '../utils/data'
 import classes from '../styles/classes'
@@ -16,23 +16,23 @@ export default () => {
     const {
         dispatch,
         users,
-        // user,
+        user,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
-    const [customers, setCustomers] = useState(null)
+    const [loading, setLoading] = useState(null)
+    const [vendors, setVendors] = useState(null)
 
     useEffect(() => {
         if (!users) init()
-        else filterUsers('customer')
+        else filterUsers('vendor')
     }, [])
 
     useEffect(() => {
-        if (users) filterUsers('customer')
+        if (users) filterUsers('vendor')
     }, [users])
 
     const init = async () => {
-        setLoading('Loading users...')
+        setLoading('Loading vendors...')
             
         const loadedUsers = await loadUsers(loadedUsers)
         
@@ -43,7 +43,7 @@ export default () => {
         setLoading(null)
     }
 
-    const filterUsers = type => setCustomers(
+    const filterUsers = type => setVendors(
         users.filter(({ _id, username, profileImage, role }) => {
             if (role == type) {
                 return ({ _id, username, profileImage, role })
@@ -55,14 +55,15 @@ export default () => {
         <View>
             
             <Text style={classes.pageTitle}>
-                Users
+                Vendors
             </Text>
 
             {!users && loading
                 ? <LoadingView label={loading} />
-                : customers
-                    ? <UserList users={customers} />
-                    : <Text style={classes.textDefault}>No users to display.</Text>}
+                : vendors
+                    ? <VendorList users={vendors} />
+                    : <Text style={classes.textDefault}>No participating vendors.</Text>
+            }
         </View>
     )
 }

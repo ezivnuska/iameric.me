@@ -6,7 +6,7 @@ import {
     View,
 } from 'react-native'
 import main from '../styles/main'
-import { PlusOutlined } from '@ant-design/icons'
+import classes from '../styles/classes'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -68,7 +68,7 @@ export default ({ item, username, onPress }) => {
                 >
                     <Text
                         style={[
-                            main.subheading,
+                            classes.headerSecondary,
                             {
                                 // flexBasis: 'auto',
                                 // flexGrow: 1,
@@ -85,7 +85,7 @@ export default ({ item, username, onPress }) => {
                     >
                         <Text
                             style={[
-                                main.text,
+                                classes.textDefault,
                                 {
                                     // flexBasis: '20%',
                                     lineHeight: 24,
@@ -98,8 +98,8 @@ export default ({ item, username, onPress }) => {
                 </View>
                 
             </View>
-            {(blurb && blurb.length) ? <Text style={main.text}>{blurb}</Text> : null}
-            {(desc && desc.length) ? <Text style={main.text}>{desc}</Text> : null}
+            {(blurb && blurb.length) ? <Text style={classes.textDefault}>{blurb}</Text> : null}
+            {(desc && desc.length) ? <Text style={classes.textDefault}>{desc}</Text> : null}
 
         </View>
     )

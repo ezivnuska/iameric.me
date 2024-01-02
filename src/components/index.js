@@ -67,6 +67,9 @@ import UserModule from './UserModule'
 import UserSelector from './UserSelector'
 import UserDetails from './UserDetails'
 import VendorHome from './VendorHome'
+import VendorList from './VendorList'
+import VendorListItem from './VendorListItem'
+import VendorModule from './VendorModule'
 import VendorSelector from './VendorSelector'
 
 export {
@@ -139,5 +142,8 @@ export {
     UserSelector,
     UserDetails,
     VendorHome,
+    VendorList,
+    VendorListItem,
+    VendorModule,
     VendorSelector,
 }

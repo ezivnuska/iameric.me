@@ -5,9 +5,9 @@ import {
     Text,
 } from 'react-native'
 import {
-    LoadingView,
     Menu,
     SecureScreen,
+    LoadingView,
 } from '@components'
 import { AppContext } from '../AppContext'
 // import { goBack, navigate } from '../navigators/RootNavigation'
@@ -20,11 +20,11 @@ export default ({ navigation, route }) => {
 
     const {
         dispatch,
-        // loading,
+        loading,
         users,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(null)
+    // const [loading, setLoading] = useState(null)
     const [userDetails, setUserDetails] = useState(null)
 
     useEffect(() => {
@@ -56,7 +56,7 @@ export default ({ navigation, route }) => {
 
     const fetchUsers = async () => {
 
-        setLoading('Loading users...')
+        dispatch({ type: 'SET_LOADING', loading: 'Loading users...' })
 
         const loadedUsers = await loadUsers(loadedUsers)
         
@@ -64,16 +64,12 @@ export default ({ navigation, route }) => {
             dispatch({ type: 'SET_USERS', users: loadedUsers })
         }
 
-        setLoading(null)
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     // TODO: clean this.
     const renderUserAvatar = () => {
-
-        const filename = (userDetails.profileImage && userDetails.profileImage.filename)
-            ? userDetails.profileImage.filename
-            : null
-        
+        const filename = userDetails.profileImage && userDetails.profileImage.filename ? userDetails.profileImage.filename : null
         const source = filename ?
             `${IMAGE_PATH}/${userDetails.username}/${filename}` :
             `${IMAGE_PATH}/avatar-default.png`
@@ -84,9 +80,8 @@ export default ({ navigation, route }) => {
                 style={{
                     width: '100%',
                     height: 200,
-                    // backgroundColor: '#ccc',
-                    resizeMode: 'cover',
-                    marginVertical: 15,
+                    backgroundColor: '#ccc',
+                    resizeMode: 'contain',
                 }}
             />
         )
@@ -96,7 +91,7 @@ export default ({ navigation, route }) => {
         <SecureScreen navigation={navigation}>
             
             {loading
-                ? <LoadingView label={loading} />
+                ? <LoadingView />
                 : userDetails
                     ? (
                         <>
@@ -111,7 +106,7 @@ export default ({ navigation, route }) => {
                                 </Text>
                             </Pressable>
 
-                            <Text style={classes.headerSecondary}>{userDetails.username}</Text>
+                            <Text style={classes.textDefault}>{userDetails.username}</Text>
                             <Text style={classes.textDefault}>{userDetails.email}</Text>
 
                             {renderUserAvatar()}

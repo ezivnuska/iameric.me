@@ -5,9 +5,9 @@ import {
     Text,
 } from 'react-native'
 import {
-    LoadingView,
     Menu,
     SecureScreen,
+    LoadingView,
 } from '@components'
 import { AppContext } from '../AppContext'
 // import { goBack, navigate } from '../navigators/RootNavigation'
@@ -20,7 +20,6 @@ export default ({ navigation, route }) => {
 
     const {
         dispatch,
-        // loading,
         users,
     } = useContext(AppContext)
 
@@ -69,7 +68,7 @@ export default ({ navigation, route }) => {
 
     // TODO: clean this.
     const renderUserAvatar = () => {
-
+        
         const filename = (userDetails.profileImage && userDetails.profileImage.filename)
             ? userDetails.profileImage.filename
             : null
@@ -84,7 +83,7 @@ export default ({ navigation, route }) => {
                 style={{
                     width: '100%',
                     height: 200,
-                    // backgroundColor: '#ccc',
+                    // backgroundColor: '#000',
                     resizeMode: 'cover',
                     marginVertical: 15,
                 }}
@@ -101,7 +100,7 @@ export default ({ navigation, route }) => {
                     ? (
                         <>
                             <Pressable
-                                onPress={() => navigation.navigate('UserList')}
+                                onPress={() => navigation.navigate('VendorList')}
                                 style={{
                                     paddingBottom: 10,
                                 }}
@@ -110,7 +109,7 @@ export default ({ navigation, route }) => {
                                     &lt; Back
                                 </Text>
                             </Pressable>
-
+                            
                             <Text style={classes.headerSecondary}>{userDetails.username}</Text>
                             <Text style={classes.textDefault}>{userDetails.email}</Text>
 

@@ -31,7 +31,7 @@ export default ({ navigation }) => {
     useEffect(() => {
         if (user) {
             navigation.navigate('Secure', {
-                screen: 'Users',
+                screen: 'Vendors',
             })
         }
     }, [user])
