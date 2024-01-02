@@ -101,7 +101,7 @@ const SignInForm = ({ onComplete }) => {
 		storeEmail(email)
 		setLoading(true)
 
-		const { data } = await signin(email, password)
+		const data = await signin(email, password)
 		// console.log('data', data)
 		if (data && data.user) {
 			onComplete(data.user)
