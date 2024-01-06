@@ -9,7 +9,7 @@ const initialState = {
     entries: null,
     images: null,
     loading: null,
-    orders: null,
+    orders: [],
     products: null,
     profileImage: null,
     user: null,
@@ -207,7 +207,7 @@ const reducer = (state = initialState, action) => {
             }
             entries = null
             loading = null
-            orders = null
+            orders = []
             products = null
             profileId = null
             user = null

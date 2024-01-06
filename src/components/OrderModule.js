@@ -5,13 +5,14 @@ import {
 } from 'react-native'
 import {
     ButtonPrimary,
-    ModalContent,
     OrderDetails,
+    OrderList,
     OrderPreview,
+    PopUpModal,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-import { loadUserOrders } from '../utils/data'
+import { loadOrders } from '../utils/data'
 
 export default () => {
     
@@ -25,14 +26,17 @@ export default () => {
     const [featuredItem, setFeaturedItem] = useState(null)
 
     useEffect(() => {
-        if (!orders) getOrders()
+        console.log('orders length:', orders, orders.length)
+        if (!orders.length) getOrders()
     }, [])
 
     const getOrders = async () => {
+        console.log('getting orders...')
         setLoading(true)
-        const orders = await loadUserOrders(user._id)
+        const orders = await loadOrders(user._id)
         setLoading(false)
         if (!orders) return
+        console.log('got orders...', orders)
         dispatch({ type: 'SET_ORDERS', orders })
     }
 
@@ -228,13 +232,20 @@ export default () => {
         setFeaturedItem(order._id)
     }
 
+    const renderOrderList = () => {
+        console.log('hi', orders)
+        if (orders && orders.length) {
+            return <OrderList orders={orders} />
+        }
+    }
+
     const renderOrders = () => {
         if (loading) return <Text>Loading Orders...</Text>
         if (!orders || !orders.length) return null
-        const items = relevantOrders(orders)
-        console.log('rel orders', items)
+        // const items = relevantOrders(orders)
+        // console.log('rel orders', items)
         
-        return (items && items.length) ? (
+        return (
             <View>
                 <View
                     style={{
@@ -245,7 +256,7 @@ export default () => {
                         flexWrap: 'wrap',
                     }}
                 >
-                    {items.map((order, index) => (
+                    {orders.map((order, index) => (
                         <OrderPreview
                             key={`order-preview-${index}`}
                             onPress={() => onPress(order)}
@@ -254,23 +265,28 @@ export default () => {
                     ))}
                 </View>
             
-                <ModalContent
-                    transparent={false}
+                <PopUpModal
                     visible={featuredItem}
                     onRequestClose={() => setFeaturedItem(null)}
-                    label='Order Details'
                 >
                     {featuredItem ? renderOrderProcessForm(featuredItem) : null}
-                </ModalContent>
+                </PopUpModal>
             </View>
-        ) : <Text>No active orders.</Text>
+        )
     }
 
     return (
         <View style={{
             marginVertical: 10,
         }}>
-            {renderOrders()}
+            {renderOrderList()}
+            
+            <PopUpModal
+                visible={featuredItem}
+                onRequestClose={() => setFeaturedItem(null)}
+            >
+                {featuredItem ? renderOrderProcessForm(featuredItem) : null}
+            </PopUpModal>
         </View>
     )
 }

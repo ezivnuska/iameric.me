@@ -5,6 +5,7 @@ import ImagesScreen from './ImagesScreen'
 import LoadingScreen from './LoadingScreen'
 import MenuScreen from './MenuScreen'
 import OrderScreen from './OrderScreen'
+import ProductsScreen from './ProductsScreen'
 import SettingsScreen from './SettingsScreen'
 import SplashScreen from './SplashScreen'
 import StartScreen from './StartScreen'
@@ -20,6 +21,7 @@ export {
     LoadingScreen,
     MenuScreen,
     OrderScreen,
+    ProductsScreen,
     SettingsScreen,
     SplashScreen,
     StartScreen,

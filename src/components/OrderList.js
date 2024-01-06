@@ -5,14 +5,15 @@ import {
 } from 'react-native'
 import {
     ButtonPrimary,
-    ModalContent,
     OrderDetails,
     OrderPreview,
+    PopUpModal,
     TimeSelector,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import moment from 'moment'
+import classes from '../styles/classes'
 import main from '../styles/main'
 
 export default ({ orders }) => {
@@ -26,6 +27,9 @@ export default ({ orders }) => {
     const [featured, setFeatured] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
 
+    useEffect(() => {
+        console.log('orders......', orders)
+    }, [])
     useEffect(() => {
         setFeaturedItem(getFeaturedItem(featured))
     }, [featured])
@@ -166,7 +170,7 @@ export default ({ orders }) => {
 
     const renderVendorForm = id => (
         <View>
-            <Text style={main.text}>How long until ready?</Text>
+            <Text style={classes.textDefault}>How long until ready?</Text>
             <TimeSelector onSelect={time => confirmOrder(id, time)} />
         </View>
     )
@@ -192,29 +196,25 @@ export default ({ orders }) => {
         setFeatured(order._id)
     }
 
-    const renderOrders = () => orders.map((order, index) => (
-        <OrderPreview
-            key={`order-preview-${index}`}
-            onPress={() => onPress(order)}
-            order={order}
-        >
-            {renderOrderProcessButton(order)}
-        </OrderPreview>
-    ))
-
     return (
         <View style={[main.padded, { borderWidth: 1, borderColor: 'green' }]}>
             
-            {(orders && orders.length) && renderOrders()}
+            {orders.map((order, index) => (
+                <OrderPreview
+                    key={`order-preview-${index}`}
+                    onPress={() => onPress(order)}
+                    order={order}
+                >
+                    {renderOrderProcessButton(order)}
+                </OrderPreview>
+            ))}
 
-            <ModalContent
+            <PopUpModal
                 visible={featured}
                 onRequestClose={() => setFeatured(null)}
-                label='Order Details'
-                loading={loading}
             >
                 <OrderDetails order={featuredItem} />
-            </ModalContent>
+            </PopUpModal>
         </View>
     )
 }

@@ -102,7 +102,7 @@ export default ({ onPress }) => {
         })
         dispatch({ type: 'SET_VERIFIED', verified: true })
         dispatch({ type: 'SET_LOADING', loading: null })
-        // navigation.navigate('Secure', {
+        // navigation.navigate('Private', {
         //     screen: 'Tabs',
         //     params: {
         //         screen: 'Users',

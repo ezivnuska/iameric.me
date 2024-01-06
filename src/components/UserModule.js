@@ -55,7 +55,7 @@ export default () => {
         <View>
             
             <Text style={classes.pageTitle}>
-                Users
+                Customers
             </Text>
 
             {!users && loading

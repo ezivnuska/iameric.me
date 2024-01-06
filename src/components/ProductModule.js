@@ -4,7 +4,8 @@ import {
     View,
 } from 'react-native'
 import {
-    ModalContent,
+    // ModalContent,
+    PopUpModal,
     ProductForm,
     ProductList,
 } from '.'
@@ -15,6 +16,7 @@ import {
 } from '../utils/data'
 import { PlusOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
+import classes from '../styles/classes'
 
 export default () => {
 
@@ -85,15 +87,19 @@ export default () => {
                     alignItems: 'center',
                 }}
             >
-                <Text style={[{
-                    flex: 1,
-                    flexGrow: 0,
-                    // flexShrink: 1,
-                    flexBasis: 'auto',
-                    fontSize: 24,
-                    fontWeight: 700,
-                    lineHeight: 32,
-                }]}>Products</Text>
+                <Text
+                    style={[
+                        {
+                            flex: 1,
+                            flexGrow: 0,
+                            // flexShrink: 1,
+                            flexBasis: 'auto',
+                        },
+                        classes.pageTitle,
+                    ]}
+                >
+                    Products
+                </Text>
 
                 <View style={{
                     flex: 1,
@@ -125,17 +131,16 @@ export default () => {
                     : <Text>No products to display.</Text>
             }
 
-            <ModalContent
+            <PopUpModal
                 visible={showModal || featured}
                 onRequestClose={closeModal}
-                label={`${featured && featured._id ? 'Edit' : 'Add'} Product`}
             >
                 <ProductForm
                     onComplete={onProductFormSubmitted}
                     onDelete={() => onDelete(featured._id)}
                     existingProduct={featured}
                 />
-            </ModalContent>
+            </PopUpModal>
         </View>
     )
 }

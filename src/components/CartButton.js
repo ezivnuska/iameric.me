@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
     Cart,
-    ModalContent,
+    PopUpModal,
 } from '.'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
@@ -28,7 +28,7 @@ export default () => {
 
     const onSubmitCart = () => {
         setModalVisible(false)
-        navigate('Home')
+        navigate('Orders')
     }
 
     return (
@@ -45,15 +45,14 @@ export default () => {
                 {items.length}
             </Button>
 
-            <ModalContent
+            <PopUpModal
                 visible={modalVisible}
                 onRequestClose={() => setModalVisible(false)}
-                label='Cart'
             >
                 <Cart
                     onSubmitOrder={onSubmitCart}
                 />
-            </ModalContent>
+            </PopUpModal>
 
         </View>
     )

@@ -17,13 +17,13 @@ export default ({ children, navigation, ...props }) => {
         user,
     } = useContext(AppContext)
 
-    useEffect(() => {
-        if (!user) {
-            // console.log('not verified')
-            // initialize(dispatch)
-            navigation.navigate('Start')
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (!user) {
+    //         // console.log('not verified')
+    //         // initialize(dispatch)
+    //         navigation.navigate('Start')
+    //     }
+    // }, [user])
 
     // const checkUser = async () => {
     //     dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })
@@ -33,7 +33,7 @@ export default ({ children, navigation, ...props }) => {
     //         if (verifiedUser) {
     //             dispatch({ type: 'SET_VERIFIED', verified: true })
     //             dispatch({ type: 'SET_USER', user: verifiedUser })
-    //             // navigate('Secure')
+    //             // navigate('Private')
     //             setSecureUser(verifiedUser)
     //         } else {
     //             navigation.navigate('Start')
@@ -46,9 +46,7 @@ export default ({ children, navigation, ...props }) => {
         <Screen style={props.style || {}}>
             {loading
                 ? <LoadingView />
-                : user
-                    ? children
-                    : null
+                : children
             }
         </Screen>
     )

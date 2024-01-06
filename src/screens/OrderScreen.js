@@ -1,12 +1,12 @@
 import React from 'react'
 
 import {
-    OrderListContainer,
-    Screen,
+    OrderModule,
+    SecureScreen,
 } from '@components'
 
 export default () => (
-    <Screen>
-        <OrderListContainer />
-    </Screen>
+    <SecureScreen>
+        <OrderModule />
+    </SecureScreen>
 )

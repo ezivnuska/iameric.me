@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import main from '../styles/main'
 import { AppContext } from '../AppContext'
+import classes from '../styles/classes'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -72,17 +73,17 @@ export default ({ product, onDelete, onPress, ...props }) => {
                         flexShrink: 1,
                     }}
                 >
-                    <View style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                    }}>
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                        }}
+                    >
                         
                         <Text style={[
-                            main.text,
+                            classes.headerSecondary,
                             {
-                                fontSize: 18,
-                                fontWeight: 700,
                                 flexBasis: 'auto',
                                 flexGrow: 1,
                                 flexBasis: '80%',
@@ -91,23 +92,22 @@ export default ({ product, onDelete, onPress, ...props }) => {
                             {product.title}
                         </Text>
 
-                        <Text style={[
-                            main.text,
-                            {
-                                flexBasis: '20%',
-                                textAlign: 'right',
-                                fontSize: 18,
-                                fontWeight: 700,
-                                color: '#666',
-                                flexGrow: 0,
-                            }
-                        ]}>
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                {
+                                    flexBasis: '20%',
+                                    textAlign: 'right',
+                                    flexGrow: 0,
+                                }
+                            ]}
+                        >
                             ${product.price}
                         </Text>
 
                     </View>
-                    <Text style={main.text}>{product.blurb}</Text>
-                    <Text style={main.text}>{product.desc}</Text>
+                    <Text style={classes.textDefault}>{product.blurb}</Text>
+                    <Text style={classes.textDefault}>{product.desc}</Text>
                 </View>
             </View>
             

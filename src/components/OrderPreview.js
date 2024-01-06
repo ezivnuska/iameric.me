@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
 import {
+    Pressable,
     StyleSheet,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import {
@@ -12,9 +12,8 @@ import {
 } from '.'
 
 import { AppContext } from '../AppContext'
-import main from '../styles/main'
+import classes from '../styles/classes'
 import moment from 'moment'
-import { Button } from 'antd'
 import {
     DownOutlined,
     UpOutlined,
@@ -73,32 +72,30 @@ const OrderPreview = ({ order, children, ...props }) => {
 
     const renderCustomer = () => customer ? (
         <View style={styles.column}>
-            <Text style={[styles.heading, { color: textColor() }]}>{customer.username}</Text>
+            <Text style={classes.headerSecondary}>{customer.username}</Text>
             {renderLocation()}
         </View>
     ) : <Text>No customer</Text>
     
     const renderVendor = () => vendor ? (
         <View style={styles.column}>
-            <Text style={[styles.heading, { color: textColor() }]}>{`${vendor.username} (${items.length} ${items.length > 1 ? 'items' : 'item'})`}</Text>
+            <Text style={classes.headerSecondary}>{`${vendor.username} (${items.length} ${items.length > 1 ? 'items' : 'item'})`}</Text>
             <LocationDetails location={vendor.location} style={{ color: textColor()}} />
         </View>
     ) : <Text>No vendor</Text>
 
     const renderHeaderButton = () => (
-        <TouchableOpacity
+        <Pressable
             style={styles.button}
             onPress={() => setExpanded(!expanded)}
         >
             {
-            expanded
-            ?
-            <UpOutlined />
-            :
-            <DownOutlined />
+                expanded
+                    ? <UpOutlined />
+                    : <DownOutlined />
             }
 
-        </TouchableOpacity>
+        </Pressable>
     )
 
     return (
@@ -107,13 +104,13 @@ const OrderPreview = ({ order, children, ...props }) => {
         >
             <View style={styles.header}>
                 <View style={styles.statusDisplay}>
-                    {!confirmed && vendor && <Text style={[main.text, styles.status]}>Waiting on confirmation from {vendor.username}</Text>}
-                    {(confirmed && !accepted) && <Text style={[main.text, styles.status]}>Looking for available driver.</Text>}
-                    {(pickup && !received) && <Text style={[main.text, styles.milestone]}>Ready for pick up at {moment(pickup).format('LT')}</Text>}
-                    {(accepted && !arrived) && <Text style={[main.text, styles.status]}>{driver.username} is on the way to {vendor.username}.</Text>}
-                    {ready && <Text style={[main.text, styles.status]}>Order is ready.</Text>}
-                    {(arrived && !received) && <Text style={[main.text, styles.status]}>{driver.username} is onsite and waiting for your order.</Text>}
-                    {(received && !delivered) && <Text style={[main.text, styles.status]}>{driver.username} is on the way.</Text>}
+                    {!confirmed && vendor && <Text style={[classes.textDefault, styles.status]}>Waiting on confirmation from {vendor.username}</Text>}
+                    {(confirmed && !accepted) && <Text style={[classes.textDefault, styles.status]}>Looking for available driver.</Text>}
+                    {(pickup && !received) && <Text style={[classes.textDefault, styles.milestone]}>Ready for pick up at {moment(pickup).format('LT')}</Text>}
+                    {(accepted && !arrived) && <Text style={[classes.textDefault, styles.status]}>{driver.username} is on the way to {vendor.username}.</Text>}
+                    {ready && <Text style={[classes.textDefault, styles.status]}>Order is ready.</Text>}
+                    {(arrived && !received) && <Text style={[classes.textDefault, styles.status]}>{driver.username} is onsite and waiting for your order.</Text>}
+                    {(received && !delivered) && <Text style={[classes.textDefault, styles.status]}>{driver.username} is on the way.</Text>}
                 </View>
 
                 {renderHeaderButton()}
@@ -121,13 +118,13 @@ const OrderPreview = ({ order, children, ...props }) => {
 
 
             <View style={[styles.timeline, { display: expanded ? 'block' : 'none' }]}>
-                {<Text style={[main.text, styles.milestone]}>Ordered {moment(date).format('dddd, MMM Do')} at {moment(date).format('LT')}</Text>}
-                {confirmed && <Text style={[main.text, styles.milestone]}>Confirmed by {vendor.username} at {moment(confirmed).format('LT')}</Text>}
-                {accepted && <Text style={[main.text, styles.milestone]}>Accepted by {driver.username} at {moment(accepted).format('LT')}</Text>}
-                {arrived && <Text style={[main.text, styles.milestone]}>Driver arrived at {vendor.username} at {moment(arrived).format('LT')}</Text>}
-                {ready && <Text style={[main.text, styles.milestone]}>Order marked ready at {moment(ready).format('LT')}</Text>}
-                {received && <Text style={[main.text, styles.milestone]}>Order picked up at {moment(received).format('LT')}</Text>}
-                {delivered && <Text style={[main.text, styles.milestone]}>{driver.username} delivered order at {moment(delivered).format('LT')}</Text>}
+                {<Text style={[classes.textDefault, styles.milestone]}>Ordered {moment(date).format('dddd, MMM Do')} at {moment(date).format('LT')}</Text>}
+                {confirmed && <Text style={[classes.textDefault, styles.milestone]}>Confirmed by {vendor.username} at {moment(confirmed).format('LT')}</Text>}
+                {accepted && <Text style={[classes.textDefault, styles.milestone]}>Accepted by {driver.username} at {moment(accepted).format('LT')}</Text>}
+                {arrived && <Text style={[classes.textDefault, styles.milestone]}>Driver arrived at {vendor.username} at {moment(arrived).format('LT')}</Text>}
+                {ready && <Text style={[classes.textDefault, styles.milestone]}>Order marked ready at {moment(ready).format('LT')}</Text>}
+                {received && <Text style={[classes.textDefault, styles.milestone]}>Order picked up at {moment(received).format('LT')}</Text>}
+                {delivered && <Text style={[classes.textDefault, styles.milestone]}>{driver.username} delivered order at {moment(delivered).format('LT')}</Text>}
             </View>
 
             <View style={styles.columns}>

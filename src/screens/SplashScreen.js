@@ -19,13 +19,13 @@ export default ({ navigation }) => {
         start()
     }, [])
 
-    useEffect(() => {
-        if (user) {
-            navigation.navigate('Secure', {
-                screen: 'Vendors',
-            })
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user) {
+    //         navigation.navigate('Private', {
+    //             screen: 'Vendors',
+    //         })
+    //     }
+    // }, [user])
 
     const start = async () => {
         dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })

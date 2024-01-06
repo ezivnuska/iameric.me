@@ -18,6 +18,10 @@ export default () => {
     const [current, setCurrent] = useState([])
 
     useEffect(() => {
+        console.log('orders', orders)
+    }, [])
+
+    useEffect(() => {
         if (orders) sortOrders(orders.filter(order => order.status < 6))
     }, [orders])
 

@@ -6,11 +6,11 @@ import {
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
-import main from '../styles/main'
+import classes from '../styles/classes'
 import axios from 'axios'
 import { Button } from 'antd'
 
-const Cart = ({ onSubmitOrder }) => {
+export default ({ onSubmitOrder }) => {
 
     const {
         dispatch,
@@ -54,19 +54,76 @@ const Cart = ({ onSubmitOrder }) => {
     return cart.items ? (
         <View>
             <FlatList
-                style={styles.cart}
+                style={{
+                    paddingBottom: 10,
+                }}
                 data={cart.items}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item }) => (
-                    <View style={styles.item}>
-                        <Text style={[main.text, styles.text]}>{item.title}</Text>
-                        <Text style={[main.text, styles.value]}>${item.price}</Text>
+                    <View style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                    }}>
+                        <Text
+                            style={classes.textDefault}
+                        >
+                            {item.title}
+                        </Text>
+
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                {
+                                    flexBasis: 'auto',
+                                    flexGrow: 0,
+                                    flexShrink: 1,
+                                },
+                            ]}
+                        >
+                            ${item.price}
+                        </Text>
                     </View>
                 )} 
             />
-            <View style={styles.flexContainer}>
-                <Text style={[main.text, styles.text, styles.total]}>Total:</Text>
-                <Text style={[main.text, styles.value, styles.total]}>${getTotal()}</Text>
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingBottom: 10,
+                }}
+            >
+                <Text
+                    style={[
+                        classes.textDefault,
+                        {
+                            flexBasis: '80%',
+                            flexGrow: 1,
+                            flexShrink: 0,
+                        },
+                        {
+                            fontWeight: 700,
+                        },
+                    ]}
+                >
+                    Total:
+                </Text>
+                <Text
+                    style={[
+                        classes.textDefault,
+                        {
+                            flexBasis: 'auto',
+                            flexGrow: 0,
+                            flexShrink: 1,
+                        },
+                        {
+                            fontWeight: 700,
+                        },
+                    ]}
+                >
+                    ${getTotal()}
+                </Text>
             </View>
 
             <Button
@@ -90,38 +147,3 @@ const Cart = ({ onSubmitOrder }) => {
         </View>
     ) : null
 }
-
-export default Cart
-
-const styles = StyleSheet.create({
-    cart: {
-        // borderBottomWidth: 1,
-        // borderBottomColor: '#ccc',
-        // paddingBottom: 10,
-        paddingBottom: 10,
-    },
-    flexContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingBottom: 10,
-    },
-    item: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    text: {
-        flexBasis: '80%',
-        flexGrow: 1,
-        flexShrink: 0,
-    },
-    value: {
-        flexBasis: 'auto',
-        flexGrow: 0,
-        flexShrink: 1,
-    },
-    total: {
-        fontWeight: 700,
-    },
-})

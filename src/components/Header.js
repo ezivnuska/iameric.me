@@ -18,9 +18,7 @@ export default () => {
     } = useContext(AppContext)
 
     const onBrandClicked = () => {
-        if (user) navigate('Secure', {
-            screen: 'Vendors'
-        })
+        if (user) navigate('Orders')
         else navigate('Splash')
     }
     
@@ -57,9 +55,7 @@ export default () => {
                     }}
                 >
                     <AuthMenu
-                        onPress={() => navigate('Secure', {
-                            screen: 'Settings'
-                        })}
+                        onPress={() => navigate('Settings')}
                     />
                 </View>
             </View>

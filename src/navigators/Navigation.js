@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     NavigationContainer,
 } from '@react-navigation/native'
@@ -8,7 +8,9 @@ import {
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
-    MenuScreen,
+    // MenuScreen,
+    OrderScreen,
+    ProductsScreen,
     SettingsScreen,
     SplashScreen,
     StartScreen,
@@ -19,78 +21,80 @@ import {
 import { navigationRef } from './RootNavigation'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AppContext } from '../AppContext'
 
-const SecureStack = createBottomTabNavigator()
-const SecureStackScreen = () => {
-    return (
-        <SecureStack.Navigator
-            initialRouteName='Vendors'
-            screenOptions={{
-                headerShown: false,
-                tabBarShowLabel: false,
-                tabBarActiveTintColor: '#fff',
-                tabBarLabelStyle: { fontSize: 18 },
-                tabBarStyle: { backgroundColor: '#000' },
-            }}
-        >
-            <SecureStack.Screen
-                name='Vendors'
-                component={VendorsStackScreen}
-                options={{
-                    tabBarLabel: 'Vendors',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='fast-food-outline' size={size} color={color} />
-                    ),
-                }}
-            />
+// const SecureStack = createBottomTabNavigator()
+// const SecureStackScreen = () => {
+//     return (
+//         <SecureStack.Navigator
+//             initialRouteName='Vendors'
+//             screenOptions={{
+//                 headerShown: false,
+//                 tabBarShowLabel: false,
+//                 tabBarActiveTintColor: '#fff',
+//                 tabBarLabelStyle: { fontSize: 18 },
+//                 tabBarStyle: { backgroundColor: '#000' },
+//             }}
+//         >
+//             <SecureStack.Screen
+//                 name='Vendors'
+//                 component={VendorsStackScreen}
+//                 options={{
+//                     tabBarLabel: 'Vendors',
+//                     tabBarIcon: ({ focused, color, size }) => (
+//                         <Icon name='fast-food-outline' size={size} color={color} />
+//                     ),
+//                 }}
+//             />
 
-            <SecureStack.Screen
-                name='Users'
-                component={UsersStackScreen}
-                options={{
-                    tabBarLabel: 'Users',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='people-circle-outline' size={size} color={color} />
-                    ),
-                }}
-            />
+//             <SecureStack.Screen
+//                 name='Users'
+//                 component={UsersStackScreen}
+//                 options={{
+//                     tabBarLabel: 'Users',
+//                     tabBarIcon: ({ focused, color, size }) => (
+//                         <Icon name='people-circle-outline' size={size} color={color} />
+//                     ),
+//                 }}
+//             />
 
-            <SecureStack.Screen
-                name='Forum'
-                component={ForumScreen}
-                options={{
-                    tabBarLabel: 'Forum',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='chatbubble-outline' size={size} color={color} />
-                    ),
-                }}
-            />
+//             <SecureStack.Screen
+//                 name='Forum'
+//                 component={ForumScreen}
+//                 options={{
+//                     tabBarLabel: 'Forum',
+//                     tabBarIcon: ({ focused, color, size }) => (
+//                         <Icon name='chatbubble-outline' size={size} color={color} />
+//                     ),
+//                 }}
+//             />
             
-            <SecureStack.Screen
-                name='Settings'
-                component={SettingsScreen}
-                options={{
-                    tabBarLabel: 'Settings',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='cog' size={size} color={color} />
-                    ),
-                }}
-            />
+//             <SecureStack.Screen
+//                 name='Settings'
+//                 component={SettingsScreen}
+//                 options={{
+//                     tabBarLabel: 'Settings',
+//                     tabBarIcon: ({ focused, color, size }) => (
+//                         <Icon name='cog' size={size} color={color} />
+//                     ),
+//                 }}
+//             />
 
-            <SecureStack.Screen
-                name='Images'
-                component={ImagesScreen}
-                options={{
-                    tabBarLabel: 'Images',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='images-outline' size={size} color={color} />
-                    ),
-                }}
-            />
+//             <SecureStack.Screen
+//                 name='Images'
+//                 component={ImagesScreen}
+//                 options={{
+//                     tabBarLabel: 'Images',
+//                     tabBarIcon: ({ focused, color, size }) => (
+//                         <Icon name='images-outline' size={size} color={color} />
+//                     ),
+//                 }}
+//             />
 
-        </SecureStack.Navigator>
-    )
-}
+//         </SecureStack.Navigator>
+//     )
+// }
+
 const UsersStack = createNativeStackNavigator()
 const UsersStackScreen = () => {
 
@@ -116,6 +120,32 @@ const UsersStackScreen = () => {
         </UsersStack.Navigator>
     )
 }
+
+// const OrdersStack = createNativeStackNavigator()
+// const OrdersStackScreen = () => {
+
+//     return (
+//         <OrdersStack.Navigator
+//             screenOptions={() => ({
+//                 initialRouteName: 'OrderList',
+//                 headerShown: false,
+//             })}
+//         >
+//             <OrdersStack.Screen
+//                 name='OrderList'
+//                 component={OrderScreen}
+//                 options={{ title: 'Orders' }}
+//             />
+
+//             {/* <OrdersStack.Screen
+//                 name='Order'
+//                 component={OrderScreen}
+//                 options={{ title: 'Order' }}
+//             /> */}
+            
+//         </OrdersStack.Navigator>
+//     )
+// }
 
 // const VendorStack = createNativeStackNavigator()
 // const VendorStackScreen = () => {
@@ -146,6 +176,10 @@ const UsersStackScreen = () => {
 const VendorsStack = createNativeStackNavigator()
 const VendorsStackScreen = () => {
 
+    const {
+        user,
+    } = useContext(AppContext)
+
     return (
         <VendorsStack.Navigator
             screenOptions={() => ({
@@ -175,42 +209,193 @@ const VendorsStackScreen = () => {
     )
 }
 
-const AuthStack = createNativeStackNavigator()
-const AuthStackScreen = () => (
-    <AuthStack.Navigator
+const ProductsStack = createNativeStackNavigator()
+const ProductsStackScreen = () => (
+    <ProductsStack.Navigator
+        screenOptions={() => ({
+            initialRouteName: 'ProductList',
+            headerShown: false,
+        })}
+    >
+        <ProductsStack.Screen
+            name='ProductList'
+            component={ProductsScreen}
+            options={{ title: 'Products' }}
+        />
+
+        {/* <ProductsStack.Screen
+            name='Product'
+            component={ProductScreen}
+            options={{ title: 'Product' }}
+        /> */}
+        
+    </ProductsStack.Navigator>
+)
+
+// const DriversStack = createNativeStackNavigator()
+// const DriversStackScreen = () => (
+//     <DriversStack.Navigator
+//         screenOptions={() => ({
+//             initialRouteName: 'DriverList',
+//             headerShown: false,
+//         })}
+//     >
+//         <DriversStack.Screen
+//             name='DriverList'
+//             component={DriversScreen}
+//             options={{ title: 'Drivers' }}
+//         />
+
+//         <DriversStack.Screen
+//             name='Driver'
+//             component={DriverScreen}
+//             options={{ title: 'Driver' }}
+//         />
+        
+//     </DriversStack.Navigator>
+// )
+
+const PublicStack = createNativeStackNavigator()
+const PublicStackScreen = () => (
+    <PublicStack.Navigator
         screenOptions={() => ({
             initialRouteName: 'Splash',
             headerShown: false,
         })}
     >
-        <AuthStack.Screen
+        <PublicStack.Screen
             name='Splash'
             component={SplashScreen}
             options={{ title: 'Splash' }}
         />
 
-        <AuthStack.Screen
+        <PublicStack.Screen
             name='Start'
             component={StartScreen}
             options={{ title: 'Start' }}
         />
-
-        <AuthStack.Screen
-            name='Secure'
-            component={SecureStackScreen}
-            options={{ title: 'iameric' }}
-        />
         
-    </AuthStack.Navigator>
+    </PublicStack.Navigator>
 )
 
-const config = {
+const PrivateStack = createBottomTabNavigator()
+const PrivateStackScreen = ({ user }) => {
+    return (
+        <PrivateStack.Navigator
+            initialRouteName='Orders'
+            screenOptions={{
+                headerShown: false,
+                tabBarShowLabel: false,
+                tabBarActiveTintColor: '#fff',
+                tabBarLabelStyle: { fontSize: 18 },
+                tabBarStyle: { backgroundColor: '#000' },
+            }}
+        >
+            <PrivateStack.Screen
+                name='Orders'
+                component={OrderScreen}
+                options={{
+                    tabBarLabel: 'Orders',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='alert-circle-outline' size={size} color={color} />
+                    ),
+                }}
+            />
+
+            {(user.role === 'vendor') && (
+                <PrivateStack.Screen
+                    name='Products'
+                    component={ProductsStackScreen}
+                    options={{
+                        tabBarLabel: 'Products',
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <Icon name='grid-outline' size={size} color={color} />
+                        ),
+                    }}
+                />
+            )}
+
+            {user.role !== 'vendor' && user.role !== 'driver' && (
+                <PrivateStack.Screen
+                    name='Vendors'
+                    component={VendorsStackScreen}
+                    options={{
+                        tabBarLabel: 'Vendors',
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <Icon name='fast-food-outline' size={size} color={color} />
+                        ),
+                    }}
+                />
+            )}
+
+            {user.role !== 'driver' && (
+                <PrivateStack.Screen
+                    name='Users'
+                    component={UsersStackScreen}
+                    options={{
+                        tabBarLabel: 'Users',
+                        tabBarIcon: ({ focused, color, size }) => (
+                            <Icon name='people-circle-outline' size={size} color={color} />
+                        ),
+                    }}
+                />
+            )}
+
+            <PrivateStack.Screen
+                name='Forum'
+                component={ForumScreen}
+                options={{
+                    tabBarLabel: 'Forum',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='chatbubble-outline' size={size} color={color} />
+                    ),
+                }}
+            />
+
+            <PrivateStack.Screen
+                name='Images'
+                component={ImagesScreen}
+                options={{
+                    tabBarLabel: 'Images',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='images-outline' size={size} color={color} />
+                    ),
+                }}
+            />
+            
+            <PrivateStack.Screen
+                name='Settings'
+                component={SettingsScreen}
+                options={{
+                    tabBarLabel: 'Settings',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='cog' size={size} color={color} />
+                    ),
+                }}
+            />
+
+        </PrivateStack.Navigator>
+    )
+}
+
+const publicScreens = {
     screens: {
         Splash: 'splash',
         Start: 'start',
-        Secure: {
+    },
+}
+
+const privateScreens = {
+    screens: {
+        Private: {
             path: '',
             screens: {
+                Products: {
+                    path: 'products',
+                    screens: {
+                        ProductList: '',
+                    },
+                },
                 Users: {
                     path: 'users',
                     screens: {
@@ -225,6 +410,14 @@ const config = {
                         Vendor: '/:id',
                     },
                 },
+                // Drivers: {
+                //     path: 'drivers',
+                //     screens: {
+                //         DriverList: '',
+                //         Driver: '/:id',
+                //     },
+                // },
+                Orders: 'orders',
                 Forum: 'forum',
                 Images: 'images',
                 Settings: 'settings',
@@ -233,18 +426,38 @@ const config = {
     },
 }
 
-const linking = {
-    prefixes: ['https://iameric.me'],
-    config,
-}
+export default () => {
 
-export default () => (
-    <NavigationContainer
-        ref={navigationRef}
-        linking={linking}
-        fallback={<FallbackScreen />}
-        // onStateChange={async state => {}}
-    >
-        <AuthStackScreen />
-    </NavigationContainer>
-)
+    const {
+        user,
+    } = useContext(AppContext)
+
+    const [verified, setVerified] = useState(false)
+    const [linking, setLinking] = useState(null)
+
+    useEffect(() => {
+        if (user && !verified) setVerified(true)
+        if (!user && verified) setVerified(false)
+        setLinking(getLinking(user && verified))
+    }, [user, verified])
+
+    // useEffect(() => {
+
+    // }, [linking])
+
+    const getLinking = secure => ({
+        prefixes: ['https://iameric.me'],
+        config: secure ? privateScreens : publicScreens,
+    })
+
+    return (
+        <NavigationContainer
+            ref={navigationRef}
+            linking={linking}
+            fallback={<FallbackScreen />}
+            // onStateChange={async state => {}}
+        >
+            {user ? <PrivateStackScreen user={user} /> : <PublicStackScreen />}
+        </NavigationContainer>
+    )
+}
