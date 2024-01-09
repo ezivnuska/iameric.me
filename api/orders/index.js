@@ -224,7 +224,7 @@ const createOrder = async (req, res) => {
         return res.json(400).json(null)
     }
     
-    console.log(`new order created by ${order.customer.username} from ${order.vendor.username}`)
+    // console.log(`new order created by ${order.customer.username} from ${order.vendor.username}`)
 
     return res.status(200).json(order)
 }
@@ -259,7 +259,7 @@ const confirmOrder = async (req, res) => {
         return res.status(400).json(null)
     }
 
-    console.log(`${order.vendor.username} confirmed order for ${order.customer.username}`)
+    // console.log(`${order.vendor.username} confirmed order for ${order.customer.username}`)
 
     return res.status(200).json(order)
 }
@@ -295,7 +295,7 @@ const acceptOrder = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    console.log(`${order.driver.username} accepted order for ${order.customer.username} from ${order.vendor.username}`)
+    // console.log(`${order.driver.username} accepted order for ${order.customer.username} from ${order.vendor.username}`)
 
     return res.status(200).json(order)
 }
@@ -327,7 +327,7 @@ const markOrderAsReady = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    console.log(`${order.vendor.username} marked order for ${order.customer.username} as ready`)
+    // console.log(`${order.vendor.username} marked order for ${order.customer.username} as ready`)
 
     return res.status(200).json(order)
 }
@@ -360,7 +360,7 @@ const markDriverAtVendorLocation = async (req, res) => {
         return res.status(400).json(null)
     }
 
-    console.log(`${order.driver.username} arrived at ${order.vendor.username}`)
+    // console.log(`${order.driver.username} arrived at ${order.vendor.username}`)
 
     return res.status(200).json(order)
 }
@@ -393,7 +393,7 @@ const markOrderReceivedByDriver = async (req, res) => {
         return res.status(200).json(null)
     }
     
-    console.log(`${order.driver.username} picked up order for ${order.customer.username} from ${order.vendor.username}`)
+    // console.log(`${order.driver.username} picked up order for ${order.customer.username} from ${order.vendor.username}`)
 
     return res.status(200).json(order)
 }
@@ -426,7 +426,7 @@ const markOrderComplete = async (req, res) => {
         return res.status(406).json({ err: 'Error completing order'})
     }
 
-    console.log(`${order.driver.username} completed order from ${order.vendor.username} to ${order.customer.username}`)
+    // console.log(`${order.driver.username} completed order from ${order.vendor.username} to ${order.customer.username}`)
 
     return res.status(200).json(order)
 }
@@ -454,7 +454,7 @@ const closeOrder = async (req, res) => {
         console.log('Could not close order')
         return res.status(406).json({ err: 'Error closing order'})
     }
-    console.log(`Closed order (${order._id}) from ${order.vendor.username}`)
+    // console.log(`Closed order (${order._id}) from ${order.vendor.username}`)
 
     return res.status(200).json(order)
 }

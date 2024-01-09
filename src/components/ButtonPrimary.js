@@ -1,11 +1,12 @@
 import React from 'react'
 import {
+    Pressable,
     Text,
-    TouchableOpacity,
 } from 'react-native'
 import defaultStyles from '../styles/main'
+// import classes from '../styles/classes'
 
-const ButtonPrimary = ({ label, onPress, disabled = false, fontSize = null, ...props }) => {
+export default ({ label, onPress, disabled = false, fontSize = null, ...props }) => {
     
     const handlePress = async () => {
         // do stuff
@@ -13,7 +14,7 @@ const ButtonPrimary = ({ label, onPress, disabled = false, fontSize = null, ...p
     }
 
     return (
-        <TouchableOpacity
+        <Pressable
             style={[defaultStyles.button, disabled ? defaultStyles.buttonDisabled : props.style ? props.style : null]}
             onPress={handlePress}
             disabled={disabled}
@@ -26,8 +27,6 @@ const ButtonPrimary = ({ label, onPress, disabled = false, fontSize = null, ...p
                 {label}
             </Text>
             
-        </TouchableOpacity>
+        </Pressable>
     )
 }
-
-export default ButtonPrimary

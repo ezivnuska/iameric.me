@@ -6,7 +6,7 @@ import {
 import { AppContext } from '../AppContext'
 import {
     LoadingView,
-    UserList,
+    DriverList,
 } from '.'
 import { loadUsers } from '../utils/data'
 import classes from '../styles/classes'
@@ -16,30 +16,23 @@ export default () => {
     const {
         dispatch,
         users,
-        // user,
+        user,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
-    const [customers, setCustomers] = useState(null)
+    const [loading, setLoading] = useState(null)
+    const [drivers, setDrivers] = useState(null)
 
     useEffect(() => {
         if (!users) init()
-        else filterUsers('customer')
+        else filterUsers('driver')
     }, [])
 
     useEffect(() => {
-        
-        if (users) {
-            const filteredUsers = [
-                ...filterUsers('customer'),
-                ...filterUsers('admin'),
-            ]
-            setCustomers(filteredUsers)
-        }
+        if (users) filterUsers('driver')
     }, [users])
 
     const init = async () => {
-        setLoading('Loading users...')
+        setLoading('Loading vendors...')
             
         const loadedUsers = await loadUsers(loadedUsers)
         
@@ -50,24 +43,27 @@ export default () => {
         setLoading(null)
     }
 
-    const filterUsers = type => users.filter(({ _id, username, profileImage, role }) => {
-        if (role == type) {
-            return ({ _id, username, profileImage, role })
-        }
-    })
+    const filterUsers = type => setDrivers(
+        users.filter(({ _id, username, profileImage, role }) => {
+            if (role == type) {
+                return ({ _id, username, profileImage, role })
+            }
+        })
+    )
 
     return (
         <View>
             
             <Text style={classes.pageTitle}>
-                Customers
+                Drivers
             </Text>
 
             {!users && loading
                 ? <LoadingView label={loading} />
-                : customers
-                    ? <UserList users={customers} />
-                    : <Text style={classes.textDefault}>No users to display.</Text>}
+                : drivers
+                    ? <DriverList users={drivers} />
+                    : <Text style={classes.textDefault}>No drivers yet.</Text>
+            }
         </View>
     )
 }

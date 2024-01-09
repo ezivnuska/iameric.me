@@ -54,7 +54,7 @@ export default ({ vendor }) => {
 
         // setLoading(true)
         
-        dispatch({ type: 'ADD_TO_CART', item, vendor: vendor._id })
+        dispatch({ type: 'ADD_TO_CART', item })
         
         setFeatured(null)
         // setLoading(false)

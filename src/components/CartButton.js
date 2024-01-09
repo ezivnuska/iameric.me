@@ -14,20 +14,14 @@ import { navigate } from '../navigators/RootNavigation'
 export default () => {
 
     const {
-        state,
+        cart,
     } = useContext(AppContext)
 
-    const { cart } = state
-
     const [modalVisible, setModalVisible] = useState(false)
-    const [items, setItems] = useState([])
-
-    useEffect(() => {
-        setItems(cart.items)
-    }, [cart])
 
     const onSubmitCart = () => {
         setModalVisible(false)
+        
         navigate('Orders')
     }
 
@@ -42,7 +36,7 @@ export default () => {
                 onClick={() => setModalVisible(true)}
             >   
                 &nbsp;
-                {items.length}
+                {cart.length}
             </Button>
 
             <PopUpModal

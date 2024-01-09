@@ -1,10 +1,7 @@
 import React, { createContext, useReducer } from 'react'
 
 const initialState = {
-    cart: {
-        vendor: null,
-        items: [],
-    },
+    cart: [],
     dims: null,
     entries: null,
     images: null,
@@ -94,13 +91,14 @@ const reducer = (state = initialState, action) => {
             users = action.users
             break
         case 'ADD_TO_CART':
-            cart = {
-                vendor: action.vendor,
-                items: [...cart.items, action.item],
-            }
+            console.log('ADDING TO CART', cart, action.item)
+            cart = [
+                ...cart,
+                action.item,
+            ]
             break
         case 'CLEAR_CART':
-            cart = { vendor: null, items: null }
+            cart = []
             break
         case 'NEW_ENTRY':
             entries = [...entries, action.entry]
@@ -116,7 +114,7 @@ const reducer = (state = initialState, action) => {
             break
         case 'ADD_ORDER':
             orders = [...orders, action.order]
-            cart = { vendor: null, items: null }
+            cart = []
             break
         case 'CONFIRM_ORDER':
             orders = orders.map(order => {
@@ -187,7 +185,7 @@ const reducer = (state = initialState, action) => {
         break
         case 'CLOSE_ORDER':
             orders = orders.map(order => {
-                if (order._id == action.order._id) {
+                if (order._id === action.order._id) {
                     return {
                         ...order,
                         status: action.order.status,
@@ -201,10 +199,7 @@ const reducer = (state = initialState, action) => {
         break
         case 'SIGNOUT':
             console.log('signing out...')
-            cart = {
-                vendor: null,
-                items: [],
-            }
+            cart = []
             entries = null
             loading = null
             orders = []

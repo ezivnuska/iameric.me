@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    FlatList,
     Text,
     View,
 } from 'react-native'
@@ -27,9 +28,6 @@ export default ({ orders }) => {
     const [featured, setFeatured] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
 
-    useEffect(() => {
-        console.log('orders......', orders)
-    }, [])
     useEffect(() => {
         setFeaturedItem(getFeaturedItem(featured))
     }, [featured])
@@ -156,7 +154,7 @@ export default ({ orders }) => {
             post('/api/order/close', { id })
         
         setLoading(false)
-
+        // console.log('order-->', data)
         if (!data) console.log('Error closing order')
 
         dispatch({ type: 'CLOSE_ORDER', order: data })
@@ -176,20 +174,41 @@ export default ({ orders }) => {
     )
 
     const renderOrderProcessButton = order => {
-        console.log('order.status', order.status)
-        switch (order.status) {
-            case 0: return user.role === 'vendor' ? renderVendorForm(order._id) : user.role === 'customer' ? renderButton('Cancel Order', () => cancelOrder(order._id)) : null; break
-            case 1: return user.role === 'driver' ? renderButton('Accept Delivery', () => acceptDelivery(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
-            case 2: return user.role === 'driver' ? renderButton('Arrived at Vendor', () => driverArrived(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
-            case 3: return user.role === 'driver' ? renderButton('Picked Up', () => receivedOrder(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
-            case 4: return user.role === 'driver' ? renderButton('Delivery Complete', () => completeDelivery(order._id)) : null; break
-            case 5: return user.role === 'customer' ? renderButton('Order Received', () => closeOrder(order._id)) : null; break
-            default: return null
+        // console.log('CASE', order.status, user ? user.role : 'no role')
+        switch(user.role) {
+            case 'admin':
+            case 'customer':
+                if (order.status === 0) return renderButton('Cancel Order', () => cancelOrder(order._id))
+                else if (order.status === 5) return renderButton('Order Received', () => closeOrder(order._id))
+            break
+            case 'vendor':
+                if (order.status === 0) return renderVendorForm(order._id)
+                else if (order.status === 1 && !order.ready) return renderButton('Order is Ready', () => onOrderReady(order._id))
+                else if (order.status === 2 && !order.ready) return renderButton('Order is Ready', () => onOrderReady(order._id))
+                else if (order.status === 3 && !order.ready) return renderButton('Order is Ready', () => onOrderReady(order._id))
+            break
+            case 'driver':
+                if (order.status === 1) return renderButton('Accept Delivery', () => acceptDelivery(order._id))
+                else if (order.status === 2) return renderButton('Arrived at Vendor', () => driverArrived(order._id))
+                else if (order.status === 3) return renderButton('Picked Up', () => receivedOrder(order._id))
+                else if (order.status === 4) return renderButton('Delivery Complete', () => completeDelivery(order._id))
+            break
+            default:
+                return null
         }
+        // switch (order.status) {
+        //     // case 0: return user.role === 'vendor' ? renderVendorForm(order._id) : user.role === 'customer' ? renderButton('Cancel Order', () => cancelOrder(order._id)) : null; break
+        //     // case 1: return user.role === 'driver' ? renderButton('Accept Delivery', () => acceptDelivery(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
+        //     // case 2: return user.role === 'driver' ? renderButton('Arrived at Vendor', () => driverArrived(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
+        //     // case 3: return user.role === 'driver' ? renderButton('Picked Up', () => receivedOrder(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
+        //     // case 4: return user.role === 'driver' ? renderButton('Delivery Complete', () => completeDelivery(order._id)) : null; break
+        //     // case 5: return user.role === 'customer' ? renderButton('Order Received', () => closeOrder(order._id)) : null; break
+        //     // default: return null
+        // }
     }
 
     const getFeaturedItem = id => {
-        return orders.filter((order, index) => order._id === id)[0]
+        return orders ? orders.filter((order, index) => order._id === id)[0] : []
     }
 
     const onPress = order => {
@@ -197,9 +216,33 @@ export default ({ orders }) => {
     }
 
     return (
-        <View style={[main.padded, { borderWidth: 1, borderColor: 'green' }]}>
-            
-            {orders.map((order, index) => (
+        <View
+            style={[
+                main.padded,
+                // {
+                //     borderWidth: 1,
+                //     borderColor: 'green'
+                // }
+            ]}
+        >
+            <FlatList
+                data={orders}
+                listKey={() => 'orders'}
+                keyExtractor={(item, index) => 'key' + index}
+                renderItem={({ item, index }) => (
+                    <OrderPreview
+                        key={`order-preview-${index}`}
+                        onPress={() => onPress(item)}
+                        order={item}
+                    >
+                        {renderOrderProcessButton(item)}
+                    </OrderPreview>
+                )}
+                style={{
+                    marginVertical: 10,
+                }}
+            />
+            {/* {orders.map((order, index) => (
                 <OrderPreview
                     key={`order-preview-${index}`}
                     onPress={() => onPress(order)}
@@ -207,7 +250,7 @@ export default ({ orders }) => {
                 >
                     {renderOrderProcessButton(order)}
                 </OrderPreview>
-            ))}
+            ))} */}
 
             <PopUpModal
                 visible={featured}

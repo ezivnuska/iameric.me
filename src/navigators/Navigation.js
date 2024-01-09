@@ -390,12 +390,7 @@ const privateScreens = {
         Private: {
             path: '',
             screens: {
-                Products: {
-                    path: 'products',
-                    screens: {
-                        ProductList: '',
-                    },
-                },
+                Products: 'products',
                 Users: {
                     path: 'users',
                     screens: {
@@ -417,7 +412,12 @@ const privateScreens = {
                 //         Driver: '/:id',
                 //     },
                 // },
-                Orders: 'orders',
+                Orders: {
+                    path: 'orders',
+                    screens: {
+                        OrderList: '',
+                    },
+                },
                 Forum: 'forum',
                 Images: 'images',
                 Settings: 'settings',
@@ -438,16 +438,20 @@ export default () => {
     useEffect(() => {
         if (user && !verified) setVerified(true)
         if (!user && verified) setVerified(false)
-        setLinking(getLinking(user && verified))
+        setLinking(getLinking())
     }, [user, verified])
+    
+    useEffect(() => {
+        console.log('*** user ***', user)
+    }, [user])
 
     // useEffect(() => {
-
+    //     console.log('linking', linking)
     // }, [linking])
 
-    const getLinking = secure => ({
+    const getLinking = () => ({
         prefixes: ['https://iameric.me'],
-        config: secure ? privateScreens : publicScreens,
+        config: (user && verified && linking) ? { ...publicScreens, ...privateScreens } : publicScreens,
     })
 
     return (

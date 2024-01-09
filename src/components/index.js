@@ -12,6 +12,9 @@ import CircleButton from './CircleButton'
 import CustomerHome from './CustomerHome'
 import DeleteAccountButton from './DeleteAccountButton'
 import DriverHome from './DriverHome'
+import DriverList from './DriverList'
+import DriverListItem from './DriverListItem'
+import DriverModule from './DriverModule'
 import DriverSelector from './DriverSelector'
 import EditButton from './EditButton'
 import EntryModule from './EntryModule'
@@ -87,6 +90,9 @@ export {
     CustomerHome,
     DeleteAccountButton,
     DriverHome,
+    DriverList,
+    DriverListItem,
+    DriverModule,
     DriverSelector,
     EditButton,
     EntryModule,

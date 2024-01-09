@@ -4,7 +4,7 @@ import {
     SafeAreaView,
     View,
 } from 'react-native'
-import { Navigation } from '../navigators'
+import { PublicNavigation, PrivateNavigation } from '../navigators'
 import { AppContext } from '../AppContext'
 import {
     Header,
@@ -22,6 +22,7 @@ export default () => {
     const {
         dispatch,
         dims,
+        user,
     } = useContext(AppContext)
 
     useEffect(() => {
@@ -64,7 +65,11 @@ export default () => {
                     // borderColor: 'purple',
                 }}
             >
-                <Navigation />
+                {user
+                    ? <PrivateNavigation user={user} />
+                    : <PublicNavigation />
+                }
+                {/* <Navigation /> */}
             </View>
         </SafeAreaView>
     ) : (

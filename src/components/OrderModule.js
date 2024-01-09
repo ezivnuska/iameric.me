@@ -13,6 +13,7 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { loadOrders } from '../utils/data'
+import classes from '../styles/classes'
 
 export default () => {
     
@@ -26,17 +27,16 @@ export default () => {
     const [featuredItem, setFeaturedItem] = useState(null)
 
     useEffect(() => {
-        console.log('orders length:', orders, orders.length)
         if (!orders.length) getOrders()
     }, [])
 
     const getOrders = async () => {
-        console.log('getting orders...')
+        
         setLoading(true)
         const orders = await loadOrders(user._id)
         setLoading(false)
         if (!orders) return
-        console.log('got orders...', orders)
+        
         dispatch({ type: 'SET_ORDERS', orders })
     }
 
@@ -45,23 +45,19 @@ export default () => {
     }
 
     const relevantOrders = orders => {
+        // console.log('user.role', user.role)
         switch(user.role) {
             case 'driver':
-                return orders.filter(item => 
-                    (item.status > 0 && item.status < 6) &&
-                    (item.driver && item.driver._id == user._id)
-                )
+                return orders.filter(item => item.status > 0 && item.status < 6)
             break
             case 'customer':
-                return orders.filter(item => {
-                    return item.customer._id == user._id && item.status < 6
-                })
+                return orders.filter(item => item.customer && item.customer._id == user._id && item.status < 6)
             break
             case 'vendor':
-                return orders.filter(item => {
-                    return item.vendor._id == user._id && item.status < 6
-                })
+                return orders.filter(item => item.vendor && item.vendor._id === user._id && item.status < 6)
             break
+            case 'admin':
+                return orders.filter(item => item.status <= 5)
         }
     }
 
@@ -181,7 +177,7 @@ export default () => {
     }
 
     const renderOrderProcessButton = status => {
-        console.log('status', status)
+        // console.log('status', status)
         switch (user.role) {
             case 'customer':
                 return <ButtonPrimary label='Cancel Order' onPress={cancelOrder} disabled={loading} />
@@ -219,7 +215,7 @@ export default () => {
 
     const renderOrderProcessForm = id => {
         const order = getFeaturedItem(id)
-        console.log('renderOrderProcessForm', order)
+        // console.log('renderOrderProcessForm', order)
         return (
             <View>
                 <OrderDetails order={order} />
@@ -232,54 +228,50 @@ export default () => {
         setFeaturedItem(order._id)
     }
 
-    const renderOrderList = () => {
-        console.log('hi', orders)
-        if (orders && orders.length) {
-            return <OrderList orders={orders} />
-        }
-    }
-
-    const renderOrders = () => {
-        if (loading) return <Text>Loading Orders...</Text>
-        if (!orders || !orders.length) return null
-        // const items = relevantOrders(orders)
-        // console.log('rel orders', items)
+    // const renderOrders = () => {
+    //     if (loading) return <Text>Loading Orders...</Text>
+    //     if (!orders || !orders.length) return null
+    //     // const items = relevantOrders(orders)
+    //     // console.log('rel orders', items)
         
-        return (
-            <View>
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        columnGap: '3%',
-                        flexWrap: 'wrap',
-                    }}
-                >
-                    {orders.map((order, index) => (
-                        <OrderPreview
-                            key={`order-preview-${index}`}
-                            onPress={() => onPress(order)}
-                            order={order}
-                        />
-                    ))}
-                </View>
+    //     return (
+    //         <View>
+    //             <View
+    //                 style={{
+    //                     display: 'flex',
+    //                     flexDirection: 'row',
+    //                     justifyContent: 'flex-start',
+    //                     columnGap: '3%',
+    //                     flexWrap: 'wrap',
+    //                 }}
+    //             >
+    //                 {orders.map((order, index) => (
+    //                     <OrderPreview
+    //                         key={`order-preview-${index}`}
+    //                         onPress={() => onPress(order)}
+    //                         order={order}
+    //                     />
+    //                 ))}
+    //             </View>
             
-                <PopUpModal
-                    visible={featuredItem}
-                    onRequestClose={() => setFeaturedItem(null)}
-                >
-                    {featuredItem ? renderOrderProcessForm(featuredItem) : null}
-                </PopUpModal>
-            </View>
-        )
-    }
+    //             <PopUpModal
+    //                 visible={featuredItem}
+    //                 onRequestClose={() => setFeaturedItem(null)}
+    //             >
+    //                 {featuredItem ? renderOrderProcessForm(featuredItem) : null}
+    //             </PopUpModal>
+    //         </View>
+    //     )
+    // }
 
     return (
         <View style={{
             marginVertical: 10,
         }}>
-            {renderOrderList()}
+            {(relevantOrders(orders) && relevantOrders(orders).length)
+                ? <OrderList orders={relevantOrders(orders)} />
+                : <Text style={classes.textDefault}>No orders.</Text>
+            }
             
             <PopUpModal
                 visible={featuredItem}

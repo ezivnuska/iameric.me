@@ -75,8 +75,6 @@ export default ({ onPress }) => {
         verified,
     } = useContext(AppContext)
 
-    const { items } = cart
-
     const [showSignInModal, setShowSignInModal] = useState(false)
 
     const setUser = async ({
@@ -137,7 +135,7 @@ export default ({ onPress }) => {
                     height: '100%',
                     paddingRight: 15,
                 }}>
-                    {items && items.length ? <CartButton /> : null}
+                    {cart && cart.length ? <CartButton /> : null}
 
                     <UserButton onPress={onPress} user={user} />
                 </View>

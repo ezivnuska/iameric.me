@@ -22,25 +22,31 @@ export default ({ onSubmitOrder }) => {
 
     const getTotal = () => {
         let total = 0
-        cart.items.map(i => total += Number(i.price))
+        cart.map(i => total += Number(i.price))
         return String(total.toFixed(2))
     }
 
+    const getVendor = () => {
+        let id = null
+        cart.map(item => id = item.vendor ? item.vendor._id : null)
+        return id
+    }
+
     const submitOrder = async () => {
-        const { items, vendor } = cart
         const newOrder = {
             customer: user._id,
-            vendor,
-            items: items.map(item => item._id),
+            vendor: getVendor(),
+            items: cart.map(item => item._id),
         }
         
-        setLoading(true)
+        setLoading('Submitting order...')
 
         const { data } = await axios.
             post('/api/order', newOrder)
 
-        setLoading(false)
+        setLoading(null)
         
+        console.log('order data submitted...', data)
         if (!data) {
             console.log('Order submission failed')
             return
@@ -51,13 +57,13 @@ export default ({ onSubmitOrder }) => {
         onSubmitOrder()
     }
 
-    return cart.items ? (
+    return cart ? (
         <View>
             <FlatList
                 style={{
                     paddingBottom: 10,
                 }}
-                data={cart.items}
+                data={cart}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item }) => (
                     <View style={{
