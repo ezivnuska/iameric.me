@@ -91,7 +91,6 @@ const reducer = (state = initialState, action) => {
             users = action.users
             break
         case 'ADD_TO_CART':
-            console.log('ADDING TO CART', cart, action.item)
             cart = [
                 ...cart,
                 action.item,

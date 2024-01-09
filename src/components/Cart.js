@@ -46,7 +46,6 @@ export default ({ onSubmitOrder }) => {
 
         setLoading(null)
         
-        console.log('order data submitted...', data)
         if (!data) {
             console.log('Order submission failed')
             return
