@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    ImageBackground,
+    Pressable,
     StyleSheet,
+    Text,
     View,
 } from 'react-native'
 import {
@@ -12,10 +15,14 @@ import { AppContext } from '../AppContext'
 import { Button } from 'antd'
 import { connect } from '../Data'
 import { initialize } from '../utils/auth'
+import classes from '../styles/classes'
+
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ navigation }) => {
 
     const {
+        dims,
         dispatch,
         loading,
         user,
@@ -91,8 +98,79 @@ export default ({ navigation }) => {
 
     return (
         <Screen>
-            <View style={styles.buttons}>
-                <Button
+            <View style={[
+                styles.buttons,
+                { height: dims ? dims.window.height - 100 : '100%' },
+            ]}>
+                <Pressable
+                    style={styles.button}
+                    onPress={() => onConnect('customer')}
+                >
+                    <ImageBackground
+                        style={{ flex: 1 }}
+                        resizeMode='cover'
+                        source={`${IMAGE_PATH}/customer-avatar.png`}
+                    >
+                        
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                styles.buttonText
+                            ]}
+                        >
+                            Hungry?
+                        </Text>
+
+                    </ImageBackground>
+
+                </Pressable>
+
+                <Pressable
+                    style={styles.button}
+                    onPress={() => onConnect('vendor')}
+                >
+                    <ImageBackground
+                        style={{ flex: 1 }}
+                        resizeMode='cover'
+                        source={`${IMAGE_PATH}/vendor-avatar.png`}
+                    >
+                        
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                styles.buttonText
+                            ]}
+                        >
+                            Selling?
+                        </Text>
+                        
+                    </ImageBackground>
+
+                </Pressable>
+
+                <Pressable
+                    style={styles.button}
+                    onPress={() => onConnect('driver')}
+                >
+                    <ImageBackground
+                        style={{ flex: 1 }}
+                        resizeMode='cover'
+                        source={`${IMAGE_PATH}/driver-avatar.png`}
+                    >
+                        
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                styles.buttonText
+                            ]}
+                        >
+                            Driving?
+                        </Text>
+
+                    </ImageBackground>
+
+                </Pressable>
+                {/* <Button
                     style={styles.button}
                     type='primary'
                     onClick={() => onConnect('customer')}
@@ -112,14 +190,13 @@ export default ({ navigation }) => {
                     style={styles.button}
                 >
                     Deliver
-                </Button>
+                </Button> */}
                 
             </View>
-            <View style={styles.buttons}>
+            {/* <View>
                 <Button
                     type='primary'
                     onClick={() => setShowSignUpModal(true)}
-                    style={styles.button}
                 >
                     Sign Up
                 </Button>
@@ -132,27 +209,42 @@ export default ({ navigation }) => {
                 <SignUpForm
                     onComplete={onModalClosed}
                 />
-            </PopUpModal>
+            </PopUpModal> */}
         </Screen>
     )
 }
 
 const styles = StyleSheet.create({
     buttons: {
+        // display: 'flex',
+        // flexDirection: 'column',
+        // justifyContent: 'flex-start',
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-evenly',
-        alignItems: 'center',
-        width: '100%',
-        minWidth: 375,
-        maxWidth: 375,
-        paddingVertical: 20,
+        alignItems: 'stretch',
+        // height: '100%',
+        // width: '100%',
+        // borderStyle: 'solid',
+        // borderWidth: 2,
+        // borderColor: 'yellow',
+        // minWidth: 375,
+        // maxWidth: 375,
+        // paddingVertical: 20,
     },
     button: {
         flex: 1,
-        flexBasis: 'auto',
-        flexGrow: 0,
-        flexShrink: 0,
-        borderRadius: 12,
+        // flexBasis: '30%',
+        flexGrow: 1,
+        // flexShrink: 0,
+        // borderRadius: 12,
+        borderWidth: 1,
+        borderColor: '#fff',
+        position: 'relative',
     },
+    buttonText: {
+        position: 'absolute',
+        bottom: 15,
+        left: 15,
+    }
 })

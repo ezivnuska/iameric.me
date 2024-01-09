@@ -25,13 +25,24 @@ export default ({ children, ...props }) => {
         >
             <ScrollView
                 style={{
-                    height: '100%',
-                    paddingTop: 10,
+                    height: dims ? dims.window.height - 100 : '100%',
+                    // paddingTop: 10,
+                    // borderWidth: 1,
+                    // borderStyle: 'dotted',
+                    // borderColor: 'yellow',
+                    marginBottom: 50,
                 }}
             >
                 <View
                     style={{
-                        paddingBottom: 50,
+                        // display: 'flex',
+                        // flexDirection: 'column',
+                        // justifyContent: 'flex-start',
+                        height: dims ? dims.window.height - 100 : '100%',
+                        // paddingBottom: 50,
+                        // borderWidth: 1,
+                        // borderStyle: 'dashed',
+                        // borderColor: 'orange',
                     }}
                 >
                     {children}
