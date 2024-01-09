@@ -149,6 +149,7 @@ module.exports = {
     alias: {
       'react-native$': 'react-native-web',
       // 'react-native-vector-icons': 'react-native-vector-icons/dist',
+      'react-native-linear-gradient': 'react-native-web-linear-gradient',
     },
   },
   module: {

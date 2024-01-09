@@ -16,6 +16,7 @@ import { Button } from 'antd'
 import { connect } from '../Data'
 import { initialize } from '../utils/auth'
 import classes from '../styles/classes'
+import LinearGradient from 'react-native-linear-gradient'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -111,15 +112,27 @@ export default ({ navigation }) => {
                         resizeMode='cover'
                         source={`${IMAGE_PATH}/customer-avatar.png`}
                     >
-                        
-                        <Text
-                            style={[
-                                classes.textDefault,
-                                styles.buttonText
-                            ]}
+                        <LinearGradient
+                            colors={['#00000000', '#000000']}
+                            style={{
+                                flex: 1,
+                                paddingLeft: 15,
+                                paddingRight: 15,
+                                borderRadius: 5,
+                                opacity: 1,
+                            }}
                         >
-                            Hungry?
-                        </Text>
+                        
+                            <Text
+                                style={[
+                                    classes.textDefault,
+                                    styles.buttonText
+                                ]}
+                            >
+                                Hungry?
+                            </Text>
+
+                        </LinearGradient>
 
                     </ImageBackground>
 
@@ -134,15 +147,27 @@ export default ({ navigation }) => {
                         resizeMode='cover'
                         source={`${IMAGE_PATH}/vendor-avatar.png`}
                     >
-                        
-                        <Text
-                            style={[
-                                classes.textDefault,
-                                styles.buttonText
-                            ]}
+                        <LinearGradient
+                            colors={['#00000000', '#000000']}
+                            style={{
+                                flex: 1,
+                                paddingLeft: 15,
+                                paddingRight: 15,
+                                borderRadius: 5,
+                                opacity: 1,
+                            }}
                         >
-                            Selling?
-                        </Text>
+                        
+                            <Text
+                                style={[
+                                    classes.textDefault,
+                                    styles.buttonText
+                                ]}
+                            >
+                                Selling?
+                            </Text>
+
+                        </LinearGradient>
                         
                     </ImageBackground>
 
@@ -157,15 +182,27 @@ export default ({ navigation }) => {
                         resizeMode='cover'
                         source={`${IMAGE_PATH}/driver-avatar.png`}
                     >
-                        
-                        <Text
-                            style={[
-                                classes.textDefault,
-                                styles.buttonText
-                            ]}
+                        <LinearGradient
+                            colors={['#00000000', '#000000']}
+                            style={{
+                                flex: 1,
+                                paddingLeft: 15,
+                                paddingRight: 15,
+                                borderRadius: 5,
+                                opacity: 1,
+                            }}
                         >
-                            Driving?
-                        </Text>
+                        
+                            <Text
+                                style={[
+                                    classes.textDefault,
+                                    styles.buttonText
+                                ]}
+                            >
+                                Driving?
+                            </Text>
+
+                        </LinearGradient>
 
                     </ImageBackground>
 
@@ -238,8 +275,8 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         // flexShrink: 0,
         // borderRadius: 12,
-        borderWidth: 1,
-        borderColor: '#fff',
+        // borderWidth: 1,
+        // borderColor: '#fff',
         position: 'relative',
     },
     buttonText: {

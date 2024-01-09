@@ -9,9 +9,7 @@ import CategoryPicker from './CategoryPicker'
 import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
 import CircleButton from './CircleButton'
-import CustomerHome from './CustomerHome'
 import DeleteAccountButton from './DeleteAccountButton'
-import DriverHome from './DriverHome'
 import DriverList from './DriverList'
 import DriverListItem from './DriverListItem'
 import DriverModule from './DriverModule'
@@ -68,7 +66,6 @@ import UserList from './UserList'
 import UserModule from './UserModule'
 import UserSelector from './UserSelector'
 import UserDetails from './UserDetails'
-import VendorHome from './VendorHome'
 import VendorList from './VendorList'
 import VendorListItem from './VendorListItem'
 import VendorModule from './VendorModule'
@@ -86,9 +83,7 @@ export {
     CenteredContent,
     CenteredView,
     CircleButton,
-    CustomerHome,
     DeleteAccountButton,
-    DriverHome,
     DriverList,
     DriverListItem,
     DriverModule,
@@ -145,7 +140,6 @@ export {
     UserModule,
     UserSelector,
     UserDetails,
-    VendorHome,
     VendorList,
     VendorListItem,
     VendorModule,

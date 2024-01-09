@@ -36,7 +36,7 @@ export default ({ children, onRequestClose, ...props }) => (
                     left: 0,
 
                     backgroundColor: '#000',
-                    opacity: 0.9,
+                    opacity: 1.0,
                 }}
                 onPress={onRequestClose}
             />

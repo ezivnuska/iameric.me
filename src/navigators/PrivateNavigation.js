@@ -148,7 +148,7 @@ const PublicStackScreen = () => {
 
 const PrivateStack = createBottomTabNavigator()
 const PrivateStackScreen = () => {
-    // const { user } = useContext(AppContext)
+    const { user } = useContext(AppContext)
     // console.log('private', user)
     return (
         <PrivateStack.Navigator
@@ -172,7 +172,7 @@ const PrivateStackScreen = () => {
                 }}
             />
 
-            {/* {(user.role === 'vendor') && ( */}
+            {(user && user.role === 'vendor') && (
                 <PrivateStack.Screen
                     name='Products'
                     component={ProductsStackScreen}
@@ -183,9 +183,9 @@ const PrivateStackScreen = () => {
                         ),
                     }}
                 />
-            {/* )} */}
+            )}
 
-            {/* {user.role !== 'vendor' && user.role !== 'driver' && ( */}
+            {user && user.role !== 'vendor' && user.role !== 'driver' && (
                 <PrivateStack.Screen
                     name='Vendors'
                     component={VendorsStackScreen}
@@ -196,9 +196,9 @@ const PrivateStackScreen = () => {
                         ),
                     }}
                 />
-            {/* )} */}
+            )}
 
-            {/* {user.role !== 'driver' && ( */}
+            {user && user.role !== 'driver' && (
                 <PrivateStack.Screen
                     name='Users'
                     component={UsersStackScreen}
@@ -209,7 +209,7 @@ const PrivateStackScreen = () => {
                         ),
                     }}
                 />
-            {/* )} */}
+            )}
 
             <PrivateStack.Screen
                 name='Drivers'
@@ -285,7 +285,7 @@ const MainStackScreen = () => (
 const config = {
     screens: {
         Public: {
-            path: '',
+            path: 'start',
             screens: {
                 Splash: {
                     path: 'splash',
@@ -296,7 +296,7 @@ const config = {
             },
         },
         Private: {
-            path: 'private',
+            path: '',
             screens: {
                 Orders: {
                     path: 'orders',
