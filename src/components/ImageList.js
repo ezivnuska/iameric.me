@@ -53,49 +53,53 @@ export default ({ images, loading, username, onSelected, onAddImage }) => (
             </Pressable>
         ))}
 
-        <Pressable
-            onPress={onAddImage}
-            style={{
-                flexBasis: 'auto',
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: IMAGE_SIZE,
-                height: IMAGE_SIZE,
-                borderWidth: 1,
-                borderColor: '#999',
-                shadowColor: '#000',
-                shadowOffset: {
-                    width: 0,
-                    height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 4,
-                elevation: 5,
-                backgroundColor: '#000',
-            }}
-            key={images ? images.length : '0'}
-        >
-            <View
+        {username !== 'Driver' &&
+        username !== 'Customer' &&
+        username !== 'Vendor' && (
+            <Pressable
+                onPress={onAddImage}
                 style={{
-                    // width: IMAGE_SIZE,
-                    // height: IMAGE_SIZE,
-                    // borderWidth: 1,
-                    // borderColor: '#999',
-                    // shadowColor: '#000',
-                    // shadowOffset: {
-                    //     width: 0,
-                    //     height: 2,
-                    // },
-                    // shadowOpacity: 0.25,
-                    // shadowRadius: 4,
-                    // elevation: 5,
-                    // backgroundColor: '#000',
+                    flexBasis: 'auto',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: IMAGE_SIZE,
+                    height: IMAGE_SIZE,
+                    borderWidth: 1,
+                    borderColor: '#999',
+                    shadowColor: '#000',
+                    shadowOffset: {
+                        width: 0,
+                        height: 2,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
+                    backgroundColor: '#000',
                 }}
+                key={images ? images.length : '0'}
             >
-                <Icon name='add-outline' size={32} color='#fff' />
-            </View>
-        </Pressable>
+                <View
+                    style={{
+                        // width: IMAGE_SIZE,
+                        // height: IMAGE_SIZE,
+                        // borderWidth: 1,
+                        // borderColor: '#999',
+                        // shadowColor: '#000',
+                        // shadowOffset: {
+                        //     width: 0,
+                        //     height: 2,
+                        // },
+                        // shadowOpacity: 0.25,
+                        // shadowRadius: 4,
+                        // elevation: 5,
+                        // backgroundColor: '#000',
+                    }}
+                >
+                    <Icon name='add-outline' size={32} color='#fff' />
+                </View>
+            </Pressable>
+        )}
     </View>
 )

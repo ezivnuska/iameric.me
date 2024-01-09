@@ -165,12 +165,16 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
                             </Button>
                         )}
 
-                        <Button
-                            onClick={deleteImage}
-                            disabled={loading}
-                        >
-                            Delete
-                        </Button>
+                        {user.username !== 'Driver' &&
+                        user.username !== 'Customer' &&
+                        user.username !== 'Vendor' && (
+                            <Button
+                                onClick={deleteImage}
+                                disabled={loading}
+                            >
+                                Delete
+                            </Button>
+                        )}
 
                     </View>
 
