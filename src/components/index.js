@@ -40,7 +40,6 @@ import LocationModule from './LocationModule'
 import LocationForm from './LocationForm'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
-import ModalContent from './ModalContent'
 import OrderListContainer from './OrderListContainer'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
@@ -118,7 +117,6 @@ export {
     LocationForm,
     Menu,
     MenuItem,
-    ModalContent,
     OrderListContainer,
     OrderList,
     OrderDetails,
