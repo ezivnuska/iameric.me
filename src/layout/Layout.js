@@ -37,6 +37,11 @@ export default () => {
         return () => subscription.remove()
     }, [])
 
+
+    // useEffect(() => {
+    //     console.log('helloworld')
+    // }, [])
+
     // useEffect(() => {
     //     console.log('dims changed', dims)
         
@@ -65,11 +70,7 @@ export default () => {
                     // borderColor: 'purple',
                 }}
             >
-                {user
-                    ? <PrivateNavigation user={user} />
-                    : <PublicNavigation />
-                }
-                {/* <Navigation /> */}
+                <PrivateNavigation />
             </View>
         </SafeAreaView>
     ) : (

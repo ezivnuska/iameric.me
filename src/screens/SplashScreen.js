@@ -14,23 +14,25 @@ export default ({ navigation }) => {
         loading,
         user,
     } = useContext(AppContext)
-
+    
     useEffect(() => {
+        console.log('splash')
         start()
     }, [])
 
-    // useEffect(() => {
-    //     if (user) {
-    //         navigation.navigate('Private', {
-    //             screen: 'Vendors',
-    //         })
-    //     }
-    // }, [user])
+    useEffect(() => {
+        if (user) {
+            console.log('SplashScreen found user, navigating to Private.')
+            navigation.navigate('Private')
+        }
+    }, [user])
 
     const start = async () => {
+        console.log('starting')
         dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })
+
         const verified = await initialize(dispatch)
-        
+        console.log('verified', verified)
         if (verified) {
             dispatch({ type: 'SET_USER', user: verified })
             dispatch({ type: 'SET_VERIFIED', verified: true })

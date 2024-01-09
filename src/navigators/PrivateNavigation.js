@@ -120,8 +120,36 @@ const DriversStackScreen = () => (
     </DriversStack.Navigator>
 )
 
+const PublicStack = createNativeStackNavigator()
+const PublicStackScreen = () => {
+    // console.log('yoyoy')
+    return (
+        <PublicStack.Navigator
+            screenOptions={() => ({
+                initialRouteName: 'Splash',
+                headerShown: false,
+            })}
+        >
+            <PublicStack.Screen
+                name='Splash'
+                component={SplashScreen}
+                options={{ title: 'Splash' }}
+            />
+    
+            <PublicStack.Screen
+                name='Start'
+                component={StartScreen}
+                options={{ title: 'Start' }}
+            />
+            
+        </PublicStack.Navigator>
+    )
+}
+
 const PrivateStack = createBottomTabNavigator()
-const PrivateStackScreen = ({ user }) => {
+const PrivateStackScreen = () => {
+    // const { user } = useContext(AppContext)
+    // console.log('private', user)
     return (
         <PrivateStack.Navigator
             initialRouteName='Orders'
@@ -231,44 +259,83 @@ const PrivateStackScreen = ({ user }) => {
     )
 }
 
+const MainStack = createNativeStackNavigator()
+const MainStackScreen = () => (
+    <MainStack.Navigator
+        screenOptions={() => ({
+            initialRouteName: 'Public',
+            headerShown: false,
+        })}
+    >
+        <MainStack.Screen
+            name='Public'
+            component={PublicStackScreen}
+            options={{ title: 'Public' }}
+        />
+
+        <MainStack.Screen
+            name='Private'
+            component={PrivateStackScreen}
+            options={{ title: 'Private' }}
+        />
+        
+    </MainStack.Navigator>
+)
+
 const config = {
     screens: {
-        Orders: {
-            path: 'orders',
+        Public: {
+            path: '',
             screens: {
-                OrderList: '',
+                Splash: {
+                    path: 'splash',
+                },
+                Start: {
+                    path: ''
+                },
             },
         },
-        Products: {
-            path: 'products',
+        Private: {
+            path: 'private',
             screens: {
-                ProductList: '',
+                Orders: {
+                    path: 'orders',
+                    screens: {
+                        OrderList: '',
+                    },
+                },
+                Products: {
+                    path: 'products',
+                    screens: {
+                        ProductList: '',
+                    },
+                },
+                Users: {
+                    path: 'users',
+                    screens: {
+                        UserList: '',
+                        User: '/:id',
+                    },
+                },
+                Vendors: {
+                    path: 'vendors',
+                    screens: {
+                        VendorList: '',
+                        Vendor: '/:id',
+                    },
+                },
+                Drivers: {
+                    path: 'drivers',
+                    screens: {
+                        DriverList: '',
+                        Driver: '/:id',
+                    },
+                },
+                Forum: 'forum',
+                Images: 'images',
+                Settings: 'settings',
             },
         },
-        Users: {
-            path: 'users',
-            screens: {
-                UserList: '',
-                User: '/:id',
-            },
-        },
-        Vendors: {
-            path: 'vendors',
-            screens: {
-                VendorList: '',
-                Vendor: '/:id',
-            },
-        },
-        Drivers: {
-            path: 'drivers',
-            screens: {
-                DriverList: '',
-                Driver: '/:id',
-            },
-        },
-        Forum: 'forum',
-        Images: 'images',
-        Settings: 'settings',
     },
 }
 
@@ -278,18 +345,27 @@ export default () => {
         user,
     } = useContext(AppContext)
 
-    const [verified, setVerified] = useState(false)
-    // const [linking, setLinking] = useState(null)
+    // const [verified, setVerified] = useState(false)
+    // // const [linking, setLinking] = useState(null)
 
-    useEffect(() => {
-        if (user && !verified) setVerified(true)
-        if (!user && verified) setVerified(false)
-        // setLinking(getLinking())
-    }, [user, verified])
+    // useEffect(() => {
+    //     console.log('hello')
+    // }, [])
+    // useEffect(() => {
+    //     if (user && !verified) setVerified(true)
+    //     if (!user && verified) setVerified(false)
+    //     // setLinking(getLinking())
+    // }, [user, verified])
     
     useEffect(() => {
-        if (user) console.log(`${user.username} connected.`)
-        else console.log('no user connected.')
+        if (user) {
+            console.log(`${user.username} connected.`)
+            navigationRef.navigate('Private')
+        }
+        else {
+            console.log('no user connected.')
+            navigationRef.navigate('Public', { screen: 'Start' })
+        }
     }, [user])
 
     // useEffect(() => {
@@ -299,6 +375,12 @@ export default () => {
     const linking = {
         prefixes: ['https://iameric.me'],
         config,
+        // getStateFromPath: (path, options) => {
+        //     console.log('stateFromPath:', path, options)
+        // },
+        // getPathFromState: (state, config) => {
+        //     console.log('pathFromState:', state, config)
+        // }
     }
 
     return (
@@ -308,7 +390,8 @@ export default () => {
             fallback={<FallbackScreen />}
             // onStateChange={async state => {}}
         >
-            <PrivateStackScreen user={user} />
+            <MainStackScreen />
+            
         </NavigationContainer>
     )
 }

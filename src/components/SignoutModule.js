@@ -41,7 +41,7 @@ export default () => {
         
         dispatch({ type: 'SET_LOADING', loading: null })
         
-        dispatch({ type: 'SIGNOUT' })
+        dispatch({ type: 'SET_VERIFIED', verified: false })
     }
 
     const validateClose = () => {

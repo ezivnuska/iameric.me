@@ -5,8 +5,8 @@ import {
     SecureScreen,
 } from '@components'
 
-export default () => (
-    <SecureScreen>
+export default ({ navigation, route }) => (
+    <SecureScreen navigation={navigation}>
         <OrderModule />
     </SecureScreen>
 )

@@ -15,15 +15,37 @@ export default ({ children, navigation, ...props }) => {
         dispatch,
         loading,
         user,
+        verified,
     } = useContext(AppContext)
 
+    useEffect(() => {
+        // console.log('SecureScreen--> onStart')
+        // if (!user) navigation.navigate('Public', { screen: 'Start' })
+        // else navigation.navigate('Private')
+    }, [])
+
     // useEffect(() => {
-    //     if (!user) {
-    //         // console.log('not verified')
-    //         // initialize(dispatch)
-    //         navigation.navigate('Start')
-    //     }
+    //     console.log('SecureScreen:onUserChanged-->', user)
+        
     // }, [user])
+
+    useEffect(() => {
+        // console.log('SecureScreenChanged: user:', user)
+        // console.log('SecureScreenChanged: loading:', loading)
+        // console.log('SecureScreenChanged: verified:', verified)
+        if (!loading) {
+            if (!verified) {
+                if (user) {
+                    dispatch({ type: 'SIGNOUT' })
+                    navigation.navigate('Public', { screen: 'Start' })
+                }
+            } else {
+                if (user) {
+                    navigation.navigate('Private')
+                } else dispatch({ type: 'SET_VERIFIED', verified: false })
+            }
+        }
+    }, [loading, user, verified])
 
     // const checkUser = async () => {
     //     dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })
@@ -44,7 +66,7 @@ export default ({ children, navigation, ...props }) => {
 
     return (
         <Screen style={props.style || {}}>
-            {loading
+            {(loading || !user || !verified)
                 ? <LoadingView />
                 : children
             }

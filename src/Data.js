@@ -82,7 +82,6 @@ export const signin = async (email, password) => {
         console.log('signin successful')
     } else {
         console.log('Error: No data returned when authenticating user')
-        return data
     }
 
     return data
