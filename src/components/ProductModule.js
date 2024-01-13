@@ -17,6 +17,7 @@ import {
 import { PlusOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
 import classes from '../styles/classes'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default () => {
 
@@ -79,7 +80,15 @@ export default () => {
 
     return (
         <View>
-            <View
+            <IconButton
+                label='Products'
+                onPress={() => setShowModal(true)}
+                disabled={loading}
+                iconName='add-outline'
+                alignIcon='right'
+                align='left'
+            />
+            {/* <View
                 style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -90,32 +99,25 @@ export default () => {
                 <Text
                     style={[
                         {
-                            flex: 1,
                             flexGrow: 0,
                             // flexShrink: 1,
                             flexBasis: 'auto',
+                            marginRight: 5,
                         },
-                        classes.pageTitle,
+                        classes.headerSecondary,
                     ]}
                 >
                     Products
                 </Text>
-
-                <View style={{
-                    flex: 1,
-                    flexGrow: 0,
-                    flexShrink: 1,
-                    flexBasis: 'auto',
-                    paddingHorizontal: 10,
-                }}>
-                    <IconButton
-                        label='Add'
-                        onPress={() => setShowModal(true)}
-                        disabled={loading}
-                    />
-                </View>
+                <Icon
+                    name='add-outline'
+                    onPress={() => setShowModal(true)}
+                    color='yellow'
+                    size={16}
+                    iconStyle={{ fontWeight: 700 }}
+                />
                 
-            </View>
+            </View> */}
 
             {loading
                 ? <Text>Loading...</Text>
