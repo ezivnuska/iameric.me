@@ -7,7 +7,10 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import { Button } from 'antd'
+import {
+    IconButton,
+} from '.'
+// import { Button } from 'antd'
 
 export default ({ children, onRequestClose, ...props }) => (
     <Modal
@@ -64,14 +67,20 @@ export default ({ children, onRequestClose, ...props }) => (
                     }}
                 >
                     {children}
-                    <Button
+
+                    <IconButton
+                        label='Cancel'
+                        onPress={onRequestClose}
+                        iconName='close-outline'
+                    />
+                    {/* <Button
                         size='large'
                         type='text'
                         onClick={onRequestClose}
                         style={{ color: '#eee' }}
                         >
                         Cancel
-                    </Button>
+                    </Button> */}
                 </ScrollView>
             </View>
             

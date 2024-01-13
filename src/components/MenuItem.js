@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import main from '../styles/main'
 import classes from '../styles/classes'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -20,7 +21,7 @@ export default ({ item, username, onPress }) => {
             style={{
                 borderBottomWidth: 1,
                 borderBottomColor: '#ccc',
-                paddingBottom: 10,
+                paddingVertical: 10,
             }}
         >
             <View
@@ -36,6 +37,8 @@ export default ({ item, username, onPress }) => {
                         style={{
                             marginBottom: 10,
                             flexBasis: IMAGE_SIZE + 10,
+                            flexGrow: 0,
+                            flexShrink: 0,
                         }}
                     >
                         <Image
@@ -48,14 +51,6 @@ export default ({ item, username, onPress }) => {
                                 height: IMAGE_SIZE,
                                 borderWidth: 1,
                                 borderColor: '#999',
-                                shadowColor: '#000',
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 2,
-                                },
-                                shadowOpacity: 0.25,
-                                shadowRadius: 4,
-                                elevation: 5,
                             }}
                         />
                     </View>
@@ -64,37 +59,50 @@ export default ({ item, username, onPress }) => {
                 <View
                     style={{
                         flexBasis: 'auto',
+                        flexGrow: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'fex-start',
+                        alignItems: 'flex-start',
                     }}
                 >
-                    <Text
-                        style={[
-                            classes.headerSecondary,
-                            {
-                                // flexBasis: 'auto',
-                                // flexGrow: 1,
-                                // flexBasis: '80%',
-                                lineHeight: 24,
-                            }
-                        ]}
-                    >
+                    <Text style={classes.headerSecondary}>
                         {title}
                     </Text>
 
                     <Pressable
                         onPress={onPress}
+                        style={{
+                            flexBasis: 'auto',
+                            flexShrink: 1,
+                            flexGrow: 0,
+                            backgroundColor: 'blue',
+                            borderRadius: 6,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            // width: 'auto',
+                            paddingHorizontal: 5,
+                        }}
                     >
+                        <Icon
+                            name='add-outline'
+                            size={16}
+                            color='#fff'
+                            style={[{ flexBasis: 'auto', flexShrink: 1 }]}
+                        />
                         <Text
-                            style={[
-                                classes.textDefault,
-                                {
-                                    // flexBasis: '20%',
-                                    lineHeight: 24,
-                                }
-                            ]}
+                            style={[classes.buttonText, { flexBasis: 'auto', flexShrink: 1 }]}
                         >
                             ${price}
                         </Text>
                     </Pressable>
+
+                    {/* <Pressable onPress={onPress}>
+                        <Text style={{ lineHeight: 24 }}>
+                            ${price}
+                        </Text>
+                    </Pressable> */}
                 </View>
                 
             </View>

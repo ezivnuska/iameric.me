@@ -1,14 +1,17 @@
 import React from 'react'
 import {
     Image,
+    Pressable,
     Text,
     View,
 } from 'react-native'
-// import {
-//     LoadingView,
-// } from '.'
+import {
+    IconButton,
+} from '.'
 import { Button } from 'antd'
 import main from '../styles/main'
+import classes from 'src/styles/classes'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -28,19 +31,10 @@ export default ({ product, onOrder }) => product ? (
                     height={product.image.height}
                     source={{ uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}` }}
                     style={{
-                        resizeMode: 'stretch',
+                        resizeMode: 'center',
                         width: product.image.width,
                         height: product.image.height,
                         borderWidth: 1,
-                        borderColor: '#999',
-                        shadowColor: '#000',
-                        shadowOffset: {
-                            width: 0,
-                            height: 2,
-                        },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 4,
-                        elevation: 5,
                     }}
                 />
             </View>
@@ -48,14 +42,12 @@ export default ({ product, onOrder }) => product ? (
 
         <View
             style={{
-
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
             }}
         >
             
-
             <View
                 style={{
                     flexBasis: 'auto',
@@ -73,7 +65,7 @@ export default ({ product, onOrder }) => product ? (
                     
                     <Text
                         style={[
-                            main.text,
+                            classes.defaultText,
                             {
                                 fontSize: 18,
                                 fontWeight: 700,
@@ -107,7 +99,42 @@ export default ({ product, onOrder }) => product ? (
         <Text style={[main.text, { color: '#fff' }]}>{product.blurb}</Text>
         <Text style={[main.text, { color: '#fff' }]}>{product.desc}</Text>
 
-        <Button
+        <IconButton
+            label='Add to Cart'
+            iconName='add-outline'
+            bgColor='blue'
+            onPress={() => onOrder(product)}
+        />
+        {/* <Pressable
+            onPress={() => onOrder(product)}
+            style={{
+                flexBasis: 'auto',
+                flexShrink: 1,
+                flexGrow: 0,
+                backgroundColor: 'blue',
+                borderRadius: 6,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                // width: 'auto',
+                paddingHorizontal: 5,
+                marginVerical: 10,
+            }}
+        >
+            <Icon
+                name='add-outline'
+                size={16}
+                color='#fff'
+                style={[{ flexBasis: 'auto', flexShrink: 1 }]}
+            />
+            <Text
+                style={[classes.buttonText, { flexBasis: 'auto', flexShrink: 1 }]}
+            >
+                Add to Cart
+            </Text>
+        </Pressable> */}
+
+        {/* <Button
             size='large'
             type='primary'
             onClick={() => onOrder(product)}
@@ -117,6 +144,6 @@ export default ({ product, onOrder }) => product ? (
             }}
         >
             Add to Cart
-        </Button>
+        </Button> */}
     </View>
 ) : null
