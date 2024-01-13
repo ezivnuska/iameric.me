@@ -17,6 +17,8 @@ import { connect } from '../Data'
 import { initialize } from '../utils/auth'
 import classes from '../styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { SelectiveSignUpForm } from 'src/components'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -29,8 +31,8 @@ export default ({ navigation }) => {
         user,
     } = useContext(AppContext)
 
-    const [showSignUpModal, setShowSignUpModal] = useState(false)
-    const [showSignInModal, setShowSignInModal] = useState(false)
+    const [showSignUpModal, setShowSignUpModal] = useState(null)
+    const [showSignInModal, setShowSignInModal] = useState(null)
 
     useEffect(() => {
         start()
@@ -92,8 +94,8 @@ export default ({ navigation }) => {
     const onModalClosed = response => {
         // console.log('closing modal, setting user', response)
         setUser(response)
-        if (showSignUpModal) setShowSignUpModal(false)
-        if (showSignInModal) setShowSignInModal(false)
+        if (showSignUpModal) setShowSignUpModal(null)
+        if (showSignInModal) setShowSignInModal(null)
         // if (loading) dispatch({ type: 'SET_LOADING', loading: 'false' })
     }
 
@@ -103,185 +105,186 @@ export default ({ navigation }) => {
                 styles.buttons,
                 { height: dims ? dims.window.height - 100 : '100%' },
             ]}>
-                <Pressable
-                    style={styles.button}
-                    onPress={() => onConnect('customer')}
+
+                <BackgroundImageWithGradient
+                    caption='Hungry?'
+                    imageSource={`${IMAGE_PATH}/customer-avatar.png`}
                 >
-                    <ImageBackground
-                        style={{ flex: 1 }}
-                        resizeMode='cover'
-                        source={`${IMAGE_PATH}/customer-avatar.png`}
-                    >
-                        <LinearGradient
-                            colors={['#00000000', '#000000']}
-                            style={{
-                                flex: 1,
-                                paddingLeft: 15,
-                                paddingRight: 15,
-                                borderRadius: 5,
-                                opacity: 1,
-                            }}
-                        >
-                        
-                            <Text
-                                style={[
-                                    classes.textDefault,
-                                    styles.buttonText
-                                ]}
-                            >
-                                Hungry?
-                            </Text>
+                    <View style={styles.controls}>
+                        <ControlButton
+                            label='Sign Up to Order!'
+                            iconName='arrow-forward-circle-outline'
+                            onPress={() => setShowSignUpModal('customer')}
+                        />
+                        <ControlButton
+                            label='Preview'
+                            iconName='eye-outline'
+                            onPress={() => onConnect('customer')}
+                        />
+                    </View>
+                </BackgroundImageWithGradient>
 
-                        </LinearGradient>
-
-                    </ImageBackground>
-
-                </Pressable>
-
-                <Pressable
-                    style={styles.button}
-                    onPress={() => onConnect('vendor')}
+                <BackgroundImageWithGradient
+                    caption='Selling?'
+                    imageSource={`${IMAGE_PATH}/vendor-avatar.png`}
                 >
-                    <ImageBackground
-                        style={{ flex: 1 }}
-                        resizeMode='cover'
-                        source={`${IMAGE_PATH}/vendor-avatar.png`}
-                    >
-                        <LinearGradient
-                            colors={['#00000000', '#000000']}
-                            style={{
-                                flex: 1,
-                                paddingLeft: 15,
-                                paddingRight: 15,
-                                borderRadius: 5,
-                                opacity: 1,
-                            }}
-                        >
-                        
-                            <Text
-                                style={[
-                                    classes.textDefault,
-                                    styles.buttonText
-                                ]}
-                            >
-                                Selling?
-                            </Text>
+                    <View style={styles.controls}>
+                        <ControlButton
+                            label='Join as Merchant!'
+                            iconName='arrow-forward-circle-outline'
+                            onPress={() => setShowSignUpModal('vendor')}
+                        />
+                        <ControlButton
+                            label='Preview'
+                            iconName='eye-outline'
+                            onPress={() => onConnect('vendor')}
+                        />
+                    </View>
+                </BackgroundImageWithGradient>
 
-                        </LinearGradient>
-                        
-                    </ImageBackground>
-
-                </Pressable>
-
-                <Pressable
-                    style={styles.button}
-                    onPress={() => onConnect('driver')}
+                <BackgroundImageWithGradient
+                    caption='Driving?'
+                    imageSource={`${IMAGE_PATH}/driver-avatar.png`}
                 >
-                    <ImageBackground
-                        style={{ flex: 1 }}
-                        resizeMode='cover'
-                        source={`${IMAGE_PATH}/driver-avatar.png`}
-                    >
-                        <LinearGradient
-                            colors={['#00000000', '#000000']}
-                            style={{
-                                flex: 1,
-                                paddingLeft: 15,
-                                paddingRight: 15,
-                                borderRadius: 5,
-                                opacity: 1,
-                            }}
-                        >
-                        
-                            <Text
-                                style={[
-                                    classes.textDefault,
-                                    styles.buttonText
-                                ]}
-                            >
-                                Driving?
-                            </Text>
+                    <View style={styles.controls}>
+                        <ControlButton
+                            label='Become a Driver!'
+                            iconName='arrow-forward-circle-outline'
+                            onPress={() => setShowSignUpModal('driver')}
+                        />
+                        <ControlButton
+                            label='Preview'
+                            iconName='eye-outline'
+                            onPress={() => onConnect('driver')}
+                        />
+                    </View>
+                </BackgroundImageWithGradient>
 
-                        </LinearGradient>
-
-                    </ImageBackground>
-
-                </Pressable>
-                {/* <Button
-                    style={styles.button}
-                    type='primary'
-                    onClick={() => onConnect('customer')}
-                >
-                    Order
-                </Button>
-                <Button
-                    type='primary'
-                    onClick={() => onConnect('vendor')}
-                    style={styles.button}
-                >
-                    Sell
-                </Button>
-                <Button
-                    type='primary'
-                    onClick={() => onConnect('driver')}
-                    style={styles.button}
-                >
-                    Deliver
-                </Button> */}
-                
-            </View>
-            {/* <View>
-                <Button
-                    type='primary'
-                    onClick={() => setShowSignUpModal(true)}
-                >
-                    Sign Up
-                </Button>
             </View>
 
             <PopUpModal
                 visible={showSignUpModal}
                 onRequestClose={() => setShowSignUpModal(false)}
             >
-                <SignUpForm
+                <SelectiveSignUpForm
+                    role={showSignUpModal}
                     onComplete={onModalClosed}
                 />
-            </PopUpModal> */}
+            </PopUpModal>
+            
         </Screen>
     )
 }
 
+const BackgroundImageWithGradient = ({ caption, children, imageSource }) => (
+    <View
+        style={styles.button}
+        // onPress={() => onConnect('driver')}
+    >
+        <ImageBackground
+            style={ styles.image }
+            resizeMode='cover'
+            source={imageSource}
+        >
+            <LinearGradient
+                colors={['#00000000', '#000000']}
+                style={{ flex: 1, opacity: 1 }}
+            >
+                <Text style={[ classes.headerSecondary, styles.caption ]}>
+                    {caption}        
+                </Text>
+
+                {children}
+
+            </LinearGradient>
+
+        </ImageBackground>
+
+    </View>
+)
+
+const ControlButton = ({ label, onPress, iconName = null }) => (
+
+    <Pressable
+        onPress={onPress}
+        style={{
+            flexBasis: 'auto',
+            flexGrow: 0,
+            flexShrink: 1,
+        }}
+    >
+                                        
+        <View
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'flex-start',
+            }}
+        >
+            <Text
+                style={[
+                    classes.buttonText,
+                    {
+                        flexBasis: 'auto',
+                        flexGrow: 1,
+                        flexShrink: 0,
+                    }
+                ]}
+            >
+                {label}
+            </Text>
+
+            {iconName && (
+                <Icon
+                    name={iconName}
+                    size={18}
+                    color='#fff'
+                    style={{
+                        flex: 1,
+                        marginLeft: 5,
+                    }}
+                />
+            )}
+
+        </View>
+
+    </Pressable>
+)
+
 const styles = StyleSheet.create({
     buttons: {
-        // display: 'flex',
-        // flexDirection: 'column',
-        // justifyContent: 'flex-start',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'stretch',
-        // height: '100%',
-        // width: '100%',
-        // borderStyle: 'solid',
-        // borderWidth: 2,
-        // borderColor: 'yellow',
-        // minWidth: 375,
-        // maxWidth: 375,
-        // paddingVertical: 20,
+        rowGap: 10,
+        overflow: 'visible',
     },
     button: {
         flex: 1,
-        // flexBasis: '30%',
         flexGrow: 1,
-        // flexShrink: 0,
-        // borderRadius: 12,
-        // borderWidth: 1,
-        // borderColor: '#fff',
+        borderRadius: 20,
+        overflow: 'hidden',
         position: 'relative',
     },
-    buttonText: {
+    image: {
+        flex: 1,
+    },
+    caption: {
+        position: 'absolute',
+        bottom: 40,
+        left: 15,
+        fontWeight: 700,
+    },
+    controls: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         position: 'absolute',
         bottom: 15,
-        left: 15,
-    }
+        width: '100%',
+        paddingHorizontal: 15,
+    },
 })

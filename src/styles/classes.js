@@ -23,6 +23,13 @@ export default {
         color: colors.textDefault,
         letterSpacing: 0.5,
     },
+    buttonText: {
+        fontSize: sizes.textDefault,
+        fontWeight: 600,
+        lineHeight: sizes.textDefault + 8,
+        color: colors.textDefault,
+        letterSpacing: 0.5,
+    },
     userHeading: {
         fontSize: sizes.userTitle,
         fontWeight: 700,
