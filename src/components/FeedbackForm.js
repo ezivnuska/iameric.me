@@ -1,18 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
-    // StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
     View
 } from 'react-native'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles/main'
 import {
-    // ButtonPrimary,
-    FormButton,
     FormInput,
+    IconButton,
 } from '.'
 
 export default () => {
@@ -58,7 +53,6 @@ export default () => {
         >
             
             <FormInput
-                // label='Leave a comment'
                 value={entry}
                 onChangeText={onChangeEntry}
                 placeholder='say something...'
@@ -69,12 +63,11 @@ export default () => {
                 onKeyPress={onEnter}
             />
 
-            <FormButton
+            <IconButton
                 label='Send'
-                dirty={entry.length}
-                valid={entry.length}
-                onClick={onSubmit}
-                disabled={loading}
+                bgColor={entry.length ? 'blue' : 'gray'}
+                disabled={!entry.length || loading}
+                onPress={onSubmit}
             />
 
         </View>

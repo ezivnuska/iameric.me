@@ -4,14 +4,12 @@ import {
     View,
 } from 'react-native'
 import {
+    IconButton,
     LoadingView,
     PopUpModal,
 } from '.'
-import { Button } from 'antd'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-// import { navigate } from '@navigators/RootNavigation'
-// import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cleanStorage } from '../utils/storage'
 import classes from '../styles/classes'
 
@@ -25,6 +23,14 @@ export default () => {
 
     const [modalVisible, setModalVisible] = useState(false)
 
+    const showModal = () => {
+        setModalVisible(true)
+    }
+
+    const hideModal = () => {
+        setModalVisible(false)
+    }
+    
     const signout = async () => {
 
         dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
@@ -45,7 +51,7 @@ export default () => {
     }
 
     const validateClose = () => {
-        if (!loading) setModalVisible(false)
+        if (!loading) hideModal()
     }
 
     return (
@@ -73,41 +79,33 @@ export default () => {
 
             </View>
 
-            <Button
-                size='large'
-                type='default'
-                onClick={() => setModalVisible(true)}
-                disabled={loading}
-            >
-                Sign Out
-            </Button>
+            <IconButton
+                label='Sign Out'
+                onPress={showModal}
+                disabled={modalVisible}
+                bgColor={modalVisible ? 'gray' : 'blue'}
+            />
 
             <PopUpModal
                 visible={modalVisible}
                 onRequestClose={validateClose}
             >
-                {!loading
-                    ? (
-                        <View
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-around',
-                            }}
-                        >
-                            <Button
-                                size='large'
-                                type='primary'
-                                danger
-                                onClick={signout}
-                            >
-                                Sign Out
-                            </Button>
-                        </View>
-                    ) : (
-                        <LoadingView />
-                    )
-                }
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                    }}
+                >
+
+                    <IconButton
+                        label='Sign Out'
+                        onPress={signout}
+                        disabled={loading}
+                        bgColor='gray'
+                    />
+                </View>
+                
             </PopUpModal>
         </View>
     )

@@ -25,7 +25,7 @@ export default ({ product, onDelete, onPress, ...props }) => {
             style={{
                 borderBottomWidth: 1,
                 borderBottomColor: '#ccc',
-                paddingBottom: 10,
+                paddingVertical: 10,
             }}
         >
             <View

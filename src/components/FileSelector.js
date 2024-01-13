@@ -1,34 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
-    Platform,
-    Text,
-} from 'react-native'
-import {
-  openImagePickerAsync,
-  openImageSelector,
-} from 'src/utils/images'
-import { Button } from 'antd'
+  IconButton,
+} from '.'
 import { openFileSelector } from '../utils/images'
 
 export default ({ onSelected }) => {
 
+  const [loading, setLoading] = useState(false)
+
   const handlePress = async () => {
+    setLoading(true)
     const uri = await openFileSelector()
+    setLoading(false)
     onSelected(uri)
   }
 
   return (
-    <Button
-      // type='primary'
-      size='small'
-      onClick={handlePress}
-    >
-      <Text
-        // style={styles.selectButtonTitle}
-      >
-        Pick Image
-      </Text>
-
-    </Button>
+    <IconButton
+      label='Select'
+      onPress={handlePress}
+      disabled={loading}
+      bgColor='blue'
+    />
   )
 }

@@ -10,9 +10,8 @@ import defaultStyles from '../styles/main'
 import { signin } from '../Data'
 import { isValidEmail } from '../utils/tools'
 import { storeEmail, getSavedEmail } from '../utils/storage'
-import { Button } from 'antd'
 
-const SignInForm = ({ onComplete }) => {
+export default ({ onComplete }) => {
 
     const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
@@ -162,20 +161,15 @@ const SignInForm = ({ onComplete }) => {
 					{errorMessage || ' '}
 				</Text>
 
-				<Button
-					size='large'
-					type='primary'
+				<IconButton
+					label={loading ? 'Signing In' : 'Sign In'}
 					disabled={loading || !isValid() || errors.length}
-					onClick={submitData}
-					style={{ color: '#fff' }}
-				>
-					{loading ? 'Signing In' : 'Sign In'}
-				</Button>
+					onPress={submitData}
+					bgColor={loading ? 'gray' : 'blue'}
+				/>
 
 			</View>
 
 		</View>
     )
 }
-
-export default SignInForm

@@ -1,51 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
 import {
     FileSelector,
+    IconButton,
     ImageWithURI,
-    LoadingView,
-    Preview,
 } from '.'
-// import ReactAvatarEditor from 'react-avatar-editor'
-import { Button } from 'antd'
 import EXIF from 'exif-js'
-import axios from 'axios'
 import { AppContext } from '../AppContext'
-import { dataURItoBlob, handleUpload, imageToDataURIs, uploadImage } from '../Upload'
-
-const initialSize = 300
 
 export default ({ onImageSelected, removeImage, uri }) => {
 
     const {
-        dims,
-        dispatch,
         user,
     } = useContext(AppContext)
 
-    const [size, setSize] = useState(initialSize)
-    const [preview, setPreview] = useState(null)
-    const [editor, setEditor] = useState(null)
     const [loading, setLoading] = useState(null)
-    const [payload, setPayload] = useState(null)
-    
-    const [attachment, setAttachment] = useState(null)
-    // useEffect(() => {
-        
-    //     if (!dims) return
-
-    //     const dropzone = document.getElementById('dropzone')
-        
-    //     if (dropzone) {
-    //         const maxWidth = size
-    //         const actualWidth = dropzone.offsetWidth
-    //         const width = actualWidth > maxWidth ? maxWidth : actualWidth
-    //         setSize(width)
-    //     }
-    // }, [dims])
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
@@ -68,9 +39,6 @@ export default ({ onImageSelected, removeImage, uri }) => {
             
             const { uri, height, width } = data.imageData
             
-            setPreview({ uri, height, width })
-            
-            // setPayload(data)
             onImageSelected(data)
             
             setLoading(false)
@@ -163,59 +131,22 @@ export default ({ onImageSelected, removeImage, uri }) => {
         }
     }
 
-    const onSubmit = async () => {
-
-        if (!payload) {
-            console.log('no image data to submit.')
-            return
-        }
-
-        setLoading(true)
-        
-        onImageSelected(payload)
-    }
-
-    const clearPreview = () => {
-        setPayload(null)
-        setPreview(null)
-    }
-
-    const renderImage = () => uri ? (
-        <View
-            style={{
-                paddingRight: 10,
-            }}
-        >
-            <Image
-                source={{ uri }}
-                style={{
-                    width: 50,
-                    height: 50,
-                    resizeMode: 'stretch',
-                }}
-            />
-        </View>
-    ) : null
-
     const renderControls = () => (
         <View style={{
+            flexGrow: 1,
             display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
             height: 50,
-            // borderWidth: 1,
-            // borderStyle: 'dotted',
-            // borderColor: '#ccc',
         }}>
             
             {uri ? (
-                <Button
-                    // type='primary'
-                    size='small'
-                    onClick={removeImage}
-                >
-                    <Text>Remove Image</Text>
-                </Button>
+                <IconButton
+                    label='Delete'
+                    onPress={removeImage}
+                    disabled={loading}
+                    bgColor='red'
+                />
             ) : null}
 
             <FileSelector
@@ -231,6 +162,10 @@ export default ({ onImageSelected, removeImage, uri }) => {
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 marginVertical: 10,
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                borderWidth: 1,
+                borderColor: '#fff',
             }}
         >
             
@@ -248,29 +183,6 @@ export default ({ onImageSelected, removeImage, uri }) => {
             ) : null}
                 
             {renderControls()}
-
-            {/* <View style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginVertical: 15,
-                width: size,
-            }}>
-                <Button
-                    disabled={!preview || !payload}
-                    onClick={onSubmit}
-                >
-                    Select/Upload
-                </Button>
-
-                <Button
-                    disabled={!preview || !payload}
-                    onClick={clearPreview}
-                >
-                    Clear
-                </Button>
-
-            </View> */}
 
         </View>
     )

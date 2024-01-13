@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import {
     FormInput,
+    IconButton,
     LoadingView,
     PopUpModal,
 } from '.'
@@ -90,15 +91,11 @@ export default ({ id }) => {
                 all images and data.
             </Text>
 
-            <Button
-                size='large'
-                type='primary'
-                danger
-                onClick={() => setModalVisible(true)}
+            <IconButton
+                bgColor='red'
+                onPress={() => setModalVisible(true)}
                 disabled={loading}
-            >
-                Delete Account
-            </Button>
+            />
 
             <PopUpModal
                 visible={modalVisible}
@@ -124,15 +121,12 @@ export default ({ id }) => {
                                 onKeyPress={onEnter}
                             />
 
-                            <Button
-                                size='large'
-                                type='primary'
-                                danger
-                                onClick={deleteAccount}
+                            <IconButton
+                                label='Delete Account'
+                                bgColor='red'
+                                onPress={deleteAccount}
                                 disabled={!isValid()}
-                            >
-                                Delete Account
-                            </Button>
+                            />
                         </View>
                     ) : (
                         <LoadingView label={loading} />

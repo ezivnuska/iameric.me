@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    // ModalContent,
+    IconButton,
     PopUpModal,
     ProductForm,
     ProductList,
@@ -108,11 +108,9 @@ export default () => {
                     flexBasis: 'auto',
                     paddingHorizontal: 10,
                 }}>
-                    <Button
-                        size='small'
-                        shape='circle'
-                        icon={<PlusOutlined />}
-                        onClick={() => setShowModal(true)}
+                    <IconButton
+                        label='Add'
+                        onPress={() => setShowModal(true)}
                         disabled={loading}
                     />
                 </View>

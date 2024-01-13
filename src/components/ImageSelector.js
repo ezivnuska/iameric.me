@@ -1,16 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    Platform,
-    Text,
-    Pressable,
     View,
 } from 'react-native'
 import {
-    // FileSelector,
-    LoadingView,
+    IconButton,
     Preview,
 } from '.'
-import { Button } from 'antd'
 import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
 import { openFileSelector } from 'src/utils/images'
@@ -21,13 +16,11 @@ export default ({ onSelected }) => {
 
     const {
         dims,
-        dispatch,
         user,
     } = useContext(AppContext)
 
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
-    const [editor, setEditor] = useState(null)
     const [loading, setLoading] = useState(false)
     const [payload, setPayload] = useState(null)
 
@@ -51,12 +44,6 @@ export default ({ onSelected }) => {
         initFileSelector()
     }, [])
 
-    // useEffect(() => {
-    //     if (open) setLoading('Waiting for image...')
-    //     else if (loading) setLoading('Working...')
-    //     else setLoading(null)
-    // }, [open])
-
     const initFileSelector = async () => {
         const uri = await openFileSelector()
         if (uri) handleSelectedImage(uri)
@@ -64,11 +51,8 @@ export default ({ onSelected }) => {
 
     const handleSelectedImage = async uri => {
         const reader = new FileReader()
-        // console.log('reading selected uri')
         reader.onload = ({ target }) => {
             const exif = EXIF.readFromBinaryFile(target.result)
-            // console.log('selected uri read')
-            // console.log('loading selected uri with exif data')
             loadImage(uri, exif)
         }
 
@@ -79,11 +63,8 @@ export default ({ onSelected }) => {
 
     const loadImage = async (src, exif) => {
         const image = new Image()
-        // console.log('loading image')
         image.onload = async () => {
             const data = await handleImageData(image, exif)
-            // console.log('image loaded')
-            // console.log('image data', data)
             
             setLoading(null)
 
@@ -94,10 +75,8 @@ export default ({ onSelected }) => {
     }
 
     useEffect(() => {
-        // console.log('setting payload', payload)
         if (payload) {
             const { uri, height, width } = payload.imageData
-            // console.log('setting preview', payload.imageData)
             setPreview({ uri, height, width })
         } else if (preview) {
             setPreview(null)
@@ -198,7 +177,6 @@ export default ({ onSelected }) => {
             return
         }
 
-        // setLoading(true)
         const { imageData, thumbData, userId } = payload
         setPayload(null)
 
@@ -230,16 +208,6 @@ export default ({ onSelected }) => {
                     />
                 </View>
             ) : null}
-
-            {/* (
-                <Button
-            //         size='small'
-            //         onClick={handleSelectedImage}
-            //     >
-            //         Pick an Image
-            //     </Button>
-            // ) */}
-            
             
             <View
                 style={{
@@ -247,7 +215,6 @@ export default ({ onSelected }) => {
                     flexDirection: 'column',
                     justifyContent: 'space-evenly',
                     width: size,
-                    // backgroundColor: 'red',
                 }}
             >
                 {preview ? (
@@ -257,44 +224,31 @@ export default ({ onSelected }) => {
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
                             width: size,
-                            // backgroundColor: 'red',
                         }}
                     >
-                        <Button
-                            size='large'
-                            type='primary'
+                        <IconButton
+                            label='Upload Image'
                             disabled={loading}
-                            onClick={onSubmit}
-                            style={{
-                                color: '#fff',
-                                backgroundColor: '#161',
-                            }}
-                        >
-                            Upload
-                        </Button>
+                            onPress={onSubmit}
+                            bgColor='blue'
+                        />
 
-                        <Button
-                            size='large'
+                        <IconButton
+                            label='Change Image'
                             disabled={loading}
-                            onClick={initFileSelector}
-                        >
-                            Change
-                        </Button>
+                            onPress={initFileSelector}
+                            bgColor='blue'
+                        />
+
                     </View>
 
                 ) : (
-                    <Button
-                        size='large'
-                        type='primary'
+                    <IconButton
+                        label='Select Image'
                         disabled={loading}
-                        onClick={initFileSelector}
-                        style={{
-                            color: '#fff',
-                            backgroundColor: '#161',
-                        }}
-                    >
-                        Select Image
-                    </Button>
+                        onPress={initFileSelector}
+                        bgColor='blue'
+                    />
                 )}
 
             </View>

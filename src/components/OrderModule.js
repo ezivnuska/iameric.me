@@ -180,28 +180,28 @@ export default () => {
         // console.log('status', status)
         switch (user.role) {
             case 'customer':
-                return <ButtonPrimary label='Cancel Order' onPress={cancelOrder} disabled={loading} />
+                return <IconButton label='Cancel Order' onPress={cancelOrder} disabled={loading} />
             break
             case 'vendor':
                 if (status == 0)
-                    return <ButtonPrimary label='Confirm Order' onPress={confirmOrder} disabled={loading} />
+                    return <IconButton label='Confirm Order' onPress={confirmOrder} disabled={loading} />
                     
                 if (status == 4)
-                    return <ButtonPrimary label='Clear Order' onPress={cancelOrder} disabled={loading} />
+                    return <IconButton label='Clear Order' onPress={cancelOrder} disabled={loading} />
             break
             case 'driver':
                 switch (status) {
                     case 1:
-                        return <ButtonPrimary label='Accept Delivery' onPress={acceptDelivery} disabled={loading} />
+                        return <IconButton label='Accept Delivery' onPress={acceptDelivery} disabled={loading} />
                     break
                     case 2:
-                        return <ButtonPrimary label='Picked Up' onPress={receivedOrder} disabled={loading} />
+                        return <IconButton label='Picked Up' onPress={receivedOrder} disabled={loading} />
                     break
                     case 3:
-                        return <ButtonPrimary label='Order Completed' onPress={completeDelivery} disabled={loading} />
+                        return <IconButton label='Order Completed' onPress={completeDelivery} disabled={loading} />
                     break
                     case 4:
-                        return <ButtonPrimary label='Clear Order' onPress={cancelOrder} disabled={loading} />
+                        return <IconButton label='Clear Order' onPress={cancelOrder} disabled={loading} />
                     break
                     default:
                         return null

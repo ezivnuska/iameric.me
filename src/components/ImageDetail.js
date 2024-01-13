@@ -4,12 +4,13 @@ import {
     Text,
     View,
 } from 'react-native'
-import { ProductSelector } from '.'
+import {
+    IconButton,
+    ProductSelector,
+} from '.'
 import { AppContext } from '../AppContext'
-import { Button } from 'antd'
 import axios from 'axios'
 import layout from '../styles/layout'
-import main from '../styles/main'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -156,24 +157,25 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
                             paddingVertical: layout.verticalPadding,
                         }}
                     >
+                        
                         {showAvatarButton() && (
-                            <Button
-                                onClick={setAvatar}
+                            <IconButton
+                                label='Set as Avatar'
+                                onPress={setAvatar}
                                 disabled={loading}
-                            >
-                                Make Avatar
-                            </Button>
+                                bgColor='blue'
+                            />
                         )}
 
                         {user.username !== 'Driver' &&
                         user.username !== 'Customer' &&
                         user.username !== 'Vendor' && (
-                            <Button
-                                onClick={deleteImage}
+                            <IconButton
+                                label='Delete Image'
+                                onPress={deleteImage}
                                 disabled={loading}
-                            >
-                                Delete
-                            </Button>
+                                bgColor='red'
+                            />
                         )}
 
                     </View>

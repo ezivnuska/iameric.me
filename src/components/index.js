@@ -4,17 +4,14 @@ import Brand from './Brand'
 import ButtonPrimary from './ButtonPrimary'
 import Cart from './Cart'
 import CartButton from './CartButton'
-import CloseButton from './CloseButton'
 import CategoryPicker from './CategoryPicker'
 import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
-import CircleButton from './CircleButton'
 import DeleteAccountButton from './DeleteAccountButton'
 import DriverList from './DriverList'
 import DriverListItem from './DriverListItem'
 import DriverModule from './DriverModule'
 import DriverSelector from './DriverSelector'
-import EditButton from './EditButton'
 import EntryModule from './EntryModule'
 import EntryList from './EntryList'
 import EntryListItem from './EntryListItem'
@@ -79,18 +76,15 @@ export {
     Brand,
     ButtonPrimary,
     Cart,
-    CloseButton,
     CartButton,
     CategoryPicker,
     CenteredContent,
     CenteredView,
-    CircleButton,
     DeleteAccountButton,
     DriverList,
     DriverListItem,
     DriverModule,
     DriverSelector,
-    EditButton,
     EntryModule,
     EntryList,
     EntryListItem,

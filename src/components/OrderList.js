@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native'
 import {
-    ButtonPrimary,
+    IconButton,
     OrderDetails,
     OrderPreview,
     PopUpModal,
@@ -163,7 +163,11 @@ export default ({ orders }) => {
     }
 
     const renderButton = (label, action) => (
-        <ButtonPrimary label={label} onPress={action} disabled={loading} />
+        <IconButton
+            label={label}
+            onPress={action}
+            disabled={loading}
+        />
     )
 
     const renderVendorForm = id => (

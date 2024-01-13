@@ -8,6 +8,7 @@ import defaultStyles from '../styles/main'
 import {
     FormButton,
     FormInput,
+    IconButton,
 } from '.'
 import { Button } from 'antd'
 
@@ -152,11 +153,11 @@ export default ({ onSubmit, location }) => {
                 onKeyPress={onEnter}
             />
 
-            <FormButton
+            <IconButton
                 label='Update Location'
-                dirty={dirty}
-                valid={isValid()}
-                onClick={submitForm}
+                onPress={submitForm}
+                disabled={loading || !isValid()}
+                bgColor={dirty ? 'blue' : 'gray'}
             />
 
         </View>

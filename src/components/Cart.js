@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     FlatList,
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
+import {
+    IconButton,
+} from '.'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
 import axios from 'axios'
-import { Button } from 'antd'
 
 export default ({ onSubmitOrder }) => {
 
@@ -130,24 +131,20 @@ export default ({ onSubmitOrder }) => {
                     ${getTotal()}
                 </Text>
             </View>
-
-            <Button
-                type='primary'
-                onClick={submitOrder}
+            
+            <IconButton
+                label='Submit Order'
+                onPress={submitOrder}
+                bgColor='blue'
                 disabled={loading}
-                style={{ marginBottom: 10 }}
-            >
-                Submit Order
-            </Button>
-
-            <Button
-                type='default'
-                onClick={() => dispatch({ type: 'CLEAR_CART' })}
+            />
+            
+            <IconButton
+                label='Clear Cart'
+                onPress={() => dispatch({ type: 'CLEAR_CART' })}
+                bgColor='gray'
                 disabled={loading}
-                style={{ marginBottom: 10 }}
-            >
-                Clear Cart
-            </Button>
+            />
 
         </View>
     ) : null

@@ -3,11 +3,11 @@ import {
 	Text,
 	View,
 } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import axios from 'axios'
 import defaultStyles from '../styles/main'
-import { FormInput, RolePicker } from '.'
-import { Button } from 'antd'
+import {
+	FormInput,
+	IconButton,
+} from '.'
 import { isValidEmail } from '../utils/tools'
 import { signup } from '../Data'
 import { storeEmail, getSavedEmail } from '../utils/storage'
@@ -225,15 +225,12 @@ export default ({ role, onComplete }) => {
 					{errorMessage || ' '}
 				</Text>
 
-				<Button
-					size='large'
-					type='primary'
+				<IconButton
+					label={loading ? 'Signing Up' : 'Sign Up'}
 					disabled={loading || !isValid() || errors.length}
-					onClick={submitData}
-					style={{ color: '#fff' }}
-				>
-					{loading ? 'Signing Up' : 'Sign Up'}
-				</Button>
+					onPress={submitData}
+					bgColor={loading ? 'gray' : 'blue'}
+				/>
 
 			</View>
 

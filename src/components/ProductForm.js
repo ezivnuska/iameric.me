@@ -6,9 +6,10 @@ import {
     View,
 } from 'react-native'
 import {
-    ButtonPrimary,
+    // ButtonPrimary,
     CategoryPicker,
     FormInput,
+    IconButton,
     ImageFormModule,
     // ImageUploader,
 } from '.'
@@ -327,18 +328,18 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 disabled={loading}
             />
 
-            <ButtonPrimary
-                style={main.button}
+            <IconButton
                 label='Save'
-                disabled={loading || (title && !title.length) || (price && !price.length)}
                 onPress={onSubmit}
+                disabled={loading || (title && !title.length) || (price && !price.length)}
+                bgColor='blue'
             />
 
-            <ButtonPrimary
-                style={main.button}
+            <IconButton
                 label='Delete'
-                disabled={loading}
                 onPress={onDelete}
+                disabled={loading}
+                bgColor='red'
             />
 
         </View>
