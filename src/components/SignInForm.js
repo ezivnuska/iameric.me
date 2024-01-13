@@ -166,7 +166,7 @@ export default ({ onComplete }) => {
 					label={loading ? 'Signing In' : 'Sign In'}
 					disabled={loading || !isValid() || errors.length}
 					onPress={submitData}
-					bgColor={loading ? 'gray' : 'blue'}
+					bgColor={(!isValid() || loading) ? 'gray' : 'blue'}
 				/>
 
 			</View>

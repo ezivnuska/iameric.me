@@ -4,6 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
+    IconButton,
     OrderDetails,
     OrderList,
     PopUpModal,
@@ -178,7 +179,14 @@ export default () => {
         // console.log('status', status)
         switch (user.role) {
             case 'customer':
-                return <IconButton label='Cancel Order' onPress={cancelOrder} disabled={loading} />
+                return (
+                    <IconButton
+                        label='Cancel Order'
+                        onPress={cancelOrder}
+                        disabled={loading}
+                        bgColor='red'
+                    />
+                )
             break
             case 'vendor':
                 if (status == 0)

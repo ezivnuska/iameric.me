@@ -12,7 +12,7 @@ import main from '../styles/main'
 import moment from 'moment'
 import { AppContext } from '../AppContext'
 
-const OrderDetails = ({ order }) => {
+export default ({ order }) => {
     
     const { pickup, customer, driver, vendor } = order
 
@@ -65,8 +65,6 @@ const OrderDetails = ({ order }) => {
         </View>
     )
 }
-
-export default OrderDetails
 
 const styles = StyleSheet.create({
     container: {

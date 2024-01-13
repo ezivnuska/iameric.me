@@ -167,6 +167,7 @@ export default ({ orders }) => {
             label={label}
             onPress={action}
             disabled={loading}
+            bgColor={loading ? 'gray' : 'blue'}
         />
     )
 
@@ -200,15 +201,6 @@ export default ({ orders }) => {
             default:
                 return null
         }
-        // switch (order.status) {
-        //     // case 0: return user.role === 'vendor' ? renderVendorForm(order._id) : user.role === 'customer' ? renderButton('Cancel Order', () => cancelOrder(order._id)) : null; break
-        //     // case 1: return user.role === 'driver' ? renderButton('Accept Delivery', () => acceptDelivery(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
-        //     // case 2: return user.role === 'driver' ? renderButton('Arrived at Vendor', () => driverArrived(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
-        //     // case 3: return user.role === 'driver' ? renderButton('Picked Up', () => receivedOrder(order._id)) : (user.role === 'vendor' && !order.ready) ? renderButton('Order is Ready', () => onOrderReady(order._id)) : null; break
-        //     // case 4: return user.role === 'driver' ? renderButton('Delivery Complete', () => completeDelivery(order._id)) : null; break
-        //     // case 5: return user.role === 'customer' ? renderButton('Order Received', () => closeOrder(order._id)) : null; break
-        //     // default: return null
-        // }
     }
 
     const getFeaturedItem = id => {
@@ -220,15 +212,7 @@ export default ({ orders }) => {
     }
 
     return (
-        <View
-            style={[
-                main.padded,
-                // {
-                //     borderWidth: 1,
-                //     borderColor: 'green'
-                // }
-            ]}
-        >
+        <View>
             <FlatList
                 data={orders}
                 listKey={() => 'orders'}

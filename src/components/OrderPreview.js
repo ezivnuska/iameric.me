@@ -107,12 +107,7 @@ export default ({ order, children, ...props }) => {
     )
 
     return order ? (
-        <View
-            style={{
-                borderWidth: 1,
-                borderColor: 'red',
-            }}
-        >
+        <View>
             <View style={styles.header}>
                 <View style={styles.statusDisplay}>
                     {!order.confirmed && order.vendor && <Text style={[classes.textDefault, styles.status]}>Waiting on confirmation from {order.vendor.username}</Text>}

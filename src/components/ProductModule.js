@@ -87,6 +87,7 @@ export default () => {
                 iconName='add-outline'
                 alignIcon='right'
                 align='left'
+                padded={false}
             />
             {/* <View
                 style={{

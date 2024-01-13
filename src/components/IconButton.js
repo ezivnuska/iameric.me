@@ -6,7 +6,7 @@ import {
 import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ onPress, disabled, align = 'center', iconAlignment = 'left', bgColor = 'transparent', label = null, iconName = null }) => (
+export default ({ onPress, disabled, padded = true, align = 'center', alignIcon = 'left', bgColor = 'transparent', label = null, iconName = null }) => (
     <Pressable
         onPress={onPress}
         disabled={disabled}
@@ -16,7 +16,7 @@ export default ({ onPress, disabled, align = 'center', iconAlignment = 'left', b
             justifyContent: align,
             alignItems: 'center',
             paddingVertical: 5,
-            paddingHorizontal: 15,
+            paddingHorizontal: padded ? 15 : 0,
             backgroundColor: bgColor,
             borderRadius: 6,
             textAlign: 'center',
@@ -25,12 +25,12 @@ export default ({ onPress, disabled, align = 'center', iconAlignment = 'left', b
             // borderColor: '#f00',
         }}
     >
-        {(iconName && iconAlignment === 'left') && (
+        {(iconName && alignIcon === 'left') && (
             <Icon
                 name={iconName}
                 size={16}
                 color='#fff'
-                style={[{ flexBasis: 'auto', flexShrink: 1 }]}
+                style={[{ flexBasis: 'auto', flexShrink: 1, marginRight: 5 }]}
             />
         )}
 
@@ -42,12 +42,12 @@ export default ({ onPress, disabled, align = 'center', iconAlignment = 'left', b
             </Text>
         )}
 
-        {(iconName && iconAlignment === 'right') && (
+        {(iconName && alignIcon === 'right') && (
             <Icon
                 name={iconName}
                 size={16}
                 color='#fff'
-                style={[{ flexBasis: 'auto', flexShrink: 1 }]}
+                style={[{ flexBasis: 'auto', flexShrink: 1, marginLeft: 5 }]}
             />
         )}
     </Pressable>
