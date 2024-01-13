@@ -19,12 +19,15 @@ export default () => {
         // user,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
+    const [mounted, setMounted] = useState(false)
+    const [loading, setLoading] = useState(null)
     const [customers, setCustomers] = useState(null)
 
     useEffect(() => {
+        setMounted(true)
         if (!users) init()
         else filterUsers('customer')
+        // return () => setMounted(false)
     }, [])
 
     useEffect(() => {
@@ -34,6 +37,7 @@ export default () => {
                 ...filterUsers('customer'),
                 ...filterUsers('admin'),
             ]
+            // if (mounted)
             setCustomers(filteredUsers)
         }
     }, [users])
@@ -47,6 +51,7 @@ export default () => {
             dispatch({ type: 'SET_USERS', users: loadedUsers })
         }
 
+        // if (mounted)
         setLoading(null)
     }
 
@@ -63,9 +68,9 @@ export default () => {
                 Customers
             </Text>
 
-            {!users && loading
+            {loading
                 ? <LoadingView label={loading} />
-                : customers
+                : users
                     ? <UserList users={customers} />
                     : <Text style={classes.textDefault}>No users to display.</Text>}
         </View>
