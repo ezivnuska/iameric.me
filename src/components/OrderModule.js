@@ -4,10 +4,8 @@ import {
     View,
 } from 'react-native'
 import {
-    ButtonPrimary,
     OrderDetails,
     OrderList,
-    OrderPreview,
     PopUpModal,
 } from '.'
 import axios from 'axios'

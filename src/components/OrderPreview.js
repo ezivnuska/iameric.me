@@ -6,8 +6,6 @@ import {
     View,
 } from 'react-native'
 import {
-    // CountdownTimer,
-    // DefaultText,
     LocationDetails,
 } from '.'
 
@@ -152,19 +150,6 @@ export default ({ order, children, ...props }) => {
                 {renderVendor()}
                 {renderCustomer()}
             </View>
-
-            {/* {showOptionsButton()
-                ? (
-                    <Button
-                        type='primary'
-                        size='small'
-                        onClick={() => onPress(_id)}
-                        style={styles.button}
-                    >   
-                        Details &amp; Options
-                    </Button>
-                ) : null
-            } */}
 
             {children}
 

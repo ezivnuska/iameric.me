@@ -6,11 +6,9 @@ import {
 import { AppContext } from '../AppContext'
 import defaultStyles from '../styles/main'
 import {
-    FormButton,
     FormInput,
     IconButton,
 } from '.'
-import { Button } from 'antd'
 
 export default ({ onSubmit, location }) => {
 

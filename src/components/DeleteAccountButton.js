@@ -92,6 +92,7 @@ export default ({ id }) => {
             </Text>
 
             <IconButton
+                label='Delete Account'
                 bgColor='red'
                 onPress={() => setModalVisible(true)}
                 disabled={loading}
