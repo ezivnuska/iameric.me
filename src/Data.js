@@ -2,7 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { cleanStorage, clearStorage, getUserToken, setUserToken } from './utils/storage'
 
-export const authenticate = async token => {
+export const authenticate = async (dispatch, token) => {
+    
+    dispatch({ type: 'SET_LOADING', loading: 'User found. Verifying...' })
     
     const { data } = await axios.
         post('/api/authenticate', { token })
@@ -12,10 +14,14 @@ export const authenticate = async token => {
         await clearStorage()
         return null
     }
-    
+
     const { user } = data
-    
+
     await setUserToken(user.token)
+            
+    dispatch({ type: 'SET_USER', user })
+    dispatch({ type: 'SET_LOADED', loaded: true })
+    dispatch({ type: 'SET_LOADING', loading: null })
     
     return user
 }

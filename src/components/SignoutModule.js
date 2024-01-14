@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Text,
     View,
@@ -12,11 +12,13 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { cleanStorage } from '../utils/storage'
 import classes from '../styles/classes'
+import { navigationRef } from 'src/navigators/RootNavigation'
 
 export default () => {
 
     const {
         dispatch,
+        loaded,
         loading,
         user,
     } = useContext(AppContext)
@@ -30,7 +32,11 @@ export default () => {
     const hideModal = () => {
         setModalVisible(false)
     }
-    
+
+    useEffect(() => {
+        if (!loaded) signout()
+    }, [loaded])
+
     const signout = async () => {
 
         dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
@@ -40,15 +46,50 @@ export default () => {
         
         if (!data) {
             console.log('could not sign out user')
-            return
+        } else {
+            
+            await cleanStorage()
+            
+            console.log('signed out user')
+            
+            dispatch({ type: 'SET_LOADING', loading: null })
+            dispatch({ type: 'SET_LOADED', loaded: null })
+            dispatch({ type: 'SIGNOUT' })
+    
+            navigationRef.navigate('Start')
         }
-        
-        await cleanStorage()
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
-        
-        dispatch({ type: 'SET_VERIFIED', verified: false })
     }
+    
+    // const signout = async () => {
+            
+    //     dispatch({ type: 'SET_LOADED', loaded: false })
+    
+    //     hideModal()
+
+    //     // navigationRef.navigate('Orders')
+
+    //     return
+
+    //     dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
+        
+    //     const { data } = await axios
+    //         .post('/api/signout', { _id: user._id })
+        
+    //     if (!data) {
+    //         console.log('could not sign out user')
+    //         return
+    //     }
+        
+    //     await cleanStorage()
+        
+    //     dispatch({ type: 'SET_LOADING', loading: null })
+        
+    //     dispatch({ type: 'SET_LOADED', loaded: false })
+
+    //     hideModal()
+
+    //     navigationRef.navigate('Start')
+    // }
 
     const validateClose = () => {
         if (!loading) hideModal()

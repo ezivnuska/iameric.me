@@ -72,7 +72,7 @@ export default ({ onPress }) => {
         dispatch,
         loading,
         user,
-        verified,
+        loaded,
     } = useContext(AppContext)
 
     const [showSignInModal, setShowSignInModal] = useState(false)
@@ -98,7 +98,7 @@ export default ({ onPress }) => {
                 username,
             },
         })
-        dispatch({ type: 'SET_VERIFIED', verified: true })
+        dispatch({ type: 'SET_LOADED', loaded: true })
         dispatch({ type: 'SET_LOADING', loading: null })
         // navigation.navigate('Private', {
         //     screen: 'Tabs',
@@ -126,7 +126,7 @@ export default ({ onPress }) => {
             paddingRight: 15,
         }}>
 
-            {(verified && user && !loading) ? (
+            {(loaded && user && !loading) ? (
                 <View style={{
                     display: 'flex',
                     flexDirection: 'row',

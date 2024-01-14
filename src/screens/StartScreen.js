@@ -9,7 +9,8 @@ import {
 import {
     PopUpModal,
     Screen,
-    SignUpForm,
+    // SignUpForm,
+    SelectiveSignUpForm,
 } from '@components'
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
@@ -18,7 +19,6 @@ import { initialize } from '../utils/auth'
 import classes from '../styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { SelectiveSignUpForm } from 'src/components'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -27,6 +27,7 @@ export default ({ navigation }) => {
     const {
         dims,
         dispatch,
+        loaded,
         loading,
         user,
     } = useContext(AppContext)
@@ -35,17 +36,21 @@ export default ({ navigation }) => {
     const [showSignInModal, setShowSignInModal] = useState(null)
 
     useEffect(() => {
-        start()
-    }, [])
-
-    const start = async () => {
-        const verified = await initialize(dispatch)
-        if (verified) {
-            dispatch({ type: 'SET_USER', user: verified })
-            dispatch({ type: 'SET_VERIFIED', verified: true })
+        if (!loaded) {
+            start()
         }
-        dispatch({ type: 'SET_LOADING', loading: null })
+    }, [])
+    
+    const start = async () => {
+        console.log('starting')
+        await initialize(dispatch)
     }
+
+    useEffect(() => {
+        if (loaded && user) {
+            navigation.navigate('Private')
+        }
+    }, [user, loaded])
 
     const onConnect = async type => {
         
@@ -81,7 +86,7 @@ export default ({ navigation }) => {
                 username,
             },
         })
-        dispatch({ type: 'SET_VERIFIED', verified: true })
+        dispatch({ type: 'SET_LOADED', loaded: true })
         dispatch({ type: 'SET_LOADING', loading: null })
         // navigation.navigate('Private', {
         //     screen: 'Tabs',

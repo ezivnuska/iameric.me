@@ -12,6 +12,7 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { loadOrders } from '../utils/data'
+import { cleanStorage } from '../utils/storage'
 import classes from '../styles/classes'
 import { navigationRef } from 'src/navigators/RootNavigation'
 
@@ -19,36 +20,79 @@ export default () => {
     
     const {
         dispatch,
+        loaded,
         user,
         orders,
     } = useContext(AppContext)
 
+    const [items, setItems] = useState(null)
     const [loading, setLoading] = useState(false)
     const [featuredItem, setFeaturedItem] = useState(null)
 
     useEffect(() => {
-        if (!orders || !orders.length) getOrders()
+        if (!orders) getOrders()
     }, [])
+
+    useEffect(() => {
+        if (user) {
+            const relevantOrders = getRelevantOrders(orders)
+            setItems(relevantOrders)
+        }
+    }, [orders])
+
+    useEffect(() => {
+        if (items && !items.length) gotoNextScreen()
+    }, [items])
+
+    useEffect(() => {
+        if (!loaded) signout()
+    }, [loaded])
+
+    const signout = async () => {
+
+        dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
+        
+        const { data } = await axios
+            .post('/api/signout', { _id: user._id })
+        
+        if (!data) {
+            console.log('could not sign out user')
+        } else {
+            
+            await cleanStorage()
+            
+            console.log('signed out user')
+            
+            dispatch({ type: 'SET_LOADING', loading: null })
+            dispatch({ type: 'SET_LOADED', loaded: null })
+            dispatch({ type: 'SIGNOUT' })
+    
+            navigationRef.navigate('Start')
+        }
+    }
 
     const getOrders = async () => {
         
         setLoading(true)
-        const orders = await loadOrders(user._id)
-        const relevant = relevantOrders(orders)
+
+        await loadOrders(dispatch)
+
         setLoading(false)
-        
-        if (!relevant || !relevant.length) {
-            navigationRef.navigate('Vendors')
-        } else {
-            dispatch({ type: 'SET_ORDERS', orders })
-        }
+    }
+
+    const gotoNextScreen = () => {
+        if (!user) return
+        let nextScreen = 'Forum'
+        if (user.role === 'customer') nextScreen = 'Vendors'
+        if (user.role === 'vendor') nextScreen = 'Products'
+        navigationRef.navigate(nextScreen)
     }
 
     const getFeaturedItem = id => {
         return orders.filter((order, index) => order._id === id)[0]
     }
 
-    const relevantOrders = orders => {
+    const getRelevantOrders = orders => {
         
         switch(user.role) {
             case 'driver':
@@ -279,9 +323,11 @@ export default () => {
         <View style={{
             marginVertical: 10,
         }}>
-            {(relevantOrders(orders) && relevantOrders(orders).length)
-                ? <OrderList orders={relevantOrders(orders)} />
-                : <Text style={classes.textDefault}>No orders.</Text>
+            {loading
+                ? <LoadingView label={loading} />
+                : (items && items.length)
+                    ? <OrderList orders={items} />
+                    : <Text style={classes.textDefault}>No orders.</Text>
             }
             
             <PopUpModal

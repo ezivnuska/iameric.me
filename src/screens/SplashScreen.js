@@ -16,7 +16,7 @@ export default ({ navigation }) => {
     } = useContext(AppContext)
     
     useEffect(() => {
-        console.log('splash')
+        // console.log('splash')
         start()
     }, [])
 
@@ -28,19 +28,13 @@ export default ({ navigation }) => {
     }, [user])
 
     const start = async () => {
-        console.log('starting')
-        dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })
 
-        const verified = await initialize(dispatch)
-        console.log('verified', verified)
-        if (verified) {
-            dispatch({ type: 'SET_USER', user: verified })
-            dispatch({ type: 'SET_VERIFIED', verified: true })
-        } else {
+        const verifiedUser = await initialize(dispatch)
+        console.log('start:verifiedUser', verifiedUser)
+        if (!verifiedUser) {
             navigation.navigate('Start')
         }
-
-        dispatch({ type: 'SET_LOADING', loading: null })
+        // else navigation.navigate('Private')
     }
 
     return (

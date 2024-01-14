@@ -15,7 +15,7 @@ export default ({ children, navigation, ...props }) => {
         dispatch,
         loading,
         user,
-        verified,
+        loaded,
     } = useContext(AppContext)
 
     useEffect(() => {
@@ -29,23 +29,23 @@ export default ({ children, navigation, ...props }) => {
         
     // }, [user])
 
-    useEffect(() => {
-        // console.log('SecureScreenChanged: user:', user)
-        // console.log('SecureScreenChanged: loading:', loading)
-        // console.log('SecureScreenChanged: verified:', verified)
-        if (!loading) {
-            if (!verified) {
-                if (user) {
-                    dispatch({ type: 'SIGNOUT' })
-                    navigation.navigate('Public', { screen: 'Start' })
-                }
-            } else {
-                if (user) {
-                    navigation.navigate('Private')
-                } else dispatch({ type: 'SET_VERIFIED', verified: false })
-            }
-        }
-    }, [loading, user, verified])
+    // useEffect(() => {
+    //     // console.log('SecureScreenChanged: user:', user)
+    //     // console.log('SecureScreenChanged: loading:', loading)
+    //     // console.log('SecureScreenChanged: verified:', verified)
+    //     if (!loading) {
+    //         if (!verified) {
+    //             if (user) {
+    //                 dispatch({ type: 'SIGNOUT' })
+    //                 // navigation.navigate('Public', { screen: 'Start' })
+    //             }
+    //         } else {
+    //             if (user) {
+    //                 // navigation.navigate('Private')
+    //             } else dispatch({ type: 'SET_VERIFIED', verified: false })
+    //         }
+    //     }
+    // }, [loading, user, verified])
 
     // const checkUser = async () => {
     //     dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })
@@ -66,10 +66,12 @@ export default ({ children, navigation, ...props }) => {
 
     return (
         <Screen style={props.style || {}}>
-            {(loading || !user || !verified)
-                ? <LoadingView />
-                : children
-            }
+            {user ? children : null}
         </Screen>
     )
+    // return (
+    //     <Screen style={props.style || {}}>
+    //         {children}
+    //     </Screen>
+    // )
 }

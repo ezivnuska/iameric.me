@@ -11,18 +11,18 @@ const initialState = {
     profileImage: null,
     user: null,
     users: null,
-    verified: false,
+    loaded: false,
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, entries, loading, orders, products, profileImage, user, users, verified } = state
+    let { cart, dims, entries, loading, orders, products, profileImage, user, users, loaded } = state
     
     switch(action.type) {
         case 'SET_DIMS':
             dims = action.dims
             break
-        case 'SET_VERIFIED':
-            verified = action.verified
+        case 'SET_LOADED':
+            loaded = action.loaded
             break
         case 'SET_USER':
             user = action.user
@@ -206,13 +206,13 @@ const reducer = (state = initialState, action) => {
             profileId = null
             user = null
             users = null
-            verified = false
+            loaded = false
         break
         default:
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, entries, loading, orders, products, profileImage, user, users, verified }
+    return { cart, dims, entries, loading, orders, products, profileImage, user, users, loaded }
 }
 
 export const AppContext = createContext({
@@ -242,7 +242,7 @@ export const AppProvider = ({ children }) => {
             user: state.user,
             users: state.users,
             vendors: usersByRole('vendor'),
-            verified: state.verified,
+            loaded: state.loaded,
         }}>
             {children}
         </AppContext.Provider>

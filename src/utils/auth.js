@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { authenticate } from '../Data'
-import { setUserToken } from './storage'
+import { cleanStorage, clearStorage, getUserToken, setUserToken } from './storage'
 
 export const initialize = async dispatch => {
     
@@ -15,17 +15,23 @@ export const initialize = async dispatch => {
         // if stored token found...
         dispatch({ type: 'SET_LOADING', loading: 'User found. Verifying...' })
 
-        const verifiedUser = await authenticate(tokenFromStorage)
+        const user = await authenticate(dispatch, tokenFromStorage)
         
         // if user token could not be verified...
-        if (verifiedUser) {
+        if (user) {
             // if token verified...
-            await setUserToken(verifiedUser.token)
+            await setUserToken(user.token)
             
+            dispatch({ type: 'SET_USER', user })
+            dispatch({ type: 'SET_LOADED', loaded: true })
+            dispatch({ type: 'SET_LOADING', loading: null })
+            
+            return user
+        } else {
+            await clearStorage()
         }
-        
-        return verifiedUser
 
+        return null
     }
 
     return null

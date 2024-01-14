@@ -120,31 +120,31 @@ const DriversStackScreen = () => (
     </DriversStack.Navigator>
 )
 
-const PublicStack = createNativeStackNavigator()
-const PublicStackScreen = () => {
-    // console.log('yoyoy')
-    return (
-        <PublicStack.Navigator
-            screenOptions={() => ({
-                initialRouteName: 'Splash',
-                headerShown: false,
-            })}
-        >
-            <PublicStack.Screen
-                name='Splash'
-                component={SplashScreen}
-                options={{ title: 'Splash' }}
-            />
+// const PublicStack = createNativeStackNavigator()
+// const PublicStackScreen = () => {
+//     // console.log('yoyoy')
+//     return (
+//         <PublicStack.Navigator
+//             screenOptions={() => ({
+//                 initialRouteName: 'Splash',
+//                 headerShown: false,
+//             })}
+//         >
+//             <PublicStack.Screen
+//                 name='Splash'
+//                 component={SplashScreen}
+//                 options={{ title: 'Splash' }}
+//             />
     
-            <PublicStack.Screen
-                name='Start'
-                component={StartScreen}
-                options={{ title: 'Start' }}
-            />
+//             <PublicStack.Screen
+//                 name='Start'
+//                 component={StartScreen}
+//                 options={{ title: 'Start' }}
+//             />
             
-        </PublicStack.Navigator>
-    )
-}
+//         </PublicStack.Navigator>
+//     )
+// }
 
 const PrivateStack = createBottomTabNavigator()
 const PrivateStackScreen = () => {
@@ -263,14 +263,21 @@ const MainStack = createNativeStackNavigator()
 const MainStackScreen = () => (
     <MainStack.Navigator
         screenOptions={() => ({
-            initialRouteName: 'Public',
+            initialRouteName: 'Splash',
             headerShown: false,
         })}
     >
+        
         <MainStack.Screen
-            name='Public'
-            component={PublicStackScreen}
-            options={{ title: 'Public' }}
+            name='Splash'
+            component={SplashScreen}
+            options={{ title: 'Splash' }}
+        />
+
+        <MainStack.Screen
+            name='Start'
+            component={StartScreen}
+            options={{ title: 'Start' }}
         />
 
         <MainStack.Screen
@@ -284,17 +291,8 @@ const MainStackScreen = () => (
 
 const config = {
     screens: {
-        Public: {
-            path: 'start',
-            screens: {
-                Splash: {
-                    path: 'splash',
-                },
-                Start: {
-                    path: ''
-                },
-            },
-        },
+        Splash: 'splash',
+        Start: 'start',
         Private: {
             path: '',
             screens: {
@@ -364,7 +362,7 @@ export default () => {
         }
         else {
             console.log('no user connected.')
-            navigationRef.navigate('Public', { screen: 'Start' })
+            navigationRef.navigate('Start')
         }
     }, [user])
 
