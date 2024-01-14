@@ -4,18 +4,16 @@ import {
     SafeAreaView,
     View,
 } from 'react-native'
-import { PublicNavigation, PrivateNavigation } from '../navigators'
+import {
+    // PublicNavigation,
+    PrivateNavigation,
+} from '../navigators'
 import { AppContext } from '../AppContext'
 import {
     Header,
     LoadingView,
 } from '@components'
 import base from '../styles/base'
-
-let initialDims = {
-    window: Dimensions.get('window'),
-    screen: Dimensions.get('screen'),
-}
 
 export default () => {
 
@@ -25,27 +23,35 @@ export default () => {
         user,
     } = useContext(AppContext)
 
+    const logDims = dimensions => {
+        console.log(`window: ${dimensions.window.width} x ${dimensions.window.height}`)
+        console.log(`screen: ${dimensions.screen.width} x ${dimensions.screen.height}`)
+    }
+
     useEffect(() => {
-        // console.log('initial dims', initialDims)
-        dispatch({ type: 'SET_DIMS', dims: initialDims })
+        
+        const initialDims = {
+            window: Dimensions.get('window'),
+            screen: Dimensions.get('screen'),
+        }
+        
+        logDims(initialDims)
+
+        dispatch({
+            type: 'SET_DIMS',
+            dims: initialDims,
+        })
 
         const subscription = Dimensions.addEventListener(
             'change',
-            ({ window, screen }) => dispatch({ type: 'SET_DIMS', dims: { window, screen } })
+            ({ window, screen }) => {
+                logDims({ window, screen })
+                dispatch({ type: 'SET_DIMS', dims: { window, screen } })
+            }
         )
 
         return () => subscription.remove()
     }, [])
-
-
-    // useEffect(() => {
-    //     console.log('helloworld')
-    // }, [])
-
-    // useEffect(() => {
-    //     console.log('dims changed', dims)
-        
-    // }, [dims])
 
     return dims ? (
         <SafeAreaView
@@ -53,9 +59,6 @@ export default () => {
                 width: dims.window.width,
                 height: dims.window.height,
                 backgroundColor: base.backgroundColor,
-                // borderWidth: 2,
-                // borderStyle: 'dashed',
-                // borderColor: 'green',
             }}
         >
             <Header />
@@ -65,9 +68,6 @@ export default () => {
                     width: dims.window.width,
                     maxWidth: 375,
                     marginHorizontal: 'auto',
-                    // borderWidth: 2,
-                    // borderStyle: 'dashed',
-                    // borderColor: 'purple',
                 }}
             >
                 <PrivateNavigation />
@@ -78,9 +78,6 @@ export default () => {
             style={{
                 width: '100%',
                 paddingTop: 100,
-                // borderWidth: 2,
-                // borderStyle: 'dashed',
-                // borderColor: 'purple',
             }}
         >
             <LoadingView />

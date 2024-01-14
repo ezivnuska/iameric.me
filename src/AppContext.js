@@ -5,24 +5,24 @@ const initialState = {
     dims: null,
     entries: null,
     images: null,
+    loaded: null,
     loading: null,
     orders: [],
     products: null,
     profileImage: null,
     user: null,
     users: null,
-    verified: false,
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, entries, loading, orders, products, profileImage, user, users, verified } = state
+    let { cart, dims, entries, loaded, loading, orders, products, profileImage, user, users } = state
     
     switch(action.type) {
         case 'SET_DIMS':
             dims = action.dims
             break
-        case 'SET_VERIFIED':
-            verified = action.verified
+        case 'SET_LOADED':
+            loaded = action.loaded
             break
         case 'SET_USER':
             user = action.user
@@ -200,19 +200,19 @@ const reducer = (state = initialState, action) => {
             console.log('signing out...')
             cart = []
             entries = null
+            loaded = null
             loading = null
             orders = []
             products = null
             profileId = null
             user = null
             users = null
-            verified = false
         break
         default:
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, entries, loading, orders, products, profileImage, user, users, verified }
+    return { cart, dims, entries, loaded, loading, orders, products, profileImage, user, users }
 }
 
 export const AppContext = createContext({
@@ -236,13 +236,13 @@ export const AppProvider = ({ children }) => {
             dims: state.dims,
             drivers: otherUsersByRole('driver'),
             entries: state.entries,
+            loaded: state.loaded,
             loading: state.loading,
             orders: state.orders,
             products: state.products,
             user: state.user,
             users: state.users,
             vendors: usersByRole('vendor'),
-            verified: state.verified,
         }}>
             {children}
         </AppContext.Provider>

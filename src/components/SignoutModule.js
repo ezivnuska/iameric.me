@@ -12,6 +12,8 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { cleanStorage } from '../utils/storage'
 import classes from '../styles/classes'
+import { signout } from '../navigators/RootNavigation'
+// import { navigationRef } from 'src/navigators/RootNavigation'
 
 export default () => {
 
@@ -31,7 +33,7 @@ export default () => {
         setModalVisible(false)
     }
     
-    const signout = async () => {
+    const initSignout = async () => {
 
         dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
         
@@ -45,9 +47,9 @@ export default () => {
         
         await cleanStorage()
         
-        dispatch({ type: 'SET_LOADING', loading: null })
-        
-        dispatch({ type: 'SET_VERIFIED', verified: false })
+        dispatch({ type: 'SET_LOADED', loaded: null })
+
+        signout()
     }
 
     const validateClose = () => {
@@ -100,7 +102,7 @@ export default () => {
 
                     <IconButton
                         label='Sign Out'
-                        onPress={signout}
+                        onPress={initSignout}
                         disabled={loading}
                         bgColor='gray'
                     />

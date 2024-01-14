@@ -1,6 +1,7 @@
 import { createNavigationContainerRef } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { cleanStorage } from 'src/utils/storage'
+import { CommonActions } from '@react-navigation/native'
 
 export const navigationRef = createNavigationContainerRef()
 
@@ -11,6 +12,17 @@ export const goBack = async () => {
         const detail = await AsyncStorage.getItem('detail')
         if (detail && prevRoute !== 'Home' && prevRoute !== 'Forum') navigate(prevRoute, { id: detail })
         else navigate(prevRoute)
+    }
+}
+
+export const signout = async () => {
+    if (navigationRef.isReady()) {
+        navigationRef.dispatch(state => {
+            return CommonActions.reset({
+                ...state,
+                index: 0,
+            })
+        })
     }
 }
 

@@ -27,6 +27,7 @@ export default ({ navigation }) => {
     const {
         dims,
         dispatch,
+        loaded,
         loading,
         user,
     } = useContext(AppContext)
@@ -34,18 +35,18 @@ export default ({ navigation }) => {
     const [showSignUpModal, setShowSignUpModal] = useState(null)
     const [showSignInModal, setShowSignInModal] = useState(null)
 
-    useEffect(() => {
-        start()
-    }, [])
+    // useEffect(() => {
+    //     start()
+    // }, [])
 
-    const start = async () => {
-        const verified = await initialize(dispatch)
-        if (verified) {
-            dispatch({ type: 'SET_USER', user: verified })
-            dispatch({ type: 'SET_VERIFIED', verified: true })
-        }
-        dispatch({ type: 'SET_LOADING', loading: null })
-    }
+    // const start = async () => {
+    //     const verifiedUser = await initialize(dispatch)
+    //     if (verifiedUser) {
+    //         dispatch({ type: 'SET_USER', user: verifiedUser })
+    //         // dispatch({ type: 'SET_VERIFIED', verified: true })
+    //     }
+    //     dispatch({ type: 'SET_LOADING', loading: null })
+    // }
 
     const onConnect = async type => {
         
@@ -81,7 +82,7 @@ export default ({ navigation }) => {
                 username,
             },
         })
-        dispatch({ type: 'SET_VERIFIED', verified: true })
+        // dispatch({ type: 'SET_VERIFIED', verified: true })
         dispatch({ type: 'SET_LOADING', loading: null })
         // navigation.navigate('Private', {
         //     screen: 'Tabs',

@@ -98,8 +98,8 @@ export default ({ onPress }) => {
                 username,
             },
         })
-        dispatch({ type: 'SET_VERIFIED', verified: true })
         dispatch({ type: 'SET_LOADING', loading: null })
+        dispatch({ type: 'SET_LOADED', loaded: true })
         // navigation.navigate('Private', {
         //     screen: 'Tabs',
         //     params: {
@@ -126,7 +126,11 @@ export default ({ onPress }) => {
             paddingRight: 15,
         }}>
 
-            {(verified && user && !loading) ? (
+            {(
+                // verified &&
+                user &&
+                !loading
+            ) ? (
                 <View style={{
                     display: 'flex',
                     flexDirection: 'row',

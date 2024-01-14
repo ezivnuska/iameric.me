@@ -10,6 +10,7 @@ import {
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
+    LoadingScreen,
     // MenuScreen,
     OrderScreen,
     ProductsScreen,
@@ -24,6 +25,7 @@ import { navigationRef } from './RootNavigation'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const UsersStack = createNativeStackNavigator()
 const UsersStackScreen = () => {
@@ -147,252 +149,275 @@ const PublicStackScreen = () => {
 }
 
 const PrivateStack = createBottomTabNavigator()
-const PrivateStackScreen = () => {
-    const { user } = useContext(AppContext)
-    // console.log('private', user)
-    return (
-        <PrivateStack.Navigator
-            initialRouteName='Orders'
-            screenOptions={{
-                headerShown: false,
-                tabBarShowLabel: false,
-                tabBarActiveTintColor: '#fff',
-                tabBarLabelStyle: { fontSize: 18 },
-                tabBarStyle: { backgroundColor: '#000' },
-            }}
-        >
-            <PrivateStack.Screen
-                name='Orders'
-                component={OrderScreen}
-                options={{
-                    tabBarLabel: 'Orders',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='alert-circle-outline' size={size} color={color} />
-                    ),
-                }}
-            />
-
-            {(user && user.role === 'vendor') && (
-                <PrivateStack.Screen
-                    name='Products'
-                    component={ProductsStackScreen}
-                    options={{
-                        tabBarLabel: 'Products',
-                        tabBarIcon: ({ focused, color, size }) => (
-                            <Icon name='grid-outline' size={size} color={color} />
-                        ),
-                    }}
-                />
-            )}
-
-            {user && user.role !== 'vendor' && user.role !== 'driver' && (
-                <PrivateStack.Screen
-                    name='Vendors'
-                    component={VendorsStackScreen}
-                    options={{
-                        tabBarLabel: 'Vendors',
-                        tabBarIcon: ({ focused, color, size }) => (
-                            <Icon name='fast-food-outline' size={size} color={color} />
-                        ),
-                    }}
-                />
-            )}
-
-            {user && user.role !== 'driver' && (
-                <PrivateStack.Screen
-                    name='Users'
-                    component={UsersStackScreen}
-                    options={{
-                        tabBarLabel: 'Users',
-                        tabBarIcon: ({ focused, color, size }) => (
-                            <Icon name='people-circle-outline' size={size} color={color} />
-                        ),
-                    }}
-                />
-            )}
-
-            <PrivateStack.Screen
-                name='Drivers'
-                component={DriversStackScreen}
-                options={{
-                    tabBarLabel: 'Drivers',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='car-sport-outline' size={size} color={color} />
-                    ),
-                }}
-            />
-
-            <PrivateStack.Screen
-                name='Forum'
-                component={ForumScreen}
-                options={{
-                    tabBarLabel: 'Forum',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='chatbubble-outline' size={size} color={color} />
-                    ),
-                }}
-            />
-
-            <PrivateStack.Screen
-                name='Images'
-                component={ImagesScreen}
-                options={{
-                    tabBarLabel: 'Images',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='images-outline' size={size} color={color} />
-                    ),
-                }}
-            />
-            
-            <PrivateStack.Screen
-                name='Settings'
-                component={SettingsScreen}
-                options={{
-                    tabBarLabel: 'Settings',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='cog' size={size} color={color} />
-                    ),
-                }}
-            />
-
-        </PrivateStack.Navigator>
-    )
-}
-
-const MainStack = createNativeStackNavigator()
-const MainStackScreen = () => (
-    <MainStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'Public',
+const PrivateStackScreen = ({ user }) => (
+    <PrivateStack.Navigator
+        initialRouteName='Orders'
+        screenOptions={{
             headerShown: false,
-        })}
+            tabBarShowLabel: false,
+            tabBarActiveTintColor: '#fff',
+            tabBarLabelStyle: { fontSize: 18 },
+            tabBarStyle: { backgroundColor: '#000' },
+        }}
     >
-        <MainStack.Screen
-            name='Public'
-            component={PublicStackScreen}
-            options={{ title: 'Public' }}
+        <PrivateStack.Screen
+            name='Orders'
+            component={OrderScreen}
+            options={{
+                tabBarLabel: 'Orders',
+                tabBarIcon: ({ focused, color, size }) => (
+                    <Icon name='alert-circle-outline' size={size} color={color} />
+                ),
+            }}
         />
 
-        <MainStack.Screen
-            name='Private'
-            component={PrivateStackScreen}
-            options={{ title: 'Private' }}
+        {(user && user.role === 'vendor') && (
+            <PrivateStack.Screen
+                name='Products'
+                component={ProductsStackScreen}
+                options={{
+                    tabBarLabel: 'Products',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='grid-outline' size={size} color={color} />
+                    ),
+                }}
+            />
+        )}
+
+        {user && user.role !== 'vendor' && user.role !== 'driver' && (
+            <PrivateStack.Screen
+                name='Vendors'
+                component={VendorsStackScreen}
+                options={{
+                    tabBarLabel: 'Vendors',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='fast-food-outline' size={size} color={color} />
+                    ),
+                }}
+            />
+        )}
+
+        {user && user.role !== 'driver' && (
+            <PrivateStack.Screen
+                name='Users'
+                component={UsersStackScreen}
+                options={{
+                    tabBarLabel: 'Users',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='people-circle-outline' size={size} color={color} />
+                    ),
+                }}
+            />
+        )}
+
+        <PrivateStack.Screen
+            name='Drivers'
+            component={DriversStackScreen}
+            options={{
+                tabBarLabel: 'Drivers',
+                tabBarIcon: ({ focused, color, size }) => (
+                    <Icon name='car-sport-outline' size={size} color={color} />
+                ),
+            }}
+        />
+
+        <PrivateStack.Screen
+            name='Forum'
+            component={ForumScreen}
+            options={{
+                tabBarLabel: 'Forum',
+                tabBarIcon: ({ focused, color, size }) => (
+                    <Icon name='chatbubble-outline' size={size} color={color} />
+                ),
+            }}
+        />
+
+        <PrivateStack.Screen
+            name='Images'
+            component={ImagesScreen}
+            options={{
+                tabBarLabel: 'Images',
+                tabBarIcon: ({ focused, color, size }) => (
+                    <Icon name='images-outline' size={size} color={color} />
+                ),
+            }}
         />
         
-    </MainStack.Navigator>
+        <PrivateStack.Screen
+            name='Settings'
+            component={SettingsScreen}
+            options={{
+                tabBarLabel: 'Settings',
+                tabBarIcon: ({ focused, color, size }) => (
+                    <Icon name='cog' size={size} color={color} />
+                ),
+            }}
+        />
+
+    </PrivateStack.Navigator>
 )
+
+// const MainStack = createNativeStackNavigator()
+// const MainStackScreen = () => (
+//     <MainStack.Navigator
+//         screenOptions={() => ({
+//             initialRouteName: 'Public',
+//             headerShown: false,
+//         })}
+//     >
+//         <MainStack.Screen
+//             name='Public'
+//             component={PublicStackScreen}
+//             options={{ title: 'Public' }}
+//         />
+
+//         <MainStack.Screen
+//             name='Private'
+//             component={PrivateStackScreen}
+//             options={{ title: 'Private' }}
+//         />
+        
+//     </MainStack.Navigator>
+// )
 
 const config = {
     screens: {
-        Public: {
-            path: 'start',
-            screens: {
-                Splash: {
-                    path: 'splash',
-                },
-                Start: {
-                    path: ''
-                },
-            },
-        },
-        Private: {
+        Orders: {
             path: '',
             screens: {
-                Orders: {
-                    path: 'orders',
-                    screens: {
-                        OrderList: '',
-                    },
-                },
-                Products: {
-                    path: 'products',
-                    screens: {
-                        ProductList: '',
-                    },
-                },
-                Users: {
-                    path: 'users',
-                    screens: {
-                        UserList: '',
-                        User: '/:id',
-                    },
-                },
-                Vendors: {
-                    path: 'vendors',
-                    screens: {
-                        VendorList: '',
-                        Vendor: '/:id',
-                    },
-                },
-                Drivers: {
-                    path: 'drivers',
-                    screens: {
-                        DriverList: '',
-                        Driver: '/:id',
-                    },
-                },
-                Forum: 'forum',
-                Images: 'images',
-                Settings: 'settings',
+                OrderList: '',
             },
         },
+        Products: {
+            path: 'products',
+            screens: {
+                ProductList: '',
+            },
+        },
+        Users: {
+            path: 'users',
+            screens: {
+                UserList: '',
+                User: '/:id',
+            },
+        },
+        Vendors: {
+            path: 'vendors',
+            screens: {
+                VendorList: '',
+                Vendor: '/:id',
+            },
+        },
+        Drivers: {
+            path: 'drivers',
+            screens: {
+                DriverList: '',
+                Driver: '/:id',
+            },
+        },
+        Forum: 'forum',
+        Images: 'images',
+        Settings: 'settings',
     },
 }
+
+// const config = {
+//     screens: {
+//         Public: {
+//             path: 'start',
+//             screens: {
+//                 Splash: {
+//                     path: 'splash',
+//                 },
+//                 Start: {
+//                     path: ''
+//                 },
+//             },
+//         },
+//         Private: {
+//             path: '',
+//             screens: {
+//                 Orders: {
+//                     path: 'orders',
+//                     screens: {
+//                         OrderList: '',
+//                     },
+//                 },
+//                 Products: {
+//                     path: 'products',
+//                     screens: {
+//                         ProductList: '',
+//                     },
+//                 },
+//                 Users: {
+//                     path: 'users',
+//                     screens: {
+//                         UserList: '',
+//                         User: '/:id',
+//                     },
+//                 },
+//                 Vendors: {
+//                     path: 'vendors',
+//                     screens: {
+//                         VendorList: '',
+//                         Vendor: '/:id',
+//                     },
+//                 },
+//                 Drivers: {
+//                     path: 'drivers',
+//                     screens: {
+//                         DriverList: '',
+//                         Driver: '/:id',
+//                     },
+//                 },
+//                 Forum: 'forum',
+//                 Images: 'images',
+//                 Settings: 'settings',
+//             },
+//         },
+//     },
+// }
 
 export default () => {
 
     const {
+        dispatch,
+        loaded,
+        loading,
         user,
     } = useContext(AppContext)
-
-    // const [verified, setVerified] = useState(false)
-    // // const [linking, setLinking] = useState(null)
-
-    // useEffect(() => {
-    //     console.log('hello')
-    // }, [])
-    // useEffect(() => {
-    //     if (user && !verified) setVerified(true)
-    //     if (!user && verified) setVerified(false)
-    //     // setLinking(getLinking())
-    // }, [user, verified])
     
-    useEffect(() => {
-        if (user) {
-            console.log(`${user.username} connected.`)
-            navigationRef.navigate('Private')
-        }
-        else {
-            console.log('no user connected.')
-            navigationRef.navigate('Public', { screen: 'Start' })
-        }
-    }, [user])
-
     // useEffect(() => {
-    //     console.log('linking', linking)
-    // }, [linking])
+    //     // console.log(user ? `${user.username} connected.` : 'no user connected.')
+    //     if (!loaded) checkForToken()
+    // }, [loaded])
+
+    // const checkForToken = async () => {
+    //     const token = await AsyncStorage.getItem('userToken')
+    //     if (!token && user) {
+    //         console.log('dispatching SIGNOUT')
+    //         dispatch({ type: 'SIGNOUT' })
+    //     }
+    // }
 
     const linking = {
         prefixes: ['https://iameric.me'],
         config,
-        // getStateFromPath: (path, options) => {
-        //     console.log('stateFromPath:', path, options)
-        // },
-        // getPathFromState: (state, config) => {
-        //     console.log('pathFromState:', state, config)
-        // }
+    }
+
+    if (!user) {
+        if (loaded) return <StartScreen />
+        else return <SplashScreen />
     }
 
     return (
         <NavigationContainer
             ref={navigationRef}
             linking={linking}
-            fallback={<FallbackScreen />}
-            // onStateChange={async state => {
-            //     console.log(`\nstate:`, state)
-            // }}
+            // fallback={<FallbackScreen />}
+            // onStateChange={async state => {}}
         >
-            <MainStackScreen />
+            <PrivateStackScreen user={user} />
             
         </NavigationContainer>
     )

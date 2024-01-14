@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import {
     IconButton,
+    LoadingView,
     OrderDetails,
     OrderList,
     PopUpModal,
@@ -14,15 +15,18 @@ import { AppContext } from '../AppContext'
 import { loadOrders } from '../utils/data'
 import classes from '../styles/classes'
 import { navigationRef } from 'src/navigators/RootNavigation'
+import { CommonActions } from '@react-navigation/native'
 
 export default () => {
     
     const {
         dispatch,
+        loaded,
         user,
         orders,
     } = useContext(AppContext)
 
+    const [items, setItems] = useState(null)
     const [loading, setLoading] = useState(false)
     const [featuredItem, setFeaturedItem] = useState(null)
 
@@ -30,25 +34,48 @@ export default () => {
         if (!orders || !orders.length) getOrders()
     }, [])
 
+    useEffect(() => {
+        if (user && !loaded) {
+            dispatch({ type: 'SIGNOUT' })
+        }
+    }, [loaded])
+
+    useEffect(() => {
+        if (orders && orders.length) setItems(getRelevantOrders(orders))
+    }, [orders])
+
     const getOrders = async () => {
         
         setLoading(true)
-        const orders = await loadOrders(user._id)
-        const relevant = relevantOrders(orders)
-        setLoading(false)
         
-        if (!relevant || !relevant.length) {
-            navigationRef.navigate('Vendors')
-        } else {
-            dispatch({ type: 'SET_ORDERS', orders })
+        await loadOrders(dispatch)
+        
+        setLoading(false)
+
+        if (!orders) {
+            console.log('error loading orders')
+            return
         }
+
+        const relevantOrders = getRelevantOrders(orders)
+        
+        if (!relevantOrders.length) {
+            goToNextScreen()
+        }
+    }
+
+    const goToNextScreen = () => {
+        let nextScreen = 'Forum'
+        if (user.role === 'customer') nextScreen = 'Vendors'
+        if (user.role === 'vendor') nextScreen = 'Products'
+        navigationRef.navigate(nextScreen)
     }
 
     const getFeaturedItem = id => {
         return orders.filter((order, index) => order._id === id)[0]
     }
 
-    const relevantOrders = orders => {
+    const getRelevantOrders = orders => {
         
         switch(user.role) {
             case 'driver':
@@ -279,9 +306,11 @@ export default () => {
         <View style={{
             marginVertical: 10,
         }}>
-            {(relevantOrders(orders) && relevantOrders(orders).length)
-                ? <OrderList orders={relevantOrders(orders)} />
-                : <Text style={classes.textDefault}>No orders.</Text>
+            {loading
+                ? <LoadingView label={loading} />
+                : (items && items.length)
+                    ? <OrderList orders={items} />
+                    : <Text style={classes.textDefault}>No orders.</Text>
             }
             
             <PopUpModal

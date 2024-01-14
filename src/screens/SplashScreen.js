@@ -5,42 +5,22 @@ import {
 } from '@components'
 import { AppContext } from '../AppContext'
 import { CenteredView } from 'src/components'
-import { initialize } from '../utils/auth'
+import { checkAuth } from '../utils/auth'
 
 export default ({ navigation }) => {
     
     const {
         dispatch,
-        loading,
-        user,
     } = useContext(AppContext)
     
     useEffect(() => {
-        console.log('splash')
         start()
     }, [])
 
-    useEffect(() => {
-        if (user) {
-            console.log('SplashScreen found user, navigating to Private.')
-            navigation.navigate('Private')
-        }
-    }, [user])
-
     const start = async () => {
-        console.log('starting')
-        dispatch({ type: 'SET_LOADING', loading: 'Verifying user...' })
+        console.log(`\n<< splash >>\n\n`)
 
-        const verified = await initialize(dispatch)
-        console.log('verified', verified)
-        if (verified) {
-            dispatch({ type: 'SET_USER', user: verified })
-            dispatch({ type: 'SET_VERIFIED', verified: true })
-        } else {
-            navigation.navigate('Start')
-        }
-
-        dispatch({ type: 'SET_LOADING', loading: null })
+        await checkAuth(dispatch)
     }
 
     return (

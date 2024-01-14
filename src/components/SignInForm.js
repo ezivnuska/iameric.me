@@ -103,12 +103,13 @@ export default ({ onComplete }) => {
 
 		const data = await signin(email, password)
 		// console.log('data', data)
-		if (data && data.user) {
+
+		if (!data) {
+			console.log('Error authenticating user')
+		} else if (data.user) {
 			onComplete(data.user)
 		} else if (data) {
 			handleError(data)
-		} else {
-			console.log('Error authenticating user')
 		}
 
 		setLoading(false)
