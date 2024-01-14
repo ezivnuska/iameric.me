@@ -388,7 +388,9 @@ export default () => {
             ref={navigationRef}
             linking={linking}
             fallback={<FallbackScreen />}
-            // onStateChange={async state => {}}
+            // onStateChange={async state => {
+            //     console.log(`\nstate:`, state)
+            // }}
         >
             <MainStackScreen />
             

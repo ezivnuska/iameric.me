@@ -13,6 +13,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { loadOrders } from '../utils/data'
 import classes from '../styles/classes'
+import { navigationRef } from 'src/navigators/RootNavigation'
 
 export default () => {
     
@@ -26,17 +27,21 @@ export default () => {
     const [featuredItem, setFeaturedItem] = useState(null)
 
     useEffect(() => {
-        if (!orders.length) getOrders()
+        if (!orders || !orders.length) getOrders()
     }, [])
 
     const getOrders = async () => {
         
         setLoading(true)
         const orders = await loadOrders(user._id)
+        const relevant = relevantOrders(orders)
         setLoading(false)
-        if (!orders) return
         
-        dispatch({ type: 'SET_ORDERS', orders })
+        if (!relevant || !relevant.length) {
+            navigationRef.navigate('Vendors')
+        } else {
+            dispatch({ type: 'SET_ORDERS', orders })
+        }
     }
 
     const getFeaturedItem = id => {
@@ -44,7 +49,7 @@ export default () => {
     }
 
     const relevantOrders = orders => {
-        // console.log('user.role', user.role)
+        
         switch(user.role) {
             case 'driver':
                 return orders.filter(item => item.status > 0 && item.status < 6)
