@@ -6,7 +6,7 @@ const initialState = {
     entries: null,
     images: null,
     loading: null,
-    orders: [],
+    orders: null,
     products: null,
     profileImage: null,
     user: null,
@@ -109,9 +109,10 @@ const reducer = (state = initialState, action) => {
             entries = entries.filter(entry => entry._id !== action.id)
             break
         case 'SET_ORDERS':
-            orders = action.orders
+            orders = (action.orders && action.orders.length) ? action.orders : null
             break
         case 'ADD_ORDER':
+            if (!orders) orders = []
             orders = [...orders, action.order]
             cart = []
             break
@@ -195,13 +196,14 @@ const reducer = (state = initialState, action) => {
         break
         case 'REMOVE_ORDER':
             orders = orders.filter(order => order._id != action.id)
+            if (!orders.length) orders = null
         break
         case 'SIGNOUT':
             console.log('signing out...')
             cart = []
             entries = null
             loading = null
-            orders = []
+            orders = null
             products = null
             profileId = null
             user = null

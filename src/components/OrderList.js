@@ -143,6 +143,7 @@ export default ({ orders }) => {
         if (!data) console.log('Error completing order')
 
         dispatch({ type: 'COMPLETE_ORDER', order: data })
+        dispatch({ type: 'REMOVE_ORDER', id: data.id })
 
         setFeatured(null)
     }
@@ -158,6 +159,7 @@ export default ({ orders }) => {
         if (!data) console.log('Error closing order')
 
         dispatch({ type: 'CLOSE_ORDER', order: data })
+        dispatch({ type: 'REMOVE_ORDER', id: data.id })
 
         setFeatured(null)
     }
@@ -182,9 +184,12 @@ export default ({ orders }) => {
         // console.log('CASE', order.status, user ? user.role : 'no role')
         switch(user.role) {
             case 'admin':
+                if (order.status === 6) return renderButton('Delete Order', () => deleteOrder(order._id))
+            break
             case 'customer':
                 if (order.status === 0) return renderButton('Cancel Order', () => cancelOrder(order._id))
                 else if (order.status === 5) return renderButton('Order Received', () => closeOrder(order._id))
+                else return <Text style={classes.textDefault}>Order in progress. Too late to cancel.</Text>
             break
             case 'vendor':
                 if (order.status === 0) return renderVendorForm(order._id)

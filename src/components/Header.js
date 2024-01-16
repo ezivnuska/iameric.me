@@ -18,8 +18,8 @@ export default () => {
     } = useContext(AppContext)
 
     const onBrandClicked = () => {
-        if (user) navigate('Orders')
-        else navigate('Splash')
+        if (user) navigate('Private')
+        else navigate('Start')
     }
     
     return (

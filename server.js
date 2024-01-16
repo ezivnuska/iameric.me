@@ -64,6 +64,7 @@ const {
     getOrdersByDriverId,
     getOrdersByUserId,
     getOrdersByVendorId,
+    getRelevantOrdersByUserId,
     markDriverAtVendorLocation,
     markOrderAsReady,
     markOrderComplete,
@@ -137,7 +138,7 @@ app.post(   '/preview/delete',          deletePreview)
 app.get(    '/images/:name',            getImageIdFromFilename)
 
 // orders
-app.get(    '/orders/:id',              getOrdersByUserId)
+app.get(    '/orders/:id',              getRelevantOrdersByUserId)
 app.get(    '/orders',                  getAllOrders)
 app.get(    '/orders/user/:id',         getOrdersByUserId)
 app.get(    '/orders/customer/:id',     getOrdersByCustomerId)

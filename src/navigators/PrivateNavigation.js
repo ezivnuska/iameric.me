@@ -149,10 +149,18 @@ const DriversStackScreen = () => (
 const PrivateStack = createBottomTabNavigator()
 const PrivateStackScreen = () => {
     const { user } = useContext(AppContext)
+    const getInitialRouteName = () => {
+        if (!user || !user.role) return 'Orders'
+        switch (user.role) {
+            case 'customer': return 'Vendors'; break
+            case 'vendor':
+            case 'driver': return 'Orders'; break
+        }
+    }
     // console.log('private', user)
     return (
         <PrivateStack.Navigator
-            initialRouteName='Orders'
+            initialRouteName={getInitialRouteName()}
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
@@ -263,16 +271,16 @@ const MainStack = createNativeStackNavigator()
 const MainStackScreen = () => (
     <MainStack.Navigator
         screenOptions={() => ({
-            initialRouteName: 'Splash',
+            initialRouteName: 'Start',
             headerShown: false,
         })}
     >
         
-        <MainStack.Screen
+        {/* <MainStack.Screen
             name='Splash'
             component={SplashScreen}
             options={{ title: 'Splash' }}
-        />
+        /> */}
 
         <MainStack.Screen
             name='Start'
@@ -291,7 +299,7 @@ const MainStackScreen = () => (
 
 const config = {
     screens: {
-        Splash: 'splash',
+        // Splash: 'splash',
         Start: 'start',
         Private: {
             path: '',

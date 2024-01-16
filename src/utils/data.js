@@ -99,17 +99,20 @@ export const deleteEntryWithId = async id => {
  * @returns array of order objects
  */
 
-export const loadOrders = async dispatch => {
+export const loadOrders = async (dispatch, id) => {
 
-    const { data } = await axios.get('/api/orders')
-
+    dispatch({ type: 'SET_LOADING', loading: 'Loading orders...' })
+    
+    const { data } = await axios.get(`/api/orders/${id}`)
+    
     if (!data.orders) {
         console.log('could not load orders.')
         return null
     }
-
+    
     dispatch({ type: 'SET_ORDERS', orders: data.orders })
-
+    dispatch({ type: 'SET_LOADING', loading: null })
+    
     // return data.orders
 }
 

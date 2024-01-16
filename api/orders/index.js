@@ -1,4 +1,5 @@
 const Order = require('../../models/Order')
+const User = require('../../models/User')
 
 const getSanitizedOrders = orders => {
     return orders.map(({
@@ -22,27 +23,79 @@ const getSanitizedOrders = orders => {
     }))
 }
 
-// const getOrderIdsByUserId = async (req, res) => {
-//     const { id } = req.params
+const getFilteredOrders = async filter => {
+    const orders = await Order
+        .find(filter)
+        .populate('items', 'price title')
+        .populate({
+            path: 'customer',
+            select: 'username location',
+            populate: { path: 'location' }
+        })
+        .populate({
+            path: 'vendor',
+            select: 'username location',
+            populate: { path: 'location' }
+        })
+        .populate('driver', 'username')
     
-//     let orders = await Order
-//         .find({
-//             $or: [
-//                 { customer: id },
-//                 { driver: id },
-//                 { vendor: id }
-//             ]
-//         })
+    return orders
+}
+
+const getRelevantOrdersByUserId = async (req, res) => {
+
+    const { id } = req.params
+
+    const user = await User.findOne({ _id: id })
+
+    const { role } = user
+
+    let orders = null
+
+    if (role === 'customer') {
+        orders = await getFilteredOrders({
+            $and: [
+                { customer: id },
+                { status: { $lt: 6 } },
+            ],
+        })
+
+    } else if (role === 'vendor') {
+        orders = await getFilteredOrders({
+            $or: [
+                { $and: [
+                    { vendor: id },
+                    { status: { $lt: 6 } },    
+                ]},
+                { status: { $lt: 6 } },
+            ],
+        })
+
+    } else if (role === 'driver') {
+        orders = await getFilteredOrders({
+            $or: [
+                { $and: [
+                    { driver: id },
+                    { status: { $lt: 6 } },
+                ]},
+                { status: { $lt: 2 } },
+            ],
+        })
+
+    } else if (role === 'admin') {
+        orders = await Order
+            .find({})
+    }
     
-//     if (!orders) {
-//         console.log('no orders to be found.')
-//         return res.status(200).json(null)
-//     }
+    if (!orders) {
+        console.log('Error getting relevant orders by id')
+        return res.json(200).json(null)
+    }
 
-//     const orderIds = orders.map(order => order._id)
+    const sanitizedOrders = getSanitizedOrders(orders)
 
-//     return res.status(200).json({orderIds})
-// }
+    return res.status(200).json({ orders: sanitizedOrders })
+}
 
 const getOrdersByUserId = async (req, res) => {
     
@@ -71,7 +124,7 @@ const getOrdersByUserId = async (req, res) => {
     
     if (!orders) {
         console.log('Error getting orders by id')
-        return res.json(400).json(null)
+        return res.json(200).json(null)
     }
 
     // console.log('unsanitized orders', response)
@@ -485,6 +538,7 @@ module.exports = {
     getOrdersByDriverId,
     getOrdersByUserId,
     getOrdersByVendorId,
+    getRelevantOrdersByUserId,
     markDriverAtVendorLocation,
     markOrderAsReady,
     markOrderComplete,

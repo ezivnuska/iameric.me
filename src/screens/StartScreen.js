@@ -36,6 +36,7 @@ export default ({ navigation }) => {
     const [showSignInModal, setShowSignInModal] = useState(null)
 
     useEffect(() => {
+        console.log('START')
         if (!loaded) {
             start()
         }

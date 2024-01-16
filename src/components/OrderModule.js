@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import {
     IconButton,
+    LoadingView,
     OrderDetails,
     OrderList,
     PopUpModal,
@@ -21,32 +22,36 @@ export default () => {
     const {
         dispatch,
         loaded,
+        loading,
         user,
         orders,
     } = useContext(AppContext)
 
     const [items, setItems] = useState(null)
-    const [loading, setLoading] = useState(false)
     const [featuredItem, setFeaturedItem] = useState(null)
 
     useEffect(() => {
-        if (!orders) getOrders()
-    }, [])
+        if (user) getOrders()
+    }, [user])
 
-    useEffect(() => {
-        if (user) {
-            const relevantOrders = getRelevantOrders(orders)
-            setItems(relevantOrders)
-        }
-    }, [orders])
-
-    useEffect(() => {
-        if (items && !items.length) gotoNextScreen()
-    }, [items])
+    // useEffect(() => {
+    //     console.log('<< order changed >>')
+    //     if (orders) {
+    //         setItems(orders)
+    //         // if (orders.length) {
+    //         // } else {
+    //         //     gotoNextScreen()
+    //         // }
+    //     }
+    // }, [orders])
 
     useEffect(() => {
         if (!loaded) signout()
     }, [loaded])
+
+    const getOrders = async () => {
+        await loadOrders(dispatch, user._id)
+    }
 
     const signout = async () => {
 
@@ -71,42 +76,16 @@ export default () => {
         }
     }
 
-    const getOrders = async () => {
-        
-        setLoading(true)
-
-        await loadOrders(dispatch)
-
-        setLoading(false)
-    }
-
-    const gotoNextScreen = () => {
-        if (!user) return
-        let nextScreen = 'Forum'
-        if (user.role === 'customer') nextScreen = 'Vendors'
-        if (user.role === 'vendor') nextScreen = 'Products'
-        navigationRef.navigate(nextScreen)
-    }
+    // const gotoNextScreen = () => {
+    //     if (!user) return
+    //     let nextScreen = 'Forum'
+    //     if (user.role === 'customer') nextScreen = 'Vendors'
+    //     if (user.role === 'vendor') nextScreen = 'Products'
+    //     navigationRef.navigate('Private', { screen: nextScreen })
+    // }
 
     const getFeaturedItem = id => {
         return orders.filter((order, index) => order._id === id)[0]
-    }
-
-    const getRelevantOrders = orders => {
-        
-        switch(user.role) {
-            case 'driver':
-                return orders.filter(item => item.status > 0 && item.status < 6)
-            break
-            case 'customer':
-                return orders.filter(item => item.customer && item.customer._id == user._id && item.status < 6)
-            break
-            case 'vendor':
-                return orders.filter(item => item.vendor && item.vendor._id === user._id && item.status < 6)
-            break
-            case 'admin':
-                return orders.filter(item => item.status <= 5)
-        }
     }
 
     const removeOrder = id => {
@@ -114,10 +93,14 @@ export default () => {
     }
 
     const deleteOrder = async id => {
-        setLoading(true)
-        removeOrder(id)
+        
+        dispatch({ type: 'SET_LOADING', loading: 'Deleting order...' })
+
         await axios.delete(`/api/order/${id}`)
-        setLoading(false)
+        
+        removeOrder(id)
+
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const cancelOrder = async () => {
@@ -139,18 +122,21 @@ export default () => {
 
     const confirmOrder = async () => {
 
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Confirming order...' })
 
         const order = await axios.
             post(`/api/order/confirm/${featuredItem}`)
         
-        setLoading(false)
-        
-        if (!order) console.log('Error confirming order')
+            
+        if (!order) {
+            console.log('Error confirming order')
+        } else {
+            dispatch({ type: 'CONFIRM_ORDER', id: featuredItem })
+            setOrderConfirmed(order._id)
+        }
+            
+        dispatch({ type: 'SET_LOADING', loading: null })
 
-        dispatch({ type: 'CONFIRM_ORDER', id: featuredItem })
-
-        setOrderConfirmed(order._id)
     }
 
     const getItemById = id => orders.filter(item => item._id == id)[0]
@@ -166,18 +152,20 @@ export default () => {
 
     const acceptDelivery = async () => {
 
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Accepting delivery...' })
 
         const { data } = await axios.
             post('/api/order/accept', { id: featuredItem, driver: user._id })
         
-        setLoading(false)
-
+            
         if (!data) console.log('Error confirming order')
+        else {
+            dispatch({ type: 'ACCEPT_ORDER', order: data })
+            setOrderAccepted(data._id)
+        }
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
 
-        dispatch({ type: 'ACCEPT_ORDER', order: data })
-
-        setOrderAccepted(data._id)
     }
 
     const setOrderReceived = id => {
@@ -193,35 +181,37 @@ export default () => {
 
     const receivedOrder = async () => {
 
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Receiving order...' })
 
         const order = await axios.
             post('/api/order/received', { id: featuredItem, driver: user._id })
         
-        setLoading(false)
-        
+            
         if (!order) console.log('Error marking order picked up')
+        else {
+            dispatch({ type: 'ORDER_RECEIVED', id: featuredItem, driver: user._id })
+            setOrderReceived(order._id)
+        }
 
-        dispatch({ type: 'ORDER_RECEIVED', id: featuredItem, driver: user._id })
-
-        setOrderReceived(order._id)
+        dispatch({ type: 'SET_LOADING', loading: null })
 
     }
 
     const completeDelivery = async () => {
         
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Completing delivery...' })
         
         const order = await axios.
             post(`/api/order/complete/${featuredItem}`)
-        
-        setLoading(false)
-
+            
         if (!order) console.log('Error completing order')
+        else {
+            dispatch({ type: 'COMPLETE_ORDER', id: featuredItem })
+            setFeaturedItem(null)
+        }
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
 
-        dispatch({ type: 'COMPLETE_ORDER', id: featuredItem })
-
-        setFeaturedItem(null)
     }
 
     const renderOrderProcessButton = status => {
@@ -324,9 +314,9 @@ export default () => {
             marginVertical: 10,
         }}>
             {loading
-                ? <LoadingView label={loading} />
-                : (items && items.length)
-                    ? <OrderList orders={items} />
+                ? <LoadingView />
+                : orders
+                    ? <OrderList orders={orders} />
                     : <Text style={classes.textDefault}>No orders.</Text>
             }
             
