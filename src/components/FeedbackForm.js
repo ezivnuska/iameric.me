@@ -61,6 +61,7 @@ export default () => {
                 keyboardType='default'
                 style={defaultStyles.input}
                 onKeyPress={onEnter}
+                autoFocus
             />
 
             <IconButton
