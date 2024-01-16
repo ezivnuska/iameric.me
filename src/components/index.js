@@ -21,6 +21,7 @@ import FormButton from './FormButton'
 import FormInput from './FormInput'
 import FormInputStatusIcon from './FormInputStatusIcon'
 import Header from './Header'
+import HeaderIconButton from './HeaderIconButton'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
 import ImageDetail from './ImageDetail'
@@ -93,6 +94,7 @@ export {
     FormInput,
     FormInputStatusIcon,
     Header,
+    HeaderIconButton,
     HoverableView,
     IconButton,
     ImageDetail,

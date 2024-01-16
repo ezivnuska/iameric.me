@@ -6,7 +6,7 @@ import {
 import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ onPress, disabled, padded = true, align = 'center', alignIcon = 'left', bgColor = 'transparent', label = null, iconName = null }) => (
+export default ({ onPress, disabled, padded = true, align = 'center', alignIcon = 'left', bgColor = 'transparent', label = null, iconName = null, textStyles = null }) => (
     <Pressable
         onPress={onPress}
         disabled={disabled}
@@ -30,13 +30,17 @@ export default ({ onPress, disabled, padded = true, align = 'center', alignIcon 
                 name={iconName}
                 size={16}
                 color='#fff'
-                style={[{ flexBasis: 'auto', flexShrink: 1, marginRight: 0 }]}
+                style={{ flexBasis: 'auto', flexShrink: 1, marginRight: 0 }}
             />
         )}
 
         {label && (
             <Text
-                style={[classes.buttonText, { flexBasis: 'auto', flexGrow: 0 }]}
+                style={[
+                    classes.buttonText,
+                    { flexBasis: 'auto', flexGrow: 0 },
+                    textStyles || null,
+                ]}
             >
                 {label}
             </Text>

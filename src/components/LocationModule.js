@@ -5,16 +5,12 @@ import {
     View,
 } from 'react-native'
 import {
+    HeaderIconButton,
     LoadingView,
     LocationForm,
     LocationDetails,
     PopUpModal,
 } from '.'
-import {
-    EditOutlined,
-    PlusCircleOutlined,
-} from '@ant-design/icons'
-import Icon from 'react-native-vector-icons/Ionicons'
 import axios from 'axios'
 import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
@@ -79,55 +75,15 @@ export default ({ userId }) => {
         setModalVisible(false)
     }
 
-    const renderHeader = () => (
-        <View
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                marginBottom: 5,
-            }}
-        >
-            <Text
-                style={[
-                    classes.headerSecondary,
-                    {
-                        flex: 1,
-                        flexGrow: 0,
-                        flexBasis: 'auto',
-                    },
-                ]}
-            >
-                Address
-            </Text>
-            
-            
-            <Pressable
-                style={{
-                    flexBasis: 'auto',
-                    paddingHorizontal: 10,
-                }}
-                onPress={() => setModalVisible(true)}
-                disabled={loading}
-            >
-                {location
-                    ? (
-                        <Icon name='create-outline' size={32} color='#fff' />
-                    ) : (
-                        <Icon name='add-outline' size={32} color='#fff' />
-                    )
-                }
-                
-            </Pressable>
-        </View>
-    )
-
     return (
-        <View style={{ marginVertical: layout.verticalMargin }}>
+        <View>
             
-            {renderHeader()}
-
+            <HeaderIconButton
+                iconName={location ? 'create-outline' : 'add-outline'}
+                label='Address'
+                disabled={loading}
+                onPress={() => setModalVisible(true)}
+            />
             {loading
                 ? <LoadingView label='Loading location...' />
                 : location

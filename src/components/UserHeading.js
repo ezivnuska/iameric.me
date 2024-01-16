@@ -25,6 +25,7 @@ export default ({ online, username, filename, onPress = null }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
+                marginBottom: 10,
             }}
         >
             <View

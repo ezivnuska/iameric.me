@@ -19,9 +19,11 @@ export default ({ users }) => (
             return (
                 <View
                     style={{
-                        paddingTop: 7,
-                        paddingBottom: 4,
+                        // paddingTop: 7,
+                        // paddingBottom: 4,
                         borderBottomWidth: 1,
+                        borderBottomColor: '#333',
+                        marginBottom: 10,
                     }}
                 >
                     <UserHeading
