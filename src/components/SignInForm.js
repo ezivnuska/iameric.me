@@ -6,6 +6,7 @@ import {
 import {
 	FormInput,
 	IconButton,
+	LoadingView,
 } from '.'
 import defaultStyles from '../styles/main'
 import { signin } from '../Data'
@@ -19,6 +20,7 @@ export default ({ onComplete }) => {
 	const [loading, setLoading] = useState(false)
 	const [errors, setErrors] = useState([])
 	const [errorMessage, setErrorMessage] = useState(null)
+	const [ready, setReady] = useState(false)
 
 	useEffect(() => {
 		initForm()
@@ -27,6 +29,10 @@ export default ({ onComplete }) => {
 	useEffect(() => {
 		validateForm()
 	}, [email, password])
+
+	useEffect(() => {
+		console.log('ready', ready)
+	}, [ready])
 
 	useEffect(() => {
 		if (email.length && !isValidEmail(email)) addError('email')
@@ -42,8 +48,13 @@ export default ({ onComplete }) => {
 	}
 
 	const initForm = async () => {
+		console.log('init form')
 		const savedEmail = await getSavedEmail()
-		if (savedEmail) setEmail(savedEmail)
+		console.log('savedEmail', savedEmail)
+		if (savedEmail) {
+			setEmail(savedEmail)
+		}
+		setReady(true)
 	}
 
 	const hasError = value => {
@@ -118,14 +129,15 @@ export default ({ onComplete }) => {
 		if (e.code === 'Enter') submitData()
 	}
 
-    return (
-        <View style={defaultStyles.formContainer}>
-					
+    return !ready ? (
+		<LoadingView />
+	) : (
+		<View style={defaultStyles.formContainer}>
 			<View
 				style={defaultStyles.form}
 			>
 
-            	<Text style={[defaultStyles.title, { color: '#fff', textAlign: 'center' }]}>Sign In</Text>
+				<Text style={[defaultStyles.title, { color: '#fff', textAlign: 'center' }]}>Sign In</Text>
 
 				<FormInput
 					label='Email'
@@ -138,6 +150,7 @@ export default ({ onComplete }) => {
 					style={defaultStyles.input}
 					invalid={hasError('email')}
 					onKeyPress={onEnter}
+					autoFocus={!email.length}
 				/>
 
 				<FormInput
@@ -151,6 +164,7 @@ export default ({ onComplete }) => {
 					style={defaultStyles.input}
 					invalid={hasError('password')}
 					onKeyPress={onEnter}
+					autoFocus={email.length}
 				/>
 
 				
@@ -170,7 +184,6 @@ export default ({ onComplete }) => {
 				/>
 
 			</View>
-
 		</View>
-    )
+	)
 }
