@@ -20,7 +20,7 @@ export default ({ onComplete }) => {
 	const [loading, setLoading] = useState(false)
 	const [errors, setErrors] = useState([])
 	const [errorMessage, setErrorMessage] = useState(null)
-	const [ready, setReady] = useState(false)
+	const [formReady, setFormReady] = useState(false)
 
 	useEffect(() => {
 		initForm()
@@ -29,10 +29,6 @@ export default ({ onComplete }) => {
 	useEffect(() => {
 		validateForm()
 	}, [email, password])
-
-	useEffect(() => {
-		console.log('ready', ready)
-	}, [ready])
 
 	useEffect(() => {
 		if (email.length && !isValidEmail(email)) addError('email')
@@ -48,13 +44,11 @@ export default ({ onComplete }) => {
 	}
 
 	const initForm = async () => {
-		console.log('init form')
 		const savedEmail = await getSavedEmail()
-		console.log('savedEmail', savedEmail)
 		if (savedEmail) {
 			setEmail(savedEmail)
 		}
-		setReady(true)
+		setFormReady(true)
 	}
 
 	const hasError = value => {
@@ -129,61 +123,66 @@ export default ({ onComplete }) => {
 		if (e.code === 'Enter') submitData()
 	}
 
-    return !ready ? (
-		<LoadingView />
-	) : (
+	const renderForm = () => (
+		<View
+			style={defaultStyles.form}
+		>
+
+			<Text style={[defaultStyles.title, { color: '#fff', textAlign: 'center' }]}>Sign In</Text>
+
+			<FormInput
+				label='Email'
+				value={email}
+				onChange={value => setEmail(value)}
+				placeholder='Email'
+				textContentType='emailAddress'
+				autoCapitalize='none'
+				keyboardType='email-address'
+				style={defaultStyles.input}
+				invalid={hasError('email')}
+				onKeyPress={onEnter}
+				autoFocus={!email.length}
+			/>
+
+			<FormInput
+				label='Password'
+				value={password}
+				onChange={value => setPassword(value)}
+				placeholder='Password'
+				textContentType='password'
+				autoCapitalize='none'
+				secureTextEntry={true}
+				style={defaultStyles.input}
+				invalid={hasError('password')}
+				onKeyPress={onEnter}
+				autoFocus={email.length}
+			/>
+
+			
+			<Text
+				style={{
+					color: '#f00',
+					marginBottom: 15,
+			}}>
+				{errorMessage || ' '}
+			</Text>
+
+			<IconButton
+				label={loading ? 'Signing In' : 'Sign In'}
+				disabled={loading || !isValid() || errors.length}
+				onPress={submitData}
+				bgColor={(!isValid() || loading) ? 'gray' : 'blue'}
+			/>
+
+		</View>
+	)
+
+    return (
 		<View style={defaultStyles.formContainer}>
-			<View
-				style={defaultStyles.form}
-			>
-
-				<Text style={[defaultStyles.title, { color: '#fff', textAlign: 'center' }]}>Sign In</Text>
-
-				<FormInput
-					label='Email'
-					value={email}
-					onChange={value => setEmail(value)}
-					placeholder='Email'
-					textContentType='emailAddress'
-					autoCapitalize='none'
-					keyboardType='email-address'
-					style={defaultStyles.input}
-					invalid={hasError('email')}
-					onKeyPress={onEnter}
-					autoFocus={!email.length}
-				/>
-
-				<FormInput
-					label='Password'
-					value={password}
-					onChange={value => setPassword(value)}
-					placeholder='Password'
-					textContentType='password'
-					autoCapitalize='none'
-					secureTextEntry={true}
-					style={defaultStyles.input}
-					invalid={hasError('password')}
-					onKeyPress={onEnter}
-					autoFocus={email.length}
-				/>
-
-				
-				<Text
-					style={{
-						color: '#f00',
-						marginBottom: 15,
-				}}>
-					{errorMessage || ' '}
-				</Text>
-
-				<IconButton
-					label={loading ? 'Signing In' : 'Sign In'}
-					disabled={loading || !isValid() || errors.length}
-					onPress={submitData}
-					bgColor={(!isValid() || loading) ? 'gray' : 'blue'}
-				/>
-
-			</View>
+			{formReady
+				? renderForm()
+				: <LoadingView label='loading form...' />
+			}
 		</View>
 	)
 }

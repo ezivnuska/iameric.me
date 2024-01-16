@@ -12,7 +12,7 @@ export default ({ location }) => {
     const { address1, address2, city, state, zip } = location
     
     return (
-        <View style={{ borderWidth: 1, borderColor: 'pink'}}>
+        <View>
             <Text style={classes.textDefault}>{address1}{address2.length ? `, ${address2}` : null}</Text>
             <Text style={classes.textDefault}>{`${city}, ${state} ${zip}`}</Text>
         </View>

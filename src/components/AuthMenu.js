@@ -39,7 +39,7 @@ const UserButton = ({ onPress, user }) => {
                 flexBasis: 'auto',
                 marginLeft: 5,
                 paddingRight: 5,
-                marginRight: 5,
+                // marginRight: 5,
                 // padding: 5,
                 display: 'flex',
                 flexDirection: 'row',
@@ -137,7 +137,9 @@ export default ({ onPress }) => {
             alignItems: 'center',
             justifyContent: 'flex-end',
             height: '100%',
-            paddingRight: 15,
+            // paddingRight: 15,
+            // borderWidth: 1,
+            // borderColor: 'red',
         }}>
 
             {(loaded && user && !loading) ? (
@@ -147,7 +149,7 @@ export default ({ onPress }) => {
                     alignItems: 'center',
                     justifyContent: 'flex-end',
                     height: '100%',
-                    paddingRight: 15,
+                    // paddingRight: 15,
                 }}>
                     {cart && cart.length ? <CartButton /> : null}
 

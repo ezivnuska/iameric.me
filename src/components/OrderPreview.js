@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    IconButton,
     LocationDetails,
 } from '.'
 
@@ -69,6 +70,7 @@ export default ({ order, children, ...props }) => {
     // }, [item])
 
     const [expanded, setExpanded] = useState(false)
+    const [showOrderDetails, setShowOrderDetails] = useState(false)
 
     const textColor = () => order.status === 5 ? '#aaa' : '#000'
 
@@ -114,33 +116,50 @@ export default ({ order, children, ...props }) => {
         <Text style={[classes.textDefault, styles.milestone]}>{text}</Text>
     )
 
+    const renderOrderMilestones = order => (
+        <View>
+            {/* style={[styles.timeline, { display: expanded ? 'block' : 'none' }]} */}
+            {renderMilestone(`Ordered ${moment(order.date).format('dddd, MMM Do')} at ${moment(order.date).format('LT')}`)}
+            {order.confirmed && renderMilestone(`Confirmed by ${order.vendor.username} at ${moment(order.confirmed).format('LT')}`)}
+            {order.accepted && renderMilestone(`Accepted by ${order.driver.username} at ${moment(order.accepted).format('LT')}`)}
+            {order.arrived && renderMilestone(`Driver arrived at ${order.vendor.username} at ${moment(order.arrived).format('LT')}`)}
+            {order.ready && renderMilestone(`Order marked ready at ${moment(order.ready).format('LT')}`)}
+            {order.received && renderMilestone(`Order picked up at ${moment(order.received).format('LT')}`)}
+            {order.delivered && renderMilestone(`${order.driver.username} delivered order at ${moment(order.delivered).format('LT')}`)}
+        </View>
+    )
+
+    const renderOrderStatus = order => (
+        <View style={styles.statusDisplay}>
+            {user.role === 'admin' && renderStatus(`status: ${order.status}`)}
+            {!order.confirmed && order.vendor && renderStatus(`Waiting on confirmation from ${order.vendor.username}`)}
+            {(order.confirmed && !order.accepted) && renderStatus('Looking for available driver.')}
+            {(order.pickup && !order.received) && renderStatus(`Ready for pick up at ${moment(order.pickup).format('LT')}`)}
+            {(order.accepted && !order.arrived) && renderStatus(`${order.driver.username} is on the way to ${order.vendor.username}.`)}
+            {order.ready && renderStatus(`Order is ready.`)}
+            {(order.arrived && !order.received) && renderStatus(`${order.driver.username} is onsite and waiting for your order.`)}
+            {(order.received && !order.delivered) && renderStatus(`${order.driver.username} is on the way.`)}
+        </View>
+    )
+
     return order ? (
         <View>
             <View style={styles.header}>
-                <View style={styles.statusDisplay}>
-                    {renderStatus(`status: ${order.status}`)}
-                    {!order.confirmed && order.vendor && renderStatus(`Waiting on confirmation from ${order.vendor.username}`)}
-                    {(order.confirmed && !order.accepted) && renderStatus('Looking for available driver.')}
-                    {(order.pickup && !order.received) && renderStatus(`Ready for pick up at ${moment(order.pickup).format('LT')}`)}
-                    {(order.accepted && !order.arrived) && renderStatus(`${order.driver.username} is on the way to ${order.vendor.username}.`)}
-                    {order.ready && renderStatus(`Order is ready.`)}
-                    {(order.arrived && !order.received) && renderStatus(`${order.driver.username} is onsite and waiting for your order.`)}
-                    {(order.received && !order.delivered) && renderStatus(`${order.driver.username} is on the way.`)}
-                </View>
+                {renderOrderStatus(order)} 
 
                 {renderHeaderButton()}
             </View>
 
-            <View>
-                {/* style={[styles.timeline, { display: expanded ? 'block' : 'none' }]} */}
-                {renderMilestone(`Ordered ${moment(order.date).format('dddd, MMM Do')} at ${moment(order.date).format('LT')}`)}
-                {order.confirmed && renderMilestone(`Confirmed by ${order.vendor.username} at ${moment(order.confirmed).format('LT')}`)}
-                {order.accepted && renderMilestone(`Accepted by ${order.driver.username} at ${moment(order.accepted).format('LT')}`)}
-                {order.arrived && renderMilestone(`Driver arrived at ${order.vendor.username} at ${moment(order.arrived).format('LT')}`)}
-                {order.ready && renderMilestone(`Order marked ready at ${moment(order.ready).format('LT')}`)}
-                {order.received && renderMilestone(`Order picked up at ${moment(order.received).format('LT')}`)}
-                {order.delivered && renderMilestone(`${order.driver.username} delivered order at ${moment(order.delivered).format('LT')}`)}
-            </View>
+            {(user.role === 'admin') && (
+                <View>
+                    <IconButton
+                        align='right'
+                        iconName={showOrderDetails ? 'chevron-up-outline' : 'chevron-down-outline'}
+                        onPress={() => setShowOrderDetails(!showOrderDetails)}
+                    />
+                    {showOrderDetails && renderOrderMilestones(order)}
+                </View>
+            )}
 
             <View
                 style={{

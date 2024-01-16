@@ -69,7 +69,7 @@ const handleSignin = async (req, res) => {
     
     const user = await User
         .findOne({ email })
-        .populate('profileImage', 'filename')
+        .populate({ path: 'profileImage', select: 'filename width height' })
     console.log('user', user)
 
     if (!user)
@@ -116,7 +116,7 @@ const createUser = async (email, username, password, role) => {
             { $set: { token: newToken } },
             { new: true },
         )
-        .populate('profileImage', 'filename')
+        .populate({ path: 'profileImage', select: 'filename width height' })
 
     if (!user) {
         console.log('Error updating user with token')
@@ -175,7 +175,7 @@ const authenticate = async (req, res) => {
 
     const user = await User
         .findOne({ _id: userFromToken._id })
-        .populate('profileImage', 'filename')
+        .populate({ path: 'profileImage', select: 'filename width height' })
 
     if (!user) {
         console.log('failed to refresh user token')

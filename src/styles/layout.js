@@ -1,6 +1,6 @@
 const verticalMargin = 10
 const verticalPadding = 10
-const horizontalPadding = 15
+const horizontalPadding = 10
 const horizontalMargin = 10
 
 const full = {

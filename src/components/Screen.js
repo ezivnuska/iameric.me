@@ -18,8 +18,10 @@ export default ({ children, ...props }) => {
                 {
                     height: dims ? dims.window.height - 50 : '100%',
                     width: '100%',
-                    paddingHorizontal: 15,
+                    paddingHorizontal: 10,
                     backgroundColor: colors.backgroundDefault,
+                    // borderWidth: 1,
+                    // borderColor: 'yellow'
                 },
             ]}
         >

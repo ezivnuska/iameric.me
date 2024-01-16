@@ -13,6 +13,7 @@ import { AppContext } from '../AppContext'
 // import { goBack, navigate } from '../navigators/RootNavigation'
 import { loadUsers } from '../utils/data'
 import classes from '../styles/classes'
+import { IconButton } from 'src/components'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -70,6 +71,8 @@ export default ({ navigation, route }) => {
     // TODO: clean this.
     const renderUserAvatar = () => {
 
+        console.log('info', userDetails)
+
         const filename = (userDetails.profileImage && userDetails.profileImage.filename)
             ? userDetails.profileImage.filename
             : null
@@ -82,8 +85,8 @@ export default ({ navigation, route }) => {
             <Image
                 source={source}
                 style={{
-                    width: '100%',
-                    height: 200,
+                    width: userDetails.profileImage.width,
+                    height: userDetails.profileImage.width,
                     // backgroundColor: '#ccc',
                     resizeMode: 'cover',
                     marginVertical: 15,
@@ -100,18 +103,15 @@ export default ({ navigation, route }) => {
                 : userDetails
                     ? (
                         <>
-                            <Pressable
+                            <IconButton
+                                iconName='arrow-back-outline'
                                 onPress={() => navigation.navigate('UserList')}
-                                style={{
-                                    paddingBottom: 10,
-                                }}
-                            >
-                                <Text style={classes.textDefault}>
-                                    &lt; Back
-                                </Text>
-                            </Pressable>
+                                label='Back'
+                                align='left'
+                            />
 
                             <Text style={classes.headerSecondary}>{userDetails.username}</Text>
+                            
                             <Text style={classes.textDefault}>{userDetails.email}</Text>
 
                             {renderUserAvatar()}

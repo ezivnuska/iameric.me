@@ -4,7 +4,7 @@ const getAllUsers = async (req, res) => {
     
     const users = await User
         .find({})
-        .populate('profileImage', 'filename')
+        .populate({ path: 'profileImage', select: 'filename width height' })
     
     if (!users) {
         console.log('Could not fetch users')
@@ -46,7 +46,7 @@ const getAllVendors = async (req, res) => {
     
     let vendors = await User
         .find({ role: 'vendor' })
-        .populate('profileImage', 'filename')
+        .populate({ path: 'profileImage', select: 'filename width height' })
     
     if (!vendors) {
         console.log('could not fetch all vendors.')
@@ -71,7 +71,7 @@ const getUserById = async (req, res, next) => {
     const user = await User
         .findOne({ _id: req.params.id })
         .populate('location')
-        .populate('profileImage', 'filename')
+        .populate({ path: 'profileImage', select: 'filename width height' })
         
     if (!user) {
         console.log('could not get user by id.')

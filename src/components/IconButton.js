@@ -16,11 +16,12 @@ export default ({ onPress, disabled, padded = true, align = 'center', alignIcon 
             justifyContent: align,
             alignItems: 'center',
             paddingVertical: 5,
-            paddingHorizontal: padded ? 15 : 0,
+            paddingRight: 5,//padded ? 15 : 0,
+            paddingLeft: align === 'left' ? 0 : 5,//padded ? 15 : 0,
             backgroundColor: bgColor,
             borderRadius: 6,
             textAlign: 'center',
-            marginVertical: 10,
+            // marginVertical: 10,
             // borderWidth: 1,
             // borderColor: '#f00',
         }}
@@ -30,7 +31,7 @@ export default ({ onPress, disabled, padded = true, align = 'center', alignIcon 
                 name={iconName}
                 size={16}
                 color='#fff'
-                style={{ flexBasis: 'auto', flexShrink: 1, marginRight: 0 }}
+                style={{ flexBasis: 'auto', flexShrink: 1, marginRight: 5 }}
             />
         )}
 

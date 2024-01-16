@@ -30,7 +30,7 @@ const getProfileImageByUserId = async (req, res) => {
     
     const user = await User
         .findOne({ _id: req.params.id })
-        .populate('profileImage', 'filename')
+        .populate({ path: 'profileImage', select: 'filename width height' })
 
     return res.status(200).json(user)
 }
@@ -58,7 +58,7 @@ const updateProfileImage = async (req, res) => {
     
     const user = await User
         .findOneAndUpdate({ _id: userId }, { $set: { profileImage: imageId } }, { new: true })
-        .populate('profileImage', 'filename')
+        .populate({ path: 'profileImage', select: 'filename width height' })
 
     if (!user) {
         console.log('Error: could not find user while updating avatar')

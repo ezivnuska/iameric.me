@@ -18,8 +18,8 @@ export default ({ onPress, disabled, label, iconName = null }) => (
             backgroundColor: 'transparent',
             textAlign: 'center',
             // marginVertical: 10,
-            borderWidth: 1,
-            borderColor: 'yellow',
+            // borderWidth: 1,
+            // borderColor: 'yellow',
         }}
     >
         {label && (
