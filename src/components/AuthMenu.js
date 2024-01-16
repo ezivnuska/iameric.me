@@ -161,25 +161,32 @@ export default ({ onPress }) => {
                     />
                 </View>
             ) : (
-                <Pressable
+                <IconButton
+                    iconName='log-in-outline'
+                    label='Sign In'
                     onPress={() => setShowSignInModal(true)}
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
+                    disabled={loading}
+                    alignIcon='right'
+                />
+                // <Pressable
+                //     onPress={() => setShowSignInModal(true)}
+                //     style={{
+                //         display: 'flex',
+                //         flexDirection: 'row',
 
-                    }}
-                >
-                    <Icon
-                        name='log-in-outline'
-                        size={24}
-                        color='#fff'
-                    />
+                //     }}
+                // >
+                //     <Icon
+                //         name='log-in-outline'
+                //         size={24}
+                //         color='#fff'
+                //     />
 
-                    <Text style={classes.textDefault}>
-                        Sign In
-                    </Text>
+                //     <Text style={classes.textDefault}>
+                //         Sign In
+                //     </Text>
                     
-                </Pressable>
+                // </Pressable>
             )}
 
             <PopUpModal

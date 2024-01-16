@@ -24,17 +24,16 @@ export const initialize = async dispatch => {
             await setUserToken(user.token)
             
             dispatch({ type: 'SET_USER', user })
-            dispatch({ type: 'SET_LOADED', loaded: true })
-            dispatch({ type: 'SET_LOADING', loading: null })
             
             return user
         } else {
             await clearStorage()
         }
-
-        return null
     }
-
+    
+    dispatch({ type: 'SET_LOADED', loaded: true })
+    dispatch({ type: 'SET_LOADING', loading: null })
+    
     return null
 }
 
