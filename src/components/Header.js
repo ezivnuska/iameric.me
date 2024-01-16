@@ -18,7 +18,7 @@ export default () => {
     } = useContext(AppContext)
 
     const onBrandClicked = () => {
-        if (user) navigate('Private')
+        if (user) navigate('Private', { screen: 'Orders' })
         else navigate('Start')
     }
     

@@ -14,7 +14,6 @@ import {
     OrderScreen,
     ProductsScreen,
     SettingsScreen,
-    SplashScreen,
     StartScreen,
     UsersScreen,
     VendorScreen,
@@ -275,12 +274,6 @@ const MainStackScreen = () => (
             headerShown: false,
         })}
     >
-        
-        {/* <MainStack.Screen
-            name='Splash'
-            component={SplashScreen}
-            options={{ title: 'Splash' }}
-        /> */}
 
         <MainStack.Screen
             name='Start'
@@ -299,7 +292,6 @@ const MainStackScreen = () => (
 
 const config = {
     screens: {
-        // Splash: 'splash',
         Start: 'start',
         Private: {
             path: '',
@@ -350,18 +342,6 @@ export default () => {
     const {
         user,
     } = useContext(AppContext)
-
-    // const [verified, setVerified] = useState(false)
-    // // const [linking, setLinking] = useState(null)
-
-    // useEffect(() => {
-    //     console.log('hello')
-    // }, [])
-    // useEffect(() => {
-    //     if (user && !verified) setVerified(true)
-    //     if (!user && verified) setVerified(false)
-    //     // setLinking(getLinking())
-    // }, [user, verified])
     
     useEffect(() => {
         if (user) {
@@ -374,19 +354,11 @@ export default () => {
         }
     }, [user])
 
-    // useEffect(() => {
-    //     console.log('linking', linking)
-    // }, [linking])
-
     const linking = {
         prefixes: ['https://iameric.me'],
         config,
-        // getStateFromPath: (path, options) => {
-        //     console.log('stateFromPath:', path, options)
-        // },
-        // getPathFromState: (state, config) => {
-        //     console.log('pathFromState:', state, config)
-        // }
+        // getStateFromPath: (path, options) => {},
+        // getPathFromState: (state, config) => {},
     }
 
     return (
@@ -394,9 +366,7 @@ export default () => {
             ref={navigationRef}
             linking={linking}
             fallback={<FallbackScreen />}
-            // onStateChange={async state => {
-            //     console.log(`\nstate:`, state)
-            // }}
+            // onStateChange={async state => {}}
         >
             <MainStackScreen />
             

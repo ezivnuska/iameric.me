@@ -11,6 +11,7 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { cleanStorage } from '../utils/storage'
+import { signout } from '../utils/auth'
 import classes from '../styles/classes'
 import { navigationRef } from 'src/navigators/RootNavigation'
 
@@ -34,31 +35,38 @@ export default () => {
     }
 
     useEffect(() => {
-        if (!loaded) signout()
+        if (!loaded) initSignout()
     }, [loaded])
 
-    const signout = async () => {
+    const initSignout = async () => {
+        
+        await signout(dispatch, user._id)
 
-        dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
-        
-        const { data } = await axios
-            .post('/api/signout', { _id: user._id })
-        
-        if (!data) {
-            console.log('could not sign out user')
-        } else {
-            
-            await cleanStorage()
-            
-            console.log('signed out user')
-            
-            dispatch({ type: 'SET_LOADING', loading: null })
-            dispatch({ type: 'SET_LOADED', loaded: null })
-            dispatch({ type: 'SIGNOUT' })
-    
-            navigationRef.navigate('Start')
-        }
+        navigationRef.navigate('Start')
     }
+
+    // const signout = async () => {
+
+    //     dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
+        
+    //     const { data } = await axios
+    //         .post('/api/signout', { _id: user._id })
+        
+    //     if (!data) {
+    //         console.log('could not sign out user')
+    //     } else {
+            
+    //         await cleanStorage()
+            
+    //         console.log('signed out user')
+            
+    //         dispatch({ type: 'SET_LOADING', loading: null })
+    //         dispatch({ type: 'SET_LOADED', loaded: null })
+    //         dispatch({ type: 'SIGNOUT' })
+    
+    //         navigationRef.navigate('Start')
+    //     }
+    // }
     
     // const signout = async () => {
             

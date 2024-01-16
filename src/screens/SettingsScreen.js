@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
     Text,
     View,
@@ -8,7 +8,6 @@ import {
     ImageModule,
     LocationModule,
     SecureScreen,
-    SignoutModule,
     UserDetails,
 } from '@components'
 import { AppContext } from '../AppContext'
@@ -31,9 +30,7 @@ export default ({ navigation }) => {
                 <View>
                     <UserDetails user={user} />
 
-                    {user.role !== 'driver' && <LocationModule userId={user._id} />} 
-                    
-                    <SignoutModule />
+                    {user.role !== 'driver' && <LocationModule userId={user._id} />}
                     
                     {
                         user.username !== 'Customer' &&

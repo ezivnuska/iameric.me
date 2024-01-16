@@ -30,7 +30,7 @@ export default ({ onPress, disabled, padded = true, align = 'center', alignIcon 
                 name={iconName}
                 size={16}
                 color='#fff'
-                style={[{ flexBasis: 'auto', flexShrink: 1, marginRight: 5 }]}
+                style={[{ flexBasis: 'auto', flexShrink: 1, marginRight: 0 }]}
             />
         )}
 

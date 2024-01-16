@@ -7,9 +7,11 @@ import {
 } from 'react-native'
 import {
     CartButton,
+    IconButton,
     PopUpModal,
     SignInForm,
 } from '.'
+import { signout } from '../utils/auth'
 import { AppContext } from '../AppContext'
 import layout from '../styles/layout'
 import DefaultAvatar from '../images/avatar-default-small.png'
@@ -17,6 +19,7 @@ import { DownOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import Icon from 'react-native-vector-icons/Ionicons'
 import classes from '../styles/classes'
+import { navigationRef } from 'src/navigators/RootNavigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -35,10 +38,14 @@ const UserButton = ({ onPress, user }) => {
                 flexShrink: 0,
                 flexBasis: 'auto',
                 marginLeft: 5,
+                paddingRight: 5,
+                marginRight: 5,
                 // padding: 5,
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
+                // borderWidth: 1,
+                // borderColor: 'red'
             }}
         >
             <Image
@@ -76,6 +83,7 @@ export default ({ onPress }) => {
     } = useContext(AppContext)
 
     const [showSignInModal, setShowSignInModal] = useState(false)
+    const [showSignoutModal, setShowSignoutModal] = useState(false)
 
     const setUser = async ({
         _id,
@@ -116,6 +124,12 @@ export default ({ onPress }) => {
         // if (loading) dispatch({ type: 'SET_LOADING', loading: 'false' })
     }
 
+    const initSignout = async () => {
+        await signout(dispatch, user._id)
+        setShowSignoutModal(false)
+        navigationRef.navigate('Start')
+    }
+
     return (
         <View style={{
             display: 'flex',
@@ -138,6 +152,13 @@ export default ({ onPress }) => {
                     {cart && cart.length ? <CartButton /> : null}
 
                     <UserButton onPress={onPress} user={user} />
+
+                    <IconButton
+                        onPress={() => setShowSignoutModal(true)}
+                        disables={loading}
+                        iconName='close-outline'
+                        padded={false}
+                    />
                 </View>
             ) : (
                 <Pressable
@@ -152,7 +173,6 @@ export default ({ onPress }) => {
                         name='log-in-outline'
                         size={24}
                         color='#fff'
-                        style={{ marginRight: 5 }}
                     />
 
                     <Text style={classes.textDefault}>
@@ -169,6 +189,28 @@ export default ({ onPress }) => {
                 <SignInForm
                     onComplete={onModalClosed}
                 />
+            </PopUpModal>
+
+            <PopUpModal
+                visible={showSignoutModal}
+                onRequestClose={() => setShowSignoutModal(false)}
+            >
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-around',
+                    }}
+                >
+
+                    <IconButton
+                        label='Sign Out'
+                        onPress={initSignout}
+                        disabled={loading}
+                        bgColor='gray'
+                    />
+                </View>
+                
             </PopUpModal>
             
         </View>

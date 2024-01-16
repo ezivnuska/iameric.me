@@ -9,7 +9,6 @@ import MenuScreen from './MenuScreen'
 import OrderScreen from './OrderScreen'
 import ProductsScreen from './ProductsScreen'
 import SettingsScreen from './SettingsScreen'
-import SplashScreen from './SplashScreen'
 import StartScreen from './StartScreen'
 import UsersScreen from './UsersScreen'
 import VendorScreen from './VendorScreen'
@@ -27,7 +26,6 @@ export {
     OrderScreen,
     ProductsScreen,
     SettingsScreen,
-    SplashScreen,
     StartScreen,
     UsersScreen,
     VendorScreen,

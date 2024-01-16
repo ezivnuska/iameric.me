@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { authenticate } from '../Data'
 import { cleanStorage, clearStorage, getUserToken, setUserToken } from './storage'
+import axios from 'axios'
 
 export const initialize = async dispatch => {
     
@@ -35,4 +36,29 @@ export const initialize = async dispatch => {
     }
 
     return null
+}
+
+
+
+export const signout = async (dispatch, _id) => {
+
+    dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
+    
+    const { data } = await axios
+        .post('/api/signout', { _id })
+    
+    if (!data) {
+        console.log('could not sign out user')
+    } else {
+        
+        await cleanStorage()
+        
+        console.log('signed out user')
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
+        dispatch({ type: 'SET_LOADED', loaded: null })
+        dispatch({ type: 'SIGNOUT' })
+
+        // navigationRef.navigate('Start')
+    }
 }
