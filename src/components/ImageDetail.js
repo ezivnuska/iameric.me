@@ -23,11 +23,7 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
-    // const [showProductSelector, setShowProductSelector] = useState(false)
 
-    useEffect(() => {
-        console.log('imageData', imageData)
-    }, [imageData])
     const isImageProfileImage = id => user.profileImage === id
 
     const isImageProductImage = id => {
@@ -138,7 +134,7 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
                 // width={width}
                 // height={height}
                 source={{
-                    uri: `${IMAGE_PATH}/${user.username}/${imageData.filename}`,
+                    uri: `${IMAGE_PATH}/${imageData.user.username}/${imageData.filename}`,
                 }}
                 style={{
                     resizeMode: 'contain',

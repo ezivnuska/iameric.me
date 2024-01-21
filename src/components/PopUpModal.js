@@ -69,7 +69,7 @@ export default ({ children, onRequestClose, ...props }) => (
                     {children}
 
                     <IconButton
-                        label='Cancel'
+                        label='Close'
                         onPress={onRequestClose}
                         iconName='close-outline'
                     />

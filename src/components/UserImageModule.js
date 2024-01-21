@@ -6,7 +6,7 @@ import {
 import {
     ImageDetail,
     ImageList,
-    ImageSelector,
+    LoadingView,
     PopUpModal,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -61,15 +61,17 @@ export default ({ user }) => {
             {/* <Header onPress={() => setModalVisible(true)} /> */}
 
             {loading
-                ? <Text style={classes.textDefault}>Loading images...</Text>
-                : (
-                    <ImageList
-                        loading={loading}
-                        images={items}
-                        username={user.username}
-                        onSelected={onSelected}
-                    />
-                )
+                ? <LoadingView label='Loading images...' />
+                : items && items.length
+                    ? (
+                        <ImageList
+                            loading={loading}
+                            images={items}
+                            username={user.username}
+                            onSelected={onSelected}
+                        />
+                    )
+                    : <Text style={classes.textDefault}>No entries yet.</Text>
             }
             
             <PopUpModal
