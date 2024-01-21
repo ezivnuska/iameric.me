@@ -8,6 +8,7 @@ import {
     LoadingView,
     Menu,
     SecureScreen,
+    UserImageModule,
 } from '@components'
 import { AppContext } from '../AppContext'
 // import { goBack, navigate } from '../navigators/RootNavigation'
@@ -71,8 +72,6 @@ export default ({ navigation, route }) => {
     // TODO: clean this.
     const renderUserAvatar = () => {
 
-        console.log('info', userDetails)
-
         const filename = (userDetails.profileImage && userDetails.profileImage.filename)
             ? userDetails.profileImage.filename
             : null
@@ -116,9 +115,11 @@ export default ({ navigation, route }) => {
 
                             {renderUserAvatar()}
 
-                            {userDetails.role === 'vendor' && (
+                            <UserImageModule user={userDetails} />
+
+                            {/* {userDetails.role === 'vendor' && (
                                 <Menu vendor={userDetails} />
-                            )}
+                            )} */}
                         </>
                     )
                     : null

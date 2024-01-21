@@ -4,6 +4,7 @@ import Brand from './Brand'
 import ButtonPrimary from './ButtonPrimary'
 import Cart from './Cart'
 import CartButton from './CartButton'
+import CartProductPreview from './CartProductPreview'
 import CategoryPicker from './CategoryPicker'
 import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
@@ -39,7 +40,6 @@ import Menu from './Menu'
 import MenuItem from './MenuItem'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
-import OrderModule from './OrderModule'
 import OrderPreview from './OrderPreview'
 import PopUpModal from './PopUpModal'
 import Preview from './Preview'
@@ -62,6 +62,7 @@ import UserListItem from './UserListItem'
 import UserHeading from './UserHeading'
 import UserFilter from './UserFilter'
 import UserList from './UserList'
+import UserImageModule from './UserImageModule'
 import UserModule from './UserModule'
 import UserSelector from './UserSelector'
 import UserDetails from './UserDetails'
@@ -77,6 +78,7 @@ export {
     ButtonPrimary,
     Cart,
     CartButton,
+    CartProductPreview,
     CategoryPicker,
     CenteredContent,
     CenteredView,
@@ -112,7 +114,6 @@ export {
     MenuItem,
     OrderList,
     OrderDetails,
-    OrderModule,
     OrderPreview,
     PopUpModal,
     Preview,
@@ -135,6 +136,7 @@ export {
     UserHeading,
     UserFilter,
     UserList,
+    UserImageModule,
     UserModule,
     UserSelector,
     UserDetails,

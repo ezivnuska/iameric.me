@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    CartProductPreview,
     IconButton,
     LocationDetails,
 } from '.'
@@ -66,18 +67,16 @@ export default ({ order, children, ...props }) => {
     // }, [])
 
     // useEffect(() => {
-    //     console.log('item', item)
-    // }, [item])
+    //     console.log('order', order)
+    // }, [order])
 
     const [expanded, setExpanded] = useState(false)
     const [showOrderDetails, setShowOrderDetails] = useState(false)
 
-    const textColor = () => order.status === 5 ? '#aaa' : '#000'
-
     const renderLocation = () => {
         if (user.role === 'vendor') return null
         if (user.role === 'driver' && order.status < 2) return null
-        return <LocationDetails location={order.customer.location} style={{ color: textColor()}} />
+        return <LocationDetails location={order.customer.location} />
     }
 
     const renderCustomer = () => order && order.customer ? (
@@ -87,16 +86,21 @@ export default ({ order, children, ...props }) => {
         </View>
     ) : <Text style={classes.textDefault}>No customer</Text>
     
-    const renderVendor = () => order.vendor ? (
+    const renderVendor = () => order && order.vendor ? (
         <View style={styles.column}>
             <Text style={classes.headerSecondary}>{`${order.vendor.username} (${order.items.length} ${order.items.length > 1 ? 'items' : 'item'})`}</Text>
-            <LocationDetails location={order.vendor.location} style={{ color: textColor()}} />
+            <LocationDetails location={order.vendor.location} />
         </View>
     ) : <Text style={classes.textDefault}>No vendor</Text>
 
     const renderHeaderButton = () => (
         <Pressable
-            style={styles.button}
+            style={{
+                flexBasis: 'auto',
+                flexShrink: 0,
+                paddingTop: 5,
+                paddingHorizontal: 5,
+            }}
             onPress={() => setExpanded(!expanded)}
         >
             {
@@ -131,27 +135,36 @@ export default ({ order, children, ...props }) => {
 
     const renderOrderStatus = order => (
         <View style={styles.statusDisplay}>
-            {user.role === 'admin' && renderStatus(`status: ${order.status}`)}
+            {/* {user.role === 'admin' && renderStatus(`status: ${order.status}`)} */}
             {!order.confirmed && order.vendor && renderStatus(`Waiting on confirmation from ${order.vendor.username}`)}
             {(order.confirmed && !order.accepted) && renderStatus('Looking for available driver.')}
-            {(order.pickup && !order.received) && renderStatus(`Ready for pick up at ${moment(order.pickup).format('LT')}`)}
-            {(order.accepted && !order.arrived) && renderStatus(`${order.driver.username} is on the way to ${order.vendor.username}.`)}
+            {(user.role === 'driver' && order.pickup && !order.received) && renderStatus(`Pick-up by ${moment(order.pickup).format('LT')}`)}
+            {(user.role !== 'driver' && order.accepted && !order.arrived) && renderStatus(`${order.driver.username} is on the way to ${order.vendor.username}.`)}
             {order.ready && renderStatus(`Order is ready.`)}
-            {(order.arrived && !order.received) && renderStatus(`${order.driver.username} is onsite and waiting for your order.`)}
+            {(user.role !== 'driver' && order.arrived && !order.received) && renderStatus(`${order.driver.username} is onsite and waiting for your order.`)}
             {(order.received && !order.delivered) && renderStatus(`${order.driver.username} is on the way.`)}
         </View>
     )
 
     return order ? (
         <View>
-            <View style={styles.header}>
-                {renderOrderStatus(order)} 
+            <View
+                style={{
+                    // display: 'flex',
+                    // flexDirection: 'column',
+                    // // justifyContent: 'stretch',
+                    // // alignItems: 'flex-start',
+                }}
+            >
+                {renderOrderStatus(order)}
 
-                {renderHeaderButton()}
+                <CartProductPreview order={order} />
+
+                {/* {renderHeaderButton()} */}
             </View>
 
-            {(user.role === 'admin') && (
-                <View>
+            {/* {(user.role === 'admin') && (
+                <View style={{ borderWidth: 1, borderColor: 'yellow' }}>
                     <IconButton
                         align='right'
                         iconName={showOrderDetails ? 'chevron-up-outline' : 'chevron-down-outline'}
@@ -159,7 +172,7 @@ export default ({ order, children, ...props }) => {
                     />
                     {showOrderDetails && renderOrderMilestones(order)}
                 </View>
-            )}
+            )} */}
 
             <View
                 style={{
@@ -195,28 +208,16 @@ const styles = StyleSheet.create({
         marginBottom: 3,
         fontWeight: 600,
     },
-    header: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'stretch',
-        alignItems: 'flex-start',
-    },
     statusDisplay: {
         flex: 1,
         flexBasis: 'auto',
         flexGrow: 1,
     },
-    button: {
-        flexBasis: 'auto',
-        flexShrink: 0,
-        paddingTop: 5,
-        // paddingBottom: 10,
-        paddingHorizontal: 5,
-    },
     status: {
         fontSize: 18,
         lineHeight: 22,
         fontWeight: 600,
+        marginBottom: 5,
     },
     timeline: {
         display: 'flex',

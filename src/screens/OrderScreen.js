@@ -1,12 +1,12 @@
 import React from 'react'
 
 import {
-    OrderModule,
+    OrderList,
     SecureScreen,
 } from '@components'
 
 export default ({ navigation, route }) => (
     <SecureScreen navigation={navigation}>
-        <OrderModule />
+        <OrderList />
     </SecureScreen>
 )

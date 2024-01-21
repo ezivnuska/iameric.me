@@ -13,8 +13,8 @@ export default ({ location }) => {
     
     return (
         <View>
-            <Text style={classes.textDefault}>{address1}{address2.length ? `, ${address2}` : null}</Text>
-            <Text style={classes.textDefault}>{`${city}, ${state} ${zip}`}</Text>
+            <Text style={classes.textSmaller}>{address1}{address2.length ? `, ${address2}` : null}</Text>
+            <Text style={classes.textSmaller}>{`${city}, ${state} ${zip}`}</Text>
         </View>
     )
 }

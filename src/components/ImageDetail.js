@@ -14,7 +14,7 @@ import layout from '../styles/layout'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
+export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) => {
 
     const {
         dispatch,
@@ -25,6 +25,9 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
     const [loading, setLoading] = useState(null)
     // const [showProductSelector, setShowProductSelector] = useState(false)
 
+    useEffect(() => {
+        console.log('imageData', imageData)
+    }, [imageData])
     const isImageProfileImage = id => user.profileImage === id
 
     const isImageProductImage = id => {
@@ -67,7 +70,7 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
         
         setLoading(null)
         
-        onDelete(data.imageId, isProfileImage, isProductImage)
+        if (onDelete) onDelete(data.imageId, isProfileImage, isProductImage)
     }
 
     const setAvatar = async () => {
@@ -146,7 +149,7 @@ export default ({ closeModal, onDelete, imageData, resize = 'stretch' }) => {
                 }}
             />
 
-            {!loading && (
+            {(user._id === imageData.user) && !loading && (
                 <>
                     <View
                         style={{

@@ -99,9 +99,7 @@ export const deleteEntryWithId = async id => {
  * @returns array of order objects
  */
 
-export const loadOrders = async (dispatch, id) => {
-
-    dispatch({ type: 'SET_LOADING', loading: 'Loading orders...' })
+export const getOrdersById = async id => {
     
     const { data } = await axios.get(`/api/orders/${id}`)
     
@@ -110,10 +108,7 @@ export const loadOrders = async (dispatch, id) => {
         return null
     }
     
-    dispatch({ type: 'SET_ORDERS', orders: data.orders })
-    dispatch({ type: 'SET_LOADING', loading: null })
-    
-    // return data.orders
+    return data.orders
 }
 
 export const loadUserOrders = async userId => {

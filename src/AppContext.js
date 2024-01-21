@@ -1,7 +1,7 @@
 import React, { createContext, useReducer } from 'react'
 
 const initialState = {
-    cart: [],
+    cart: null,
     dims: null,
     entries: null,
     images: null,
@@ -16,6 +16,22 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     let { cart, dims, entries, loading, orders, products, profileImage, user, users, loaded } = state
+
+    const updateOrder = newData => {
+        const index = orders.findIndex(order => order._id === newData._id)
+        if (index <= -1) return
+        const currentOrder = orders[index]
+        const updatedOrder = {
+            ...currentOrder,
+            ...newData,
+        }
+        
+        return [
+            ...orders.slice(0, index),
+            updatedOrder,
+            ...orders.slice(index + 1),
+        ]
+    }
     
     switch(action.type) {
         case 'SET_DIMS':
@@ -91,13 +107,25 @@ const reducer = (state = initialState, action) => {
             users = action.users
             break
         case 'ADD_TO_CART':
-            cart = [
-                ...cart,
-                action.item,
-            ]
+            const { vendor, item } = action
+            
+            let currentOrder = null
+            
+            if (cart) {
+                const index = cart.findIndex(order => order.vendor._id === vendor._id)
+                
+                if (index >= -1) {
+                    currentOrder = {
+                        ...cart[index],
+                        items: [...cart[index].items, item],
+                    }
+                } else currentOrder = { vendor, items: [item] }
+                
+                cart = [...cart.slice(0, index), currentOrder, ...cart.slice(index + 1)]
+            } else cart = [{ vendor, items: [item] }]
             break
         case 'CLEAR_CART':
-            cart = []
+            cart = null
             break
         case 'NEW_ENTRY':
             entries = [...entries, action.entry]
@@ -112,11 +140,11 @@ const reducer = (state = initialState, action) => {
             orders = (action.orders && action.orders.length) ? action.orders : null
             break
         case 'ADD_ORDER':
-            if (!orders) orders = []
-            orders = [...orders, action.order]
-            cart = []
+            cart = null
+            orders = orders ? [...orders, action.order] : [action.order]
             break
         case 'CONFIRM_ORDER':
+            // updateOrder(action.order)
             orders = orders.map(order => {
                 if (order._id == action.order._id) {
                     return {
@@ -200,7 +228,7 @@ const reducer = (state = initialState, action) => {
         break
         case 'SIGNOUT':
             console.log('signing out...')
-            cart = []
+            cart = null
             entries = null
             loading = null
             orders = null

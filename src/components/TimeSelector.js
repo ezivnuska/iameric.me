@@ -1,66 +1,51 @@
 import React from 'react'
 import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import { Button } from 'antd'
 
-const numDurations = 6
+export default ({ onSelect }) => {
 
-const TimeButton = ({ time, onSelect, ...props }) => {
-    return (
-        <Button
-            type='primary'
-            size='small'
-            onClick={() => onSelect(time)}
-            style={props.style}
-        >
-            {`${time} m`}
-        </Button>
-    )
-}
-
-const TimeSelector = ({ onSelect }) => {
+    const numDurations = 6
 
     const renderButtons = () => {
         const array = []
-        let time = numDurations
-        while (time > 0) {
+
+        while (array.length < numDurations) {
+
+            let time = (array.length + 1) * 5
+            
             array.push(
-                <TimeButton
+                <Button
                     key={time}
-                    time={time * 5}
-                    onSelect={t => onSelect(t)}
-                    style={styles.button}
-                />
+                    type='primary'
+                    size='small'
+                    onClick={() => onSelect(time)}
+                    style={{
+                        flex: 1,
+                        flexShrink: 0,
+                        height: 40,
+                    }}
+                >
+                    {`${time} m`}
+                </Button>
             )
-            time--
         }
-        return array
+        
+        return array.reverse()
     }
 
     return (
-        <View style={styles.container}>
+        <View
+            style={{
+                marginVertical: 15,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'stretch',
+                columnGap: 2,
+            }}
+        >
             {renderButtons()}
         </View>
     )
 }
-
-export default TimeSelector
-
-const styles = StyleSheet.create({
-    container: {
-        marginVertical: 15,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'stretch',
-        columnGap: 2,
-    },
-    button: {
-        flex: 1,
-        flexShrink: 0,
-        height: 40,
-    },
-})

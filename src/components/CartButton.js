@@ -10,20 +10,23 @@ import {
 // import { ShoppingCartOutlined } from '@ant-design/icons'
 // import { Button } from 'antd'
 import { AppContext } from '../AppContext'
-import { navigate } from '../navigators/RootNavigation'
+import { navigationRef } from '../navigators/RootNavigation'
 
 export default () => {
 
     const {
         cart,
+        dispatch,
     } = useContext(AppContext)
 
     const [modalVisible, setModalVisible] = useState(false)
 
-    const onSubmitCart = () => {
+    const onSubmitted = order => {
         setModalVisible(false)
         
-        navigate('Orders')
+        dispatch({ type: 'ADD_ORDER', order })
+        
+        navigationRef.navigate('Private', { screen: 'Orders' })
     }
 
     return (
@@ -31,7 +34,7 @@ export default () => {
             marginHorizontal: 5,
         }}>
             <IconButton
-                label={cart.length}
+                label={cart[0].items.length}
                 iconName='cart-outline'
                 bgColor='blue'
                 onPress={() => setModalVisible(true)}
@@ -42,7 +45,7 @@ export default () => {
                 onRequestClose={() => setModalVisible(false)}
             >
                 <Cart
-                    onSubmitOrder={onSubmitCart}
+                    onSubmitted={onSubmitted}
                 />
             </PopUpModal>
 

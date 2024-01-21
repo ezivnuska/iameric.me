@@ -30,14 +30,27 @@ const getFilteredOrders = async filter => {
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
+        })
     
     return orders
 }
@@ -83,8 +96,7 @@ const getRelevantOrdersByUserId = async (req, res) => {
         })
 
     } else if (role === 'admin') {
-        orders = await Order
-            .find({})
+        orders = await getFilteredOrders({ status: { $lt: 7 } },)
     }
     
     if (!orders) {
@@ -93,7 +105,7 @@ const getRelevantOrdersByUserId = async (req, res) => {
     }
 
     const sanitizedOrders = getSanitizedOrders(orders)
-
+    console.log('sanitaized orders', sanitizedOrders)
     return res.status(200).json({ orders: sanitizedOrders })
 }
 
@@ -260,16 +272,30 @@ const createOrder = async (req, res) => {
         
     order = await Order
         .findOne({ _id: order._id })
-        .populate('items', 'title price')
+        .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
+        })
+        .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
         })
 
     if (!order) {
@@ -295,17 +321,30 @@ const confirmOrder = async (req, res) => {
             } },
             { new: true },
         )
+        .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
-        .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
+        })
 
     if (!order) {
         console.log('Could not confirm order')
@@ -331,17 +370,31 @@ const acceptOrder = async (req, res) => {
             } },
             { new: true },
         )
+        .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
+        })
         
     if (!order) {
         console.log('Could not accept order')
@@ -363,17 +416,31 @@ const markOrderAsReady = async (req, res) => {
             } },
             { new: true },
         )
+        .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
+        })
         
     if (!order) {
         console.log('Could not mark order ready')
@@ -396,17 +463,31 @@ const markDriverAtVendorLocation = async (req, res) => {
             } },
             { new: true },
         )
+        .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
+        })
 
     if (!order) {
         console.log('Could not update driver status')
@@ -429,17 +510,31 @@ const markOrderReceivedByDriver = async (req, res) => {
             } },
             { new: true },
         )
+        .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
+        })
         
     if (!order) {
         console.log('Could not save order status as picked up')
@@ -462,17 +557,31 @@ const markOrderComplete = async (req, res) => {
             } },
             { new: true },
         )
+        .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
+        })
         
     if (!order) {
         console.log('Could not complete order')
@@ -490,18 +599,32 @@ const closeOrder = async (req, res) => {
         findOneAndUpdate({ _id: id }, { $set: {
             status: 6,
             closed: Date.now(),
-        } }, { new: true }).
-        populate({
+        } }, { new: true })
+        .populate('items', 'price title')
+        .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
-        }).
-        populate({
+            populate: { path: 'location' },
+        })
+        .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
-        }).
-        populate('driver', 'username')
+            populate: { path: 'location' },
+        })
+        .populate('driver', 'username')
+        .populate({
+            path: 'items',
+            populate: [
+                {
+                    path: 'image',
+                    select: 'filename',
+                },
+                {
+                    path: 'vendor',
+                    select: 'username',
+                },
+            ],
+        })
         
     if (!order) {
         console.log('Could not close order')

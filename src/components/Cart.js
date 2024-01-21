@@ -5,13 +5,14 @@ import {
     View,
 } from 'react-native'
 import {
+    CartProductPreview,
     IconButton,
 } from '.'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
 import axios from 'axios'
 
-export default ({ onSubmitOrder }) => {
+export default ({ onSubmitted }) => {
 
     const {
         dispatch,
@@ -23,13 +24,13 @@ export default ({ onSubmitOrder }) => {
 
     const getTotal = () => {
         let total = 0
-        cart.map(i => total += Number(i.price))
+        cart[0].items.map(i => total += Number(i.price))
         return String(total.toFixed(2))
     }
 
     const getVendor = () => {
         let id = null
-        cart.map(item => id = item.vendor ? item.vendor._id : null)
+        cart[0].items.map(item => id = item.vendor ? item.vendor._id : null)
         return id
     }
 
@@ -37,10 +38,10 @@ export default ({ onSubmitOrder }) => {
         const newOrder = {
             customer: user._id,
             vendor: getVendor(),
-            items: cart.map(item => item._id),
+            items: cart[0].items.map(item => item._id),
         }
         
-        setLoading('Submitting order...')
+        setLoading('Submitting order...', newOrder)
 
         const { data } = await axios.
             post('/api/order', newOrder)
@@ -51,10 +52,8 @@ export default ({ onSubmitOrder }) => {
             console.log('Order submission failed')
             return
         }
-        
-        dispatch({ type: 'ADD_ORDER', order: data })
 
-        onSubmitOrder()
+        onSubmitted(data)
     }
 
     return cart ? (
@@ -66,30 +65,7 @@ export default ({ onSubmitOrder }) => {
                 data={cart}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item }) => (
-                    <View style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                    }}>
-                        <Text
-                            style={classes.textDefault}
-                        >
-                            {item.title}
-                        </Text>
-
-                        <Text
-                            style={[
-                                classes.textDefault,
-                                {
-                                    flexBasis: 'auto',
-                                    flexGrow: 0,
-                                    flexShrink: 1,
-                                },
-                            ]}
-                        >
-                            ${item.price}
-                        </Text>
-                    </View>
+                    <CartProductPreview order={item} />
                 )} 
             />
             <View

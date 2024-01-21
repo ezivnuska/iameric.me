@@ -89,36 +89,6 @@ export default () => {
                 align='left'
                 padded={false}
             />
-            {/* <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                }}
-            >
-                <Text
-                    style={[
-                        {
-                            flexGrow: 0,
-                            // flexShrink: 1,
-                            flexBasis: 'auto',
-                            marginRight: 5,
-                        },
-                        classes.headerSecondary,
-                    ]}
-                >
-                    Products
-                </Text>
-                <Icon
-                    name='add-outline'
-                    onPress={() => setShowModal(true)}
-                    color='yellow'
-                    size={16}
-                    iconStyle={{ fontWeight: 700 }}
-                />
-                
-            </View> */}
 
             {loading
                 ? <Text>Loading...</Text>

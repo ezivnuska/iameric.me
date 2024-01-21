@@ -53,7 +53,8 @@ export default ({ images, loading, username, onSelected, onAddImage }) => (
             </Pressable>
         ))}
 
-        {username !== 'Driver' &&
+        {onAddImage &&
+        username !== 'Driver' &&
         username !== 'Customer' &&
         username !== 'Vendor' && (
             <Pressable
@@ -80,25 +81,7 @@ export default ({ images, loading, username, onSelected, onAddImage }) => (
                 }}
                 key={images ? images.length : '0'}
             >
-                <View
-                    style={{
-                        // width: IMAGE_SIZE,
-                        // height: IMAGE_SIZE,
-                        // borderWidth: 1,
-                        // borderColor: '#999',
-                        // shadowColor: '#000',
-                        // shadowOffset: {
-                        //     width: 0,
-                        //     height: 2,
-                        // },
-                        // shadowOpacity: 0.25,
-                        // shadowRadius: 4,
-                        // elevation: 5,
-                        // backgroundColor: '#000',
-                    }}
-                >
-                    <Icon name='add-outline' size={32} color='#fff' />
-                </View>
+                <Icon name='add-outline' size={32} color='#fff' />
             </Pressable>
         )}
     </View>

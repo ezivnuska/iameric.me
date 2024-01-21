@@ -23,6 +23,12 @@ export default {
         color: colors.textDefault,
         letterSpacing: 0.5,
     },
+    textSmaller: {
+        fontSize: sizes.textSmaller,// 14
+        fontWeight: 400,
+        lineHeight: sizes.textDefault + 4,// 20
+        color: colors.textDefault,
+    },
     buttonText: {
         fontSize: sizes.textDefault - 2,// 16
         fontWeight: 600,
