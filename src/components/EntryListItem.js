@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     ActivityIndicator,
     Text,
@@ -11,7 +11,7 @@ import classes from '../styles/classes'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
 
-export default ({ entry, onDelete, ...props }) => {
+export default ({ entry, onDelete }) => {
     
     const {
         state,
@@ -19,42 +19,15 @@ export default ({ entry, onDelete, ...props }) => {
     } = useContext(AppContext)
     
     const { user } = state
-    const { userId, username, text } = entry
-    const [ author, setAuthor ] = useState({ userId, username })
-    const [ filename, setFilename ] = useState(null)
-
-    const getUserFromUsers = () => users ? users.filter(u => u._id === userId)[0] : null
+    const { author, text } = entry
 
     const isUserOnline = () => {
-        const currentUser = users ? users.filter(u => u._id === userId)[0] : null
+        const currentUser = users ? users.filter(u => u._id === author._id)[0] : null
         if (currentUser) return currentUser.token !== null
     }
-
-    const getFilename = () => {
-        const selectedUser = users.filter(u => u._id === userId)[0]
-        if (!selectedUser ||
-            !selectedUser.profileImage ||
-            !selectedUser.profileImage.filename) {
-            return null
-        } else {
-            return selectedUser.profileImage.filename
-        }
-    }
-
-    useEffect(() => {
-        if (users && !filename) {
-            const avatarFilename = getFilename()
-            if (avatarFilename) setFilename(avatarFilename)
-        }
-    }, [users])
         
     return (
-        <View
-            {...props}
-            style={{
-                display: 'flex',
-            }}
-        >
+        <View>
             {author ? (
                 <View style={{ paddingTop: 10 }}>
                     <View
@@ -66,10 +39,10 @@ export default ({ entry, onDelete, ...props }) => {
                     >
                         
                         <UserHeading
-                            online={isUserOnline(userId)}
-                            username={username}
-                            filename={filename}
-                            onPress={() => navigate('User', { id: userId })}
+                            online={isUserOnline(author._id)}
+                            username={author.username}
+                            filename={author.profileImage.filename}
+                            onPress={() => navigate('User', { id: author._id })}
                             styleProps={{
                                 flex: 1,
                                 flexBasis: 'auto',
@@ -77,7 +50,7 @@ export default ({ entry, onDelete, ...props }) => {
                             }}
                         />
 
-                        {(userId === user._id || user.role === 'admin') ? (
+                        {(author._id === user._id || user.role === 'admin') ? (
                             <View
                                 style={{
                                     flex: 1,

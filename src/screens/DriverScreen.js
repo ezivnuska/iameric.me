@@ -5,6 +5,7 @@ import {
     Text,
 } from 'react-native'
 import {
+    IconButton,
     Menu,
     SecureScreen,
     LoadingView,
@@ -99,16 +100,12 @@ export default ({ navigation, route }) => {
                 : userDetails
                     ? (
                         <>
-                            <Pressable
+                            <IconButton
+                                iconName='arrow-back-outline'
                                 onPress={() => navigation.navigate('DriverList')}
-                                style={{
-                                    paddingBottom: 10,
-                                }}
-                            >
-                                <Text style={classes.textDefault}>
-                                    &lt; Back
-                                </Text>
-                            </Pressable>
+                                label='Back'
+                                align='left'
+                            />
                             
                             <Text style={classes.headerSecondary}>{userDetails.username}</Text>
                             <Text style={classes.textDefault}>{userDetails.email}</Text>

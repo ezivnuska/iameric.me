@@ -213,7 +213,7 @@ const deleteAccount = async (req, res) => {
 
     console.log(`\ndeleting account: ${id}`)
 
-    const deletedEntries = await Entry.deleteMany({ userId: id })
+    const deletedEntries = await Entry.deleteMany({ user: id })
     
     if (!deletedEntries) {
         console.log('could not delete entries.')
@@ -221,7 +221,7 @@ const deleteAccount = async (req, res) => {
         console.log(`deleted ${deletedEntries.deletedCount} entries`)
     }
 
-    const deletedLocation = await Location.deleteOne({ userId: id })
+    const deletedLocation = await Location.deleteOne({ user: id })
     if (!deletedLocation) {
         console.log('could not delete user location.')
     } else {

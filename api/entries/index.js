@@ -2,8 +2,8 @@ const Entry = require('../../models/Entry')
 
 const createEntry = async (req, res) => {
     
-    const { username, userId, text } = req.body
-    const entry = await Entry.create({ username, userId, text })
+    const { user, text } = req.body
+    const entry = await Entry.create({ author: user, text })
 
     if (!entry) {
         console.log('Problem creating entry.')
@@ -15,7 +15,13 @@ const createEntry = async (req, res) => {
 
 const getEntries = async (req, res) => {
     
-    const entries = await Entry.find({})
+    const entries = await Entry
+        .find({})
+        .populate({
+            path: 'author',
+            select: 'username profileImage',
+            populate: { path: 'profileImage' },
+        })
     
     if (!entries) {
         console.log('error fetching entries.')
@@ -37,9 +43,9 @@ const deleteEntryById = async (req, res) => {
     return res.status(200).json({ entry })
 }
 
-const deleteAllEntriesByUserId = async userId => {
+const deleteAllEntriesByUserId = async user => {
     const { deleteCount } = await Entry
-        .deleteMany({ userId })
+        .deleteMany({ user })
 
     console.log('deleted entries', deleteCount)
 

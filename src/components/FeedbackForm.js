@@ -25,7 +25,7 @@ export default () => {
     
     const onSubmit = async () => {
         const { username, _id } = user
-        const newEntry = { username, userId: _id, text: entry }
+        const newEntry = { user: _id, text: entry }
         
         setLoading(true)
         
