@@ -73,4 +73,14 @@ export default {
         paddingVertical: 5,
         marginBottom: 10,
     },
+    calm: {
+        fontSize: sizes.headerSecondary,// 18
+        fontWeight: 700,
+        lineHeight: sizes.headerSecondary + 4,// 22
+        color: '#00f',
+        backgroundColor: '#aaf',
+        textAlign: 'center',
+        paddingVertical: 5,
+        marginBottom: 10,
+    },
 }

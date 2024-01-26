@@ -83,7 +83,7 @@ const handleSignin = async (req, res) => {
     user.token = createToken(user)
     
     await user.save()
-    console.log('user', user)
+    // console.log('user', user)
 
     const sanitizedUser = getSanitizedUser(user)
 
@@ -181,7 +181,7 @@ const authenticate = async (req, res) => {
     const userFromToken = getDecodedUser(token)
 
     if (!userFromToken) return res.status(200).json(null)
-    
+
     console.log(`\n${userFromToken.username} was previously connected.\n`)
     
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)

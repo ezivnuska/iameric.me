@@ -118,7 +118,15 @@ export default ({ order, children, ...props }) => {
             {(user.role !== 'driver' && order.accepted && !order.arrived) && renderStatus(`${order.driver.username} is on the way to ${order.vendor.username}.`)}
             {order.ready && renderStatus(`Order is ready.`)}
             {(user.role !== 'driver' && order.arrived && !order.received) && renderStatus(`${order.driver.username} is onsite and waiting for your order.`)}
-            {(order.received && !order.delivered) && renderStatus(`${order.driver.username} is on the way.`)}
+            {(order.received && !order.delivered)
+                ? user.role === 'customer'
+                    ? <Text style={classes.calm}>RELAX</Text>
+                    : <Text style={classes.emergency}>DROP OFF</Text>
+                : null}
+            {/* {(order.completed)
+                ? <Text style={classes.calm}>MMmmMmm...</Text>
+                : null//renderStatus(`${order.driver.username} is on the way.`)
+            } */}
         </View>
     )
 

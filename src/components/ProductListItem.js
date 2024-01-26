@@ -103,9 +103,9 @@ export default ({ product, onDelete, onPress, ...props }) => {
         user,
     } = useContext(AppContext)
 
-    useEffect(() => {
-        console.log('product', product)
-    }, [product])
+    // useEffect(() => {
+    //     console.log('product', product)
+    // }, [product])
     
     return (
         <Pressable
