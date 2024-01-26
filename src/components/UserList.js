@@ -15,7 +15,7 @@ export default ({ users }) => (
         keyExtractor={(item, index) => 'user' + index}
         renderItem={({ item }) => {
             const { _id, profileImage, username, token } = item
-            const online = !!token
+            
             return (
                 <View
                     style={{
@@ -27,8 +27,7 @@ export default ({ users }) => (
                     }}
                 >
                     <UserHeading
-                        online={online}
-                        username={username}
+                        user={item}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
                         onPress={() => navigate('User', { id: _id })}
                     />

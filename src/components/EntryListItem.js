@@ -39,8 +39,7 @@ export default ({ entry, onDelete }) => {
                     >
                         
                         <UserHeading
-                            online={isUserOnline(author._id)}
-                            username={author.username}
+                            user={author}
                             filename={author.profileImage.filename}
                             onPress={() => navigate('User', { id: author._id })}
                             styleProps={{

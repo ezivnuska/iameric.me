@@ -49,7 +49,8 @@ const clearUserToken = async _id => {
 // returns new token from user data
 const createToken = ({ _id, username, email, role, profileImage }) => {
     // set expiration timestamp
-    const expiration = Math.floor(Date.now() / 1000) + ((60 * 60) * 24)
+    // const expiration = Math.floor(Date.now() / 1000) + ((60 * 60) * 24)
+    const expiration = Math.floor(Date.now() / 1000) + ((60 * 1))
     return jwt.sign({
         _id,
         username,
@@ -70,25 +71,42 @@ const handleSignin = async (req, res) => {
     const user = await User
         .findOne({ email })
         .populate({ path: 'profileImage', select: 'filename width height' })
-    console.log('user', user)
-
-    if (!user)
+        
+        if (!user)
         return res.status(200).json({ error: true, invalidField: 'email', msg: 'No user found with that email.' })
     
     const passwordsMatch = await bcrypt.compare(password, user.password)
 
     if (!passwordsMatch)
         return res.status(200).json({ error: true, invalidField: 'password', msg: 'Incorrect password.' })
-
+    
     user.token = createToken(user)
-
+    
     await user.save()
+    console.log('user', user)
 
     const sanitizedUser = getSanitizedUser(user)
 
     console.log(`\nUser signed in: ${user.username}`)
     
     return res.status(200).json({ user: sanitizedUser })
+}
+
+const validateToken = async (req, res) => {
+    const { id } = req.body
+    const user = await User
+        .findOne({ _id: id })
+    console.log('validating user', user.username)
+    if (!user) return res.status(200).json(false)
+
+    const userFromToken = getDecodedUser(user.token)
+    console.log('userFromToken', userFromToken)
+    if (!userFromToken) return res.status(200).json(false)
+
+    const newDate = new Date(userFromToken.exp) - Date.now()
+    console.log('newDate', newDate, newDate > 0)
+    const expired = (newDate > 0)
+    return res.status(200).json(!expired)
 }
 
 const createUser = async (email, username, password, role) => {
@@ -164,7 +182,6 @@ const authenticate = async (req, res) => {
 
     if (!userFromToken) return res.status(200).json(null)
     
-    console.log('user from token:', userFromToken)
     console.log(`\n${userFromToken.username} was previously connected.\n`)
     
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)
@@ -261,4 +278,5 @@ module.exports = {
     handleSignin,
     handleSignout,
     handleSignup,
+    validateToken,
 }

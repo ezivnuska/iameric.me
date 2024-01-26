@@ -61,3 +61,11 @@ export const signout = async (dispatch, _id) => {
         // navigationRef.navigate('Start')
     }
 }
+
+export const validateToken = async token => {
+    const userFromToken = await axios
+        .post('/api/token', { token })
+        console.log('userFromToken', userFromToken)
+    const expired = (new Date(userFromToken.exp) - Date.now() > 0)
+    console.log('expired', expired)
+}

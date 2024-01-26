@@ -10,9 +10,8 @@ import { navigate } from '../navigators/RootNavigation'
 
 const UserFilterListItem = ({ user }) => (
     <UserHeading
-        online={user.token !== null}
+        user={user}
         filename={(user.profileImage && user.profileImage.filename) ? user.profileImage.filename : null}
-        username={user.username}
         onPress={() => navigate('User', { id: user._id })}
     />
 )

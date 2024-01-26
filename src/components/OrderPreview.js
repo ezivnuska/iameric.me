@@ -10,7 +10,6 @@ import {
     IconButton,
     LocationDetails,
 } from '.'
-
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
 import moment from 'moment'
@@ -25,53 +24,8 @@ export default ({ order, children, ...props }) => {
         user,
     } = useContext(AppContext)
 
-    // const [item, setItem] = useState(null)
-
-    // useEffect(() => {
-        
-    //     if (order) {
-    //         const {
-    //             _id,
-    //             accepted,
-    //             arrived,
-    //             confirmed,
-    //             customer,
-    //             date,
-    //             delivered,
-    //             driver,
-    //             items,
-    //             pickup,
-    //             ready,
-    //             received,
-    //             status,
-    //             vendor,
-    //         } = order
-
-    //         setItem({
-    //             _id,
-    //             accepted,
-    //             arrived,
-    //             confirmed,
-    //             customer,
-    //             date,
-    //             delivered,
-    //             driver,
-    //             items,
-    //             pickup,
-    //             ready,
-    //             received,
-    //             status,
-    //             vendor,
-    //         })
-    //     }
-    // }, [])
-
-    // useEffect(() => {
-    //     console.log('order', order)
-    // }, [order])
-
     const [expanded, setExpanded] = useState(false)
-    const [showOrderDetails, setShowOrderDetails] = useState(false)
+    // const [showOrderDetails, setShowOrderDetails] = useState(false)
 
     const renderLocation = () => {
         if (user.role === 'vendor') return null
@@ -79,19 +33,23 @@ export default ({ order, children, ...props }) => {
         return <LocationDetails location={order.customer.location} />
     }
 
-    const renderCustomer = () => order && order.customer ? (
-        <View style={styles.column}>
-            <Text style={classes.headerSecondary}>{order.customer.username}</Text>
-            {renderLocation()}
-        </View>
-    ) : <Text style={classes.textDefault}>No customer</Text>
+    const renderCustomer = () => order && order.customer
+        ? (
+            <View style={styles.column}>
+                <Text style={classes.headerSecondary}>Drop Off</Text>
+                {renderLocation()}
+            </View>
+        )
+        : null
     
-    const renderVendor = () => order && order.vendor ? (
-        <View style={styles.column}>
-            <Text style={classes.headerSecondary}>{`${order.vendor.username} (${order.items.length} ${order.items.length > 1 ? 'items' : 'item'})`}</Text>
-            <LocationDetails location={order.vendor.location} />
-        </View>
-    ) : <Text style={classes.textDefault}>No vendor</Text>
+    const renderVendor = () => order && order.vendor
+        ? (
+            <View style={styles.column}>
+                <Text style={classes.headerSecondary}>Pick Up</Text>
+                <LocationDetails location={order.vendor.location} />
+            </View>
+        )
+        : <Text style={classes.textDefault}>No vendor</Text>
 
     const renderHeaderButton = () => (
         <Pressable
@@ -111,6 +69,19 @@ export default ({ order, children, ...props }) => {
 
         </Pressable>
     )
+
+    const showCustomerLocation = () => {
+        if (user.role === 'vendor') return null
+        else {
+            return (
+                user.role === 'customer'
+                ||
+                user.role === 'admin'
+                ||
+                (order.driver._id === user._id && order.accepted)
+            ) ? renderCustomer() : null
+        }
+    }
 
     const renderStatus = text => (
         <Text style={[classes.textDefault, styles.status]}>{text}</Text>
@@ -137,7 +108,12 @@ export default ({ order, children, ...props }) => {
         <View style={styles.statusDisplay}>
             {/* {user.role === 'admin' && renderStatus(`status: ${order.status}`)} */}
             {!order.confirmed && order.vendor && renderStatus(`Waiting on confirmation from ${order.vendor.username}`)}
-            {(order.confirmed && !order.accepted) && renderStatus('Looking for available driver.')}
+            {(order.confirmed && !order.accepted)
+                ? user.role === 'driver'
+                    ? <Text style={classes.emergency}>DRIVER NEEDED</Text>
+                    : renderStatus('Looking for driver.')
+                : null
+            }
             {(user.role === 'driver' && order.pickup && !order.received) && renderStatus(`Pick-up by ${moment(order.pickup).format('LT')}`)}
             {(user.role !== 'driver' && order.accepted && !order.arrived) && renderStatus(`${order.driver.username} is on the way to ${order.vendor.username}.`)}
             {order.ready && renderStatus(`Order is ready.`)}
@@ -148,14 +124,7 @@ export default ({ order, children, ...props }) => {
 
     return order ? (
         <View>
-            <View
-                style={{
-                    // display: 'flex',
-                    // flexDirection: 'column',
-                    // // justifyContent: 'stretch',
-                    // // alignItems: 'flex-start',
-                }}
-            >
+            <View>
                 {renderOrderStatus(order)}
 
                 <CartProductPreview order={order} />
@@ -184,7 +153,7 @@ export default ({ order, children, ...props }) => {
                 }}
             >
                 {renderVendor()}
-                {renderCustomer()}
+                {showCustomerLocation()}
             </View>
 
             {children}

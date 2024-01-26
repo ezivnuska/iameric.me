@@ -15,6 +15,7 @@ const {
     handleSignin,
     handleSignout,
     handleSignup,
+    validateToken,
 } = require('./api/auth')
 
 const {
@@ -102,6 +103,7 @@ app.post(   '/signup',                 handleSignup)
 app.post(   '/authenticate',           authenticate)
 app.post(   '/signout',                handleSignout)
 app.post(   '/unsubscribe',            deleteAccount)
+app.post(   '/token',                  validateToken)
 
 // users
 app.get(    '/users',                   getAllUsers)

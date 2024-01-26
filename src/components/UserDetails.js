@@ -5,8 +5,7 @@ import {
 
 export default ({ user }) => (
     <UserHeading
-        online={!!user.token}
-        username={user.username}
+        user={user}
         filename={user.profileImage && user.profileImage.filename ? user.profileImage.filename : null}
     />
 )

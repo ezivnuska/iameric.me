@@ -1,104 +1,148 @@
-import React, { useContext, useState } from 'react'
+import React from 'react'
 import {
     FlatList,
     Image,
     Text,
     View,
 } from 'react-native'
-import {
-    IconButton,
-} from '.'
-import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
-import axios from 'axios'
 
 const IMAGE_SIZE = 24
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ order }) => (
-    <FlatList
-        data={order.items}
-        listKey={() => 'order-items'}
-        keyExtractor={(item, index) => 'order-item-key' + index}
-        renderItem={({ item, index }) => (
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#333',
-                    paddingBottom: 8,
-                    marginBottom: 7,
-                    // borderColor: 'yellow',
-                }}
-            >
-                <View style={{
-                    flexBasis: 'auto',
-                    flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    // borderWidth: 1,
-                    // borderColor: 'red',
-                }}>
-                    <View
-                        style={{
-                            flexBasis: 'auto',
-                            flexGrow: 0,
-                            flexShrink: 0,
-                            paddingRight: 10,
-                        }}
-                    >
-                        <Image
-                            width={IMAGE_SIZE}
-                            height={IMAGE_SIZE}
-                            source={{ uri: `${IMAGE_PATH}/${item.vendor.username}/thumb/${item.image.filename}` }}
-                            style={{
-                                resizeMode: 'cover',
-                                width: IMAGE_SIZE,
-                                height: IMAGE_SIZE,
-                                borderWidth: 1,
-                                borderColor: '#999',
-                                shadowColor: '#000',
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 2,
-                                },
-                                shadowOpacity: 0.25,
-                                shadowRadius: 4,
-                                elevation: 5,
-                            }}
-                        />
-                    </View>
-                        
-                    <Text
-                        style={[
-                            { flexBasis: 'auto', flexGrow: 1 },
-                            classes.textDefault,
-                        ]}
-                    >
-                        {item.title}
-                    </Text>
-                </View>
-        
-                <Text
-                    style={[
-                        classes.textDefault,
-                        {
-                            flexBasis: 'auto',
-                            flexGrow: 0,
-                            flexShrink: 0,
-                            textAlign: 'left',
-                        },
-                    ]}
-                >
-                    ${item.price}
-                </Text>
-            </View>
-        )}
+const ProductThumb = ({ product }) => (
+    <Image
+        width={IMAGE_SIZE}
+        height={IMAGE_SIZE}
+        source={{ uri: `${IMAGE_PATH}/${product.vendor.username}/thumb/${product.image.filename}` }}
         style={{
-            marginTop: 10,
+            resizeMode: 'cover',
+            width: IMAGE_SIZE,
+            height: IMAGE_SIZE,
+            borderWidth: 1,
+            borderColor: '#999',
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5,
         }}
     />
 )
+
+const CartListItem = ({ item }) => (
+    <View
+        style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingVertical: 3,
+            marginBottom: 3,
+        }}
+    >
+        <View
+            style={{
+                flexBasis: 'auto',
+                flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+            }}
+        >
+            <View
+                style={{
+                    flexBasis: 'auto',
+                    flexGrow: 0,
+                    flexShrink: 0,
+                    paddingRight: 10,
+                }}
+            >
+                <ProductThumb product={item} />
+            </View>
+                
+            <Text
+                style={[
+                    { flexBasis: 'auto', flexGrow: 1 },
+                    classes.textDefault,
+                ]}
+            >
+                {item.title}
+            </Text>
+            
+            <Text
+                style={[
+                    classes.textDefault,
+                    classes.itemPrice,
+                ]}
+            >
+                {item.price}
+            </Text>
+            
+        </View>
+    </View>
+)
+
+const CartTotal = ({ order }) => {
+    const getOrderTotal = ({ items }) => {
+        let total = 0
+        items.map(({ price }) => {
+            total += Number(price)
+        })
+        return total.toFixed(2)
+    }
+    return (
+        <View
+            style={{
+                marginTop: 5,
+                paddingTop: 7,
+                borderTopWidth: 1,
+                // borderTopStyle: 'dotted',
+                borderTopColor: '#ccc',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+            }}
+        >
+            <Text
+                style={[
+                    classes.textDefault,
+                    classes.bold,
+                ]}
+            >
+                Total:
+            </Text>
+            <Text
+                style={[
+                    classes.textDefault,
+                    classes.orderTotal,
+                ]}
+            >
+                {`$${getOrderTotal(order)}`}
+            </Text>
+        </View>
+    )
+}
+
+export default ({ order }) => {
+
+    const listItems = () => [
+        ...order.items.map((item, index) => <CartListItem item={item} key={`item-${index}`} />),
+        <CartTotal order={order} key={`item-${order.items.length}`} />,
+    ]
+
+    return (
+        <View style={{ paddingVertical: 10 }}>
+            
+            <FlatList
+                data={listItems()}
+                listKey={() => 'order-items'}
+                keyExtractor={(item, index) => 'order-item-key' + index}
+                renderItem={({ item, index }) => item}
+            />
+
+        </View>
+    )
+}

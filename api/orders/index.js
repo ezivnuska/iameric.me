@@ -105,7 +105,7 @@ const getRelevantOrdersByUserId = async (req, res) => {
     }
 
     const sanitizedOrders = getSanitizedOrders(orders)
-    console.log('sanitized orders', sanitizedOrders)
+    
     return res.status(200).json({ orders: sanitizedOrders })
 }
 
@@ -139,9 +139,7 @@ const getOrdersByUserId = async (req, res) => {
         return res.json(200).json(null)
     }
 
-    // console.log('unsanitized orders', response)
     const sanitizedOrders = getSanitizedOrders(orders)
-    // console.log('sanitized orders', sanitizedOrders)
 
     return res.status(200).json({ orders: sanitizedOrders })
 }
