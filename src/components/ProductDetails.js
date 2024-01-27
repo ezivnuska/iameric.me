@@ -32,6 +32,8 @@ const QuantityControl = ({ value, onChange }) => {
                 borderWidth: 2,
                 borderColor: '#fff',
                 borderRadius: 10,
+                marginVertical: 15,
+                marginHorizontal: 'auto',
             }}
         >
             <IconButton
@@ -65,16 +67,11 @@ const QuantityControl = ({ value, onChange }) => {
 }
 
 export default ({ product, onOrder }) => {
-    
+
     const [quantity, setQuantity] = useState(1)
 
     return product ? (
         <View>
-            
-            <QuantityControl
-                value={quantity}
-                onChange={value => setQuantity(value)}
-            />
 
             {product.image ? (
                 <View
@@ -155,6 +152,11 @@ export default ({ product, onOrder }) => {
             </View>
             <Text style={[main.text, { color: '#fff' }]}>{product.blurb}</Text>
             <Text style={[main.text, { color: '#fff' }]}>{product.desc}</Text>
+            
+            <QuantityControl
+                value={quantity}
+                onChange={value => setQuantity(value)}
+            />
     
             <IconButton
                 label={`Add ${quantity > 1 ? `${quantity} ` : ''}to Cart ($${Number(product.price) * quantity})`}
