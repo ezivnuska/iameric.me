@@ -50,13 +50,11 @@ export default ({ vendor }) => {
         dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendorId: vendor._id, products: data.products })
     }
 
-    const addToCart = item => {
+    const addToCart = (product, quantity) => {
 
-        // setLoading(true)
-        dispatch({ type: 'ADD_TO_CART', vendor, item })
+        dispatch({ type: 'ADD_TO_CART', vendor, product, quantity })
         
         setFeatured(null)
-        // setLoading(false)
     }
     
     return (
@@ -90,7 +88,11 @@ export default ({ vendor }) => {
                 visible={featured}
                 onRequestClose={() => setFeatured(null)}
             >
-                <ProductDetails loading={loading} product={featured} onOrder={addToCart} />
+                <ProductDetails
+                    loading={loading}
+                    product={featured}
+                    onOrder={addToCart}
+                />
             </PopUpModal>
         </View>
     )

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -7,8 +7,6 @@ import {
     IconButton,
     PopUpModal,
 } from '.'
-// import { ShoppingCartOutlined } from '@ant-design/icons'
-// import { Button } from 'antd'
 import { AppContext } from '../AppContext'
 import { navigationRef } from '../navigators/RootNavigation'
 
@@ -29,12 +27,18 @@ export default () => {
         navigationRef.navigate('Private', { screen: 'Orders' })
     }
 
+    const getItemCount = items => {
+        let count = 0
+        items.map(item => count += item.quantity)
+        return count
+    }
+
     return (
         <View style={{
             marginHorizontal: 5,
         }}>
             <IconButton
-                label={cart[0].items.length}
+                label={getItemCount(cart[0].items)}
                 iconName='cart-outline'
                 bgColor='blue'
                 onPress={() => setModalVisible(true)}

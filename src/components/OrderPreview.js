@@ -25,11 +25,6 @@ export default ({ order, children, ...props }) => {
     } = useContext(AppContext)
 
     const [expanded, setExpanded] = useState(false)
-    // const [showOrderDetails, setShowOrderDetails] = useState(false)
-
-    // useEffect(() => {
-    //     console.log('order', order)
-    // }, [order])
 
     const renderLocation = () => {
         if (user.role === 'vendor') return null
@@ -109,6 +104,7 @@ export default ({ order, children, ...props }) => {
     )
 
     const renderOrderStatus = order => (
+        
         <View style={styles.statusDisplay}>
             {/* {user.role === 'admin' && renderStatus(`status: ${order.status}`)} */}
             {!order.confirmed && order.vendor && <Text style={classes.emergency}>Waiting on vendor confirmation</Text>}
@@ -150,7 +146,7 @@ export default ({ order, children, ...props }) => {
         >
             <View>
                 {renderOrderStatus(order)}
-
+                
                 <CartProductPreview order={order} />
 
                 {/* {renderHeaderButton()} */}

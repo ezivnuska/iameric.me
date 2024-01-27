@@ -26,7 +26,11 @@ const getSanitizedOrders = orders => {
 const getFilteredOrders = async filter => {
     const orders = await Order
         .find(filter)
-        .populate('items', 'price title')
+        .populate({
+            path: 'items',
+            select: 'product',
+            populate: { path: 'product' },
+        })
         .populate({
             path: 'customer',
             select: 'username location',
@@ -38,19 +42,19 @@ const getFilteredOrders = async filter => {
             populate: { path: 'location' },
         })
         .populate('driver', 'username')
-        .populate({
-            path: 'items',
-            populate: [
-                {
-                    path: 'image',
-                    select: 'filename',
-                },
-                {
-                    path: 'vendor',
-                    select: 'username',
-                },
-            ],
-        })
+        // .populate({
+        //     path: 'items',
+        //     populate: [
+        //         {
+        //             path: 'image',
+        //             select: 'filename',
+        //         },
+        //         {
+        //             path: 'vendor',
+        //             select: 'username',
+        //         },
+        //     ],
+        // })
     
     return orders
 }
@@ -260,14 +264,23 @@ const getOrdersByVendorId = async (req, res) => {
 
 const createOrder = async (req, res) => {
     
-    const { customer, items, vendor } = req.body
+    const { customer, items } = req.body
+    
+    const vendor = items[0].product.vendor
+    
+    const itemized = items.map(({ product, quantity }) => ({
+        customer: customer._id,
+        product: product._id,
+        vendor: vendor._id,
+        quantity,
+    }))
 
     let order = await Order.create({
         customer,
-        items,
+        items: itemized,
         vendor,
     })
-        
+    
     order = await Order
         .findOne({ _id: order._id })
         .populate('items', 'price title')
@@ -284,16 +297,8 @@ const createOrder = async (req, res) => {
         .populate('driver', 'username')
         .populate({
             path: 'items',
-            populate: [
-                {
-                    path: 'image',
-                    select: 'filename',
-                },
-                {
-                    path: 'vendor',
-                    select: 'username',
-                },
-            ],
+            select: 'product',
+            populate: { path: 'product' },
         })
 
     if (!order) {

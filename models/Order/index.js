@@ -2,14 +2,17 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const orderSchema = Schema({
+const OrderSchema = Schema({
   date: {
     type: Date,
     default: Date.now,
   },
   items: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Product',
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: 'Product',
+    },
+    quantity: Number,
   }],
   vendor: {
     type: Schema.Types.ObjectId,
@@ -19,10 +22,6 @@ const orderSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
-  // locations: [{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'Location',
-  // }],
   confirmed: {
     type: Date,
     default: null,
@@ -68,6 +67,6 @@ const orderSchema = Schema({
   timestamps: true,
 })
 
-const OrderModel = mongoose.model('Order', orderSchema)
+const OrderModel = mongoose.model('Order', OrderSchema)
 
 module.exports = OrderModel

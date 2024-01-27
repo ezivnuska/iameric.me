@@ -107,22 +107,25 @@ const reducer = (state = initialState, action) => {
             users = action.users
             break
         case 'ADD_TO_CART':
-            const { vendor, item } = action
+            const { vendor, product, quantity } = action
             
             let currentOrder = null
             
             if (cart) {
-                const index = cart.findIndex(order => order.vendor._id === vendor._id)
+                let index = 0
+                if (cart.length > 1)
+                    index = cart.findIndex(order => order.vendor._id === vendor._id)
                 
                 if (index >= -1) {
                     currentOrder = {
                         ...cart[index],
-                        items: [...cart[index].items, item],
+                        items: [...cart[index].items, { product, quantity }],
                     }
-                } else currentOrder = { vendor, items: [item] }
+                } else currentOrder = { vendor, items: [{ product, quantity }] }
                 
                 cart = [...cart.slice(0, index), currentOrder, ...cart.slice(index + 1)]
-            } else cart = [{ vendor, items: [item] }]
+            } else cart = [{ vendor, items: [{ product, quantity }] }]
+            
             break
         case 'CLEAR_CART':
             cart = null
@@ -140,11 +143,10 @@ const reducer = (state = initialState, action) => {
             orders = (action.orders && action.orders.length) ? action.orders : null
             break
         case 'ADD_ORDER':
-            cart = null
             orders = orders ? [...orders, action.order] : [action.order]
+            cart = null
             break
         case 'CONFIRM_ORDER':
-            // updateOrder(action.order)
             orders = orders.map(order => {
                 if (order._id == action.order._id) {
                     return {

@@ -44,11 +44,7 @@ export default () => {
     }
 
     useEffect(() => {
-        if (orders) {
-            sortOrders(orders)
-        } else {
-            setItems(null)
-        }
+        setItems(orders)
     }, [orders])
 
     const loadOrders = async () => {
@@ -56,8 +52,6 @@ export default () => {
         dispatch({ type: 'SET_LOADING', loading: 'Loading orders...' })
         
         const loadedOrders = await getOrdersById(user._id)
-        
-        // setItems(loadedOrders)
         
         dispatch({ type: 'SET_ORDERS', orders: loadedOrders })
         dispatch({ type: 'SET_LOADING', loading: null })
@@ -259,7 +253,10 @@ export default () => {
             {(items && items.length)
                 ? (
                     <FlatList
-                        data={items.sort((a, b) => a.status >= b.status ? a : b)}
+                        data={items.sort((a, b) => {
+                            console.log('a', a)
+                            return a.product.status >= b.product.status ? a : b
+                        })}
                         listKey={() => 'orders'}
                         keyExtractor={(item, index) => 'order-' + index}
                         renderItem={({ item, index }) => (

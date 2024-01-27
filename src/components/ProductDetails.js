@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Image,
     Pressable,
@@ -16,134 +16,153 @@ import Icon from 'react-native-vector-icons/Ionicons'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ product, onOrder }) => product ? (
-    <View>
+const QuantityControl = ({ value, onChange }) => {
+    
+    const increase = () => {onChange(value + 1)}
+    const decrease = () => onChange(value - 1)
 
-        {product.image ? (
-            <View
-                style={{
-                    marginBottom: 10,
-                    flexBasis: 'auto',
-                }}
-            >
-                <Image
-                    width={product.image.width}
-                    height={product.image.height}
-                    source={{ uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}` }}
-                    style={{
-                        resizeMode: 'center',
-                        width: product.image.width,
-                        height: product.image.height,
-                        borderWidth: 1,
-                    }}
-                />
-            </View>
-        ) : null}
-
+    return (
         <View
             style={{
+                width: 150,
                 display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: 'space-evenly',
+                alignItems: 'center',
+                borderWidth: 2,
+                borderColor: '#fff',
+                borderRadius: 10,
             }}
         >
-            
-            <View
-                style={{
-                    flexBasis: 'auto',
-                    flexGrow: 1,
-                    flexShrink: 1,
-                }}
+            <IconButton
+                iconName='remove-outline'
+                onPress={decrease}
+                disabled={value < 2}
+                style={{ flex: 1 }}
+            />
+    
+            <Text
+                style={[
+                    classes.textDefault,
+                    classes.bold,
+                    {
+                        flex: 1,
+                        textAlign: 'center'
+                    }
+                ]}
             >
+                {value}
+            </Text>
+    
+            <IconButton
+                iconName='add-outline'
+                onPress={increase}
+                style={{ flex: 1 }}
+            />
+    
+        </View>
+    )
+}
+
+export default ({ product, onOrder }) => {
+    
+    const [quantity, setQuantity] = useState(1)
+
+    return product ? (
+        <View>
+            
+            <QuantityControl
+                value={quantity}
+                onChange={value => setQuantity(value)}
+            />
+
+            {product.image ? (
                 <View
                     style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
+                        marginBottom: 10,
+                        flexBasis: 'auto',
                     }}
                 >
-                    
-                    <Text
-                        style={[
-                            classes.defaultText,
+                    <Image
+                        width={product.image.width}
+                        height={product.image.height}
+                        source={{ uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}` }}
+                        style={{
+                            resizeMode: 'center',
+                            width: product.image.width,
+                            height: product.image.height,
+                            borderWidth: 1,
+                        }}
+                    />
+                </View>
+            ) : null}
+    
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                
+                <View
+                    style={{
+                        flexBasis: 'auto',
+                        flexGrow: 1,
+                        flexShrink: 1,
+                    }}
+                >
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        
+                        <Text
+                            style={[
+                                classes.defaultText,
+                                {
+                                    fontSize: 18,
+                                    fontWeight: 700,
+                                    flexBasis: 'auto',
+                                    flexGrow: 1,
+                                    flexBasis: '80%',
+                                    color: '#fff',
+                                }
+                            ]}
+                        >
+                            {product.title}
+                        </Text>
+    
+                        <Text style={[
+                            main.text,
                             {
+                                flexBasis: '20%',
+                                textAlign: 'right',
                                 fontSize: 18,
                                 fontWeight: 700,
-                                flexBasis: 'auto',
-                                flexGrow: 1,
-                                flexBasis: '80%',
                                 color: '#fff',
+                                flexGrow: 0,
                             }
-                        ]}
-                    >
-                        {product.title}
-                    </Text>
-
-                    <Text style={[
-                        main.text,
-                        {
-                            flexBasis: '20%',
-                            textAlign: 'right',
-                            fontSize: 18,
-                            fontWeight: 700,
-                            color: '#fff',
-                            flexGrow: 0,
-                        }
-                    ]}>
-                        ${product.price}
-                    </Text>
-
+                        ]}>
+                            ${product.price}
+                        </Text>
+    
+                    </View>
                 </View>
             </View>
-        </View>
-        <Text style={[main.text, { color: '#fff' }]}>{product.blurb}</Text>
-        <Text style={[main.text, { color: '#fff' }]}>{product.desc}</Text>
-
-        <IconButton
-            label='Add to Cart'
-            iconName='add-outline'
-            bgColor='blue'
-            onPress={() => onOrder(product)}
-        />
-        {/* <Pressable
-            onPress={() => onOrder(product)}
-            style={{
-                flexBasis: 'auto',
-                flexShrink: 1,
-                flexGrow: 0,
-                backgroundColor: 'blue',
-                borderRadius: 6,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                // width: 'auto',
-                paddingHorizontal: 5,
-                marginVerical: 10,
-            }}
-        >
-            <Icon
-                name='add-outline'
-                size={16}
-                color='#fff'
-                style={[{ flexBasis: 'auto', flexShrink: 1 }]}
+            <Text style={[main.text, { color: '#fff' }]}>{product.blurb}</Text>
+            <Text style={[main.text, { color: '#fff' }]}>{product.desc}</Text>
+    
+            <IconButton
+                label={`Add ${quantity > 1 ? `${quantity} ` : ''}to Cart ($${Number(product.price) * quantity})`}
+                // iconName='add-outline'
+                bgColor='blue'
+                onPress={() => onOrder(product, quantity)}
             />
-            <Text
-                style={[classes.buttonText, { flexBasis: 'auto', flexShrink: 1 }]}
-            >
-                Add to Cart
-            </Text>
-        </Pressable> */}
 
-        {/* <Button
-            size='large'
-            type='primary'
-            onClick={() => onOrder(product)}
-            style={{
-                color: '#fff',
-                backgroundColor: '#161',
-            }}
-        >
-            Add to Cart
-        </Button> */}
-    </View>
-) : null
+        </View>
+    ) : null
+}

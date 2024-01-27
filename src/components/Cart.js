@@ -26,17 +26,10 @@ export default ({ onSubmitted }) => {
     //     }
     // }, [cart])
 
-    const getVendor = () => {
-        let id = null
-        cart[0].items.map(item => id = item.vendor ? item.vendor._id : null)
-        return id
-    }
-
     const submitOrder = async () => {
         const newOrder = {
             customer: user._id,
-            vendor: getVendor(),
-            items: cart[0].items.map(item => item._id),
+            items: cart[0].items,
         }
         
         setLoading('Submitting order...', newOrder)
