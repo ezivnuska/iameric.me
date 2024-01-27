@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
@@ -23,12 +22,6 @@ export default ({ onSubmit, location }) => {
     const [ zip, setZip ] = useState(location.zip)
     const [ dirty, setDirty ] = useState(false)
     const [ loading, setLoading ] = useState(false)
-
-    // const onChangeAddressLine1 = value => setAddress1(value)
-    // const onChangeAddressLine2 = value => setAddress2(value)
-    // const onChangeCity = value => setCity(value)
-    // const onChangeState = value => setState(value)
-    // const onChangeZip = value => setZip(value)
 
     const onChange = (name, value) => {
         switch(name) {
@@ -59,10 +52,6 @@ export default ({ onSubmit, location }) => {
             break
         }
     }
-
-    // useEffect(() => {
-        
-    // }, [])
 
     const submitForm = () => {
         if (!isValid()) return

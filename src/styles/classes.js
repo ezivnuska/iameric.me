@@ -70,17 +70,17 @@ export default {
         color: '#fff',
         backgroundColor: '#f00',
         textAlign: 'center',
-        paddingVertical: 5,
+        paddingVertical: 7,
         marginBottom: 10,
     },
     calm: {
         fontSize: sizes.headerSecondary,// 18
         fontWeight: 700,
         lineHeight: sizes.headerSecondary + 4,// 22
-        color: '#00f',
-        backgroundColor: '#aaf',
+        color: '#fff',
+        backgroundColor: '#00f',
         textAlign: 'center',
-        paddingVertical: 5,
+        paddingVertical: 7,
         marginBottom: 10,
     },
 }

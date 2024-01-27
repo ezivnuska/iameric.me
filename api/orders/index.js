@@ -69,7 +69,7 @@ const getRelevantOrdersByUserId = async (req, res) => {
         orders = await getFilteredOrders({
             $and: [
                 { customer: id },
-                { status: { $lt: 6 } },
+                // { status: { $lt: 7 } },
             ],
         })
 

@@ -27,6 +27,10 @@ export default ({ order, children, ...props }) => {
     const [expanded, setExpanded] = useState(false)
     // const [showOrderDetails, setShowOrderDetails] = useState(false)
 
+    // useEffect(() => {
+    //     console.log('order', order)
+    // }, [order])
+
     const renderLocation = () => {
         if (user.role === 'vendor') return null
         if (user.role === 'driver' && order.status < 2) return null
@@ -78,7 +82,7 @@ export default ({ order, children, ...props }) => {
                 ||
                 user.role === 'admin'
                 ||
-                (order.driver._id === user._id && order.accepted)
+                (order.driver && order.driver._id === user._id && order.accepted)
             ) ? renderCustomer() : null
         }
     }
@@ -107,31 +111,43 @@ export default ({ order, children, ...props }) => {
     const renderOrderStatus = order => (
         <View style={styles.statusDisplay}>
             {/* {user.role === 'admin' && renderStatus(`status: ${order.status}`)} */}
-            {!order.confirmed && order.vendor && renderStatus(`Waiting on confirmation from ${order.vendor.username}`)}
+            {!order.confirmed && order.vendor && <Text style={classes.emergency}>Waiting on vendor confirmation</Text>}
             {(order.confirmed && !order.accepted)
                 ? user.role === 'driver'
                     ? <Text style={classes.emergency}>DRIVER NEEDED</Text>
-                    : renderStatus('Looking for driver.')
+                    : <Text style={classes.emergency}>Looking for driver...</Text>
                 : null
             }
             {(user.role === 'driver' && order.pickup && !order.received) && renderStatus(`Pick-up by ${moment(order.pickup).format('LT')}`)}
-            {(user.role !== 'driver' && order.accepted && !order.arrived) && renderStatus(`${order.driver.username} is on the way to ${order.vendor.username}.`)}
-            {order.ready && renderStatus(`Order is ready.`)}
-            {(user.role !== 'driver' && order.arrived && !order.received) && renderStatus(`${order.driver.username} is onsite and waiting for your order.`)}
+            {(user.role !== 'driver' && order.accepted && !order.arrived) && <Text style={classes.calm}>{order.driver.username} is headed to pickup location.</Text>}
+            {order.ready && !order.received && <Text style={classes.calm}>Order is ready.</Text>}
+            {(user.role !== 'driver' && order.arrived && !order.received) && <Text style={classes.calm}>{order.driver.username} is at merchant.</Text>}
             {(order.received && !order.delivered)
                 ? user.role === 'customer'
-                    ? <Text style={classes.calm}>RELAX</Text>
-                    : <Text style={classes.emergency}>DROP OFF</Text>
+                    ? <Text style={classes.calm}>Driver is on the way.</Text>
+                    : user.role === 'driver'
+                        ? <Text style={classes.emergency}>Proceed to delivery address.</Text>
+                        : null
                 : null}
-            {/* {(order.completed)
-                ? <Text style={classes.calm}>MMmmMmm...</Text>
-                : null//renderStatus(`${order.driver.username} is on the way.`)
-            } */}
+            {order.delivered
+                ? user.role === 'driver'
+                    ? <Text style={classes.calm}>Waiting for customer confirmation.</Text>
+                    : <Text style={classes.emergency}>Confirmation Requested</Text>
+                : null
+            }
         </View>
     )
 
-    return order ? (
-        <View>
+    return (
+        <View
+            style={{
+                opacity: order.status > 5 ? 0.5 : 1,
+                // borderWidth: 1,
+                // borderColor: 'red',
+                marginBottom: 10,
+                paddingBottom: 5,
+            }}
+        >
             <View>
                 {renderOrderStatus(order)}
 
@@ -151,23 +167,28 @@ export default ({ order, children, ...props }) => {
                 </View>
             )} */}
 
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'stretch',
-                    marginTop: 5,
-                    marginBottom: 10,
-                }}
-            >
-                {renderVendor()}
-                {showCustomerLocation()}
-            </View>
+            {order.status < 6 ? (
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'stretch',
+                        marginTop: 10,
+                        marginBottom: 5,
+                        paddingVertical: 5,
+                        // borderWidth: 1,
+                        // borderStyle: 'dotted',
+                        // borderColor: '#fff',
+                    }}
+                >
+                    {renderVendor()}
+                    {showCustomerLocation()}
+                </View>
+            ) : null}
 
             {children}
-
         </View>
-    ) : <Text style={classes.textDefault}>No item.</Text>
+    )
 }
 
 const styles = StyleSheet.create({

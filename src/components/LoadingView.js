@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import {
-    // ActivityIndicator,
     Text,
     View,
 } from 'react-native'
@@ -20,9 +19,6 @@ export default ({ label = null }) => {
                 justifyContent: 'center',
             }}
         >
-            {/* <ActivityIndicator
-                size='small'
-            /> */}
 
             <Text
                 style={{

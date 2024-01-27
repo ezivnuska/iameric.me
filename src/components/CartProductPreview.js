@@ -97,7 +97,7 @@ const CartTotal = ({ order }) => {
         <View
             style={{
                 marginTop: 5,
-                paddingTop: 7,
+                paddingTop: 5,
                 borderTopWidth: 1,
                 // borderTopStyle: 'dotted',
                 borderTopColor: '#ccc',
@@ -127,14 +127,16 @@ const CartTotal = ({ order }) => {
 }
 
 export default ({ order }) => {
-
+    
     const listItems = () => [
         ...order.items.map((item, index) => <CartListItem item={item} key={`item-${index}`} />),
         <CartTotal order={order} key={`item-${order.items.length}`} />,
     ]
 
-    return (
-        <View style={{ paddingVertical: 10 }}>
+    return order.items ? (
+        <View
+            // style={{ borderWidth: 1, borderColor: 'green' }}
+        >
             
             <FlatList
                 data={listItems()}
@@ -144,5 +146,5 @@ export default ({ order }) => {
             />
 
         </View>
-    )
+    ) : null
 }

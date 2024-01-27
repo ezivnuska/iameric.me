@@ -10,7 +10,7 @@ import {
 } from '.'
 import defaultStyles from '../styles/main'
 import { signin } from '../Data'
-import { isValidEmail } from '../utils/tools'
+import { isValidEmail } from '../utils/auth'
 import { storeEmail, getSavedEmail } from '../utils/storage'
 
 export default ({ onComplete }) => {

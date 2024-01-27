@@ -12,7 +12,6 @@ import {
     PopUpModal,
 } from '.'
 import axios from 'axios'
-import layout from '../styles/layout'
 import { AppContext } from '../AppContext'
 import { getLocationWithUserId } from '../utils/data'
 import classes from '../styles/classes'

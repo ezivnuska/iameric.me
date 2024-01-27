@@ -100,7 +100,7 @@ const validateToken = async (req, res) => {
     if (!user) return res.status(200).json(false)
 
     const userFromToken = getDecodedUser(user.token)
-    console.log('userFromToken', userFromToken)
+    // console.log('userFromToken', userFromToken)
     if (!userFromToken) return res.status(200).json(false)
 
     const newDate = new Date(userFromToken.exp) - Date.now()

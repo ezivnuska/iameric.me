@@ -6,16 +6,13 @@ import {
 } from 'react-native'
 import {
     IconButton,
-    OrderDetails,
     OrderPreview,
-    PopUpModal,
     TimeSelector,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import moment from 'moment'
 import classes from '../styles/classes'
-import main from '../styles/main'
 import { getOrdersById } from '../utils/data'
 
 export default () => {
@@ -30,13 +27,28 @@ export default () => {
     const [featured, setFeatured] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
     const [items, setItems] = useState(orders)
+    const [showCompletedOrders, setShowCompletedOrders] = useState(true)
 
     useEffect(() => {
         loadOrders()
     }, [])
 
+    const sortOrders = array => {
+        let active = []
+        let completed = []
+        array.map(item => item.status < 6 ? active.push(item) : completed.push(item))
+        setItems([
+            ...active,
+            // ...completed,
+        ])
+    }
+
     useEffect(() => {
-        setItems(orders)
+        if (orders) {
+            sortOrders(orders)
+        } else {
+            setItems(null)
+        }
     }, [orders])
 
     const loadOrders = async () => {
@@ -45,7 +57,7 @@ export default () => {
         
         const loadedOrders = await getOrdersById(user._id)
         
-        setItems(loadedOrders)
+        // setItems(loadedOrders)
         
         dispatch({ type: 'SET_ORDERS', orders: loadedOrders })
         dispatch({ type: 'SET_LOADING', loading: null })
@@ -206,14 +218,11 @@ export default () => {
     const renderOrderProcessButton = order => {
         // console.log('CASE', order.status, user ? user.role : 'no role')
         switch(user.role) {
-            case 'admin':
-                return renderButton('Delete Order', () => deleteOrder(order._id))
-            break
+            case 'admin':if (order.status === 6) return renderButton('Delete Order', () => deleteOrder(order._id))
             case 'customer':
                 if (order.status === 0) return renderButton('Cancel Order', () => cancelOrder(order._id))
                 else if (order.status === 5) return renderButton('Order Received', () => closeOrder(order._id))
-                else if (order.status === 6) return <Text style={classes.textDefault}>Order completed.</Text>
-                else return <Text style={classes.textDefault}>Order in progress. Too late to cancel.</Text>
+                else return <Text style={[classes.textDefault, classes.bold]}>Order in progress.</Text>
             break
             case 'vendor':
                 if (order.status === 0) {
@@ -224,9 +233,7 @@ export default () => {
                         </View>
                     )
                 }
-                else if (order.status === 1 && !order.ready) return renderButton('Order is Ready', () => onOrderReady(order._id))
-                else if (order.status === 2 && !order.ready) return renderButton('Order is Ready', () => onOrderReady(order._id))
-                else if (order.status === 3 && !order.ready) return renderButton('Order is Ready', () => onOrderReady(order._id))
+                else if (order.status > 0 && order.status < 4 && !order.ready) return renderButton('Order is Ready', () => onOrderReady(order._id))
             break
             case 'driver':
                 if (order.status === 1) return renderButton('Accept Delivery', () => acceptDelivery(order._id))
@@ -249,39 +256,27 @@ export default () => {
 
     return (
         <View>
-            <FlatList
-                data={items}
-                listKey={() => 'orders'}
-                keyExtractor={(item, index) => 'key' + index}
-                renderItem={({ item, index }) => (
-                    <OrderPreview
-                        key={`order-preview-${index}`}
-                        onPress={() => onPress(item)}
-                        order={item}
-                    >
-                        {renderOrderProcessButton(item)}
-                    </OrderPreview>
-                )}
-                style={{
-                    marginVertical: 10,
-                }}
-            />
-            {/* {orders.map((order, index) => (
-                <OrderPreview
-                    key={`order-preview-${index}`}
-                    onPress={() => onPress(order)}
-                    order={order}
-                >
-                    {renderOrderProcessButton(order)}
-                </OrderPreview>
-            ))} */}
+            {(items && items.length)
+                ? (
+                    <FlatList
+                        data={items.sort((a, b) => a.status >= b.status ? a : b)}
+                        listKey={() => 'orders'}
+                        keyExtractor={(item, index) => 'order-' + index}
+                        renderItem={({ item, index }) => (
+                            <OrderPreview
+                                key={`order-preview-${index}`}
+                                onPress={() => onPress(item)}
+                                order={item}
+                            >
+                                <View style={{ marginVertical: 3 }}>
+                                    {renderOrderProcessButton(item)}
+                                </View>
 
-            {/* <PopUpModal
-                visible={featured}
-                onRequestClose={() => setFeatured(null)}
-            >
-                <OrderDetails order={featuredItem} />
-            </PopUpModal> */}
+                            </OrderPreview>
+                        )}
+                    />
+                ) : <Text style={classes.textDefault}>No current orders.</Text>
+            }
         </View>
     )
 }

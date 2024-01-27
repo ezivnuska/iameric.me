@@ -20,7 +20,6 @@ import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormButton from './FormButton'
 import FormInput from './FormInput'
-import FormInputStatusIcon from './FormInputStatusIcon'
 import Header from './Header'
 import HeaderIconButton from './HeaderIconButton'
 import HoverableView from './HoverableView'
@@ -94,7 +93,6 @@ export {
     FileSelector,
     FormButton,
     FormInput,
-    FormInputStatusIcon,
     Header,
     HeaderIconButton,
     HoverableView,

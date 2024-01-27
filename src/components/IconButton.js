@@ -6,7 +6,7 @@ import {
 import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ onPress, disabled, padded = true, align = 'center', alignIcon = 'left', bgColor = 'transparent', label = null, iconName = null, textStyles = null }) => (
+export default ({ onPress, disabled, padded = true, align = 'center', alignIcon = 'left', bgColor = 'transparent', label = null, iconName = null, textStyles = null, ...props }) => (
     <Pressable
         onPress={onPress}
         disabled={disabled}
@@ -24,6 +24,7 @@ export default ({ onPress, disabled, padded = true, align = 'center', alignIcon 
             // marginVertical: 10,
             // borderWidth: 1,
             // borderColor: '#f00',
+            ...props.style,
         }}
     >
         {(iconName && alignIcon === 'left') && (

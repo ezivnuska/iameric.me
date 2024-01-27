@@ -62,10 +62,14 @@ export const signout = async (dispatch, _id) => {
     }
 }
 
-export const validateToken = async token => {
-    const userFromToken = await axios
-        .post('/api/token', { token })
-        console.log('userFromToken', userFromToken)
-    const expired = (new Date(userFromToken.exp) - Date.now() > 0)
-    console.log('expired', expired)
-}
+// export const validateToken = async token => {
+//     const userFromToken = await axios
+//         .post('/api/token', { token })
+//         // console.log('userFromToken', userFromToken)
+//     const expired = (new Date(userFromToken.exp) - Date.now() > 0)
+//     console.log('expired', expired)
+// }
+
+export const isValidEmail = value =>  value.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+)

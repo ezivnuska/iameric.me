@@ -62,7 +62,7 @@ export default ({ children, onRequestClose, ...props }) => (
                 <ScrollView
                     style={{
                         width: '100%',
-                        padding: 10,
+                        paddingVertical: 10,
                         // backgroundColor: '#f00',
                     }}
                 >
@@ -71,7 +71,7 @@ export default ({ children, onRequestClose, ...props }) => (
                     <IconButton
                         label='Close'
                         onPress={onRequestClose}
-                        iconName='close-outline'
+                        // iconName='close-outline'
                     />
                     {/* <Button
                         size='large'

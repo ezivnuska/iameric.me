@@ -9,7 +9,7 @@ import {
 	IconButton,
 	RolePicker,
 } from '.'
-import { isValidEmail } from '../utils/tools'
+import { isValidEmail } from '../utils/auth'
 import { signup } from '../Data'
 import { storeEmail, getSavedEmail } from '../utils/storage'
 

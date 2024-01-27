@@ -41,7 +41,7 @@ export const checkStatus = async () => {
     }
     
     const { token, ...user } = userVerified
-    // console.log('setUserToken', token)
+    
     await setUserToken(token)
 
     return user
@@ -60,9 +60,8 @@ export const connect = async type => {
     const { data } = await axios.
         post('/api/signin', { email, password })
     
-    // console.log('connect-->', data)
     if (data && data.user) {
-        // console.log('setUserToken', data.user.token)
+        
         await setUserToken(data.user.token)
     } else if (data && data.error) {
         console.log('Error authenticating user', data.msg)

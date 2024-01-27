@@ -1,7 +1,5 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
-    FlatList,
-    Text,
     View,
 } from 'react-native'
 import {
@@ -22,11 +20,11 @@ export default ({ onSubmitted }) => {
 
     const [loading, setLoading] = useState(false)
 
-    const getTotal = () => {
-        let total = 0
-        cart[0].items.map(i => total += Number(i.price))
-        return String(total.toFixed(2))
-    }
+    // useEffect(() => {
+    //     if (cart) {
+    //         console.log('cart', cart)
+    //     }
+    // }, [cart])
 
     const getVendor = () => {
         let id = null
@@ -56,71 +54,30 @@ export default ({ onSubmitted }) => {
         onSubmitted(data)
     }
 
-    return cart ? (
+    return cart && cart.length ? (
         <View>
-            <FlatList
-                style={{
-                    paddingBottom: 10,
-                }}
-                data={cart}
-                keyExtractor={(item, index) => index}
-                renderItem={({ item }) => (
-                    <CartProductPreview order={item} />
-                )} 
-            />
+            {cart.map((order, orderIndex) => (
+                <CartProductPreview order={order} key={`order-${orderIndex}`} />
+            ))}
+            
             <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingBottom: 10,
-                }}
+                style={{ paddingTop: 10, paddingBottom: 7 }}
             >
-                <Text
-                    style={[
-                        classes.textDefault,
-                        {
-                            flexBasis: '80%',
-                            flexGrow: 1,
-                            flexShrink: 0,
-                        },
-                        {
-                            fontWeight: 700,
-                        },
-                    ]}
-                >
-                    Total:
-                </Text>
-                <Text
-                    style={[
-                        classes.textDefault,
-                        {
-                            flexBasis: 'auto',
-                            flexGrow: 0,
-                            flexShrink: 1,
-                        },
-                        {
-                            fontWeight: 700,
-                        },
-                    ]}
-                >
-                    ${getTotal()}
-                </Text>
+                <IconButton
+                    label='Submit Order'
+                    onPress={submitOrder}
+                    bgColor='blue'
+                    disabled={loading}
+                    style={{ marginBottom: 10 }}
+                />
+                
+                <IconButton
+                    label='Clear Cart'
+                    onPress={() => dispatch({ type: 'CLEAR_CART' })}
+                    bgColor='gray'
+                    disabled={loading}
+                />
             </View>
-            
-            <IconButton
-                label='Submit Order'
-                onPress={submitOrder}
-                bgColor='blue'
-                disabled={loading}
-            />
-            
-            <IconButton
-                label='Clear Cart'
-                onPress={() => dispatch({ type: 'CLEAR_CART' })}
-                bgColor='gray'
-                disabled={loading}
-            />
 
         </View>
     ) : null
