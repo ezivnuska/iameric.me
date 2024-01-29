@@ -4,13 +4,15 @@ import {
     SafeAreaView,
     View,
 } from 'react-native'
-import { PublicNavigation, PrivateNavigation } from '../navigators'
+import { Navigation } from '../navigators'
 import { AppContext } from '../AppContext'
 import {
     Header,
     LoadingView,
 } from '@components'
 import base from '../styles/base'
+import { useTheme } from 'react-native-paper'
+import { light } from '../styles/colors'
 
 let initialDims = {
     window: Dimensions.get('window'),
@@ -23,10 +25,14 @@ export default () => {
         dispatch,
         dims,
         user,
+        toggleTheme,
+        isThemeDark,
     } = useContext(AppContext)
 
+    const theme = useTheme()
+
     useEffect(() => {
-        // console.log('initial dims', initialDims)
+        
         dispatch({ type: 'SET_DIMS', dims: initialDims })
 
         const subscription = Dimensions.addEventListener(
@@ -37,25 +43,16 @@ export default () => {
         return () => subscription.remove()
     }, [])
 
-
-    // useEffect(() => {
-    //     console.log('helloworld')
-    // }, [])
-
-    // useEffect(() => {
-    //     console.log('dims changed', dims)
-        
-    // }, [dims])
+    useEffect(() => {
+        console.log('dims changed', dims)
+    }, [dims])
 
     return dims ? (
         <SafeAreaView
             style={{
                 width: dims.window.width,
                 height: dims.window.height,
-                backgroundColor: base.backgroundColor,
-                // borderWidth: 2,
-                // borderStyle: 'dashed',
-                // borderColor: 'green',
+                backgroundColor: theme?.colors.headerSecondary,
             }}
         >
             <Header />
@@ -65,25 +62,10 @@ export default () => {
                     width: dims.window.width,
                     maxWidth: 375,
                     marginHorizontal: 'auto',
-                    // borderWidth: 2,
-                    // borderStyle: 'dashed',
-                    // borderColor: 'purple',
                 }}
             >
-                <PrivateNavigation />
+                <Navigation />
             </View>
         </SafeAreaView>
-    ) : (
-        <SafeAreaView
-            style={{
-                width: '100%',
-                paddingTop: 100,
-                // borderWidth: 2,
-                // borderStyle: 'dashed',
-                // borderColor: 'purple',
-            }}
-        >
-            <LoadingView />
-        </SafeAreaView>
-    )
+    ) : null
 }

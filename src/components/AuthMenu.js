@@ -5,6 +5,7 @@ import {
     Text,
     View,
 } from 'react-native'
+import { useTheme } from '@react-navigation/native'
 import {
     CartButton,
     IconButton,
@@ -24,6 +25,8 @@ import { navigationRef } from 'src/navigators/RootNavigation'
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const UserButton = ({ onPress, user }) => {
+
+    const { colors } = useTheme()
     
     const getSource = () => user.profileImage
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
@@ -61,7 +64,7 @@ const UserButton = ({ onPress, user }) => {
             />
     
             <Text style={{
-                color: '#fff',
+                color: colors.textDefault,
                 fontWeight: 700,
                 lineHeight: 32,
             }}>

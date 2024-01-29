@@ -1,4 +1,5 @@
-import React, { createContext, useReducer } from 'react'
+import React, { createContext, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { getLocally, saveLocally } from './utils/storage'
 
 const initialState = {
     cart: null,
@@ -255,12 +256,37 @@ export const AppContext = createContext({
 
 export const AppProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
+    const [isThemeDark, setIsThemeDark] = useState(false)
     
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
     const otherUsersByRole = role => (state.users && state.user) ? usersByRole(role).filter(u => u._id !== state.user._id) : null
-    
+
+    useEffect(() => {
+        initTheme()
+    }, [])
+
+    const initTheme = async () => {
+        const themeIsDark = await getLocally('dark')
+        setIsThemeDark(themeIsDark)
+    }
+
+    const toggleTheme = useCallback(async () => {
+        console.log('toggleTheme', isThemeDark)
+        await saveLocally('dark', !isThemeDark)
+        return setIsThemeDark(!isThemeDark)
+    }, [isThemeDark])
+
+    const preferences = useMemo(
+        () => ({
+            toggleTheme,
+            isThemeDark,
+        }),
+        [toggleTheme, isThemeDark]
+    )
+
     return (
         <AppContext.Provider value={{
+            ...preferences,
             state,
             dispatch,
             cart: state.cart,
@@ -275,6 +301,8 @@ export const AppProvider = ({ children }) => {
             users: state.users,
             vendors: usersByRole('vendor'),
             loaded: state.loaded,
+            toggleTheme,
+            isThemeDark,
         }}>
             {children}
         </AppContext.Provider>

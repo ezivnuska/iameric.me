@@ -4,13 +4,16 @@ import {
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
-import colors from '../styles/colors'
+import { useTheme } from '@react-navigation/native'
 
 export default ({ children, ...props }) => {
 
     const {
         dims,
+        theme,
     } = useContext(AppContext)
+    
+    const { colors } = useTheme()
 
     return (
         <View
@@ -19,7 +22,7 @@ export default ({ children, ...props }) => {
                     height: dims ? dims.window.height - 50 : '100%',
                     width: '100%',
                     paddingHorizontal: 10,
-                    backgroundColor: colors.backgroundDefault,
+                    backgroundColor: colors.background,
                     // borderWidth: 1,
                     // borderColor: 'yellow'
                 },

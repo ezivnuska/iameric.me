@@ -9,21 +9,27 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
-import base from '../styles/base'
+import { dark, light } from '../styles/colors'
+import { useTheme } from '@react-navigation/native'
 
 export default () => {
     
     const {
         user,
+        toggleTheme,
     } = useContext(AppContext)
 
+    const { colors } = useTheme()
+
     const onBrandClicked = () => {
-        if (user) navigate('Private', { screen: 'Orders' })
-        else navigate('Start')
+        console.log('brandClicked')
+        toggleTheme()
+        // if (user) navigate('Private', { screen: 'Orders' })
+        // else navigate('Start')
     }
     
     return (
-        <CenteredContent type='full' style={{ backgroundColor: base.headerBGColor }}>
+        <CenteredContent type='full' style={{ backgroundColor: colors.headerBackground }}>
             
             <View
                 style={{
