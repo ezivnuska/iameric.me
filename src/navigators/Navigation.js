@@ -3,7 +3,7 @@ import {
     NavigationContainer,
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,
-    useTheme,
+    // useTheme,
 } from '@react-navigation/native'
 import {
     MD2DarkTheme,
@@ -32,7 +32,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
 import { dark, light } from '../styles/colors'
 import merge from 'deepmerge'
-import { PaperProvider } from 'react-native-paper'
+import { useTheme } from 'react-native-paper'
 
 const UsersStack = createNativeStackNavigator()
 const UsersStackScreen = () => {

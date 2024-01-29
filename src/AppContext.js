@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
-import { getLocally, saveLocally } from './utils/storage'
+// import { getLocally, saveLocally } from './utils/storage'
 
 const initialState = {
     cart: null,
@@ -18,21 +18,21 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     let { cart, dims, entries, loading, orders, products, profileImage, user, users, loaded } = state
 
-    const updateOrder = newData => {
-        const index = orders.findIndex(order => order._id === newData._id)
-        if (index <= -1) return
-        const currentOrder = orders[index]
-        const updatedOrder = {
-            ...currentOrder,
-            ...newData,
-        }
+    // const updateOrder = newData => {
+    //     const index = orders.findIndex(order => order._id === newData._id)
+    //     if (index <= -1) return
+    //     const currentOrder = orders[index]
+    //     const updatedOrder = {
+    //         ...currentOrder,
+    //         ...newData,
+    //     }
         
-        return [
-            ...orders.slice(0, index),
-            updatedOrder,
-            ...orders.slice(index + 1),
-        ]
-    }
+    //     return [
+    //         ...orders.slice(0, index),
+    //         updatedOrder,
+    //         ...orders.slice(index + 1),
+    //     ]
+    // }
     
     switch(action.type) {
         case 'SET_DIMS':
@@ -254,56 +254,58 @@ export const AppContext = createContext({
 })
 
 
-export const AppProvider = ({ children }) => {
+export const AppProvider = ({ children, preferences }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
-    const [isThemeDark, setIsThemeDark] = useState(false)
+    // const [isThemeDark, setIsThemeDark] = useState(false)
     
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
     const otherUsersByRole = role => (state.users && state.user) ? usersByRole(role).filter(u => u._id !== state.user._id) : null
 
-    useEffect(() => {
-        initTheme()
-    }, [])
+    // useEffect(() => {
+    //     initTheme()
+    // }, [])
 
-    const initTheme = async () => {
-        const themeIsDark = await getLocally('dark')
-        setIsThemeDark(themeIsDark)
-    }
+    // const initTheme = async () => {
+    //     const themeIsDark = await getLocally('dark')
+    //     setIsThemeDark(themeIsDark)
+    // }
 
-    const toggleTheme = useCallback(async () => {
-        console.log('toggleTheme', isThemeDark)
-        await saveLocally('dark', !isThemeDark)
-        return setIsThemeDark(!isThemeDark)
-    }, [isThemeDark])
+    // const toggleTheme = useCallback(async () => {
+    //     console.log('toggleTheme', isThemeDark)
+    //     await saveLocally('dark', !isThemeDark)
+    //     return setIsThemeDark(!isThemeDark)
+    // }, [isThemeDark])
 
-    const preferences = useMemo(
-        () => ({
-            toggleTheme,
-            isThemeDark,
-        }),
-        [toggleTheme, isThemeDark]
-    )
+    // const preferences = useMemo(
+    //     () => ({
+    //         toggleTheme,
+    //         isThemeDark,
+    //     }),
+    //     [toggleTheme, isThemeDark]
+    // )
 
     return (
-        <AppContext.Provider value={{
-            ...preferences,
-            state,
-            dispatch,
-            cart: state.cart,
-            customers: otherUsersByRole('customer'),
-            dims: state.dims,
-            drivers: otherUsersByRole('driver'),
-            entries: state.entries,
-            loading: state.loading,
-            orders: state.orders,
-            products: state.products,
-            user: state.user,
-            users: state.users,
-            vendors: usersByRole('vendor'),
-            loaded: state.loaded,
-            toggleTheme,
-            isThemeDark,
-        }}>
+        <AppContext.Provider
+            value={{
+                ...preferences,
+                state,
+                dispatch,
+                cart: state.cart,
+                customers: otherUsersByRole('customer'),
+                dims: state.dims,
+                drivers: otherUsersByRole('driver'),
+                entries: state.entries,
+                loading: state.loading,
+                orders: state.orders,
+                products: state.products,
+                user: state.user,
+                users: state.users,
+                vendors: usersByRole('vendor'),
+                loaded: state.loaded,
+                // toggleTheme,
+                // isThemeDark,
+            }}
+        >
             {children}
         </AppContext.Provider>
     )

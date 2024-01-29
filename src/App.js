@@ -1,9 +1,7 @@
-import React, { createContext, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
-  NavigationContainer,
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
-  useTheme,
 } from '@react-navigation/native'
 import {
   MD2DarkTheme,
@@ -13,44 +11,61 @@ import { Layout } from './layout'
 import { AppProvider } from './AppContext'
 import { PaperProvider } from 'react-native-paper'
 import { getLocally, saveLocally } from './utils/storage'
+import { dark, light } from './styles/colors'
+import merge from 'deepmerge'
+import { PreferencesContext } from './PreferencesContext'
 
-const App = () => {
-    
+const CombinedDefaultTheme = merge(MD2LightTheme, NavigationDefaultTheme, light)
+const CombinedDarkTheme = merge(MD2DarkTheme, NavigationDarkTheme, dark)
+
+export default () => {
+
   const [isThemeDark, setIsThemeDark] = useState(false)
-
-  const CombinedDefaultTheme = merge(MD2LightTheme, NavigationDefaultTheme, light)
-  const CombinedDarkTheme = merge(MD2DarkTheme, NavigationDarkTheme, dark)
 
   let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme
 
   useEffect(() => {
     initTheme()
-}, [])
+  }, [])
+  
+  const initTheme = async () => {
 
-const initTheme = async () => {
-    const themeIsDark = await getLocally('dark')
-    setIsThemeDark(themeIsDark)
-}
+    let localDarkValue = await getLocally('dark')
+    if (!localDarkValue) await saveDarkValue(false)
+  }
 
-const toggleTheme = useCallback(async () => {
-    console.log('toggleTheme', isThemeDark)
-    await saveLocally('dark', !isThemeDark)
+  const saveDarkValue = async darkValue => {
+    try {
+      await saveLocally('dark', darkValue)
+    } catch (err) {
+      console.log('error saving isThemeDark to local value', err)
+    }
+  }
+
+  useEffect(() => {
+    theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme
+  }, [isThemeDark])
+
+  const toggleTheme = useCallback(async () => {
+    await saveDarkValue(!isThemeDark)
     return setIsThemeDark(!isThemeDark)
-}, [isThemeDark])const preferences = useMemo(
-  () => ({
-      toggleTheme,
-      isThemeDark,
-  }),
-  [toggleTheme, isThemeDark]
-)
+  }, [isThemeDark])
 
-return (
-    <PaperProvider theme={theme}>
-      <AppProvider>
-        <Layout />
-      </AppProvider>
-    </PaperProvider>
+  const preferences = useMemo(
+    () => ({
+        toggleTheme,
+        isThemeDark,
+    }),
+    [toggleTheme, isThemeDark]
+  )
+
+  return (
+    <PreferencesContext.Provider value={preferences}>
+      <PaperProvider theme={theme}>
+        <AppProvider preferences={preferences}>
+          <Layout />
+        </AppProvider>
+      </PaperProvider>
+    </PreferencesContext.Provider>
   )
 }
-
-export default App

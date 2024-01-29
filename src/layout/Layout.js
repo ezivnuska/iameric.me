@@ -8,11 +8,12 @@ import { Navigation } from '../navigators'
 import { AppContext } from '../AppContext'
 import {
     Header,
-    LoadingView,
+    // LoadingView,
 } from '@components'
-import base from '../styles/base'
+// import base from '../styles/base'
 import { useTheme } from 'react-native-paper'
-import { light } from '../styles/colors'
+// import { light } from '../styles/colors'
+import { PreferencesContext } from '../PreferencesContext'
 
 let initialDims = {
     window: Dimensions.get('window'),
@@ -24,12 +25,10 @@ export default () => {
     const {
         dispatch,
         dims,
-        user,
-        toggleTheme,
-        isThemeDark,
     } = useContext(AppContext)
 
     const theme = useTheme()
+    const { toggleTheme, isThemeDark } = useContext(PreferencesContext)
 
     useEffect(() => {
         

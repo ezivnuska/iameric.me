@@ -6,16 +6,10 @@ import {
 } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import layout from '../styles/layout'
-import { AppContext } from '../AppContext'
 
 export default ({ onPress }) => {
 
-    const {
-        theme,
-        toggleTheme,
-    } = useContext(AppContext)
-
-    const colors = useTheme()
+    const theme = useTheme()
     
     return (
         <TouchableOpacity
@@ -26,7 +20,7 @@ export default ({ onPress }) => {
                 lineHeight: 45,
                 fontSize: 25,
                 fontWeight: 700,
-                color: colors.brandLight,
+                color: theme?.colors.brandLight,
             }}>
                 iam
                 <Text style={{ color: theme?.colors.brandDark }}>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     View,
 } from 'react-native'
@@ -7,19 +7,18 @@ import {
     Brand,
     CenteredContent,
 } from '.'
-import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
-import { dark, light } from '../styles/colors'
-import { useTheme } from '@react-navigation/native'
+import { useTheme } from 'react-native-paper'
+import { PreferencesContext } from '../PreferencesContext'
 
 export default () => {
     
     const {
-        user,
         toggleTheme,
-    } = useContext(AppContext)
-
-    const { colors } = useTheme()
+        isThemeDark,
+    } = useContext(PreferencesContext)
+    
+    const theme = useTheme()
 
     const onBrandClicked = () => {
         console.log('brandClicked')
@@ -29,7 +28,7 @@ export default () => {
     }
     
     return (
-        <CenteredContent type='full' style={{ backgroundColor: colors.headerBackground }}>
+        <CenteredContent type='full' style={{ backgroundColor: theme?.colors.headerBackground }}>
             
             <View
                 style={{
