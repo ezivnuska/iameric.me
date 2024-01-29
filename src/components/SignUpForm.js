@@ -7,17 +7,15 @@ import defaultStyles from '../styles/main'
 import {
 	FormInput,
 	IconButton,
-	RolePicker,
 } from '.'
 import { isValidEmail } from '../utils/auth'
 import { signup } from '../Data'
 import { storeEmail, getSavedEmail } from '../utils/storage'
 
-export default ({ onComplete }) => {
+export default ({ role, onComplete }) => {
 	
 	const [email, setEmail] = useState('')
 	const [username, setUsername] = useState('')
-	const [role, setRole] = useState('driver')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
 	const [loading, setLoading] = useState(false)
@@ -166,12 +164,6 @@ export default ({ onComplete }) => {
 
 				<Text style={[defaultStyles.title, { textAlign: 'center', color: '#fff' }]}>Sign Up</Text>
 
-				<RolePicker
-					value={role}
-					onChange={value => setRole(value)}
-					onKeyPress={onEnter}
-				/>
-
 				<FormInput
 					label='Email'
 					value={email}
@@ -236,7 +228,7 @@ export default ({ onComplete }) => {
 				<IconButton
 					label={loading ? 'Signing Up' : 'Sign Up'}
 					disabled={loading || !isValid() || errors.length}
-					onClick={submitData}
+					onPress={submitData}
 					bgColor={loading ? 'gray' : 'blue'}
 				/>
 

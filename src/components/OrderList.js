@@ -255,7 +255,7 @@ export default () => {
                     <FlatList
                         data={items.sort((a, b) => {
                             console.log('a', a)
-                            return a.product.status >= b.product.status ? a : b
+                            return a.status >= b.status ? a : b
                         })}
                         listKey={() => 'orders'}
                         keyExtractor={(item, index) => 'order-' + index}

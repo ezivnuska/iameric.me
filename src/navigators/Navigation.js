@@ -1,10 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useCallback, useEffect, useState } from 'react'
 import {
     NavigationContainer,
+    DarkTheme as NavigationDarkTheme,
+    DefaultTheme as NavigationDefaultTheme,
+    useTheme,
 } from '@react-navigation/native'
+import {
+    MD2DarkTheme,
+    MD2LightTheme,
+  } from 'react-native-paper'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     DetailsScreen,
+    DriverScreen,
+    DriversScreen,
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
@@ -12,7 +21,6 @@ import {
     OrderScreen,
     ProductsScreen,
     SettingsScreen,
-    SplashScreen,
     StartScreen,
     UsersScreen,
     VendorScreen,
@@ -22,78 +30,9 @@ import { navigationRef } from './RootNavigation'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
-
-// const SecureStack = createBottomTabNavigator()
-// const SecureStackScreen = () => {
-//     return (
-//         <SecureStack.Navigator
-//             initialRouteName='Vendors'
-//             screenOptions={{
-//                 headerShown: false,
-//                 tabBarShowLabel: false,
-//                 tabBarActiveTintColor: '#fff',
-//                 tabBarLabelStyle: { fontSize: 18 },
-//                 tabBarStyle: { backgroundColor: '#000' },
-//             }}
-//         >
-//             <SecureStack.Screen
-//                 name='Vendors'
-//                 component={VendorsStackScreen}
-//                 options={{
-//                     tabBarLabel: 'Vendors',
-//                     tabBarIcon: ({ focused, color, size }) => (
-//                         <Icon name='fast-food-outline' size={size} color={color} />
-//                     ),
-//                 }}
-//             />
-
-//             <SecureStack.Screen
-//                 name='Users'
-//                 component={UsersStackScreen}
-//                 options={{
-//                     tabBarLabel: 'Users',
-//                     tabBarIcon: ({ focused, color, size }) => (
-//                         <Icon name='people-circle-outline' size={size} color={color} />
-//                     ),
-//                 }}
-//             />
-
-//             <SecureStack.Screen
-//                 name='Forum'
-//                 component={ForumScreen}
-//                 options={{
-//                     tabBarLabel: 'Forum',
-//                     tabBarIcon: ({ focused, color, size }) => (
-//                         <Icon name='chatbubble-outline' size={size} color={color} />
-//                     ),
-//                 }}
-//             />
-            
-//             <SecureStack.Screen
-//                 name='Settings'
-//                 component={SettingsScreen}
-//                 options={{
-//                     tabBarLabel: 'Settings',
-//                     tabBarIcon: ({ focused, color, size }) => (
-//                         <Icon name='cog' size={size} color={color} />
-//                     ),
-//                 }}
-//             />
-
-//             <SecureStack.Screen
-//                 name='Images'
-//                 component={ImagesScreen}
-//                 options={{
-//                     tabBarLabel: 'Images',
-//                     tabBarIcon: ({ focused, color, size }) => (
-//                         <Icon name='images-outline' size={size} color={color} />
-//                     ),
-//                 }}
-//             />
-
-//         </SecureStack.Navigator>
-//     )
-// }
+import { dark, light } from '../styles/colors'
+import merge from 'deepmerge'
+import { PaperProvider } from 'react-native-paper'
 
 const UsersStack = createNativeStackNavigator()
 const UsersStackScreen = () => {
@@ -121,93 +60,34 @@ const UsersStackScreen = () => {
     )
 }
 
-// const OrdersStack = createNativeStackNavigator()
-// const OrdersStackScreen = () => {
-
-//     return (
-//         <OrdersStack.Navigator
-//             screenOptions={() => ({
-//                 initialRouteName: 'OrderList',
-//                 headerShown: false,
-//             })}
-//         >
-//             <OrdersStack.Screen
-//                 name='OrderList'
-//                 component={OrderScreen}
-//                 options={{ title: 'Orders' }}
-//             />
-
-//             {/* <OrdersStack.Screen
-//                 name='Order'
-//                 component={OrderScreen}
-//                 options={{ title: 'Order' }}
-//             /> */}
-            
-//         </OrdersStack.Navigator>
-//     )
-// }
-
-// const VendorStack = createNativeStackNavigator()
-// const VendorStackScreen = () => {
-
-//     return (
-//         <VendorStack.Navigator
-//             screenOptions={() => ({
-//                 initialRouteName: 'Vendor',
-//                 headerShown: false,
-//             })}
-//         >
-//             <VendorStack.Screen
-//                 name='Vendor'
-//                 component={VendorScreen}
-//                 options={{ title: 'Vendor' }}
-//             />
-
-//             <VendorStack.Screen
-//                 name='Menu'
-//                 component={MenuScreen}
-//                 options={{ title: 'Menu' }}
-//             />
-            
-//         </VendorStack.Navigator>
-//     )
-// }
-
 const VendorsStack = createNativeStackNavigator()
-const VendorsStackScreen = () => {
+const VendorsStackScreen = () => (
+    <VendorsStack.Navigator
+        screenOptions={() => ({
+            initialRouteName: 'VendorList',
+            headerShown: false,
+        })}
+    >
+        <VendorsStack.Screen
+            name='VendorList'
+            component={VendorsScreen}
+            options={{ title: 'Vendors' }}
+        />
 
-    const {
-        user,
-    } = useContext(AppContext)
-
-    return (
-        <VendorsStack.Navigator
-            screenOptions={() => ({
-                initialRouteName: 'VendorList',
-                headerShown: false,
-            })}
-        >
-            <VendorsStack.Screen
-                name='VendorList'
-                component={VendorsScreen}
-                options={{ title: 'Vendors' }}
-            />
-
-            <VendorsStack.Screen
-                name='Vendor'
-                component={VendorScreen}
-                options={{ title: 'Vendor' }}
-            />
-            
-            {/* <VendorsStack.Screen
-                name='VendorDetails'
-                component={VendorStackScreen}
-                options={{ title: 'Vendor' }}
-            /> */}
-            
-        </VendorsStack.Navigator>
-    )
-}
+        <VendorsStack.Screen
+            name='Vendor'
+            component={VendorScreen}
+            options={{ title: 'Vendor' }}
+        />
+        
+        {/* <VendorsStack.Screen
+            name='VendorDetails'
+            component={VendorStackScreen}
+            options={{ title: 'Vendor' }}
+        /> */}
+        
+    </VendorsStack.Navigator>
+)
 
 const ProductsStack = createNativeStackNavigator()
 const ProductsStackScreen = () => (
@@ -222,67 +102,74 @@ const ProductsStackScreen = () => (
             component={ProductsScreen}
             options={{ title: 'Products' }}
         />
-
-        {/* <ProductsStack.Screen
-            name='Product'
-            component={ProductScreen}
-            options={{ title: 'Product' }}
-        /> */}
         
     </ProductsStack.Navigator>
 )
 
-// const DriversStack = createNativeStackNavigator()
-// const DriversStackScreen = () => (
-//     <DriversStack.Navigator
-//         screenOptions={() => ({
-//             initialRouteName: 'DriverList',
-//             headerShown: false,
-//         })}
-//     >
-//         <DriversStack.Screen
-//             name='DriverList'
-//             component={DriversScreen}
-//             options={{ title: 'Drivers' }}
-//         />
-
-//         <DriversStack.Screen
-//             name='Driver'
-//             component={DriverScreen}
-//             options={{ title: 'Driver' }}
-//         />
-        
-//     </DriversStack.Navigator>
-// )
-
-const PublicStack = createNativeStackNavigator()
-const PublicStackScreen = () => (
-    <PublicStack.Navigator
+const DriversStack = createNativeStackNavigator()
+const DriversStackScreen = () => (
+    <DriversStack.Navigator
         screenOptions={() => ({
-            initialRouteName: 'Splash',
+            initialRouteName: 'DriverList',
             headerShown: false,
         })}
     >
-        <PublicStack.Screen
-            name='Splash'
-            component={SplashScreen}
-            options={{ title: 'Splash' }}
+        <DriversStack.Screen
+            name='DriverList'
+            component={DriversScreen}
+            options={{ title: 'Drivers' }}
         />
 
-        <PublicStack.Screen
-            name='Start'
-            component={StartScreen}
-            options={{ title: 'Start' }}
+        <DriversStack.Screen
+            name='Driver'
+            component={DriverScreen}
+            options={{ title: 'Driver' }}
         />
         
-    </PublicStack.Navigator>
+    </DriversStack.Navigator>
 )
 
+// const PublicStack = createNativeStackNavigator()
+// const PublicStackScreen = () => {
+//     // console.log('yoyoy')
+//     return (
+//         <PublicStack.Navigator
+//             screenOptions={() => ({
+//                 initialRouteName: 'Splash',
+//                 headerShown: false,
+//             })}
+//         >
+//             <PublicStack.Screen
+//                 name='Splash'
+//                 component={SplashScreen}
+//                 options={{ title: 'Splash' }}
+//             />
+    
+//             <PublicStack.Screen
+//                 name='Start'
+//                 component={StartScreen}
+//                 options={{ title: 'Start' }}
+//             />
+            
+//         </PublicStack.Navigator>
+//     )
+// }
+
 const PrivateStack = createBottomTabNavigator()
-const PrivateStackScreen = ({ user }) => {
+const PrivateStackScreen = () => {
+    const { user } = useContext(AppContext)
+    const getInitialRouteName = () => {
+        if (!user || !user.role) return 'Orders'
+        switch (user.role) {
+            case 'customer': return 'Vendors'; break
+            case 'vendor':
+            case 'driver': return 'Orders'; break
+        }
+    }
+    // console.log('private', user)
     return (
         <PrivateStack.Navigator
-            initialRouteName='Orders'
+            initialRouteName={getInitialRouteName()}
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
@@ -302,7 +189,7 @@ const PrivateStackScreen = ({ user }) => {
                 }}
             />
 
-            {(user.role === 'vendor') && (
+            {(user && user.role === 'vendor') && (
                 <PrivateStack.Screen
                     name='Products'
                     component={ProductsStackScreen}
@@ -315,7 +202,7 @@ const PrivateStackScreen = ({ user }) => {
                 />
             )}
 
-            {user.role !== 'vendor' && user.role !== 'driver' && (
+            {user && user.role !== 'vendor' && user.role !== 'driver' && (
                 <PrivateStack.Screen
                     name='Vendors'
                     component={VendorsStackScreen}
@@ -328,7 +215,7 @@ const PrivateStackScreen = ({ user }) => {
                 />
             )}
 
-            {user.role !== 'driver' && (
+            {user && user.role !== 'driver' && (
                 <PrivateStack.Screen
                     name='Users'
                     component={UsersStackScreen}
@@ -340,6 +227,17 @@ const PrivateStackScreen = ({ user }) => {
                     }}
                 />
             )}
+
+            <PrivateStack.Screen
+                name='Drivers'
+                component={DriversStackScreen}
+                options={{
+                    tabBarLabel: 'Drivers',
+                    tabBarIcon: ({ focused, color, size }) => (
+                        <Icon name='car-sport-outline' size={size} color={color} />
+                    ),
+                }}
+            />
 
             <PrivateStack.Screen
                 name='Forum'
@@ -378,19 +276,48 @@ const PrivateStackScreen = ({ user }) => {
     )
 }
 
-const publicScreens = {
-    screens: {
-        Splash: 'splash',
-        Start: 'start',
-    },
-}
+const MainStack = createNativeStackNavigator()
+const MainStackScreen = () => (
+    <MainStack.Navigator
+        screenOptions={() => ({
+            initialRouteName: 'Start',
+            headerShown: false,
+        })}
+    >
 
-const privateScreens = {
+        <MainStack.Screen
+            name='Start'
+            component={StartScreen}
+            options={{ title: 'Start' }}
+        />
+
+        <MainStack.Screen
+            name='Private'
+            component={PrivateStackScreen}
+            options={{ title: 'Private' }}
+        />
+        
+    </MainStack.Navigator>
+)
+
+const config = {
     screens: {
+        Start: 'start',
         Private: {
             path: '',
             screens: {
-                Products: 'products',
+                Orders: {
+                    path: 'orders',
+                    screens: {
+                        OrderList: '',
+                    },
+                },
+                Products: {
+                    path: 'products',
+                    screens: {
+                        ProductList: '',
+                    },
+                },
                 Users: {
                     path: 'users',
                     screens: {
@@ -405,17 +332,11 @@ const privateScreens = {
                         Vendor: '/:id',
                     },
                 },
-                // Drivers: {
-                //     path: 'drivers',
-                //     screens: {
-                //         DriverList: '',
-                //         Driver: '/:id',
-                //     },
-                // },
-                Orders: {
-                    path: 'orders',
+                Drivers: {
+                    path: 'drivers',
                     screens: {
-                        OrderList: '',
+                        DriverList: '',
+                        Driver: '/:id',
                     },
                 },
                 Forum: 'forum',
@@ -431,37 +352,34 @@ export default () => {
     const {
         user,
     } = useContext(AppContext)
-
-    const [verified, setVerified] = useState(false)
-    const [linking, setLinking] = useState(null)
-
-    useEffect(() => {
-        if (user && !verified) setVerified(true)
-        if (!user && verified) setVerified(false)
-        setLinking(getLinking())
-    }, [user, verified])
     
     useEffect(() => {
-        console.log('*** user ***', user)
+        if (user) {
+            console.log(`${user.username} connected.`)
+            navigationRef.navigate('Private')
+        }
+        else {
+            console.log('no user connected.')
+            navigationRef.navigate('Start')
+        }
     }, [user])
 
-    // useEffect(() => {
-    //     console.log('linking', linking)
-    // }, [linking])
-
-    const getLinking = () => ({
+    const linking = {
         prefixes: ['https://iameric.me'],
-        config: (user && verified && linking) ? { ...publicScreens, ...privateScreens } : publicScreens,
-    })
+        config,
+    }
+
+    const theme = useTheme()
 
     return (
         <NavigationContainer
             ref={navigationRef}
             linking={linking}
             fallback={<FallbackScreen />}
+            theme={theme}
             // onStateChange={async state => {}}
         >
-            {user ? <PrivateStackScreen user={user} /> : <PublicStackScreen />}
+            <MainStackScreen />
         </NavigationContainer>
     )
 }

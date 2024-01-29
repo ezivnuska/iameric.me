@@ -11,7 +11,7 @@ import {
 import defaultStyles from '../styles/main'
 import { signin } from '../Data'
 import { isValidEmail } from '../utils/auth'
-import { storeEmail, getSavedEmail } from '../utils/storage'
+import { saveLocally, getSavedEmail } from '../utils/storage'
 
 export default ({ onComplete }) => {
 
@@ -103,7 +103,7 @@ export default ({ onComplete }) => {
 			return console.log('Could not verifiy credentials.')
 		}
 
-		storeEmail(email)
+		saveLocally('email', email)
 		setLoading(true)
 
 		const data = await signin(email, password)

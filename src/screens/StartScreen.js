@@ -9,8 +9,7 @@ import {
 import {
     PopUpModal,
     Screen,
-    // SignUpForm,
-    SelectiveSignUpForm,
+    SignUpForm,
 } from '@components'
 import { AppContext } from '../AppContext'
 import { Button } from 'antd'
@@ -172,7 +171,7 @@ export default ({ navigation }) => {
                 visible={showSignUpModal}
                 onRequestClose={() => setShowSignUpModal(false)}
             >
-                <SelectiveSignUpForm
+                <SignUpForm
                     role={showSignUpModal}
                     onComplete={onModalClosed}
                 />
