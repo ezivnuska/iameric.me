@@ -5,7 +5,6 @@ import {
     Text,
     View,
 } from 'react-native'
-import { useTheme } from '@react-navigation/native'
 import {
     CartButton,
     IconButton,
@@ -14,19 +13,20 @@ import {
 } from '.'
 import { signout } from '../utils/auth'
 import { AppContext } from '../AppContext'
-import layout from '../styles/layout'
-import DefaultAvatar from '../images/avatar-default-small.png'
-import { DownOutlined } from '@ant-design/icons'
-import axios from 'axios'
-import Icon from 'react-native-vector-icons/Ionicons'
-import classes from '../styles/classes'
+// import layout from '../styles/layout'
+// import DefaultAvatar from '../images/avatar-default-small.png'
+// import { DownOutlined } from '@ant-design/icons'
+// import axios from 'axios'
+// import Icon from 'react-native-vector-icons/Ionicons'
+// import classes from '../styles/classes'
 import { navigationRef } from 'src/navigators/RootNavigation'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const UserButton = ({ onPress, user }) => {
 
-    const { colors } = useTheme()
+    const theme = useTheme()
     
     const getSource = () => user.profileImage
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
@@ -64,7 +64,7 @@ const UserButton = ({ onPress, user }) => {
             />
     
             <Text style={{
-                color: colors.textDefault,
+                color: theme?.colors.textDefault,
                 fontWeight: 700,
                 lineHeight: 32,
             }}>

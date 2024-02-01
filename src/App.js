@@ -12,13 +12,16 @@ import { AppProvider } from './AppContext'
 import { PaperProvider } from 'react-native-paper'
 import { getLocally, saveLocally } from './utils/storage'
 import { dark, light } from './styles/colors'
-import merge from 'deepmerge'
 import { PreferencesContext } from './PreferencesContext'
-
-const CombinedDefaultTheme = merge(MD2LightTheme, NavigationDefaultTheme, light)
-const CombinedDarkTheme = merge(MD2DarkTheme, NavigationDarkTheme, dark)
+import merge from 'deepmerge'
 
 export default () => {
+
+  const defaultTheme = merge(MD2LightTheme, NavigationDefaultTheme)
+  const darkTheme = merge(MD2DarkTheme, NavigationDarkTheme)
+  
+  const CombinedDefaultTheme = merge(defaultTheme, light)
+  const CombinedDarkTheme = merge(darkTheme, dark)
 
   const [isThemeDark, setIsThemeDark] = useState(false)
 

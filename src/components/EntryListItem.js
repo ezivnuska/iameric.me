@@ -10,8 +10,11 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import classes from '../styles/classes'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
+import { useTheme } from 'react-native-paper'
 
 export default ({ entry, onDelete }) => {
+
+    const theme = useTheme()
     
     const {
         state,
@@ -80,7 +83,14 @@ export default ({ entry, onDelete }) => {
                             borderBottomColor: '#666',
                         }}
                     >
-                        <Text style={classes.textDefault}>{text}</Text>
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                { color: theme?.colors.textDefault }
+                            ]}
+                        >
+                            {text}
+                        </Text>
                     </View>
                 </View>
             ) : <ActivityIndicator size='small' />}

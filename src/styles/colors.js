@@ -8,7 +8,7 @@ export const dark = {
         textDefault: '#fff',
         userTitle: '#fff',
         brandLight: '#fff',
-        brandDark: '#ddd',
+        brandDark: '#aaa',
     },
 }
 
@@ -16,12 +16,12 @@ export const light = {
     dark: false,
     colors: {
         background: '#fff',
-        headerBackground: 'pink',
+        headerBackground: '#fff',
         headerPrimary: '#000',
         headerSecondary: 'orange',
         textDefault: '#000',
         userTitle: '#000',
-        brandLight: 'yellow',
-        brandDark: '#ddd',
+        brandLight: '#000',
+        brandDark: '#aaa',
     },
 }

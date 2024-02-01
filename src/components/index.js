@@ -14,7 +14,6 @@ import DriverListItem from './DriverListItem'
 import DriverModule from './DriverModule'
 import DriverSelector from './DriverSelector'
 import EntryModule from './EntryModule'
-import EntryList from './EntryList'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
@@ -86,7 +85,6 @@ export {
     DriverModule,
     DriverSelector,
     EntryModule,
-    EntryList,
     EntryListItem,
     FeedbackForm,
     FileSelector,

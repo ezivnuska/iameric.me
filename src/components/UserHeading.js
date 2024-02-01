@@ -5,15 +5,16 @@ import {
     Text,
     View,
 } from 'react-native'
-import main from '../styles/main'
 import { ThunderboltOutlined } from '@ant-design/icons'
-// import DefaultAvatar from '../images/avatar-default-small.png'
 import classes from '../styles/classes'
 import axios from 'axios'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ user, filename, onPress = null }) => {
+
+    const theme = useTheme()
 
     const [loading, setLoading] = useState(false)
     const [online, setOnline] = useState(false)
@@ -69,7 +70,14 @@ export default ({ user, filename, onPress = null }) => {
                         flexBasis: 'auto',
                     }}
                 >
-                    <Text style={classes.userHeading}>{user.username} {online && <ThunderboltOutlined style={{ color: 'green' }} />}</Text>
+                    <Text
+                        style={[
+                            classes.userHeading,
+                            { color: theme?.colors.textDefault }
+                        ]}
+                    >
+                        {user.username}
+                        {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}</Text>
                 </View>
             )}
         </Pressable>

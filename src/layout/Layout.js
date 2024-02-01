@@ -13,7 +13,7 @@ import {
 // import base from '../styles/base'
 import { useTheme } from 'react-native-paper'
 // import { light } from '../styles/colors'
-import { PreferencesContext } from '../PreferencesContext'
+// import { PreferencesContext } from '../PreferencesContext'
 
 let initialDims = {
     window: Dimensions.get('window'),
@@ -28,7 +28,7 @@ export default () => {
     } = useContext(AppContext)
 
     const theme = useTheme()
-    const { toggleTheme, isThemeDark } = useContext(PreferencesContext)
+    // const { toggleTheme, isThemeDark } = useContext(PreferencesContext)
 
     useEffect(() => {
         
@@ -51,7 +51,7 @@ export default () => {
             style={{
                 width: dims.window.width,
                 height: dims.window.height,
-                backgroundColor: theme?.colors.headerSecondary,
+                backgroundColor: theme?.colors.headerBackground,
             }}
         >
             <Header />

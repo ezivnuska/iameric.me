@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     View,
 } from 'react-native'
@@ -15,17 +15,9 @@ export default () => {
     
     const {
         toggleTheme,
-        isThemeDark,
     } = useContext(PreferencesContext)
     
     const theme = useTheme()
-
-    const onBrandClicked = () => {
-        console.log('brandClicked')
-        toggleTheme()
-        // if (user) navigate('Private', { screen: 'Orders' })
-        // else navigate('Start')
-    }
     
     return (
         <CenteredContent type='full' style={{ backgroundColor: theme?.colors.headerBackground }}>
@@ -51,7 +43,7 @@ export default () => {
                         flexBasis: 'auto',
                     }}
                 >
-                    <Brand onPress={onBrandClicked} />
+                    <Brand onPress={toggleTheme} />
                 </View>
 
                 <View

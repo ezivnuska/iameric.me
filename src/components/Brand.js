@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import {
     Text,
     TouchableOpacity,
-    useColorScheme,
+    // useColorScheme,
 } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import layout from '../styles/layout'

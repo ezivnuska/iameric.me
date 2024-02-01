@@ -14,6 +14,7 @@ import { AppContext } from '../AppContext'
 import moment from 'moment'
 import classes from '../styles/classes'
 import { getOrdersById } from '../utils/data'
+import { useTheme } from 'react-native-paper'
 
 export default () => {
 
@@ -22,6 +23,8 @@ export default () => {
         orders,
         user,
     } = useContext(AppContext)
+
+    const theme = useTheme()
 
     const [loading, setLoading] = useState(false)
     const [featured, setFeatured] = useState(null)
@@ -269,7 +272,7 @@ export default () => {
                             </OrderPreview>
                         )}
                     />
-                ) : <Text style={classes.textDefault}>No current orders.</Text>
+                ) : <Text style={{ color: theme?.colors.textDefault }}>No current orders.</Text>
             }
         </View>
     )

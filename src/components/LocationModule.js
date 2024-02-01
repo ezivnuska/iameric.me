@@ -15,6 +15,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { getLocationWithUserId } from '../utils/data'
 import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
 const initialState = {
     address1: '',
@@ -25,6 +26,8 @@ const initialState = {
 }
 
 export default ({ userId }) => {
+
+    const theme = useTheme()
 
     const {
         dispatch,
@@ -83,6 +86,7 @@ export default ({ userId }) => {
                 disabled={loading}
                 onPress={() => setModalVisible(true)}
             />
+            
             {loading
                 ? <LoadingView label='Loading location...' />
                 : location
@@ -91,7 +95,14 @@ export default ({ userId }) => {
                         <Pressable
                             onPress={() => setModalVisible(true)}
                         >
-                            <Text style={classes.textDefault}>Add your location.</Text>
+                            <Text
+                                style={[
+                                    classes.textDefault,
+                                    { color: theme?.colors.textDefault },
+                                ]}
+                            >
+                                Add your location.
+                            </Text>
                         </Pressable>
                     )
             }

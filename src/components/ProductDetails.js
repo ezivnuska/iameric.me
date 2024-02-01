@@ -11,7 +11,7 @@ import {
 import { Button } from 'antd'
 import main from '../styles/main'
 import classes from 'src/styles/classes'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -49,7 +49,8 @@ const QuantityControl = ({ value, onChange }) => {
                     classes.bold,
                     {
                         flex: 1,
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        color: theme?.colors.textDefault,
                     }
                 ]}
             >

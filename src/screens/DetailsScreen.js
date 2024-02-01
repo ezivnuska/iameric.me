@@ -1,28 +1,27 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
-    Pressable,
     Text,
 } from 'react-native'
 import {
     LoadingView,
-    Menu,
     SecureScreen,
     UserImageModule,
 } from '@components'
 import { AppContext } from '../AppContext'
-// import { goBack, navigate } from '../navigators/RootNavigation'
 import { loadUsers } from '../utils/data'
 import classes from '../styles/classes'
 import { IconButton } from 'src/components'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ navigation, route }) => {
 
+    const theme = useTheme()
+
     const {
         dispatch,
-        // loading,
         users,
     } = useContext(AppContext)
 
@@ -33,7 +32,6 @@ export default ({ navigation, route }) => {
 
         if (!route.params || !route.params.id)
             console.log('missing required id param')
-            // goBack()
         
         if (!users) fetchUsers()
 
@@ -109,17 +107,27 @@ export default ({ navigation, route }) => {
                                 align='left'
                             />
 
-                            <Text style={classes.headerSecondary}>{userDetails.username}</Text>
+                            <Text
+                                style={[
+                                    classes.headerSecondary,
+                                    { color: theme?.colors.textDefault },
+                                ]}
+                            >
+                                {userDetails.username}
+                            </Text>
                             
-                            <Text style={classes.textDefault}>{userDetails.email}</Text>
+                            <Text
+                                style={[
+                                    classes.textDefault,
+                                    { color: theme?.colors.textDefault },
+                                ]}
+                            >
+                                {userDetails.email}
+                            </Text>
 
                             {renderUserAvatar()}
 
                             <UserImageModule user={userDetails} />
-
-                            {/* {userDetails.role === 'vendor' && (
-                                <Menu vendor={userDetails} />
-                            )} */}
                         </>
                     )
                     : null

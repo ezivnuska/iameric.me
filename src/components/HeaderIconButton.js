@@ -6,47 +6,60 @@ import {
 } from 'react-native'
 import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { useTheme } from 'react-native-paper'
 
-export default ({ onPress, disabled, label, iconName = null }) => (
-    <View
-        style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            paddingVertical: 5,
-            backgroundColor: 'transparent',
-            textAlign: 'center',
-            // marginVertical: 10,
-            // borderWidth: 1,
-            // borderColor: 'yellow',
-        }}
-    >
-        {label && (
-            <Text
-                style={[
-                    classes.headerSecondary,
-                    { flexBasis: 'auto', flexGrow: 0 },
-                ]}
-            >
-                {label}
-            </Text>
-        )}
+export default ({ onPress, disabled, label, iconName = null }) => {
 
-        {iconName && (
-            <Pressable
-                onPress={onPress}
-                disabled={disabled}
-            >
-                <Icon
-                    name={iconName}
-                    size={16}
+    const theme = useTheme()
+
+    return (
+        <View
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                paddingVertical: 5,
+                backgroundColor: 'transparent',
+                textAlign: 'center',
+            }}
+        >
+            {label && (
+                <Text
                     style={[
-                        { flexBasis: 'auto', flexShrink: 1, marginLeft: 5, lineHeight: 2 },
                         classes.headerSecondary,
+                        {
+                            flexBasis: 'auto',
+                            flexGrow: 0,
+                            color: theme?.colors.textDefault,
+                        },
                     ]}
-                />
-            </Pressable>
-        )}
-    </View>
-) 
+                >
+                    {label}
+                </Text>
+            )}
+
+            {iconName && (
+                <Pressable
+                    onPress={onPress}
+                    disabled={disabled}
+                >
+                    <Icon
+                        name={iconName}
+                        size={16}
+                        style={[
+                            classes.headerSecondary,
+                            {
+                                flexBasis: 'auto',
+                                flexShrink: 1,
+                                marginLeft: 5,
+                                lineHeight: 2,
+                                color: theme?.colors.textDefault,
+                            },
+                        ]}
+                    />
+                </Pressable>
+            )}
+        </View>
+    )
+}

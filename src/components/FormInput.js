@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
-    StyleSheet,
 	Text,
 	TextInput,
     View,
 } from 'react-native'
 import defaultStyles from '../styles/main'
+import { useTheme } from 'react-native-paper'
 
-const FormInput = ({ label, onChange, invalid = false, ...props }) => {
+export default ({ label, onChange, invalid = false, ...props }) => {
     
+    const theme = useTheme()
+
     const [inputValue, setInputValue] = useState('')
     const [dirty, setDirty] = useState(false)
-
-    // useEffect(() => {
-    //     console.log('label', label)
-    //     console.log('invalid', invalid)
-    // }, [invalid])
 
     const onChangeText = value => {
         setInputValue(value)
@@ -32,7 +29,16 @@ const FormInput = ({ label, onChange, invalid = false, ...props }) => {
             style={[defaultStyles.inputContainer, styles]}
         >
             
-            {(label && label.length) ? <Text style={defaultStyles.darkFormLabel}>{label}</Text> : null}
+            {(label && label.length) ? (
+                <Text
+                    style={[
+                        defaultStyles.darkFormLabel,
+                        { color: theme?.colors.textDefault }
+                    ]}
+                >
+                    {label}
+                </Text>
+            ) : null}
                 
             <TextInput
                 style={[defaultStyles.input, { flexShrink: 0 }]}
@@ -45,5 +51,3 @@ const FormInput = ({ label, onChange, invalid = false, ...props }) => {
         </View>
     )
 }
-
-export default FormInput

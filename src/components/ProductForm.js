@@ -1,19 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    // Image,
-    // Pressable,
-    // Text,
     View,
 } from 'react-native'
 import {
-    // ButtonPrimary,
     CategoryPicker,
     FormInput,
     IconButton,
     ImageFormModule,
-    // ImageUploader,
 } from '.'
-// import { Button } from 'antd'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import main from '../styles/main'
@@ -28,18 +22,13 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(false)
-    // const [ product, setProduct ] = useState(null)
     const [ title, setTitle ] = useState()
     const [ price, setPrice ] = useState()
     const [ blurb, setBlurb ] = useState()
     const [ desc, setDesc ] = useState()
     const [ category, setCategory ] = useState()
-    // const [ image, setImage ] = useState(null)
     const [ image, setImage ] = useState(null)
-    // const [ filename, setFilename ] = useState(null)
-    // const [ path, setPath ] = useState(null)
     const [ attachment, setAttachment ] = useState(null)
-    // const [ showSelector, setShowSelector ] = useState(false)
 
     const onChangeTitle = value => setTitle(value)
     const onChangePrice = value => setPrice(value)
@@ -54,25 +43,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
         }
     }, [])
 
-    // useEffect(() => {
-    //     console.log('attachment changed', attachment)
-    //     if (attachment) {
-    //         console.log('attachment set', attachment)
-    //     }
-    // }, [attachment])
-
-    // const getProductData = async () => {
-    //     setLoading(true)
-    //     const { data } = await axios.get(`/api/product/${existingProduct}`)
-    //     if (!data) {
-    //         return null
-    //     }
-    //     setFormData(data)
-    //     setLoading(false)
-    // }
-
     const setFormData = data => {
-        const { title, price, blurb, desc, category } = data
         setTitle(data.title)
         setPrice(data.price)
         setBlurb(data.blurb)
@@ -82,7 +53,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
     }
 
     const onSubmit = async () => {
-        // console.log('attachment on submit', attachment)
+        
         setLoading(true)
 
         const { _id } = user
@@ -111,7 +82,6 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
             }
         }
 
-        // console.log('product data after attachment', productData)
         const { data } = await axios
             .post('/api/product', productData)
 
@@ -133,38 +103,17 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
         setDesc('')
         setBlurb('')
         setCategory('')
-        // setFilename(null)
         setImage(null)
         setAttachment(null)
 
         onComplete(data)
     }
 
-    // const onImageUploaded = name => {
-    //     console.log('filename set after image upload', name)
-    //     setFilename(name)
-    // }
-    
-    // const onImageSelected = payload => {
-    //     setAttachment(payload)
-    // }
-
     const removeImage = () => {
         if (attachment) {
             setAttachment(null)
         } else if (image) setImage(null)
     }
-
-    // const onAttachmentCancelled = () => {
-    //     // setImage(existingProduct.image || null)
-    //     setAttachment(null)
-    //     // setShowSelector(false)
-    // }
-
-    // const setImageForDeletion = () => {
-    //     setImage(null)
-    //     // setShowSelector(true)
-    // }
 
     const renderImageFormModule = () => {
         
@@ -176,100 +125,12 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
 
         return (
             <ImageFormModule
-                // onImageUpdated={onImageUpdated}
                 onImageSelected={setAttachment}
                 removeImage={removeImage}
                 uri={uri}
             />
         )
     }
-    
-    // const renderImage = () => {
-        
-    //     const uri = image
-    //         ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
-    //         : attachment
-    //             ? attachment.thumbData.uri
-    //             : null
-        
-    //     return uri ? (
-    //         <View
-    //             style={{
-    //                 paddingRight: 10,
-    //             }}
-    //         >
-    //             <Image
-    //                 source={{ uri }}
-    //                 style={{
-    //                     width: 50,
-    //                     height: 50,
-    //                     resizeMode: 'stretch',
-    //                 }}
-    //             />
-    //         </View>
-    //     ) : null
-    // }
-
-    // const renderControls = () => (
-    //     <View
-    //         style={{
-    //             borderWidth: 1,
-    //             borderStyle: 'dotted',
-    //         }}
-    //     >
-            
-    //         {image ? (
-    //             <Button
-    //                 type='primary'
-    //                 size='small'
-    //                 onClick={setImageForDeletion}
-    //                 >
-    //                 <Text>Remove Image</Text>
-    //             </Button>
-    //         ) : attachment ? (
-    //             <Pressable
-    //             onPress={onAttachmentCancelled}
-    //             disabled={loading}
-    //             >
-    //                 <Text>Remove Attachment</Text>
-    //             </Pressable>
-    //         ) : (
-    //             <ImageUploader
-    //                 onImageSelected={onImageSelected}
-    //                 showSubmit={false}
-    //             />
-    //         )}
-    //     </View>
-    // )
-
-    // const renderImageModule = () => (
-    //     <View
-    //         style={{
-    //             marginVertical: 10,
-    //         }}
-    //     >
-    //         {true
-    //             ? (
-    //                 <View
-    //                     style={{
-    //                         display: 'flex',
-    //                         flexDirection: 'row',
-    //                         justifyContent: 'flex-start',
-    //                     }}
-    //                 >
-    //                     {renderImage()}
-    //                     {renderControls()}
-    //                 </View>
-    //             )
-    //             : (
-    //                 <ImageUploader
-    //                     onImageSelected={onImageSelected}
-    //                     showSubmit={false}
-    //                 />
-    //             )
-    //         }
-    //     </View>
-    // )
 
     return (
         <View style={[main.form, { width: '100%' }]}>

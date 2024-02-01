@@ -1,18 +1,22 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    FlatList,
     Text,
     View,
 } from 'react-native'
 import {
-    EntryList,
+    EntryListItem,
     FeedbackForm,
     LoadingView,
 } from '.'
 import { AppContext } from '../AppContext'
 import { deleteEntryWithId, loadEntries } from '../utils/data'
 import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
 export default ({ navigation }) => {
+
+    const theme = useTheme()
     
     const {
         dispatch,
@@ -81,12 +85,25 @@ export default ({ navigation }) => {
                 ? <LoadingView label={loading} />
                 : items && items.length
                     ? (
-                        <EntryList
-                            entries={items.reverse()}
-                            deleteItem={removeItemById}
+                        <FlatList
+                            data={entries.reverse()}
+                            keyExtractor={(item, index) => `${index}-entry-${item._id}`}
+                            renderItem={({ item }) => (
+                                <EntryListItem
+                                    entry={item}
+                                    onDelete={removeItemById}
+                                />
+                            )} 
                         />
                     ) : (
-                        <Text style={classes.textDefault}>No entries yet.</Text>
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                { color: theme?.colors.textDefault },
+                            ]}
+                        >
+                            No entries yet.
+                        </Text>
                     )
             }
 
