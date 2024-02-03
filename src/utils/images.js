@@ -62,3 +62,11 @@ export const openImageSelector = async () => {
     
     return(uri)
 }
+
+export const getImageDataById = async id => {
+    
+    const { data } = await axios
+        .get(`/api/image/${id}`)
+    
+    return data
+}

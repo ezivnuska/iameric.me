@@ -4,10 +4,12 @@ import {
     Screen,
 } from '@components'
 import { AppContext } from '../AppContext'
-import { authenticate } from '../Data'
-import { setUserToken } from '../utils/storage'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { initialize } from '../utils/auth'
+import {
+    authenticate,
+    // initialize,
+} from '../utils/auth'
+// import { setUserToken } from '../utils/storage'
+// import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default ({ children, navigation, ...props }) => {
 

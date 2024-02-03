@@ -12,12 +12,11 @@ import {
     SignUpForm,
 } from '@components'
 import { AppContext } from '../AppContext'
-import { Button } from 'antd'
-import { connect } from '../Data'
-import { initialize } from '../utils/auth'
+import { connect, initialize } from '../utils/auth'
 import classes from '../styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -27,7 +26,7 @@ export default ({ navigation }) => {
         dims,
         dispatch,
         loaded,
-        loading,
+        // loading,
         user,
     } = useContext(AppContext)
 
@@ -35,15 +34,15 @@ export default ({ navigation }) => {
     const [showSignInModal, setShowSignInModal] = useState(null)
 
     useEffect(() => {
-        console.log('START')
         if (!loaded) {
             start()
         }
     }, [])
     
     const start = async () => {
-        console.log('starting')
+        console.log('initializing...')
         await initialize(dispatch)
+        console.log('initialized.')
     }
 
     useEffect(() => {
@@ -55,7 +54,7 @@ export default ({ navigation }) => {
     const onConnect = async type => {
         
         const connectedUser = await connect(type)
-        // console.log('connectedUser', connectedUser)
+        
         if (!connectedUser) {
             console.log('Error: Could not connect user.')
             return
@@ -97,18 +96,25 @@ export default ({ navigation }) => {
     }
 
     const onModalClosed = response => {
-        // console.log('closing modal, setting user', response)
+        
         setUser(response)
+
         if (showSignUpModal) setShowSignUpModal(null)
         if (showSignInModal) setShowSignInModal(null)
-        // if (loading) dispatch({ type: 'SET_LOADING', loading: 'false' })
     }
 
     return (
         <Screen>
             <View style={[
-                styles.buttons,
-                { height: dims ? dims.window.height - 100 : '100%' },
+                {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'stretch',
+                    rowGap: 10,
+                    overflow: 'visible',
+                    height: dims ? dims.window.height - 100 : '100%',
+                },
             ]}>
 
                 <BackgroundImageWithGradient
@@ -181,114 +187,119 @@ export default ({ navigation }) => {
     )
 }
 
-const BackgroundImageWithGradient = ({ caption, children, imageSource }) => (
-    <View
-        style={styles.button}
-        // onPress={() => onConnect('driver')}
-    >
-        <ImageBackground
-            style={ styles.image }
-            resizeMode='cover'
-            source={imageSource}
-        >
-            <LinearGradient
-                colors={['#00000000', '#000000']}
-                style={{ flex: 1, opacity: 1 }}
-            >
-                <Text style={[ classes.headerSecondary, styles.caption ]}>
-                    {caption}        
-                </Text>
+const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
+    
+    const theme = useTheme()
 
-                {children}
-
-            </LinearGradient>
-
-        </ImageBackground>
-
-    </View>
-)
-
-const ControlButton = ({ label, onPress, iconName = null }) => (
-
-    <Pressable
-        onPress={onPress}
-        style={{
-            flexBasis: 'auto',
-            flexGrow: 0,
-            flexShrink: 1,
-        }}
-    >
-                                        
+    return (
         <View
             style={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
+                flex: 1,
+                flexGrow: 1,
+                borderRadius: 20,
+                overflow: 'hidden',
+                position: 'relative',
             }}
         >
-            <Text
-                style={[
-                    classes.buttonText,
-                    {
-                        flexBasis: 'auto',
-                        flexGrow: 1,
-                        flexShrink: 0,
-                    }
-                ]}
+            <ImageBackground
+                style={{ flex: 1 }}
+                resizeMode='cover'
+                source={imageSource}
             >
-                {label}
-            </Text>
+                <LinearGradient
+                    style={{ flex: 1, opacity: 1 }}
+                    colors={theme?.dark
+                        ? [ '#00000000', '#000000' ]
+                        : [ '#ffffff00', '#ffffff' ]
+                    }
+                >
+                    <Text
+                        style={[
+                            classes.headerSecondary,
+                            {
+                                position: 'absolute',
+                                bottom: 30,
+                                left: 15,
+                                fontWeight: 700,
+                                color: theme?.colors.textDefault,
+                            },
+                        ]}
+                    >
+                        {caption}        
+                    </Text>
 
-            {iconName && (
-                <Icon
-                    name={iconName}
-                    size={18}
-                    color='#fff'
-                    style={{
-                        flex: 1,
-                        marginLeft: 5,
-                    }}
-                />
-            )}
+                    {children}
+
+                </LinearGradient>
+
+            </ImageBackground>
 
         </View>
+    )
+}
 
-    </Pressable>
-)
+const ControlButton = ({ label, onPress, iconName = null }) => {
+    
+    const theme = useTheme()
+
+    return (
+        <Pressable
+            onPress={onPress}
+            style={{
+                flexBasis: 'auto',
+                flexGrow: 0,
+                flexShrink: 1,
+            }}
+        >
+                                            
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start',
+                }}
+            >
+                <Text
+                    style={[
+                        classes.buttonText,
+                        {
+                            flexBasis: 'auto',
+                            flexGrow: 1,
+                            flexShrink: 0,
+                            color: theme?.colors.textDefault,
+                        }
+                    ]}
+                >
+                    {label}
+                </Text>
+
+                {iconName && (
+                    <Icon
+                        name={iconName}
+                        size={18}
+                        color={theme?.colors.textDefault}
+                        style={{
+                            flex: 1,
+                            marginLeft: 5,
+                        }}
+                    />
+                )}
+
+            </View>
+
+        </Pressable>
+    )
+}
 
 const styles = StyleSheet.create({
-    buttons: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        alignItems: 'stretch',
-        rowGap: 10,
-        overflow: 'visible',
-    },
-    button: {
-        flex: 1,
-        flexGrow: 1,
-        borderRadius: 20,
-        overflow: 'hidden',
-        position: 'relative',
-    },
-    image: {
-        flex: 1,
-    },
-    caption: {
-        position: 'absolute',
-        bottom: 40,
-        left: 15,
-        fontWeight: 700,
-    },
     controls: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 15,
+        bottom: 10,
         width: '100%',
         paddingHorizontal: 15,
     },

@@ -2,6 +2,7 @@ export const dark = {
     dark: true,
     colors: {
         background: '#000',
+        backgroundTransparent: '#00000000',
         border: '#fff',
         brandDark: '#aaa',
         brandLight: '#fff',
@@ -18,6 +19,7 @@ export const light = {
     dark: false,
     colors: {
         background: '#fff',
+        backgroundTransparent: '#fffff00',
         border: '#000',
         brandDark: '#aaa',
         brandLight: '#000',

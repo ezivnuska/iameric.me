@@ -9,8 +9,7 @@ import {
 	LoadingView,
 } from '.'
 import defaultStyles from '../styles/main'
-import { signin } from '../Data'
-import { isValidEmail } from '../utils/auth'
+import { isValidEmail, signin } from '../utils/auth'
 import { saveLocally, getSavedEmail } from '../utils/storage'
 
 export default ({ onComplete }) => {

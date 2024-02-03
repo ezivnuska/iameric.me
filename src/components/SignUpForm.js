@@ -8,8 +8,10 @@ import {
 	FormInput,
 	IconButton,
 } from '.'
-import { isValidEmail } from '../utils/auth'
-import { signup } from '../Data'
+import {
+	isValidEmail,
+	signup,
+} from '../utils/auth'
 import { storeEmail, getSavedEmail } from '../utils/storage'
 
 export default ({ role, onComplete }) => {

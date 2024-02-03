@@ -13,7 +13,7 @@ import defaultStyles from '../styles/main'
 import { AppContext } from '../AppContext'
 import { clearStorage } from '../utils/storage'
 import { Button } from 'antd'
-import { unsubscribe } from '../Data'
+import { unsubscribe } from '../utils/auth'
 import classes from '../styles/classes'
 
 export default ({ id }) => {
