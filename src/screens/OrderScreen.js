@@ -1,11 +1,11 @@
 import React from 'react'
 import {
     OrderList,
-    SecureScreen,
+    Screen,
 } from '@components'
 
 export default ({ navigation }) => (
-    <SecureScreen navigation={navigation}>
+    <Screen navigation={navigation}>
         <OrderList />
-    </SecureScreen>
+    </Screen>
 )

@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
     ImageModule,
-    SecureScreen,
+    Screen,
 } from '@components'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
@@ -16,7 +16,7 @@ export default ({ navigation }) => {
     } = useContext(AppContext)
 
     return (
-        <SecureScreen navigation={navigation}>
+        <Screen navigation={navigation}>
             
             <Text style={classes.pageTitle}>
                 Images
@@ -26,6 +26,6 @@ export default ({ navigation }) => {
                 ? <ImageModule user={user} />
                 : <Text>No user</Text>
             }
-        </SecureScreen>
+        </Screen>
     )
 }

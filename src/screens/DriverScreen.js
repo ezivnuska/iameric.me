@@ -7,7 +7,7 @@ import {
 import {
     IconButton,
     Menu,
-    SecureScreen,
+    Screen,
     LoadingView,
 } from '@components'
 import { AppContext } from '../AppContext'
@@ -93,7 +93,7 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <SecureScreen navigation={navigation}>
+        <Screen navigation={navigation}>
             
             {loading
                 ? <LoadingView label={loading} />
@@ -116,6 +116,6 @@ export default ({ navigation, route }) => {
                     : null
             }
             
-        </SecureScreen>
+        </Screen>
     )
 }

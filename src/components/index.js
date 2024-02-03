@@ -49,7 +49,6 @@ import ProductListItem from './ProductListItem'
 import ProductSelector from './ProductSelector'
 import RolePicker from './RolePicker'
 import Screen from './Screen'
-import SecureScreen from './SecureScreen'
 import SignInForm from './SignInForm'
 import SignoutModule from './SignoutModule'
 import SignUpForm from './SignUpForm'
@@ -120,7 +119,6 @@ export {
     ProductSelector,
     RolePicker,
     Screen,
-    SecureScreen,
     SimpleLink,
     SignInForm,
     SignUpForm,

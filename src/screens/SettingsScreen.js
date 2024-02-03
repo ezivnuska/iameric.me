@@ -7,7 +7,7 @@ import {
     DeleteAccountButton,
     ImageModule,
     LocationModule,
-    SecureScreen,
+    Screen,
     UserDetails,
 } from '@components'
 import { AppContext } from '../AppContext'
@@ -20,7 +20,7 @@ export default ({ navigation }) => {
     } = useContext(AppContext)
 
     return (
-        <SecureScreen navigation={navigation}>
+        <Screen navigation={navigation}>
             
             <Text style={classes.pageTitle}>
                 Settings
@@ -42,6 +42,6 @@ export default ({ navigation }) => {
                 </View>
             )}
 
-        </SecureScreen>
+        </Screen>
     )
 }

@@ -1,11 +1,11 @@
 import React from 'react'
 import {
     ProductModule,
-    SecureScreen,
+    Screen,
 } from '@components'
 
 export default ({ navigation }) => (
-    <SecureScreen navigation={navigation}>
+    <Screen navigation={navigation}>
         <ProductModule />
-    </SecureScreen>
+    </Screen>
 )

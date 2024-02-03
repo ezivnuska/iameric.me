@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import {
     LoadingView,
-    SecureScreen,
+    Screen,
     UserImageModule,
 } from '@components'
 import { AppContext } from '../AppContext'
@@ -93,7 +93,7 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <SecureScreen navigation={navigation}>
+        <Screen navigation={navigation}>
             
             {loading
                 ? <LoadingView label={loading} />
@@ -133,6 +133,6 @@ export default ({ navigation, route }) => {
                     : null
             }
             
-        </SecureScreen>
+        </Screen>
     )
 }
