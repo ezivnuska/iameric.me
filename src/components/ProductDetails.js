@@ -8,7 +8,6 @@ import {
 import {
     IconButton,
 } from '.'
-import { Button } from 'antd'
 import main from '../styles/main'
 import classes from 'src/styles/classes'
 import { useTheme } from 'react-native-paper'

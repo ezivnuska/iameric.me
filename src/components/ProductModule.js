@@ -14,10 +14,6 @@ import {
     deleteProductWithId,
     loadProducts,
 } from '../utils/data'
-import { PlusOutlined } from '@ant-design/icons'
-import { Button } from 'antd'
-import classes from '../styles/classes'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 export default () => {
 
