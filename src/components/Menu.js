@@ -11,19 +11,19 @@ import {
     ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
-// import main from '../styles/main'
 import classes from '../styles/classes'
 import axios from 'axios'
+import { useTheme } from 'react-native-paper'
 
 export default ({ vendor }) => {
 
+    const theme = useTheme()
+
     const {
         dispatch,
-        // vendors,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
-    // const [items, setItems] = useState(false)
     const [featured, setFeatured] = useState(null)
 
     useEffect(() => {
@@ -71,7 +71,6 @@ export default ({ vendor }) => {
                         <FlatList
                             data={vendor.products}
                             keyExtractor={item => `product-${item._id}`}
-                            // style={styles.list}
                             renderItem={({ item }) => (
                                 <MenuItem
                                     item={item}
@@ -81,7 +80,16 @@ export default ({ vendor }) => {
                             )}
                         />
                     )
-                    : <Text style={classes.textDefault}>No products to display.</Text>
+                    : (
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                { color: theme?.colors.textDefault },
+                            ]}
+                        >
+                            No products to display.
+                        </Text>
+                    )
             }
 
             <PopUpModal

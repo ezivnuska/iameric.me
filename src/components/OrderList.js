@@ -33,8 +33,8 @@ export default () => {
     const [showCompletedOrders, setShowCompletedOrders] = useState(true)
 
     useEffect(() => {
-        loadOrders()
-    }, [])
+        if (user && !items) loadOrders()
+    }, [user])
 
     const sortOrders = array => {
         let active = []
@@ -253,7 +253,7 @@ export default () => {
 
     return (
         <View>
-            {(items && items.length)
+            {items && items.length
                 ? (
                     <FlatList
                         data={items.sort((a, b) => a.status >= b.status ? a : b)}
@@ -272,7 +272,13 @@ export default () => {
                             </OrderPreview>
                         )}
                     />
-                ) : <Text style={{ color: theme?.colors.textDefault }}>No current orders.</Text>
+                ) : (
+                    <Text
+                        style={{ color: theme?.colors.textDefault }}
+                    >
+                        No current orders.
+                    </Text>
+                )
             }
         </View>
     )

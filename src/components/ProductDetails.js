@@ -16,6 +16,8 @@ const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const QuantityControl = ({ value, onChange }) => {
+
+    const theme = useTheme()
     
     const increase = () => {onChange(value + 1)}
     const decrease = () => onChange(value - 1)
@@ -68,30 +70,31 @@ const QuantityControl = ({ value, onChange }) => {
 
 export default ({ product, onOrder }) => {
 
+    const theme = useTheme()
+
     const [quantity, setQuantity] = useState(1)
 
     return product ? (
         <View>
 
             {product.image ? (
-                <View
-                    style={{
-                        marginBottom: 10,
-                        flexBasis: 'auto',
+                <Image
+                    width={product.image.width}
+                    height={product.image.height}
+                    source={{
+                        uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}`
                     }}
-                >
-                    <Image
-                        width={product.image.width}
-                        height={product.image.height}
-                        source={{ uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}` }}
-                        style={{
-                            resizeMode: 'center',
-                            width: product.image.width,
-                            height: product.image.height,
-                            borderWidth: 1,
-                        }}
-                    />
-                </View>
+                    style={{
+                        marginBottom: 20,
+                        marginHorizontal: 'auto',
+                        flexBasis: 'auto',
+                        width: product.image.width,
+                        height: product.image.height,
+                        resizeMode: 'center',
+                        borderWidth: 1,
+                        borderColor: theme?.colors.border,
+                    }}
+                />
             ) : null}
     
             <View
@@ -126,7 +129,7 @@ export default ({ product, onOrder }) => {
                                     flexBasis: 'auto',
                                     flexGrow: 1,
                                     flexBasis: '80%',
-                                    color: '#fff',
+                                    color: theme?.colors.textDefault,
                                 }
                             ]}
                         >
@@ -140,8 +143,8 @@ export default ({ product, onOrder }) => {
                                 textAlign: 'right',
                                 fontSize: 18,
                                 fontWeight: 700,
-                                color: '#fff',
                                 flexGrow: 0,
+                                color: theme?.colors.textDefault,
                             }
                         ]}>
                             ${product.price}
@@ -150,8 +153,24 @@ export default ({ product, onOrder }) => {
                     </View>
                 </View>
             </View>
-            <Text style={[main.text, { color: '#fff' }]}>{product.blurb}</Text>
-            <Text style={[main.text, { color: '#fff' }]}>{product.desc}</Text>
+            
+            <Text
+                style={[
+                    main.text,
+                    { color: theme?.colors.textDefault },
+                ]}
+            >
+                {product.blurb}
+            </Text>
+            
+            <Text
+                style={[
+                    main.text,
+                    { color: theme?.colors.textDefault },
+                ]}
+            >
+                {product.desc}
+            </Text>
             
             <QuantityControl
                 value={quantity}

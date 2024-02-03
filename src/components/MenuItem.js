@@ -5,14 +5,16 @@ import {
     Text,
     View,
 } from 'react-native'
-import main from '../styles/main'
 import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item, username, onPress }) => {
+
+    const theme = useTheme()
     
     const { _id, price, title, desc, vendor, blurb, category, image } = item
     
@@ -50,7 +52,7 @@ export default ({ item, username, onPress }) => {
                                 width: IMAGE_SIZE,
                                 height: IMAGE_SIZE,
                                 borderWidth: 1,
-                                borderColor: '#999',
+                                borderColor: theme?.colors.border,
                             }}
                         />
                     </View>
@@ -66,7 +68,12 @@ export default ({ item, username, onPress }) => {
                         alignItems: 'flex-start',
                     }}
                 >
-                    <Text style={classes.headerSecondary}>
+                    <Text
+                        style={[
+                            classes.headerSecondary,
+                            { color: theme?.colors.textDefault },
+                        ]}
+                    >
                         {title}
                     </Text>
 
@@ -81,21 +88,29 @@ export default ({ item, username, onPress }) => {
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'center',
-                            // width: 'auto',
                             paddingHorizontal: 5,
                         }}
                     >
                         <Icon
                             name='add-outline'
                             size={16}
-                            color='#fff'
-                            style={[{ flexBasis: 'auto', flexShrink: 1 }]}
+                            color={theme?.colors.buttonLabel}
+                            style={{ flexBasis: 'auto', flexShrink: 1 }}
                         />
+
                         <Text
-                            style={[classes.buttonText, { flexBasis: 'auto', flexShrink: 1 }]}
+                            style={[
+                                classes.buttonText,
+                                {
+                                    flexBasis: 'auto',
+                                    flexShrink: 1,
+                                    color: theme?.colors.buttonLabel,
+                                },
+                            ]}
                         >
                             ${price}
                         </Text>
+
                     </Pressable>
 
                     {/* <Pressable onPress={onPress}>
@@ -106,8 +121,28 @@ export default ({ item, username, onPress }) => {
                 </View>
                 
             </View>
-            {(blurb && blurb.length) ? <Text style={classes.textDefault}>{blurb}</Text> : null}
-            {(desc && desc.length) ? <Text style={classes.textDefault}>{desc}</Text> : null}
+
+            {(blurb && blurb.length) ? (
+                <Text
+                    style={[
+                        classes.textDefault,
+                        { color: theme?.colors.textDefault },
+                    ]}
+                >
+                    {blurb}
+                </Text>
+            ) : null}
+
+            {(desc && desc.length) ? (
+                <Text
+                    style={[
+                        classes.textDefault,
+                        { color: theme?.colors.textDefault },
+                    ]}
+                >
+                    {desc}
+                </Text>
+            ) : null}
 
         </View>
     )
