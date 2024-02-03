@@ -2,13 +2,15 @@ export const dark = {
     dark: true,
     colors: {
         background: '#000',
+        border: '#fff',
+        brandDark: '#aaa',
+        brandLight: '#fff',
         headerBackground: '#000',
         headerPrimary: '#fff',
         headerSecondary: 'yellow',
+        shadow: '#fff',
         textDefault: '#fff',
         userTitle: '#fff',
-        brandLight: '#fff',
-        brandDark: '#aaa',
     },
 }
 
@@ -16,12 +18,14 @@ export const light = {
     dark: false,
     colors: {
         background: '#fff',
+        border: '#000',
+        brandDark: '#aaa',
+        brandLight: '#000',
         headerBackground: '#fff',
         headerPrimary: '#000',
         headerSecondary: 'orange',
         textDefault: '#000',
+        shadow: '#000',
         userTitle: '#000',
-        brandLight: '#000',
-        brandDark: '#aaa',
     },
 }
