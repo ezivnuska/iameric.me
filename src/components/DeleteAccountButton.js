@@ -14,8 +14,11 @@ import { AppContext } from '../AppContext'
 import { clearStorage } from '../utils/storage'
 import { unsubscribe } from '../utils/auth'
 import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
 export default ({ id }) => {
+
+    const theme = useTheme()
 
     const {
         dispatch,
@@ -70,7 +73,8 @@ export default ({ id }) => {
                     classes.headerSecondary,
                     {
                         marginBottom: 5,
-                    }
+                        color: theme?.colors.textDefault,
+                    },
                 ]}
             >
                 Delete Account
@@ -81,13 +85,12 @@ export default ({ id }) => {
                     classes.textDefault,
                     {
                         marginBottom: 15,
+                        color: theme?.colors.textDefault,
                     },
                 ]}
             >
-                We hate to see you go. 
-                Deleting your account 
-                will permantly remove 
-                all images and data.
+                We hate to see you go. Deleting your account 
+                will permantly remove all images and data.
             </Text>
 
             <IconButton

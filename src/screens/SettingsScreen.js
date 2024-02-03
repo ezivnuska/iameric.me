@@ -5,15 +5,17 @@ import {
 } from 'react-native'
 import {
     DeleteAccountButton,
-    ImageModule,
     LocationModule,
     Screen,
     UserDetails,
 } from '@components'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
 export default ({ navigation }) => {
+
+    const theme = useTheme()
 
     const {
         user,
@@ -22,7 +24,12 @@ export default ({ navigation }) => {
     return (
         <Screen navigation={navigation}>
             
-            <Text style={classes.pageTitle}>
+            <Text
+                style={[
+                    classes.pageTitle,
+                    { color: theme?.colors.textDefault },
+                ]}
+            >
                 Settings
             </Text>
             
