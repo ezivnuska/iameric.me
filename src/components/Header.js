@@ -6,6 +6,7 @@ import {
     AuthMenu,
     Brand,
     CenteredContent,
+    IconButton,
 } from '.'
 import { navigate } from '../navigators/RootNavigation'
 import { useTheme } from 'react-native-paper'
@@ -14,6 +15,7 @@ import { PreferencesContext } from '../PreferencesContext'
 export default () => {
     
     const {
+        isThemeDark,
         toggleTheme,
     } = useContext(PreferencesContext)
     
@@ -49,8 +51,15 @@ export default () => {
                 <View
                     style={{
                         flexBasis: 'auto',
+                        display: 'flex',
+                        flexDirection: 'row',
                     }}
                 >
+                    <IconButton
+                        iconName={`${isThemeDark ? 'sunny' : 'moon'}-outline`}
+                        onPress={toggleTheme}
+                    />
+
                     <AuthMenu
                         onPress={() => navigate('Settings')}
                     />
