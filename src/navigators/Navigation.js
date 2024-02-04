@@ -5,8 +5,6 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     DetailsScreen,
-    DriverScreen,
-    DriversScreen,
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
@@ -91,29 +89,6 @@ const ProductsStackScreen = () => (
     </ProductsStack.Navigator>
 )
 
-const DriversStack = createNativeStackNavigator()
-const DriversStackScreen = () => (
-    <DriversStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'DriverList',
-            headerShown: false,
-        })}
-    >
-        <DriversStack.Screen
-            name='DriverList'
-            component={DriversScreen}
-            options={{ title: 'Drivers' }}
-        />
-
-        <DriversStack.Screen
-            name='Driver'
-            component={DriverScreen}
-            options={{ title: 'Driver' }}
-        />
-        
-    </DriversStack.Navigator>
-)
-
 const PrivateStack = createMaterialBottomTabNavigator()
 // const PrivateStack = createBottomTabNavigator()
 const PrivateStackScreen = () => {
@@ -121,28 +96,26 @@ const PrivateStackScreen = () => {
     const theme = useTheme()
 
     const { user } = useContext(AppContext)
-    
-    const getInitialRouteName = () => {
-        if (!user || !user.role) return 'Orders'
+
+    const getTitle = () => {
         switch (user.role) {
-            case 'customer': return 'Vendors'; break
-            case 'vendor':
-            case 'driver': return 'Orders'; break
+            case 'customer': return 'Customers'; break
+            case 'vendor': return 'Merchants'; break
+            case 'driver': return 'Drivers'; break
+            default: return 'Users'
         }
     }
+
     const iconSize = 24
-    return (
+
+    return user ? (
         <PrivateStack.Navigator
-            initialRouteName={getInitialRouteName()}
+            initialRouteName='Orders'
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{ backgroundColor: theme?.colors.tabBackground }}
             screenOptions={{
                 headerShown: false,
-                // tabBarShowLabel: false,
-                // tabBarActiveTintColor: '#fff',
-                // tabBarLabelStyle: { fontSize: 18 },
-                // tabBarStyle: { backgroundColor: '#000' },
             }}
         >
             <PrivateStack.Screen
@@ -156,7 +129,7 @@ const PrivateStackScreen = () => {
                 }}
             />
 
-            {(user && user.role === 'vendor') && (
+            {user.role === 'vendor' && (
                 <PrivateStack.Screen
                     name='Products'
                     component={ProductsStackScreen}
@@ -169,12 +142,12 @@ const PrivateStackScreen = () => {
                 />
             )}
 
-            {user && user.role !== 'vendor' && user.role !== 'driver' && (
+            {user.role === 'customer' || user.role === 'admin' && (
                 <PrivateStack.Screen
                     name='Vendors'
                     component={VendorsStackScreen}
                     options={{
-                        tabBarLabel: 'Vendors',
+                        tabBarLabel: 'Merchants',
                         tabBarIcon: ({ focused, color }) => (
                             <Icon name='fast-food-outline' size={iconSize} color={color} />
                         ),
@@ -182,26 +155,13 @@ const PrivateStackScreen = () => {
                 />
             )}
 
-            {user && user.role !== 'driver' && (
-                <PrivateStack.Screen
-                    name='Users'
-                    component={UsersStackScreen}
-                    options={{
-                        tabBarLabel: 'Users',
-                        tabBarIcon: ({ focused, color }) => (
-                            <Icon name='people-circle-outline' size={iconSize} color={color} />
-                        ),
-                    }}
-                />
-            )}
-
             <PrivateStack.Screen
-                name='Drivers'
-                component={DriversStackScreen}
+                name='Users'
+                component={UsersStackScreen}
                 options={{
-                    tabBarLabel: 'Drivers',
+                    tabBarLabel: getTitle(),
                     tabBarIcon: ({ focused, color }) => (
-                        <Icon name='car-sport-outline' size={iconSize} color={color} />
+                        <Icon name='people-circle-outline' size={iconSize} color={color} />
                     ),
                 }}
             />
@@ -240,7 +200,7 @@ const PrivateStackScreen = () => {
             />
 
         </PrivateStack.Navigator>
-    )
+    ) : null
 }
 
 const MainStack = createNativeStackNavigator()
@@ -290,20 +250,6 @@ const config = {
                     screens: {
                         UserList: '',
                         User: '/:id',
-                    },
-                },
-                Vendors: {
-                    path: 'vendors',
-                    screens: {
-                        VendorList: '',
-                        Vendor: '/:id',
-                    },
-                },
-                Drivers: {
-                    path: 'drivers',
-                    screens: {
-                        DriverList: '',
-                        Driver: '/:id',
                     },
                 },
                 Forum: 'forum',

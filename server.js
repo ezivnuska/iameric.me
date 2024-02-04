@@ -19,7 +19,7 @@ const {
 } = require('./api/auth')
 
 const {
-    getAllUsersByRole,
+    getUsersByRole,
     getNumberOfOnlineUsers,
     // getAllVendorIds,
     getAllVendors,
@@ -107,7 +107,7 @@ app.post(   '/token',                  validateToken)
 
 // users
 app.get(    '/user/:id',                getUserById)
-app.get(    '/users/:role',             getAllUsersByRole)
+app.get(    '/users/:role',             getUsersByRole)
 app.get(    '/users/online',            getNumberOfOnlineUsers)
 app.get(    '/vendors',                 getAllVendors)
 

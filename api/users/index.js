@@ -1,9 +1,10 @@
 const User = require('../../models/User')
 
-const getAllUsersByRole = async (req, res) => {
+const getUsersByRole = async (req, res) => {
     const { role } = req.params
+    let query = role === 'admin' ? {} : { role }
     const users = await User
-        .find({ role })
+        .find(query)
         .populate({
             path: 'profileImage',
             select: 'filename width height',
@@ -87,7 +88,7 @@ const getUserById = async (req, res, next) => {
 }
 
 module.exports = {
-    getAllUsersByRole,
+    getUsersByRole,
     getNumberOfOnlineUsers,
     getAllVendorIds,
     getAllVendors,

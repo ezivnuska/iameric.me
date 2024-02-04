@@ -34,19 +34,28 @@ export default () => {
         const loadedUsers = await loadUsersByRole(user.role)
         
         if (loadedUsers) {
-            dispatch({ type: 'SET_USERS', users: loadedUsers })
+            dispatch({ type: 'SET_USERS', users: loadedUsers.filter(u => u._id !== user._id) })
         }
 
         // if (mounted)
         setLoading(null)
     }
 
+    const renderTitle = () => {
+        let title = null
+        switch (user.role) {
+            case 'customer': title = 'Customers'; break
+            case 'vendor': title = 'Merchants'; break
+            case 'driver': title = 'Drivers'; break
+            default: title = 'Users'
+        }
+        return <DefaultText style={classes.pageTitle}>{title}</DefaultText>
+    }
+
     return (
         <View>
             
-            <DefaultText style={classes.pageTitle}>
-                Customers
-            </DefaultText>
+            {renderTitle()}
 
             {loading
                 ? <LoadingView label={loading} />

@@ -1,6 +1,4 @@
 import DetailsScreen from './DetailsScreen'
-import DriverScreen from './DriverScreen'
-import DriversScreen from './DriversScreen'
 import FallbackScreen from './FallbackScreen'
 import ForumScreen from './ForumScreen'
 import ImagesScreen from './ImagesScreen'
@@ -15,8 +13,6 @@ import VendorsScreen from './VendorsScreen'
 
 export {
     DetailsScreen,
-    DriverScreen,
-    DriversScreen,
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
