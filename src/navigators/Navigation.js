@@ -142,7 +142,7 @@ const PrivateStackScreen = () => {
                 />
             )}
 
-            {user.role === 'customer' || user.role === 'admin' && (
+            {(user.role === 'customer' || user.role === 'admin') && (
                 <PrivateStack.Screen
                     name='Vendors'
                     component={VendorsStackScreen}
@@ -243,6 +243,13 @@ const config = {
                     path: 'products',
                     screens: {
                         ProductList: '',
+                    },
+                },
+                Vendors: {
+                    path: 'vendors',
+                    screens: {
+                        VendorList: '',
+                        Vendor: '/:id',
                     },
                 },
                 Users: {
