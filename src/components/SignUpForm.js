@@ -12,7 +12,7 @@ import {
 	isValidEmail,
 	signup,
 } from '../utils/auth'
-import { storeEmail, getSavedEmail } from '../utils/storage'
+import { saveLocally, getLocally } from '../utils/storage'
 
 export default ({ role, onComplete }) => {
 	
@@ -54,7 +54,7 @@ export default ({ role, onComplete }) => {
 	}
 
 	const initForm = async () => {
-		const savedEmail = await getSavedEmail()
+		const savedEmail = await getLocally('email')
 		if (savedEmail) setEmail(savedEmail)
 	}
 
@@ -137,8 +137,9 @@ export default ({ role, onComplete }) => {
 			return console.log('Could not verify form data.')
 		}
 
-		storeEmail(email)
 		setLoading(true)
+
+		await saveLocally('email', email)
 		
 		const { data } = await signup(email, password, role, username)
 		
@@ -228,10 +229,10 @@ export default ({ role, onComplete }) => {
 				</Text>
 
 				<IconButton
+					type='primary'
 					label={loading ? 'Signing Up' : 'Sign Up'}
 					disabled={loading || !isValid() || errors.length}
 					onPress={submitData}
-					bgColor={loading ? 'gray' : 'blue'}
 				/>
 
 			</View>

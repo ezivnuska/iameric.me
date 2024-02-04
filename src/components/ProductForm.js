@@ -190,17 +190,17 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
             />
 
             <IconButton
+                type='primary'
                 label='Save'
                 onPress={onSubmit}
                 disabled={loading || (title && !title.length) || (price && !price.length)}
-                bgColor='blue'
             />
 
             <IconButton
+                type='danger'
                 label='Delete'
                 onPress={onDelete}
                 disabled={loading}
-                bgColor='red'
             />
 
         </View>

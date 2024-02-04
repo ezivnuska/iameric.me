@@ -9,8 +9,11 @@ import {
     FormInput,
     IconButton,
 } from '.'
+import { useTheme } from 'react-native-paper'
 
 export default () => {
+
+    const theme = useTheme()
 
     const {
         state,
@@ -65,8 +68,8 @@ export default () => {
             />
 
             <IconButton
+                type='primary'
                 label='Send'
-                bgColor={entry.length ? 'blue' : 'gray'}
                 disabled={!entry.length || loading}
                 onPress={onSubmit}
             />

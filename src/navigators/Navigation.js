@@ -1,14 +1,7 @@
-import React, { useContext, useCallback, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     NavigationContainer,
-    DarkTheme as NavigationDarkTheme,
-    DefaultTheme as NavigationDefaultTheme,
-    // useTheme,
 } from '@react-navigation/native'
-import {
-    MD2DarkTheme,
-    MD2LightTheme,
-  } from 'react-native-paper'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     DetailsScreen,
@@ -17,7 +10,6 @@ import {
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
-    // MenuScreen,
     OrderScreen,
     ProductsScreen,
     SettingsScreen,
@@ -27,11 +19,10 @@ import {
     VendorsScreen,
 } from '../screens'
 import { navigationRef } from './RootNavigation'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
-import { dark, light } from '../styles/colors'
-import merge from 'deepmerge'
 import { useTheme } from 'react-native-paper'
 
 const UsersStack = createNativeStackNavigator()
@@ -80,12 +71,6 @@ const VendorsStackScreen = () => (
             options={{ title: 'Vendor' }}
         />
         
-        {/* <VendorsStack.Screen
-            name='VendorDetails'
-            component={VendorStackScreen}
-            options={{ title: 'Vendor' }}
-        /> */}
-        
     </VendorsStack.Navigator>
 )
 
@@ -129,35 +114,14 @@ const DriversStackScreen = () => (
     </DriversStack.Navigator>
 )
 
-// const PublicStack = createNativeStackNavigator()
-// const PublicStackScreen = () => {
-//     // console.log('yoyoy')
-//     return (
-//         <PublicStack.Navigator
-//             screenOptions={() => ({
-//                 initialRouteName: 'Splash',
-//                 headerShown: false,
-//             })}
-//         >
-//             <PublicStack.Screen
-//                 name='Splash'
-//                 component={SplashScreen}
-//                 options={{ title: 'Splash' }}
-//             />
-    
-//             <PublicStack.Screen
-//                 name='Start'
-//                 component={StartScreen}
-//                 options={{ title: 'Start' }}
-//             />
-            
-//         </PublicStack.Navigator>
-//     )
-// }
-
-const PrivateStack = createBottomTabNavigator()
+const PrivateStack = createMaterialBottomTabNavigator()
+// const PrivateStack = createBottomTabNavigator()
 const PrivateStackScreen = () => {
+
+    const theme = useTheme()
+
     const { user } = useContext(AppContext)
+    
     const getInitialRouteName = () => {
         if (!user || !user.role) return 'Orders'
         switch (user.role) {
@@ -166,16 +130,19 @@ const PrivateStackScreen = () => {
             case 'driver': return 'Orders'; break
         }
     }
-    // console.log('private', user)
+    const iconSize = 24
     return (
         <PrivateStack.Navigator
             initialRouteName={getInitialRouteName()}
+            activeColor={theme?.colors.tabActive}
+            inactiveColor={theme?.colors.tabInactive}
+            barStyle={{ backgroundColor: theme?.colors.tabBackground }}
             screenOptions={{
                 headerShown: false,
-                tabBarShowLabel: false,
-                tabBarActiveTintColor: '#fff',
-                tabBarLabelStyle: { fontSize: 18 },
-                tabBarStyle: { backgroundColor: '#000' },
+                // tabBarShowLabel: false,
+                // tabBarActiveTintColor: '#fff',
+                // tabBarLabelStyle: { fontSize: 18 },
+                // tabBarStyle: { backgroundColor: '#000' },
             }}
         >
             <PrivateStack.Screen
@@ -183,8 +150,8 @@ const PrivateStackScreen = () => {
                 component={OrderScreen}
                 options={{
                     tabBarLabel: 'Orders',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='alert-circle-outline' size={size} color={color} />
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='alert-circle-outline' size={iconSize} color={color} />
                     ),
                 }}
             />
@@ -195,8 +162,8 @@ const PrivateStackScreen = () => {
                     component={ProductsStackScreen}
                     options={{
                         tabBarLabel: 'Products',
-                        tabBarIcon: ({ focused, color, size }) => (
-                            <Icon name='grid-outline' size={size} color={color} />
+                        tabBarIcon: ({ focused, color }) => (
+                            <Icon name='grid-outline' size={iconSize} color={color} />
                         ),
                     }}
                 />
@@ -208,8 +175,8 @@ const PrivateStackScreen = () => {
                     component={VendorsStackScreen}
                     options={{
                         tabBarLabel: 'Vendors',
-                        tabBarIcon: ({ focused, color, size }) => (
-                            <Icon name='fast-food-outline' size={size} color={color} />
+                        tabBarIcon: ({ focused, color }) => (
+                            <Icon name='fast-food-outline' size={iconSize} color={color} />
                         ),
                     }}
                 />
@@ -221,8 +188,8 @@ const PrivateStackScreen = () => {
                     component={UsersStackScreen}
                     options={{
                         tabBarLabel: 'Users',
-                        tabBarIcon: ({ focused, color, size }) => (
-                            <Icon name='people-circle-outline' size={size} color={color} />
+                        tabBarIcon: ({ focused, color }) => (
+                            <Icon name='people-circle-outline' size={iconSize} color={color} />
                         ),
                     }}
                 />
@@ -233,8 +200,8 @@ const PrivateStackScreen = () => {
                 component={DriversStackScreen}
                 options={{
                     tabBarLabel: 'Drivers',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='car-sport-outline' size={size} color={color} />
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='car-sport-outline' size={iconSize} color={color} />
                     ),
                 }}
             />
@@ -244,8 +211,8 @@ const PrivateStackScreen = () => {
                 component={ForumScreen}
                 options={{
                     tabBarLabel: 'Forum',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='chatbubble-outline' size={size} color={color} />
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='chatbubble-outline' size={iconSize} color={color} />
                     ),
                 }}
             />
@@ -255,8 +222,8 @@ const PrivateStackScreen = () => {
                 component={ImagesScreen}
                 options={{
                     tabBarLabel: 'Images',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='images-outline' size={size} color={color} />
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='images-outline' size={iconSize} color={color} />
                     ),
                 }}
             />
@@ -266,8 +233,8 @@ const PrivateStackScreen = () => {
                 component={SettingsScreen}
                 options={{
                     tabBarLabel: 'Settings',
-                    tabBarIcon: ({ focused, color, size }) => (
-                        <Icon name='cog' size={size} color={color} />
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='cog' size={iconSize} color={color} />
                     ),
                 }}
             />

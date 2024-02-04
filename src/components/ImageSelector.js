@@ -227,27 +227,26 @@ export default ({ onSelected }) => {
                         }}
                     >
                         <IconButton
+                            type='primary'
                             label='Upload Image'
                             disabled={loading}
                             onPress={onSubmit}
-                            bgColor='blue'
                         />
 
                         <IconButton
                             label='Change Image'
                             disabled={loading}
                             onPress={initFileSelector}
-                            bgColor='blue'
                         />
 
                     </View>
 
                 ) : (
                     <IconButton
+                        type='primary'
                         label='Select Image'
                         disabled={loading}
                         onPress={initFileSelector}
-                        bgColor='blue'
                     />
                 )}
 

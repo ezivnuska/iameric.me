@@ -159,10 +159,10 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
                         
                         {showAvatarButton() && (
                             <IconButton
+                                type='primary'
                                 label='Set as Avatar'
                                 onPress={setAvatar}
                                 disabled={loading}
-                                bgColor='blue'
                             />
                         )}
 
@@ -170,10 +170,10 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
                         user.username !== 'Customer' &&
                         user.username !== 'Vendor' && (
                             <IconButton
+                                type='danger'
                                 label='Delete Image'
                                 onPress={deleteImage}
                                 disabled={loading}
-                                bgColor='red'
                             />
                         )}
 

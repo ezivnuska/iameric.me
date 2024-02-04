@@ -5,7 +5,6 @@ import FallbackScreen from './FallbackScreen'
 import ForumScreen from './ForumScreen'
 import ImagesScreen from './ImagesScreen'
 import LoadingScreen from './LoadingScreen'
-import MenuScreen from './MenuScreen'
 import OrderScreen from './OrderScreen'
 import ProductsScreen from './ProductsScreen'
 import SettingsScreen from './SettingsScreen'
@@ -22,7 +21,6 @@ export {
     ForumScreen,
     ImagesScreen,
     LoadingScreen,
-    MenuScreen,
     OrderScreen,
     ProductsScreen,
     SettingsScreen,

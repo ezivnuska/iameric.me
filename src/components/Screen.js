@@ -6,10 +6,11 @@ import {
 import { AppContext } from '../AppContext'
 import { useTheme } from '@react-navigation/native'
 
-export default ({ children, ...props }) => {
+export default ({ children, secure = true, ...props }) => {
 
     const {
         dims,
+        user,
     } = useContext(AppContext)
     
     const theme = useTheme()
@@ -36,7 +37,7 @@ export default ({ children, ...props }) => {
                         height: dims ? dims.window.height - 100 : '100%',
                     }}
                 >
-                    {children}
+                    {(!secure || secure && user) && children}
                 </View>
             </ScrollView>
         </View>

@@ -8,33 +8,31 @@ import {
     LoadingView,
     DriverList,
 } from '.'
-import { loadUsers } from '../utils/data'
+import { loadUsersByRole } from '../utils/data'
 import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
 export default () => {
 
+    const theme = useTheme()
+
     const {
         dispatch,
-        users,
         user,
+        users,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
-    const [drivers, setDrivers] = useState(null)
 
     useEffect(() => {
-        if (!users) init()
-        else filterUsers('driver')
+        fetchUsers()
     }, [])
 
-    useEffect(() => {
-        if (users) filterUsers('driver')
-    }, [users])
+    const fetchUsers = async () => {
 
-    const init = async () => {
-        setLoading('Loading vendors...')
+        setLoading('Loading drivers...')
             
-        const loadedUsers = await loadUsers(loadedUsers)
+        const loadedUsers = await loadUsersByRole(user.role)
         
         if (loadedUsers) {
             dispatch({ type: 'SET_USERS', users: loadedUsers })
@@ -43,26 +41,32 @@ export default () => {
         setLoading(null)
     }
 
-    const filterUsers = type => setDrivers(
-        users.filter(({ _id, username, profileImage, role }) => {
-            if (role == type) {
-                return ({ _id, username, profileImage, role })
-            }
-        })
-    )
-
     return (
         <View>
             
-            <Text style={classes.pageTitle}>
+            <Text
+                style={[
+                    classes.pageTitle,
+                    { color: theme?.colors.textDefault },
+                ]}
+            >
                 Drivers
             </Text>
 
-            {!users && loading
+            {loading
                 ? <LoadingView label={loading} />
-                : drivers
-                    ? <DriverList users={drivers} />
-                    : <Text style={classes.textDefault}>No drivers yet.</Text>
+                : users
+                    ? <DriverList users={users} />
+                    : (
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                { color: theme?.colors.textDefault },
+                            ]}
+                        >
+                            No drivers yet.
+                        </Text>
+                    )
             }
         </View>
     )

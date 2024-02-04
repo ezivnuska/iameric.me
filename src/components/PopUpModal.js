@@ -73,6 +73,7 @@ export default ({ children, onRequestClose, ...props }) => {
                             label='Close'
                             onPress={onRequestClose}
                             // iconName='close-outline'
+                            transparent
                         />
                         {/* <Button
                             size='large'

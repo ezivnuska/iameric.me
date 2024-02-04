@@ -142,10 +142,10 @@ export default ({ onImageSelected, removeImage, uri }) => {
             
             {uri ? (
                 <IconButton
+                    type='danger'
                     label='Delete'
                     onPress={removeImage}
                     disabled={loading}
-                    bgColor='red'
                 />
             ) : null}
 

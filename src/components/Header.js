@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
     View,
 } from 'react-native'
@@ -58,6 +58,7 @@ export default () => {
                     <IconButton
                         iconName={`${isThemeDark ? 'sunny' : 'moon'}-outline`}
                         onPress={toggleTheme}
+                        transparent
                     />
 
                     <AuthMenu

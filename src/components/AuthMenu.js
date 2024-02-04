@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -13,12 +13,6 @@ import {
 } from '.'
 import { signout } from '../utils/auth'
 import { AppContext } from '../AppContext'
-// import layout from '../styles/layout'
-// import DefaultAvatar from '../images/avatar-default-small.png'
-// import { DownOutlined } from '@ant-design/icons'
-// import axios from 'axios'
-// import Icon from 'react-native-vector-icons/Ionicons'
-// import classes from '../styles/classes'
 import { navigationRef } from 'src/navigators/RootNavigation'
 import { useTheme } from 'react-native-paper'
 
@@ -82,7 +76,6 @@ export default ({ onPress }) => {
         dispatch,
         loading,
         user,
-        loaded,
     } = useContext(AppContext)
 
     const [showSignInModal, setShowSignInModal] = useState(false)
@@ -109,22 +102,13 @@ export default ({ onPress }) => {
                 username,
             },
         })
-        dispatch({ type: 'SET_LOADED', loaded: true })
+
         dispatch({ type: 'SET_LOADING', loading: null })
-        // navigation.navigate('Private', {
-        //     screen: 'Tabs',
-        //     params: {
-        //         screen: 'Users',
-        //     },
-        // })
     }
 
     const onModalClosed = response => {
-        // console.log('closing modal, setting user', response)
         setUser(response)
-        // if (showSignUpModal) setShowSignUpModal(false)
         if (showSignInModal) setShowSignInModal(false)
-        // if (loading) dispatch({ type: 'SET_LOADING', loading: 'false' })
     }
 
     const initSignout = async () => {
@@ -140,19 +124,15 @@ export default ({ onPress }) => {
             alignItems: 'center',
             justifyContent: 'flex-end',
             height: '100%',
-            // paddingRight: 15,
-            // borderWidth: 1,
-            // borderColor: 'red',
         }}>
 
-            {(loaded && user && !loading) ? (
+            {(user && !loading) ? (
                 <View style={{
                     display: 'flex',
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
                     height: '100%',
-                    // paddingRight: 15,
                 }}>
                     {cart && cart.length ? <CartButton /> : null}
 
@@ -163,6 +143,7 @@ export default ({ onPress }) => {
                         disables={loading}
                         iconName='close-outline'
                         padded={false}
+                        transparent
                     />
                 </View>
             ) : (
@@ -172,26 +153,9 @@ export default ({ onPress }) => {
                     onPress={() => setShowSignInModal(true)}
                     disabled={loading}
                     alignIcon='right'
+                    padded={false}
+                    transparent
                 />
-                // <Pressable
-                //     onPress={() => setShowSignInModal(true)}
-                //     style={{
-                //         display: 'flex',
-                //         flexDirection: 'row',
-
-                //     }}
-                // >
-                //     <Icon
-                //         name='log-in-outline'
-                //         size={24}
-                //         color='#fff'
-                //     />
-
-                //     <Text style={classes.textDefault}>
-                //         Sign In
-                //     </Text>
-                    
-                // </Pressable>
             )}
 
             <PopUpModal
@@ -216,10 +180,10 @@ export default ({ onPress }) => {
                 >
 
                     <IconButton
+                        type='primary'
                         label='Sign Out'
                         onPress={initSignout}
                         disabled={loading}
-                        bgColor='gray'
                     />
                 </View>
                 

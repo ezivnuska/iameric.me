@@ -3,14 +3,22 @@ const Entry = require('../../models/Entry')
 const createEntry = async (req, res) => {
     
     const { user, text } = req.body
-    const entry = await Entry.create({ author: user, text })
+    const newEntry = await Entry.create({ author: user, text })
 
-    if (!entry) {
+    if (!newEntry) {
         console.log('Problem creating entry.')
         return res.status(200).json(null)
-    } else {
-        return res.json({ entry })
     }
+
+    const entry = await Entry
+        .findOne({ _id: newEntry._id })
+        .populate({
+            path: 'author',
+            select: 'username profileImage',
+            populate: { path: 'profileImage' },
+        })
+
+    return res.json({ entry })
 }
 
 const getEntries = async (req, res) => {

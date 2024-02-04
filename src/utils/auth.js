@@ -20,7 +20,6 @@ export const authenticate = async (dispatch, token) => {
     await setUserToken(user.token)
             
     dispatch({ type: 'SET_USER', user })
-    dispatch({ type: 'SET_LOADED', loaded: true })
     dispatch({ type: 'SET_LOADING', loading: null })
     
     return user
@@ -54,8 +53,6 @@ export const connect = async type => {
 }
 
 export const initialize = async dispatch => {
-    
-    console.log('initializing')
 
     dispatch({ type: 'SET_LOADING', loading: 'Looking for user...' })
     
@@ -80,8 +77,7 @@ export const initialize = async dispatch => {
             await clearStorage()
         }
     }
-    
-    dispatch({ type: 'SET_LOADED', loaded: true })
+
     dispatch({ type: 'SET_LOADING', loading: null })
     
     return null
@@ -121,7 +117,6 @@ export const signout = async (dispatch, _id) => {
         console.log('signed out user')
         
         dispatch({ type: 'SET_LOADING', loading: null })
-        dispatch({ type: 'SET_LOADED', loaded: null })
         dispatch({ type: 'SIGNOUT' })
     }
 }

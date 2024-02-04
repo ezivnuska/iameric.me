@@ -1,5 +1,4 @@
-import React, { createContext, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
-// import { getLocally, saveLocally } from './utils/storage'
+import React, { createContext, useReducer } from 'react'
 
 const initialState = {
     cart: null,
@@ -12,34 +11,14 @@ const initialState = {
     profileImage: null,
     user: null,
     users: null,
-    loaded: false,
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, entries, loading, orders, products, profileImage, user, users, loaded } = state
-
-    // const updateOrder = newData => {
-    //     const index = orders.findIndex(order => order._id === newData._id)
-    //     if (index <= -1) return
-    //     const currentOrder = orders[index]
-    //     const updatedOrder = {
-    //         ...currentOrder,
-    //         ...newData,
-    //     }
-        
-    //     return [
-    //         ...orders.slice(0, index),
-    //         updatedOrder,
-    //         ...orders.slice(index + 1),
-    //     ]
-    // }
+    let { cart, dims, entries, loading, orders, products, profileImage, user, users } = state
     
     switch(action.type) {
         case 'SET_DIMS':
             dims = action.dims
-            break
-        case 'SET_LOADED':
-            loaded = action.loaded
             break
         case 'SET_USER':
             user = action.user
@@ -99,7 +78,6 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_LOADING':
             loading = action.loading
-            // if (loading) console.log('>>', loading)
             break
         case 'SET_PROFILE_IMAGE':
             user = { ...user, profileImage: action.profileImage }
@@ -239,13 +217,12 @@ const reducer = (state = initialState, action) => {
             profileId = null
             user = null
             users = null
-            loaded = false
         break
         default:
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, entries, loading, orders, products, profileImage, user, users, loaded }
+    return { cart, dims, entries, loading, orders, products, profileImage, user, users }
 }
 
 export const AppContext = createContext({
@@ -256,33 +233,9 @@ export const AppContext = createContext({
 
 export const AppProvider = ({ children, preferences }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
-    // const [isThemeDark, setIsThemeDark] = useState(false)
     
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
     const otherUsersByRole = role => (state.users && state.user) ? usersByRole(role).filter(u => u._id !== state.user._id) : null
-
-    // useEffect(() => {
-    //     initTheme()
-    // }, [])
-
-    // const initTheme = async () => {
-    //     const themeIsDark = await getLocally('dark')
-    //     setIsThemeDark(themeIsDark)
-    // }
-
-    // const toggleTheme = useCallback(async () => {
-    //     console.log('toggleTheme', isThemeDark)
-    //     await saveLocally('dark', !isThemeDark)
-    //     return setIsThemeDark(!isThemeDark)
-    // }, [isThemeDark])
-
-    // const preferences = useMemo(
-    //     () => ({
-    //         toggleTheme,
-    //         isThemeDark,
-    //     }),
-    //     [toggleTheme, isThemeDark]
-    // )
 
     return (
         <AppContext.Provider
@@ -301,9 +254,6 @@ export const AppProvider = ({ children, preferences }) => {
                 user: state.user,
                 users: state.users,
                 vendors: usersByRole('vendor'),
-                loaded: state.loaded,
-                // toggleTheme,
-                // isThemeDark,
             }}
         >
             {children}

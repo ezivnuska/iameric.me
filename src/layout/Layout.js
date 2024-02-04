@@ -8,43 +8,50 @@ import { Navigation } from '../navigators'
 import { AppContext } from '../AppContext'
 import {
     Header,
-    // LoadingView,
 } from '@components'
-// import base from '../styles/base'
+import { getLocally } from '../utils/storage'
 import { useTheme } from 'react-native-paper'
-// import { light } from '../styles/colors'
-// import { PreferencesContext } from '../PreferencesContext'
 
 let initialDims = {
     window: Dimensions.get('window'),
     screen: Dimensions.get('screen'),
 }
 
+console.log('initialDims', initialDims)
+
 export default () => {
 
     const {
         dispatch,
         dims,
+        isThemeDark,
+        toggleTheme,
     } = useContext(AppContext)
 
     const theme = useTheme()
-    // const { toggleTheme, isThemeDark } = useContext(PreferencesContext)
 
     useEffect(() => {
-        
-        dispatch({ type: 'SET_DIMS', dims: initialDims })
 
         const subscription = Dimensions.addEventListener(
             'change',
             ({ window, screen }) => dispatch({ type: 'SET_DIMS', dims: { window, screen } })
         )
 
+        getLocalTheme()
+
         return () => subscription.remove()
     }, [])
 
-    useEffect(() => {
-        console.log('dims changed', dims)
-    }, [dims])
+    const getLocalTheme = async () => {
+        const isDark = await getLocally('dark')
+        if (isDark && !isThemeDark) toggleTheme()
+
+        dispatch({ type: 'SET_DIMS', dims: initialDims })
+    }
+
+    // useEffect(() => {
+    //     console.log('dims changed', dims)
+    // }, [dims])
 
     return dims ? (
         <SafeAreaView

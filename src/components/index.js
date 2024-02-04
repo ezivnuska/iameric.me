@@ -12,7 +12,6 @@ import DeleteAccountButton from './DeleteAccountButton'
 import DriverList from './DriverList'
 import DriverListItem from './DriverListItem'
 import DriverModule from './DriverModule'
-import DriverSelector from './DriverSelector'
 import EntryModule from './EntryModule'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
@@ -60,12 +59,10 @@ import UserFilter from './UserFilter'
 import UserList from './UserList'
 import UserImageModule from './UserImageModule'
 import UserModule from './UserModule'
-import UserSelector from './UserSelector'
 import UserDetails from './UserDetails'
 import VendorList from './VendorList'
 import VendorListItem from './VendorListItem'
 import VendorModule from './VendorModule'
-import VendorSelector from './VendorSelector'
 
 export {
     AuthMenu,
@@ -82,7 +79,6 @@ export {
     DriverList,
     DriverListItem,
     DriverModule,
-    DriverSelector,
     EntryModule,
     EntryListItem,
     FeedbackForm,
@@ -130,10 +126,8 @@ export {
     UserList,
     UserImageModule,
     UserModule,
-    UserSelector,
     UserDetails,
     VendorList,
     VendorListItem,
     VendorModule,
-    VendorSelector,
 }

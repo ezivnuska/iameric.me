@@ -9,8 +9,11 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import { navigationRef } from '../navigators/RootNavigation'
+import { useTheme } from 'react-native-paper'
 
 export default () => {
+
+    const theme = useTheme()
 
     const {
         cart,
@@ -40,8 +43,8 @@ export default () => {
             <IconButton
                 label={getItemCount(cart[0].items)}
                 iconName='cart-outline'
-                bgColor='blue'
                 onPress={() => setModalVisible(true)}
+                padded={true}
             />
 
             <PopUpModal

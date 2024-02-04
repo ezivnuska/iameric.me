@@ -7,15 +7,26 @@ import axios from 'axios'
  *  
  */
 
-export const loadUsers = async () => {
-    const { data } = await axios.get('/api/users')
+export const loadUsersByRole = async role => {
+    const { data } = await axios.get(`/api/users/${role}`)
     
     if (!data.users) {
-        console.log('could not load users.')
+        console.log(`could not load ${role}s.`)
         return null
     }
 
     return data.users
+}
+
+export const loadUserById = async id => {
+    const { data } = await axios.get(`/api/user/${id}`)
+    
+    if (!data.user) {
+        console.log('could not load user details.')
+        return null
+    }
+
+    return data.user
 }
 
 /**

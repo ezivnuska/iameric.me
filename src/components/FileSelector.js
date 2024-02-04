@@ -17,10 +17,10 @@ export default ({ onSelected }) => {
 
   return (
     <IconButton
+      type='primary'
       label='Select'
       onPress={handlePress}
       disabled={loading}
-      bgColor='blue'
     />
   )
 }

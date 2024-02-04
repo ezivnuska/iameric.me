@@ -42,6 +42,7 @@ const QuantityControl = ({ value, onChange }) => {
                 onPress={decrease}
                 disabled={value < 2}
                 style={{ flex: 1 }}
+                transparent
             />
     
             <Text
@@ -62,6 +63,7 @@ const QuantityControl = ({ value, onChange }) => {
                 iconName='add-outline'
                 onPress={increase}
                 style={{ flex: 1 }}
+                transparent
             />
     
         </View>
@@ -180,7 +182,6 @@ export default ({ product, onOrder }) => {
             <IconButton
                 label={`Add ${quantity > 1 ? `${quantity} ` : ''}to Cart ($${Number(product.price) * quantity})`}
                 // iconName='add-outline'
-                bgColor='blue'
                 onPress={() => onOrder(product, quantity)}
             />
 

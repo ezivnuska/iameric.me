@@ -8,44 +8,33 @@ import {
     LoadingView,
     UserList,
 } from '.'
-import { loadUsers } from '../utils/data'
+import { loadUsersByRole } from '../utils/data'
 import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
 export default () => {
 
+    const theme = useTheme()
+    
     const {
         dispatch,
         users,
-        // user,
+        user,
     } = useContext(AppContext)
 
     const [mounted, setMounted] = useState(false)
     const [loading, setLoading] = useState(null)
-    const [customers, setCustomers] = useState(null)
 
     useEffect(() => {
         setMounted(true)
         if (!users) init()
-        else filterUsers('customer')
-        // return () => setMounted(false)
+        return () => setMounted(false)
     }, [])
 
-    useEffect(() => {
-        
-        if (users) {
-            const filteredUsers = [
-                ...filterUsers('customer'),
-                ...filterUsers('admin'),
-            ]
-            // if (mounted)
-            setCustomers(filteredUsers)
-        }
-    }, [users])
-
     const init = async () => {
-        setLoading('Loading users...')
-            
-        const loadedUsers = await loadUsers(loadedUsers)
+        setLoading(`Loading ${user.role}s...`)
+        
+        const loadedUsers = await loadUsersByRole(user.role)
         
         if (loadedUsers) {
             dispatch({ type: 'SET_USERS', users: loadedUsers })
@@ -55,24 +44,33 @@ export default () => {
         setLoading(null)
     }
 
-    const filterUsers = type => users.filter(({ _id, username, profileImage, role }) => {
-        if (role == type) {
-            return ({ _id, username, profileImage, role })
-        }
-    })
-
     return (
         <View>
             
-            <Text style={classes.pageTitle}>
+            <Text
+                style={[
+                    classes.pageTitle,
+                    { color: theme?.colors.textDefault },
+                ]}
+            >
                 Customers
             </Text>
 
             {loading
                 ? <LoadingView label={loading} />
                 : users
-                    ? <UserList users={customers} />
-                    : <Text style={classes.textDefault}>No users to display.</Text>}
+                    ? <UserList users={users} />
+                    : (
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                { color: theme?.colors.textDefault },
+                            ]}
+                        >
+                            No users to display.
+                        </Text>
+                    )
+                }
         </View>
     )
 }

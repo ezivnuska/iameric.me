@@ -205,10 +205,10 @@ export default () => {
 
     const renderButton = (label, action) => (
         <IconButton
+            type='primary'
             label={label}
             onPress={action}
             disabled={loading}
-            bgColor={loading ? 'gray' : 'blue'}
         />
     )
 

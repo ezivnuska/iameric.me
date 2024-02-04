@@ -3,8 +3,8 @@ import { IconButton } from '.'
 
 export default ({ dirty, valid, label }) => (
     <IconButton
+        type='primary'
         label={label}
-        bgColor={dirty ? 'blue' : 'gray'}
         disabled={!dirty || !valid}
     />
 )

@@ -10,7 +10,7 @@ import {
 } from '.'
 import defaultStyles from '../styles/main'
 import { isValidEmail, signin } from '../utils/auth'
-import { saveLocally, getSavedEmail } from '../utils/storage'
+import { saveLocally, getLocally } from '../utils/storage'
 
 export default ({ onComplete }) => {
 
@@ -43,7 +43,7 @@ export default ({ onComplete }) => {
 	}
 
 	const initForm = async () => {
-		const savedEmail = await getSavedEmail()
+		const savedEmail = await getLocally('email')
 		if (savedEmail) {
 			setEmail(savedEmail)
 		}
@@ -167,10 +167,10 @@ export default ({ onComplete }) => {
 			</Text>
 
 			<IconButton
+                type='primary'
 				label={loading ? 'Signing In' : 'Sign In'}
 				disabled={loading || !isValid() || errors.length}
 				onPress={submitData}
-				bgColor={(!isValid() || loading) ? 'gray' : 'blue'}
 			/>
 
 		</View>

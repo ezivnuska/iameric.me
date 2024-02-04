@@ -57,9 +57,9 @@ export default ({ onSubmitted }) => {
                 style={{ paddingTop: 10, paddingBottom: 7 }}
             >
                 <IconButton
+                    type='primary'
                     label='Submit Order'
                     onPress={submitOrder}
-                    bgColor='blue'
                     disabled={loading}
                     style={{ marginBottom: 10 }}
                 />
@@ -67,8 +67,8 @@ export default ({ onSubmitted }) => {
                 <IconButton
                     label='Clear Cart'
                     onPress={() => dispatch({ type: 'CLEAR_CART' })}
-                    bgColor='gray'
                     disabled={loading}
+                    transparent
                 />
             </View>
 

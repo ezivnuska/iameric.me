@@ -4,14 +4,14 @@ import {
     Text,
 } from 'react-native'
 import {
+    IconButton,
     LoadingView,
     Screen,
     UserImageModule,
 } from '@components'
 import { AppContext } from '../AppContext'
-import { loadUsers } from '../utils/data'
+import { loadUserById } from '../utils/data'
 import classes from '../styles/classes'
-import { IconButton } from 'src/components'
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -22,7 +22,6 @@ export default ({ navigation, route }) => {
 
     const {
         dispatch,
-        users,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
@@ -32,59 +31,34 @@ export default ({ navigation, route }) => {
 
         if (!route.params || !route.params.id)
             console.log('missing required id param')
-        
-        if (!users) fetchUsers()
+        else loadUserDetails(route.params.id)
 
     }, [])
-    
-    useEffect(() => {
-        if (users && (route.params && route.params.id)) getDetails(route.params.id)
-    }, [users])
 
-    useEffect(() => {
-        if (users && (route.params && route.params.id) && (route.params && route.params.id)) getDetails(route.params.id)
-    }, [route.params])
-
-    const getUserDetailsWithId = id => users.filter(u => u._id === id)[0]
-
-    const getDetails = async id => {
-        const details = await getUserDetailsWithId(id)
-        if (details) {
-            setUserDetails(details)
-        }
-    }
-
-    const fetchUsers = async () => {
-
-        setLoading('Loading users...')
-
-        const loadedUsers = await loadUsers(loadedUsers)
-        
-        if (loadedUsers) {
-            dispatch({ type: 'SET_USERS', users: loadedUsers })
-        }
-
-        setLoading(null)
+    const loadUserDetails = async id => {
+        const user = await loadUserById(id)
+        setUserDetails(user)
     }
 
     // TODO: clean this.
     const renderUserAvatar = () => {
 
-        const filename = (userDetails.profileImage && userDetails.profileImage.filename)
-            ? userDetails.profileImage.filename
+        const { profileImage, username } = userDetails
+
+        const filename = (profileImage && profileImage.filename)
+            ? profileImage.filename
             : null
         
         const source = filename ?
-            `${IMAGE_PATH}/${userDetails.username}/${filename}` :
+            `${IMAGE_PATH}/${username}/${filename}` :
             `${IMAGE_PATH}/avatar-default.png`
         
         return (
             <Image
                 source={source}
                 style={{
-                    width: userDetails.profileImage.width,
-                    height: userDetails.profileImage.width,
-                    // backgroundColor: '#ccc',
+                    width: profileImage ? profileImage.width : 250,
+                    height: profileImage ? profileImage.width : 250,
                     resizeMode: 'cover',
                     marginVertical: 15,
                 }}
@@ -105,6 +79,7 @@ export default ({ navigation, route }) => {
                                 onPress={() => navigation.navigate('UserList')}
                                 label='Back'
                                 align='left'
+                                transparent
                             />
 
                             <Text
@@ -114,15 +89,6 @@ export default ({ navigation, route }) => {
                                 ]}
                             >
                                 {userDetails.username}
-                            </Text>
-                            
-                            <Text
-                                style={[
-                                    classes.textDefault,
-                                    { color: theme?.colors.textDefault },
-                                ]}
-                            >
-                                {userDetails.email}
                             </Text>
 
                             {renderUserAvatar()}

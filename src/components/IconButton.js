@@ -7,9 +7,19 @@ import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from 'react-native-paper'
 
-export default ({ onPress, disabled, padded = true, align = 'center', alignIcon = 'left', bgColor = 'transparent', label = null, iconName = null, textStyles = null, ...props }) => {
+export default ({ onPress, disabled, type = 'default', padded = true, align = 'center', alignIcon = 'left', transparent = false, label = null, iconName = null, textStyles = null, ...props }) => {
 
     const theme = useTheme()
+
+    const getBackgroundColor = () => {
+        if (transparent) return transparent
+        if (disabled) return theme?.colors.buttonDisabled
+        switch (type) {
+            case 'primary': return theme?.colors.buttonPrimary; break
+            case 'danger': return theme?.colors.buttonDanger; break
+            default: return theme?.colors.buttonDefault
+        }
+    }
 
     return (
         <Pressable
@@ -21,9 +31,9 @@ export default ({ onPress, disabled, padded = true, align = 'center', alignIcon 
                 justifyContent: align,
                 alignItems: 'center',
                 paddingVertical: 5,
-                paddingRight: 5,//padded ? 15 : 0,
-                paddingLeft: align === 'left' ? 0 : 5,//padded ? 15 : 0,
-                backgroundColor: bgColor,
+                paddingRight: padded ? 15 : 0,
+                paddingLeft: align === 'left' ? 0 : padded ? 15 : 0,
+                backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                 borderRadius: 6,
                 textAlign: 'center',
                 ...props.style,

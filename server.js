@@ -19,7 +19,7 @@ const {
 } = require('./api/auth')
 
 const {
-    getAllUsers,
+    getAllUsersByRole,
     getNumberOfOnlineUsers,
     // getAllVendorIds,
     getAllVendors,
@@ -106,10 +106,10 @@ app.post(   '/unsubscribe',            deleteAccount)
 app.post(   '/token',                  validateToken)
 
 // users
-app.get(    '/users',                   getAllUsers)
+app.get(    '/user/:id',                getUserById)
+app.get(    '/users/:role',             getAllUsersByRole)
 app.get(    '/users/online',            getNumberOfOnlineUsers)
 app.get(    '/vendors',                 getAllVendors)
-app.get(    '/users/:id',               getUserById)
 
 // entries
 app.post(   '/entry',                   createEntry)

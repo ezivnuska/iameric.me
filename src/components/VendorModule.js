@@ -8,61 +8,58 @@ import {
     LoadingView,
     VendorList,
 } from '.'
-import { loadUsers } from '../utils/data'
+import { loadUsersByRole } from '../utils/data'
 import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
 export default () => {
 
+    const theme = useTheme()
+
     const {
         dispatch,
-        users,
-        user,
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
     const [vendors, setVendors] = useState(null)
 
     useEffect(() => {
-        if (!users) init()
-        else filterUsers('vendor')
+        loadVendors()
     }, [])
 
-    useEffect(() => {
-        if (users) filterUsers('vendor')
-    }, [users])
-
-    const init = async () => {
+    const loadVendors = async () => {
         setLoading('Loading vendors...')
-            
-        const loadedUsers = await loadUsers(loadedUsers)
-        
-        if (loadedUsers) {
-            dispatch({ type: 'SET_USERS', users: loadedUsers })
-        }
-
+        const users = await loadUsersByRole('vendor')
+        setVendors(users)
         setLoading(null)
     }
-
-    const filterUsers = type => setVendors(
-        users.filter(({ _id, username, profileImage, role }) => {
-            if (role == type) {
-                return ({ _id, username, profileImage, role })
-            }
-        })
-    )
 
     return (
         <View>
             
-            <Text style={classes.pageTitle}>
+            <Text
+                style={[
+                    classes.pageTitle,
+                    { color: theme?.colors.textDefault },
+                ]}
+            >
                 Vendors
             </Text>
 
-            {!users && loading
+            {loading
                 ? <LoadingView label={loading} />
                 : vendors
                     ? <VendorList users={vendors} />
-                    : <Text style={classes.textDefault}>No participating vendors.</Text>
+                    : (
+                        <Text
+                            style={[
+                                classes.textDefault,
+                                { color: theme?.colors.textDefault },
+                            ]}
+                        >
+                            No participating vendors.
+                        </Text>
+                    )
             }
         </View>
     )

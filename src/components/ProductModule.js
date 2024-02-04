@@ -84,6 +84,7 @@ export default () => {
                 alignIcon='right'
                 align='left'
                 padded={false}
+                transparent
             />
 
             {loading

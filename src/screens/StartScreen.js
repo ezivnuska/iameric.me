@@ -7,6 +7,7 @@ import {
     View,
 } from 'react-native'
 import {
+    IconButton,
     PopUpModal,
     Screen,
     SignUpForm,
@@ -22,11 +23,12 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ navigation }) => {
 
+    const theme = useTheme()
+
     const {
         dims,
         dispatch,
-        loaded,
-        // loading,
+        loading,
         user,
     } = useContext(AppContext)
 
@@ -34,22 +36,16 @@ export default ({ navigation }) => {
     const [showSignInModal, setShowSignInModal] = useState(null)
 
     useEffect(() => {
-        if (!loaded) {
-            start()
-        }
+        initialize(dispatch)
     }, [])
     
-    const start = async () => {
-        console.log('initializing...')
-        await initialize(dispatch)
-        console.log('initialized.')
-    }
-
     useEffect(() => {
-        if (loaded && user) {
-            navigation.navigate('Private')
-        }
-    }, [user, loaded])
+        if (!loading) validateUser()
+    }, [loading])
+
+    const validateUser = async () => {
+        if (user) navigation.navigate('Private')
+    }
 
     const onConnect = async type => {
         
@@ -85,14 +81,8 @@ export default ({ navigation }) => {
                 username,
             },
         })
-        dispatch({ type: 'SET_LOADED', loaded: true })
+
         dispatch({ type: 'SET_LOADING', loading: null })
-        // navigation.navigate('Private', {
-        //     screen: 'Tabs',
-        //     params: {
-        //         screen: 'Users',
-        //     },
-        // })
     }
 
     const onModalClosed = response => {
@@ -104,7 +94,7 @@ export default ({ navigation }) => {
     }
 
     return (
-        <Screen>
+        <Screen secure={false}>
             <View style={[
                 {
                     display: 'flex',
@@ -122,15 +112,19 @@ export default ({ navigation }) => {
                     imageSource={`${IMAGE_PATH}/customer-avatar.png`}
                 >
                     <View style={styles.controls}>
-                        <ControlButton
+                        <IconButton
+                            type='primary'
                             label='Sign Up to Order!'
                             iconName='arrow-forward-circle-outline'
                             onPress={() => setShowSignUpModal('customer')}
+                            alignIcon='right'
                         />
-                        <ControlButton
+                        <IconButton
                             label='Preview'
                             iconName='eye-outline'
                             onPress={() => onConnect('customer')}
+                            alignIcon='right'
+                            transparent
                         />
                     </View>
                 </BackgroundImageWithGradient>
@@ -140,15 +134,19 @@ export default ({ navigation }) => {
                     imageSource={`${IMAGE_PATH}/vendor-avatar.png`}
                 >
                     <View style={styles.controls}>
-                        <ControlButton
+                        <IconButton
+                            type='primary'
                             label='Join as Merchant!'
                             iconName='arrow-forward-circle-outline'
                             onPress={() => setShowSignUpModal('vendor')}
+                            alignIcon='right'
                         />
-                        <ControlButton
+                        <IconButton
                             label='Preview'
                             iconName='eye-outline'
                             onPress={() => onConnect('vendor')}
+                            alignIcon='right'
+                            transparent
                         />
                     </View>
                 </BackgroundImageWithGradient>
@@ -158,15 +156,20 @@ export default ({ navigation }) => {
                     imageSource={`${IMAGE_PATH}/driver-avatar.png`}
                 >
                     <View style={styles.controls}>
-                        <ControlButton
+                        <IconButton
+                            type='primary'
                             label='Become a Driver!'
                             iconName='arrow-forward-circle-outline'
                             onPress={() => setShowSignUpModal('driver')}
+                            alignIcon='right'
                         />
-                        <ControlButton
+                        
+                        <IconButton
                             label='Preview'
                             iconName='eye-outline'
                             onPress={() => onConnect('driver')}
+                            alignIcon='right'
+                            transparent
                         />
                     </View>
                 </BackgroundImageWithGradient>
@@ -218,8 +221,8 @@ const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
                             classes.headerSecondary,
                             {
                                 position: 'absolute',
-                                bottom: 30,
-                                left: 15,
+                                bottom: 50,
+                                left: 20,
                                 fontWeight: 700,
                                 color: theme?.colors.textDefault,
                             },
@@ -235,60 +238,6 @@ const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
             </ImageBackground>
 
         </View>
-    )
-}
-
-const ControlButton = ({ label, onPress, iconName = null }) => {
-    
-    const theme = useTheme()
-
-    return (
-        <Pressable
-            onPress={onPress}
-            style={{
-                flexBasis: 'auto',
-                flexGrow: 0,
-                flexShrink: 1,
-            }}
-        >
-                                            
-            <View
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-start',
-                }}
-            >
-                <Text
-                    style={[
-                        classes.buttonText,
-                        {
-                            flexBasis: 'auto',
-                            flexGrow: 1,
-                            flexShrink: 0,
-                            color: theme?.colors.textDefault,
-                        }
-                    ]}
-                >
-                    {label}
-                </Text>
-
-                {iconName && (
-                    <Icon
-                        name={iconName}
-                        size={18}
-                        color={theme?.colors.textDefault}
-                        style={{
-                            flex: 1,
-                            marginLeft: 5,
-                        }}
-                    />
-                )}
-
-            </View>
-
-        </Pressable>
     )
 }
 

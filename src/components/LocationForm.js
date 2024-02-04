@@ -141,10 +141,10 @@ export default ({ onSubmit, location }) => {
             />
 
             <IconButton
+                type='primary'
                 label='Update Location'
                 onPress={submitForm}
                 disabled={loading || !isValid()}
-                bgColor={dirty ? 'blue' : 'gray'}
             />
 
         </View>
