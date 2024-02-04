@@ -48,7 +48,7 @@ export default ({ order, children, ...props }) => {
                 <LocationDetails location={order.vendor.location} />
             </View>
         )
-        : <Text style={classes.textDefault}>No vendor</Text>
+        : <DefaultText>No vendor</DefaultText>
 
     const renderHeaderButton = () => (
         <Pressable

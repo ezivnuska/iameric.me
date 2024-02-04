@@ -1,11 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     Image,
     Pressable,
     Text,
     View,
 } from 'react-native'
-import main from '../styles/main'
+import {
+    DefaultText,
+} from '@components'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
 import { useTheme } from 'react-native-paper'
@@ -84,55 +86,33 @@ export default ({ product, onDelete, onPress, ...props }) => {
                         }}
                     >
                         
-                        <Text style={[
-                            classes.headerSecondary,
-                            {
-                                flexBasis: 'auto',
-                                flexGrow: 1,
-                                flexBasis: '80%',
-                                color: theme?.colors.textDefault,
-                            }
-                        ]}>
-                            {product.title}
-                        </Text>
-
-                        <Text
+                        <DefaultText
                             style={[
-                                classes.textDefault,
+                                classes.headerSecondary,
                                 {
-                                    flexBasis: '20%',
-                                    textAlign: 'right',
-                                    flexGrow: 0,
-                                    color: theme?.colors.textDefault,
+                                    flexBasis: 'auto',
+                                    flexGrow: 1,
+                                    flexBasis: '80%',
                                 }
                             ]}
                         >
+                            {product.title}
+                        </DefaultText>
+
+                        <DefaultText
+                            style={{
+                                flexBasis: '20%',
+                                textAlign: 'right',
+                                flexGrow: 0,
+                            }}
+                        >
                             ${product.price}
-                        </Text>
+                        </DefaultText>
 
                     </View>
                     
-                    <Text
-                        style={[
-                            classes.textDefault,
-                            {
-                                color: theme?.colors.textDefault,
-                            }
-                        ]}
-                    >
-                        {product.blurb}
-                    </Text>
-
-                    <Text
-                        style={[
-                            classes.textDefault,
-                            {
-                                color: theme?.colors.textDefault,
-                            }
-                        ]}
-                    >
-                        {product.desc}
-                    </Text>
+                    <DefaultText>{product.blurb}</DefaultText>
+                    <DefaultText>{product.desc}</DefaultText>
 
                 </View>
             </View>

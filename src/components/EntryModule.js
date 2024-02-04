@@ -5,6 +5,7 @@ import {
     View,
 } from 'react-native'
 import {
+    DefaultText,
     EntryListItem,
     FeedbackForm,
     LoadingView,
@@ -12,11 +13,8 @@ import {
 import { AppContext } from '../AppContext'
 import { deleteEntryWithId, loadEntries } from '../utils/data'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
 
 export default ({ navigation }) => {
-
-    const theme = useTheme()
     
     const {
         dispatch,
@@ -95,16 +93,7 @@ export default ({ navigation }) => {
                                 />
                             )} 
                         />
-                    ) : (
-                        <Text
-                            style={[
-                                classes.textDefault,
-                                { color: theme?.colors.textDefault },
-                            ]}
-                        >
-                            No entries yet.
-                        </Text>
-                    )
+                    ) : <DefaultText>No entries yet.</DefaultText>
             }
 
         </View>

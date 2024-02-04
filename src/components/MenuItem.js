@@ -2,9 +2,11 @@ import React from 'react'
 import {
     Image,
     Pressable,
-    Text,
     View,
 } from 'react-native'
+import {
+    DefaultText,
+} from '@components'
 import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from 'react-native-paper'
@@ -68,14 +70,11 @@ export default ({ item, username, onPress }) => {
                         alignItems: 'flex-start',
                     }}
                 >
-                    <Text
-                        style={[
-                            classes.headerSecondary,
-                            { color: theme?.colors.textDefault },
-                        ]}
+                    <DefaultText
+                        style={classes.headerSecondary}
                     >
                         {title}
-                    </Text>
+                    </DefaultText>
 
                     <Pressable
                         onPress={onPress}
@@ -98,18 +97,14 @@ export default ({ item, username, onPress }) => {
                             style={{ flexBasis: 'auto', flexShrink: 1 }}
                         />
 
-                        <Text
+                        <DefaultText
                             style={[
                                 classes.buttonText,
-                                {
-                                    flexBasis: 'auto',
-                                    flexShrink: 1,
-                                    color: theme?.colors.buttonLabel,
-                                },
+                                { flexBasis: 'auto', flexShrink: 1 },
                             ]}
                         >
                             ${price}
-                        </Text>
+                        </DefaultText>
 
                     </Pressable>
 
@@ -123,25 +118,11 @@ export default ({ item, username, onPress }) => {
             </View>
 
             {(blurb && blurb.length) ? (
-                <Text
-                    style={[
-                        classes.textDefault,
-                        { color: theme?.colors.textDefault },
-                    ]}
-                >
-                    {blurb}
-                </Text>
+                <DefaultText>{blurb}</DefaultText>
             ) : null}
 
             {(desc && desc.length) ? (
-                <Text
-                    style={[
-                        classes.textDefault,
-                        { color: theme?.colors.textDefault },
-                    ]}
-                >
-                    {desc}
-                </Text>
+                <DefaultText>{desc}</DefaultText>
             ) : null}
 
         </View>

@@ -1,23 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     FlatList,
-    Text,
     View,
 } from 'react-native'
 import {
+    DefaultText,
     LoadingView,
     MenuItem,
     PopUpModal,
     ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
-import classes from '../styles/classes'
 import axios from 'axios'
-import { useTheme } from 'react-native-paper'
 
 export default ({ vendor }) => {
-
-    const theme = useTheme()
 
     const {
         dispatch,
@@ -81,14 +77,7 @@ export default ({ vendor }) => {
                         />
                     )
                     : (
-                        <Text
-                            style={[
-                                classes.textDefault,
-                                { color: theme?.colors.textDefault },
-                            ]}
-                        >
-                            No products to display.
-                        </Text>
+                        <DefaultText>No products to display.</DefaultText>
                     )
             }
 

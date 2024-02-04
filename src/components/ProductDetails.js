@@ -1,23 +1,17 @@
 import React, { useState } from 'react'
 import {
     Image,
-    Pressable,
-    Text,
     View,
 } from 'react-native'
 import {
+    DefaultText,
     IconButton,
 } from '.'
-import main from '../styles/main'
-import classes from 'src/styles/classes'
-import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const QuantityControl = ({ value, onChange }) => {
-
-    const theme = useTheme()
     
     const increase = () => {onChange(value + 1)}
     const decrease = () => onChange(value - 1)
@@ -45,19 +39,15 @@ const QuantityControl = ({ value, onChange }) => {
                 transparent
             />
     
-            <Text
-                style={[
-                    classes.textDefault,
-                    classes.bold,
-                    {
-                        flex: 1,
-                        textAlign: 'center',
-                        color: theme?.colors.textDefault,
-                    }
-                ]}
+            <DefaultText
+                style={{
+                    flex: 1,
+                    textAlign: 'center',
+                    fontWeight: 700,
+                }}
             >
                 {value}
-            </Text>
+            </DefaultText>
     
             <IconButton
                 iconName='add-outline'
@@ -122,57 +112,41 @@ export default ({ product, onOrder }) => {
                         }}
                     >
                         
-                        <Text
-                            style={[
-                                classes.defaultText,
-                                {
-                                    fontSize: 18,
-                                    fontWeight: 700,
-                                    flexBasis: 'auto',
-                                    flexGrow: 1,
-                                    flexBasis: '80%',
-                                    color: theme?.colors.textDefault,
-                                }
-                            ]}
+                        <DefaultText
+                            style={{
+                                fontSize: 18,
+                                fontWeight: 700,
+                                flexBasis: 'auto',
+                                flexGrow: 1,
+                                flexBasis: '80%',
+                            }}
                         >
                             {product.title}
-                        </Text>
+                        </DefaultText>
     
-                        <Text style={[
-                            main.text,
-                            {
+                        <DefaultText
+                            style={{
                                 flexBasis: '20%',
                                 textAlign: 'right',
                                 fontSize: 18,
                                 fontWeight: 700,
                                 flexGrow: 0,
-                                color: theme?.colors.textDefault,
-                            }
-                        ]}>
+                            }}
+                        >
                             ${product.price}
-                        </Text>
+                        </DefaultText>
     
                     </View>
                 </View>
             </View>
             
-            <Text
-                style={[
-                    main.text,
-                    { color: theme?.colors.textDefault },
-                ]}
-            >
+            <DefaultText>
                 {product.blurb}
-            </Text>
+            </DefaultText>
             
-            <Text
-                style={[
-                    main.text,
-                    { color: theme?.colors.textDefault },
-                ]}
-            >
+            <DefaultText>
                 {product.desc}
-            </Text>
+            </DefaultText>
             
             <QuantityControl
                 value={quantity}

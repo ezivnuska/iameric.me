@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import classes from '../styles/classes'
+import DefaultText from './DefaultText'
 
 const IMAGE_SIZE = 24
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -90,23 +91,17 @@ const CartListItem = ({ item, quantity, ...props }) => {
                     {/* <ProductThumb product={item} /> */}
                 </View>
                     
-                <Text
-                    style={[
-                        { flexBasis: 'auto', flexGrow: 1 },
-                        classes.textDefault,
-                    ]}
+                <DefaultText
+                    style={{ flexBasis: 'auto', flexGrow: 1 }}
                 >
                     {item.title}
-                </Text>
+                </DefaultText>
                 
-                <Text
-                    style={[
-                        classes.textDefault,
-                        classes.itemPrice,
-                    ]}
+                <DefaultText
+                    style={classes.itemPrice}
                 >
                     {Number(item.price) * Number(quantity)}
-                </Text>
+                </DefaultText>
                 
             </View>
         </View>
@@ -127,29 +122,21 @@ const CartTotal = ({ order }) => (
             marginTop: 5,
             paddingTop: 5,
             borderTopWidth: 1,
-            // borderTopStyle: 'dotted',
             borderTopColor: '#ccc',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
         }}
     >
-        <Text
-            style={[
-                classes.textDefault,
-                classes.bold,
-            ]}
-        >
+        <DefaultText bold>
             Total:
-        </Text>
-        <Text
-            style={[
-                classes.textDefault,
-                classes.orderTotal,
-            ]}
+        </DefaultText>
+
+        <DefaultText
+            style={classes.orderTotal}
         >
             ${getOrderTotal(order)}
-        </Text>
+        </DefaultText>
     </View>
 )
 

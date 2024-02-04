@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     FlatList,
-    Text,
     View,
 } from 'react-native'
 import {
+    DefaultText,
     IconButton,
     OrderPreview,
     TimeSelector,
@@ -12,9 +12,7 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import moment from 'moment'
-import classes from '../styles/classes'
 import { getOrdersById } from '../utils/data'
-import { useTheme } from 'react-native-paper'
 
 export default () => {
 
@@ -23,8 +21,6 @@ export default () => {
         orders,
         user,
     } = useContext(AppContext)
-
-    const theme = useTheme()
 
     const [loading, setLoading] = useState(false)
     const [featured, setFeatured] = useState(null)
@@ -219,13 +215,13 @@ export default () => {
             case 'customer':
                 if (order.status === 0) return renderButton('Cancel Order', () => cancelOrder(order._id))
                 else if (order.status === 5) return renderButton('Order Received', () => closeOrder(order._id))
-                else return <Text style={[classes.textDefault, classes.bold]}>Order in progress.</Text>
+                else return <DefaultText bold>Order in progress.</DefaultText>
             break
             case 'vendor':
                 if (order.status === 0) {
                     return (
                         <View>
-                            <Text style={classes.textDefault}>How long until ready?</Text>
+                            <DefaultText>How long until ready?</DefaultText>
                             <TimeSelector onSelect={time => confirmOrder(order._id, time)} />
                         </View>
                     )
@@ -273,11 +269,7 @@ export default () => {
                         )}
                     />
                 ) : (
-                    <Text
-                        style={{ color: theme?.colors.textDefault }}
-                    >
-                        No current orders.
-                    </Text>
+                    <DefaultText>No current orders.</DefaultText>
                 )
             }
         </View>

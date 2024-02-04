@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Pressable,
-    Text,
     View,
 } from 'react-native'
 import {
+    DefaultText,
     HeaderIconButton,
     LoadingView,
     LocationForm,
@@ -14,8 +14,6 @@ import {
 import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { getLocationWithUserId } from '../utils/data'
-import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
 
 const initialState = {
     address1: '',
@@ -26,8 +24,6 @@ const initialState = {
 }
 
 export default ({ userId }) => {
-
-    const theme = useTheme()
 
     const {
         dispatch,
@@ -95,14 +91,7 @@ export default ({ userId }) => {
                         <Pressable
                             onPress={() => setModalVisible(true)}
                         >
-                            <Text
-                                style={[
-                                    classes.textDefault,
-                                    { color: theme?.colors.textDefault },
-                                ]}
-                            >
-                                Add your location.
-                            </Text>
+                            <DefaultText>Add your location.</DefaultText>
                         </Pressable>
                     )
             }

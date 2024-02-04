@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
 import {
+    DefaultText,
     ImageDetail,
     ImageList,
     ImageSelector,
@@ -11,7 +11,6 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import classes from '../styles/classes'
 
 export default ({ user }) => {
 
@@ -102,7 +101,7 @@ export default ({ user }) => {
             {/* <Header onPress={() => setModalVisible(true)} /> */}
 
             {loading
-                ? <Text style={classes.textDefault}>Loading images...</Text>
+                ? <DefaultText>Loading images...</DefaultText>
                 : (
                     <ImageList
                         loading={loading}

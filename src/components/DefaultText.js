@@ -2,12 +2,25 @@ import React from 'react'
 import {
     Text,
 } from 'react-native'
-import main from '../styles/main'
+import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
-const DefaultText = ({ children, ...props }) => (
-    <Text style={[main.text, props.style]}>
-        {children}
-    </Text>
-)
+export default ({ children, bold = false, ...props }) => {
+    
+    const theme = useTheme()
 
-export default DefaultText
+    return (
+        <Text
+            style={[
+                classes.textDefault,
+                props.style,
+                {
+                    color: theme?.colors.textDefault,
+                    fontWeight: bold ? 700 : 400,
+                },
+            ]}
+        >
+            {children}
+        </Text>
+    )
+}
