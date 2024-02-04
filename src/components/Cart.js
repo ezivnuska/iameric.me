@@ -68,7 +68,6 @@ export default ({ onSubmitted }) => {
                     label='Clear Cart'
                     onPress={() => dispatch({ type: 'CLEAR_CART' })}
                     disabled={loading}
-                    transparent
                 />
             </View>
 

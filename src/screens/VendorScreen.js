@@ -23,15 +23,15 @@ export default ({ navigation, route }) => {
 
         if (!route.params || !route.params.id)
             console.log('missing required id param')
-        else loadUserDetails()
+        else loadUserDetails(route.params.id)
 
     }, [])
     
 
     const loadUserDetails = async id => {
-        setLoading('Loading user details...')
+        setLoading('Loading vendor details...')
         const user = await loadUserById(id)
-        setUserDetails(details)
+        setUserDetails(user)
         setLoading(null)
     }
 
@@ -80,10 +80,6 @@ export default ({ navigation, route }) => {
                             <DefaultText style={classes.headerSecondary}>
                                 {userDetails.username}
                             </DefaultText>
-                            
-                            
-                            
-                            <DefaultText>{userDetails.email}</DefaultText>
 
                             {renderUserAvatar()}
 

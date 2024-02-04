@@ -19,6 +19,7 @@ export const loadUsersByRole = async role => {
 }
 
 export const loadUserById = async id => {
+    
     const { data } = await axios.get(`/api/user/${id}`)
     
     if (!data.user) {

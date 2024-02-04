@@ -16,22 +16,26 @@ import {
     VendorScreen,
     VendorsScreen,
 } from '../screens'
+import {
+    BackButton,
+} from '@components'
 import { navigationRef } from './RootNavigation'
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
 import { useTheme } from 'react-native-paper'
+import NavBar from 'src/components/NavBar'
 
 const UsersStack = createNativeStackNavigator()
 const UsersStackScreen = () => {
 
     return (
         <UsersStack.Navigator
-            screenOptions={() => ({
-                initialRouteName: 'UserList',
+            initialRouteName='UserList'
+            screenOptions={{
                 headerShown: false,
-            })}
+            }}
         >
             <UsersStack.Screen
                 name='UserList'
@@ -52,10 +56,10 @@ const UsersStackScreen = () => {
 const VendorsStack = createNativeStackNavigator()
 const VendorsStackScreen = () => (
     <VendorsStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'VendorList',
+        initialRouteName='VendorList'
+        screenOptions={{
             headerShown: false,
-        })}
+        }}
     >
         <VendorsStack.Screen
             name='VendorList'
@@ -75,10 +79,10 @@ const VendorsStackScreen = () => (
 const ProductsStack = createNativeStackNavigator()
 const ProductsStackScreen = () => (
     <ProductsStack.Navigator
-        screenOptions={() => ({
-            initialRouteName: 'ProductList',
+        initialRouteName='ProductList'
+        screenOptions={{
             headerShown: false,
-        })}
+        }}
     >
         <ProductsStack.Screen
             name='ProductList'
@@ -206,8 +210,8 @@ const PrivateStackScreen = () => {
 const MainStack = createNativeStackNavigator()
 const MainStackScreen = () => (
     <MainStack.Navigator
+        initialRouteName='Start'
         screenOptions={() => ({
-            initialRouteName: 'Start',
             headerShown: false,
         })}
     >

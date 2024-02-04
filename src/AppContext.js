@@ -37,14 +37,6 @@ const reducer = (state = initialState, action) => {
                 else return product
             })
             break
-        case 'UPDATE_VENDOR_PRODUCTS':
-            users = users.map((v, i) => {
-                if (v._id === action.vendorId) {
-                    v.products = action.products
-                }
-                return v
-            })
-            break
         case 'SET_PRODUCTS':
             products = action.products
             break

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import {
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
@@ -11,6 +10,7 @@ import {
 import main from '../styles/main'
 import moment from 'moment'
 import { AppContext } from '../AppContext'
+import classes from 'src/styles/classes'
 
 export default ({ order }) => {
     
@@ -30,23 +30,26 @@ export default ({ order }) => {
     const getDeliveryTime = () => moment(pickup).add(20, 'm').format('LT')
 
     const renderCustomerInfo = () => (
-        <View style={styles.locationContainer}>
-            <Text style={main.text}>{`Deliver to ${customer.username}`}</Text>
+        <View style={{ marginBottom: 10 }}>
+            <DefaultText bold>{`Deliver to ${customer.username}`}</DefaultText>
             {renderLocation()}
         </View>
     )
 
     const renderVendorInfo = () => (
-        <View style={styles.locationContainer}>
-            <Text style={[main.text, main.subheading]}>{`Pick up from ${vendor.username} by ${getPickupTime()}`}</Text>
+        <View style={{ marginBottom: 10 }}>
+            <DefaultText style={classes.headerSecondary}>
+                {`Pick up from ${vendor.username} by ${getPickupTime()}`}
+            </DefaultText>
+
             <LocationDetails location={vendor.location} />
         </View>
     )
 
     const renderDriverInfo = () => driver ? (
         <View>
-            <Text style={main.text}>{`Assigned to ${driver.username}`}</Text>
-            <Text style={[main.text]}>Deliver by {`${getDeliveryTime()}`}</Text>
+            <DefaultText bold>{`Assigned to ${driver.username}`}</DefaultText>
+            <DefaultText>Deliver by {`${getDeliveryTime()}`}</DefaultText>
         </View>
     ) : <Text style={main.text}>Looking for driver...</Text>
 
@@ -60,17 +63,8 @@ export default ({ order }) => {
         ) : null
 
     return (
-        <View style={styles.container}>
+        <View style={{ marginBottom: 10 }}>
             {renderDetails()}
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        marginBottom: 10,
-    },
-    locationContainer: {
-        marginBottom: 10,
-    },
-})

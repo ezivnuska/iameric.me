@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     Pressable,
     StyleSheet,
@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import {
     CartProductPreview,
-    IconButton,
+    DefaultText,
     LocationDetails,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -35,7 +35,7 @@ export default ({ order, children, ...props }) => {
     const renderCustomer = () => order && order.customer
         ? (
             <View style={styles.column}>
-                <Text style={classes.headerSecondary}>Drop Off</Text>
+                <DefaultText style={classes.headerSecondary}>Drop Off</DefaultText>
                 {renderLocation()}
             </View>
         )
@@ -44,7 +44,7 @@ export default ({ order, children, ...props }) => {
     const renderVendor = () => order && order.vendor
         ? (
             <View style={styles.column}>
-                <Text style={classes.headerSecondary}>Pick Up</Text>
+                <DefaultText style={classes.headerSecondary}>Pick Up</DefaultText>
                 <LocationDetails location={order.vendor.location} />
             </View>
         )

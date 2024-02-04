@@ -41,6 +41,7 @@ export default () => {
             marginHorizontal: 5,
         }}>
             <IconButton
+                type='primary'
                 label={getItemCount(cart[0].items)}
                 iconName='cart-outline'
                 onPress={() => setModalVisible(true)}

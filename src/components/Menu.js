@@ -21,14 +21,11 @@ export default ({ vendor }) => {
 
     const [loading, setLoading] = useState(null)
     const [featured, setFeatured] = useState(null)
+    const [products, setProducts] = useState(null)
 
     useEffect(() => {
-        init()
-    }, [])
-    
-    const init = async () => {
         getProducts()
-    }
+    }, [])
 
     const getProducts = async () => {
         
@@ -43,7 +40,7 @@ export default ({ vendor }) => {
             return
         }
         
-        dispatch({ type: 'UPDATE_VENDOR_PRODUCTS', vendorId: vendor._id, products: data.products })
+        setProducts(data.products)
     }
 
     const addToCart = (product, quantity) => {
@@ -62,10 +59,10 @@ export default ({ vendor }) => {
         >
             {loading
                 ? <LoadingView label={loading} />
-                : (vendor.products && vendor.products.length)
+                : (products && products.length)
                     ? (
                         <FlatList
-                            data={vendor.products}
+                            data={products}
                             keyExtractor={item => `product-${item._id}`}
                             renderItem={({ item }) => (
                                 <MenuItem

@@ -7,6 +7,7 @@ import {
     DefaultText,
     IconButton,
 } from '.'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -154,6 +155,7 @@ export default ({ product, onOrder }) => {
             />
     
             <IconButton
+                type='primary'
                 label={`Add ${quantity > 1 ? `${quantity} ` : ''}to Cart ($${Number(product.price) * quantity})`}
                 // iconName='add-outline'
                 onPress={() => onOrder(product, quantity)}

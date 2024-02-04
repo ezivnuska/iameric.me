@@ -1,28 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Image,
-    Text,
 } from 'react-native'
 import {
+    DefaultText,
     IconButton,
     LoadingView,
     Screen,
     UserImageModule,
 } from '@components'
-import { AppContext } from '../AppContext'
 import { loadUserById } from '../utils/data'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ navigation, route }) => {
-
-    const theme = useTheme()
-
-    const {
-        dispatch,
-    } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
     const [userDetails, setUserDetails] = useState(null)
@@ -82,14 +74,9 @@ export default ({ navigation, route }) => {
                                 transparent
                             />
 
-                            <Text
-                                style={[
-                                    classes.headerSecondary,
-                                    { color: theme?.colors.textDefault },
-                                ]}
-                            >
+                            <DefaultText style={classes.headerSecondary}>
                                 {userDetails.username}
-                            </Text>
+                            </DefaultText>
 
                             {renderUserAvatar()}
 
