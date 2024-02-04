@@ -1,25 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
 import {
+    DefaultText,
     ImageDetail,
     ImageList,
     LoadingView,
     PopUpModal,
 } from '.'
-import { AppContext } from '../AppContext'
 import axios from 'axios'
-import classes from '../styles/classes'
 
 export default ({ user }) => {
-
-    const {
-        dispatch,
-    } = useContext(AppContext)
-
-    const [modalVisible, setModalVisible] = useState(false)
 
     const [featured, setFeatured] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -57,8 +49,6 @@ export default ({ user }) => {
 
     return (
         <View style={{ paddingBottom: 15 }}>
-                
-            {/* <Header onPress={() => setModalVisible(true)} /> */}
 
             {loading
                 ? <LoadingView label='Loading images...' />
@@ -71,7 +61,7 @@ export default ({ user }) => {
                             onSelected={onSelected}
                         />
                     )
-                    : <Text style={classes.textDefault}>No entries yet.</Text>
+                    : <DefaultText>No entries yet.</DefaultText>
             }
             
             <PopUpModal

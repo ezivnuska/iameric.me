@@ -1,20 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     View,
-    Text,
 } from 'react-native'
-import { AppContext } from '../AppContext'
 import {
+    DefaultText,
     LoadingView,
     UserList,
 } from '.'
+import { AppContext } from '../AppContext'
 import { loadUsersByRole } from '../utils/data'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
 
 export default () => {
-
-    const theme = useTheme()
     
     const {
         dispatch,
@@ -47,29 +44,15 @@ export default () => {
     return (
         <View>
             
-            <Text
-                style={[
-                    classes.pageTitle,
-                    { color: theme?.colors.textDefault },
-                ]}
-            >
+            <DefaultText style={classes.pageTitle}>
                 Customers
-            </Text>
+            </DefaultText>
 
             {loading
                 ? <LoadingView label={loading} />
                 : users
                     ? <UserList users={users} />
-                    : (
-                        <Text
-                            style={[
-                                classes.textDefault,
-                                { color: theme?.colors.textDefault },
-                            ]}
-                        >
-                            No users to display.
-                        </Text>
-                    )
+                    : <DefaultText>No users to display.</DefaultText>
                 }
         </View>
     )

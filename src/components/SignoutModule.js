@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
 import {
+    DefaultText,
     IconButton,
     PopUpModal,
 } from '.'
@@ -53,20 +53,15 @@ export default () => {
         >
             <View style={{ marginBottom: 5 }}>
                 
-                <Text style={classes.headerSecondary}>
+                <DefaultText style={classes.headerSecondary}>
                     Sign Out
-                </Text>
+                </DefaultText>
 
-                <Text
-                    style={[
-                        classes.textDefault,
-                        {
-                            marginBottom: 15,
-                        },
-                    ]}
+                <DefaultText
+                    style={{ marginBottom: 15 }}
                 >
                     See you next time!
-                </Text>
+                </DefaultText>
 
             </View>
 

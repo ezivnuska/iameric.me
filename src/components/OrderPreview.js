@@ -83,11 +83,11 @@ export default ({ order, children, ...props }) => {
     }
 
     const renderStatus = text => (
-        <Text style={[classes.textDefault, styles.status]}>{text}</Text>
+        <DefaultText style={styles.status}>{text}</DefaultText>
     )
 
     const renderMilestone = text => (
-        <Text style={[classes.textDefault, styles.milestone]}>{text}</Text>
+        <DefaultText style={styles.milestone}>{text}</DefaultText>
     )
 
     const renderOrderMilestones = order => (
