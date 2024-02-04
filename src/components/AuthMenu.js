@@ -102,7 +102,7 @@ export default ({ onPress }) => {
                 username,
             },
         })
-
+        
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
