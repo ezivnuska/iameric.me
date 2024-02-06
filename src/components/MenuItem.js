@@ -70,9 +70,7 @@ export default ({ item, username, onPress }) => {
                         alignItems: 'flex-start',
                     }}
                 >
-                    <DefaultText
-                        style={classes.headerSecondary}
-                    >
+                    <DefaultText style={classes.headerSecondary}>
                         {title}
                     </DefaultText>
 
@@ -82,7 +80,7 @@ export default ({ item, username, onPress }) => {
                             flexBasis: 'auto',
                             flexShrink: 1,
                             flexGrow: 0,
-                            backgroundColor: 'blue',
+                            backgroundColor: theme?.colors.buttonPrimary,
                             borderRadius: 6,
                             display: 'flex',
                             flexDirection: 'row',
@@ -100,7 +98,11 @@ export default ({ item, username, onPress }) => {
                         <DefaultText
                             style={[
                                 classes.buttonText,
-                                { flexBasis: 'auto', flexShrink: 1 },
+                                {
+                                    flexBasis: 'auto',
+                                    flexShrink: 1,
+                                    color: theme?.colors.textDefault,
+                                },
                             ]}
                         >
                             ${price}

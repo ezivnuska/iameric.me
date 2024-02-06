@@ -9,7 +9,7 @@ import { AppContext } from '../AppContext'
 import {
     Header,
 } from '@components'
-import { getLocally } from '../utils/storage'
+// import { getLocally } from '../utils/storage'
 import { useTheme } from 'react-native-paper'
 
 let initialDims = {
@@ -17,15 +17,11 @@ let initialDims = {
     screen: Dimensions.get('screen'),
 }
 
-console.log('initialDims', initialDims)
-
 export default () => {
 
     const {
         dispatch,
         dims,
-        isThemeDark,
-        toggleTheme,
     } = useContext(AppContext)
 
     const theme = useTheme()
@@ -37,21 +33,14 @@ export default () => {
             ({ window, screen }) => dispatch({ type: 'SET_DIMS', dims: { window, screen } })
         )
 
-        getLocalTheme()
+        dispatch({ type: 'SET_DIMS', dims: initialDims })
 
         return () => subscription.remove()
     }, [])
 
-    const getLocalTheme = async () => {
-        const isDark = await getLocally('dark')
-        if (isDark && !isThemeDark) toggleTheme()
-
-        dispatch({ type: 'SET_DIMS', dims: initialDims })
-    }
-
-    // useEffect(() => {
-    //     console.log('dims changed', dims)
-    // }, [dims])
+    useEffect(() => {
+        if (dims) console.log('dims changed', dims)
+    }, [dims])
 
     return dims ? (
         <SafeAreaView

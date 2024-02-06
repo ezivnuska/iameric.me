@@ -64,6 +64,7 @@ export default ({ vendor }) => {
                         <FlatList
                             data={products}
                             keyExtractor={item => `product-${item._id}`}
+                            showsVerticalScrollIndicator={false}
                             renderItem={({ item }) => (
                                 <MenuItem
                                     item={item}

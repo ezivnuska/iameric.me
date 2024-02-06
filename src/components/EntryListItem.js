@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
     ActivityIndicator,
     Pressable,
@@ -11,21 +11,17 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
 import { navigate } from '../navigators/RootNavigation'
+import { useTheme } from 'react-native-paper'
 
 export default ({ entry, onDelete }) => {
     
+    const theme = useTheme()
+    
     const {
-        state,
-        users,
+        user,
     } = useContext(AppContext)
     
-    const { user } = state
     const { author, text } = entry
-
-    const isUserOnline = () => {
-        const currentUser = users ? users.filter(u => u._id === author._id)[0] : null
-        if (currentUser) return currentUser.token !== null
-    }
         
     return (
         <View>
@@ -68,7 +64,11 @@ export default ({ entry, onDelete }) => {
                                     }}
                                     onPress={() => onDelete(entry._id)}
                                 >
-                                    <Icon name='trash-outline' size={20} color='#fff' />
+                                    <Icon
+                                        name='trash-outline'
+                                        size={20}
+                                        color={theme?.colors.textDefault}
+                                    />
                                 </Pressable>
                             </View>
                         ) : null}

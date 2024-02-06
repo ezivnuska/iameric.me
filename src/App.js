@@ -23,7 +23,7 @@ export default () => {
   const CombinedDefaultTheme = merge(defaultTheme, light)
   const CombinedDarkTheme = merge(darkTheme, dark)
 
-  const [isThemeDark, setIsThemeDark] = useState(false)
+  const [isThemeDark, setIsThemeDark] = useState(true)
 
   let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme
 
@@ -32,16 +32,11 @@ export default () => {
   }, [])
   
   const initTheme = async () => {
-
-    let localDarkValue = await getLocally('dark')
-    if (!localDarkValue) await saveDarkValue(false)
-  }
-
-  const saveDarkValue = async darkValue => {
-    try {
-      await saveLocally('dark', darkValue)
-    } catch (err) {
-      console.log('error saving isThemeDark to local value', err)
+    let dark = await getLocally('dark')
+    const isDark = dark === 'true'
+    if (isDark !== isThemeDark) {
+      console.log('switching theme')
+      setIsThemeDark(isDark)
     }
   }
 
@@ -50,8 +45,9 @@ export default () => {
   }, [isThemeDark])
 
   const toggleTheme = useCallback(async () => {
-    await saveDarkValue(!isThemeDark)
-    return setIsThemeDark(!isThemeDark)
+    const value = !isThemeDark
+    await saveLocally('dark', value)
+    setIsThemeDark(value)
   }, [isThemeDark])
 
   const preferences = useMemo(

@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     FlatList,
-    Text,
     View,
 } from 'react-native'
 import {
@@ -25,7 +24,7 @@ export default ({ navigation }) => {
     const [items, setItems] = useState(null)
 
     useEffect(() => {
-        if (!entries) getEntries()
+        getEntries()
     }, [])
 
     const getEntries = async () => {
@@ -73,9 +72,9 @@ export default ({ navigation }) => {
             }}
         >
             
-            <Text style={classes.pageTitle}>
+            <DefaultText style={classes.pageTitle}>
                 Forum
-            </Text>
+            </DefaultText>
 
             <FeedbackForm />
             
@@ -84,7 +83,7 @@ export default ({ navigation }) => {
                 : items && items.length
                     ? (
                         <FlatList
-                            data={entries.reverse()}
+                            data={entries}
                             keyExtractor={(item, index) => `${index}-entry-${item._id}`}
                             renderItem={({ item }) => (
                                 <EntryListItem

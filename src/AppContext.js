@@ -102,7 +102,7 @@ const reducer = (state = initialState, action) => {
             cart = null
             break
         case 'NEW_ENTRY':
-            entries = [...entries, action.entry]
+            entries = [action.entry, ...entries]
             break
         case 'SET_ENTRIES':
             entries = action.entries
@@ -232,7 +232,6 @@ export const AppProvider = ({ children, preferences }) => {
     return (
         <AppContext.Provider
             value={{
-                ...preferences,
                 state,
                 dispatch,
                 cart: state.cart,
@@ -246,6 +245,7 @@ export const AppProvider = ({ children, preferences }) => {
                 user: state.user,
                 users: state.users,
                 vendors: usersByRole('vendor'),
+                ...preferences,
             }}
         >
             {children}

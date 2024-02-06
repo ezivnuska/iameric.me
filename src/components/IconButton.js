@@ -44,7 +44,7 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                     name={iconName}
                     size={16}
                     color={ theme?.colors.textDefault }
-                    style={{ flexBasis: 'auto', flexShrink: 1, marginRight: 5 }}
+                    style={{ flexBasis: 'auto', flexShrink: 1 }}
                 />
             )}
 
@@ -68,7 +68,7 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 <Icon
                     name={iconName}
                     size={16}
-                    color='#fff'
+                    color={ theme?.colors.textDefault }
                     style={[{ flexBasis: 'auto', flexShrink: 1, marginLeft: 5 }]}
                 />
             )}

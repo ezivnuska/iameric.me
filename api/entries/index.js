@@ -30,6 +30,7 @@ const getEntries = async (req, res) => {
             select: 'username profileImage',
             populate: { path: 'profileImage' },
         })
+        .sort({ createdAt: -1 })
     
     if (!entries) {
         console.log('error fetching entries.')

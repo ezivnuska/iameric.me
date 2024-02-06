@@ -13,6 +13,8 @@ const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const QuantityControl = ({ value, onChange }) => {
+
+    const theme = useTheme()
     
     const increase = () => {onChange(value + 1)}
     const decrease = () => onChange(value - 1)
@@ -26,7 +28,7 @@ const QuantityControl = ({ value, onChange }) => {
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
                 borderWidth: 2,
-                borderColor: '#fff',
+                borderColor: theme?.colors.textDefault,
                 borderRadius: 10,
                 marginVertical: 15,
                 marginHorizontal: 'auto',
@@ -36,7 +38,12 @@ const QuantityControl = ({ value, onChange }) => {
                 iconName='remove-outline'
                 onPress={decrease}
                 disabled={value < 2}
-                style={{ flex: 1 }}
+                style={{
+                    flex: 1,
+                    borderRightWidth: 1,
+                    borderColor: theme?.colors.textDefault,
+                    borderRadius: 'none',
+                }}
                 transparent
             />
     
@@ -53,7 +60,12 @@ const QuantityControl = ({ value, onChange }) => {
             <IconButton
                 iconName='add-outline'
                 onPress={increase}
-                style={{ flex: 1 }}
+                style={{
+                    flex: 1,
+                    borderLeftWidth: 1,
+                    borderColor: theme?.colors.textDefault,
+                    borderRadius: 'none',
+                }}
                 transparent
             />
     
@@ -156,7 +168,7 @@ export default ({ product, onOrder }) => {
     
             <IconButton
                 type='primary'
-                label={`Add ${quantity > 1 ? `${quantity} ` : ''}to Cart ($${Number(product.price) * quantity})`}
+                label={`Add ${quantity > 1 ? `${quantity} ` : ''}to Cart ($${Number(Number(product.price) * quantity).toFixed(2)})`}
                 // iconName='add-outline'
                 onPress={() => onOrder(product, quantity)}
             />

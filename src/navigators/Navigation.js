@@ -16,16 +16,12 @@ import {
     VendorScreen,
     VendorsScreen,
 } from '../screens'
-import {
-    BackButton,
-} from '@components'
 import { navigationRef } from './RootNavigation'
 // import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
 import { useTheme } from 'react-native-paper'
-import NavBar from 'src/components/NavBar'
 
 const UsersStack = createNativeStackNavigator()
 const UsersStackScreen = () => {
