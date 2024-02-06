@@ -8,7 +8,6 @@ import {
     VendorList,
 } from '.'
 import { loadUsersByRole } from '../utils/data'
-import classes from '../styles/classes'
 
 export default () => {
 
@@ -28,10 +27,6 @@ export default () => {
 
     return (
         <View>
-            
-            <ThemedText style={classes.pageTitle}>
-                Vendors
-            </ThemedText>
 
             {loading
                 ? <LoadingView label={loading} />
@@ -39,6 +34,7 @@ export default () => {
                     ? <VendorList users={vendors} />
                     : <ThemedText>No participating vendors.</ThemedText>
             }
+
         </View>
     )
 }

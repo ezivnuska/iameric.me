@@ -54,6 +54,7 @@ export default () => {
                         flexBasis: 'auto',
                         display: 'flex',
                         flexDirection: 'row',
+                        alignItems: 'center',
                     }}
                 >
                     <IconButton

@@ -46,6 +46,7 @@ export default () => {
                 iconName='cart-outline'
                 onPress={() => setModalVisible(true)}
                 padded={true}
+                textStyles={{ color: theme?.colors.buttonLabel }}
             />
 
             <PopUpModal

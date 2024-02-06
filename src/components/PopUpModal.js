@@ -39,7 +39,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         right: 0,
                         bottom: 0,
                         left: 0,
-                        backgroundColor: theme?.colors.background,
+                        backgroundColor: theme?.colors.modalBackground,
                         opacity: 0.9,
                     }}
                     onPress={onRequestClose}
@@ -47,9 +47,9 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
 
                 <View
                     style={{
-                        width: 360,
-                        minWidth: 360,
-                        maxWidth: 360,
+                        width: 345,
+                        minWidth: 280,
+                        maxWidth: 880,
                         maxHeight: '90%',
                         paddingHorizontal: 10,
                         marginHorizontal: 'auto',

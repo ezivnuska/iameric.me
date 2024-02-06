@@ -42,7 +42,7 @@ export default ({ children, secure = true, ...props }) => {
                 >
                     <View
                         style={{
-                            paddingVertical: 10,
+                            // paddingVertical: 10,
                             paddingHorizontal: 10,
                         }}
                     >

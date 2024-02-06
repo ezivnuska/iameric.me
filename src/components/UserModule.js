@@ -9,7 +9,6 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import { loadUsersByRole } from '../utils/data'
-import classes from '../styles/classes'
 
 export default () => {
     
@@ -41,28 +40,16 @@ export default () => {
         setLoading(null)
     }
 
-    const renderTitle = () => {
-        let title = null
-        switch (user.role) {
-            case 'customer': title = 'Customers'; break
-            case 'vendor': title = 'Merchants'; break
-            case 'driver': title = 'Drivers'; break
-            default: title = 'Users'
-        }
-        return <ThemedText style={classes.pageTitle}>{title}</ThemedText>
-    }
-
     return (
         <View>
-            
-            {renderTitle()}
 
             {loading
                 ? <LoadingView label={loading} />
                 : users
                     ? <UserList users={users} />
                     : <ThemedText>No users to display.</ThemedText>
-                }
+            }
+        
         </View>
     )
 }

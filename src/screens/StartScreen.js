@@ -101,7 +101,7 @@ export default ({ navigation }) => {
                     flexDirection: 'column',
                     justifyContent: 'space-evenly',
                     alignItems: 'stretch',
-                    rowGap: 10,
+                    // rowGap: 10,
                     overflow: 'visible',
                     height: dims ? dims.window.height - 100 : '100%',
                 },
@@ -118,6 +118,7 @@ export default ({ navigation }) => {
                             iconName='arrow-forward-circle-outline'
                             onPress={() => setShowSignUpModal('customer')}
                             alignIcon='right'
+                            textStyles={{ color: '#fff' }}
                         />
                         <IconButton
                             label='Preview'
@@ -125,6 +126,7 @@ export default ({ navigation }) => {
                             onPress={() => onConnect('customer')}
                             alignIcon='right'
                             transparent
+                            textStyles={{ color: '#fff' }}
                         />
                     </View>
                 </BackgroundImageWithGradient>
@@ -140,6 +142,7 @@ export default ({ navigation }) => {
                             iconName='arrow-forward-circle-outline'
                             onPress={() => setShowSignUpModal('vendor')}
                             alignIcon='right'
+                            textStyles={{ color: '#fff' }}
                         />
                         <IconButton
                             label='Preview'
@@ -147,6 +150,7 @@ export default ({ navigation }) => {
                             onPress={() => onConnect('vendor')}
                             alignIcon='right'
                             transparent
+                            textStyles={{ color: '#fff' }}
                         />
                     </View>
                 </BackgroundImageWithGradient>
@@ -162,6 +166,7 @@ export default ({ navigation }) => {
                             iconName='arrow-forward-circle-outline'
                             onPress={() => setShowSignUpModal('driver')}
                             alignIcon='right'
+                            textStyles={{ color: '#fff' }}
                         />
                         
                         <IconButton
@@ -170,6 +175,7 @@ export default ({ navigation }) => {
                             onPress={() => onConnect('driver')}
                             alignIcon='right'
                             transparent
+                            textStyles={{ color: '#fff' }}
                         />
                     </View>
                 </BackgroundImageWithGradient>
@@ -198,9 +204,9 @@ const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
         <View
             style={{
                 flex: 1,
-                flexGrow: 1,
-                borderRadius: 20,
-                overflow: 'hidden',
+                // flexGrow: 1,
+                // borderRadius: 20,
+                // overflow: 'hidden',
                 position: 'relative',
             }}
         >
@@ -213,7 +219,7 @@ const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
                     style={{ flex: 1, opacity: 1 }}
                     colors={theme?.dark
                         ? [ '#00000000', '#000000' ]
-                        : [ '#ffffff00', '#ffffff' ]
+                        : [ '#00000000', '#000000' ]
                     }
                 >
                     <Text
@@ -221,10 +227,10 @@ const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
                             classes.headerSecondary,
                             {
                                 position: 'absolute',
-                                bottom: 50,
+                                bottom: 52,
                                 left: 20,
                                 fontWeight: 700,
-                                color: theme?.colors.textDefault,
+                                color: '#fff',//theme?.colors.textDefault,
                             },
                         ]}
                     >
@@ -248,7 +254,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 10,
+        bottom: 15,
         width: '100%',
         paddingHorizontal: 15,
     },

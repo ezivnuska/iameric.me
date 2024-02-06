@@ -35,11 +35,11 @@ const UserButton = ({ onPress, user }) => {
                 flexShrink: 0,
                 flexBasis: 'auto',
                 paddingHorizontal: 7,
-                paddingVertical: 3,
+                // paddingVertical: 3,
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                borderRadius: 6,
+                borderRadius: 10,
                 backgroundColor: theme?.colors.screen,
                 shadowColor: theme?.colors.shadow,
                 shadowOffset: {
@@ -49,6 +49,7 @@ const UserButton = ({ onPress, user }) => {
                 shadowOpacity: 0.5,
                 shadowRadius: 4,
                 elevation: 1,
+                height: 35,
             }}
         >
             <View
@@ -61,6 +62,7 @@ const UserButton = ({ onPress, user }) => {
                 }}
             >
                 <Image
+                    source={getSource()}
                     style={{
                         width: 28,
                         height: 28,
@@ -68,14 +70,13 @@ const UserButton = ({ onPress, user }) => {
                     }}
                     // onLoadStart={() => setLoading(true)}
                     // onLoadEnd={() => setLoading(false)}
-                    source={getSource()}
                 />
             </View>
     
             <Text style={{
                 color: theme?.colors.textDefault,
                 fontWeight: 700,
-                lineHeight: 32,
+                lineHeight: 35,
             }}>
                 {user.username}
             </Text>

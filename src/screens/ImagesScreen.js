@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import {
     ImageModule,
     Screen,
+    ScreenTitle,
     ThemedText,
 } from '@components'
 import { AppContext } from '../AppContext'
@@ -16,9 +17,7 @@ export default ({ navigation }) => {
     return (
         <Screen navigation={navigation}>
             
-            <ThemedText style={classes.pageTitle}>
-                Images
-            </ThemedText>
+            <ScreenTitle title='Images' />
             
             {user
                 ? <ImageModule user={user} />

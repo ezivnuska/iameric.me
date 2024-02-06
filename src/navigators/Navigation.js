@@ -24,8 +24,8 @@ import { AppContext } from '../AppContext'
 import { useTheme } from 'react-native-paper'
 
 const UsersStack = createNativeStackNavigator()
-const UsersStackScreen = () => {
-
+const UsersStackScreen = ({ route }) => {
+    const { title } = route.params
     return (
         <UsersStack.Navigator
             initialRouteName='UserList'
@@ -37,6 +37,7 @@ const UsersStackScreen = () => {
                 name='UserList'
                 component={UsersScreen}
                 options={{ title: 'UserList' }}
+                initialParams={{ title }}
             />
 
             <UsersStack.Screen
@@ -166,6 +167,7 @@ const PrivateStackScreen = () => {
             <PrivateStack.Screen
                 name='Users'
                 component={UsersStackScreen}
+                initialParams={{ title: getTitle() }}
                 options={{
                     tabBarLabel: getTitle(),
                     tabBarIcon: ({ focused, color }) => (

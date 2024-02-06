@@ -248,7 +248,7 @@ export default () => {
     }
 
     return (
-        <View>
+        <View style={{ paddingVertical: 20 }}>
             {items && items.length
                 ? (
                     <FlatList

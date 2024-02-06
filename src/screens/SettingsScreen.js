@@ -1,21 +1,17 @@
 import React, { useContext } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
 import {
     DeleteAccountButton,
     LocationModule,
     Screen,
+    ScreenTitle,
     UserDetails,
 } from '@components'
 import { AppContext } from '../AppContext'
-import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
 
 export default ({ navigation }) => {
-
-    const theme = useTheme()
 
     const {
         user,
@@ -24,14 +20,7 @@ export default ({ navigation }) => {
     return (
         <Screen navigation={navigation}>
             
-            <Text
-                style={[
-                    classes.pageTitle,
-                    { color: theme?.colors.textDefault },
-                ]}
-            >
-                Settings
-            </Text>
+            <ScreenTitle title='Settings' />
             
             {user && (
                 <View>

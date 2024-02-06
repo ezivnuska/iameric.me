@@ -11,7 +11,6 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import { deleteEntryWithId, loadEntries } from '../utils/data'
-import classes from '../styles/classes'
 
 export default ({ navigation }) => {
     
@@ -71,11 +70,6 @@ export default ({ navigation }) => {
                 paddingBottom: 10,
             }}
         >
-            
-            <ThemedText style={classes.pageTitle}>
-                Forum
-            </ThemedText>
-
             <FeedbackForm />
             
             {loading

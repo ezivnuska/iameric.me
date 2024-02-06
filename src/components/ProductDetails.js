@@ -22,7 +22,9 @@ const QuantityControl = ({ value, onChange }) => {
     return (
         <View
             style={{
-                width: 150,
+                // width: 150,
+                width: '100%',
+                height: 35,
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
@@ -43,6 +45,7 @@ const QuantityControl = ({ value, onChange }) => {
                     borderRightWidth: 1,
                     borderColor: theme?.colors.textDefault,
                     borderRadius: 'none',
+                    height: 35,
                 }}
                 transparent
             />
@@ -52,6 +55,7 @@ const QuantityControl = ({ value, onChange }) => {
                     flex: 1,
                     textAlign: 'center',
                     fontWeight: 700,
+                    lineHeight: 35,
                 }}
             >
                 {value}
@@ -65,6 +69,7 @@ const QuantityControl = ({ value, onChange }) => {
                     borderLeftWidth: 1,
                     borderColor: theme?.colors.textDefault,
                     borderRadius: 'none',
+                    height: 35,
                 }}
                 transparent
             />
@@ -171,6 +176,7 @@ export default ({ product, onOrder }) => {
                 label={`Add ${quantity > 1 ? `${quantity} ` : ''}to Cart ($${Number(Number(product.price) * quantity).toFixed(2)})`}
                 // iconName='add-outline'
                 onPress={() => onOrder(product, quantity)}
+                textStyles={{ color: theme?.colors.buttonLabel }}
             />
 
         </View>

@@ -1,9 +1,10 @@
 import React from 'react'
 import {
     Pressable,
-    Text,
 } from 'react-native'
-import classes from '../styles/classes'
+import {
+    ThemedText,
+} from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from 'react-native-paper'
 
@@ -30,12 +31,14 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 flexDirection: 'row',
                 justifyContent: align,
                 alignItems: 'center',
-                paddingVertical: 5,
+                // paddingVertical: 5,
                 paddingRight: padded ? 10 : 0,
                 paddingLeft: align === 'left' ? 0 : padded ? 10 : 0,
                 backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
-                borderRadius: 6,
+                borderRadius: 10,
                 textAlign: 'center',
+                height: 35,
+                // borderWidth: 1,
                 ...props.style,
             }}
         >
@@ -43,33 +46,33 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 <Icon
                     name={type === 'danger' ? 'skull-outline' : iconName}
                     size={16}
-                    color={ type === 'danger' ? '#fff' : theme?.colors.textDefault }
-                    style={{ flexBasis: 'auto', flexShrink: 1, marginRight: label ? 8 : 0 }}
+                    color={ textStyles ? textStyles.color : type === 'danger' ? '#fff' : theme?.colors.textDefault }
+                    style={{ flexBasis: 'auto', flexShrink: 1, lineHeight: 35, marginRight: label ? 8 : 0 }}
                 />
             )}
 
             {label && (
-                <Text
+                <ThemedText
                     style={[
-                        classes.buttonText,
                         {
                             flexBasis: 'auto',
                             flexGrow: 0,
                             color: type === 'danger' ? '#fff' : theme?.colors.textDefault,
+                            lineHeight: 35,
                         },
                         textStyles || {},
                     ]}
                 >
                     {label}
-                </Text>
+                </ThemedText>
             )}
 
             {(iconName && alignIcon === 'right') && (
                 <Icon
                     name={iconName}
                     size={16}
-                    color={ theme?.colors.textDefault }
-                    style={[{ flexBasis: 'auto', flexShrink: 1, marginLeft: 5 }]}
+                    color={ textStyles?.color || theme?.colors.textDefault }
+                    style={[{ flexBasis: 'auto', flexShrink: 1, lineHeight: 35, marginLeft: 5 }]}
                 />
             )}
         </Pressable>

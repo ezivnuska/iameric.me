@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 import classes from '../styles/classes'
 import ThemedText from './ThemedText'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 24
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -34,29 +35,35 @@ const ProductThumb = ({ product }) => (
     />
 )
 
-const Quantity = ({ quantity }) => (
-    <View
-        style={{
-            width: 20,
-            height: 20,
-            borderWidth: 1,
-            borderColor: '#fff',
-            borderRadius: 5,
-        }}
-    >
-        <Text
+const Quantity = ({ quantity }) => {
+    
+    const theme = useTheme()
+    return (
+        <View
             style={{
-                width: 20,
-                lineHeight: 20,
-                textAlign: 'center',
-                color: '#fff',
-                fontWeight: 500,
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: 30,
+                height: 30,
+                borderWidth: 1,
+                borderColor: theme?.colors.border,
+                borderRadius: 15,
             }}
         >
-            {quantity}
-        </Text>
-    </View>
-)
+            <ThemedText
+                style={{
+                    flex: 1,
+                    fontSize: 14,
+                    lineHeight: 20,
+                    textAlign: 'center',
+                    fontWeight: 500,
+                }}
+            >
+                {quantity}
+            </ThemedText>
+        </View>
+    )
+}
 
 const CartListItem = ({ item, quantity, ...props }) => {
     return (

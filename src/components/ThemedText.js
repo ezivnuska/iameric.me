@@ -13,11 +13,11 @@ export default ({ children, bold = false, ...props }) => {
         <Text
             style={[
                 classes.textDefault,
-                props.style,
                 {
                     color: theme?.colors.textDefault,
                     fontWeight: bold ? 700 : 400,
                 },
+                props.style,
             ]}
         >
             {children}

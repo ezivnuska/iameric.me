@@ -96,14 +96,11 @@ export default ({ item, username, onPress }) => {
                         />
 
                         <ThemedText
-                            style={[
-                                classes.buttonText,
-                                {
-                                    flexBasis: 'auto',
-                                    flexShrink: 1,
-                                    color: theme?.colors.textDefault,
-                                },
-                            ]}
+                            style={{
+                                flexBasis: 'auto',
+                                flexShrink: 1,
+                                color: theme?.colors.buttonLabel,
+                            }}
                         >
                             ${price}
                         </ThemedText>

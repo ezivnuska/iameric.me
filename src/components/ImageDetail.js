@@ -11,10 +11,13 @@ import {
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 import layout from '../styles/layout'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) => {
+
+    const theme = useTheme()
 
     const {
         dispatch,
@@ -23,6 +26,10 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
     } = useContext(AppContext)
 
     const [loading, setLoading] = useState(null)
+
+    useEffect(() => {
+        console.log('imageData', imageData)
+    }, [imageData])
 
     const isImageProfileImage = id => user.profileImage === id
 
@@ -92,11 +99,6 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
         closeModal()
     }
 
-    const showAvatarButton = () => {
-        if (!user.profileImage || user.profileImage._id !== imageData._id) return true
-        return false
-    }
-
     const setProductImage = async productId => {
         
         setLoading(true)
@@ -109,7 +111,7 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
                 imageId: imageData._id,
             })
 
-        setLoading(false)
+        setLoading(null)
         
         if (!data) {
             console.log('Error setting image id for product.')
@@ -141,11 +143,11 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
                     width: imageData.width,
                     height: imageData.height,
                     borderWidth: 1,
-                    marginBottom: 15,
+                    // marginBottom: 15,
                 }}
             />
 
-            {(user._id === imageData.user) && !loading && (
+            {(user._id === imageData.user._id) ? (
                 <>
                     <View
                         style={{
@@ -153,35 +155,39 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
                             width: '100%',
+                            height: 50,
                             paddingVertical: layout.verticalPadding,
+                            borderWidth: 1,
+                            borderColor: 'red',
                         }}
                     >
                         
-                        {showAvatarButton() && (
+                        {/* {(!user.profileImage || (user.profileImage && user.profileImage._id !== imageData._id)) ? ( */}
                             <IconButton
                                 type='primary'
                                 label='Set as Avatar'
                                 onPress={setAvatar}
                                 disabled={loading}
+                                style={{ flex: 1, color: theme?.colors.textDefault }}
                             />
-                        )}
+                        {/* ) : null} */}
 
-                        {user.username !== 'Driver' &&
+                        {/* {user.username !== 'Driver' &&
                         user.username !== 'Customer' &&
-                        user.username !== 'Vendor' && (
+                        user.username !== 'Vendor' && ( */}
                             <IconButton
                                 type='danger'
                                 label='Delete Image'
                                 onPress={deleteImage}
                                 disabled={loading}
+                                style={{ flex: 1 }}
                             />
-                        )}
+                        {/* )} */}
 
                     </View>
 
-                    {imageData &&
-                    user.role === 'vendor' &&
-                    (products && products.length) ? (
+                    {(user.role === 'vendor' &&
+                    (products && products.length)) ? (
                         <View style={{ 
                             width: '100%',
                             // borderWidth: 1,
@@ -205,8 +211,7 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
                         </View>
                     ) : null}
                 </>
-            )}
-
+            ) : null}
         </View>
     ) : null
 }

@@ -39,6 +39,7 @@ import MenuItem from './MenuItem'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
+import ScreenTitle from './ScreenTitle'
 import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
@@ -107,6 +108,7 @@ export {
     OrderList,
     OrderDetails,
     OrderPreview,
+    ScreenTitle,
     PopUpModal,
     Preview,
     ProductDetails,

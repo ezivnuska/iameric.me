@@ -5,6 +5,7 @@ export const dark = {
         backgroundTransparent: '#00000000',
         border: '#aaa',
         buttonLabel: '#fff',
+        buttonText: '#fff',
         buttonDefault: '#00a',
         buttonPrimary: '#e97451',
         buttonSecondary: '#aaf',
@@ -21,6 +22,7 @@ export const dark = {
         tabBackground: '#000',
         textDefault: '#fff',
         userTitle: '#fff',
+        modalBackground: '#111',
     },
 }
 
@@ -31,6 +33,7 @@ export const light = {
         backgroundTransparent: '#fffff00',
         border: '#aaa',
         buttonLabel: '#fff',
+        buttonText: '#fff',
         buttonDefault: '#00a',
         buttonPrimary: '#e97451',
         buttonSecondary: '#aaf',
@@ -47,5 +50,6 @@ export const light = {
         tabBackground: '#fff',
         textDefault: '#000',
         userTitle: '#000',
+        modalBackground: '#333',
     },
 }
