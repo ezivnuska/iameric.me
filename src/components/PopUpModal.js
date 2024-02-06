@@ -53,10 +53,10 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         maxHeight: '90%',
                         paddingHorizontal: 10,
                         marginHorizontal: 'auto',
-                        backgroundColor: transparent ? 'transparent' : theme?.colors.screen,
+                        backgroundColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.screen,
                         borderRadius: 12,
                         borderWidth: transparent ? 0 : 1,
-                        borderColor: transparent ? 'transparent' : theme?.colors.border,
+                        borderColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.border,
                         flexBasis: 'auto',
                     }}
                 >

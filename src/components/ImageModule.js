@@ -125,7 +125,7 @@ export default ({ user }) => {
             <PopUpModal
                 visible={featured}
                 onRequestClose={() => setFeatured(false)}
-                transparent={false}
+                transparent={true}
             >
                 <ImageDetail
                     imageData={featured}

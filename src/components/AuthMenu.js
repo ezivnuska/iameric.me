@@ -185,6 +185,7 @@ export default ({ onPress }) => {
             <PopUpModal
                 visible={showSignoutModal}
                 onRequestClose={() => setShowSignoutModal(false)}
+                transparent={true}
             >
                 <View
                     style={{

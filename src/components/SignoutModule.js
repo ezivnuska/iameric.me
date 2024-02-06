@@ -75,6 +75,7 @@ export default () => {
             <PopUpModal
                 visible={modalVisible}
                 onRequestClose={validateClose}
+                transparent={true}
             >
                 <View
                     style={{
