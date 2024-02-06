@@ -22,8 +22,12 @@ export default () => {
     const theme = useTheme()
     
     return (
-        <CenteredContent type='full' style={{ backgroundColor: theme?.colors.headerBackground }}>
-            
+        <View
+            style={{
+                width: '100%'
+            }}
+        >
+        
             <View
                 style={{
                     display: 'flex',
@@ -31,9 +35,6 @@ export default () => {
                     justifyContent: 'space-between',
                     alignItems: 'stretch',
                     width: '100%',
-                    minWidth: 300,
-                    maxWidth: 900,
-                    marginHorizontal: 'auto',
                     height: 50,
                     minHeight: 50,
                     maxHeight: 50,
@@ -67,6 +68,6 @@ export default () => {
                 </View>
             </View>
 
-        </CenteredContent>
+        </View>
     )
 }

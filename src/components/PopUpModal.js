@@ -10,7 +10,7 @@ import {
 } from '.'
 import { useTheme } from 'react-native-paper'
 
-export default ({ children, onRequestClose, ...props }) => {
+export default ({ children, onRequestClose, transparent = false, ...props }) => {
     
     const theme = useTheme()
 
@@ -51,12 +51,12 @@ export default ({ children, onRequestClose, ...props }) => {
                         minWidth: 360,
                         maxWidth: 360,
                         maxHeight: '90%',
+                        paddingHorizontal: 10,
                         marginHorizontal: 'auto',
-                        // backgroundColor: '#666',
-                        // borderRadius: 10,
-                        // borderWidth: 1,
-                        // borderColor: '#ddd',
-                        // borderStyle: 'dotted',
+                        backgroundColor: transparent ? 'transparent' : theme?.colors.screen,
+                        borderRadius: 12,
+                        borderWidth: transparent ? 0 : 1,
+                        borderColor: transparent ? 'transparent' : theme?.colors.border,
                         flexBasis: 'auto',
                     }}
                 >
@@ -70,19 +70,12 @@ export default ({ children, onRequestClose, ...props }) => {
                         {children}
 
                         <IconButton
-                            label='Close'
+                            label='Cancel'
                             onPress={onRequestClose}
                             // iconName='close-outline'
+                            style={{ marginTop: 10 }}
                             transparent
                         />
-                        {/* <Button
-                            size='large'
-                            type='text'
-                            onClick={onRequestClose}
-                            style={{ color: '#eee' }}
-                            >
-                            Cancel
-                        </Button> */}
                     </ScrollView>
                 </View>
                 

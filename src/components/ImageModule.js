@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     ImageDetail,
     ImageList,
     ImageSelector,
@@ -101,7 +101,7 @@ export default ({ user }) => {
             {/* <Header onPress={() => setModalVisible(true)} /> */}
 
             {loading
-                ? <DefaultText>Loading images...</DefaultText>
+                ? <ThemedText>Loading images...</ThemedText>
                 : (
                     <ImageList
                         loading={loading}
@@ -125,6 +125,7 @@ export default ({ user }) => {
             <PopUpModal
                 visible={featured}
                 onRequestClose={() => setFeatured(false)}
+                transparent={false}
             >
                 <ImageDetail
                     imageData={featured}

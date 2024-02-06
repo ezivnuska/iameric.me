@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     LoadingView,
     MenuItem,
     PopUpModal,
@@ -75,7 +75,7 @@ export default ({ vendor }) => {
                         />
                     )
                     : (
-                        <DefaultText>No products to display.</DefaultText>
+                        <ThemedText>No products to display.</ThemedText>
                     )
             }
 

@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     IconButton,
 } from '.'
 import { useTheme } from 'react-native-paper'
@@ -47,7 +47,7 @@ const QuantityControl = ({ value, onChange }) => {
                 transparent
             />
     
-            <DefaultText
+            <ThemedText
                 style={{
                     flex: 1,
                     textAlign: 'center',
@@ -55,7 +55,7 @@ const QuantityControl = ({ value, onChange }) => {
                 }}
             >
                 {value}
-            </DefaultText>
+            </ThemedText>
     
             <IconButton
                 iconName='add-outline'
@@ -125,7 +125,7 @@ export default ({ product, onOrder }) => {
                         }}
                     >
                         
-                        <DefaultText
+                        <ThemedText
                             style={{
                                 fontSize: 18,
                                 fontWeight: 700,
@@ -135,9 +135,9 @@ export default ({ product, onOrder }) => {
                             }}
                         >
                             {product.title}
-                        </DefaultText>
+                        </ThemedText>
     
-                        <DefaultText
+                        <ThemedText
                             style={{
                                 flexBasis: '20%',
                                 textAlign: 'right',
@@ -147,19 +147,19 @@ export default ({ product, onOrder }) => {
                             }}
                         >
                             ${product.price}
-                        </DefaultText>
+                        </ThemedText>
     
                     </View>
                 </View>
             </View>
             
-            <DefaultText>
+            <ThemedText>
                 {product.blurb}
-            </DefaultText>
+            </ThemedText>
             
-            <DefaultText>
+            <ThemedText>
                 {product.desc}
-            </DefaultText>
+            </ThemedText>
             
             <QuantityControl
                 value={quantity}

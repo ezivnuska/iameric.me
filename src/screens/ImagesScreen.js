@@ -1,10 +1,8 @@
 import React, { useContext } from 'react'
 import {
-    Text,
-} from 'react-native'
-import {
     ImageModule,
     Screen,
+    ThemedText,
 } from '@components'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
@@ -18,13 +16,13 @@ export default ({ navigation }) => {
     return (
         <Screen navigation={navigation}>
             
-            <Text style={classes.pageTitle}>
+            <ThemedText style={classes.pageTitle}>
                 Images
-            </Text>
+            </ThemedText>
             
             {user
                 ? <ImageModule user={user} />
-                : <Text>No user</Text>
+                : <ThemedText>No user</ThemedText>
             }
         </Screen>
     )

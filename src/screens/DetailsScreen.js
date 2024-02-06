@@ -3,7 +3,7 @@ import {
     Image,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     IconButton,
     LoadingView,
     Screen,
@@ -74,9 +74,9 @@ export default ({ navigation, route }) => {
                                 transparent
                             />
 
-                            <DefaultText style={classes.headerSecondary}>
+                            <ThemedText style={classes.headerSecondary}>
                                 {userDetails.username}
-                            </DefaultText>
+                            </ThemedText>
 
                             {renderUserAvatar()}
 

@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     EntryListItem,
     FeedbackForm,
     LoadingView,
@@ -72,9 +72,9 @@ export default ({ navigation }) => {
             }}
         >
             
-            <DefaultText style={classes.pageTitle}>
+            <ThemedText style={classes.pageTitle}>
                 Forum
-            </DefaultText>
+            </ThemedText>
 
             <FeedbackForm />
             
@@ -92,7 +92,7 @@ export default ({ navigation }) => {
                                 />
                             )} 
                         />
-                    ) : <DefaultText>No entries yet.</DefaultText>
+                    ) : <ThemedText>No entries yet.</ThemedText>
             }
 
         </View>

@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import {
     CartProductPreview,
-    DefaultText,
+    ThemedText,
     LocationDetails,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -35,7 +35,7 @@ export default ({ order, children, ...props }) => {
     const renderCustomer = () => order && order.customer
         ? (
             <View style={styles.column}>
-                <DefaultText style={classes.headerSecondary}>Drop Off</DefaultText>
+                <ThemedText style={classes.headerSecondary}>Drop Off</ThemedText>
                 {renderLocation()}
             </View>
         )
@@ -44,11 +44,11 @@ export default ({ order, children, ...props }) => {
     const renderVendor = () => order && order.vendor
         ? (
             <View style={styles.column}>
-                <DefaultText style={classes.headerSecondary}>Pick Up</DefaultText>
+                <ThemedText style={classes.headerSecondary}>Pick Up</ThemedText>
                 <LocationDetails location={order.vendor.location} />
             </View>
         )
-        : <DefaultText>No vendor</DefaultText>
+        : <ThemedText>No vendor</ThemedText>
 
     const renderHeaderButton = () => (
         <Pressable
@@ -83,11 +83,11 @@ export default ({ order, children, ...props }) => {
     }
 
     const renderStatus = text => (
-        <DefaultText style={styles.status}>{text}</DefaultText>
+        <ThemedText style={styles.status}>{text}</ThemedText>
     )
 
     const renderMilestone = text => (
-        <DefaultText style={styles.milestone}>{text}</DefaultText>
+        <ThemedText style={styles.milestone}>{text}</ThemedText>
     )
 
     const renderOrderMilestones = order => (

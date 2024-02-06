@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     IconButton,
     PopUpModal,
 } from '.'
@@ -53,15 +53,15 @@ export default () => {
         >
             <View style={{ marginBottom: 5 }}>
                 
-                <DefaultText style={classes.headerSecondary}>
+                <ThemedText style={classes.headerSecondary}>
                     Sign Out
-                </DefaultText>
+                </ThemedText>
 
-                <DefaultText
+                <ThemedText
                     style={{ marginBottom: 15 }}
                 >
                     See you next time!
-                </DefaultText>
+                </ThemedText>
 
             </View>
 

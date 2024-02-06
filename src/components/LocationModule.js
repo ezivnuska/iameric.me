@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     HeaderIconButton,
     LoadingView,
     LocationForm,
@@ -91,7 +91,7 @@ export default ({ userId }) => {
                         <Pressable
                             onPress={() => setModalVisible(true)}
                         >
-                            <DefaultText>Add your location.</DefaultText>
+                            <ThemedText>Add your location.</ThemedText>
                         </Pressable>
                     )
             }

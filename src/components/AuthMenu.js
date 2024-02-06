@@ -34,28 +34,43 @@ const UserButton = ({ onPress, user }) => {
                 flexGrow: 0,
                 flexShrink: 0,
                 flexBasis: 'auto',
-                marginLeft: 5,
-                paddingRight: 5,
-                // marginRight: 5,
-                // padding: 5,
+                paddingHorizontal: 7,
+                paddingVertical: 3,
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                // borderWidth: 1,
-                // borderColor: 'red'
+                borderRadius: 6,
+                backgroundColor: theme?.colors.screen,
+                shadowColor: theme?.colors.shadow,
+                shadowOffset: {
+                    width: 0,
+                    height: 0,
+                },
+                shadowOpacity: 0.5,
+                shadowRadius: 4,
+                elevation: 1,
             }}
         >
-            <Image
+            <View
                 style={{
-                    width: 24,
-                    height: 24,
-                    resizeMode: 'stretch',
-                    marginRight: 9,
+                    width: 28,
+                    height: 28,
+                    marginRight: 5,
+                    borderRadius: 14,
+                    overflow: 'hidden',
                 }}
-                // onLoadStart={() => setLoading(true)}
-                // onLoadEnd={() => setLoading(false)}
-                source={getSource()}
-            />
+            >
+                <Image
+                    style={{
+                        width: 28,
+                        height: 28,
+                        resizeMode: 'center',
+                    }}
+                    // onLoadStart={() => setLoading(true)}
+                    // onLoadEnd={() => setLoading(false)}
+                    source={getSource()}
+                />
+            </View>
     
             <Text style={{
                 color: theme?.colors.textDefault,
@@ -142,7 +157,7 @@ export default ({ onPress }) => {
                         onPress={() => setShowSignoutModal(true)}
                         disables={loading}
                         iconName='close-outline'
-                        padded={false}
+                        // padded={true}
                         transparent
                     />
                 </View>
@@ -153,7 +168,7 @@ export default ({ onPress }) => {
                     onPress={() => setShowSignInModal(true)}
                     disabled={loading}
                     alignIcon='right'
-                    padded={false}
+                    // padded={false}
                     transparent
                 />
             )}

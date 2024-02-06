@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     UserHeading,
 } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -81,7 +81,7 @@ export default ({ entry, onDelete }) => {
                             borderBottomColor: '#666',
                         }}
                     >
-                        <DefaultText>{text}</DefaultText>
+                        <ThemedText>{text}</ThemedText>
                     </View>
                 </View>
             ) : <ActivityIndicator size='small' />}

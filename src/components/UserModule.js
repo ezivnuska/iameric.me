@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     LoadingView,
     UserList,
 } from '.'
@@ -49,7 +49,7 @@ export default () => {
             case 'driver': title = 'Drivers'; break
             default: title = 'Users'
         }
-        return <DefaultText style={classes.pageTitle}>{title}</DefaultText>
+        return <ThemedText style={classes.pageTitle}>{title}</ThemedText>
     }
 
     return (
@@ -61,7 +61,7 @@ export default () => {
                 ? <LoadingView label={loading} />
                 : users
                     ? <UserList users={users} />
-                    : <DefaultText>No users to display.</DefaultText>
+                    : <ThemedText>No users to display.</ThemedText>
                 }
         </View>
     )

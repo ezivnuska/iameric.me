@@ -47,19 +47,45 @@ export default () => {
             style={{
                 width: dims.window.width,
                 height: dims.window.height,
-                backgroundColor: theme?.colors.headerBackground,
+                backgroundColor: theme?.colors.background,
             }}
         >
-            <Header />
+            <View
+                style={{
+                    width: dims.window.width,
+                    height: 50,
+                    backgroundColor: theme?.colors.background,
+                }}
+            >
+                <View
+                    style={{
+                        width: 375,
+                        minWidth: 300,
+                        maxWidth: 900,
+                        marginHorizontal: 'auto',
+                    }}
+                >
+                    <Header />
+                </View>
+
+            </View>
+
             <View
                 style={{
                     height: dims.window.height - 50,
                     width: dims.window.width,
-                    maxWidth: 375,
-                    marginHorizontal: 'auto',
+                    backgroundColor: theme?.colors.background,
                 }}
             >
-                <Navigation />
+                <View
+                    style={{
+                        width: dims.window.width,
+                        height: dims.window.height - 50,
+                        marginHorizontal: 'auto',
+                    }}
+                >
+                    <Navigation />
+                </View>
             </View>
         </SafeAreaView>
     ) : null

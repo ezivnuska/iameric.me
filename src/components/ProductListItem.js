@@ -6,7 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
 } from '@components'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
@@ -86,7 +86,7 @@ export default ({ product, onDelete, onPress, ...props }) => {
                         }}
                     >
                         
-                        <DefaultText
+                        <ThemedText
                             style={[
                                 classes.headerSecondary,
                                 {
@@ -97,9 +97,9 @@ export default ({ product, onDelete, onPress, ...props }) => {
                             ]}
                         >
                             {product.title}
-                        </DefaultText>
+                        </ThemedText>
 
-                        <DefaultText
+                        <ThemedText
                             style={{
                                 flexBasis: '20%',
                                 textAlign: 'right',
@@ -107,12 +107,12 @@ export default ({ product, onDelete, onPress, ...props }) => {
                             }}
                         >
                             ${product.price}
-                        </DefaultText>
+                        </ThemedText>
 
                     </View>
                     
-                    <DefaultText>{product.blurb}</DefaultText>
-                    <DefaultText>{product.desc}</DefaultText>
+                    <ThemedText>{product.blurb}</ThemedText>
+                    <ThemedText>{product.desc}</ThemedText>
 
                 </View>
             </View>

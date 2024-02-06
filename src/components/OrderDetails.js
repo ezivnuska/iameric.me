@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     LocationDetails,
 } from '.'
 import main from '../styles/main'
@@ -31,16 +31,16 @@ export default ({ order }) => {
 
     const renderCustomerInfo = () => (
         <View style={{ marginBottom: 10 }}>
-            <DefaultText bold>{`Deliver to ${customer.username}`}</DefaultText>
+            <ThemedText bold>{`Deliver to ${customer.username}`}</ThemedText>
             {renderLocation()}
         </View>
     )
 
     const renderVendorInfo = () => (
         <View style={{ marginBottom: 10 }}>
-            <DefaultText style={classes.headerSecondary}>
+            <ThemedText style={classes.headerSecondary}>
                 {`Pick up from ${vendor.username} by ${getPickupTime()}`}
-            </DefaultText>
+            </ThemedText>
 
             <LocationDetails location={vendor.location} />
         </View>
@@ -48,8 +48,8 @@ export default ({ order }) => {
 
     const renderDriverInfo = () => driver ? (
         <View>
-            <DefaultText bold>{`Assigned to ${driver.username}`}</DefaultText>
-            <DefaultText>Deliver by {`${getDeliveryTime()}`}</DefaultText>
+            <ThemedText bold>{`Assigned to ${driver.username}`}</ThemedText>
+            <ThemedText>Deliver by {`${getDeliveryTime()}`}</ThemedText>
         </View>
     ) : <Text style={main.text}>Looking for driver...</Text>
 

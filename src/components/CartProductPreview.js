@@ -6,7 +6,7 @@ import {
     View,
 } from 'react-native'
 import classes from '../styles/classes'
-import DefaultText from './DefaultText'
+import ThemedText from './ThemedText'
 
 const IMAGE_SIZE = 24
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -91,17 +91,17 @@ const CartListItem = ({ item, quantity, ...props }) => {
                     {/* <ProductThumb product={item} /> */}
                 </View>
                     
-                <DefaultText
+                <ThemedText
                     style={{ flexBasis: 'auto', flexGrow: 1 }}
                 >
                     {item.title}
-                </DefaultText>
+                </ThemedText>
                 
-                <DefaultText
+                <ThemedText
                     style={classes.itemPrice}
                 >
                     {Number(item.price) * Number(quantity)}
-                </DefaultText>
+                </ThemedText>
                 
             </View>
         </View>
@@ -128,15 +128,15 @@ const CartTotal = ({ order }) => (
             justifyContent: 'space-between',
         }}
     >
-        <DefaultText bold>
+        <ThemedText bold>
             Total:
-        </DefaultText>
+        </ThemedText>
 
-        <DefaultText
+        <ThemedText
             style={classes.orderTotal}
         >
             ${getOrderTotal(order)}
-        </DefaultText>
+        </ThemedText>
     </View>
 )
 

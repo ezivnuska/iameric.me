@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     FormInput,
     IconButton,
     LoadingView,
@@ -65,21 +65,21 @@ export default ({ id }) => {
                 marginTop: 20,
             }}
         >
-            <DefaultText
+            <ThemedText
                 style={[
                     classes.headerSecondary,
                     { marginBottom: 5 },
                 ]}
             >
                 Delete Account
-            </DefaultText>
+            </ThemedText>
             
-            <DefaultText
+            <ThemedText
                 style={{ marginBottom: 15 }}
             >
                 We hate to see you go. Deleting your account 
                 will permantly remove all images and data.
-            </DefaultText>
+            </ThemedText>
 
             <IconButton
                 type='danger'
@@ -100,6 +100,19 @@ export default ({ id }) => {
                                 justifyContent: 'space-around',
                             }}
                         >
+                            <View
+                                style={{ marginBottom: 20 }}
+                            >
+                                <ThemedText style={classes.headerSecondary}>
+                                    Delete Account and Data
+                                </ThemedText>
+
+                                <ThemedText>
+                                    Enter your username to close your account and 
+                                    permanently delete all of your data.
+                                </ThemedText>
+                            </View>
+
                             <FormInput
                                 // label='Leave a comment'
                                 value={confirmationText}

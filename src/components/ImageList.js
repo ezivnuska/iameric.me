@@ -19,12 +19,12 @@ export default ({ images, loading, username, onSelected, onAddImage }) => {
         borderColor: theme?.colors.border,
         shadowColor: theme?.colors.shadow,
         shadowOffset: {
-            width: 2,
-            height: 3,
+            width: 1,
+            height: 1,
         },
-        shadowOpacity: 0.5,
-        shadowRadius: 5,
-        elevation: 5,
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+        elevation: 1,
         backgroundColor: theme?.colors.background,
     }
     

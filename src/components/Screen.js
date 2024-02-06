@@ -19,27 +19,37 @@ export default ({ children, secure = true, ...props }) => {
         <View
             style={[
                 {
-                    paddingHorizontal: 10,
-                    width: '100%',
                     height: dims ? dims.window.height - 50 : '100%',
                     backgroundColor: theme?.colors.background,
                 },
             ]}
-        >
-            <ScrollView
-                style={{
-                    marginBottom: 50,
-                    height: dims ? dims.window.height - 100 : '100%',
-                }}
             >
-                <View
+            <View
+                style={{
+                    height: dims ? dims.window.height - 100 : '100%',
+                    backgroundColor: theme?.colors.screen,
+                }}    
+            >
+
+                <ScrollView
                     style={{
+                        width: 375,
+                        paddingBottom: 50,
+                        marginHorizontal: 'auto',
                         height: dims ? dims.window.height - 100 : '100%',
+                        textAlign: 'left',
                     }}
                 >
-                    {(!secure || secure && user) && children}
-                </View>
-            </ScrollView>
+                    <View
+                        style={{
+                            paddingVertical: 10,
+                            paddingHorizontal: 10,
+                        }}
+                    >
+                        {(!secure || secure && user) && children}
+                    </View>
+                </ScrollView>
+            </View>
         </View>
     )
 }

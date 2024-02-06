@@ -113,7 +113,15 @@ const PrivateStackScreen = () => {
             initialRouteName='Orders'
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
-            barStyle={{ backgroundColor: theme?.colors.tabBackground }}
+            barStyle={{
+                backgroundColor: 'transparent',
+                // alignItems: 'stretch',
+                width: 375,
+                minWidth: 300,
+                maxWidth: 900,
+                marginHorizontal: 'auto',
+                elevation: 0,
+            }}
             screenOptions={{
                 headerShown: false,
             }}

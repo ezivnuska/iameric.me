@@ -8,7 +8,7 @@ import CartProductPreview from './CartProductPreview'
 import CategoryPicker from './CategoryPicker'
 import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
-import DefaultText from './DefaultText'
+import ThemedText from './ThemedText'
 import DeleteAccountButton from './DeleteAccountButton'
 import DriverList from './DriverList'
 import DriverListItem from './DriverListItem'
@@ -76,7 +76,7 @@ export {
     CategoryPicker,
     CenteredContent,
     CenteredView,
-    DefaultText,
+    ThemedText,
     DeleteAccountButton,
     DriverList,
     DriverListItem,

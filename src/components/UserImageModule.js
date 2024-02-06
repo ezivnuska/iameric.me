@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     ImageDetail,
     ImageList,
     LoadingView,
@@ -61,7 +61,7 @@ export default ({ user }) => {
                             onSelected={onSelected}
                         />
                     )
-                    : <DefaultText>No entries yet.</DefaultText>
+                    : <ThemedText>No entries yet.</ThemedText>
             }
             
             <PopUpModal

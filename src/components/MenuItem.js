@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
 } from '@components'
 import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -70,9 +70,9 @@ export default ({ item, username, onPress }) => {
                         alignItems: 'flex-start',
                     }}
                 >
-                    <DefaultText style={classes.headerSecondary}>
+                    <ThemedText style={classes.headerSecondary}>
                         {title}
-                    </DefaultText>
+                    </ThemedText>
 
                     <Pressable
                         onPress={onPress}
@@ -95,7 +95,7 @@ export default ({ item, username, onPress }) => {
                             style={{ flexBasis: 'auto', flexShrink: 1 }}
                         />
 
-                        <DefaultText
+                        <ThemedText
                             style={[
                                 classes.buttonText,
                                 {
@@ -106,7 +106,7 @@ export default ({ item, username, onPress }) => {
                             ]}
                         >
                             ${price}
-                        </DefaultText>
+                        </ThemedText>
 
                     </Pressable>
 
@@ -120,11 +120,11 @@ export default ({ item, username, onPress }) => {
             </View>
 
             {(blurb && blurb.length) ? (
-                <DefaultText>{blurb}</DefaultText>
+                <ThemedText>{blurb}</ThemedText>
             ) : null}
 
             {(desc && desc.length) ? (
-                <DefaultText>{desc}</DefaultText>
+                <ThemedText>{desc}</ThemedText>
             ) : null}
 
         </View>

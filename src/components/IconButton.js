@@ -39,12 +39,12 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 ...props.style,
             }}
         >
-            {(iconName && alignIcon === 'left') && (
+            {((type === 'danger' || iconName) && alignIcon === 'left') && (
                 <Icon
-                    name={iconName}
+                    name={type === 'danger' ? 'skull-outline' : iconName}
                     size={16}
-                    color={ theme?.colors.textDefault }
-                    style={{ flexBasis: 'auto', flexShrink: 1 }}
+                    color={ type === 'danger' ? '#fff' : theme?.colors.textDefault }
+                    style={{ flexBasis: 'auto', flexShrink: 1, marginRight: label ? 8 : 0 }}
                 />
             )}
 
@@ -55,9 +55,9 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                         {
                             flexBasis: 'auto',
                             flexGrow: 0,
-                            color: theme?.colors.textDefault,
+                            color: type === 'danger' ? '#fff' : theme?.colors.textDefault,
                         },
-                        textStyles || null,
+                        textStyles || {},
                     ]}
                 >
                     {label}

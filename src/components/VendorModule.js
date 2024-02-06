@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     LoadingView,
     VendorList,
 } from '.'
@@ -29,15 +29,15 @@ export default () => {
     return (
         <View>
             
-            <DefaultText style={classes.pageTitle}>
+            <ThemedText style={classes.pageTitle}>
                 Vendors
-            </DefaultText>
+            </ThemedText>
 
             {loading
                 ? <LoadingView label={loading} />
                 : vendors
                     ? <VendorList users={vendors} />
-                    : <DefaultText>No participating vendors.</DefaultText>
+                    : <ThemedText>No participating vendors.</ThemedText>
             }
         </View>
     )

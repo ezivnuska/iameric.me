@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    DefaultText,
+    ThemedText,
     IconButton,
     OrderPreview,
     TimeSelector,
@@ -215,13 +215,13 @@ export default () => {
             case 'customer':
                 if (order.status === 0) return renderButton('Cancel Order', () => cancelOrder(order._id))
                 else if (order.status === 5) return renderButton('Order Received', () => closeOrder(order._id))
-                else return <DefaultText bold>Order in progress.</DefaultText>
+                else return <ThemedText bold>Order in progress.</ThemedText>
             break
             case 'vendor':
                 if (order.status === 0) {
                     return (
                         <View>
-                            <DefaultText>How long until ready?</DefaultText>
+                            <ThemedText>How long until ready?</ThemedText>
                             <TimeSelector onSelect={time => confirmOrder(order._id, time)} />
                         </View>
                     )
@@ -269,7 +269,7 @@ export default () => {
                         )}
                     />
                 ) : (
-                    <DefaultText>No current orders.</DefaultText>
+                    <ThemedText>No current orders.</ThemedText>
                 )
             }
         </View>

@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import { AppContext } from '../AppContext'
 import {
-    DefaultText,
+    ThemedText,
     LoadingView,
     DriverList,
 } from '.'
@@ -44,17 +44,17 @@ export default () => {
     return (
         <View>
             
-            <DefaultText
+            <ThemedText
                 style={classes.pageTitle}
             >
                 Drivers
-            </DefaultText>
+            </ThemedText>
 
             {loading
                 ? <LoadingView label={loading} />
                 : users
                     ? <DriverList users={users} />
-                    : <DefaultText>No drivers yet.</DefaultText>
+                    : <ThemedText>No drivers yet.</ThemedText>
             }
         </View>
     )
