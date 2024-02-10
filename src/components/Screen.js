@@ -23,7 +23,7 @@ export default ({ children, secure = true, ...props }) => {
                     backgroundColor: theme?.colors.background,
                 },
             ]}
-            >
+        >
             <View
                 style={{
                     height: dims ? dims.window.height - 100 : '100%',
@@ -34,15 +34,15 @@ export default ({ children, secure = true, ...props }) => {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{
-                        width: 375,
                         paddingBottom: 50,
-                        marginHorizontal: 'auto',
                         height: dims ? dims.window.height - 100 : '100%',
                         textAlign: 'left',
                     }}
-                >
+                    >
                     <View
                         style={{
+                            width: 375,
+                            marginHorizontal: 'auto',
                             // paddingVertical: 10,
                             paddingHorizontal: 10,
                         }}
