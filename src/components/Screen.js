@@ -28,10 +28,11 @@ export default ({ children, secure = true, ...props }) => {
                 style={{
                     height: dims ? dims.window.height - 100 : '100%',
                     backgroundColor: theme?.colors.screen,
-                }}    
+                }}
             >
 
                 <ScrollView
+                    showsVerticalScrollIndicator={false}
                     style={{
                         width: 375,
                         paddingBottom: 50,
