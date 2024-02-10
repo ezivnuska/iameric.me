@@ -83,12 +83,13 @@ export default ({ product, onDelete, onPress, ...props }) => {
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
+                            marginBottom: 2,
                         }}
                     >
                         
                         <ThemedText
                             style={[
-                                classes.headerSecondary,
+                                classes.productTitle,
                                 {
                                     flexBasis: 'auto',
                                     flexGrow: 1,
@@ -105,6 +106,7 @@ export default ({ product, onDelete, onPress, ...props }) => {
                                 textAlign: 'right',
                                 flexGrow: 0,
                             }}
+                            bold
                         >
                             ${product.price}
                         </ThemedText>

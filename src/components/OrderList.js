@@ -247,31 +247,26 @@ export default () => {
         setFeatured(order._id)
     }
 
-    return (
-        <View style={{ paddingVertical: 20 }}>
-            {items && items.length
-                ? (
-                    <FlatList
-                        data={items.sort((a, b) => a.status >= b.status ? a : b)}
-                        listKey={() => 'orders'}
-                        keyExtractor={(item, index) => 'order-' + index}
-                        renderItem={({ item, index }) => (
-                            <OrderPreview
-                                key={`order-preview-${index}`}
-                                onPress={() => onPress(item)}
-                                order={item}
-                            >
-                                <View style={{ marginVertical: 3 }}>
-                                    {renderOrderProcessButton(item)}
-                                </View>
+    return items && items.length
+        ? (
+            <FlatList
+                data={items.sort((a, b) => a.status >= b.status ? a : b)}
+                listKey={() => 'orders'}
+                keyExtractor={(item, index) => 'order-' + index}
+                renderItem={({ item, index }) => (
+                    <OrderPreview
+                        key={`order-preview-${index}`}
+                        onPress={() => onPress(item)}
+                        order={item}
+                    >
+                        <View style={{ marginVertical: 3 }}>
+                            {renderOrderProcessButton(item)}
+                        </View>
 
-                            </OrderPreview>
-                        )}
-                    />
-                ) : (
-                    <ThemedText>No current orders.</ThemedText>
-                )
-            }
-        </View>
-    )
+                    </OrderPreview>
+                )}
+            />
+        ) : (
+            <ThemedText>No current orders.</ThemedText>
+        )
 }
