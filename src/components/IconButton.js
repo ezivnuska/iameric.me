@@ -42,11 +42,11 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 ...props.style,
             }}
         >
-            {((type === 'danger' || iconName) && alignIcon === 'left') && (
+            {(type === 'danger' || (iconName && alignIcon === 'left')) && (
                 <Icon
                     name={type === 'danger' ? 'skull-outline' : iconName}
                     size={16}
-                    color={ textStyles?.color || type === 'danger' ? '#fff' : theme?.colors.textDefault }
+                    color={theme?.colors.buttonLabel}
                     style={[
                         { flexBasis: 'auto', flexShrink: 1, flexGrow: 0, lineHeight: 35, marginRight: label ? 8 : 0 },
                         textStyles,

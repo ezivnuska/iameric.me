@@ -86,6 +86,8 @@ const UserButton = ({ onPress, user }) => {
 }
 
 export default ({ onPress }) => {
+
+    const theme = useTheme()
     
     const {
         cart,
@@ -158,7 +160,7 @@ export default ({ onPress }) => {
                         onPress={() => setShowSignoutModal(true)}
                         disables={loading}
                         iconName='close-outline'
-                        // padded={true}
+                        textStyles={{ color: theme?.colors.textDefault }}
                         transparent
                     />
                 </View>

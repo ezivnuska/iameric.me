@@ -61,6 +61,7 @@ export default () => {
                         iconName={`${isThemeDark ? 'sunny' : 'moon'}-outline`}
                         onPress={toggleTheme}
                         transparent
+                        textStyles={{ color: theme?.colors.textDefault }}
                     />
 
                     <AuthMenu

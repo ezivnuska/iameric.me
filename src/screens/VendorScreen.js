@@ -11,10 +11,13 @@ import {
 } from '@components'
 import { loadUserById } from '../utils/data'
 import classes from '../styles/classes'
+import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ navigation, route }) => {
+
+    const theme = useTheme()
 
     const [loading, setLoading] = useState(null)
     const [userDetails, setUserDetails] = useState(null)
@@ -74,6 +77,7 @@ export default ({ navigation, route }) => {
                                 onPress={() => navigation.navigate('VendorList')}
                                 label='Back'
                                 align='left'
+                                textStyles={{ color: theme?.colors.textDefault }}
                                 transparent
                             />
                             
