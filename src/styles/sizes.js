@@ -6,4 +6,5 @@ export default {
     textSmallest: 12,
     userTitle: 18,
     formInputLabel: 18,
+    userTitle: 16,
 }

@@ -5,10 +5,10 @@ import {
     View,
 } from 'react-native'
 import {
+    IconButton,
     ThemedText,
 } from '@components'
 import classes from '../styles/classes'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
@@ -70,48 +70,30 @@ export default ({ item, username, onPress }) => {
                         alignItems: 'flex-start',
                     }}
                 >
-                    <ThemedText style={classes.headerSecondary}>
+                    <ThemedText style={classes.userTitle}>
                         {title}
                     </ThemedText>
 
-                    <Pressable
-                        onPress={onPress}
+                    <IconButton
+                        type='primary'
+                        iconName='add-outline'
+                        label={`$${price}`}
+                        padded={false}
+                        align='center'
                         style={{
                             flexBasis: 'auto',
                             flexShrink: 1,
                             flexGrow: 0,
-                            backgroundColor: theme?.colors.buttonPrimary,
-                            borderRadius: 6,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            paddingHorizontal: 5,
+                            paddingLeft: 7,
+                            paddingRight: 7,
                         }}
-                    >
-                        <Icon
-                            name='add-outline'
-                            size={16}
-                            color={theme?.colors.buttonLabel}
-                            style={{ flexBasis: 'auto', flexShrink: 1 }}
-                        />
+                        textStyles={{
+                            lineHeight: 'auto',
+                            paddingVertical: 2,
+                            marginRight: 0,
+                        }}
+                    />
 
-                        <ThemedText
-                            style={{
-                                flexBasis: 'auto',
-                                flexShrink: 1,
-                                color: theme?.colors.buttonLabel,
-                            }}
-                        >
-                            ${price}
-                        </ThemedText>
-
-                    </Pressable>
-
-                    {/* <Pressable onPress={onPress}>
-                        <Text style={{ lineHeight: 24 }}>
-                            ${price}
-                        </Text>
-                    </Pressable> */}
                 </View>
                 
             </View>

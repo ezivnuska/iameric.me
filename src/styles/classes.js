@@ -13,6 +13,13 @@ export default {
         lineHeight: 35,
         // lineHeight: sizes.headerSecondary + 4,// 22
     },
+    userTitle: {
+        fontSize: sizes.userTitle,// 18
+        fontWeight: 600,
+        lineHeight: 20,
+        marginBottom: 7,
+        // lineHeight: sizes.headerSecondary + 4,// 22
+    },
     textDefault: {
         fontSize: sizes.textDefault,// 16
         fontWeight: 300,
