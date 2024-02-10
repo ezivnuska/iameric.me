@@ -1,7 +1,6 @@
 import AuthMenu from './AuthMenu'
 import Avatar from './Avatar'
 import Brand from './Brand'
-import ButtonPrimary from './ButtonPrimary'
 import Cart from './Cart'
 import CartButton from './CartButton'
 import CartProductPreview from './CartProductPreview'
@@ -51,9 +50,7 @@ import ProductSelector from './ProductSelector'
 import RolePicker from './RolePicker'
 import Screen from './Screen'
 import SignInForm from './SignInForm'
-import SignoutModule from './SignoutModule'
 import SignUpForm from './SignUpForm'
-import SimpleLink from './SimpleLink'
 import TimeSelector from './TimeSelector'
 import UserListItem from './UserListItem'
 import UserHeading from './UserHeading'
@@ -70,7 +67,6 @@ export {
     AuthMenu,
     Avatar,
     Brand,
-    ButtonPrimary,
     Cart,
     CartButton,
     CartProductPreview,
@@ -119,10 +115,8 @@ export {
     ProductSelector,
     RolePicker,
     Screen,
-    SimpleLink,
     SignInForm,
     SignUpForm,
-    SignoutModule,
     TimeSelector,
     UserListItem,
     UserHeading,

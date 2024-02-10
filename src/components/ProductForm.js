@@ -10,7 +10,7 @@ import {
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../AppContext'
-import main from '../styles/main'
+import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -34,7 +34,10 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
     const onChangePrice = value => setPrice(value)
     const onChangeBlurb = value => setBlurb(value)
     const onChangeDesc = value => setDesc(value)
-    const onChangeCategory = value => setCategory(value)
+    const onChangeCategory = value => {
+        console.log('setting category...', value)
+        setCategory(value)
+    }
     
     useEffect(() => {
         // if editing, set initial form vars
@@ -50,6 +53,24 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
         setDesc(data.desc)
         setCategory(data.category)
         setImage(data.image)
+    }
+
+    const resetForm = () => {
+        if (existingProduct) {
+            setFormData(existingProduct)
+        } else {
+            clearForm()
+        }
+    }
+
+    const clearForm = () => {
+        setTitle('')
+        setPrice('')
+        setDesc('')
+        setBlurb('')
+        setCategory('')
+        setImage(null)
+        setAttachment(null)
     }
 
     const onSubmit = async () => {
@@ -97,14 +118,8 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
         } else {
             dispatch({ type: 'UPDATE_PRODUCT', product: data })
         }
-
-        setTitle('')
-        setPrice('')
-        setDesc('')
-        setBlurb('')
-        setCategory('')
-        setImage(null)
-        setAttachment(null)
+        
+        clearForm()
 
         onComplete(data)
     }
@@ -133,7 +148,12 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
     }
 
     return (
-        <View style={[main.form, { width: '100%' }]}>
+        <View
+            style={[
+                classes.formContainer,
+                { width: '100%' },
+            ]}
+        >
 
             <CategoryPicker
                 style={{ marginBottom: 10 }}
@@ -153,7 +173,6 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 textContentType='default'
                 autoCapitalize='true'
                 keyboardType='default'
-                style={main.input}
                 disabled={loading}
             />
 
@@ -163,7 +182,6 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 onChangeText={onChangePrice}
                 placeholder='0.00'
                 keyboardType='decimal-pad'
-                style={main.input}
                 disabled={loading}
             />
 
@@ -174,7 +192,6 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 placeholder='blurb'
                 keyboardType='default'
                 multiline
-                style={[main.input, main.textArea]}
                 disabled={loading}
             />
 
@@ -185,7 +202,6 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
                 placeholder='description'
                 keyboardType='default'
                 multiline
-                style={[main.input, main.textArea]}
                 disabled={loading}
             />
 
@@ -197,9 +213,8 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
             />
 
             <IconButton
-                type='danger'
-                label='Delete'
-                onPress={onDelete}
+                label={existingProduct ? 'Reset Form' : 'Clear Form'}
+                onPress={resetForm}
                 disabled={loading}
             />
 

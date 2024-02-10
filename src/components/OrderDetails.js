@@ -1,13 +1,11 @@
 import React, { useContext } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
 import {
     ThemedText,
     LocationDetails,
 } from '.'
-import main from '../styles/main'
 import moment from 'moment'
 import { AppContext } from '../AppContext'
 import classes from 'src/styles/classes'
@@ -51,7 +49,7 @@ export default ({ order }) => {
             <ThemedText bold>{`Assigned to ${driver.username}`}</ThemedText>
             <ThemedText>Deliver by {`${getDeliveryTime()}`}</ThemedText>
         </View>
-    ) : <Text style={main.text}>Looking for driver...</Text>
+    ) : <ThemedText>Looking for driver...</ThemedText>
 
     const renderDetails = () => user.role !== 'vendor'
         ? (

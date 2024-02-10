@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import {
-	Text,
 	TextInput,
     View,
 } from 'react-native'
-import defaultStyles from '../styles/main'
+import {
+    ThemedText,
+} from '.'
+import classes from '../styles/classes'
 import { useTheme } from 'react-native-paper'
 
 export default ({ label, onChange, invalid = false, ...props }) => {
@@ -26,22 +28,33 @@ export default ({ label, onChange, invalid = false, ...props }) => {
 
     return (
         <View
-            style={[defaultStyles.inputContainer, styles]}
+            style={[
+                classes.formInputContainer,
+                styles,
+            ]}
         >
             
             {(label && label.length) ? (
-                <Text
+                <ThemedText
                     style={[
-                        defaultStyles.darkFormLabel,
+                        classes.formInputLabel,
                         { color: theme?.colors.textDefault }
                     ]}
                 >
                     {label}
-                </Text>
+                </ThemedText>
             ) : null}
                 
             <TextInput
-                style={[defaultStyles.input, { flexShrink: 0 }]}
+                style={[
+                    classes.formInput,
+                    props.multiline ? classes.formTextArea : null,// { flexShrink: 0 },
+                    {
+                        color: theme?.colors.inputText,
+                        placeholderTextColor: theme?.colors.inputPlaceholder,
+                        backgroundColor: theme?.colors.inputBackground,
+                    },
+                ]}
                 // onBlur={onBlur}
                 onChangeText={onChangeText}
                 value={inputValue}

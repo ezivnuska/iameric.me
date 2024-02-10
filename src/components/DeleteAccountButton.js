@@ -9,7 +9,6 @@ import {
     LoadingView,
     PopUpModal,
 } from '.'
-import defaultStyles from '../styles/main'
 import { AppContext } from '../AppContext'
 import { clearStorage } from '../utils/storage'
 import { unsubscribe } from '../utils/auth'
@@ -121,7 +120,6 @@ export default ({ id }) => {
                                 textContentType='none'
                                 autoCapitalize='none'
                                 keyboardType='default'
-                                style={defaultStyles.input}
                                 onKeyPress={onEnter}
                             />
 

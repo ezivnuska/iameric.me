@@ -61,10 +61,10 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                     }}
                 >
                     <ScrollView
+                        showsVerticalScrollIndicator={false}
                         style={{
                             width: '100%',
                             paddingVertical: 10,
-                            // backgroundColor: '#f00',
                         }}
                     >
                         {children}
@@ -72,8 +72,6 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         <IconButton
                             label='Cancel'
                             onPress={onRequestClose}
-                            // iconName='close-outline'
-                            style={{ marginTop: 10 }}
                             transparent
                         />
                     </ScrollView>

@@ -31,7 +31,7 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 flexDirection: 'row',
                 justifyContent: align,
                 alignItems: 'center',
-                // paddingVertical: 5,
+                marginVertical: 5,
                 paddingRight: padded ? 10 : 0,
                 paddingLeft: align === 'left' ? 0 : padded ? 10 : 0,
                 backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
@@ -57,7 +57,7 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                         {
                             flexBasis: 'auto',
                             flexGrow: 0,
-                            color: type === 'danger' ? '#fff' : theme?.colors.textDefault,
+                            color: transparent ? theme?.colors.textDefault : theme?.colors.buttonLabel,
                             lineHeight: 35,
                         },
                         textStyles || {},

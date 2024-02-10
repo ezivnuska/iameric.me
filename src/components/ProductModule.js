@@ -9,11 +9,12 @@ import {
     ProductForm,
     ProductList,
 } from '.'
-import { AppContext } from '../AppContext'
 import {
     deleteProductWithId,
     loadProducts,
 } from '../utils/data'
+import { AppContext } from '../AppContext'
+import classes from '../styles/classes'
 
 export default () => {
 
@@ -85,6 +86,7 @@ export default () => {
                 align='left'
                 padded={false}
                 transparent
+                textStyles={classes.headerSecondary}
             />
 
             {loading

@@ -39,13 +39,13 @@ export default ({ navigation }) => {
         initialize(dispatch)
     }, [])
     
-    useEffect(() => {
-        if (!loading) validateUser()
-    }, [loading])
+    // useEffect(() => {
+    //     if (!loading) validateUser()
+    // }, [loading])
 
-    const validateUser = async () => {
-        if (user) navigation.navigate('Private')
-    }
+    // const validateUser = async () => {
+    //     if (user) navigation.navigate('Private')
+    // }
 
     const onConnect = async type => {
         
@@ -227,7 +227,7 @@ const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
                             classes.headerSecondary,
                             {
                                 position: 'absolute',
-                                bottom: 52,
+                                bottom: 60,
                                 left: 20,
                                 fontWeight: 700,
                                 color: '#fff',//theme?.colors.textDefault,

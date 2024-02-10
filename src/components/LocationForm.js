@@ -2,12 +2,12 @@ import React, { useContext, useState } from 'react'
 import {
     View,
 } from 'react-native'
-import { AppContext } from '../AppContext'
-import defaultStyles from '../styles/main'
 import {
     FormInput,
     IconButton,
 } from '.'
+import { AppContext } from '../AppContext'
+import classes from '../styles/classes'
 
 export default ({ onSubmit, location }) => {
 
@@ -75,7 +75,7 @@ export default ({ onSubmit, location }) => {
 	}
 
     return (
-        <View style={defaultStyles.form}>
+        <View style={classes.formContainer}>
             
             <FormInput
                 label='Address'
@@ -85,7 +85,6 @@ export default ({ onSubmit, location }) => {
                 textContentType='streetAddressLine1'
                 autoCapitalize='words'
                 keyboardType='default'
-                style={defaultStyles.input}
                 onKeyPress={onEnter}
             />
             
@@ -96,12 +95,11 @@ export default ({ onSubmit, location }) => {
                 textContentType='streetAddressLine2'
                 autoCapitalize='words'
                 keyboardType='default'
-                style={defaultStyles.input}
                 onKeyPress={onEnter}
             />
             
             <View
-                style={defaultStyles.formColumns}
+                style={classes.formColumns}
             >
                 <FormInput
                     label='City'
@@ -111,7 +109,6 @@ export default ({ onSubmit, location }) => {
                     textContentType='addressCity'
                     autoCapitalize='words'
                     keyboardType='default'
-                    style={defaultStyles.input}
 					onKeyPress={onEnter}
                 />
                 
@@ -123,7 +120,7 @@ export default ({ onSubmit, location }) => {
                     textContentType='addressState'
                     autoCapitalize='none'
                     keyboardType='default'
-                    style={[defaultStyles.input, { width: 100 }]}
+                    style={[classes.formInput, { width: 100 }]}
 					onKeyPress={onEnter}
                 />
             </View>
@@ -136,7 +133,6 @@ export default ({ onSubmit, location }) => {
                 textContentType='postalCode'
                 autoCapitalize='none'
                 keyboardType='default'
-                style={defaultStyles.input}
                 onKeyPress={onEnter}
             />
 

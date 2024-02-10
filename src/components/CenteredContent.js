@@ -4,7 +4,6 @@ import {
 } from 'react-native'
 import { AppContext } from '../AppContext'
 import layout from '../styles/layout'
-import base from '../styles/base'
 
 const CenteredContent = ({ children, type, ...props }) => {
 

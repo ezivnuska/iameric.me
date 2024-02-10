@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import {
-	Text,
     View,
 } from 'react-native'
 import {
 	FormInput,
 	IconButton,
 	LoadingView,
+	ThemedText,
 } from '.'
-import defaultStyles from '../styles/main'
+import classes from '../styles/classes'
 import { isValidEmail, signin } from '../utils/auth'
 import { saveLocally, getLocally } from '../utils/storage'
 
@@ -122,66 +122,59 @@ export default ({ onComplete }) => {
 		if (e.code === 'Enter') submitData()
 	}
 
-	const renderForm = () => (
-		<View
-			style={defaultStyles.form}
-		>
-
-			<Text style={[defaultStyles.title, { color: '#fff', textAlign: 'center' }]}>Sign In</Text>
-
-			<FormInput
-				label='Email'
-				value={email}
-				onChange={value => setEmail(value)}
-				placeholder='Email'
-				textContentType='emailAddress'
-				autoCapitalize='none'
-				keyboardType='email-address'
-				style={defaultStyles.input}
-				invalid={hasError('email')}
-				onKeyPress={onEnter}
-				autoFocus={!email.length}
-			/>
-
-			<FormInput
-				label='Password'
-				value={password}
-				onChange={value => setPassword(value)}
-				placeholder='Password'
-				textContentType='password'
-				autoCapitalize='none'
-				secureTextEntry={true}
-				style={defaultStyles.input}
-				invalid={hasError('password')}
-				onKeyPress={onEnter}
-				autoFocus={email.length}
-			/>
-
-			
-			<Text
-				style={{
-					color: '#f00',
-					marginBottom: 15,
-			}}>
-				{errorMessage || ' '}
-			</Text>
-
-			<IconButton
-                type='primary'
-				label={loading ? 'Signing In' : 'Sign In'}
-				disabled={loading || !isValid() || errors.length}
-				onPress={submitData}
-			/>
-
-		</View>
-	)
-
-    return (
-		<View style={defaultStyles.formContainer}>
-			{formReady
-				? renderForm()
-				: <LoadingView label='loading form...' />
-			}
-		</View>
-	)
+    return formReady
+		? (
+			<View
+				style={classes.formContainer}
+			>
+	
+				<ThemedText
+					style={[
+						classes.headerSecondary,
+						{ textAlign: 'center' },
+					]}
+				>
+					Sign In
+				</ThemedText>
+	
+				<FormInput
+					label='Email'
+					value={email}
+					onChange={value => setEmail(value)}
+					placeholder='Email'
+					textContentType='emailAddress'
+					autoCapitalize='none'
+					keyboardType='email-address'
+					invalid={hasError('email')}
+					onKeyPress={onEnter}
+					autoFocus={!email.length}
+				/>
+	
+				<FormInput
+					label='Password'
+					value={password}
+					onChange={value => setPassword(value)}
+					placeholder='Password'
+					textContentType='password'
+					autoCapitalize='none'
+					secureTextEntry={true}
+					invalid={hasError('password')}
+					onKeyPress={onEnter}
+					autoFocus={email.length}
+				/>
+	
+				
+				<ThemedText style={{ marginBottom: 15 }}>
+					{errorMessage || ' '}
+				</ThemedText>
+	
+				<IconButton
+					type='primary'
+					label={loading ? 'Signing In' : 'Sign In'}
+					disabled={loading || !isValid() || errors.length}
+					onPress={submitData}
+				/>
+	
+			</View>
+		) : <LoadingView label='loading form...' />
 }

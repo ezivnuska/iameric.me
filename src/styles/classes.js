@@ -8,10 +8,10 @@ export default {
         lineHeight: sizes.headerPrimary + 4,
     },
     headerSecondary: {
-        marginBottom: 5,
         fontSize: sizes.headerSecondary,// 18
         fontWeight: 700,
-        lineHeight: sizes.headerSecondary + 4,// 22
+        lineHeight: 35,
+        // lineHeight: sizes.headerSecondary + 4,// 22
     },
     textDefault: {
         fontSize: sizes.textDefault,// 16
@@ -74,4 +74,42 @@ export default {
         paddingVertical: 7,
         marginBottom: 10,
     },
+    formContainer: {
+        //
+	},
+	formColumns: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		columnGap: 10,
+	},
+    formInputLabel: {
+        marginTop: 5,
+        marginBottom: 8,
+        fontSize: sizes.formInputLabel,// 18
+        fontWeight: 500,
+        lineHeight: sizes.formInputLabel + 4,// 22
+    },
+	formInputContainer: {
+		borderBottomWidth: 2,
+		borderBottomColor: '#ccc',
+		marginBottom: 10,
+		paddingBottom: 2,
+
+	},
+    formInput: {
+		flexBasis: 'auto',
+		flexGrow: 1,
+		flexShrink: 1,
+		height: 40,
+		paddingHorizontal: 10,
+		fontSize: 18,
+		lineHeight: 22,
+		outlineWidth: 0,
+	},
+	formTextArea: {
+        height: 80,
+		paddingVertical: 8,
+        lineHeight: 22,
+	},
 }

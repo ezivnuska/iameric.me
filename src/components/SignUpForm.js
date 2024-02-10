@@ -3,11 +3,12 @@ import {
 	Text,
 	View,
 } from 'react-native'
-import defaultStyles from '../styles/main'
 import {
 	FormInput,
 	IconButton,
+	ThemedText,
 } from '.'
+import classes from '../styles/classes'
 import {
 	isValidEmail,
 	signup,
@@ -159,83 +160,81 @@ export default ({ role, onComplete }) => {
     }
 
 	return (			
-		<View style={defaultStyles.formContainer}>
+		<View style={classes.formContainer}>
 
-			<View
-				style={defaultStyles.form}
+			<ThemedText
+				style={[
+					classes.headerSecondary,
+					{ textAlign: 'center' },
+				]}
 			>
+				Sign Up
+			</ThemedText>
 
-				<Text style={[defaultStyles.title, { textAlign: 'center', color: '#fff' }]}>Sign Up</Text>
+			<FormInput
+				label='Email'
+				value={email}
+				onChange={value => setEmail(value)}
+				placeholder='email'
+				textContentType='emailAddress'
+				autoCapitalize='none'
+				keyboardType='email-address'
+				invalid={hasError('email')}
+				onKeyPress={onEnter}
+			/>
 
-				<FormInput
-					label='Email'
-					value={email}
-					onChange={value => setEmail(value)}
-					placeholder='email'
-					textContentType='emailAddress'
-					autoCapitalize='none'
-					keyboardType='email-address'
-					style={defaultStyles.input}
-					invalid={hasError('email')}
-					onKeyPress={onEnter}
-				/>
+			<FormInput
+				label='Username'
+				value={username}
+				onChange={value => setUsername(value)}
+				placeholder='username'
+				textContentType='none'
+				autoCapitalize='none'
+				keyboardType='default'
+				onKeyPress={onEnter}
+			/>
 
-				<FormInput
-					label='Username'
-					value={username}
-					onChange={value => setUsername(value)}
-					placeholder='username'
-					textContentType='none'
-					autoCapitalize='none'
-					keyboardType='default'
-					style={defaultStyles.input}
-					onKeyPress={onEnter}
-				/>
+			<FormInput
+				label='Password'
+				value={password}
+				onChange={value => setPassword(value)}
+				placeholder='password'
+				textContentType='password'
+				autoCapitalize='none'
+				keyboardType='default'
+				secureTextEntry={true}
+				invalid={hasError('password')}
+				onKeyPress={onEnter}
+			/>
 
-				<FormInput
-					label='Password'
-					value={password}
-					onChange={value => setPassword(value)}
-					placeholder='password'
-					textContentType='password'
-					autoCapitalize='none'
-					keyboardType='default'
-					secureTextEntry={true}
-					style={defaultStyles.input}
-					invalid={hasError('password')}
-					onKeyPress={onEnter}
-				/>
+			<FormInput
+				label='Confirm Password'
+				value={confirmPassword}
+				onChange={value => setConfirmPassword(value)}
+				placeholder='password again'
+				textContentType='password'
+				autoCapitalize='none'
+				keyboardType='default'
+				secureTextEntry={true}
+				invalid={hasError('password')}
+				onKeyPress={onEnter}
+			/>
 
-				<FormInput
-					label='Confirm Password'
-					value={confirmPassword}
-					onChange={value => setConfirmPassword(value)}
-					placeholder='password again'
-					textContentType='password'
-					autoCapitalize='none'
-					keyboardType='default'
-					secureTextEntry={true}
-					style={defaultStyles.input}
-					invalid={hasError('password')}
-					onKeyPress={onEnter}
-				/>
+			<ThemedText
+				style={{
+					marginBottom: 15,
+					color: '#f00'
+				}}
+			>
+				{errorMessage || ' '}
+			</ThemedText>
 
-				<Text
-					style={{
-						color: '#f00',
-						marginBottom: 15,
-				}}>
-					{errorMessage || ' '}
-				</Text>
-
-				<IconButton
-					type='primary'
-					label={loading ? 'Signing Up' : 'Sign Up'}
-					disabled={loading || !isValid() || errors.length}
-					onPress={submitData}
-				/>
-
-			</View>
+			<IconButton
+				type='primary'
+				label={loading ? 'Signing Up' : 'Sign Up'}
+				disabled={loading || !isValid() || errors.length}
+				onPress={submitData}
+			/>
 
 		</View>
 	)

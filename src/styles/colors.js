@@ -23,6 +23,9 @@ export const dark = {
         textDefault: '#fff',
         userTitle: '#fff',
         modalBackground: '#111',
+        inputText: '#fff',
+        inputBackground: '#333',
+        inputPlaceholder: '#ccc',
     },
 }
 
@@ -51,5 +54,8 @@ export const light = {
         textDefault: '#000',
         userTitle: '#000',
         modalBackground: '#333',
+        inputText: '#000',
+        inputBackground: '#ddd',
+        inputPlaceholder: '#777',
     },
 }

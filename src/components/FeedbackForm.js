@@ -2,18 +2,15 @@ import React, { useContext, useState } from 'react'
 import {
     View
 } from 'react-native'
-import axios from 'axios'
-import { AppContext } from '../AppContext'
-import defaultStyles from '../styles/main'
 import {
     FormInput,
     IconButton,
 } from '.'
-import { useTheme } from 'react-native-paper'
+import axios from 'axios'
+import { AppContext } from '../AppContext'
+import classes from '../styles/classes'
 
 export default () => {
-
-    const theme = useTheme()
 
     const {
         state,
@@ -51,7 +48,7 @@ export default () => {
 
     return (
         <View
-            style={defaultStyles.form}
+            style={classes.formContainer}
             onKeyPress={onEnter}
         >
             
@@ -62,7 +59,6 @@ export default () => {
                 textContentType='none'
                 autoCapitalize='sentences'
                 keyboardType='default'
-                style={defaultStyles.input}
                 onKeyPress={onEnter}
                 // autoFocus
             />

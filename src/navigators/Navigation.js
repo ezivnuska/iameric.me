@@ -111,7 +111,7 @@ const PrivateStackScreen = () => {
 
     return user ? (
         <PrivateStack.Navigator
-            initialRouteName='Orders'
+            initialRouteName={user.role === 'customer' ? 'Vendors' : 'Orders'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
