@@ -46,7 +46,7 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 <Icon
                     name={type === 'danger' ? 'skull-outline' : iconName}
                     size={16}
-                    color={theme?.colors.buttonLabel}
+                    color={theme?.colors.backButtonLabel}
                     style={[
                         { flexBasis: 'auto', flexShrink: 1, flexGrow: 0, lineHeight: 35, marginRight: label ? 8 : 0 },
                         textStyles,

@@ -9,7 +9,7 @@ const {
 } = require('../images')
 const SESSION_SECRET = process.env.JWT_SECRET || require('../../config').JWT_SECRET
 
-const getSanitizedUser = ({ _id, email, location, profileImage, role, username, token }) => ({
+const getSanitizedUser = ({ _id, email, location, profileImage, role, username, token, exp }) => ({
     _id,
     email,
     location,
@@ -17,6 +17,7 @@ const getSanitizedUser = ({ _id, email, location, profileImage, role, username, 
     role,
     username,
     token,
+    exp,
 })
 
 const updateUserById = async (_id, data) => {
@@ -50,16 +51,19 @@ const clearUserToken = async _id => {
 const createToken = ({ _id, username, email, role, profileImage }) => {
     // set expiration timestamp
     // const expiration = Math.floor(Date.now() / 1000) + ((60 * 60) * 24)
-    const expiration = Math.floor(Date.now() / 1000) + ((60 * 1))
-    return jwt.sign({
-        _id,
-        username,
-        email,
-        role,
-        // this needs work...
-        profileImage: profileImage ? profileImage.filename : null,
+    const expiration = Math.floor(Date.now() / 1000) + ((60 * 1) * 1)
+    return {
+        token: jwt.sign({
+            _id,
+            username,
+            email,
+            role,
+            // this needs work...
+            profileImage: profileImage ? profileImage.filename : null,
+            exp: expiration,
+        }, SESSION_SECRET, {}),
         exp: expiration,
-    }, SESSION_SECRET, {})
+    }
 }
 
 const getDecodedUser = token => jwt.decode(token, SESSION_SECRET)
@@ -80,10 +84,12 @@ const handleSignin = async (req, res) => {
     if (!passwordsMatch)
         return res.status(200).json({ error: true, invalidField: 'password', msg: 'Incorrect password.' })
     
-    user.token = createToken(user)
+    const { token, exp } = createToken(user)
+
+    user.token = token
+    user.exp = exp
     
     await user.save()
-    // console.log('user', user)
 
     const sanitizedUser = getSanitizedUser(user)
 
@@ -96,15 +102,15 @@ const validateToken = async (req, res) => {
     const { id } = req.body
     const user = await User
         .findOne({ _id: id })
-    console.log('validating user', user.username)
+    
     if (!user) return res.status(200).json(false)
 
     const userFromToken = getDecodedUser(user.token)
-    // console.log('userFromToken', userFromToken)
-    if (!userFromToken) return res.status(200).json(false)
 
+    if (!userFromToken) return res.status(200).json(false)
+    console.log('userFromToken', userFromToken)
     const newDate = new Date(userFromToken.exp) - Date.now()
-    console.log('newDate', newDate, newDate > 0)
+    // console.log('newDate', newDate, newDate > 0)
     const expired = (newDate > 0)
     return res.status(200).json(!expired)
 }
@@ -112,7 +118,7 @@ const validateToken = async (req, res) => {
 const createUser = async (email, username, password, role) => {
     
     let user = await User.findOne({ email })
-    console.log('user exists', user)
+    
     if (user) {
         console.log('user with that email already exists.')
         return res.status(200).json({ error: true, msg: 'Email already in use.'})
@@ -125,13 +131,13 @@ const createUser = async (email, username, password, role) => {
         return null
     }
     console.log('user exists', user)
-    const newToken = createToken(user)
-    console.log('newTOken', newToken)
+    
+    const { token, exp } = createToken(user)
     
     user = await User
         .findOneAndUpdate(
             { _id: user._id },
-            { $set: { token: newToken } },
+            { $set: { token, exp } },
             { new: true },
         )
         .populate({ path: 'profileImage', select: 'filename width height' })
@@ -199,7 +205,10 @@ const authenticate = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    user.token = createToken(user)
+    const data = createToken(user)
+    
+    user.token = data.token
+    user.exp = data.exp
 
     await user.save()
 

@@ -27,9 +27,9 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
 
     const [loading, setLoading] = useState(null)
 
-    useEffect(() => {
-        console.log('imageData', imageData)
-    }, [imageData])
+    // useEffect(() => {
+    //     console.log('imageData', imageData)
+    // }, [imageData])
 
     const isImageProfileImage = id => user.profileImage === id
 

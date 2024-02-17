@@ -43,6 +43,10 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Location',
     },
+    exp: {
+        type: Date,
+        // required: true,
+    },
 },
 {
     timestamps: true,

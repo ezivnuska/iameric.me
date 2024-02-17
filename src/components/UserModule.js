@@ -20,15 +20,25 @@ export default () => {
 
     const [mounted, setMounted] = useState(false)
     const [loading, setLoading] = useState(null)
+    let interval = undefined
 
     useEffect(() => {
         setMounted(true)
-        if (!users) init()
+        if (!users) loadUsers()
+        interval = setInterval(loadUsers, 1000 * (60 * 10))
         return () => setMounted(false)
     }, [])
 
-    const init = async () => {
-        setLoading(`Loading ${user.role}s...`)
+    useEffect(() => {
+        if (!mounted) {
+            clearInterval(interval)
+            interval = undefined
+        }
+    }, [mounted])
+
+    const loadUsers = async () => {
+
+        setLoading(`Loading ${user.role === 'admin' ? 'all users' : user.role}s...`)
         
         const loadedUsers = await loadUsersByRole(user.role)
         
@@ -36,7 +46,6 @@ export default () => {
             dispatch({ type: 'SET_USERS', users: loadedUsers.filter(u => u._id !== user._id) })
         }
 
-        // if (mounted)
         setLoading(null)
     }
 

@@ -1,6 +1,6 @@
 import { createNavigationContainerRef } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { cleanStorage } from 'src/utils/storage'
+// import { cleanStorage } from 'src/utils/storage'
 
 export const navigationRef = createNavigationContainerRef()
 
@@ -32,35 +32,35 @@ export const checkRoute = async () => {
     // navigate('Home')
 }
 
-const handleRouteChange = async (currentRoute, nextRoute, params) => {
+// const handleRouteChange = async (currentRoute, nextRoute, params) => {
     
-    if (nextRoute !== 'User') {
-        await AsyncStorage.removeItem('detail')
-    } else {
-        if (params && params.id)
-            await AsyncStorage.setItem('detail', params.id)
-    }
+//     if (nextRoute !== 'User') {
+//         await AsyncStorage.removeItem('detail')
+//     } else {
+//         if (params && params.id)
+//             await AsyncStorage.setItem('detail', params.id)
+//     }
     
-    if (
-        currentRoute === 'Start' ||
-        currentRoute === 'User' ||
-        nextRoute !== 'User'
-    ) {
-        await AsyncStorage.removeItem('prevRoute')
-    } else {
-        await AsyncStorage.setItem('prevRoute', currentRoute)
-    }
+//     if (
+//         currentRoute === 'Start' ||
+//         currentRoute === 'User' ||
+//         nextRoute !== 'User'
+//     ) {
+//         await AsyncStorage.removeItem('prevRoute')
+//     } else {
+//         await AsyncStorage.setItem('prevRoute', currentRoute)
+//     }
     
-    if (nextRoute === 'Start') {
-        await AsyncStorage.removeItem('route')
-        await cleanStorage()
-    } else {
-        await AsyncStorage.setItem('route', nextRoute)
-    }
-}
+//     if (nextRoute === 'Start') {
+//         await AsyncStorage.removeItem('route')
+//         await cleanStorage()
+//     } else {
+//         await AsyncStorage.setItem('route', nextRoute)
+//     }
+// }
 
 export const navigate = async (nextRoute, params) => {
-    // console.log('navigating', nextRoute)
+    console.log('navigating', nextRoute, params)
     if (navigationRef.isReady()) {
         
         // const { name } = navigationRef.getCurrentRoute()

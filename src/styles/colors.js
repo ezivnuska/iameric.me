@@ -1,6 +1,7 @@
 export const dark = {
     dark: true,
     colors: {
+        backButtonLabel: '#fff',
         background: '#000',
         backgroundTransparent: '#00000000',
         border: '#aaa',
@@ -32,6 +33,7 @@ export const dark = {
 export const light = {
     dark: false,
     colors: {
+        backButtonLabel: '#000',
         background: '#eee',
         backgroundTransparent: '#fffff00',
         border: '#aaa',

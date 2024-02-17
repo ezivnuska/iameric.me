@@ -7,7 +7,6 @@ import {
 } from 'react-native'
 import { ThunderboltOutlined } from '@ant-design/icons'
 import classes from '../styles/classes'
-import axios from 'axios'
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -20,17 +19,13 @@ export default ({ user, filename, onPress = null }) => {
     const [online, setOnline] = useState(false)
 
     useEffect(() => {
-        checkStatus()
-    }, [])
+        if (user && user.exp) {
+            const newDate = new Date(user.exp) - Date.now()
+            const expired = (newDate > 0)
+            setOnline(!expired)
+        }
+    }, [user])
     
-    const checkStatus = async () => {
-        setLoading('Validating token...')
-        const isValid = await axios
-            .post('/api/token', { id: user._id })
-        setOnline(isValid)
-        setLoading(null)
-    }
-
     const getSource = () => filename
         ? `${IMAGE_PATH}/${user.username}/${filename}`
         : `${IMAGE_PATH}/avatar-default-small.png`
