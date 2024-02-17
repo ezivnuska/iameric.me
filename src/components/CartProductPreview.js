@@ -5,8 +5,10 @@ import {
     Text,
     View,
 } from 'react-native'
+import {
+    ThemedText
+} from '.'
 import classes from '../styles/classes'
-import ThemedText from './ThemedText'
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 24
