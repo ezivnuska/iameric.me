@@ -142,7 +142,6 @@ export default ({ onPress }) => {
             alignItems: 'center',
             justifyContent: 'flex-end',
             height: '100%',
-            marginHorizontal: 3,
         }}>
 
             {(user && !loading) ? (

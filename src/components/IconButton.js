@@ -32,8 +32,8 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 justifyContent: align,
                 alignItems: 'center',
                 marginVertical: padded ? 5 : 0,
-                paddingRight: padded ? 10 : 0,
-                paddingLeft: align === 'left' ? 0 : padded ? 10 : 0,
+                paddingRight: padded ? 8 : 0,
+                paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
                 backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                 borderRadius: 10,
                 textAlign: 'center',
@@ -75,7 +75,12 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                     name={iconName}
                     size={16}
                     color={ textStyles?.color || theme?.colors.textDefault }
-                    style={[{ flexBasis: 'auto', flexShrink: 1, lineHeight: 35, marginLeft: 5 }]}
+                    style={{
+                        flexBasis: 'auto',
+                        flexShrink: 1,
+                        lineHeight: 35,
+                        marginLeft: 8,
+                    }}
                 />
             )}
         </Pressable>
