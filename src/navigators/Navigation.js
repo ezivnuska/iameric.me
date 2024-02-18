@@ -24,8 +24,7 @@ import { AppContext } from '../AppContext'
 import { useTheme } from 'react-native-paper'
 
 const UsersStack = createNativeStackNavigator()
-const UsersStackScreen = ({ route }) => {
-    const { title } = route.params
+const UsersStackScreen = ({ route, navigation, id, title, username }) => {
     return (
         <UsersStack.Navigator
             initialRouteName='UserList'
@@ -35,15 +34,16 @@ const UsersStackScreen = ({ route }) => {
         >
             <UsersStack.Screen
                 name='UserList'
-                component={UsersScreen}
-                options={{ title: 'UserList' }}
-                initialParams={{ title }}
+                children={() => <UsersScreen title={title} />}
+                // component={UsersScreen}
+                // options={{ title }}
             />
 
             <UsersStack.Screen
                 name='User'
-                component={DetailsScreen}
-                options={{ title: 'User' }}
+                children={props => <DetailsScreen {...props} title={title} username={username} id={id} />}
+                // component={DetailsScreen}
+                // options={{ title }}
             />
             
         </UsersStack.Navigator>
@@ -51,7 +51,7 @@ const UsersStackScreen = ({ route }) => {
 }
 
 const VendorsStack = createNativeStackNavigator()
-const VendorsStackScreen = () => (
+const VendorsStackScreen = ({ title }) => (
     <VendorsStack.Navigator
         initialRouteName='VendorList'
         screenOptions={{
@@ -66,8 +66,9 @@ const VendorsStackScreen = () => (
 
         <VendorsStack.Screen
             name='Vendor'
-            component={VendorScreen}
-            options={{ title: 'Vendor' }}
+            children={props => <VendorScreen {...props}title={username} />}
+            // component={VendorScreen}
+            // options={{ title: 'Vendor' }}
         />
         
     </VendorsStack.Navigator>
@@ -90,6 +91,15 @@ const ProductsStackScreen = () => (
     </ProductsStack.Navigator>
 )
 
+const getTitle = role => {
+    switch (role) {
+        case 'customer': return 'Customers'; break
+        case 'vendor': return 'Merchants'; break
+        case 'driver': return 'Drivers'; break
+        default: return 'Users'
+    }
+}
+
 const PrivateStack = createMaterialBottomTabNavigator()
 // const PrivateStack = createBottomTabNavigator()
 const PrivateStackScreen = () => {
@@ -97,19 +107,11 @@ const PrivateStackScreen = () => {
     const theme = useTheme()
 
     const { user } = useContext(AppContext)
-
-    const getTitle = () => {
-        switch (user.role) {
-            case 'customer': return 'Customers'; break
-            case 'vendor': return 'Merchants'; break
-            case 'driver': return 'Drivers'; break
-            default: return 'Users'
-        }
-    }
-
     const iconSize = 24
+    
+    if (!user) return null
 
-    return user ? (
+    return (
         <PrivateStack.Navigator
             initialRouteName={user.role === 'customer' ? 'Vendors' : 'Orders'}
             activeColor={theme?.colors.tabActive}
@@ -166,14 +168,20 @@ const PrivateStackScreen = () => {
 
             <PrivateStack.Screen
                 name='Users'
-                component={UsersStackScreen}
-                initialParams={{ title: getTitle() }}
-                options={{
-                    tabBarLabel: getTitle(),
+                // component={UsersStackScreen}
+                children={() => (
+                    <UsersStackScreen
+                        title={getTitle(user.role)}
+                        username={user.username}
+                        id={user._id}
+                    />
+                )}
+                options={({ route, navigation }) => ({
+                    tabBarLabel: getTitle(user.role),
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name='people-circle-outline' size={iconSize} color={color} />
                     ),
-                }}
+                  })}
             />
 
             <PrivateStack.Screen
@@ -210,7 +218,7 @@ const PrivateStackScreen = () => {
             />
 
         </PrivateStack.Navigator>
-    ) : null
+    )
 }
 
 const MainStack = createNativeStackNavigator()

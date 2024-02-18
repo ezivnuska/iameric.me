@@ -5,9 +5,9 @@ import {
     UserModule,
 } from '@components'
 
-export default ({ navigation, route }) => (
+export default ({ navigation, route, title }) => (
     <Screen navigation={navigation}>
-        <ScreenTitle title={route.params.title} />
+        <ScreenTitle title={title} />
         <UserModule />
     </Screen>
 )

@@ -222,7 +222,7 @@ const authenticate = async (req, res) => {
 
 const handleSignout = async (req, res) => {
     
-    const user = await updateUserById(req.body._id, { token: null })
+    const user = await updateUserById(req.body._id, { token: null, exp: null })
 
     if (!user) {
         console.log('could not update user.')

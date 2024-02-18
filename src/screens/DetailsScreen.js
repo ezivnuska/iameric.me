@@ -7,6 +7,7 @@ import {
     IconButton,
     LoadingView,
     Screen,
+    ScreenTitle,
     UserImageModule,
 } from '@components'
 import { loadUserById } from '../utils/data'
@@ -14,17 +15,13 @@ import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ navigation, route }) => {
+export default ({ navigation, route, id, title, username }) => {
 
     const [loading, setLoading] = useState(null)
     const [userDetails, setUserDetails] = useState(null)
 
     useEffect(() => {
-
-        if (!route.params || !route.params.id)
-            console.log('missing required id param')
-        else loadUserDetails(route.params.id)
-
+        loadUserDetails(id)
     }, [])
 
     const loadUserDetails = async id => {
@@ -61,6 +58,8 @@ export default ({ navigation, route }) => {
     return (
         <Screen navigation={navigation}>
             
+            <ScreenTitle title={title} />
+
             {loading
                 ? <LoadingView label={loading} />
                 : userDetails

@@ -66,7 +66,8 @@ export const navigate = async (nextRoute, params) => {
         // const { name } = navigationRef.getCurrentRoute()
 
         // if (nextRoute !== name) await handleRouteChange(name, nextRoute, params)
-        navigationRef.navigate(nextRoute, params)
+        if (params) navigationRef.navigate(nextRoute, params)
+        else navigationRef.navigate(nextRoute)
         return
         // if (params && params.id)
         //     navigationRef.navigate(nextRoute, params)
