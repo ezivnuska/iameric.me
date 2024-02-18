@@ -121,7 +121,7 @@ const createUser = async (email, username, password, role) => {
     
     if (user) {
         console.log('user with that email already exists.')
-        return res.status(200).json({ error: true, msg: 'Email already in use.'})
+        return null
     } else {
         user = await User.create({ username, email, password, role })
     }

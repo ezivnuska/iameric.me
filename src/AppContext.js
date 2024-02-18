@@ -4,27 +4,54 @@ const initialState = {
     cart: null,
     dims: null,
     entries: null,
-    images: null,
+    image: null,
     loading: null,
+    location: null,
+    modal: null,
     orders: null,
+    product: null,
     products: null,
+    featured: null,
     profileImage: null,
     user: null,
     users: null,
+    vendor: null,
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, entries, loading, orders, products, profileImage, user, users } = state
+    let { cart, dims, entries, featured, image, loading, location, modal, orders, product, products, profileImage, user, users } = state
     
     switch(action.type) {
         case 'SET_DIMS':
             dims = action.dims
             break
+        case 'SET_MODAL':
+            modal = action.modalName
+            break
+        case 'CLOSE_MODAL':
+            featured = null
+            image = null
+            modal = null
+            product = null
+            break
+        case 'SET_FEATURED':
+            featured = action.featured
+            modal = 'FEATURED'
+            break
+        case 'SET_PRODUCT':
+            product = action.product
+            modal = 'PRODUCT'
+            break
+        case 'SET_IMAGE':
+            image = action.image
+            modal = 'IMAGE'
+            break
         case 'SET_USER':
             user = action.user
             break
-        case 'UPDATE_LOCATION':
-            user.location = action.location
+        case 'SET_LOCATION':
+            location = action.location
+            modal = null
             break
         case 'REMOVE_IMAGE':
             if (user.profileImage && user.profileImage._id === action.id) {
@@ -32,9 +59,9 @@ const reducer = (state = initialState, action) => {
             }
             break
         case 'REMOVE_PRODUCT_IMAGE':
-            products = products.map(product => {
-                if (product.image && product.image._id === action.imageId) return { ...product, image: null }
-                else return product
+            products = products.map(prod => {
+                if (prod.image && prod.image._id === action.imageId) return { ...prod, image: null }
+                else return prod
             })
             break
         case 'SET_PRODUCTS':
@@ -46,7 +73,7 @@ const reducer = (state = initialState, action) => {
         case 'UPDATE_PRODUCT':
             if (!products) products = [action.product]
             else {
-                const i = products.findIndex(product => product._id === action.product._id)
+                const i = products.findIndex(prod => prod._id === action.product._id)
                 if (i <= -1) return
                 products = [
                     ...products.slice(0, i),
@@ -54,19 +81,20 @@ const reducer = (state = initialState, action) => {
                     ...products.slice(i + 1),
                 ]
             }
+            modal = null
             break
         case 'UPDATE_PRODUCT_IMAGE':
-            products = products.map(product => {
-                if (product._id === action.productId) {
+            products = products.map(prod => {
+                if (prod._id === action.productId) {
                     return {
-                        ...product,
+                        ...prod,
                         image: action.image,
                     }
-                } else return product
+                } else return prod
             })
             break
         case 'DELETE_PRODUCT':
-            products = products.filter(product => product._id !== action.id)
+            products = products.filter(prod => prod._id !== action.id)
             break
         case 'SET_LOADING':
             loading = action.loading
@@ -78,28 +106,35 @@ const reducer = (state = initialState, action) => {
             users = action.users
             break
         case 'ADD_TO_CART':
-            const { vendor, product, quantity } = action
-            
+
+            const { quantity } = action
+            const productVendor = action.product.vendor
+
             let currentOrder = null
-            
-            if (cart) {
+
+            if (!cart) cart = [{ vendor: productVendor, items: [{ product: action.product, quantity }] }]
+            else {
                 let index = 0
                 if (cart.length > 1)
-                    index = cart.findIndex(order => order.vendor._id === vendor._id)
+                    index = cart.findIndex(order => order.vendor._id === productVendor._id)
                 
                 if (index >= -1) {
                     currentOrder = {
                         ...cart[index],
-                        items: [...cart[index].items, { product, quantity }],
+                        items: [...cart[index].items, { product: action.product, quantity }],
                     }
-                } else currentOrder = { vendor, items: [{ product, quantity }] }
+                } else currentOrder = { vendor: productVendor, items: [{ product: action.product, quantity }] }
                 
                 cart = [...cart.slice(0, index), currentOrder, ...cart.slice(index + 1)]
-            } else cart = [{ vendor, items: [{ product, quantity }] }]
-            
+            }
+            featured = null
+            image = null
+            modal = null
+            product = null
             break
         case 'CLEAR_CART':
             cart = null
+            modal = null
             break
         case 'NEW_ENTRY':
             entries = [action.entry, ...entries]
@@ -203,8 +238,13 @@ const reducer = (state = initialState, action) => {
             console.log('signing out...')
             cart = null
             entries = null
+            featured = null
+            image = null
             loading = null
+            location = null
+            modal = null
             orders = null
+            product = null
             products = null
             profileId = null
             user = null
@@ -214,7 +254,7 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, entries, loading, orders, products, profileImage, user, users }
+    return { cart, dims, entries, featured, image, loading, location, modal, orders, product, products, profileImage, user, users }
 }
 
 export const AppContext = createContext({
@@ -228,7 +268,7 @@ export const AppProvider = ({ children, preferences }) => {
     
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
     const otherUsersByRole = role => (state.users && state.user) ? usersByRole(role).filter(u => u._id !== state.user._id) : null
-
+    
     return (
         <AppContext.Provider
             value={{
@@ -239,8 +279,13 @@ export const AppProvider = ({ children, preferences }) => {
                 dims: state.dims,
                 drivers: otherUsersByRole('driver'),
                 entries: state.entries,
+                featured: state.featured,
+                image: state.image,
                 loading: state.loading,
+                location: state.location,
+                modal: state.modal,
                 orders: state.orders,
+                product: state.product,
                 products: state.products,
                 user: state.user,
                 users: state.users,

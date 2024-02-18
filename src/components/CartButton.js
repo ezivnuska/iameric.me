@@ -1,14 +1,11 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     View,
 } from 'react-native'
 import {
-    Cart,
     IconButton,
-    PopUpModal,
 } from '.'
 import { AppContext } from '../AppContext'
-import { navigationRef } from '../navigators/RootNavigation'
 import { useTheme } from 'react-native-paper'
 
 export default () => {
@@ -20,16 +17,6 @@ export default () => {
         dispatch,
     } = useContext(AppContext)
 
-    const [modalVisible, setModalVisible] = useState(false)
-
-    const onSubmitted = order => {
-        setModalVisible(false)
-        
-        dispatch({ type: 'ADD_ORDER', order })
-        
-        navigationRef.navigate('Private', { screen: 'Orders' })
-    }
-
     const getItemCount = items => {
         let count = 0
         items.map(item => count += item.quantity)
@@ -37,26 +24,19 @@ export default () => {
     }
 
     return (
-        <View style={{
-            marginHorizontal: 5,
-        }}>
+        <View
+            style={{
+                marginHorizontal: 5,
+            }}
+        >
             <IconButton
                 type='primary'
                 label={getItemCount(cart[0].items)}
                 iconName='cart-outline'
-                onPress={() => setModalVisible(true)}
+                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'CART' })}
                 padded={true}
                 textStyles={{ color: theme?.colors.buttonLabel }}
             />
-
-            <PopUpModal
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <Cart
-                    onSubmitted={onSubmitted}
-                />
-            </PopUpModal>
 
         </View>
     )

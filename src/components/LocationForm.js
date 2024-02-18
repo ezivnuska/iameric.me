@@ -8,20 +8,31 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
+import axios from 'axios'
 
-export default ({ onSubmit, location }) => {
+const initialState = {
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zip: '',
+}
 
-    const context = useContext(AppContext)
+export default () => {
 
-    const { user } = context.state
+    const {
+        dispatch,
+        loading,
+        location,
+        user,
+    } = useContext(AppContext)
     
-    const [ address1, setAddress1 ] = useState(location.address1)
-    const [ address2, setAddress2 ] = useState(location.address2)
-    const [ city, setCity ] = useState(location.city)
-    const [ state, setState ] = useState(location.state)
-    const [ zip, setZip ] = useState(location.zip)
+    const [ address1, setAddress1 ] = useState(location?.address1 || initialState.address1)
+    const [ address2, setAddress2 ] = useState(location?.address2 || initialState.address2)
+    const [ city, setCity ] = useState(location?.city || initialState.city)
+    const [ state, setState ] = useState(location?.state || initialState.state)
+    const [ zip, setZip ] = useState(location?.zip || initialState.zip)
     const [ dirty, setDirty ] = useState(false)
-    const [ loading, setLoading ] = useState(false)
 
     const onChange = (name, value) => {
         switch(name) {
@@ -53,11 +64,28 @@ export default ({ onSubmit, location }) => {
         }
     }
 
+    const onSubmitAddress = async newLocation => {
+        
+        dispatch({ type: 'SET_LOADING', loading: 'Updating address...' })
+
+        const { data } = await axios
+            .post('/api/location', newLocation)
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
+        
+        if (!data) {
+            console.log('Error saving location', err)
+            return
+        }
+        
+        dispatch({ type: 'SET_LOCATION', location: data.location })
+    }
+
     const submitForm = () => {
         if (!isValid()) return
         const { _id, username } = user
         const newLocation = { userId: _id, username, address1, address2, city, state, zip }
-        onSubmit(newLocation)
+        onSubmitAddress(newLocation)
     }
 
     const isValid = () => {

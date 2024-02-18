@@ -9,6 +9,7 @@ import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
 import ThemedText from './ThemedText'
 import DeleteAccountButton from './DeleteAccountButton'
+import DestroyForm from './DestroyForm'
 import DriverList from './DriverList'
 import DriverListItem from './DriverListItem'
 import DriverModule from './DriverModule'
@@ -35,6 +36,18 @@ import LocationModule from './LocationModule'
 import LocationForm from './LocationForm'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
+import ModalCart from './ModalCart'
+import ModalContent from './ModalContent'
+import ModalDestroy from './ModalDestroy'
+import ModalFactory from './ModalFactory'
+import ModalFeatured from './ModalFeatured'
+import ModalImage from './ModalImage'
+import ModalImageSelector from './ModalImageSelector'
+import ModalLocation from './ModalLocation'
+import ModalProductForm from './ModalProductForm'
+import ModalSignin from './ModalSignin'
+import ModalSignup from './ModalSignup'
+import ModalSignout from './ModalSignout'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
@@ -60,7 +73,7 @@ import UserImageModule from './UserImageModule'
 import UserModule from './UserModule'
 import UserDetails from './UserDetails'
 import VendorList from './VendorList'
-import VendorListItem from './VendorListItem'
+import VendorListItem from './VendorListItem_old'
 import VendorModule from './VendorModule'
 
 export {
@@ -75,6 +88,7 @@ export {
     CenteredView,
     ThemedText,
     DeleteAccountButton,
+    DestroyForm,
     DriverList,
     DriverListItem,
     DriverModule,
@@ -101,6 +115,18 @@ export {
     LocationForm,
     Menu,
     MenuItem,
+    ModalCart,
+    ModalContent,
+    ModalDestroy,
+    ModalFactory,
+    ModalFeatured,
+    ModalImage,
+    ModalImageSelector,
+    ModalLocation,
+    ModalProductForm,
+    ModalSignin,
+    ModalSignup,
+    ModalSignout,
     OrderList,
     OrderDetails,
     OrderPreview,

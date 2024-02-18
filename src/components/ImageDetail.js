@@ -15,7 +15,7 @@ import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) => {
+export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
 
     const theme = useTheme()
 
@@ -96,7 +96,7 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
         
         dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: data })
 
-        closeModal()
+        dispatch({ type: 'CLOSE_MODAL' })
     }
 
     const setProductImage = async productId => {
@@ -120,7 +120,7 @@ export default ({ closeModal, imageData, onDelete = null, resize = 'stretch' }) 
 
         dispatch({ type: 'UPDATE_PRODUCT_IMAGE', productId, image: data.image })
         
-        closeModal()
+        dispatch({ type: 'CLOSE_MODAL' })
     }
 
     return imageData ? (

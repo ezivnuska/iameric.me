@@ -32,7 +32,7 @@ export default ({ navigation }) => {
                         user.username !== 'Customer' &&
                         user.username !== 'Driver' && 
                         user.username !== 'Vendor' &&
-                        <DeleteAccountButton id={user._id} />
+                        <DeleteAccountButton />
                     }
                     
                 </View>

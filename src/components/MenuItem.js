@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     Image,
-    Pressable,
     View,
 } from 'react-native'
 import {
@@ -10,13 +9,18 @@ import {
 } from '@components'
 import classes from '../styles/classes'
 import { useTheme } from 'react-native-paper'
+import { AppContext } from '../AppContext'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ item, username, onPress }) => {
+export default ({ item, username }) => {
 
     const theme = useTheme()
+
+    const {
+        dispatch,
+    } = useContext(AppContext)
     
     const { _id, price, title, desc, vendor, blurb, category, image } = item
     
@@ -75,6 +79,7 @@ export default ({ item, username, onPress }) => {
                     </ThemedText>
 
                     <IconButton
+                        onPress={() => dispatch({ type: 'SET_FEATURED', featured: item })}
                         type='primary'
                         iconName='add-outline'
                         label={`$${price}`}

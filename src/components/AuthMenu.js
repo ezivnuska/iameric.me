@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     Image,
     Pressable,
@@ -8,12 +8,8 @@ import {
 import {
     CartButton,
     IconButton,
-    PopUpModal,
-    SignInForm,
 } from '.'
-import { signout } from '../utils/auth'
 import { AppContext } from '../AppContext'
-import { navigationRef } from 'src/navigators/RootNavigation'
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -35,7 +31,6 @@ const UserButton = ({ onPress, user }) => {
                 flexShrink: 0,
                 flexBasis: 'auto',
                 paddingHorizontal: 7,
-                // paddingVertical: 3,
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -96,43 +91,8 @@ export default ({ onPress }) => {
         user,
     } = useContext(AppContext)
 
-    const [showSignInModal, setShowSignInModal] = useState(false)
-    const [showSignoutModal, setShowSignoutModal] = useState(false)
-
-    const setUser = async ({
-        _id,
-        email,
-        images,
-        profileImage,
-        role,
-        token,
-        username,
-    }) => {
-        dispatch({
-            type: 'SET_USER',
-            user: {
-                _id,
-                email,
-                images,
-                profileImage,
-                role,
-                token,
-                username,
-            },
-        })
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
-    }
-
-    const onModalClosed = response => {
-        setUser(response)
-        if (showSignInModal) setShowSignInModal(false)
-    }
-
-    const initSignout = async () => {
-        await signout(dispatch, user._id)
-        setShowSignoutModal(false)
-        navigationRef.navigate('Start')
+    const setModal = modalName => {
+        dispatch({ type: 'SET_MODAL', modalName })
     }
 
     return (
@@ -157,7 +117,7 @@ export default ({ onPress }) => {
                     <UserButton onPress={onPress} user={user} />
 
                     <IconButton
-                        onPress={() => setShowSignoutModal(true)}
+                        onPress={() => setModal('SIGNOUT')}
                         disables={loading}
                         iconName='close-outline'
                         textStyles={{ color: theme?.colors.textDefault }}
@@ -168,45 +128,12 @@ export default ({ onPress }) => {
                 <IconButton
                     iconName='log-in-outline'
                     label='Sign In'
-                    onPress={() => setShowSignInModal(true)}
+                    onPress={() => setModal('SIGNIN')}
                     disabled={loading}
                     alignIcon='right'
-                    // padded={false}
                     transparent
                 />
             )}
-
-            <PopUpModal
-                visible={showSignInModal}
-                onRequestClose={() => setShowSignInModal(false)}
-            >
-                <SignInForm
-                    onComplete={onModalClosed}
-                />
-            </PopUpModal>
-
-            <PopUpModal
-                visible={showSignoutModal}
-                onRequestClose={() => setShowSignoutModal(false)}
-                transparent={true}
-            >
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-around',
-                    }}
-                >
-
-                    <IconButton
-                        type='primary'
-                        label='Sign Out'
-                        onPress={initSignout}
-                        disabled={loading}
-                    />
-                </View>
-                
-            </PopUpModal>
             
         </View>
     )

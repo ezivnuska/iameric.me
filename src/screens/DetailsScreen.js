@@ -15,7 +15,7 @@ import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ navigation, route, id, title, username }) => {
+export default ({ navigation, route, id, title }) => {
 
     const [loading, setLoading] = useState(null)
     const [userDetails, setUserDetails] = useState(null)
@@ -58,7 +58,6 @@ export default ({ navigation, route, id, title, username }) => {
     return (
         <Screen navigation={navigation}>
             
-            <ScreenTitle title={title} />
 
             {loading
                 ? <LoadingView label={loading} />
@@ -73,9 +72,7 @@ export default ({ navigation, route, id, title, username }) => {
                                 transparent
                             />
 
-                            <ThemedText style={classes.headerSecondary}>
-                                {userDetails.username}
-                            </ThemedText>
+                            <ScreenTitle title={title} />
 
                             {renderUserAvatar()}
 

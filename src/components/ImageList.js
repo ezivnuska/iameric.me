@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     Image,
     Pressable,
@@ -6,13 +6,18 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from 'react-native-paper'
+import { AppContext } from '../AppContext'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, loading, username, onSelected, onAddImage }) => {
+export default ({ images, loading, username, onSelected, uploadImage }) => {
 
     const theme = useTheme()
+
+    const {
+        dispatch,
+    } = useContext(AppContext)
 
     const buttonStyle = {
         borderWidth: 1,
@@ -43,7 +48,7 @@ export default ({ images, loading, username, onSelected, onAddImage }) => {
             {images && images.map((image, index) => (
                 <Pressable
                     key={`image-${index}`}
-                    onPress={() => onSelected(image._id)}
+                    onPress={() => dispatch({ type: 'SET_IMAGE', image })}
                     style={[
                         {
                             flexBasis: 'auto',
@@ -66,13 +71,13 @@ export default ({ images, loading, username, onSelected, onAddImage }) => {
                 </Pressable>
             ))}
 
-            {onAddImage &&
+            {uploadImage &&
             username !== 'Driver' &&
             username !== 'Customer' &&
             username !== 'Vendor' && (
                 <Pressable
                     key={`image-${images ? images.length : '0'}`}
-                    onPress={onAddImage}
+                    onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SELECT_IMAGE' })}
                     style={[
                         {
                             flexBasis: 'auto',

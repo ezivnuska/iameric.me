@@ -6,7 +6,7 @@ import {
 import {
     UserHeading,
 } from '.'
-import { navigate } from '../navigators/RootNavigation'
+import { navigationRef } from '../navigators/RootNavigation'
 
 export default ({ users }) => (
     <FlatList
@@ -26,7 +26,7 @@ export default ({ users }) => (
                     <UserHeading
                         user={item}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
-                        onPress={() => navigate('Vendor', { id: _id })}
+                        onPress={() => navigationRef.navigate('Vendor', { id: _id })}
                     />
                 </View>
             )

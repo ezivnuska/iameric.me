@@ -8,9 +8,12 @@ import { Navigation } from '../navigators'
 import { AppContext } from '../AppContext'
 import {
     Header,
+    ModalFactory,
+    PopUpModal,
 } from '@components'
 // import { getLocally } from '../utils/storage'
 import { useTheme } from 'react-native-paper'
+import { ModalCart } from 'src/components'
 
 let initialDims = {
     window: Dimensions.get('window'),
@@ -22,6 +25,7 @@ export default () => {
     const {
         dispatch,
         dims,
+        modal,
     } = useContext(AppContext)
 
     const theme = useTheme()
@@ -44,6 +48,7 @@ export default () => {
 
     return dims ? (
         <SafeAreaView
+            id='layout-container'
             style={{
                 width: dims.window.width,
                 height: dims.window.height,
@@ -51,6 +56,7 @@ export default () => {
             }}
         >
             <View
+                id='header'
                 style={{
                     width: dims.window.width,
                     height: 50,
@@ -58,6 +64,7 @@ export default () => {
                 }}
             >
                 <View
+                    id='header-container'
                     style={{
                         width: 375,
                         minWidth: 300,
@@ -71,6 +78,7 @@ export default () => {
             </View>
 
             <View
+                id='content-container'
                 style={{
                     height: dims.window.height - 50,
                     width: dims.window.width,
@@ -78,6 +86,7 @@ export default () => {
                 }}
             >
                 <View
+                    id='content'
                     style={{
                         width: dims.window.width,
                         height: dims.window.height - 50,
@@ -87,6 +96,15 @@ export default () => {
                     <Navigation />
                 </View>
             </View>
+
+            <PopUpModal
+                visible={modal}
+                onRequestClose={() => dispatch({ type: 'CLOSE_MODAL' })}
+                transparent={true}
+            >
+                <ModalFactory name={modal} />
+            </PopUpModal>
+
         </SafeAreaView>
     ) : null
 }

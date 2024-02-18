@@ -41,7 +41,7 @@ const UsersStackScreen = ({ route, navigation, id, title, username }) => {
 
             <UsersStack.Screen
                 name='User'
-                children={props => <DetailsScreen {...props} title={title} username={username} id={id} />}
+                children={props => <DetailsScreen {...props} title={title} id={id} />}
                 // component={DetailsScreen}
                 // options={{ title }}
             />
@@ -51,7 +51,7 @@ const UsersStackScreen = ({ route, navigation, id, title, username }) => {
 }
 
 const VendorsStack = createNativeStackNavigator()
-const VendorsStackScreen = ({ title }) => (
+const VendorsStackScreen = () => (
     <VendorsStack.Navigator
         initialRouteName='VendorList'
         screenOptions={{
@@ -66,7 +66,7 @@ const VendorsStackScreen = ({ title }) => (
 
         <VendorsStack.Screen
             name='Vendor'
-            children={props => <VendorScreen {...props}title={username} />}
+            children={props => <VendorScreen {...props} />}
             // component={VendorScreen}
             // options={{ title: 'Vendor' }}
         />

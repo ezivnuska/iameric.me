@@ -10,23 +10,23 @@ import {
 } from '@components'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
+// import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ product, onDelete, onPress, ...props }) => {
+export default ({ product, onPress, ...props }) => {
 
     const {
         user,
     } = useContext(AppContext)
     
-    const theme = useTheme()
+    // const theme = useTheme()
 
     return (
         <Pressable
             {...props}
-            onPress={onPress}
+            onPress={() => onPress(product)}
             style={{
                 borderBottomWidth: 1,
                 borderBottomColor: '#ccc',

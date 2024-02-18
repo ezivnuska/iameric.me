@@ -7,31 +7,19 @@ import {
     ThemedText,
     HeaderIconButton,
     LoadingView,
-    LocationForm,
     LocationDetails,
-    PopUpModal,
 } from '.'
-import axios from 'axios'
 import { AppContext } from '../AppContext'
 import { getLocationWithUserId } from '../utils/data'
-
-const initialState = {
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
-}
 
 export default ({ userId }) => {
 
     const {
         dispatch,
+        loading,
+        location,
     } = useContext(AppContext)
 
-    const [location, setLocation] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false)
-    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
         getLocationData(userId)
@@ -39,38 +27,18 @@ export default ({ userId }) => {
 
     const getLocationData = async userId => {
 
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Fetching location...' })
 
         const locationData = await getLocationWithUserId(userId)
         
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
 
         if (!locationData) {
             console.log('could not get location data.')
             return
         }
 
-        setLocation(locationData)
-    }
-
-    const onSubmitAddress = async newLocation => {
-        setLoading(true)
-
-        const { data } = await axios
-            .post('/api/location', newLocation)
-        
-        setLoading(false)
-        
-        if (!data) {
-            console.log('Error saving location', err)
-            return
-        }
-
-        dispatch({ type: 'UPDATE_LOCATION', location: data.location })
-        
-        setLocation(data.location)
-
-        setModalVisible(false)
+        dispatch({ type: 'SET_LOCATION', location: locationData })
     }
 
     return (
@@ -80,7 +48,7 @@ export default ({ userId }) => {
                 iconName={location ? 'create-outline' : 'add-outline'}
                 label='Address'
                 disabled={loading}
-                onPress={() => setModalVisible(true)}
+                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'LOCATION' })}
             />
             
             {loading
@@ -95,16 +63,6 @@ export default ({ userId }) => {
                         </Pressable>
                     )
             }
-
-            <PopUpModal
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <LocationForm
-                    location={location || initialState}
-                    onSubmit={onSubmitAddress}
-                />
-            </PopUpModal>
             
         </View>
     )

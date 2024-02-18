@@ -7,8 +7,6 @@ import {
     ThemedText,
     LoadingView,
     MenuItem,
-    PopUpModal,
-    ProductDetails,
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
@@ -17,10 +15,9 @@ export default ({ vendor }) => {
 
     const {
         dispatch,
+        loading,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(null)
-    const [featured, setFeatured] = useState(null)
     const [products, setProducts] = useState(null)
 
     useEffect(() => {
@@ -29,11 +26,11 @@ export default ({ vendor }) => {
 
     const getProducts = async () => {
         
-        setLoading('Loading menu...')
+        dispatch({ type: 'SET_LOADING', loading: 'Loading menu...' })
         
         const { data } = await axios.get(`/api/products/${vendor._id}`)
         
-        setLoading(null)
+        dispatch({ type: 'SET_LOADING', loading: null })
         
         if (!data) {
             console.log('could not get vendor products')
@@ -41,13 +38,6 @@ export default ({ vendor }) => {
         }
         
         setProducts(data.products)
-    }
-
-    const addToCart = (product, quantity) => {
-
-        dispatch({ type: 'ADD_TO_CART', vendor, product, quantity })
-        
-        setFeatured(null)
     }
     
     return (
@@ -68,7 +58,6 @@ export default ({ vendor }) => {
                             renderItem={({ item }) => (
                                 <MenuItem
                                     item={item}
-                                    onPress={() => setFeatured(item)}
                                     username={vendor.username}
                                 />
                             )}
@@ -79,16 +68,6 @@ export default ({ vendor }) => {
                     )
             }
 
-            <PopUpModal
-                visible={featured}
-                onRequestClose={() => setFeatured(null)}
-            >
-                <ProductDetails
-                    loading={loading}
-                    product={featured}
-                    onOrder={addToCart}
-                />
-            </PopUpModal>
         </View>
     )
 }

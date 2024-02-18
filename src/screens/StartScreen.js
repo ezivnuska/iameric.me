@@ -1,51 +1,32 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     ImageBackground,
-    Pressable,
     StyleSheet,
     Text,
     View,
 } from 'react-native'
 import {
     IconButton,
-    PopUpModal,
     Screen,
-    SignUpForm,
 } from '@components'
 import { AppContext } from '../AppContext'
 import { connect, initialize } from '../utils/auth'
 import classes from '../styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ navigation }) => {
 
-    const theme = useTheme()
-
     const {
         dims,
         dispatch,
-        loading,
-        user,
     } = useContext(AppContext)
-
-    const [showSignUpModal, setShowSignUpModal] = useState(null)
-    const [showSignInModal, setShowSignInModal] = useState(null)
 
     useEffect(() => {
         initialize(dispatch)
     }, [])
-    
-    // useEffect(() => {
-    //     if (!loading) validateUser()
-    // }, [loading])
-
-    // const validateUser = async () => {
-    //     if (user) navigation.navigate('Private')
-    // }
 
     const onConnect = async type => {
         
@@ -85,14 +66,6 @@ export default ({ navigation }) => {
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
-    const onModalClosed = response => {
-        
-        setUser(response)
-
-        if (showSignUpModal) setShowSignUpModal(null)
-        if (showSignInModal) setShowSignInModal(null)
-    }
-
     return (
         <Screen secure={false}>
             <View style={[
@@ -101,7 +74,6 @@ export default ({ navigation }) => {
                     flexDirection: 'column',
                     justifyContent: 'space-evenly',
                     alignItems: 'stretch',
-                    // rowGap: 10,
                     overflow: 'visible',
                     height: dims ? dims.window.height - 100 : '100%',
                 },
@@ -116,7 +88,7 @@ export default ({ navigation }) => {
                             type='primary'
                             label='Sign Up to Order!'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setShowSignUpModal('customer')}
+                            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_CUSTOMER' })}
                             alignIcon='right'
                             textStyles={{ color: '#fff' }}
                         />
@@ -140,7 +112,7 @@ export default ({ navigation }) => {
                             type='primary'
                             label='Join as Merchant!'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setShowSignUpModal('vendor')}
+                            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_VENDOR' })}
                             alignIcon='right'
                             textStyles={{ color: '#fff' }}
                         />
@@ -164,7 +136,7 @@ export default ({ navigation }) => {
                             type='primary'
                             label='Become a Driver!'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setShowSignUpModal('driver')}
+                            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_DRIVER' })}
                             alignIcon='right'
                             textStyles={{ color: '#fff' }}
                         />
@@ -181,16 +153,6 @@ export default ({ navigation }) => {
                 </BackgroundImageWithGradient>
 
             </View>
-
-            <PopUpModal
-                visible={showSignUpModal}
-                onRequestClose={() => setShowSignUpModal(false)}
-            >
-                <SignUpForm
-                    role={showSignUpModal}
-                    onComplete={onModalClosed}
-                />
-            </PopUpModal>
             
         </Screen>
     )
@@ -204,9 +166,6 @@ const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
         <View
             style={{
                 flex: 1,
-                // flexGrow: 1,
-                // borderRadius: 20,
-                // overflow: 'hidden',
                 position: 'relative',
             }}
         >

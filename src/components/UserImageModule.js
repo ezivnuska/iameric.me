@@ -4,17 +4,19 @@ import {
 } from 'react-native'
 import {
     ThemedText,
-    ImageDetail,
     ImageList,
     LoadingView,
-    PopUpModal,
 } from '.'
 import axios from 'axios'
+import { AppContext } from '../AppContext'
 
 export default ({ user }) => {
 
-    const [featured, setFeatured] = useState(null)
-    const [loading, setLoading] = useState(false)
+    const {
+        dispatch,
+        loading,
+    } = useContext(AppContext)
+
     const [items, setItems] = useState(null)
 
     useEffect(() => {
@@ -27,7 +29,7 @@ export default ({ user }) => {
 
     const getImageData = async () => {
         
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Fetching image...' })
         
         const { data } = await axios.get(`/api/user/images/${user._id}`)
         
@@ -38,13 +40,13 @@ export default ({ user }) => {
         
         setItems(data.images)
 
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const onSelected = imageId => {
         const selectedItem = items.filter(item => item._id === imageId)[0]
 
-        setFeatured(selectedItem)
+        dispatch({ type: 'SET_FEATURED', featured: selectedItem })
     }
 
     return (
@@ -63,16 +65,6 @@ export default ({ user }) => {
                     )
                     : <ThemedText>No entries yet.</ThemedText>
             }
-            
-            <PopUpModal
-                visible={featured}
-                onRequestClose={() => setFeatured(false)}
-            >
-                <ImageDetail
-                    imageData={featured}
-                    closeModal={() => setFeatured(false)}
-                />
-            </PopUpModal>
 
         </View>
     )

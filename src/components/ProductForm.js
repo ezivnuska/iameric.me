@@ -14,14 +14,15 @@ import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default  ({ onComplete, onDelete, existingProduct = null }) => {
+export default  ({ onComplete, onDelete }) => {
     
     const {
-        user,
         dispatch,
+        loading,
+        product,
+        user,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
     const [ title, setTitle ] = useState()
     const [ price, setPrice ] = useState()
     const [ blurb, setBlurb ] = useState()
@@ -41,8 +42,9 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
     
     useEffect(() => {
         // if editing, set initial form vars
-        if (existingProduct) {
-            setFormData(existingProduct)
+        console.log('product...', product)
+        if (product) {
+            setFormData(product)
         }
     }, [])
 
@@ -56,8 +58,8 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
     }
 
     const resetForm = () => {
-        if (existingProduct) {
-            setFormData(existingProduct)
+        if (product) {
+            setFormData(product)
         } else {
             clearForm()
         }
@@ -75,7 +77,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
 
     const onSubmit = async () => {
         
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Submitting product...' })
 
         const { _id } = user
         
@@ -89,10 +91,10 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
             image,
         }
 
-        if (existingProduct) {
+        if (product) {
             productData = {
                 ...productData,
-                _id: existingProduct._id,
+                _id: featured._id,
             }
         }
 
@@ -106,14 +108,14 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
         const { data } = await axios
             .post('/api/product', productData)
 
-        setLoading(false)
+            dispatch({ type: 'SET_LOADING', loading: null })
 
         if (!data) {
             console.log('Error saving product', data)
             return null
         }
         
-        if (!existingProduct) {
+        if (!product) {
             dispatch({ type: 'ADD_PRODUCT', product: data })
         } else {
             dispatch({ type: 'UPDATE_PRODUCT', product: data })
@@ -213,7 +215,7 @@ export default  ({ onComplete, onDelete, existingProduct = null }) => {
             />
 
             <IconButton
-                label={existingProduct ? 'Reset Form' : 'Clear Form'}
+                label={product ? 'Reset Form' : 'Clear Form'}
                 onPress={resetForm}
                 disabled={loading}
             />

@@ -16,7 +16,7 @@ import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ navigation, route, username }) => {
+export default ({ navigation, route }) => {
 
     const theme = useTheme()
 
@@ -68,8 +68,6 @@ export default ({ navigation, route, username }) => {
     return (
         <Screen navigation={navigation}>
             
-            <ScreenTitle title={username} />
-
             {loading
                 ? <LoadingView label={loading} />
                 : userDetails
@@ -83,10 +81,8 @@ export default ({ navigation, route, username }) => {
                                 textStyles={{ color: theme?.colors.textDefault }}
                                 transparent
                             />
-                            
-                            <ThemedText style={classes.headerSecondary}>
-                                {userDetails.username}
-                            </ThemedText>
+
+                            <ScreenTitle title={userDetails.username} />
 
                             {renderUserAvatar()}
 
