@@ -6,7 +6,6 @@ import {
     IconButton,
     LoadingView,
     Menu,
-    ScreenTitle,
 } from '@components'
 import {
     Screen,
@@ -121,8 +120,6 @@ export default ({ navigation, route }) => {
                                 textStyles={{ color: theme?.colors.textDefault }}
                                 transparent
                             />
-
-                            <ScreenTitle title={userDetails.username} />
 
                             {renderUserAvatar()}
 

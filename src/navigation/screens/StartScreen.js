@@ -3,6 +3,7 @@ import {
     ImageBackground,
     StyleSheet,
     Text,
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -22,9 +23,10 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default () => {
 
     const {
-        dims,
         dispatch,
     } = useContext(AppContext)
+
+    const dims = useWindowDimensions()
 
     useEffect(() => {
         initialize(dispatch)
@@ -75,7 +77,7 @@ export default () => {
                     justifyContent: 'space-evenly',
                     alignItems: 'stretch',
                     overflow: 'visible',
-                    height: dims ? dims.window.height - 50 : '100%',
+                    height: dims.height - 50,
                 },
             ]}>
 

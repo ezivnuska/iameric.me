@@ -108,7 +108,7 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <Screen title={userDetails ? user.username : 'User' }>
+        <Screen title={userDetails ? userDetails.username : 'User' }>
             
             {loading
                 ? <LoadingView label={loading} />

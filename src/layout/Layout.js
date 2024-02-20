@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
-    Dimensions,
     SafeAreaView,
+    useWindowDimensions,
     View,
 } from 'react-native'
 import AppNavigation from '../navigation/AppNavigation'
@@ -14,47 +14,31 @@ import {
 } from '.'
 import { useTheme } from 'react-native-paper'
 
-let initialDims = {
-    window: Dimensions.get('window'),
-    screen: Dimensions.get('screen'),
-}
-
 export default () => {
 
     const {
         dispatch,
-        dims,
         modal,
         user,
     } = useContext(AppContext)
 
     const theme = useTheme()
 
-    useEffect(() => {
+    const dims = useWindowDimensions()
 
-        const subscription = Dimensions.addEventListener(
-            'change',
-            ({ window, screen }) => dispatch({ type: 'SET_DIMS', dims: { window, screen } })
-        )
-
-        dispatch({ type: 'SET_DIMS', dims: initialDims })
-
-        return () => subscription.remove()
-    }, [])
-
-    return dims ? (
+    return (
         <SafeAreaView
             id='layout-container'
             style={{
-                width: dims.window.width,
-                height: dims.window.height,
+                width: dims.width,
+                height: dims.height,
                 backgroundColor: theme?.colors.background,
             }}
         >
             <View
                 id='header'
                 style={{
-                    width: dims.window.width,
+                    width: dims.width,
                     height: 50,
                     backgroundColor: theme?.colors.background,
                 }}
@@ -76,8 +60,8 @@ export default () => {
             <View
                 id='content-container'
                 style={{
-                    height: dims.window.height - 50,
-                    width: dims.window.width,
+                    height: dims.height - 50,
+                    width: dims.width,
                     backgroundColor: theme?.colors.background,
                 }}
             >
@@ -88,7 +72,7 @@ export default () => {
                         width: '100%',
                         minWidth: 300,
                         maxWidth: 900,
-                        height: dims.window.height - 50,
+                        height: dims.height - 50,
                         marginHorizontal: 'auto',
                     }}
                 >
@@ -105,5 +89,5 @@ export default () => {
             />
 
         </SafeAreaView>
-    ) : null
+    )
 }

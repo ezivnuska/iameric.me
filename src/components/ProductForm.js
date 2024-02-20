@@ -35,14 +35,10 @@ export default  ({ onComplete, onDelete }) => {
     const onChangePrice = value => setPrice(value)
     const onChangeBlurb = value => setBlurb(value)
     const onChangeDesc = value => setDesc(value)
-    const onChangeCategory = value => {
-        console.log('setting category...', value)
-        setCategory(value)
-    }
+    const onChangeCategory = value => setCategory(value)
     
     useEffect(() => {
         // if editing, set initial form vars
-        console.log('product...', product)
         if (product) {
             setFormData(product)
         }
