@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -8,6 +8,7 @@ import {
 import { ThunderboltOutlined } from '@ant-design/icons'
 import classes from '../styles/classes'
 import { useTheme } from 'react-native-paper'
+import { AppContext } from '../AppContext'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -15,7 +16,10 @@ export default ({ user, filename, onPress = null }) => {
 
     const theme = useTheme()
 
-    const [loading, setLoading] = useState(false)
+    const {
+        loading,
+    } = useContext(AppContext)
+
     const [online, setOnline] = useState(false)
 
     useEffect(() => {

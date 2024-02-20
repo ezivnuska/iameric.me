@@ -18,15 +18,15 @@ export default () => {
 
     const {
         dispatch,
+        loading,
         orders,
         user,
     } = useContext(AppContext)
 
-    const [loading, setLoading] = useState(false)
     const [featured, setFeatured] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
     const [items, setItems] = useState(orders)
-    const [showCompletedOrders, setShowCompletedOrders] = useState(true)
+    // const [showCompletedOrders, setShowCompletedOrders] = useState(true)
 
     useEffect(() => {
         if (user && !items) loadOrders()
@@ -66,11 +66,11 @@ export default () => {
 
     const deleteOrder = async id => {
         console.log('deleting order')
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Deleting order...' })
         await axios.delete(`/api/order/${id}`)
         removeItem(id)
         dispatch({ type: 'REMOVE_ORDER', id })
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const cancelOrder = async id => {
@@ -82,7 +82,7 @@ export default () => {
 
     const confirmOrder = async (id, time) => {
         
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Confirming order...' })
         
         const m = moment()
         const pickup = m.add(time, 'm')
@@ -90,23 +90,21 @@ export default () => {
         const { data } = await axios.
             post('/api/order/confirm', { id, pickup })
         
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
 
         if (!data) return console.log('Error confirming order')
 
         dispatch({ type: 'CONFIRM_ORDER', order: data })
-
-        // setFeatured(null)
     }
 
     const acceptDelivery = async id => {
 
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Accepting delivery...' })
 
         const { data } = await axios.
             post('/api/order/accept', { id, driver: user._id })
         
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
 
         if (!data) console.log('Error accepting delivery')
 
@@ -117,16 +115,14 @@ export default () => {
 
     const onOrderReady = async id => {
 
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Marking order ready...' })
 
         const { data } = await axios.
             post('/api/order/ready', { id })
         
-        setLoading(false)
+            dispatch({ type: 'SET_LOADING', loading: null })
 
         if (!data) console.log('Error marking order ready')
-
-        console.log('data', data)
 
         dispatch({ type: 'ORDER_READY', order: data })
 
@@ -135,12 +131,12 @@ export default () => {
 
     const driverArrived = async id => {
 
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Marking driver arrived...' })
 
         const { data } = await axios.
             post('/api/order/arrived', { id })
         
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
 
         if (!data) console.log('Error updating driver status')
         
@@ -151,12 +147,12 @@ export default () => {
 
     const receivedOrder = async id => {
 
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Marking order received...' })
 
         const { data } = await axios.
             post('/api/order/received', { id })
         
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
         
         if (!data) console.log('Error marking order picked up')
         
@@ -166,13 +162,13 @@ export default () => {
     }
 
     const completeDelivery = async id => {
-        console.log('completing order delivery')
-        setLoading(true)
+        
+        dispatch({ type: 'SET_LOADING', loading: 'Marking order complete...' })
         
         const { data } = await axios.
             post('/api/order/complete', { id })
         
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
 
         if (!data) console.log('Error completing order')
 
@@ -183,15 +179,18 @@ export default () => {
     }
 
     const closeOrder = async id => {
-        console.log('closing order')
-        setLoading(true)
+        
+        dispatch({ type: 'SET_LOADING', loading: 'Marking order closed...' })
         
         const { data } = await axios.
             post('/api/order/close', { id })
         
-        setLoading(false)
-        // console.log('order-->', data)
-        if (!data) console.log('Error closing order')
+            dispatch({ type: 'SET_LOADING', loading: null })
+
+        if (!data) {
+            console.log('Error closing order')
+            return
+        }
 
         dispatch({ type: 'CLOSE_ORDER', order: data })
         dispatch({ type: 'REMOVE_ORDER', id: data.id })

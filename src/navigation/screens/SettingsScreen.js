@@ -9,16 +9,16 @@ import {
     ScreenTitle,
     UserDetails,
 } from '@components'
-import { AppContext } from '../AppContext'
+import { AppContext } from '../../AppContext'
 
-export default ({ navigation }) => {
+export default () => {
 
     const {
         user,
     } = useContext(AppContext)
 
     return (
-        <Screen navigation={navigation}>
+        <Screen>
             
             <ScreenTitle title='Settings' />
             

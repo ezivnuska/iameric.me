@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -11,12 +11,17 @@ import {
 import classes from '../styles/classes'
 import { isValidEmail, signin } from '../utils/auth'
 import { saveLocally, getLocally } from '../utils/storage'
+import { AppContext } from '../AppContext'
 
 export default ({ onComplete }) => {
 
+	const {
+		dispatch,
+		loading,
+	} = useContext(AppContext)
+
     const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [loading, setLoading] = useState(false)
 	const [errors, setErrors] = useState([])
 	const [errorMessage, setErrorMessage] = useState(null)
 	const [formReady, setFormReady] = useState(false)
@@ -103,7 +108,7 @@ export default ({ onComplete }) => {
 		}
 
 		saveLocally('email', email)
-		setLoading(true)
+		dispatch({ type: 'SET_LOADING', loading: 'Signing in...' })
 
 		const data = await signin(email, password)
 		// console.log('data', data)
@@ -115,7 +120,7 @@ export default ({ onComplete }) => {
 			console.log('Error authenticating user')
 		}
 
-		setLoading(false)
+		dispatch({ type: 'SET_LOADING', loading: null })
 	}
 
 	const onEnter = e => {

@@ -3,7 +3,7 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import { UserHeading } from '.'
-import { navigate } from '../navigators/RootNavigation'
+import { navigate } from '../navigation/RootNavigation'
 
 export default ({ user, onPress }) => (
     <TouchableOpacity

@@ -16,12 +16,13 @@ export default ({ onSelected }) => {
 
     const {
         dims,
+        dispatch,
+        loading,
         user,
     } = useContext(AppContext)
 
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
-    const [loading, setLoading] = useState(false)
     const [payload, setPayload] = useState(null)
 
     useEffect(() => {
@@ -57,7 +58,9 @@ export default ({ onSelected }) => {
         }
 
         const blob = await dataURItoBlob(uri)
-        setLoading('Processing selected image...')
+
+        dispatch({ type: 'SET_LOADING', loading: 'Processing selected image...' })
+        
         reader.readAsArrayBuffer(blob)
     }
 
@@ -66,7 +69,7 @@ export default ({ onSelected }) => {
         image.onload = async () => {
             const data = await handleImageData(image, exif)
             
-            setLoading(null)
+            dispatch({ type: 'SET_LOADING', loading: null })
 
             setPayload(data)
             

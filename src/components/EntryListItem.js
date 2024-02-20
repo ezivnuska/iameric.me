@@ -10,7 +10,7 @@ import {
 } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
-import { navigate } from '../navigators/RootNavigation'
+import { navigationRef } from '../navigation/RootNavigation'
 import { useTheme } from 'react-native-paper'
 
 export default ({ entry, onDelete }) => {
@@ -37,8 +37,8 @@ export default ({ entry, onDelete }) => {
                         
                         <UserHeading
                             user={author}
-                            filename={author.profileImage.filename}
-                            onPress={() => navigate('User', { id: author._id })}
+                            filename={author.profileImage?.filename}
+                            onPress={() => navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })}
                             styleProps={{
                                 flex: 1,
                                 flexBasis: 'auto',

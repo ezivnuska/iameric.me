@@ -5,14 +5,12 @@ import {
 import {
     AuthMenu,
     Brand,
-    CenteredContent,
     IconButton,
 } from '.'
-import { navigate } from '../navigators/RootNavigation'
 import { useTheme } from 'react-native-paper'
 import { PreferencesContext } from '../PreferencesContext'
 
-export default () => {
+export default ({ user }) => {
     
     const {
         isThemeDark,
@@ -64,9 +62,7 @@ export default () => {
                         textStyles={{ color: theme?.colors.textDefault }}
                     />
 
-                    <AuthMenu
-                        onPress={() => navigate('Settings')}
-                    />
+                    <AuthMenu user={user} />
                 </View>
             </View>
 

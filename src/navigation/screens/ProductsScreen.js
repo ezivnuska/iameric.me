@@ -4,8 +4,8 @@ import {
     Screen,
 } from '@components'
 
-export default ({ navigation }) => (
-    <Screen navigation={navigation}>
+export default () => (
+    <Screen>
         <ProductModule />
     </Screen>
 )

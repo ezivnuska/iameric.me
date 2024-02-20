@@ -6,9 +6,9 @@ import {
 import {
     UserHeading,
 } from '.'
-import { navigationRef } from '../navigators/RootNavigation'
+// import { navigationRef } from '../navigators/RootNavigation'
 
-export default ({ users }) => (
+export default ({ users, ...props }) => (
     <FlatList
         data={users}
         listKey={() => 'users'}
@@ -26,10 +26,10 @@ export default ({ users }) => (
                     <UserHeading
                         user={item}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
-                        onPress={() => navigationRef.navigate('Vendor', { id: _id })}
+                        onPress={() => props.navigation.navigate('Vendor', { id: _id })}
                     />
                 </View>
             )
-        }} 
+        }}
     />
 )

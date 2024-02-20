@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -8,10 +8,15 @@ import {
     VendorList,
 } from '.'
 import { loadUsersByRole } from '../utils/data'
+import { AppContext } from '../AppContext'
 
-export default () => {
+export default props => {
 
-    const [loading, setLoading] = useState(null)
+    const {
+        dispatch,
+        loading,
+    } = useContext(AppContext)
+
     const [vendors, setVendors] = useState(null)
 
     useEffect(() => {
@@ -19,10 +24,14 @@ export default () => {
     }, [])
 
     const loadVendors = async () => {
-        setLoading('Loading vendors...')
+
+        dispatch({ type: 'SET_LOADING', loading: 'Loading vendors...' })
+        
         const users = await loadUsersByRole('vendor')
+        
         setVendors(users)
-        setLoading(null)
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     return (
@@ -30,9 +39,18 @@ export default () => {
 
             {loading
                 ? <LoadingView label={loading} />
-                : vendors
-                    ? <VendorList users={vendors} />
-                    : <ThemedText>No participating vendors.</ThemedText>
+                : (
+                    <View
+                        style={{ display: vendors ? 'visible' : 'hidden' }}
+                    >
+                        {
+                            vendors
+                                ? <VendorList users={vendors} {...props} />
+                                : <ThemedText>No participating vendors.</ThemedText>
+                        }
+
+                    </View>
+                )
             }
 
         </View>

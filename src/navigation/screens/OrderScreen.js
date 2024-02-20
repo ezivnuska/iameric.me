@@ -5,8 +5,8 @@ import {
     ScreenTitle,
 } from '@components'
 
-export default ({ navigation }) => (
-    <Screen navigation={navigation}>
+export default () => (
+    <Screen>
         <ScreenTitle title='Orders' />
         <OrderList />
     </Screen>

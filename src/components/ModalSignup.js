@@ -33,8 +33,6 @@ export default ({ role }) => {
                 exp,
             },
         })
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const onModalClosed = response => {

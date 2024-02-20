@@ -4,7 +4,7 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import { signout } from '../utils/auth'
-import { navigationRef } from 'src/navigators/RootNavigation'
+import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default () => {
 
@@ -20,7 +20,7 @@ export default () => {
         
         dispatch({ type: 'CLOSE_MODAL' })
         
-        navigationRef.navigate('Start')
+        // navigationRef.navigate('Start')
     }
     
     return (

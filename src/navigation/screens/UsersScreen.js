@@ -5,9 +5,9 @@ import {
     UserModule,
 } from '@components'
 
-export default ({ navigation, route, title }) => (
-    <Screen navigation={navigation}>
+export default ({ title, ...props }) => (
+    <Screen>
         <ScreenTitle title={title} />
-        <UserModule />
+        <UserModule {...props} />
     </Screen>
 )

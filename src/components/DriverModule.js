@@ -18,11 +18,10 @@ export default () => {
 
     const {
         dispatch,
+        loading,
         user,
         users,
     } = useContext(AppContext)
-
-    const [loading, setLoading] = useState(null)
 
     useEffect(() => {
         fetchUsers()
@@ -30,7 +29,7 @@ export default () => {
 
     const fetchUsers = async () => {
 
-        setLoading('Loading drivers...')
+        dispatch({ type: 'SET_LOADING', loading: 'Loading drivers...' })
             
         const loadedUsers = await loadUsersByRole(user.role)
         
@@ -38,7 +37,7 @@ export default () => {
             dispatch({ type: 'SET_USERS', users: loadedUsers })
         }
 
-        setLoading(null)
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     return (

@@ -3,7 +3,7 @@ import {
     Cart,
 } from '.'
 import { AppContext } from '../AppContext'
-import { navigationRef } from 'src/navigators/RootNavigation'
+import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default () => {
 

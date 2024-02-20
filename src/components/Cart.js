@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     View,
 } from 'react-native'
@@ -7,24 +7,16 @@ import {
     IconButton,
 } from '.'
 import { AppContext } from '../AppContext'
-import classes from '../styles/classes'
 import axios from 'axios'
 
 export default ({ onSubmitted }) => {
 
     const {
-        dispatch,
-        user,
         cart,
+        dispatch,
+        loading,
+        user,
     } = useContext(AppContext)
-
-    const [loading, setLoading] = useState(false)
-
-    // useEffect(() => {
-    //     if (cart) {
-    //         console.log('cart', cart)
-    //     }
-    // }, [cart])
 
     const submitOrder = async () => {
         const newOrder = {
@@ -32,12 +24,12 @@ export default ({ onSubmitted }) => {
             items: cart[0].items,
         }
         
-        setLoading('Submitting order...', newOrder)
+        dispatch({ type: 'SET_LOADING', loading: 'Submitting order...' })
 
         const { data } = await axios.
             post('/api/order', newOrder)
 
-        setLoading(null)
+            dispatch({ type: 'SET_LOADING', loading: null })
         
         if (!data) {
             console.log('Order submission failed')

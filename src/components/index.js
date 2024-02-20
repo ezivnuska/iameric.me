@@ -25,7 +25,6 @@ import HoverableView from './HoverableView'
 import IconButton from './IconButton'
 import ImageDetail from './ImageDetail'
 import ImageFormModule from './ImageFormModule'
-import ImageModule from './ImageModule'
 import ImageList from './ImageList'
 import ImageSelector from './ImageSelector'
 import ImagePreview from './ImagePreview'
@@ -69,7 +68,6 @@ import UserListItem from './UserListItem'
 import UserHeading from './UserHeading'
 import UserFilter from './UserFilter'
 import UserList from './UserList'
-import UserImageModule from './UserImageModule'
 import UserModule from './UserModule'
 import UserDetails from './UserDetails'
 import VendorList from './VendorList'
@@ -104,7 +102,6 @@ export {
     IconButton,
     ImageDetail,
     ImageFormModule,
-    ImageModule,
     ImagePreview,
     ImageList,
     ImageSelector,
@@ -148,7 +145,6 @@ export {
     UserHeading,
     UserFilter,
     UserList,
-    UserImageModule,
     UserModule,
     UserDetails,
     VendorList,

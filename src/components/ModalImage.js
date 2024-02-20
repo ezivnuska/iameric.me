@@ -9,7 +9,6 @@ export default () => {
     const {
         image,
     } = useContext(AppContext)
-
     
     return (
         <ImageDetail

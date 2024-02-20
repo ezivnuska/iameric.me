@@ -8,7 +8,6 @@ export default () => {
 
     const {
         dispatch,
-        modal,
     } = useContext(AppContext)
 
     const setUser = async ({
@@ -34,8 +33,6 @@ export default () => {
                 exp,
             },
         })
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const onModalClosed = response => {

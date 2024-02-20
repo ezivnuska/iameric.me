@@ -11,9 +11,10 @@ import {
     ModalImageSelector,
     ModalLocation,
     ModalProductForm,
+    PopUpModal,
 } from '.'
 
-export default ({ name }) => {
+export default ({ name, close }) => {
 
     const resolveModalContent = () => {
         switch(name) {
@@ -33,9 +34,15 @@ export default ({ name }) => {
         }
     }
 
-    return name ? (
-        <ModalContent>
-            {resolveModalContent()}
-        </ModalContent>
-    ) : null
+    return (
+        <PopUpModal
+            visible={name}
+            onRequestClose={close}
+            transparent={true}
+        >
+            <ModalContent>
+                {resolveModalContent()}
+            </ModalContent>
+        </PopUpModal>
+    )
 }

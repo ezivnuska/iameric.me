@@ -4,16 +4,13 @@ import {
     SafeAreaView,
     View,
 } from 'react-native'
-import { Navigation } from '../navigators'
+import AppNavigation from '../navigation/AppNavigation'
 import { AppContext } from '../AppContext'
 import {
     Header,
     ModalFactory,
-    PopUpModal,
 } from '@components'
-// import { getLocally } from '../utils/storage'
 import { useTheme } from 'react-native-paper'
-import { ModalCart } from 'src/components'
 
 let initialDims = {
     window: Dimensions.get('window'),
@@ -26,6 +23,7 @@ export default () => {
         dispatch,
         dims,
         modal,
+        user,
     } = useContext(AppContext)
 
     const theme = useTheme()
@@ -42,9 +40,9 @@ export default () => {
         return () => subscription.remove()
     }, [])
 
-    useEffect(() => {
-        if (dims) console.log('dims changed', dims)
-    }, [dims])
+    // useEffect(() => {
+    //     if (dims) console.log('dims changed', dims)
+    // }, [dims])
 
     return dims ? (
         <SafeAreaView
@@ -72,7 +70,7 @@ export default () => {
                         marginHorizontal: 'auto',
                     }}
                 >
-                    <Header />
+                    <Header user={user} />
                 </View>
 
             </View>
@@ -85,6 +83,7 @@ export default () => {
                     backgroundColor: theme?.colors.background,
                 }}
             >
+                
                 <View
                     id='content'
                     style={{
@@ -93,17 +92,17 @@ export default () => {
                         marginHorizontal: 'auto',
                     }}
                 >
-                    <Navigation />
+                    
+                    <AppNavigation user={user} />
+
                 </View>
+
             </View>
 
-            <PopUpModal
-                visible={modal}
-                onRequestClose={() => dispatch({ type: 'CLOSE_MODAL' })}
-                transparent={true}
-            >
-                <ModalFactory name={modal} />
-            </PopUpModal>
+            <ModalFactory
+                name={modal}
+                close={() => dispatch({ type: 'CLOSE_MODAL' })}
+            />
 
         </SafeAreaView>
     ) : null

@@ -13,10 +13,10 @@ import { AppContext } from '../AppContext'
 export default ({ onImageSelected, removeImage, uri }) => {
 
     const {
+        dispatch,
+        loading,
         user,
     } = useContext(AppContext)
-
-    const [loading, setLoading] = useState(null)
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
@@ -41,7 +41,7 @@ export default ({ onImageSelected, removeImage, uri }) => {
             
             onImageSelected(data)
             
-            setLoading(false)
+            // dispatch({ type: 'SET_LOADING', loading: null })
         }
         image.src = src
     }

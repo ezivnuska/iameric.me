@@ -9,15 +9,15 @@ import {
     IconButton,
     Screen,
 } from '@components'
-import { AppContext } from '../AppContext'
-import { connect, initialize } from '../utils/auth'
-import classes from '../styles/classes'
+import { AppContext } from '../../AppContext'
+import { connect, initialize } from '@utils/auth'
+import classes from '@styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ navigation }) => {
+export default () => {
 
     const {
         dims,
@@ -62,8 +62,6 @@ export default ({ navigation }) => {
                 username,
             },
         })
-
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     return (
@@ -81,7 +79,7 @@ export default ({ navigation }) => {
 
                 <BackgroundImageWithGradient
                     caption='Hungry?'
-                    imageSource={`${IMAGE_PATH}/customer-avatar.png`}
+                    source={`${IMAGE_PATH}/customer-avatar.png`}
                 >
                     <View style={styles.controls}>
                         <IconButton
@@ -105,7 +103,7 @@ export default ({ navigation }) => {
 
                 <BackgroundImageWithGradient
                     caption='Selling?'
-                    imageSource={`${IMAGE_PATH}/vendor-avatar.png`}
+                    source={`${IMAGE_PATH}/vendor-avatar.png`}
                 >
                     <View style={styles.controls}>
                         <IconButton
@@ -129,7 +127,7 @@ export default ({ navigation }) => {
 
                 <BackgroundImageWithGradient
                     caption='Driving?'
-                    imageSource={`${IMAGE_PATH}/driver-avatar.png`}
+                    source={`${IMAGE_PATH}/driver-avatar.png`}
                 >
                     <View style={styles.controls}>
                         <IconButton
@@ -158,7 +156,7 @@ export default ({ navigation }) => {
     )
 }
 
-const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
+const BackgroundImageWithGradient = ({ caption, children, source }) => {
     
     const theme = useTheme()
 
@@ -172,7 +170,7 @@ const BackgroundImageWithGradient = ({ caption, children, imageSource }) => {
             <ImageBackground
                 style={{ flex: 1 }}
                 resizeMode='cover'
-                source={imageSource}
+                source={source}
             >
                 <LinearGradient
                     style={{ flex: 1, opacity: 1 }}

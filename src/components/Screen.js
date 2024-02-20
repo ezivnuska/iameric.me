@@ -6,7 +6,7 @@ import {
 import { AppContext } from '../AppContext'
 import { useTheme } from '@react-navigation/native'
 
-export default ({ children, secure = true, ...props }) => {
+export default ({ children, secure = true }) => {
 
     const {
         dims,
@@ -38,16 +38,18 @@ export default ({ children, secure = true, ...props }) => {
                         height: dims ? dims.window.height - 100 : '100%',
                         textAlign: 'left',
                     }}
-                    >
+                >
+
                     <View
                         style={{
                             width: 375,
                             marginHorizontal: 'auto',
-                            // paddingVertical: 10,
                             paddingHorizontal: 10,
                         }}
                     >
+
                         {(!secure || secure && user) && children}
+
                     </View>
                 </ScrollView>
             </View>

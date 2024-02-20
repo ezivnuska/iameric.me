@@ -5,9 +5,9 @@ import {
     VendorModule,
 } from '@components'
 
-export default ({ navigation }) => (
-    <Screen navigation={navigation}>
+export default props => (
+    <Screen>
         <ScreenTitle title='Merchants' />
-        <VendorModule />
+        <VendorModule {...props} />
     </Screen>
 )

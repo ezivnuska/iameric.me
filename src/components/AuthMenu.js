@@ -11,10 +11,11 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import { useTheme } from 'react-native-paper'
+import { navigationRef } from '../navigation/RootNavigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const UserButton = ({ onPress, user }) => {
+const UserButton = ({ user }) => {
 
     const theme = useTheme()
     
@@ -24,7 +25,7 @@ const UserButton = ({ onPress, user }) => {
     
     return (
         <Pressable
-            onPress={onPress}
+            onPress={() => navigationRef.navigate('Settings')}
             style={{
                 flex: 1,
                 flexGrow: 0,
@@ -80,7 +81,7 @@ const UserButton = ({ onPress, user }) => {
     )
 }
 
-export default ({ onPress }) => {
+export default ({ user }) => {
 
     const theme = useTheme()
     
@@ -88,12 +89,7 @@ export default ({ onPress }) => {
         cart,
         dispatch,
         loading,
-        user,
     } = useContext(AppContext)
-
-    const setModal = modalName => {
-        dispatch({ type: 'SET_MODAL', modalName })
-    }
 
     return (
         <View style={{
@@ -104,7 +100,7 @@ export default ({ onPress }) => {
             height: '100%',
         }}>
 
-            {(user && !loading) ? (
+            {user ? (
                 <View style={{
                     display: 'flex',
                     flexDirection: 'row',
@@ -112,13 +108,13 @@ export default ({ onPress }) => {
                     justifyContent: 'flex-end',
                     height: '100%',
                 }}>
-                    {cart && cart.length ? <CartButton /> : null}
+                    {cart?.length && <CartButton />}
 
-                    <UserButton onPress={onPress} user={user} />
+                    <UserButton user={user} />
 
                     <IconButton
-                        onPress={() => setModal('SIGNOUT')}
-                        disables={loading}
+                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNOUT' })}
+                        disabled={loading}
                         iconName='close-outline'
                         textStyles={{ color: theme?.colors.textDefault }}
                         transparent
@@ -128,7 +124,7 @@ export default ({ onPress }) => {
                 <IconButton
                     iconName='log-in-outline'
                     label='Sign In'
-                    onPress={() => setModal('SIGNIN')}
+                    onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNIN' })}
                     disabled={loading}
                     alignIcon='right'
                     transparent

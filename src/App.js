@@ -8,11 +8,15 @@ import {
   MD2LightTheme,
 } from 'react-native-paper'
 import { Layout } from './layout'
-import { AppProvider } from './AppContext'
+import {
+  AppProvider,
+} from './AppContext'
+import {
+  PreferencesContext,
+} from './PreferencesContext'
 import { PaperProvider } from 'react-native-paper'
-import { getLocally, saveLocally } from './utils/storage'
-import { dark, light } from './styles/colors'
-import { PreferencesContext } from './PreferencesContext'
+import { getLocally, saveLocally } from '@utils/storage'
+import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
 
 export default () => {

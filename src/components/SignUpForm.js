@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
 	Text,
 	View,
@@ -14,14 +14,19 @@ import {
 	signup,
 } from '../utils/auth'
 import { saveLocally, getLocally } from '../utils/storage'
+import { AppContext } from '../AppContext'
 
 export default ({ role, onComplete }) => {
+
+	const {
+		dispatch,
+		loading,
+	} = useContext(AppContext)
 	
 	const [email, setEmail] = useState('')
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [confirmPassword, setConfirmPassword] = useState('')
-	const [loading, setLoading] = useState(false)
 	const [errors, setErrors] = useState([])
 	const [errorMessage, setErrorMessage] = useState(null)
 
@@ -138,12 +143,14 @@ export default ({ role, onComplete }) => {
 			return console.log('Could not verify form data.')
 		}
 
-		setLoading(true)
+		dispatch({ type: 'SET_LOADING', loading: 'Singing up...' })
 
 		await saveLocally('email', email)
 		
 		const { data } = await signup(email, password, role, username)
 		
+		dispatch({ type: 'SET_LOADING', loading: null })
+
 		if (data && data.user) {
 			onComplete(data.user)
 		} else if (data) {
@@ -151,8 +158,6 @@ export default ({ role, onComplete }) => {
 		} else {
 			console.log('Error signing up new user')
 		}
-
-		setLoading(false)
 	}
 
 	const onEnter = e => {

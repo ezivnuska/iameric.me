@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     Image,
     Text,
@@ -15,28 +15,23 @@ import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
+export default ({ onDelete = null }) => {
 
     const theme = useTheme()
 
     const {
         dispatch,
-        user,
+        image,
+        loading,
         products,
+        user,
     } = useContext(AppContext)
-
-    const [loading, setLoading] = useState(null)
-
-    // useEffect(() => {
-    //     console.log('imageData', imageData)
-    // }, [imageData])
 
     const isImageProfileImage = id => user.profileImage === id
 
     const isImageProductImage = id => {
         let response = false
         products.map(product => {
-            if (!product.image) return false
             if (product.image === id || product.image._id === id) response = product
         })
         return response
@@ -44,55 +39,51 @@ export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
 
     const deleteImage = async () => {
 
-        const imageId = imageData._id
+        dispatch({ type: 'REMOVE_IMAGE', id: image._id })
 
-        dispatch({ type: 'REMOVE_IMAGE', id: imageId })
-
-        const isProfileImage = isImageProfileImage(imageId)
+        const isProfileImage = isImageProfileImage(image._id)
 
         let isProductImage = null
         if (user.role === 'vendor') {
-            isProductImage = isImageProductImage(imageId)
+            isProductImage = isImageProductImage(image._id)
         }
         
-        setLoading('Deleting Image...')
+        dispatch({ type: 'SET_LOADING', loading: 'Deleting Image...' })
 
         const { data } = await axios
             .post('/api/images/delete', {
-                imageId,
+                imageId: image._id,
                 isProductImage,
                 isProfileImage,
             })
 
-        setLoading(null)
-        
+            
         if (!data) {
             console.log('Error deleting image.')
-            return null
+        } else {
+            if (onDelete) onDelete(data.imageId, isProfileImage, isProductImage)
         }
+
+        dispatch({ type: 'SET_LOADING', loading: null })
         
-        setLoading(null)
-        
-        if (onDelete) onDelete(data.imageId, isProfileImage, isProductImage)
     }
 
     const setAvatar = async () => {
         
-        setLoading('Setting Avatar...')
+        dispatch({ type: 'SET_LOADING', loading: 'Setting Avatar...' })
 
         const { data } = await axios
             .post('/api/user/avatar', {
                 userId: user._id,
-                imageId: imageData._id,
+                imageId: image._id,
             })
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
         
         if (!data) {
             console.log('Error setting profileImage.')
-            setLoading(null)
             return
         }
-        
-        setLoading(null)
         
         dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: data })
 
@@ -101,29 +92,28 @@ export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
 
     const setProductImage = async productId => {
         
-        setLoading(true)
-        
-        // setShowProductSelector(false)
+        dispatch({ type: 'SET_LOADING', loading: 'Setting product image...' })
 
         const { data } = await axios
             .post('/api/product/image', {
                 productId,
-                imageId: imageData._id,
+                imageId: image._id,
             })
 
-        setLoading(null)
+        dispatch({ type: 'SET_LOADING', loading: null })
         
         if (!data) {
             console.log('Error setting image id for product.')
-            return null
+        } else if (!data.image) {
+            console.log('no image found')
+        } else {
+            dispatch({ type: 'UPDATE_PRODUCT_IMAGE', productId, image: data.image })
         }
 
-        dispatch({ type: 'UPDATE_PRODUCT_IMAGE', productId, image: data.image })
-        
         dispatch({ type: 'CLOSE_MODAL' })
     }
 
-    return imageData ? (
+    return (image && user) ? (
         <View
             style={{
                 display: 'flex',
@@ -136,18 +126,17 @@ export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
                 // width={width}
                 // height={height}
                 source={{
-                    uri: `${IMAGE_PATH}/${imageData.user.username}/${imageData.filename}`,
+                    uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
                 }}
                 style={{
                     resizeMode: 'contain',
-                    width: imageData.width,
-                    height: imageData.height,
+                    width: image.width,
+                    height: image.height,
                     borderWidth: 1,
-                    // marginBottom: 15,
                 }}
             />
 
-            {(user._id === imageData.user._id) ? (
+            {(user._id === image.user._id) ? (
                 <>
                     <View
                         style={{
@@ -156,13 +145,11 @@ export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
                             justifyContent: 'space-evenly',
                             width: '100%',
                             height: 50,
-                            paddingVertical: layout.verticalPadding,
-                            borderWidth: 1,
-                            borderColor: 'red',
+                            marginVertical: layout.verticalPadding,
                         }}
                     >
                         
-                        {/* {(!user.profileImage || (user.profileImage && user.profileImage._id !== imageData._id)) ? ( */}
+                        {(!user.profileImage || (user.profileImage && user.profileImage._id !== image._id)) ? (
                             <IconButton
                                 type='primary'
                                 label='Set as Avatar'
@@ -170,11 +157,11 @@ export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
                                 disabled={loading}
                                 style={{ flex: 1, color: theme?.colors.textDefault }}
                             />
-                        {/* ) : null} */}
+                        ) : null}
 
-                        {/* {user.username !== 'Driver' &&
+                        {user.username !== 'Driver' &&
                         user.username !== 'Customer' &&
-                        user.username !== 'Vendor' && ( */}
+                        user.username !== 'Vendor' && (
                             <IconButton
                                 type='danger'
                                 label='Delete Image'
@@ -182,7 +169,7 @@ export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
                                 disabled={loading}
                                 style={{ flex: 1 }}
                             />
-                        {/* )} */}
+                        )}
 
                     </View>
 
@@ -190,9 +177,6 @@ export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
                     (products && products.length)) ? (
                         <View style={{ 
                             width: '100%',
-                            // borderWidth: 1,
-                            // borderColor: 'yellow',
-                            // backgroundColor: 'orange',
                         }}>
                             <Text
                                 style={{
@@ -206,7 +190,7 @@ export default ({ imageData, onDelete = null, resize = 'stretch' }) => {
                             <ProductSelector
                                 onSelect={setProductImage}
                                 products={products}
-                                imageId={imageData._id}
+                                imageId={image._id}
                             />
                         </View>
                     ) : null}

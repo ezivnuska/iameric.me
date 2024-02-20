@@ -6,7 +6,7 @@ import {
     View,
 } from 'react-native'
 import { UserHeading } from '.'
-import { navigate } from '../navigators/RootNavigation'
+import { navigate } from '../navigation/RootNavigation'
 
 const UserFilterListItem = ({ user }) => (
     <UserHeading

@@ -5,8 +5,8 @@ import {
     Screen,
 } from '@components'
 
-export default ({ navigation }) => (
-    <Screen navigation={navigation}>
+export default () => (
+    <Screen>
         <ScreenTitle title='Forum' />
         <EntryModule />
     </Screen>

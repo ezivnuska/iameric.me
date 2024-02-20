@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
 } from 'react-native'
 import {
-    ThemedText,
     IconButton,
     LoadingView,
     Menu,
     Screen,
     ScreenTitle,
 } from '@components'
-import { loadUserById } from '../utils/data'
-import classes from '../styles/classes'
+import { AppContext } from '../../AppContext'
+import { loadUserById } from '@utils/data'
 import { useTheme } from 'react-native-paper'
+import axios from 'axios'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -20,23 +20,58 @@ export default ({ navigation, route }) => {
 
     const theme = useTheme()
 
-    const [loading, setLoading] = useState(null)
+    const {
+        dispatch,
+        loading,
+    } = useContext(AppContext)
+
+    const [products, setProducts] = useState(null)
     const [userDetails, setUserDetails] = useState(null)
 
+    const { id } = route.params
+
+    const getProducts = async () => {
+        
+        dispatch({ type: 'SET_LOADING', loading: 'Loading menu...' })
+        
+        const { data } = await axios.get(`/api/products/${id}`)
+        
+        if (!data) {
+            console.log('could not get vendor products')
+        } else if (!data.products || !data.products.length) {
+            console.log('No products found')
+            setProducts([])
+        } else {
+            setProducts(data.products)
+        }
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
+    }
+
     useEffect(() => {
-
-        if (!route.params || !route.params.id)
-            console.log('missing required id param')
-        else loadUserDetails(route.params.id)
-
+        if (!id) console.log('missing required id param')
+        else if (!userDetails || (userDetails && userDetails._id !== id)) {
+            loadUserDetails(id)
+        }
     }, [])
-    
 
+    useEffect(() => {
+        if (userDetails && !products) getProducts()
+    }, [userDetails])
+    
     const loadUserDetails = async id => {
-        setLoading('Loading vendor details...')
+
+        dispatch({ type: 'SET_LOADING', loading: 'Loading vendor details...' })
+        
         const user = await loadUserById(id)
-        setUserDetails(user)
-        setLoading(null)
+
+        if (!user) {
+            console.log('Error loading user details.')
+        } else {
+            setUserDetails(user)
+        }
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     // TODO: clean this.
@@ -66,7 +101,7 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <Screen navigation={navigation}>
+        <Screen>
             
             {loading
                 ? <LoadingView label={loading} />
@@ -75,7 +110,10 @@ export default ({ navigation, route }) => {
                         <>
                             <IconButton
                                 iconName='arrow-back-outline'
-                                onPress={() => navigation.navigate('VendorList')}
+                                onPress={() => navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: 'VendorList' }],
+                                })}
                                 label='Back'
                                 align='left'
                                 textStyles={{ color: theme?.colors.textDefault }}
@@ -86,7 +124,13 @@ export default ({ navigation, route }) => {
 
                             {renderUserAvatar()}
 
-                            <Menu vendor={userDetails} />
+                            {products && (
+                                <Menu
+                                    loading={loading}
+                                    products={products}
+                                    vendor={userDetails}
+                                />
+                            )}
                         </>
                     )
                     : null

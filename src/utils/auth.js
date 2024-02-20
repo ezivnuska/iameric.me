@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { cleanStorage, clearStorage, getUserToken, setUserToken } from './storage'
+import { cleanStorage, clearStorage, setUserToken } from './storage'
 import axios from 'axios'
 
 export const authenticate = async (dispatch, token) => {
@@ -58,12 +58,14 @@ export const initialize = async dispatch => {
     
     const tokenFromStorage = await AsyncStorage.getItem('userToken')
     
+    let user
+
     if (tokenFromStorage) {
         
         // if stored token found...
         dispatch({ type: 'SET_LOADING', loading: 'User found. Verifying...' })
 
-        const user = await authenticate(dispatch, tokenFromStorage)
+        user = await authenticate(dispatch, tokenFromStorage)    
         
         // if user token could not be verified...
         if (user) {
@@ -71,16 +73,15 @@ export const initialize = async dispatch => {
             await setUserToken(user.token)
             
             dispatch({ type: 'SET_USER', user })
-            
-            return user
+
         } else {
             await clearStorage()
         }
     }
 
     dispatch({ type: 'SET_LOADING', loading: null })
-    
-    return null
+
+    return user
 }
 
 export const signin = async (email, password) => {

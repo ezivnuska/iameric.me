@@ -6,7 +6,7 @@ import {
 import {
     UserHeading,
 } from '.'
-import { navigate } from '../navigators/RootNavigation'
+import { navigate } from '../navigation/RootNavigation'
 
 export default ({ users }) => (
     <FlatList

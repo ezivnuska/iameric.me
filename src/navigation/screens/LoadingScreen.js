@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { Screen } from './'
+import { Screen } from '.'
 import { LoadingView } from '@components'
-import { AppContext } from '../AppContext'
+import { AppContext } from '../../AppContext'
 
 export default () => {
 

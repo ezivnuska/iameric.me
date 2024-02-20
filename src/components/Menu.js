@@ -11,34 +11,7 @@ import {
 import { AppContext } from '../AppContext'
 import axios from 'axios'
 
-export default ({ vendor }) => {
-
-    const {
-        dispatch,
-        loading,
-    } = useContext(AppContext)
-
-    const [products, setProducts] = useState(null)
-
-    useEffect(() => {
-        getProducts()
-    }, [])
-
-    const getProducts = async () => {
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Loading menu...' })
-        
-        const { data } = await axios.get(`/api/products/${vendor._id}`)
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
-        
-        if (!data) {
-            console.log('could not get vendor products')
-            return
-        }
-        
-        setProducts(data.products)
-    }
+export default ({ loading, products, vendor }) => {
     
     return (
         <View

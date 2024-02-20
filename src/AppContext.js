@@ -262,7 +262,6 @@ export const AppContext = createContext({
     dispatch: null,
 })
 
-
 export const AppProvider = ({ children, preferences }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
     

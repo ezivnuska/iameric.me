@@ -11,12 +11,13 @@ import { AppContext } from '../AppContext'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, loading, username, onSelected, uploadImage }) => {
+export default ({ images, username, onSelected, uploadImage }) => {
 
     const theme = useTheme()
 
     const {
         dispatch,
+        loading,
     } = useContext(AppContext)
 
     const buttonStyle = {
@@ -48,7 +49,8 @@ export default ({ images, loading, username, onSelected, uploadImage }) => {
             {images && images.map((image, index) => (
                 <Pressable
                     key={`image-${index}`}
-                    onPress={() => dispatch({ type: 'SET_IMAGE', image })}
+                    onPress={() => onSelected(image)}
+                    disabled={loading}
                     style={[
                         {
                             flexBasis: 'auto',
