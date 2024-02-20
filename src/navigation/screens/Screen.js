@@ -40,7 +40,7 @@ export default ({ children, title = null, secure = true }) => {
                     style={{
                         width: '100%',
                         paddingBottom: 50,
-                        height: dims ? dims.window.height - 100 : '100%',
+                        height: dims ? dims.window.height - 50 : '100%',
                         textAlign: 'left',
                     }}
                 >

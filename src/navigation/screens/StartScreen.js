@@ -67,7 +67,7 @@ export default () => {
     }
 
     return (
-        <Screen title='Start' secure={false}>
+        <Screen secure={false}>
             <View style={[
                 {
                     display: 'flex',
@@ -75,7 +75,7 @@ export default () => {
                     justifyContent: 'space-evenly',
                     alignItems: 'stretch',
                     overflow: 'visible',
-                    height: dims ? dims.window.height - 100 : '100%',
+                    height: dims ? dims.window.height - 50 : '100%',
                 },
             ]}>
 
