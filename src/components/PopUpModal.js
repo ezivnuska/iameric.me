@@ -47,9 +47,9 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
 
                 <View
                     style={{
-                        width: 345,
-                        minWidth: 280,
-                        maxWidth: 880,
+                        width: '100%',
+                        minWidth: 200,
+                        maxWidth: 900,
                         maxHeight: '90%',
                         paddingHorizontal: 10,
                         marginHorizontal: 'auto',

@@ -93,8 +93,8 @@ export default ({ navigation, route }) => {
             <Image
                 source={source}
                 style={{
-                    width: profileImage ? profileImage.width : 250,
-                    height: profileImage ? profileImage.width : 250,
+                    width: profileImage ? profileImage.width : 300,
+                    height: profileImage ? profileImage.width : 300,
                     resizeMode: 'cover',
                     marginVertical: 15,
                 }}

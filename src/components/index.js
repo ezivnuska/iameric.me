@@ -5,7 +5,6 @@ import Cart from './Cart'
 import CartButton from './CartButton'
 import CartProductPreview from './CartProductPreview'
 import CategoryPicker from './CategoryPicker'
-import CenteredContent from './CenteredContent'
 import CenteredView from './CenteredView'
 import ThemedText from './ThemedText'
 import DeleteAccountButton from './DeleteAccountButton'
@@ -77,7 +76,6 @@ export {
     CartButton,
     CartProductPreview,
     CategoryPicker,
-    CenteredContent,
     CenteredView,
     ThemedText,
     DeleteAccountButton,

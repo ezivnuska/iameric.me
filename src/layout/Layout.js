@@ -85,7 +85,9 @@ export default () => {
                 <View
                     id='content'
                     style={{
-                        width: dims.window.width,
+                        width: '100%',
+                        minWidth: 300,
+                        maxWidth: 900,
                         height: dims.window.height - 50,
                         marginHorizontal: 'auto',
                     }}

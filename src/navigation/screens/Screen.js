@@ -38,6 +38,7 @@ export default ({ children, title = null, secure = true }) => {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{
+                        width: '100%',
                         paddingBottom: 50,
                         height: dims ? dims.window.height - 100 : '100%',
                         textAlign: 'left',
@@ -46,7 +47,7 @@ export default ({ children, title = null, secure = true }) => {
 
                     <View
                         style={{
-                            width: 375,
+                            width: '100%',
                             marginHorizontal: 'auto',
                             paddingHorizontal: 10,
                         }}

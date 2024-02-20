@@ -29,7 +29,7 @@ export default () => {
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
                 backgroundColor: 'transparent',
-                width: 375,
+                width: '100%',
                 minWidth: 300,
                 maxWidth: 900,
                 marginHorizontal: 'auto',
