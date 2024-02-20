@@ -62,7 +62,7 @@ export default () => {
                 <View
                     id='header-container'
                     style={{
-                        width: 375,
+                        width: '100%',
                         minWidth: 300,
                         maxWidth: 900,
                         marginHorizontal: 'auto',
