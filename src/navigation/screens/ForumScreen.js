@@ -1,13 +1,13 @@
 import React from 'react'
 import {
     EntryModule,
-    ScreenTitle,
-    Screen,
 } from '@components'
+import {
+    Screen,
+} from '.'
 
 export default () => (
-    <Screen>
-        <ScreenTitle title='Forum' />
+    <Screen title='Forum'>
         <EntryModule />
     </Screen>
 )

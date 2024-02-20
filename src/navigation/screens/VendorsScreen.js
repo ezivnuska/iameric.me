@@ -1,11 +1,12 @@
 import React from 'react'
 import {
-    Screen,
-    ScreenTitle,
     ThemedText,
     LoadingView,
     VendorList,
 } from '@components'
+import {
+    Screen,
+} from '.'
 import { loadUsersByRole } from '@utils/data'
 import { AppContext } from '../../AppContext'
 
@@ -34,8 +35,7 @@ export default props => {
     }
     
     return (
-        <Screen>
-            <ScreenTitle title='Merchants' />
+        <Screen title='Merchants'>
             
             {loading
                 ? <LoadingView label={loading} />

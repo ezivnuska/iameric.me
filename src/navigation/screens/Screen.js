@@ -3,10 +3,14 @@ import {
     ScrollView,
     View,
 } from 'react-native'
-import { AppContext } from '../AppContext'
+import {
+    ThemedText,
+} from '@components'
+import { AppContext } from '../../AppContext'
+import classes from '@styles/classes'
 import { useTheme } from '@react-navigation/native'
 
-export default ({ children, secure = true }) => {
+export default ({ children, title = null, secure = true }) => {
 
     const {
         dims,
@@ -47,6 +51,11 @@ export default ({ children, secure = true }) => {
                             paddingHorizontal: 10,
                         }}
                     >
+                        {title && (
+                            <ThemedText style={classes.pageTitle}>
+                                {title}
+                            </ThemedText>
+                        )}
 
                         {(!secure || secure && user) && children}
 

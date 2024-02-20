@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
     ImageList,
     LoadingView,
-    Screen,
-    ScreenTitle,
     ThemedText,
 } from '@components'
+import {
+    Screen,
+} from '.'
 import axios from 'axios'
 import { AppContext } from '../../AppContext'
 
@@ -43,9 +44,7 @@ export default () => {
     }
 
     return (
-        <Screen>
-            
-            <ScreenTitle title='Images' />
+        <Screen title='Images'>
             
             {loading
                 ? <LoadingView loading={loading} />

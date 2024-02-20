@@ -1,13 +1,13 @@
 import React from 'react'
 import {
     OrderList,
-    Screen,
-    ScreenTitle,
 } from '@components'
+import {
+    Screen,
+} from '.'
 
 export default () => (
-    <Screen>
-        <ScreenTitle title='Orders' />
+    <Screen title='Orders'>
         <OrderList />
     </Screen>
 )

@@ -7,9 +7,11 @@ import {
 import AppNavigation from '../navigation/AppNavigation'
 import { AppContext } from '../AppContext'
 import {
-    Header,
     ModalFactory,
 } from '@components'
+import {
+    Header,
+} from '.'
 import { useTheme } from 'react-native-paper'
 
 let initialDims = {
@@ -39,10 +41,6 @@ export default () => {
 
         return () => subscription.remove()
     }, [])
-
-    // useEffect(() => {
-    //     if (dims) console.log('dims changed', dims)
-    // }, [dims])
 
     return dims ? (
         <SafeAreaView

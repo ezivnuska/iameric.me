@@ -5,10 +5,11 @@ import {
 import {
     DeleteAccountButton,
     LocationModule,
-    Screen,
-    ScreenTitle,
     UserDetails,
 } from '@components'
+import {
+    Screen,
+} from '.'
 import { AppContext } from '../../AppContext'
 
 export default () => {
@@ -18,9 +19,7 @@ export default () => {
     } = useContext(AppContext)
 
     return (
-        <Screen>
-            
-            <ScreenTitle title='Settings' />
+        <Screen title='Settings'>
             
             {user && (
                 <View>

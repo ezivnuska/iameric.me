@@ -7,8 +7,10 @@ import {
 } from 'react-native'
 import {
     IconButton,
-    Screen,
 } from '@components'
+import {
+    Screen,
+} from '.'
 import { AppContext } from '../../AppContext'
 import { connect, initialize } from '@utils/auth'
 import classes from '@styles/classes'
@@ -65,7 +67,7 @@ export default () => {
     }
 
     return (
-        <Screen secure={false}>
+        <Screen title='Start' secure={false}>
             <View style={[
                 {
                     display: 'flex',

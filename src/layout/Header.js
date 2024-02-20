@@ -6,7 +6,7 @@ import {
     AuthMenu,
     Brand,
     IconButton,
-} from '.'
+} from '../components'
 import { useTheme } from 'react-native-paper'
 import { PreferencesContext } from '../PreferencesContext'
 

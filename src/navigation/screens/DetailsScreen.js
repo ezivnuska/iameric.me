@@ -6,9 +6,10 @@ import {
     IconButton,
     ImageList,
     LoadingView,
-    Screen,
-    ScreenTitle,
 } from '@components'
+import {
+    Screen,
+} from '.'
 import { AppContext } from '../../AppContext'
 import { loadUserById } from '@utils/data'
 import axios from 'axios'
@@ -107,7 +108,7 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <Screen>
+        <Screen title={userDetails ? user.username : 'User' }>
             
             {loading
                 ? <LoadingView label={loading} />
@@ -125,8 +126,6 @@ export default ({ navigation, route }) => {
                                 textStyles={{ color: theme?.colors.textDefault }}
                                 transparent
                             />
-
-                            <ScreenTitle title={userDetails.username} />
 
                             {renderUserAvatar()}
 

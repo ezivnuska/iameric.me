@@ -1,13 +1,13 @@
 import React from 'react'
 import {
-    Screen,
-    ScreenTitle,
     UserModule,
 } from '@components'
+import {
+    Screen,
+} from '.'
 
 export default ({ title, ...props }) => (
-    <Screen>
-        <ScreenTitle title={title} />
+    <Screen title={title}>
         <UserModule {...props} />
     </Screen>
 )

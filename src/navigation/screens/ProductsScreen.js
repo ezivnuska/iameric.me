@@ -1,11 +1,13 @@
 import React from 'react'
 import {
     ProductModule,
-    Screen,
 } from '@components'
+import {
+    Screen,
+} from '.'
 
 export default () => (
-    <Screen>
+    <Screen title='Products'>
         <ProductModule />
     </Screen>
 )

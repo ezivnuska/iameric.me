@@ -6,9 +6,11 @@ import {
     IconButton,
     LoadingView,
     Menu,
-    Screen,
     ScreenTitle,
 } from '@components'
+import {
+    Screen,
+} from '.'
 import { AppContext } from '../../AppContext'
 import { loadUserById } from '@utils/data'
 import { useTheme } from 'react-native-paper'
@@ -101,7 +103,7 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <Screen>
+        <Screen title='Vendors'>
             
             {loading
                 ? <LoadingView label={loading} />

@@ -19,7 +19,7 @@ import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormButton from './FormButton'
 import FormInput from './FormInput'
-import Header from './Header'
+import Header from '../layout/Header'
 import HeaderIconButton from './HeaderIconButton'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
@@ -50,7 +50,6 @@ import ModalSignout from './ModalSignout'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
-import ScreenTitle from './ScreenTitle'
 import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
@@ -59,7 +58,6 @@ import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import ProductSelector from './ProductSelector'
-import Screen from './Screen'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import TimeSelector from './TimeSelector'
@@ -93,7 +91,6 @@ export {
     FileSelector,
     FormButton,
     FormInput,
-    Header,
     HeaderIconButton,
     HoverableView,
     IconButton,
@@ -124,7 +121,6 @@ export {
     OrderList,
     OrderDetails,
     OrderPreview,
-    ScreenTitle,
     PopUpModal,
     Preview,
     ProductDetails,
@@ -133,7 +129,6 @@ export {
     ProductList,
     ProductListItem,
     ProductSelector,
-    Screen,
     SignInForm,
     SignUpForm,
     TimeSelector,
