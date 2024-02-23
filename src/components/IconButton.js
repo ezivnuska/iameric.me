@@ -32,7 +32,8 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 justifyContent: align,
                 alignItems: 'center',
                 flexShrink: 0,
-                minWidth: 180,
+                flexGrow: 0,
+                // minWidth: 180,
                 marginVertical: padded ? 5 : 0,
                 paddingRight: padded ? 8 : 0,
                 paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
@@ -60,13 +61,17 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 <ThemedText
                     style={[
                         {
+                            fontSize: 16,
                             flexBasis: 'auto',
                             flexGrow: 0,
+                            flexShrink: 0,
                             color: transparent ? theme?.colors.textDefault : theme?.colors.buttonLabel,
-                            lineHeight: 35,
+                            // lineHeight: 35,
+                            letterSpacing: 0,
                         },
                         textStyles || {},
                     ]}
+                    bold
                 >
                     {label}
                 </ThemedText>
@@ -80,7 +85,7 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                     style={{
                         flexBasis: 'auto',
                         flexShrink: 1,
-                        lineHeight: 35,
+                        // lineHeight: 35,
                         marginLeft: 8,
                     }}
                 />

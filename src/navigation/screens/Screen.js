@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import {
     ScrollView,
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -10,27 +11,29 @@ import { AppContext } from '../../AppContext'
 import classes from '@styles/classes'
 import { useTheme } from '@react-navigation/native'
 
-export default ({ children, title = null, secure = true }) => {
+export default ({ children, title = null, secure = true, tabs = true }) => {
 
     const {
-        dims,
         user,
     } = useContext(AppContext)
     
     const theme = useTheme()
 
+    const dims = useWindowDimensions()
+
     return (
         <View
             style={[
                 {
-                    height: dims ? dims.window.height - 50 : '100%',
+                    height: dims.height - 50,
                     backgroundColor: theme?.colors.background,
                 },
             ]}
         >
             <View
                 style={{
-                    height: dims ? dims.window.height - 100 : '100%',
+                    // height: dims.height - 100,
+                    height: tabs ? dims.height - 100 : '100%',
                     backgroundColor: theme?.colors.screen,
                 }}
             >
@@ -40,16 +43,13 @@ export default ({ children, title = null, secure = true }) => {
                     style={{
                         width: '100%',
                         paddingBottom: 50,
-                        height: dims ? dims.window.height - 50 : '100%',
-                        textAlign: 'left',
+                        height: tabs ? dims.height - 100 : dims.height - 50,
+                        textAlign: 'center',
                     }}
                 >
-
                     <View
                         style={{
-                            width: '100%',
-                            marginHorizontal: 'auto',
-                            paddingHorizontal: 10,
+                            height: tabs ? dims.height - 100 : dims.height - 50,
                         }}
                     >
                         {title && (
@@ -59,8 +59,8 @@ export default ({ children, title = null, secure = true }) => {
                         )}
 
                         {(!secure || secure && user) && children}
-
                     </View>
+
                 </ScrollView>
             </View>
         </View>

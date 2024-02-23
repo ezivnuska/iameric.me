@@ -10,7 +10,7 @@ export default {
     headerSecondary: {
         fontSize: sizes.headerSecondary,// 18
         fontWeight: 700,
-        lineHeight: 35,
+        lineHeight: 22,
         // lineHeight: sizes.headerSecondary + 4,// 22
     },
     userTitle: {
