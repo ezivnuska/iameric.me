@@ -68,156 +68,155 @@ export default () => {
     return (
         <View
             style={{
-                borderWidth: 2,
-                borderColor: 'yellow',
-                borderStyle: 'dashed',
+                flex: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-evenly',
+                height: '100%',
             }}
         >
 
             <ImageSegment
                 source={`${IMAGE_PATH}/customer-avatar.png`}
             >
+
                 <View
                     style={{
                         flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        flexWrap: 'wrap',
                         alignItems: 'center',
-                        justifyContent: 'space-between',
                     }}
                 >
-                    <View>
-                        <Text
-                            style={[
-                                classes.headerSecondary,
-                                {
-                                    paddingHorizontal: 8,
-                                    paddingVertical: 5,
-                                    color: '#fff',//theme?.colors.textDefault,
-                                },
-                            ]}
-                        >
-                            Hungry?        
-                        </Text>
-                    </View>
+                    <Text
+                        style={[
+                            classes.headerSecondary,
+                            {
+                                paddingHorizontal: 8,
+                                paddingVertical: 5,
+                                color: '#fff',//theme?.colors.textDefault,
+                            },
+                        ]}
+                    >
+                        Looking?
+                    </Text>
 
-                    <View>
-                        <IconButton
-                            type='primary'
-                            label='Sign Up to Order!'
-                            iconName='arrow-forward-circle-outline'
-                            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_CUSTOMER' })}
-                            alignIcon='right'
-                            textStyles={{ color: '#fff' }}
-                        />
-                    </View>
+                    <IconButton
+                        type='primary'
+                        label='Find It'
+                        iconName='arrow-forward-circle-outline'
+                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_CUSTOMER' })}
+                        alignIcon='right'
+                        textStyles={{ color: '#fff' }}
+                        style={{ marginHorizontal: 3 }}
+                    />
+                </View>
 
-                    <View>
-                        <IconButton
-                            label='Preview'
-                            iconName='eye-outline'
-                            onPress={() => onConnect('customer')}
-                            alignIcon='right'
-                            transparent
-                            textStyles={{ color: '#fff' }}
-                        />
-                    </View>
+                <View>
+                    <IconButton
+                        label='Preview'
+                        iconName='eye-outline'
+                        onPress={() => onConnect('customer')}
+                        alignIcon='right'
+                        transparent
+                        textStyles={{ color: '#fff' }}
+                    />
                 </View>
             </ImageSegment>
 
             <ImageSegment
                 source={`${IMAGE_PATH}/vendor-avatar.png`}
             >
+
                 <View
                     style={{
                         flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        flexWrap: 'wrap',
                         alignItems: 'center',
-                        justifyContent: 'space-between',
                     }}
                 >
-                    <View>
-                        <Text
-                            style={[
-                                classes.headerSecondary,
-                                {
-                                    paddingHorizontal: 8,
-                                    paddingVertical: 5,
-                                    color: '#fff',//theme?.colors.textDefault,
-                                },
-                            ]}
-                        >
-                            Selling?
-                        </Text>
-                    </View>
+                    <Text
+                        style={[
+                            classes.headerSecondary,
+                            {
+                                paddingHorizontal: 8,
+                                paddingVertical: 5,
+                                color: '#fff',//theme?.colors.textDefault,
+                            },
+                        ]}
+                    >
+                        Offering?
+                    </Text>
 
-                    <View>
-                        <IconButton
-                            type='primary'
-                            label='Offer a Product!'
-                            iconName='arrow-forward-circle-outline'
-                            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_VENDOR' })}
-                            alignIcon='right'
-                            textStyles={{ color: '#fff' }}
-                        />
-                    </View>
+                    <IconButton
+                        type='primary'
+                        label='Offer It'
+                        iconName='arrow-forward-circle-outline'
+                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_VENDOR' })}
+                        alignIcon='right'
+                        textStyles={{ color: '#fff' }}
+                        style={{ marginHorizontal: 3 }}
+                    />
+                </View>
 
-                    <View>
-                        <IconButton
-                            label='Preview'
-                            iconName='eye-outline'
-                            onPress={() => onConnect('vendor')}
-                            alignIcon='right'
-                            transparent
-                            textStyles={{ color: '#fff' }}
-                        />
-                    </View>
+                <View>
+                    <IconButton
+                        label='Preview'
+                        iconName='eye-outline'
+                        onPress={() => onConnect('vendor')}
+                        alignIcon='right'
+                        transparent
+                        textStyles={{ color: '#fff' }}
+                    />
                 </View>
             </ImageSegment>
 
             <ImageSegment
                 source={`${IMAGE_PATH}/driver-avatar.png`}
             >
+
                 <View
                     style={{
                         flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        flexWrap: 'wrap',
                         alignItems: 'center',
-                        justifyContent: 'space-between',
                     }}
                 >
-                    <View>
-                        <Text
-                            style={[
-                                classes.headerSecondary,
-                                {
-                                    paddingHorizontal: 8,
-                                    paddingVertical: 5,
-                                    color: '#fff',//theme?.colors.textDefault,
-                                },
-                            ]}
-                        >
-                            Driving?
-                        </Text>
-                    </View>
+                    <Text
+                        style={[
+                            classes.headerSecondary,
+                            {
+                                paddingHorizontal: 8,
+                                paddingVertical: 5,
+                                color: '#fff',//theme?.colors.textDefault,
+                            },
+                        ]}
+                    >
+                        Mobile?
+                    </Text>
 
-                    <View>
-                        <IconButton
-                            type='primary'
-                            label='Sign Up to Deliver!'
-                            iconName='arrow-forward-circle-outline'
-                            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_DRIVER' })}
-                            alignIcon='right'
-                            textStyles={{ color: '#fff' }}
-                        />
-                    </View>
+                    <IconButton
+                        type='primary'
+                        label='Move It'
+                        iconName='arrow-forward-circle-outline'
+                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_DRIVER' })}
+                        alignIcon='right'
+                        textStyles={{ color: '#fff' }}
+                        style={{ marginHorizontal: 3 }}
+                    />
+                </View>
 
-                    <View>
-                        <IconButton
-                            label='Preview'
-                            iconName='eye-outline'
-                            onPress={() => onConnect('driver')}
-                            alignIcon='right'
-                            transparent
-                            textStyles={{ color: '#fff' }}
-                        />
-                    </View>
+                <View>
+                    <IconButton
+                        label='Preview'
+                        iconName='eye-outline'
+                        onPress={() => onConnect('driver')}
+                        alignIcon='right'
+                        transparent
+                        textStyles={{ color: '#fff' }}
+                    />
                 </View>
             </ImageSegment>
 
@@ -236,7 +235,15 @@ const ImageSegment = ({ children, source }) => {
             source={source}
         >
             <LinearGradient
-                style={{ flex: 1, opacity: 1 }}
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'flex-end',
+                    justifyContent: 'space-between',
+                    paddingVertical: 7,
+                    paddingHorizontal: 5,
+                    opacity: 1,
+                }}
                 colors={theme?.dark
                     ? [ '#00000000', '#000000' ]
                     : [ '#00000000', '#000000' ]
