@@ -45,6 +45,18 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                     onPress={onRequestClose}
                 />
 
+                <IconButton
+                    iconName='close-outline'
+                    onPress={onRequestClose}
+                    transparent
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        backgroundColor: theme?.colors.modalBackground,
+                    }}
+                />
+
                 <View
                     style={{
                         width: '100%',
@@ -68,12 +80,6 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         }}
                     >
                         {children}
-
-                        <IconButton
-                            label='Cancel'
-                            onPress={onRequestClose}
-                            transparent
-                        />
                     </ScrollView>
                 </View>
                 
