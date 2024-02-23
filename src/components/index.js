@@ -58,6 +58,7 @@ import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import ProductSelector from './ProductSelector'
 import SignInForm from './SignInForm'
+import SignInFormLandscape from './SignInFormLandscape'
 import SignUpForm from './SignUpForm'
 import TimeSelector from './TimeSelector'
 import UserListItem from './UserListItem'
@@ -128,6 +129,7 @@ export {
     ProductListItem,
     ProductSelector,
     SignInForm,
+    SignInFormLandscape,
     SignUpForm,
     TimeSelector,
     UserListItem,
