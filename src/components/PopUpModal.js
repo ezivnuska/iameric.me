@@ -60,6 +60,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                 <View
                     style={{
                         width: '100%',
+                        height: 'auto',
                         minWidth: 200,
                         maxWidth: 900,
                         maxHeight: '90%',

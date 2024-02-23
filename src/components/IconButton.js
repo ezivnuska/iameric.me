@@ -34,8 +34,9 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 flexShrink: 0,
                 flexGrow: 0,
                 // minWidth: 180,
-                marginVertical: padded ? 3 : 0,
+                marginVertical: 5,
                 paddingRight: padded ? 8 : 0,
+                paddingVertical: 5,
                 paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
                 backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                 borderRadius: 10,
@@ -50,7 +51,7 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                     size={16}
                     color={theme?.colors.backButtonLabel}
                     style={[
-                        { flexBasis: 'auto', flexShrink: 1, flexGrow: 0, lineHeight: 35, marginRight: label ? 8 : 0 },
+                        { flexBasis: 'auto', flexShrink: 1, flexGrow: 0, marginRight: label ? 8 : 0 },
                         textStyles,
                     ]}
                 />

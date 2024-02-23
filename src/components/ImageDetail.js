@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
     Text,
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -12,12 +13,14 @@ import { AppContext } from '../AppContext'
 import axios from 'axios'
 import layout from '../styles/layout'
 import { useTheme } from 'react-native-paper'
+import { getOrientation } from '@utils/metrics'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ onDelete = null }) => {
 
     const theme = useTheme()
+    const dims = useWindowDimensions()
 
     const {
         dispatch,
@@ -26,6 +29,19 @@ export default ({ onDelete = null }) => {
         products,
         user,
     } = useContext(AppContext)
+
+    const [orientation, setOrientation] = useState('portrait')
+
+    useEffect(() => {
+        if (dims) {
+            const newOrientation = getOrientation(dims)
+            if (newOrientation !== orientation) setOrientation(newOrientation)
+        }
+    }, [dims])
+
+    useEffect(() => {
+        if (image) console.log('width/height', image.width, image.height)
+    }, [image])
 
     const isImageProfileImage = id => user.profileImage === id
 
@@ -117,35 +133,58 @@ export default ({ onDelete = null }) => {
         <View
             style={{
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: orientation === 'portrait' ? 'column' : 'row',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
             }}
         >
-            <Image
-                // width={width}
-                // height={height}
-                source={{
-                    uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
-                }}
+            <View
                 style={{
-                    resizeMode: 'contain',
-                    width: image.width,
-                    height: image.height,
-                    borderWidth: 1,
+                    flexBasis: 'auto',
+                    flexGrow: 1,
                 }}
-            />
+            >
+                <Image
+                    // width={width}
+                    // height={height}
+                    source={{
+                        uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
+                    }}
+                    style={{
+                        // flex: 1,
+                        resizeMode: 'contain',
+                        maxHeight: '95%',
+                        maxWidth: '95%',
+                        height: image.height,
+                        width: image.width,
+                        // width: 'auto',
+                        // height: 'auto',
+                        borderWidth: 1,
+                        marginHorizontal: 'auto',
+                    }}
+                />
+            </View>
 
             {(user._id === image.user._id) ? (
-                <>
+                <View
+                    style={{
+                        flexBasis: 'auto',
+                        // flexShrink: 1,
+                        // flexGrow: 1,
+                        marginHorizontal: 'auto',
+                        // borderWidth: 1,
+                        // borderColor: 'red',
+                    }}
+                >
                     <View
                         style={{
                             display: 'flex',
-                            flexDirection: 'row',
+                            flexDirection: orientation === 'portrait' ? 'row' : 'column',
                             justifyContent: 'space-evenly',
                             width: '100%',
-                            height: 50,
-                            marginVertical: layout.verticalPadding,
+                            // height: 50,
+                            // marginVertical: layout.verticalPadding,
+                            paddingHorizontal: layout.horizontalPadding,
                         }}
                     >
                         
@@ -155,7 +194,10 @@ export default ({ onDelete = null }) => {
                                 label='Set as Avatar'
                                 onPress={setAvatar}
                                 disabled={loading}
-                                style={{ flex: 1, color: theme?.colors.textDefault }}
+                                style={{
+                                    flex: 1,
+                                    color: theme?.colors.textDefault,
+                                }}
                             />
                         ) : null}
 
@@ -167,7 +209,9 @@ export default ({ onDelete = null }) => {
                                 label='Delete Image'
                                 onPress={deleteImage}
                                 disabled={loading}
-                                style={{ flex: 1 }}
+                                style={{
+                                    flex: 1,
+                                }}
                             />
                         )}
 
@@ -194,7 +238,7 @@ export default ({ onDelete = null }) => {
                             />
                         </View>
                     ) : null}
-                </>
+                </View>
             ) : null}
         </View>
     ) : null
