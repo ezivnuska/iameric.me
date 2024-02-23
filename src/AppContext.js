@@ -137,6 +137,7 @@ const reducer = (state = initialState, action) => {
             modal = null
             break
         case 'NEW_ENTRY':
+            if (!entries) entries = []
             entries = [action.entry, ...entries]
             break
         case 'SET_ENTRIES':

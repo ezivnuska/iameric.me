@@ -68,12 +68,25 @@ export default () => {
         })
     }
 
+    const styles = StyleSheet.create({
+        controls: {
+            display: 'flex',
+            flexDirection: dims.width > 600 ? 'column' : 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            position: 'absolute',
+            bottom: 15,
+            width: '100%',
+            paddingHorizontal: 15,
+        },
+    })
+
     return (
         <Screen secure={false}>
             <View style={[
                 {
                     display: 'flex',
-                    flexDirection: 'column',
+                    flexDirection: dims.width > 600 ? 'row' : 'column',
                     justifyContent: 'space-evenly',
                     alignItems: 'stretch',
                     overflow: 'visible',
@@ -163,12 +176,14 @@ export default () => {
 const BackgroundImageWithGradient = ({ caption, children, source }) => {
     
     const theme = useTheme()
+    const dims = useWindowDimensions()
 
     return (
         <View
             style={{
                 flex: 1,
                 position: 'relative',
+                minWidth: dims.width > 600 ? 200 : 300,
             }}
         >
             <ImageBackground
@@ -187,8 +202,10 @@ const BackgroundImageWithGradient = ({ caption, children, source }) => {
                         style={[
                             classes.headerSecondary,
                             {
-                                position: 'absolute',
-                                bottom: 60,
+                                flex: 1,
+                                // position: 'absolute',
+                                position: dims.width > 600 ? 'absolute' : 'relative',
+                                bottom: dims.width > 600 ? 100 : 95,
                                 left: 20,
                                 fontWeight: 700,
                                 color: '#fff',//theme?.colors.textDefault,
@@ -207,16 +224,3 @@ const BackgroundImageWithGradient = ({ caption, children, source }) => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    controls: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        position: 'absolute',
-        bottom: 15,
-        width: '100%',
-        paddingHorizontal: 15,
-    },
-})

@@ -31,6 +31,8 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 flexDirection: 'row',
                 justifyContent: align,
                 alignItems: 'center',
+                flexShrink: 0,
+                minWidth: 180,
                 marginVertical: padded ? 5 : 0,
                 paddingRight: padded ? 8 : 0,
                 paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,

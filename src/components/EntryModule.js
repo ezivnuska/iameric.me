@@ -38,7 +38,7 @@ export default ({ navigation }) => {
             console.log('No forum entries yet.')
             setItems([])
         } else {
-            // dispatch({ type: 'SET_ENTRIES', entries: entriesLoaded })   
+            dispatch({ type: 'SET_ENTRIES', entries: entriesLoaded })   
             setItems(entriesLoaded)
         }
         
