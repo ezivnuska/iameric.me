@@ -8,6 +8,9 @@ import {
 import {
     getPresentation,
 } from '../../presentations'
+import {
+    getSize,
+} from '@utils/metrics'
 
 export default () => {
 
@@ -16,14 +19,14 @@ export default () => {
     const [size, setSize] = useState('small')
 
     useEffect(() => {
-        if (dims) getSize()
+        if (dims) setSize(getSize(dims))
     }, [dims])
 
-    const getSize = () => {
-        if (dims.width <= 600) setSize('small')
-        else if (dims.width <= 712) setSize('medium')
-        else setSize('large')
-    }
+    // const getSize = () => {
+    //     if (dims.width <= 600) setSize('small')
+    //     else if (dims.width <= 712) setSize('medium')
+    //     else setSize('large')
+    // }
 
     return (
         <Screen

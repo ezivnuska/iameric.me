@@ -75,7 +75,10 @@ export default () => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-evenly',
-                height: '100%',
+                // // height: '100%',
+                // borderWidth: 2,
+                // borderColor: 'white',
+                // borderStyle: 'dotted',
             }}
         >
 

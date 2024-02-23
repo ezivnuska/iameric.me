@@ -42,7 +42,6 @@ export default ({ children, title = null, secure = true, tabs = true }) => {
                     showsVerticalScrollIndicator={false}
                     style={{
                         width: '100%',
-                        paddingBottom: 50,
                         height: tabs ? dims.height - 100 : dims.height - 50,
                         textAlign: 'center',
                     }}

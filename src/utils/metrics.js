@@ -12,14 +12,20 @@
 // const moderateScale = (size, factor = 0.5) => size + (horizontalScale(size) - size) * factor
 
 const getSize = dims => {
-    return dims
-    if (dims.width <= 600) return 'small'
+    if (dims.width <= 540) return 'small'
     else if (dims.width <= 712) return 'medium'
     else return 'large'
 }
 
+const getOrientation = dims => {
+    let orientation = 'portrait'
+    if (dims.width > dims.height) return 'landscape'
+    return orientation
+}
+
 export {
     getSize,
+    getOrientation,
     // horizontalScale,
     // verticalScale,
     // moderateScale,
