@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import {
-    SafeAreaView,
     useWindowDimensions,
+    SafeAreaView,
     View,
 } from 'react-native'
 import AppNavigation from '../navigation/AppNavigation'
@@ -12,6 +12,7 @@ import {
 import {
     Header,
 } from '.'
+import { getSize } from '@utils/metrics'
 import { useTheme } from 'react-native-paper'
 
 export default () => {
@@ -48,11 +49,14 @@ export default () => {
                     style={{
                         width: '100%',
                         minWidth: 300,
-                        maxWidth: 900,
+                        maxWidth: 600,
                         marginHorizontal: 'auto',
                     }}
                 >
-                    <Header user={user} />
+                    <Header
+                        user={user}
+                        size={getSize(dims)}
+                    />
                 </View>
 
             </View>
@@ -71,7 +75,7 @@ export default () => {
                     style={{
                         width: '100%',
                         minWidth: 300,
-                        maxWidth: 900,
+                        maxWidth: 600,
                         height: dims.height - 50,
                         marginHorizontal: 'auto',
                     }}

@@ -6,11 +6,12 @@ import {
     AuthMenu,
     Brand,
     IconButton,
+    ThemedText,
 } from '../components'
 import { useTheme } from 'react-native-paper'
 import { PreferencesContext } from '../PreferencesContext'
 
-export default ({ user }) => {
+export default ({ user, size }) => {
     
     const {
         isThemeDark,
@@ -22,7 +23,10 @@ export default ({ user }) => {
     return (
         <View
             style={{
-                width: '100%'
+                width: '100%',
+                minWidth: 300,
+                // maxWidth: 6000,
+                marginHorizontal: 'auto',
             }}
         >
         
@@ -31,21 +35,16 @@ export default ({ user }) => {
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    alignItems: 'stretch',
+                    alignItems: 'center',
                     width: '100%',
                     height: 50,
                     minHeight: 50,
-                    maxHeight: 50,
+                    maxHeight: 50
                 }}
             >
-                
-                <View
-                    style={{
-                        flexBasis: 'auto',
-                    }}
-                >
-                    <Brand onPress={toggleTheme} />
-                </View>
+                <Brand onPress={toggleTheme} />
+
+                <ThemedText>{size.width}, {size.height}</ThemedText>
 
                 <View
                     style={{

@@ -97,7 +97,7 @@ export default ({ user }) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            height: '100%',
+            // height: '100%',
         }}>
 
             {user ? (
@@ -106,7 +106,7 @@ export default ({ user }) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
-                    height: '100%',
+                    // height: '100%',
                 }}>
                     {cart?.length && <CartButton />}
 

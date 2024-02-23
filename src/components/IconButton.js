@@ -34,14 +34,13 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 flexShrink: 0,
                 flexGrow: 0,
                 // minWidth: 180,
-                marginVertical: padded ? 5 : 0,
+                marginVertical: padded ? 3 : 0,
                 paddingRight: padded ? 8 : 0,
                 paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
                 backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                 borderRadius: 10,
                 textAlign: 'center',
                 height: padded ? 35 : 'auto',
-                // borderWidth: 1,
                 ...props.style,
             }}
         >

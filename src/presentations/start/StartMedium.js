@@ -1,13 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 import {
     ImageBackground,
-    StyleSheet,
-    Text,
-    useWindowDimensions,
     View,
 } from 'react-native'
 import {
     IconButton,
+    ThemedText,
 } from '@components'
 import { AppContext } from '../../AppContext'
 import { connect, initialize } from '@utils/auth'
@@ -22,8 +20,6 @@ export default () => {
     const {
         dispatch,
     } = useContext(AppContext)
-
-    const dims = useWindowDimensions()
 
     useEffect(() => {
         initialize(dispatch)
@@ -70,7 +66,7 @@ export default () => {
             style={{
                 flex: 1,
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
                 justifyContent: 'space-evenly',
                 height: '100%',
             }}
@@ -82,24 +78,20 @@ export default () => {
 
                 <View
                     style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap',
-                        alignItems: 'center',
+                        textAlign: 'left',
                     }}
                 >
-                    <Text
+                    <ThemedText
                         style={[
                             classes.headerSecondary,
                             {
-                                paddingHorizontal: 8,
-                                paddingVertical: 5,
+                                padding: 7,
                                 color: '#fff',//theme?.colors.textDefault,
                             },
                         ]}
                     >
                         Looking?
-                    </Text>
+                    </ThemedText>
 
                     <IconButton
                         type='primary'
@@ -108,7 +100,6 @@ export default () => {
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_CUSTOMER' })}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
-                        style={{ marginHorizontal: 3 }}
                     />
                 </View>
 
@@ -130,24 +121,20 @@ export default () => {
 
                 <View
                     style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap',
-                        alignItems: 'center',
+                        textAlign: 'left',
                     }}
                 >
-                    <Text
+                    <ThemedText
                         style={[
                             classes.headerSecondary,
                             {
-                                paddingHorizontal: 8,
-                                paddingVertical: 5,
+                                padding: 7,
                                 color: '#fff',//theme?.colors.textDefault,
                             },
                         ]}
                     >
                         Offering?
-                    </Text>
+                    </ThemedText>
 
                     <IconButton
                         type='primary'
@@ -156,7 +143,6 @@ export default () => {
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_VENDOR' })}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
-                        style={{ marginHorizontal: 3 }}
                     />
                 </View>
 
@@ -178,24 +164,20 @@ export default () => {
 
                 <View
                     style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap',
-                        alignItems: 'center',
+                        textAlign: 'left',
                     }}
                 >
-                    <Text
+                    <ThemedText
                         style={[
                             classes.headerSecondary,
                             {
-                                paddingHorizontal: 8,
-                                paddingVertical: 5,
+                                padding: 7,
                                 color: '#fff',//theme?.colors.textDefault,
                             },
                         ]}
                     >
                         Mobile?
-                    </Text>
+                    </ThemedText>
 
                     <IconButton
                         type='primary'
@@ -204,7 +186,6 @@ export default () => {
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_DRIVER' })}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
-                        style={{ marginHorizontal: 3 }}
                     />
                 </View>
 
@@ -237,10 +218,9 @@ const ImageSegment = ({ children, source }) => {
             <LinearGradient
                 style={{
                     flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'flex-end',
-                    justifyContent: 'space-between',
-                    paddingVertical: 7,
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    paddingVertical: 5,
                     paddingHorizontal: 5,
                     opacity: 1,
                 }}

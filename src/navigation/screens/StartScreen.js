@@ -20,8 +20,8 @@ export default () => {
     }, [dims])
 
     const getSize = () => {
-        if (dims.width <= 400) setSize('small')
-        else if (dims.width <=600) setSize('medium')
+        if (dims.width <= 600) setSize('small')
+        else if (dims.width <= 712) setSize('medium')
         else setSize('large')
     }
 
@@ -30,7 +30,7 @@ export default () => {
             tabs={false}
             secure={false}
         >
-            {getPresentation(size)}
+            {getPresentation('start', size)}
         </Screen>
     )
 }
