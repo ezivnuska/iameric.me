@@ -15,11 +15,11 @@ export default () => {
     const {
         state,
         dispatch,
+        loading,
     } = useContext(AppContext)
 
     const { user } = state
     const [ entry, setEntry ] = useState('')
-    const [ loading, setLoading ] = useState(false)
 
     const onChangeEntry = value => setEntry(value)
     
@@ -27,16 +27,18 @@ export default () => {
         const { username, _id } = user
         const newEntry = { user: _id, text: entry }
         
-        setLoading(true)
+        dispatch({ type: 'SET_LOADING', loading: 'Submitting feedback...' })
         
         const { data } = await axios.post('/api/entry', newEntry)
         
         if (data) {
-            dispatch({ type: 'NEW_ENTRY', entry: data.entry })
             setEntry('')
+            dispatch({ type: 'NEW_ENTRY', entry: data.entry })
         } else console.log('Error submitting feedback')
 
-        setLoading(false)
+        dispatch({ type: 'SET_LOADING', loading: null })
+
+        dispatch({ type: 'CLOSE_MODAL' })
     }
 
     const onEnter = e => {
@@ -60,7 +62,7 @@ export default () => {
                 autoCapitalize='sentences'
                 keyboardType='default'
                 onKeyPress={onEnter}
-                // autoFocus
+                autoFocus
             />
 
             <IconButton

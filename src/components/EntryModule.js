@@ -8,6 +8,7 @@ import {
     EntryListItem,
     FeedbackForm,
     LoadingView,
+    IconButton,
 } from '.'
 import { AppContext } from '../AppContext'
 import { deleteEntryWithId, loadEntries } from '../utils/data'
@@ -16,25 +17,30 @@ export default ({ navigation }) => {
     
     const {
         dispatch,
-        // entries,
+        entries,
         loading,
     } = useContext(AppContext)
 
     const [items, setItems] = useState(null)
 
     useEffect(() => {
-        getEntries()
+        if (!entries) getEntries()
+        else setItems(entries)
     }, [])
+
+    useEffect(() => {
+        if (entries && entries.length !== items.length) setItems(entries)
+    }, [entries])
 
     const getEntries = async () => {
 
-        dispatch({ type: 'SET_LOADING', loading: 'loading feedback...' })
+        dispatch({ type: 'SET_LOADING', loading: 'loading forum...' })
 
         const entriesLoaded = await loadEntries()
         
         if (!entriesLoaded) {
             console.log('Error loading forum entries')
-        } else if (!entriesLoaded || !entriesLoaded.length) {
+        } else if (!entriesLoaded.length) {
             console.log('No forum entries yet.')
             setItems([])
         } else {
@@ -55,12 +61,13 @@ export default ({ navigation }) => {
             console.log('could not delete entry')
         } else {
             setItems(items.filter(item => item._id !== id))
+            dispatch({ type: 'DELETE_ENTRY', id: entryDeleted._id })
         }
         
-        // dispatch({ type: 'DELETE_ENTRY', id: entryDeleted._id })
-
         dispatch({ type: 'SET_LOADING', loading: null })
     }
+
+    const addItem = item => setItems([item, ...items])
 
     return (
         <View
@@ -68,11 +75,14 @@ export default ({ navigation }) => {
                 paddingBottom: 10,
             }}
         >
-            <FeedbackForm />
+            {/* <FeedbackForm onItemAdded={addItem} /> */}
+            {/* <IconButton
+                iconName='add-outline'
+                label='Comment'
+                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'FEEDBACK' })}
+            /> */}
             
-            {loading
-                ? <LoadingView label={loading} />
-                : items
+            {items
                 ? (
                     <FlatList
                         data={items}

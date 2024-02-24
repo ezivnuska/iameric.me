@@ -52,12 +52,6 @@ export default ({ children, title = null, secure = true, tabs = true, padded = t
                             height: tabs ? dims.height - 100 : dims.height - 50,
                         }}
                     >
-                        {title && (
-                            <ThemedText style={classes.pageTitle}>
-                                {title}
-                            </ThemedText>
-                        )}
-
                         {(!secure || secure && user) && children}
                     </View>
 

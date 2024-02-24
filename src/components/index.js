@@ -38,6 +38,7 @@ import ModalCart from './ModalCart'
 import ModalDestroy from './ModalDestroy'
 import ModalFactory from './ModalFactory'
 import ModalFeatured from './ModalFeatured'
+import ModalFeedback from './ModalFeedback'
 import ModalImage from './ModalImage'
 import ModalImageSelector from './ModalImageSelector'
 import ModalLocation from './ModalLocation'
@@ -110,6 +111,7 @@ export {
     ModalDestroy,
     ModalFactory,
     ModalFeatured,
+    ModalFeedback,
     ModalImage,
     ModalImageSelector,
     ModalLocation,
