@@ -6,11 +6,11 @@ import {
     View,
 } from 'react-native'
 import {
-    AuthMenu,
     Brand,
+    CartButton,
     IconButton,
     ThemedText,
-} from '../components'
+} from '@components'
 import { useTheme } from 'react-native-paper'
 import { AppContext } from '../AppContext'
 import { navigationRef } from '../navigation/RootNavigation'

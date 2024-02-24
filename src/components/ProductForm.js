@@ -254,12 +254,14 @@ export default  () => {
                     || (title && !title.length)
                     || (price && !price.length)
                 }
+                style={{ marginVertical: 5 }}
             />
 
             <IconButton
                 label={initialState ? 'Reset Form' : 'Clear Form'}
                 onPress={resetForm}
                 disabled={loading}
+                style={{ marginVertical: 5 }}
             />
 
         </View>

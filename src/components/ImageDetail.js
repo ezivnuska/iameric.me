@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
+    Pressable,
     Text,
     useWindowDimensions,
     View,
@@ -11,9 +12,10 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
-import layout from '../styles/layout'
+import layout from '@styles/layout'
 import { useTheme } from 'react-native-paper'
 import { getOrientation } from '@utils/metrics'
+import { loadProducts } from '@utils/data'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -39,9 +41,17 @@ export default ({ onDelete = null }) => {
         }
     }, [dims])
 
-    // useEffect(() => {
-    //     if (image) console.log('width/height', image.width, image.height)
-    // }, [image])
+    useEffect(() => {
+        if (!products) fetchProducts(user._id)
+    }, [products])
+
+    const fetchProducts = async id => {
+
+        dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
+        const updatedProducts = await loadProducts(id)
+        dispatch({ type: 'SET_PRODUCTS', products: updatedProducts })
+        dispatch({ type: 'SET_LOADING', loading: null })
+    }
 
     const isImageProfileImage = id => user.profileImage === id
 
@@ -130,15 +140,19 @@ export default ({ onDelete = null }) => {
     }
 
     return (image && user) ? (
-        <View
+        <Pressable
+            onPress={() => dispatch({ type: 'CLOSE_MODAL' })}
             style={{
-                display: 'flex',
-                flexDirection: orientation === 'portrait' ? 'column' : 'row',
+                // display: 'flex',
+                // flexDirection: orientation === 'portrait' ? 'column' : 'row',
                 justifyContent: 'flex-start',
+                width: '100%',
                 alignItems: 'center',
-                borderWidth: 1,
-                borderColor: 'red',
-                borderStyle: 'dotted',
+                // borderWidth: 1,
+                // borderColor: 'red',
+                // borderStyle: 'dotted',
+                paddingTop: 100,
+                paddingBottom: 200,
             }}
         >
             <View
@@ -181,6 +195,7 @@ export default ({ onDelete = null }) => {
                 >
                     <View
                         style={{
+                            flex: 1,
                             display: 'flex',
                             flexDirection: orientation === 'portrait' ? 'row' : 'column',
                             justifyContent: 'space-evenly',
@@ -198,7 +213,7 @@ export default ({ onDelete = null }) => {
                                 onPress={setAvatar}
                                 disabled={loading}
                                 style={{
-                                    flex: 1,
+                                    // flex: 1,
                                     color: theme?.colors.textDefault,
                                 }}
                             />
@@ -222,7 +237,8 @@ export default ({ onDelete = null }) => {
 
                     {(user.role === 'vendor' &&
                     (products && products.length)) ? (
-                        <View style={{ 
+                        <View style={{
+                            flex: 1,
                             width: '100%',
                         }}>
                             <Text
@@ -234,15 +250,17 @@ export default ({ onDelete = null }) => {
                                 Make product image:
                             </Text>
                             
-                            <ProductSelector
-                                onSelect={setProductImage}
-                                products={products}
-                                imageId={image._id}
-                            />
+                            <View>
+                                <ProductSelector
+                                    onSelect={setProductImage}
+                                    products={products}
+                                    imageId={image._id}
+                                />
+                            </View>
                         </View>
                     ) : null}
                 </View>
             ) : null}
-        </View>
+        </Pressable>
     ) : null
 }

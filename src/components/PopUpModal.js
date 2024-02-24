@@ -2,6 +2,7 @@ import React from 'react'
 import {
     Modal,
     Pressable,
+    useWindowDimensions,
     ScrollView,
     View,
 } from 'react-native'
@@ -13,6 +14,8 @@ import { useTheme } from 'react-native-paper'
 export default ({ children, onRequestClose, transparent = false, ...props }) => {
     
     const theme = useTheme()
+
+    const dims = useWindowDimensions()
 
     return (
         <Modal
@@ -50,28 +53,34 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                     iconName='close-outline'
                     onPress={onRequestClose}
                     transparent
+                    // outline
                     style={{
                         position: 'absolute',
                         top: 0,
                         right: 0,
-                        backgroundColor: theme?.colors.modalBackground,
+                        backgroundColor: 'transparent',
                         zIndex: 100,
+                    }}
+                    textStyles={{
+                        color: theme?.colors.textAlt,
                     }}
                 />
 
                 <View
                     style={{
                         position: 'relative',
-                        height: '100%',
+                        height: dims.height,
                         width: '100%',
                         minWidth: 300,
                         maxWidth: 400,
                         marginHorizontal: 'auto',
-                        backgroundColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.screen,
-                        borderWidth: transparent ? 0 : 1,
-                        borderColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.border,
+                        overflow: 'visible',
+                        // backgroundColor: 'transparent',
+                        // backgroundColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.screen,
+                        // borderWidth: transparent ? 0 : 1,
+                        // borderColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.border,
                         // flexBasis: 'auto',
-                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
+                        // backgroundColor: 'rgba(0, 0, 0, 0.25)',
                         // borderWidth: 1,
                         // borderColor: 'red',
                         // flexGrow: 1,
@@ -82,7 +91,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         style={{
                             paddingHorizontal: 'auto',
                             textAlign: 'center',
-                            paddingVertical: 100,
+                            height: dims.height,
                         }}
                     >
                         {children}
