@@ -35,7 +35,6 @@ import LocationForm from './LocationForm'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
 import ModalCart from './ModalCart'
-import ModalContent from './ModalContent'
 import ModalDestroy from './ModalDestroy'
 import ModalFactory from './ModalFactory'
 import ModalFeatured from './ModalFeatured'
@@ -43,6 +42,7 @@ import ModalImage from './ModalImage'
 import ModalImageSelector from './ModalImageSelector'
 import ModalLocation from './ModalLocation'
 import ModalProductForm from './ModalProductForm'
+import ModalProfile from './ModalProfile'
 import ModalSignin from './ModalSignin'
 import ModalSignup from './ModalSignup'
 import ModalSignout from './ModalSignout'
@@ -62,11 +62,12 @@ import SignInFormLandscape from './SignInFormLandscape'
 import SignUpForm from './SignUpForm'
 import TimeSelector from './TimeSelector'
 import UserListItem from './UserListItem'
-import UserHeading from './UserHeading'
+import UserDetails from './UserDetails'
+import UserDetailsShort from './UserDetailsShort'
 import UserFilter from './UserFilter'
+import UserHeading from './UserHeading'
 import UserList from './UserList'
 import UserModule from './UserModule'
-import UserDetails from './UserDetails'
 import VendorList from './VendorList'
 
 export {
@@ -106,7 +107,6 @@ export {
     Menu,
     MenuItem,
     ModalCart,
-    ModalContent,
     ModalDestroy,
     ModalFactory,
     ModalFeatured,
@@ -114,6 +114,7 @@ export {
     ModalImageSelector,
     ModalLocation,
     ModalProductForm,
+    ModalProfile,
     ModalSignin,
     ModalSignup,
     ModalSignout,
@@ -138,5 +139,6 @@ export {
     UserList,
     UserModule,
     UserDetails,
+    UserDetailsShort,
     VendorList,
 }

@@ -1,23 +1,32 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
     ThemedText,
     LoadingView,
     UserList,
+    UserDetailsShort,
 } from '.'
 import { AppContext } from '../AppContext'
-import { loadUsersByRole } from '../utils/data'
+import { loadUsersByRole } from '@utils/data'
+import { getOrientation } from '@utils/metrics'
 
 export default () => {
     
     const {
         dispatch,
         loading,
+        profile,
         users,
         user,
     } = useContext(AppContext)
+
+    const dims = useWindowDimensions()
+
+    const [userProfile, setUserProfile] = useState(null)
+    const [isPortrait, setIsPortrait] = useState(true)
 
     let interval = undefined
 
@@ -25,6 +34,18 @@ export default () => {
         clearInterval(interval)
         interval = undefined
     }
+
+    useEffect(() => {
+        if (!profile) setUserProfile(null)
+        else if (profile._id !== userProfile._id) {
+            setUserProfile(profile)
+        }
+    }, [profile])
+
+    useEffect(() => {
+        const portrait = getOrientation(dims) === 'portrait'
+        if (!isPortrait || isPortrait !== portrait) setIsPortrait(portrait)
+    }, [dims])
 
     useEffect(() => {
         if (!users) loadUsers()
@@ -47,15 +68,52 @@ export default () => {
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
-    return (
-        <View>
-
-            {loading
-                ? <LoadingView label={loading} />
-                : users && users.length
-                ? <UserList users={users} />
-                : <ThemedText>No users to display.</ThemedText>
+    const showProfile = userData => {
+        setUserProfile(userData)
+        dispatch({ type: 'SET_PROFILE', profile: userData })
+    }
+    
+    useEffect(() => {
+        if (userProfile) {
+            if (getOrientation(dims) === 'portrait') {
+                dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
             }
+        }
+    }, [userProfile])
+
+    return (
+        <View
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                alignItems: 'flex-start',
+                paddingVertical: 15,
+            }}
+        >
+            <View style={{ flex: 1 }}>
+                {loading
+                    ? <LoadingView label={loading} />
+                    : users && users.length
+                        ? (
+                            <UserList
+                                users={users}
+                                onPress={item => showProfile(item)}
+                            />
+                        )
+                        : <ThemedText>No users to display.</ThemedText>
+                }
+            </View>
+
+            {!isPortrait && (
+                <View style={{ flex: 1 }}>
+                    {userProfile && (
+                        <UserDetailsShort
+                            userId={userProfile._id}
+                            clear={() => dispatch({ type: 'SET_PROFILE', profile: null })}
+                        />
+                    )}
+                </View>
+            )}
         
         </View>
     )

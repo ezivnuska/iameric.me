@@ -61,25 +61,29 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                 <View
                     style={{
                         zIndex: 10,
-                        width: '100%',
-                        height: 'auto',
+                        // width: '100%',
+                        // height: 'auto',
                         minWidth: 200,
                         maxWidth: 900,
                         maxHeight: '90%',
-                        paddingHorizontal: 10,
+                        paddingVertical: 15,
+                        paddingHorizontal: 20,
                         marginHorizontal: 'auto',
                         backgroundColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.screen,
-                        borderRadius: 12,
+                        // borderRadius: 8,
                         borderWidth: transparent ? 0 : 1,
                         borderColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.border,
                         flexBasis: 'auto',
+                        // borderWidth: 1,
+                        // borderColor: 'yellow',
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)'
                     }}
                 >
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         style={{
-                            width: '100%',
-                            paddingVertical: 10,
+                            // width: '100%',
+                            // paddingVertical: 10,
                         }}
                     >
                         {children}

@@ -23,7 +23,7 @@ export default () => {
             
             {user && (
                 <View>
-                    <UserDetails user={user} />
+                    <UserDetails userId={user._id} />
 
                     {user.role !== 'driver' && <LocationModule userId={user._id} />}
                     

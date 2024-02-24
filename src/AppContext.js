@@ -3,6 +3,7 @@ import React, { createContext, useReducer } from 'react'
 const initialState = {
     cart: null,
     entries: null,
+    featured: null,
     image: null,
     loading: null,
     location: null,
@@ -10,8 +11,7 @@ const initialState = {
     orders: null,
     productData: null,
     products: null,
-    featured: null,
-    profileImage: null,
+    profile: null,
     user: null,
     users: null,
     vendor: null,
@@ -29,7 +29,7 @@ const reducer = (state = initialState, action) => {
         orders,
         productData,
         products,
-        profileImage,
+        profile,
         user,
         users,
     } = state
@@ -43,10 +43,14 @@ const reducer = (state = initialState, action) => {
             image = null
             modal = null
             productData = null
+            profile = null
             break
         case 'SET_FEATURED':
             featured = action.featured
             modal = 'FEATURED'
+            break
+        case 'SET_PROFILE':
+            profile = action.profile
             break
         case 'SET_PRODUCT':
             productData = action.productData
@@ -263,7 +267,7 @@ const reducer = (state = initialState, action) => {
             orders = null
             productData = null
             products = null
-            profileId = null
+            profile = null
             user = null
             users = null
         break
@@ -282,7 +286,7 @@ const reducer = (state = initialState, action) => {
         orders,
         productData,
         products,
-        profileImage,
+        profile,
         user,
         users,
     }
@@ -316,6 +320,7 @@ export const AppProvider = ({ children, preferences }) => {
                 orders: state.orders,
                 productData: state.productData,
                 products: state.products,
+                profile: state.profile,
                 user: state.user,
                 users: state.users,
                 vendors: usersByRole('vendor'),

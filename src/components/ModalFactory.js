@@ -1,10 +1,13 @@
 import React from 'react'
 import {
+    View,
+} from 'react-native'
+import {
     ModalCart,
-    ModalContent,
     ModalDestroy,
     ModalFeatured,
     ModalImage,
+    ModalProfile,
     ModalSignin,
     ModalSignup,
     ModalSignout,
@@ -24,6 +27,7 @@ export default ({ name, close }) => {
             case 'IMAGE': return <ModalImage />; break
             case 'LOCATION': return <ModalLocation />; break
             case 'PRODUCT': return <ProductForm />; break
+            case 'PROFILE': return <ModalProfile />; break
             case 'SELECT_IMAGE': return <ModalImageSelector />; break
             case 'SIGNIN': return <ModalSignin />; break
             case 'SIGNOUT': return <ModalSignout />; break
@@ -40,9 +44,13 @@ export default ({ name, close }) => {
             onRequestClose={close}
             transparent={true}
         >
-            <ModalContent>
+            <View
+                style={{
+                    justifyContent: 'center',
+                }}
+            >
                 {resolveModalContent()}
-            </ModalContent>
+            </View>
         </PopUpModal>
     )
 }

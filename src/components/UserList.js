@@ -8,7 +8,7 @@ import {
 } from '.'
 import { navigationRef } from '../navigation/RootNavigation'
 
-export default ({ users }) => (
+export default ({ users, onPress }) => (
     <FlatList
         data={users}
         listKey={() => 'users'}
@@ -29,7 +29,7 @@ export default ({ users }) => (
                     <UserHeading
                         user={item}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
-                        onPress={() => navigationRef.navigate('User', { id: _id })}
+                        onPress={() => onPress(item)}
                     />
                 </View>
             )

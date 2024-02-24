@@ -39,9 +39,9 @@ export default ({ onDelete = null }) => {
         }
     }, [dims])
 
-    useEffect(() => {
-        if (image) console.log('width/height', image.width, image.height)
-    }, [image])
+    // useEffect(() => {
+    //     if (image) console.log('width/height', image.width, image.height)
+    // }, [image])
 
     const isImageProfileImage = id => user.profileImage === id
 
