@@ -2,14 +2,13 @@ import React, { createContext, useReducer } from 'react'
 
 const initialState = {
     cart: null,
-    dims: null,
     entries: null,
     image: null,
     loading: null,
     location: null,
     modal: null,
     orders: null,
-    product: null,
+    productData: null,
     products: null,
     featured: null,
     profileImage: null,
@@ -19,12 +18,23 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    let { cart, dims, entries, featured, image, loading, location, modal, orders, product, products, profileImage, user, users } = state
+    let {
+        cart,
+        entries,
+        featured,
+        image,
+        loading,
+        location,
+        modal,
+        orders,
+        productData,
+        products,
+        profileImage,
+        user,
+        users,
+    } = state
     
     switch(action.type) {
-        case 'SET_DIMS':
-            dims = action.dims
-            break
         case 'SET_MODAL':
             modal = action.modalName
             break
@@ -32,14 +42,14 @@ const reducer = (state = initialState, action) => {
             featured = null
             image = null
             modal = null
-            product = null
+            productData = null
             break
         case 'SET_FEATURED':
             featured = action.featured
             modal = 'FEATURED'
             break
         case 'SET_PRODUCT':
-            product = action.product
+            productData = action.productData
             modal = 'PRODUCT'
             break
         case 'SET_IMAGE':
@@ -64,11 +74,16 @@ const reducer = (state = initialState, action) => {
                 else return prod
             })
             break
+        case 'SET_PRODUCT':
+            productData = action.formData
+            break
         case 'SET_PRODUCTS':
             products = action.products
             break
         case 'ADD_PRODUCT':
             products = [...products, action.product]
+            productData = null
+            modal = null
             break
         case 'UPDATE_PRODUCT':
             if (!products) products = [action.product]
@@ -81,20 +96,21 @@ const reducer = (state = initialState, action) => {
                     ...products.slice(i + 1),
                 ]
             }
+            productData = null
             modal = null
             break
         case 'UPDATE_PRODUCT_IMAGE':
-            products = products.map(prod => {
-                if (prod._id === action.productId) {
+            products = products.map(product => {
+                if (product._id === action.productId) {
                     return {
-                        ...prod,
+                        ...product,
                         image: action.image,
                     }
-                } else return prod
+                } else return product
             })
             break
         case 'DELETE_PRODUCT':
-            products = products.filter(prod => prod._id !== action.id)
+            products = products.filter(product => product._id !== action.id)
             break
         case 'SET_LOADING':
             loading = action.loading
@@ -130,7 +146,7 @@ const reducer = (state = initialState, action) => {
             featured = null
             image = null
             modal = null
-            product = null
+            productData = null
             break
         case 'CLEAR_CART':
             cart = null
@@ -245,7 +261,7 @@ const reducer = (state = initialState, action) => {
             location = null
             modal = null
             orders = null
-            product = null
+            productData = null
             products = null
             profileId = null
             user = null
@@ -255,7 +271,21 @@ const reducer = (state = initialState, action) => {
             throw new Error('Not valid action type')
     }
 
-    return { cart, dims, entries, featured, image, loading, location, modal, orders, product, products, profileImage, user, users }
+    return {
+        cart,
+        entries,
+        featured,
+        image,
+        loading,
+        location,
+        modal,
+        orders,
+        productData,
+        products,
+        profileImage,
+        user,
+        users,
+    }
 }
 
 export const AppContext = createContext({
@@ -276,7 +306,6 @@ export const AppProvider = ({ children, preferences }) => {
                 dispatch,
                 cart: state.cart,
                 customers: otherUsersByRole('customer'),
-                dims: state.dims,
                 drivers: otherUsersByRole('driver'),
                 entries: state.entries,
                 featured: state.featured,
@@ -285,7 +314,7 @@ export const AppProvider = ({ children, preferences }) => {
                 location: state.location,
                 modal: state.modal,
                 orders: state.orders,
-                product: state.product,
+                productData: state.productData,
                 products: state.products,
                 user: state.user,
                 users: state.users,

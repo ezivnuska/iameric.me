@@ -24,7 +24,7 @@ export default () => {
     
     return (
         <VendorTabStack.Navigator
-            initialRouteName={'Vendors'}
+            initialRouteName='Products'
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{

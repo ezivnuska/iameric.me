@@ -17,7 +17,7 @@ export default () => {
         
         dispatch({ type: 'CLOSE_MODAL' })
         
-        navigationRef.navigate('Private', { screen: 'Orders' })
+        navigationRef.navigate('Orders')
     }
     
     return (

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -15,19 +16,18 @@ const initialSize = 300
 export default ({ onSelected }) => {
 
     const {
-        dims,
         dispatch,
         loading,
         user,
     } = useContext(AppContext)
+    
+    const dims = useWindowDimensions()
 
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
 
     useEffect(() => {
-        
-        if (!dims) return
 
         const dropzone = document.getElementById('dropzone')
         

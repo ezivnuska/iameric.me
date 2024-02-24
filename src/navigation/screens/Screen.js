@@ -11,7 +11,7 @@ import { AppContext } from '../../AppContext'
 import classes from '@styles/classes'
 import { useTheme } from '@react-navigation/native'
 
-export default ({ children, title = null, secure = true, tabs = true }) => {
+export default ({ children, title = null, secure = true, tabs = true, padded = true }) => {
 
     const {
         user,
@@ -43,7 +43,8 @@ export default ({ children, title = null, secure = true, tabs = true }) => {
                     style={{
                         width: '100%',
                         height: tabs ? dims.height - 100 : dims.height - 50,
-                        textAlign: 'center',
+                        textAlign: 'left',
+                        paddingHorizontal:  padded ? 8 : 0,
                     }}
                 >
                     <View

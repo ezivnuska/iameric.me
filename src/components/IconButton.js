@@ -34,24 +34,30 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 flexShrink: 0,
                 flexGrow: 0,
                 // minWidth: 180,
-                marginVertical: 5,
+                // marginVertical: 3,
                 paddingRight: padded ? 8 : 0,
-                paddingVertical: 5,
+                // paddingVertical: 3,
                 paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
                 backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                 borderRadius: 10,
                 textAlign: 'center',
-                height: padded ? 35 : 'auto',
+                // height: padded ? 35 : 'auto',
                 ...props.style,
             }}
         >
             {(type === 'danger' || (iconName && alignIcon === 'left')) && (
                 <Icon
                     name={type === 'danger' ? 'skull-outline' : iconName}
-                    size={16}
+                    size={18}
                     color={theme?.colors.backButtonLabel}
                     style={[
-                        { flexBasis: 'auto', flexShrink: 1, flexGrow: 0, marginRight: label ? 8 : 0 },
+                        {
+                            flexBasis: 'auto',
+                            flexShrink: 1,
+                            flexGrow: 0,
+                            marginRight: label ? 8 : 0,
+                            lineHeight: 30,
+                        },
                         textStyles,
                     ]}
                 />
@@ -61,12 +67,12 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 <ThemedText
                     style={[
                         {
-                            fontSize: 16,
+                            fontSize: 18,
                             flexBasis: 'auto',
                             flexGrow: 0,
                             flexShrink: 0,
                             color: transparent ? theme?.colors.textDefault : theme?.colors.buttonLabel,
-                            // lineHeight: 35,
+                            lineHeight: 30,
                             letterSpacing: 0,
                         },
                         textStyles || {},
@@ -80,12 +86,12 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
             {(iconName && alignIcon === 'right') && (
                 <Icon
                     name={iconName}
-                    size={16}
+                    size={18}
                     color={ textStyles?.color || theme?.colors.textDefault }
                     style={{
                         flexBasis: 'auto',
                         flexShrink: 1,
-                        // lineHeight: 35,
+                        lineHeight: 30,
                         marginLeft: 8,
                     }}
                 />

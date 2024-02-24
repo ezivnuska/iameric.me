@@ -28,9 +28,7 @@ export const openImagePickerAsync = async () => {
         })
 
         return uploadResult.assets[0].uri
-    }
-
-    return pickerResult
+    } else return null
 }
 
 export const openImageSelector = async () => {
@@ -49,7 +47,7 @@ export const openImageSelector = async () => {
         quality: 1,
     })
     
-    if (!data) return null
+    if (!data || data.canceled) return null
 
     return data.assets[0].uri
   }
@@ -59,7 +57,7 @@ export const openImageSelector = async () => {
     
     if (Platform.OS === 'web') uri = await openImageSelector()
     else uri = await openImagePickerAsync()
-    
+
     return(uri)
 }
 

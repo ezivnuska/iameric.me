@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    IconButton,
     ThemedText,
 } from '@components'
 import { AppContext } from '../AppContext'
@@ -15,15 +16,16 @@ import classes from '../styles/classes'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ product, onPress, ...props }) => {
+export default ({ onDelete, product, onPress, ...props }) => {
 
     const {
+        loading,
         user,
     } = useContext(AppContext)
     
     // const theme = useTheme()
 
-    return (
+    return product ? (
         <Pressable
             {...props}
             onPress={() => onPress(product)}
@@ -117,7 +119,17 @@ export default ({ product, onPress, ...props }) => {
                     <ThemedText>{product.desc}</ThemedText>
 
                 </View>
+
+                <IconButton
+                    iconName='trash-outline'
+                    transparent
+                    // type='danger'
+                    // label='Delete Product'
+                    onPress={onDelete}
+                    disabled={loading}
+                    style={{ marginBottom: 10 }}
+                />
             </View>
         </Pressable>
-    )
+    ) : null
 }

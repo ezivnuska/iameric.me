@@ -45,7 +45,6 @@ const UserButton = ({ user }) => {
                 shadowOpacity: 0.5,
                 shadowRadius: 4,
                 elevation: 1,
-                height: 35,
             }}
         >
             <View

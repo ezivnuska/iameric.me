@@ -32,6 +32,7 @@ export default () => {
         <Screen
             tabs={false}
             secure={false}
+            padded={false}
         >
             {getPresentation('start', size)}
         </Screen>

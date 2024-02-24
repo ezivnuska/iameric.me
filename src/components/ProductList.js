@@ -8,6 +8,7 @@ export default ({ products, update }) => {
     const {
         dispatch,
         featured,
+        // products,
     } = useContext(AppContext)
 
     const onDelete = async id => {
@@ -37,7 +38,7 @@ export default ({ products, update }) => {
                     key={item => `product-${item._id}`}
                     update={update}
                     onDelete={() => onDelete(item._id)}
-                    onPress={item => dispatch({ type: 'SET_PRODUCT', product: item })}
+                    onPress={item => dispatch({ type: 'SET_PRODUCT', productData: item })}
                 />
             )}
             style={{

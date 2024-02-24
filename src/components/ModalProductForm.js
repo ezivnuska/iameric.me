@@ -9,8 +9,7 @@ export default () => {
     const { 
         dispatch,
         loading,
-        featured,
-        product,
+        productData,
     } = useContext(AppContext)
 
     const onDelete = async id => {
@@ -31,9 +30,8 @@ export default () => {
     
     return (
         <ProductForm
-            product={product}
-            onComplete={prod => dispatch({ type: 'UPDATE_PRODUCT', prod })}
-            onDelete={() => onDelete(featured._id)}
+            product={productData}
+            onComplete={() => dispatch({ type: 'CLOSE_MODAL' })}
         />
     )
 }

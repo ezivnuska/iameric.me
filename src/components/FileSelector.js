@@ -13,9 +13,7 @@ export default ({ onSelected }) => {
   } = useContext(AppContext)
 
   const handlePress = async () => {
-    dispatch({ type: 'SET_LOADING', loading: 'Opening file selector...' })
     const uri = await openFileSelector()
-    dispatch({ type: 'SET_LOADING', loading: null })
     onSelected(uri)
   }
 

@@ -54,11 +54,13 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         top: 0,
                         right: 0,
                         backgroundColor: theme?.colors.modalBackground,
+                        zIndex: 100,
                     }}
                 />
 
                 <View
                     style={{
+                        zIndex: 10,
                         width: '100%',
                         height: 'auto',
                         minWidth: 200,

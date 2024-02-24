@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import {
     useWindowDimensions,
     SafeAreaView,
@@ -10,8 +10,7 @@ import {
     ModalFactory,
 } from '@components'
 import {
-    Portrait,
-    Landscape,
+    Header,
 } from '.'
 import { getSize, getOrientation } from '@utils/metrics'
 import { useTheme } from 'react-native-paper'
@@ -28,16 +27,72 @@ export default () => {
 
     const dims = useWindowDimensions()
 
-    const [orientation, setOrientation] = useState('portrait')
+    return (
+        <SafeAreaView
+            id='layout-container'
+            style={{
+                width: dims.width,
+                height: dims.height,
+                backgroundColor: theme?.colors.background,
+            }}
+        >
+            <View
+                id='header-container'
+                style={{
+                    width: '100%',
+                    minWidth: 280,
+                    maxWidth: 600,
+                    marginHorizontal: 'auto',
+                    backgroundColor: theme?.colors.background,
+                    // borderWidth: 1,
+                    // borderColor: '#f00',
+                }}
+            >
+                <Header
+                    user={user}
+                    size={getSize(dims)}
+                    orientation={getOrientation(dims)}
+                />
+            </View>
 
-    useEffect(() => {
-        if (dims) {
-            const newOrientation = getOrientation(dims)
-            if (newOrientation !== orientation) setOrientation(newOrientation)
-        }
-    }, [dims])
+            <View
+                id='content-container'
+                style={{
+                    flex: 1,
+                    // height: dims.height - 48,
+                    width: '100%',
+                    minWidth: 280,
+                    maxWidth: 600,
+                    marginHorizontal: 'auto',
+                    backgroundColor: theme?.colors.background,
+                }}
+            >
+                
+                <View
+                    id='content'
+                    style={{
+                        flex: 1,
+                        width: '100%',
+                        minWidth: 280,
+                        maxWidth: 600,
+                        // height: dims.height - 44,
+                        marginHorizontal: 'auto',
+                        // borderWidth: 1,
+                        // borderColor: 'yellow',
+                    }}
+                >
+                    
+                    <AppNavigation user={user} />
 
-    return orientation === 'portrait'
-        ? <Portrait />
-        : <Landscape />
+                </View>
+
+            </View>
+
+            <ModalFactory
+                name={modal}
+                close={() => dispatch({ type: 'CLOSE_MODAL' })}
+            />
+
+        </SafeAreaView>
+    )
 }

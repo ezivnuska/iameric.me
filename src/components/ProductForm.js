@@ -14,48 +14,95 @@ import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default  ({ onComplete, onDelete }) => {
+export default  () => {
     
     const {
         dispatch,
         loading,
-        product,
+        productData,
         user,
     } = useContext(AppContext)
 
-    const [ title, setTitle ] = useState()
-    const [ price, setPrice ] = useState()
-    const [ blurb, setBlurb ] = useState()
-    const [ desc, setDesc ] = useState()
-    const [ category, setCategory ] = useState()
-    const [ image, setImage ] = useState(null)
-    const [ attachment, setAttachment ] = useState(null)
+    const [initialState, setInitialState] = useState(null)
+    const [title, setTitle] = useState()
+    const [price, setPrice] = useState()
+    const [blurb, setBlurb] = useState()
+    const [desc, setDesc] = useState()
+    const [category, setCategory] = useState()
+    const [image, setImage] = useState(null)
+    const [attachment, setAttachment] = useState(null)
+
+    // let formData = {
+    //     vendor: user._id,
+    //     title,
+    //     price,
+    //     blurb,
+    //     desc,
+    //     category,
+    //     image,
+    //     attachment,
+    // }
 
     const onChangeTitle = value => setTitle(value)
     const onChangePrice = value => setPrice(value)
     const onChangeBlurb = value => setBlurb(value)
     const onChangeDesc = value => setDesc(value)
     const onChangeCategory = value => setCategory(value)
+
+    useEffect(() => {
+        setFormData({ title, price, category, blurb, desc, image, attachment })
+    }, [title, price, category, blurb, desc, image, attachment])
+    
+    // useEffect(() => {
+    //     // if editing, set initial form vars
+    //     console.log('INIT_PRODUCT_FORM', productData)
+    //     if (product) {
+    //         console.log('DATA', product)
+    //         setInitialState(product)
+    //         setFormData(product)
+    //     }
+    // }, [])
     
     useEffect(() => {
         // if editing, set initial form vars
-        if (product) {
-            setFormData(product)
+        if (productData) {
+            if (!initialState) {
+                // console.log('PRODUCT_DATA', productData)
+                setInitialState(productData)
+                setFormData(productData)
+            }
         }
-    }, [])
+    }, [productData])
+
+    // useEffect(() => {
+    //     console.log('formData changed', formData)
+    //     dispatch({ type: 'SET_PRODUCT', productData: formData })
+    // }, [formData])
 
     const setFormData = data => {
+        // console.log('data', data)
         setTitle(data.title)
         setPrice(data.price)
         setBlurb(data.blurb)
         setDesc(data.desc)
         setCategory(data.category)
         setImage(data.image)
+
+        dispatch({ type: 'SET_PRODUCT', productData: ({
+            _id: data._id,
+            vendor: user._id,
+            title: data.title,
+            price: data.price,
+            blurb: data.blurb,
+            desc: data.desc,
+            category: data.category,
+            image: data.image,
+        })})
     }
 
     const resetForm = () => {
-        if (product) {
-            setFormData(product)
+        if (initialState) {
+            setFormData(initialState)
         } else {
             clearForm()
         }
@@ -76,8 +123,8 @@ export default  ({ onComplete, onDelete }) => {
         dispatch({ type: 'SET_LOADING', loading: 'Submitting product...' })
 
         const { _id } = user
-        
-        let productData = {
+
+        let newProduct = {
             vendor: _id,
             title,
             price,
@@ -87,39 +134,39 @@ export default  ({ onComplete, onDelete }) => {
             image,
         }
 
-        if (product) {
-            productData = {
-                ...productData,
-                _id: featured._id,
+        if (initialState._id) {
+            newProduct = {
+                ...newProduct,
+                _id: initialState._id,
             }
         }
 
         if (attachment) {
-            productData = {
-                ...productData,
+            newProduct = {
+                ...newProduct,
                 attachment,
             }
         }
 
         const { data } = await axios
-            .post('/api/product', productData)
+            .post('/api/product', newProduct)
 
-            dispatch({ type: 'SET_LOADING', loading: null })
-
+            
         if (!data) {
             console.log('Error saving product', data)
-            return null
-        }
-        
-        if (!product) {
-            dispatch({ type: 'ADD_PRODUCT', product: data })
         } else {
-            dispatch({ type: 'UPDATE_PRODUCT', product: data })
+            if (!initialState._id) {
+                dispatch({ type: 'ADD_PRODUCT', product: data })
+            } else {
+                dispatch({ type: 'UPDATE_PRODUCT', product: data })
+            }
         }
         
         clearForm()
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
 
-        onComplete(data)
+        // dispatch({ type: 'CLOSE_MODAL' })
     }
 
     const removeImage = () => {
@@ -207,11 +254,15 @@ export default  ({ onComplete, onDelete }) => {
                 type='primary'
                 label='Save'
                 onPress={onSubmit}
-                disabled={loading || (title && !title.length) || (price && !price.length)}
+                disabled={
+                    loading
+                    || (title && !title.length)
+                    || (price && !price.length)
+                }
             />
 
             <IconButton
-                label={product ? 'Reset Form' : 'Clear Form'}
+                label={initialState ? 'Reset Form' : 'Clear Form'}
                 onPress={resetForm}
                 disabled={loading}
             />

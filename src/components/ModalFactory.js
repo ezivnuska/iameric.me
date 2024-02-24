@@ -10,7 +10,7 @@ import {
     ModalSignout,
     ModalImageSelector,
     ModalLocation,
-    ModalProductForm,
+    ProductForm,
     PopUpModal,
 } from '.'
 
@@ -23,7 +23,7 @@ export default ({ name, close }) => {
             case 'FEATURED': return <ModalFeatured />; break
             case 'IMAGE': return <ModalImage />; break
             case 'LOCATION': return <ModalLocation />; break
-            case 'PRODUCT': return <ModalProductForm />; break
+            case 'PRODUCT': return <ProductForm />; break
             case 'SELECT_IMAGE': return <ModalImageSelector />; break
             case 'SIGNIN': return <ModalSignin />; break
             case 'SIGNOUT': return <ModalSignout />; break
