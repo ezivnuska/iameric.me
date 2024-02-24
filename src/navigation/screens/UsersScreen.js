@@ -6,8 +6,8 @@ import {
     Screen,
 } from '.'
 
-export default ({ title, ...props }) => (
-    <Screen title={title}>
+export default ({ ...props }) => (
+    <Screen>
         <UserModule {...props} />
     </Screen>
 )

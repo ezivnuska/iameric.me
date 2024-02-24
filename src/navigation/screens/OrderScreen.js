@@ -4,10 +4,12 @@ import {
 } from '@components'
 import {
     Screen,
+    ScreenTitle,
 } from '.'
 
 export default () => (
-    <Screen title='Orders'>
+    <Screen>
+        <ScreenTitle title='Orders' />
         <OrderList />
     </Screen>
 )

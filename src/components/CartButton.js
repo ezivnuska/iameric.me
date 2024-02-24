@@ -24,20 +24,14 @@ export default () => {
     }
 
     return (
-        <View
-            style={{
-                marginHorizontal: 5,
-            }}
-        >
-            <IconButton
-                type='primary'
-                label={getItemCount(cart[0].items)}
-                iconName='cart-outline'
-                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'CART' })}
-                padded={true}
-                textStyles={{ color: theme?.colors.buttonLabel }}
-            />
-
-        </View>
+        <IconButton
+            type='primary'
+            label={getItemCount(cart[0].items)}
+            iconName='cart-outline'
+            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'CART' })}
+            padded={true}
+            textStyles={{ color: theme?.colors.buttonLabel }}
+            styles={{ flexGrow: 0, flexShrink: 0 }}
+        />
     )
 }

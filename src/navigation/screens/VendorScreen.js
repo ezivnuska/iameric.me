@@ -9,6 +9,7 @@ import {
 } from '@components'
 import {
     Screen,
+    ScreenTitle,
 } from '.'
 import { AppContext } from '../../AppContext'
 import { loadUserById } from '@utils/data'
@@ -102,7 +103,8 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <Screen title='Vendors'>
+        <Screen>
+            <ScreenTitle title='Vendors' />
             
             {loading
                 ? <LoadingView label={loading} />

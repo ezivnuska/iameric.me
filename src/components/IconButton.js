@@ -8,7 +8,20 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useTheme } from 'react-native-paper'
 
-export default ({ onPress, disabled, type = 'default', padded = true, align = 'center', alignIcon = 'left', transparent = false, label = null, iconName = null, textStyles = null, ...props }) => {
+export default ({
+    onPress,
+    disabled,
+    type = 'default',
+    padded = true,
+    align = 'center',
+    alignIcon = 'left',
+    transparent = false,
+    label = null,
+    iconName = null,
+    textStyles = null,
+    outline = false,
+    ...props
+}) => {
 
     const theme = useTheme()
 
@@ -31,17 +44,20 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                 flexDirection: 'row',
                 justifyContent: align,
                 alignItems: 'center',
+                // flex: 1,
                 flexShrink: 0,
                 flexGrow: 0,
                 // minWidth: 180,
-                // marginVertical: 3,
+                // marginVertical: 5,
                 paddingRight: padded ? 8 : 0,
                 // paddingVertical: 3,
                 paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
                 backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                 borderRadius: 10,
+                borderWidth: outline ? 1 : 0,
+                borderColor: theme?.colors.border,
                 textAlign: 'center',
-                // height: padded ? 35 : 'auto',
+                // height: padded ? 30 : 'auto',
                 ...props.style,
             }}
         >
@@ -55,8 +71,8 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                             flexBasis: 'auto',
                             flexShrink: 1,
                             flexGrow: 0,
-                            marginRight: label ? 8 : 0,
                             lineHeight: 30,
+                            marginRight: label ? 5 : 0,
                         },
                         textStyles,
                     ]}
@@ -74,6 +90,7 @@ export default ({ onPress, disabled, type = 'default', padded = true, align = 'c
                             color: transparent ? theme?.colors.textDefault : theme?.colors.buttonLabel,
                             lineHeight: 30,
                             letterSpacing: 0,
+                            marginHorizontal: align === 'left' ? 0 : 8,
                         },
                         textStyles || {},
                     ]}

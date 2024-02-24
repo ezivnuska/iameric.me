@@ -71,14 +71,37 @@ export default ({ userId }) => {
         
         if (!data) {
             console.log('Error fetching user images.')
-        } else if (!data.images || !data.images.length) {
-            console.log('no images found.')
-            setImages([])
-        } else {
-            setImages(data.images)
+        // } else if (!data.images || !data.images.length) {
+        //     console.log('no images found.')
+        //     setImages([])
+        // } else {
+        //     setImages(data.images)
         }
         
         dispatch({ type: 'SET_LOADING', loading: null })
+    }
+
+    const getImageDims = (w, h) => {
+        let scale = 1
+        let width = w
+        let height = h
+        if (w >= h) {// if landscape
+            if (w > 200) {
+                scale = 200 / width
+                width *= scale
+                height *= scale
+            }
+        } else {// if portrait
+            if (h > 200) {
+                scale = 200 / height
+                width *= scale
+                height *= scale
+            }
+        }
+        return {
+            width,
+            height,
+        }
     }
 
     // TODO: clean this.
@@ -93,15 +116,19 @@ export default ({ userId }) => {
         const source = filename ?
             `${IMAGE_PATH}/${username}/${filename}` :
             `${IMAGE_PATH}/avatar-default.png`
+
+        const { width, height } = profileImage
+            ? getImageDims(profileImage.width, profileImage.height)
+            : { width: 200, height: 200 }
         
         return (
             <Image
                 source={source}
                 style={{
-                    width: profileImage ? profileImage.width : 250,
-                    height: profileImage ? profileImage.width : 250,
+                    width,
+                    height,
                     resizeMode: 'cover',
-                    marginVertical: 15,
+                    // marginVertical: 15,
                 }}
             />
         )
@@ -114,11 +141,11 @@ export default ({ userId }) => {
                 <>
                     {renderUserAvatar()}
 
-                    <ImageList
+                    {/* <ImageList
                         images={images}
                         username={userDetails.username}
                         onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
-                    />
+                    /> */}
                     {/* <UserImageModule user={userDetails} /> */}
                 </>
             )

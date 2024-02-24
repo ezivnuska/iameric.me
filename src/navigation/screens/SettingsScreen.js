@@ -9,6 +9,7 @@ import {
 } from '@components'
 import {
     Screen,
+    ScreenTitle,
 } from '.'
 import { AppContext } from '../../AppContext'
 
@@ -19,7 +20,8 @@ export default () => {
     } = useContext(AppContext)
 
     return (
-        <Screen title='Settings'>
+        <Screen>
+            <ScreenTitle title='Settings' />
             
             {user && (
                 <View>

@@ -3,11 +3,11 @@ import {
     View,
 } from 'react-native'
 import {
+    FeedbackForm,
+    ImageDetail,
     ModalCart,
     ModalDestroy,
     ModalFeatured,
-    ModalFeedback,
-    ModalImage,
     ModalProfile,
     ModalSignin,
     ModalSignup,
@@ -25,8 +25,8 @@ export default ({ name, close }) => {
             case 'CART': return <ModalCart />; break
             case 'DESTROY': return <ModalDestroy />; break
             case 'FEATURED': return <ModalFeatured />; break
-            case 'FEEDBACK': return <ModalFeedback />; break
-            case 'IMAGE': return <ModalImage />; break
+            case 'FEEDBACK': return <FeedbackForm />; break
+            case 'IMAGE': return <ImageDetail />; break
             case 'LOCATION': return <ModalLocation />; break
             case 'PRODUCT': return <ProductForm />; break
             case 'PROFILE': return <ModalProfile />; break
@@ -48,6 +48,7 @@ export default ({ name, close }) => {
         >
             <View
                 style={{
+                    width: '100%',
                     justifyContent: 'center',
                 }}
             >

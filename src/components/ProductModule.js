@@ -39,31 +39,11 @@ export default () => {
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
-    return (
-        <View>
-            <IconButton
-                label='Products'
-                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })}
-                disabled={loading}
-                iconName='add-outline'
-                alignIcon='right'
-                align='left'
-                padded={false}
-                transparent
-                textStyles={classes.headerSecondary}
+    return products
+        ? (
+            <ProductList
+                products={products}
             />
-
-            {loading
-                ? <Text>Loading...</Text>
-                : products
-                    ? (
-                        <ProductList
-                            products={products}
-                        />
-                    )
-                    : <Text>No products to display.</Text>
-            }
-            
-        </View>
-    )
+        )
+        : <Text>No products to display.</Text>
 }

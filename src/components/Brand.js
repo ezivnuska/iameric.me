@@ -14,12 +14,14 @@ export default ({ onPress }) => {
     return (
         <TouchableOpacity
             style={{
+                flex: 1,
                 paddingHorizontal: layout.horizontalPadding,
+                paddingVertical: 3,
             }}
             onPress={onPress}
         >
             <Text style={{
-                lineHeight: 30,
+                lineHeight: 26,
                 fontSize: 26,
                 fontWeight: 700,
                 color: theme?.colors.brandLight,

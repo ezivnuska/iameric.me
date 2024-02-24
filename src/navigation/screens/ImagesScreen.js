@@ -6,6 +6,7 @@ import {
 } from '@components'
 import {
     Screen,
+    ScreenTitle,
 } from '.'
 import axios from 'axios'
 import { AppContext } from '../../AppContext'
@@ -44,7 +45,8 @@ export default () => {
     }
 
     return (
-        <Screen title='Images'>
+        <Screen>
+            <ScreenTitle title='Images' />
             
             {loading
                 ? <LoadingView loading={loading} />

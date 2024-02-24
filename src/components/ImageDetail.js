@@ -136,6 +136,9 @@ export default ({ onDelete = null }) => {
                 flexDirection: orientation === 'portrait' ? 'column' : 'row',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
+                borderWidth: 1,
+                borderColor: 'red',
+                borderStyle: 'dotted',
             }}
         >
             <View

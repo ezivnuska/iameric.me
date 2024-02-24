@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     Pressable,
     View,
 } from 'react-native'
 import {
     ThemedText,
-    HeaderIconButton,
+    IconButton,
     LoadingView,
     LocationDetails,
 } from '.'
@@ -42,13 +42,16 @@ export default ({ userId }) => {
     }
 
     return (
-        <View>
+        <View style={{ marginVertical: 10 }}>
             
-            <HeaderIconButton
+            <IconButton
                 iconName={location ? 'create-outline' : 'add-outline'}
                 label='Address'
                 disabled={loading}
                 onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'LOCATION' })}
+                alignIcon='right'
+                transparent
+                align='left'
             />
             
             {loading

@@ -100,19 +100,19 @@ export default () => {
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_CUSTOMER' })}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
+                        style={{ marginVertical: 5 }}
                     />
                 </View>
 
-                <View>
-                    <IconButton
-                        label='Preview'
-                        iconName='eye-outline'
-                        onPress={() => onConnect('customer')}
-                        alignIcon='right'
-                        transparent
-                        textStyles={{ color: '#fff' }}
-                    />
-                </View>
+                <IconButton
+                    label='Preview'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('customer')}
+                    alignIcon='right'
+                    transparent
+                    textStyles={{ color: '#fff' }}
+                    style={{ marginVertical: 5 }}
+                />
             </ImageSegment>
 
             <ImageSegment
@@ -143,19 +143,20 @@ export default () => {
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_VENDOR' })}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
+                        style={{ marginVertical: 5 }}
                     />
                 </View>
 
-                <View>
-                    <IconButton
-                        label='Preview'
-                        iconName='eye-outline'
-                        onPress={() => onConnect('vendor')}
-                        alignIcon='right'
-                        transparent
-                        textStyles={{ color: '#fff' }}
-                    />
-                </View>
+                <IconButton
+                    label='Preview'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('vendor')}
+                    alignIcon='right'
+                    transparent
+                    textStyles={{ color: '#fff' }}
+                    style={{ marginVertical: 5 }}
+                />
+
             </ImageSegment>
 
             <ImageSegment
@@ -186,19 +187,20 @@ export default () => {
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_DRIVER' })}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
+                        style={{ marginVertical: 5 }}
                     />
                 </View>
 
-                <View>
-                    <IconButton
-                        label='Preview'
-                        iconName='eye-outline'
-                        onPress={() => onConnect('driver')}
-                        alignIcon='right'
-                        transparent
-                        textStyles={{ color: '#fff' }}
-                    />
-                </View>
+                <IconButton
+                    label='Preview'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('driver')}
+                    alignIcon='right'
+                    transparent
+                    textStyles={{ color: '#fff' }}
+                    style={{ marginVertical: 5 }}
+                />
+
             </ImageSegment>
 
         </View>

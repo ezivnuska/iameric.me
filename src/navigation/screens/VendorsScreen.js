@@ -8,7 +8,7 @@ import {
     VendorList,
 } from '@components'
 import {
-    Screen,
+    Screen, ScreenTitle,
 } from '.'
 import { loadUsersByRole } from '@utils/data'
 import { AppContext } from '../../AppContext'
@@ -38,7 +38,8 @@ export default props => {
     }
     
     return (
-        <Screen title='Merchants'>
+        <Screen>
+            <ScreenTitle title='Merchants' />
             
             {loading
                 ? <LoadingView label={loading} />

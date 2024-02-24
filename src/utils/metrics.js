@@ -12,7 +12,8 @@
 // const moderateScale = (size, factor = 0.5) => size + (horizontalScale(size) - size) * factor
 
 const getSize = dims => {
-    if (dims.width <= 540) return 'small'
+    const orientation = getOrientation(dims)
+    if (dims.width <= 540 || orientation === 'portrait') return 'small'
     else if (dims.width <= 712) return 'medium'
     else return 'large'
 }

@@ -193,12 +193,7 @@ export default  () => {
     }
 
     return (
-        <View
-            style={[
-                classes.formContainer,
-                { width: '100%' },
-            ]}
-        >
+        <View style={classes.formContainer}>
 
             <CategoryPicker
                 style={{ marginBottom: 10 }}

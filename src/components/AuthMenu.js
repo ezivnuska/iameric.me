@@ -8,6 +8,7 @@ import {
 import {
     CartButton,
     IconButton,
+    ThemedText,
 } from '.'
 import { AppContext } from '../AppContext'
 import { useTheme } from 'react-native-paper'
@@ -45,6 +46,10 @@ const UserButton = ({ user }) => {
                 shadowOpacity: 0.5,
                 shadowRadius: 4,
                 elevation: 1,
+                height: 30,
+                borderWidth: 1,
+                borderColor: '#fff',
+                borderStyle: 'dotted',
             }}
         >
             <View
@@ -68,13 +73,14 @@ const UserButton = ({ user }) => {
                 />
             </View>
     
-            <Text style={{
-                color: theme?.colors.textDefault,
-                fontWeight: 700,
-                lineHeight: 35,
-            }}>
+            <ThemedText
+                style={{
+                    fontWeight: 700,
+                    lineHeight: 30,
+                }}
+            >
                 {user.username}
-            </Text>
+            </ThemedText>
             
         </Pressable>
     )
@@ -90,46 +96,38 @@ export default ({ user }) => {
         loading,
     } = useContext(AppContext)
 
-    return (
+    return user ? (
         <View style={{
+            flex: 1,
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             // height: '100%',
+            borderWidth: 1,
+            borderStyle: 'dotted',
+            borderColor: 'green',
         }}>
+            {cart?.length && <CartButton />}
 
-            {user ? (
-                <View style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    // height: '100%',
-                }}>
-                    {cart?.length && <CartButton />}
+            <UserButton user={user} />
 
-                    <UserButton user={user} />
-
-                    <IconButton
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNOUT' })}
-                        disabled={loading}
-                        iconName='close-outline'
-                        textStyles={{ color: theme?.colors.textDefault }}
-                        transparent
-                    />
-                </View>
-            ) : (
-                <IconButton
-                    iconName='log-in-outline'
-                    label='Sign In'
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNIN' })}
-                    disabled={loading}
-                    alignIcon='right'
-                    transparent
-                />
-            )}
-            
+            <IconButton
+                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNOUT' })}
+                disabled={loading}
+                iconName='close-outline'
+                textStyles={{ color: theme?.colors.textDefault }}
+                transparent
+            />
         </View>
+    ) : (
+        <IconButton
+            iconName='log-in-outline'
+            label='Sign In'
+            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNIN' })}
+            disabled={loading}
+            alignIcon='right'
+            transparent
+        />
     )
 }

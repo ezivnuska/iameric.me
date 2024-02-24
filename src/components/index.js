@@ -1,4 +1,3 @@
-import AuthMenu from './AuthMenu'
 import Avatar from './Avatar'
 import Brand from './Brand'
 import Cart from './Cart'
@@ -18,8 +17,6 @@ import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormButton from './FormButton'
 import FormInput from './FormInput'
-import Header from '../layout/Header'
-import HeaderIconButton from './HeaderIconButton'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
 import ImageDetail from './ImageDetail'
@@ -38,11 +35,9 @@ import ModalCart from './ModalCart'
 import ModalDestroy from './ModalDestroy'
 import ModalFactory from './ModalFactory'
 import ModalFeatured from './ModalFeatured'
-import ModalFeedback from './ModalFeedback'
 import ModalImage from './ModalImage'
 import ModalImageSelector from './ModalImageSelector'
 import ModalLocation from './ModalLocation'
-import ModalProductForm from './ModalProductForm'
 import ModalProfile from './ModalProfile'
 import ModalSignin from './ModalSignin'
 import ModalSignup from './ModalSignup'
@@ -72,7 +67,6 @@ import UserModule from './UserModule'
 import VendorList from './VendorList'
 
 export {
-    AuthMenu,
     Avatar,
     Brand,
     Cart,
@@ -92,7 +86,6 @@ export {
     FileSelector,
     FormButton,
     FormInput,
-    HeaderIconButton,
     HoverableView,
     IconButton,
     ImageDetail,
@@ -111,11 +104,9 @@ export {
     ModalDestroy,
     ModalFactory,
     ModalFeatured,
-    ModalFeedback,
     ModalImage,
     ModalImageSelector,
     ModalLocation,
-    ModalProductForm,
     ModalProfile,
     ModalSignin,
     ModalSignup,

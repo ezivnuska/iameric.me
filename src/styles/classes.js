@@ -89,7 +89,15 @@ export default {
         marginBottom: 10,
     },
     formContainer: {
-        //
+        width: '100%',
+        minWidth: 300,
+        maxWidth: 400,
+        flexShrink: 1,
+        flexGrow: 1,
+        textAlign: 'left',
+        // borderWidth: 1,
+        // borderColor: 'yellow',
+        marginHorizontal: 'auto',
 	},
 	formColumns: {
 		display: 'flex',
@@ -120,6 +128,8 @@ export default {
 		fontSize: 18,
 		lineHeight: 22,
 		outlineWidth: 0,
+        width: '100%',
+        minWidth: 300,
 	},
 	formTextArea: {
         height: 80,

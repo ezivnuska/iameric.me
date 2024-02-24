@@ -140,8 +140,6 @@ export default ({ userId, clear }) => {
     return (
         <View
             style={{
-                borderWidth: 1,
-                borderColor: 'yellow',
                 marginHorizontal: 'auto',
             }}
         >
@@ -154,15 +152,18 @@ export default ({ userId, clear }) => {
                                 style={{
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    height: 40,
                                 }}
                             >
-                                <ThemedText style={classes.headerSecondary}>
+                                <ThemedText style={[classes.headerSecondary, { paddingHorizontal: 7 }]}>
                                     {userDetails.username}
                                 </ThemedText>
                                 
                                 <IconButton
                                     iconName='close-outline'
                                     onPress={clear}
+                                    transparent
                                 />
 
                             </View>
@@ -174,6 +175,9 @@ export default ({ userId, clear }) => {
                                 onPress={() => {
                                     navigationRef.navigate('Users', { screen: 'User', params: { id: userDetails._id} })
                                     clear()
+                                }}
+                                style={{
+                                    marginTop: 10,
                                 }}
                             />
 

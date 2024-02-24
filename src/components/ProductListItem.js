@@ -84,7 +84,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
-                            justifyContent: 'space-between',
+                            justifyContent: 'flex-start',
                             marginBottom: 2,
                         }}
                     >
@@ -94,8 +94,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                                 classes.productTitle,
                                 {
                                     flexBasis: 'auto',
-                                    flexGrow: 1,
-                                    flexBasis: '80%',
+                                    flexGrow: 0,
                                 }
                             ]}
                         >
@@ -104,8 +103,8 @@ export default ({ onDelete, product, onPress, ...props }) => {
 
                         <ThemedText
                             style={{
-                                flexBasis: '20%',
-                                textAlign: 'right',
+                                flexBasis: 'auto',
+                                marginLeft: 20,
                                 flexGrow: 0,
                             }}
                             bold

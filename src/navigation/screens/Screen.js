@@ -25,6 +25,7 @@ export default ({ children, title = null, secure = true, tabs = true, padded = t
         <View
             style={[
                 {
+                    alignItems: 'flex-start',
                     height: dims.height - 50,
                     backgroundColor: theme?.colors.background,
                 },
@@ -33,6 +34,7 @@ export default ({ children, title = null, secure = true, tabs = true, padded = t
             <View
                 style={{
                     // height: dims.height - 100,
+                    width: '100%',
                     height: tabs ? dims.height - 100 : '100%',
                     backgroundColor: theme?.colors.screen,
                 }}
@@ -41,10 +43,12 @@ export default ({ children, title = null, secure = true, tabs = true, padded = t
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{
-                        width: '100%',
+                        // width: '100%',
                         height: tabs ? dims.height - 100 : dims.height - 50,
                         textAlign: 'left',
                         paddingHorizontal:  padded ? 8 : 0,
+                        // borderWidth: 1,
+                        // borderColor: 'yellow',
                     }}
                 >
                     <View

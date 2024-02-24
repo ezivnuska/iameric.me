@@ -49,7 +49,7 @@ export default () => {
                 }}
             />
 
-            <DriverTabStack.Screen
+            {/* <DriverTabStack.Screen
                 name='Vendors'
                 component={VendorNavigator}
                 options={({ route, navigation }) => ({
@@ -58,7 +58,7 @@ export default () => {
                         <Icon name='fast-food-outline' size={iconSize} color={color} />
                     ),
                 })}
-            />
+            /> */}
 
             <DriverTabStack.Screen
                 name='Users'

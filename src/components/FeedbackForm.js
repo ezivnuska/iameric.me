@@ -63,6 +63,7 @@ export default () => {
                 keyboardType='default'
                 onKeyPress={onEnter}
                 autoFocus
+                multiline
             />
 
             <IconButton

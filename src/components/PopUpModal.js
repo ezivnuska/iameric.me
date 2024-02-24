@@ -25,7 +25,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                 style={{
                     position: 'relative',
                     height: '100%',
-
+                    textAlign: 'center',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
@@ -41,6 +41,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         left: 0,
                         backgroundColor: theme?.colors.modalBackground,
                         opacity: 0.9,
+                        
                     }}
                     onPress={onRequestClose}
                 />
@@ -60,30 +61,28 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
 
                 <View
                     style={{
-                        zIndex: 10,
-                        // width: '100%',
-                        // height: 'auto',
-                        minWidth: 200,
-                        maxWidth: 900,
-                        maxHeight: '90%',
-                        paddingVertical: 15,
-                        paddingHorizontal: 20,
+                        position: 'relative',
+                        height: '100%',
+                        width: '100%',
+                        minWidth: 300,
+                        maxWidth: 400,
                         marginHorizontal: 'auto',
                         backgroundColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.screen,
-                        // borderRadius: 8,
                         borderWidth: transparent ? 0 : 1,
                         borderColor: transparent ? 'rgba(255, 255, 255, 0)' : theme?.colors.border,
-                        flexBasis: 'auto',
+                        // flexBasis: 'auto',
+                        backgroundColor: 'rgba(0, 0, 0, 0.25)',
                         // borderWidth: 1,
-                        // borderColor: 'yellow',
-                        backgroundColor: 'rgba(0, 0, 0, 0.25)'
+                        // borderColor: 'red',
+                        // flexGrow: 1,
                     }}
                 >
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         style={{
-                            // width: '100%',
-                            // paddingVertical: 10,
+                            paddingHorizontal: 'auto',
+                            textAlign: 'center',
+                            paddingVertical: 100,
                         }}
                     >
                         {children}
