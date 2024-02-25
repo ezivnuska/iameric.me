@@ -75,7 +75,7 @@ export default ({
                             flexShrink: 1,
                             flexGrow: 0,
                             lineHeight: 30,
-                            marginRight: label ? 5 : 0,
+                            marginRight: label ? 0 : 0,
                         },
                         textStyles,
                     ]}
@@ -94,6 +94,7 @@ export default ({
                             lineHeight: 30,
                             letterSpacing: 0,
                             marginHorizontal: align === 'left' ? 0 : 8,
+                            textAlign: align,
                         },
                         textStyles || {},
                     ]}

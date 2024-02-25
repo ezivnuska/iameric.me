@@ -27,89 +27,119 @@ export default ({ item, username }) => {
     return (
         <View
             style={{
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                paddingTop: 15,
+                paddingHorizontal: 10,
                 borderBottomWidth: 1,
-                borderBottomColor: '#ccc',
-                paddingVertical: 10,
+                borderBottomColor: '#777',
             }}
         >
             <View
                 style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    // alignItems: 'baseline',
+                    flexBasis: 'auto',
+                    flexGrow: 1,
+                    flexShrink: 1,
                 }}
             >
-                {image ? (
-                    <View
-                        style={{
-                            marginBottom: 10,
-                            flexBasis: IMAGE_SIZE + 10,
-                            flexGrow: 0,
-                            flexShrink: 0,
-                        }}
-                    >
-                        <Image
-                            width={IMAGE_SIZE}
-                            height={IMAGE_SIZE}
-                            source={{ uri: `${IMAGE_PATH}/${username}/thumb/${image.filename}` }}
-                            style={{
-                                resizeMode: 'stretch',
-                                width: IMAGE_SIZE,
-                                height: IMAGE_SIZE,
-                                borderWidth: 1,
-                                borderColor: theme?.colors.border,
-                            }}
-                        />
-                    </View>
-                ) : null}
-
                 <View
                     style={{
-                        flexBasis: 'auto',
-                        flexGrow: 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'fex-start',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
                         alignItems: 'flex-start',
                     }}
                 >
-                    <ThemedText style={classes.userTitle}>
-                        {title}
-                    </ThemedText>
+                    {image ? (
+                        <View
+                            style={{
+                                flexBasis: IMAGE_SIZE + 12,
+                            }}
+                        >
+                            <Image
+                                width={IMAGE_SIZE}
+                                height={IMAGE_SIZE}
+                                source={{ uri: `${IMAGE_PATH}/${username}/thumb/${image.filename}` }}
+                                style={{
+                                    resizeMode: 'stretch',
+                                    width: IMAGE_SIZE,
+                                    height: IMAGE_SIZE,
+                                    borderWidth: 1,
+                                    borderColor: '#999',
+                                    shadowColor: '#000',
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                    elevation: 5,
+                                }}
+                            />
+                        </View>
+                    ) : null}
 
-                    <IconButton
-                        onPress={() => dispatch({ type: 'SET_FEATURED', featured: item })}
-                        type='primary'
-                        iconName='add-outline'
-                        label={`$${price}`}
-                        padded={false}
-                        align='center'
+                    <View
                         style={{
-                            flexBasis: 'auto',
-                            flexShrink: 1,
-                            flexGrow: 0,
-                            paddingLeft: 7,
-                            paddingRight: 7,
+                            flex: 1,
+                            flexDirection: 'column',
+                            justifyContent: 'flex-start',
+                            paddingBottom: 15,
                         }}
-                        textStyles={{
-                            lineHeight: 'auto',
-                            paddingVertical: 2,
-                            marginRight: 0,
-                        }}
-                    />
+                    >
+                        <View
+                            style={{
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
+                                flexWrap: 'wrap',
+                                marginBottom: 5,
+                            }}
+                        >
+                            <ThemedText
+                                style={[
+                                    classes.productTitle,
+                                    {
+                                        flexBasis: 'auto',
+                                        flexGrow: 0,
+                                        marginRight: 15,
+                                    }
+                                ]}
+                            >
+                                {title}
+                            </ThemedText>
+                        </View>
+
+                        {(blurb && blurb.length) ? (
+                            <ThemedText>{blurb}</ThemedText>
+                        ) : null}
+
+                        {(desc && desc.length) ? (
+                            <ThemedText>{desc}</ThemedText>
+                        ) : null}
+
+                    </View>
 
                 </View>
                 
             </View>
+            
 
-            {(blurb && blurb.length) ? (
-                <ThemedText>{blurb}</ThemedText>
-            ) : null}
-
-            {(desc && desc.length) ? (
-                <ThemedText>{desc}</ThemedText>
-            ) : null}
+            <IconButton
+                onPress={() => dispatch({ type: 'SET_FEATURED', featured: item })}
+                type='primary'
+                iconName='add-outline'
+                label={`$${price}`}
+                // padded={false}
+                align='center'
+                style={{
+                    // flexBasis: 'auto',
+                    flexGrow: 0,
+                }}
+                textStyles={{
+                    // marginRight: 0,
+                }}
+            />
 
         </View>
     )

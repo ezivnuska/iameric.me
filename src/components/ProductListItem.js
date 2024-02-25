@@ -46,7 +46,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                         flexDirection: 'row',
                         justifyContent: 'flex-start',
                         alignItems: 'flex-start',
-                        marginBottom: 2,
+                        // marginBottom: 2,
                     }}
                 >
                     {product.image ? (

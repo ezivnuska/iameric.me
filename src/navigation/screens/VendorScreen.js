@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
+    View,
 } from 'react-native'
 import {
     IconButton,
@@ -17,6 +18,8 @@ import { useTheme } from 'react-native-paper'
 import axios from 'axios'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+const MAX_IMAGE_WIDTH = 200
+const MAX_IMAGE_HEIGHT = 150
 
 export default ({ navigation, route }) => {
 
@@ -76,6 +79,26 @@ export default ({ navigation, route }) => {
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
+    const getImageDims = (w, h) => {
+        let scale = 1
+        let width = w
+        let height = h
+        if (w >= h) {// if landscape
+            if (w > MAX_IMAGE_WIDTH) {
+                scale = MAX_IMAGE_WIDTH / width
+                width *= scale
+                height *= scale
+            }
+        } else {// if portrait
+            if (h > MAX_IMAGE_HEIGHT) {
+                scale = MAX_IMAGE_HEIGHT / height
+                width *= scale
+                height *= scale
+            }
+        }
+        return { width, height }
+    }
+
     // TODO: clean this.
     const renderUserAvatar = () => {
         
@@ -88,15 +111,17 @@ export default ({ navigation, route }) => {
         const source = filename ?
             `${IMAGE_PATH}/${username}/${filename}` :
             `${IMAGE_PATH}/avatar-default.png`
+
+        const { width, height } = getImageDims(profileImage.width, profileImage.height)
         
         return (
             <Image
                 source={source}
                 style={{
-                    width: profileImage ? profileImage.width : 300,
-                    height: profileImage ? profileImage.width : 300,
+                    width,
+                    height,
                     resizeMode: 'cover',
-                    marginVertical: 15,
+                    marginBottom: 10,
                 }}
             />
         )
@@ -104,35 +129,41 @@ export default ({ navigation, route }) => {
 
     return (
         <Screen>
-            <ScreenTitle title='Vendors' />
+            <ScreenTitle
+                title={userDetails?.username || 'Vendor'}
+            >
+                <IconButton
+                    onPress={() => navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'VendorList' }],
+                    })}
+                    label='Return to Vendors'
+                    textStyles={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        color: theme?.colors.textDefault,
+                    }}
+                    transparent
+                />
+            </ScreenTitle>
             
             {loading
                 ? <LoadingView label={loading} />
                 : userDetails
                     ? (
-                        <>
-                            <IconButton
-                                iconName='arrow-back-outline'
-                                onPress={() => navigation.reset({
-                                    index: 0,
-                                    routes: [{ name: 'VendorList' }],
-                                })}
-                                label='Back'
-                                align='left'
-                                textStyles={{ color: theme?.colors.textDefault }}
-                                transparent
+                        <View>
+                            <View
+                                style={{ paddingHorizontal: 10 }}
+                            >
+                                {renderUserAvatar()}
+                            </View>
+
+                            <Menu
+                                loading={loading}
+                                products={products}
+                                vendor={userDetails}
                             />
-
-                            {renderUserAvatar()}
-
-                            {products && (
-                                <Menu
-                                    loading={loading}
-                                    products={products}
-                                    vendor={userDetails}
-                                />
-                            )}
-                        </>
+                        </View>
                     )
                     : null
             }

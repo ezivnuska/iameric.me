@@ -17,23 +17,33 @@ export default ({ children, title = null }) => {
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                alignItems: 'center',
+                alignItems: 'baseline',
             }}
         >
             <ThemedText
                 style={[
                     classes.pageTitle,
                     {
+                        flexBasis: 'auto',
+                        flexGrow: 1,
                         marginHorizontal: 10,
                         color: theme?.colors.headerPrimary,
+                        lineHeight: 30,
                     },
                 ]}
             >
                 {title}
             </ThemedText>
-            <View>
+
+            <View
+                style={{
+                    flexBasis: 'auto',
+                    flexGrow: 0,
+                }}
+            >
                 {children}
             </View>
+
         </View>
     )
 }

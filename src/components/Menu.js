@@ -13,34 +13,26 @@ import axios from 'axios'
 
 export default ({ loading, products, vendor }) => {
     
-    return (
-        <View
-            style={{
-                height: '100%',
-                marginVertical: 10,
-            }}
-        >
-            {loading
-                ? <LoadingView label={loading} />
-                : (products && products.length)
-                    ? (
-                        <FlatList
-                            data={products}
-                            keyExtractor={item => `product-${item._id}`}
-                            showsVerticalScrollIndicator={false}
-                            renderItem={({ item }) => (
-                                <MenuItem
-                                    item={item}
-                                    username={vendor.username}
-                                />
-                            )}
-                        />
-                    )
-                    : (
-                        <ThemedText>No products to display.</ThemedText>
-                    )
-            }
-
-        </View>
-    )
+    if (loading) return <LoadingView label={loading} />
+    return products && products.length
+        ? (
+            <FlatList
+                data={products}
+                keyExtractor={item => `product-${item._id}`}
+                showsVerticalScrollIndicator={false}
+                renderItem={({ item }) => (
+                    <MenuItem
+                        item={item}
+                        username={vendor.username}
+                    />
+                )}
+            />
+        )
+        : (
+            <ThemedText
+                style={{ paddingHorizontal: 10 }}
+            >
+                There are no available products at this time.
+            </ThemedText>
+        )
 }
