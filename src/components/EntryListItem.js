@@ -12,79 +12,78 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
 import { navigationRef } from '../navigation/RootNavigation'
 import { useTheme } from 'react-native-paper'
+import IconButton from './IconButton'
 
 export default ({ entry, onDelete }) => {
     
     const theme = useTheme()
     
     const {
+        dispatch,
         user,
     } = useContext(AppContext)
     
     const { author, text } = entry
         
     return (
-        <View>
-            {author ? (
-                <View style={{ paddingTop: 10 }}>
-                    <View
+        <View
+            style={{
+                paddingHorizontal: 10,
+                paddingBottom: 15,
+                marginBottom: 10,
+                borderBottomColor: 'white',
+                borderBottomWidth: 1,
+            }}
+        >
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
+                }}
+            >
+                
+                <UserHeading
+                    user={author}
+                    filename={author.profileImage?.filename}
+                    onPress={() => {
+                        dispatch({ type: 'SET_PROFILE', profile: author })
+                        dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                    }}
+                    // onPress={() => navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })}
+                >
+                    <ThemedText
                         style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
+                            // maxWidth: 485,
+                            flexBasis: 'auto',
                         }}
                     >
+                        {text}
+                    </ThemedText>
                         
-                        <UserHeading
-                            user={author}
-                            filename={author.profileImage?.filename}
-                            onPress={() => navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })}
-                            styleProps={{
-                                flex: 1,
-                                flexBasis: 'auto',
-                                flexGrow: 1,
-                            }}
-                        />
+                </UserHeading>
 
-                        {(author._id === user._id || user.role === 'admin') ? (
-                            <View
-                                style={{
-                                    flex: 1,
-                                    flexBasis: 'auto',
-                                    flexShrink: 1,
-                                    flexGrow: 0,
-                                    alignContent: 'center',
-                                }}
-                            >
-                                <Pressable
-                                    style={{
-                                        marginLeft: 5,
-                                        marginRight: 2,
-                                        paddingTop: 5,
-                                    }}
-                                    onPress={() => onDelete(entry._id)}
-                                >
-                                    <Icon
-                                        name='trash-outline'
-                                        size={20}
-                                        color={theme?.colors.textDefault}
-                                    />
-                                </Pressable>
-                            </View>
-                        ) : null}
-                    </View>
+                {(author._id === user._id || user.role === 'admin') ? (
                     <View
                         style={{
-                            paddingTop: 7,
-                            paddingBottom: 10,
-                            borderBottomWidth: 0.5,
-                            borderBottomColor: '#666',
+                            flex: 1,
+                            flexBasis: 'auto',
+                            flexShrink: 0,
+                            flexGrow: 0,
+                            alignContent: 'center',
                         }}
                     >
-                        <ThemedText>{text}</ThemedText>
+                        <IconButton
+                            iconName='trash-outline'
+                            onPress={() => onDelete(entry._id)}
+                            // textStyles={{ fontSize: 20 }}
+                            // style={{  }}
+                            transparent
+                        />
                     </View>
-                </View>
-            ) : <ActivityIndicator size='small' />}
+                ) : null}
+            </View>
         </View>
     )
 }

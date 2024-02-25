@@ -69,34 +69,25 @@ export default ({ navigation }) => {
 
     const addItem = item => setItems([item, ...items])
 
-    return (
-        <View
-            style={{
-                paddingBottom: 10,
-            }}
-        >
-            {/* <FeedbackForm onItemAdded={addItem} /> */}
-            {/* <IconButton
-                iconName='add-outline'
-                label='Comment'
-                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'FEEDBACK' })}
-            /> */}
-            
-            {items
-                ? (
-                    <FlatList
-                        data={items}
-                        keyExtractor={(item, index) => `${index}-entry-${item._id}`}
-                        renderItem={({ item }) => (
-                            <EntryListItem
-                                entry={item}
-                                onDelete={removeItemById}
-                            />
-                        )} 
+    return items && items.length
+        ? (
+            <FlatList
+                data={items}
+                keyExtractor={(item, index) => `${index}-entry-${item._id}`}
+                renderItem={({ item }) => (
+                    <EntryListItem
+                        entry={item}
+                        onDelete={removeItemById}
                     />
-                ) : <ThemedText>No entries yet.</ThemedText>
-            }
-
-        </View>
-    )
+                )} 
+            />
+        ) : (
+            <ThemedText
+                style={{
+                    marginLeft: 10,
+                }}
+            >
+                No entries yet.
+            </ThemedText>
+        )
 }

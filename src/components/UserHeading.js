@@ -12,7 +12,7 @@ import { AppContext } from '../AppContext'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ user, filename, onPress = null }) => {
+export default ({ children, user, filename, onPress = null }) => {
 
     const theme = useTheme()
 
@@ -35,14 +35,13 @@ export default ({ user, filename, onPress = null }) => {
         : `${IMAGE_PATH}/avatar-default-small.png`
 
     return (
-        <Pressable
-            disabled={!onPress}
-            onPress={onPress}
+        <View
             style={{
+                flex: 1,
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
-                marginBottom: 10,
+                alignItems: 'baseline',
             }}
         >
             <View
@@ -62,12 +61,17 @@ export default ({ user, filename, onPress = null }) => {
                     source={getSource()}
                 />
             </View>
-    
-            {!loading && (
-                <View
-                    style={{
-                        flexBasis: 'auto',
-                    }}
+            
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                }}
+            >
+                <Pressable
+                    disabled={!onPress}
+                    onPress={onPress}
                 >
                     <Text
                         style={[
@@ -76,9 +80,14 @@ export default ({ user, filename, onPress = null }) => {
                         ]}
                     >
                         {user.username}
-                        {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}</Text>
-                </View>
-            )}
-        </Pressable>
+                        {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
+                    </Text>
+
+                </Pressable>
+                
+                {children ? <View>{children}</View> : null}
+            </View>
+
+        </View>
     )
 }
