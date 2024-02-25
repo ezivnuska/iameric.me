@@ -10,6 +10,9 @@ export default ({ user, onPress }) => (
         onPress={() => navigate('Driver', { id: user._id })}
         style={{ borderBottomWidth: 1 }}
     >
-        <UserHeading user={user} />
+        <UserHeading
+            user={user}
+            style={{ alignItems: 'center' }}
+        />
     </Pressable>
 )

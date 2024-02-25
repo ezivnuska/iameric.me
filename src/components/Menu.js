@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import {
     FlatList,
-    View,
 } from 'react-native'
 import {
     ThemedText,
@@ -28,9 +27,7 @@ export default ({ loading, products, vendor }) => {
             />
         )
         : (
-            <ThemedText
-                style={{ paddingHorizontal: 10 }}
-            >
+            <ThemedText style={{ paddingHorizontal: 10 }}>
                 There are no available products at this time.
             </ThemedText>
         )

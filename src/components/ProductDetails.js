@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {
     Image,
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -10,6 +11,7 @@ import {
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
+const MAX_IMAGE_HEIGHT = 100
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const QuantityControl = ({ value, onChange }) => {
@@ -82,7 +84,32 @@ export default ({ product, onOrder }) => {
 
     const theme = useTheme()
 
+    const dims = useWindowDimensions()
+
     const [quantity, setQuantity] = useState(1)
+
+    const getImageDims = (w, h) => {
+        let scale = 1
+        let width = w
+        let height = h
+        if (w >= h) {// if landscape
+            if (w > (dims.width - 20)) {
+                scale = (dims.width - 20) / width
+                width *= scale
+                height *= scale
+            }
+        }
+        
+        if (h > MAX_IMAGE_HEIGHT) {
+            scale = MAX_IMAGE_HEIGHT / height
+            width *= scale
+            height *= scale
+        }
+
+        return { width, height }
+    }
+
+    const { width, height } = getImageDims(product.image.width, product.image.height)
 
     return product ? (
         <View>
@@ -98,8 +125,8 @@ export default ({ product, onOrder }) => {
                         marginBottom: 20,
                         marginHorizontal: 'auto',
                         flexBasis: 'auto',
-                        width: product.image.width,
-                        height: product.image.height,
+                        width,
+                        height,
                         resizeMode: 'center',
                         borderWidth: 1,
                         borderColor: theme?.colors.border,

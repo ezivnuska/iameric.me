@@ -8,6 +8,7 @@ import {
     ScreenTitle,
 } from '.'
 import { AppContext } from '../../AppContext'
+import { useTheme } from 'react-native-paper'
 
 export default () => {
 
@@ -15,6 +16,8 @@ export default () => {
         dispatch,
         loading,
     } = useContext(AppContext)
+
+    const theme = useTheme()
 
     return (
         <Screen>
@@ -24,13 +27,14 @@ export default () => {
                     iconName='add-outline'
                     onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })}
                     disabled={loading}
-                    // align='left'
-                    transparent
-                    style={{
-                        paddingHorizontal: 10,
-                        paddingLeft: 10,
-                        paddingRight: 10,
+                    alignIcon='right'
+                    textStyles={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        color: theme?.colors.textDefault,
                     }}
+                    outline
+                    transparent
                 />
             </ScreenTitle>
             <ProductList />

@@ -11,7 +11,6 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import LinearGradient from 'react-native-linear-gradient'
 import { useTheme } from 'react-native-paper'
 import { AppContext } from '../AppContext'
 import { navigationRef } from '../navigation/RootNavigation'
@@ -86,7 +85,9 @@ const UserButton = ({ user }) => {
     )
 }
 
-export default ({ user, size, orientation }) => {
+export default ({
+    user,
+}) => {
     
     const {
         cart,
@@ -98,20 +99,21 @@ export default ({ user, size, orientation }) => {
     
     const theme = useTheme()
 
-    const dims = useWindowDimensions()
+    // const dims = useWindowDimensions()
 
-    const renderDims = () => dims.width >= 350 && !cart ? (
-        <ThemedText
-            style={{
-                flex: 1,
-                fontSize: 12,
-                flexGrow: 1,
-                flexShrink: 1,
-            }}
-        >
-            {dims.width} x {dims.height}
-        </ThemedText>
-    ) : null
+    // const renderDims = () => dims.width >= 350 && !cart ? (
+    //     <ThemedText
+    //         style={{
+    //             flex: 1,
+    //             fontSize: 12,
+    //             flexGrow: 1,
+    //             flexShrink: 1,
+    //             lineHeight: 30,
+    //         }}
+    //     >
+    //         {dims.width}x{dims.height}
+    //     </ThemedText>
+    // ) : null
     
     return (
         <View
@@ -120,9 +122,10 @@ export default ({ user, size, orientation }) => {
                 flexDirection: 'row',
                 alignItems: 'flex-end',
                 justifyContent: 'space-between',
-                paddingVertical: 7,
+                alignItems: 'center',
                 paddingHorizontal: 5,
                 opacity: 1,
+                flexWrap: 'wrap',
             }}
             // colors={isThemeDark
             //     ? [ '#222222', '#000000' ]
@@ -131,14 +134,14 @@ export default ({ user, size, orientation }) => {
         >
             <Brand onPress={toggleTheme} />
 
-            {renderDims()}
+            {/* {renderDims()} */}
 
             <IconButton
                 iconName={`${isThemeDark ? 'sunny' : 'moon'}-outline`}
                 onPress={toggleTheme}
                 transparent
                 outline
-                style={{ marginLeft: 10 }}
+                style={{ flexGrow: 0 }}
             />
 
             {user && cart && cart.length && <CartButton style={{ marginLeft: 10 }} />}
@@ -152,6 +155,7 @@ export default ({ user, size, orientation }) => {
                     iconName='close-outline'
                     textStyles={{ color: theme?.colors.textDefault }}
                     transparent
+                    style={{ flexGrow: 0 }}
                 />
             )}
             
@@ -163,7 +167,7 @@ export default ({ user, size, orientation }) => {
                     disabled={loading}
                     alignIcon='right'
                     transparent
-                    textStyles={{ marginHorizontal: 0 }}
+                    // textStyles={{ marginHorizontal: 0 }}
                 />
             )}
         </View>

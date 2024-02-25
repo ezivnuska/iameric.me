@@ -1,22 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
+    useWindowDimensions,
 } from 'react-native'
 import {
-    IconButton,
-    ImageList,
     LoadingView,
 } from '@components'
 import { AppContext } from '../AppContext'
 import { loadUserById } from '@utils/data'
 import axios from 'axios'
-import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+const MAX_IMAGE_HEIGHT = 120
 
 export default ({ userId }) => {
 
-    const theme = useTheme()
+    const dims = useWindowDimensions()
 
     const {
         dispatch,
@@ -71,11 +70,6 @@ export default ({ userId }) => {
         
         if (!data) {
             console.log('Error fetching user images.')
-        // } else if (!data.images || !data.images.length) {
-        //     console.log('no images found.')
-        //     setImages([])
-        // } else {
-        //     setImages(data.images)
         }
         
         dispatch({ type: 'SET_LOADING', loading: null })
@@ -86,22 +80,19 @@ export default ({ userId }) => {
         let width = w
         let height = h
         if (w >= h) {// if landscape
-            if (w > 200) {
-                scale = 200 / width
-                width *= scale
-                height *= scale
-            }
-        } else {// if portrait
-            if (h > 200) {
-                scale = 200 / height
+            if (w > dims.width - 20) {
+                scale = (dims.width - 20) / width
                 width *= scale
                 height *= scale
             }
         }
-        return {
-            width,
-            height,
+        if (h > MAX_IMAGE_HEIGHT) {
+            scale = MAX_IMAGE_HEIGHT / height
+            width *= scale
+            height *= scale
         }
+
+        return { width, height }
     }
 
     // TODO: clean this.
@@ -128,7 +119,6 @@ export default ({ userId }) => {
                     width,
                     height,
                     resizeMode: 'cover',
-                    // marginVertical: 15,
                 }}
             />
         )
@@ -137,17 +127,6 @@ export default ({ userId }) => {
     return loading
         ? <LoadingView label={loading} />
         : userDetails
-            ? (
-                <>
-                    {renderUserAvatar()}
-
-                    {/* <ImageList
-                        images={images}
-                        username={userDetails.username}
-                        onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
-                    /> */}
-                    {/* <UserImageModule user={userDetails} /> */}
-                </>
-            )
+            ? renderUserAvatar()
             : null
 }

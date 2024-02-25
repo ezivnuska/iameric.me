@@ -27,6 +27,7 @@ export default ({ users }) => (
                         user={item}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
                         onPress={() => navigate('Driver', { id: _id })}
+                        style={{ alignItems: 'center' }}
                     />
                 </View>
             )

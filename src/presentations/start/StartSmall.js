@@ -107,7 +107,7 @@ export default () => {
                         iconName='arrow-forward-circle-outline'
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_CUSTOMER' })}
                         alignIcon='right'
-                        textStyles={{ color: '#fff' }}
+                        // textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}
                     />
                 </View>
@@ -154,7 +154,7 @@ export default () => {
                         iconName='arrow-forward-circle-outline'
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_VENDOR' })}
                         alignIcon='right'
-                        textStyles={{ color: '#fff' }}
+                        // textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}
                     />
                 </View>
@@ -201,7 +201,7 @@ export default () => {
                         iconName='arrow-forward-circle-outline'
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_DRIVER' })}
                         alignIcon='right'
-                        textStyles={{ color: '#fff' }}
+                        // textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}
                     />
                 </View>

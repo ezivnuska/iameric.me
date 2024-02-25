@@ -41,7 +41,7 @@ export default () => {
             <LinearGradient
                 id='header-container'
                 style={{
-                    flexBasis: 50,
+                    // flexBasis: 50,
                     flexGrow: 0,
                     backgroundColor: theme?.colors.background,
                 }}

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -18,12 +19,13 @@ import { useTheme } from 'react-native-paper'
 import axios from 'axios'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-const MAX_IMAGE_WIDTH = 200
-const MAX_IMAGE_HEIGHT = 150
+// const MAX_IMAGE_HEIGHT = 150
 
 export default ({ navigation, route }) => {
 
     const theme = useTheme()
+
+    const dims = useWindowDimensions()
 
     const {
         dispatch,
@@ -79,25 +81,25 @@ export default ({ navigation, route }) => {
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
-    const getImageDims = (w, h) => {
-        let scale = 1
-        let width = w
-        let height = h
-        if (w >= h) {// if landscape
-            if (w > MAX_IMAGE_WIDTH) {
-                scale = MAX_IMAGE_WIDTH / width
-                width *= scale
-                height *= scale
-            }
-        } else {// if portrait
-            if (h > MAX_IMAGE_HEIGHT) {
-                scale = MAX_IMAGE_HEIGHT / height
-                width *= scale
-                height *= scale
-            }
-        }
-        return { width, height }
-    }
+    // const getImageDims = (w, h) => {
+    //     let scale = 1
+    //     let width = w
+    //     let height = h
+    //     if (w >= h) {// if landscape
+    //         if (w > dims.width - 20) {
+    //             scale = (dims.width - 20) / width
+    //             width *= scale
+    //             height *= scale
+    //         }
+    //     }
+    //     if (height > MAX_IMAGE_HEIGHT) {
+    //         scale = MAX_IMAGE_HEIGHT / height
+    //         width *= scale
+    //         height *= scale
+    //     }
+        
+    //     return { width, height }
+    // }
 
     // TODO: clean this.
     const renderUserAvatar = () => {
@@ -112,8 +114,9 @@ export default ({ navigation, route }) => {
             `${IMAGE_PATH}/${username}/${filename}` :
             `${IMAGE_PATH}/avatar-default.png`
 
-        const { width, height } = getImageDims(profileImage.width, profileImage.height)
-        
+        // console.log('image width', profileImage.width)
+        // const { width, height } = getImageDims(profileImage.width, profileImage.height)
+        // console.log('w/h', width, height)
         return (
             <Image
                 source={source}
@@ -133,40 +136,33 @@ export default ({ navigation, route }) => {
                 title={userDetails?.username || 'Vendor'}
             >
                 <IconButton
+                    label='Return to Vendors'
                     onPress={() => navigation.reset({
                         index: 0,
                         routes: [{ name: 'VendorList' }],
                     })}
-                    label='Return to Vendors'
+                    disabled={loading}
                     textStyles={{
                         fontSize: 16,
                         fontWeight: 400,
                         color: theme?.colors.textDefault,
                     }}
+                    outline
                     transparent
                 />
             </ScreenTitle>
             
             {loading ? <LoadingView label={loading} /> : null}
             
-            {userDetails
-                ? (
-                    <View style={{ paddingBottom: 20 }}>
-                        <View
-                            style={{ paddingHorizontal: 10 }}
-                        >
-                            {renderUserAvatar()}
-                        </View>
+            {userDetails ? (
 
-                        <Menu
-                            loading={loading}
-                            products={products}
-                            vendor={userDetails}
-                        />
-                    </View>
-                )
-                : null
-            }
+                <Menu
+                    loading={loading}
+                    products={products}
+                    vendor={userDetails}
+                />
+            )
+            : null}
             
         </Screen>
     )

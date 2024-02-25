@@ -1,22 +1,15 @@
 import React, { useContext } from 'react'
 import {
-    ActivityIndicator,
-    Pressable,
     View,
 } from 'react-native'
 import {
     ThemedText,
     UserHeading,
 } from '@components'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { AppContext } from '../AppContext'
-import { navigationRef } from '../navigation/RootNavigation'
-import { useTheme } from 'react-native-paper'
 import IconButton from './IconButton'
 
 export default ({ entry, onDelete }) => {
-    
-    const theme = useTheme()
     
     const {
         dispatch,
@@ -38,22 +31,21 @@ export default ({ entry, onDelete }) => {
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    alignItems: 'baseline',
+                    alignItems: 'flex-start',
                 }}
             >
                 
                 <UserHeading
                     user={author}
                     filename={author.profileImage?.filename}
+                    style={{ alignItems: 'flexStart' }}
                     onPress={() => {
                         dispatch({ type: 'SET_PROFILE', profile: author })
                         dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
                     }}
-                    // onPress={() => navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })}
                 >
                     <ThemedText
                         style={{
-                            // maxWidth: 485,
                             flexBasis: 'auto',
                         }}
                     >

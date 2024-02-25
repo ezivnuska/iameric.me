@@ -179,6 +179,7 @@ export default ({ userId, clear }) => {
                                 style={{
                                     marginTop: 10,
                                 }}
+                                textStyles={{ color: theme?.colors.buttonPrimaryLabel }}
                             />
 
                             {/* <ImageList

@@ -6,8 +6,9 @@ import {
 } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import layout from '../styles/layout'
+import { navigationRef } from 'src/navigation/RootNavigation'
 
-export default ({ onPress }) => {
+export default () => {
 
     const theme = useTheme()
     
@@ -15,11 +16,14 @@ export default ({ onPress }) => {
         <TouchableOpacity
             style={{
                 flex: 1,
+                flexGrow: 1,
                 paddingHorizontal: 5,
                 paddingVertical: 3,
-                minWidth: 120,
             }}
-            onPress={onPress}
+            onPress={() => navigationRef.reset({
+                index: 0,
+                routes: [{ name: 'Vendors' }],
+            })}
         >
             <Text style={{
                 lineHeight: 26,

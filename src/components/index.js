@@ -10,7 +10,6 @@ import DeleteAccountButton from './DeleteAccountButton'
 import DestroyForm from './DestroyForm'
 import DriverList from './DriverList'
 import DriverListItem from './DriverListItem'
-import DriverModule from './DriverModule'
 import EntryModule from './EntryModule'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
@@ -56,7 +55,6 @@ import SignInForm from './SignInForm'
 import SignInFormLandscape from './SignInFormLandscape'
 import SignUpForm from './SignUpForm'
 import TimeSelector from './TimeSelector'
-import UserListItem from './UserListItem'
 import UserDetails from './UserDetails'
 import UserDetailsShort from './UserDetailsShort'
 import UserFilter from './UserFilter'
@@ -78,7 +76,6 @@ export {
     DestroyForm,
     DriverList,
     DriverListItem,
-    DriverModule,
     EntryModule,
     EntryListItem,
     FeedbackForm,
@@ -124,7 +121,6 @@ export {
     SignInFormLandscape,
     SignUpForm,
     TimeSelector,
-    UserListItem,
     UserHeading,
     UserFilter,
     UserList,

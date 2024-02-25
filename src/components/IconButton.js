@@ -39,30 +39,33 @@ export default ({
         <Pressable
             onPress={onPress}
             disabled={disabled}
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: align,
-                alignItems: 'center',
-                flexShrink: 0,
-                flexGrow: 0,
-                paddingRight: padded ? 8 : 0,
-                paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
-                backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
-                borderRadius: 10,
-                // borderWidth: outline ? 1 : 0,
-                shadowColor: outline ? theme?.colors.shadow : 'none',
-                shadowOffset: outline ? {
-                    width: 0,
-                    height: 0,
-                } : {},
-                shadowOpacity: 0.25,
-                shadowRadius: 3,
-                elevation: 1,
-                borderColor: theme?.colors.border,
-                textAlign: 'center',
-                ...props.style,
-            }}
+            style={[
+                {
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: align,
+                    alignItems: 'center',
+                    flexShrink: 0,
+                    flexGrow: 0,
+                    paddingRight: padded ? 8 : 0,
+                    paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
+                    backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
+                    borderRadius: 10,
+                    // borderWidth: outline ? 1 : 0,
+                    shadowColor: outline ? theme?.colors.shadow : 'none',
+                    shadowOffset: outline ? ({
+                        width: 0,
+                        height: 0,
+                    }) : null,
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3,
+                    elevation: 1,
+                    borderColor: theme?.colors.border,
+                    textAlign: 'center',
+                    paddingVertical: 3,
+                },
+                props.style,
+            ]}
         >
             {(type === 'danger' || (iconName && alignIcon === 'left')) && (
                 <Icon
@@ -97,10 +100,11 @@ export default ({
                                     : theme?.colors.buttonLabel,
                             lineHeight: 30,
                             letterSpacing: 0,
-                            marginHorizontal: align === 'left' ? 0 : 8,
+                            marginHorizontal: 8,//align === 'left' ? 20 : 8,
                             textAlign: align,
+                            // ...textStyles,
                         },
-                        textStyles || {},
+                        textStyles,
                     ]}
                     bold
                 >
@@ -111,13 +115,14 @@ export default ({
             {(iconName && alignIcon === 'right') && (
                 <Icon
                     name={iconName}
-                    size={18}
-                    color={ textStyles?.color || theme?.colors.textDefault }
+                    size={22}
+                    color={theme?.colors.buttonLabel}
                     style={{
-                        flexBasis: 'auto',
-                        flexShrink: 1,
+                        // flexBasis: 'auto',
+                        // flexShrink: 1,
                         lineHeight: 30,
-                        marginLeft: 5,
+                        fontWeight: 800,
+                        // marginLeft: 5,
                     }}
                 />
             )}

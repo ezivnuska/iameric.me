@@ -91,7 +91,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                                 justifyContent: 'flex-start',
                                 alignItems: 'flex-start',
                                 flexWrap: 'wrap',
-                                gap: 15,
+                                columnGap: 15,
                                 marginBottom: 3,
                             }}
                         >

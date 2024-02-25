@@ -27,6 +27,7 @@ export default ({ users, onPress }) => (
                         user={item}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
                         onPress={() => onPress(item)}
+                        style={{ alignItems: 'center' }}
                     />
                 </View>
             )

@@ -17,7 +17,8 @@ export default ({ children, title = null }) => {
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                alignItems: 'baseline',
+                alignItems: 'center',
+                marginHorizontal: 10,
             }}
         >
             <ThemedText
@@ -26,7 +27,6 @@ export default ({ children, title = null }) => {
                     {
                         flexBasis: 'auto',
                         flexGrow: 1,
-                        marginHorizontal: 10,
                         color: theme?.colors.headerPrimary,
                         lineHeight: 30,
                     },

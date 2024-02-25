@@ -32,7 +32,7 @@ export default props => {
             onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'CART' })}
             padded={true}
             textStyles={{ paddingVertical: 1, color: theme?.colors.buttonPrimaryLabel }}
-            // styles={{  }}
+            styles={{ flexGrow: 0 }}
         />
     )
 }

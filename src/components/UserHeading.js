@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -8,17 +8,12 @@ import {
 import { ThunderboltOutlined } from '@ant-design/icons'
 import classes from '../styles/classes'
 import { useTheme } from 'react-native-paper'
-import { AppContext } from '../AppContext'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ children, user, filename, onPress = null }) => {
+export default ({ children, user, filename, onPress = null, ...props }) => {
 
     const theme = useTheme()
-
-    const {
-        loading,
-    } = useContext(AppContext)
 
     const [online, setOnline] = useState(false)
 
@@ -41,13 +36,14 @@ export default ({ children, user, filename, onPress = null }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
-                alignItems: 'flex-start',
+                gap: 12,
+                ...props.style,
             }}
         >
             <Image
                 style={{
                     flexBasis: 'auto',
-                    marginRight: 10,
+                    flexGrow: 0,
                     width: 32,
                     height: 32,
                     resizeMode: 'stretch',
@@ -56,10 +52,12 @@ export default ({ children, user, filename, onPress = null }) => {
                 // onLoadEnd={() => setLoading(false)}
                 source={getSource()}
             />
-            
+
             <View
                 style={{
                     flex: 1,
+                    flexBasis: 'auto',
+                    flexGrow: 1,
                     justifyContent: 'center',
                     flexWrap: 'wrap',
                 }}
@@ -67,6 +65,7 @@ export default ({ children, user, filename, onPress = null }) => {
                 <Pressable
                     disabled={!onPress}
                     onPress={onPress}
+                    // style={{ marginBottom: 8 }}
                 >
                     <Text
                         style={[
@@ -80,7 +79,8 @@ export default ({ children, user, filename, onPress = null }) => {
 
                 </Pressable>
                 
-                {children ? <View>{children}</View> : null}
+                {children}
+
             </View>
 
         </View>

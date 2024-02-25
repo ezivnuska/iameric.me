@@ -24,7 +24,9 @@ export default () => {
                     label='Comment'
                     iconName='add-outline'
                     onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'FEEDBACK' })}
-                    // align='left'
+                    alignIcon='right'
+                    align='left'
+                    outline
                     style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
                     transparent
                 />

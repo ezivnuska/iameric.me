@@ -18,16 +18,15 @@ export default ({ users, ...props }) => (
             return (
                 <View
                     style={{
-                        paddingTop: 7,
-                        paddingBottom: 4,
+                        paddingVertical: 5,
                         paddingHorizontal: 10,
-                        borderBottomWidth: 1,
                     }}
                 >
                     <UserHeading
                         user={item}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
                         onPress={() => props.navigation.navigate('Vendor', { id: _id })}
+                        style={{ alignItems: 'center' }}
                     />
                 </View>
             )
