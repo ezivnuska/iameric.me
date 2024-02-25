@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import {
     IconButton,
-    ProductModule,
+    ProductList,
 } from '@components'
 import {
     Screen,
@@ -21,15 +21,19 @@ export default () => {
             <ScreenTitle title='Products'>
                 <IconButton
                     label='New Product'
+                    iconName='add-outline'
                     onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })}
                     disabled={loading}
-                    iconName='add-outline'
                     align='left'
-                    style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
                     transparent
+                    style={{
+                        paddingHorizontal: 10,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                    }}
                 />
             </ScreenTitle>
-            <ProductModule />
+            <ProductList />
         </Screen>
     )
 }

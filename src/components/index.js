@@ -48,7 +48,6 @@ import OrderPreview from './OrderPreview'
 import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
-import ProductModule from './ProductModule'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
@@ -117,7 +116,6 @@ export {
     PopUpModal,
     Preview,
     ProductDetails,
-    ProductModule,
     ProductForm,
     ProductList,
     ProductListItem,

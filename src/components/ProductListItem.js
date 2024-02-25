@@ -1,8 +1,6 @@
 import React, { useContext } from 'react'
 import {
     Image,
-    Pressable,
-    Text,
     View,
 } from 'react-native'
 import {
@@ -11,7 +9,6 @@ import {
 } from '@components'
 import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
-// import { useTheme } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -22,113 +19,125 @@ export default ({ onDelete, product, onPress, ...props }) => {
         loading,
         user,
     } = useContext(AppContext)
-    
-    // const theme = useTheme()
 
     return product ? (
-        <Pressable
+        <View
             {...props}
-            onPress={() => onPress(product)}
             style={{
+                display: 'flex',
+                flexDirection: 'row',
                 borderBottomWidth: 1,
-                borderBottomColor: '#ccc',
-                paddingVertical: 10,
+                borderBottomColor: '#777',
+                marginBottom: 15,
+                paddingLeft: 10,
             }}
         >
+
             <View
                 style={{
-
-                    display: 'flex',
-                    flexDirection: 'row',
-                    // justifyContent: 'space-between',
+                    flexBasis: 'auto',
+                    flexGrow: 1,
+                    flexShrink: 1,
                 }}
             >
-                {product.image ? (
-                    <View
-                        style={{
-                            marginBottom: 10,
-                            flexBasis: IMAGE_SIZE + 10,
-                        }}
-                    >
-                        <Image
-                            width={IMAGE_SIZE}
-                            height={IMAGE_SIZE}
-                            source={{ uri: `${IMAGE_PATH}/${user.username}/thumb/${product.image.filename}` }}
-                            style={{
-                                resizeMode: 'stretch',
-                                width: IMAGE_SIZE,
-                                height: IMAGE_SIZE,
-                                borderWidth: 1,
-                                borderColor: '#999',
-                                shadowColor: '#000',
-                                shadowOffset: {
-                                    width: 0,
-                                    height: 2,
-                                },
-                                shadowOpacity: 0.25,
-                                shadowRadius: 4,
-                                elevation: 5,
-                            }}
-                        />
-                    </View>
-                ) : null}
-
                 <View
                     style={{
-                        flexBasis: 'auto',
-                        flexGrow: 1,
-                        flexShrink: 1,
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'flex-start',
+                        marginBottom: 2,
                     }}
                 >
+                    {product.image ? (
+                        <View
+                            style={{
+                                flexBasis: IMAGE_SIZE + 12,
+                            }}
+                        >
+                            <Image
+                                width={IMAGE_SIZE}
+                                height={IMAGE_SIZE}
+                                source={{ uri: `${IMAGE_PATH}/${user.username}/thumb/${product.image.filename}` }}
+                                style={{
+                                    resizeMode: 'stretch',
+                                    width: IMAGE_SIZE,
+                                    height: IMAGE_SIZE,
+                                    borderWidth: 1,
+                                    borderColor: '#999',
+                                    shadowColor: '#000',
+                                    shadowOffset: {
+                                        width: 0,
+                                        height: 2,
+                                    },
+                                    shadowOpacity: 0.25,
+                                    shadowRadius: 4,
+                                    elevation: 5,
+                                }}
+                            />
+                        </View>
+                    ) : null}
+
                     <View
                         style={{
-                            display: 'flex',
-                            flexDirection: 'row',
+                            flex: 1,
+                            flexDirection: 'column',
                             justifyContent: 'flex-start',
-                            marginBottom: 2,
+                            paddingBottom: 15,
                         }}
                     >
-                        
-                        <ThemedText
-                            style={[
-                                classes.productTitle,
-                                {
-                                    flexBasis: 'auto',
-                                    flexGrow: 0,
-                                }
-                            ]}
-                        >
-                            {product.title}
-                        </ThemedText>
-
-                        <ThemedText
+                        <View
                             style={{
-                                flexBasis: 'auto',
-                                marginLeft: 20,
-                                flexGrow: 0,
+                                flex: 1,
+                                flexDirection: 'row',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-start',
+                                flexWrap: 'wrap',
+                                marginBottom: 5,
                             }}
-                            bold
                         >
-                            ${product.price}
-                        </ThemedText>
+                            <ThemedText
+                                style={[
+                                    classes.productTitle,
+                                    {
+                                        flexBasis: 'auto',
+                                        flexGrow: 0,
+                                        marginRight: 15,
+                                    }
+                                ]}
+                            >
+                                {product.title}
+                            </ThemedText>
+
+                            <ThemedText
+                                style={[
+                                    classes.productPrice,
+                                    {
+                                        flexBasis: 'auto',
+                                        flexGrow: 0,
+                                    },
+                                ]}
+                            >
+                                ${product.price}
+                            </ThemedText>
+                        </View>
+
+                        <ThemedText style={classes.productBlurb}>{product.blurb}</ThemedText>
+                        <ThemedText style={classes.textDefault}>{product.desc}</ThemedText>
 
                     </View>
-                    
-                    <ThemedText>{product.blurb}</ThemedText>
-                    <ThemedText>{product.desc}</ThemedText>
+            
+                    <IconButton
+                        iconName='create-outline'
+                        onPress={() => onPress(product)}
+                        disabled={loading}
+                        transparent
+                        style={{ marginTop: -2 }}
+                    />
 
                 </View>
-
-                <IconButton
-                    iconName='trash-outline'
-                    transparent
-                    // type='danger'
-                    // label='Delete Product'
-                    onPress={onDelete}
-                    disabled={loading}
-                    style={{ marginBottom: 10 }}
-                />
+                
             </View>
-        </Pressable>
+        </View>
     ) : null
 }

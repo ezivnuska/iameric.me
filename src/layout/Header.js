@@ -99,32 +99,18 @@ export default ({ user, size, orientation }) => {
 
     const dims = useWindowDimensions()
 
-    const renderDims = () => {
-        let showDims = false
-        let showFull = false
-        if ((dims.width >= 350 && dims.width < 375) || dims.width >= 400) showFull = true
-        if (dims.width >= 350) showDims = true
-        return (
-            <ThemedText
-                style={{
-                    flex: 1,
-                    fontSize: 12,
-                    flexGrow: 1,
-                    flexShrink: 1,
-                }}
-            >
-                {showFull
-                    ? orientation === 'portrait'
-                        ? 'portrait'
-                        : 'landscape'
-                    : orientation === 'portrait'
-                        ? 'P'
-                        : 'L'
-                }
-                {showDims && ` ${dims.width}x${dims.height}`}
-            </ThemedText>
-        )
-    }
+    const renderDims = () => dims.width >= 350 ? (
+        <ThemedText
+            style={{
+                flex: 1,
+                fontSize: 12,
+                flexGrow: 1,
+                flexShrink: 1,
+            }}
+        >
+            {dims.width} x {dims.height}
+        </ThemedText>
+    ) : null
     
     return (
         <LinearGradient

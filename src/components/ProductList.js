@@ -1,15 +1,38 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { FlatList } from 'react-native'
-import { ProductListItem } from '.'
+import {
+    LoadingView,
+    ProductListItem,
+    ThemedText,
+} from '.'
 import { AppContext } from '../AppContext'
-import { deleteProductWithId } from '../utils/data'
+import { deleteProductWithId, loadProducts } from '../utils/data'
 
-export default ({ products, update }) => {
+export default () => {
+
     const {
         dispatch,
-        featured,
-        // products,
+        loading,
+        user,
+        products,
     } = useContext(AppContext)
+
+    useEffect(() => {
+        if (!products) init()
+    }, [])
+
+    const init = async () => {
+        
+        dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
+
+        const productsLoaded = await loadProducts(user._id)
+        
+        if (productsLoaded) {
+            dispatch({ type: 'SET_PRODUCTS', products: productsLoaded })
+        }
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
+    }
 
     const onDelete = async id => {
 
@@ -27,7 +50,9 @@ export default ({ products, update }) => {
         dispatch({ type: 'CLOSE_MODAL' })
     }
 
-    return (
+    if (loading) return <LoadingView />
+
+    return products && products.length ? (
         <FlatList
             data={products}
             listKey={() => 'products'}
@@ -36,14 +61,14 @@ export default ({ products, update }) => {
                 <ProductListItem
                     product={item}
                     key={item => `product-${item._id}`}
-                    update={update}
                     onDelete={() => onDelete(item._id)}
                     onPress={item => dispatch({ type: 'SET_PRODUCT', productData: item })}
                 />
             )}
-            style={{
-                marginVertical: 10,
-            }}
         />
+    ) : (
+        <ThemedText style={{ paddingHorizontal: 10 }}>
+            No products available at this time.
+        </ThemedText>
     )
 }

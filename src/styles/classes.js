@@ -21,11 +21,20 @@ export default {
         // lineHeight: sizes.headerSecondary + 4,// 22
     },
     productTitle: {
-        fontSize: sizes.userTitle,// 18
+        fontSize: sizes.productTitle,// 22
         fontWeight: 600,
-        // lineHeight: 20,
-        // marginBottom: 7,
-        // lineHeight: sizes.headerSecondary + 4,// 22
+        lineHeight: 28,
+    },
+    productPrice: {
+        fontSize: sizes.productPrice,// 22
+        fontWeight: 600,
+        lineHeight: 28,
+    },
+    productBlurb: {
+        fontSize: sizes.productBlurb,
+        fontWeight: 500,
+        lineHeight: 20,
+        paddingBottom: 10,
     },
     textDefault: {
         fontSize: sizes.textDefault,// 16
