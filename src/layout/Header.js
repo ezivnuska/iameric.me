@@ -99,7 +99,7 @@ export default ({ user, size, orientation }) => {
 
     const dims = useWindowDimensions()
 
-    const renderDims = () => dims.width >= 350 ? (
+    const renderDims = () => dims.width >= 350 && !cart ? (
         <ThemedText
             style={{
                 flex: 1,

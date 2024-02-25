@@ -258,7 +258,12 @@ export default () => {
                         onPress={() => onPress(item)}
                         order={item}
                     >
-                        <View style={{ marginVertical: 3 }}>
+                        <View
+                            style={{
+                                marginVertical: 3,
+                                paddingHorizontal: 10,
+                            }}
+                        >
                             {renderOrderProcessButton(item)}
                         </View>
 

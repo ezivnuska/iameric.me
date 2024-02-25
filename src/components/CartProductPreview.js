@@ -47,7 +47,7 @@ const Quantity = ({ quantity }) => {
                 alignItems: 'center',
                 width: 30,
                 height: 30,
-                borderWidth: 1,
+                borderWidth: 2,
                 borderColor: theme?.colors.border,
                 borderRadius: 15,
             }}
@@ -55,10 +55,10 @@ const Quantity = ({ quantity }) => {
             <ThemedText
                 style={{
                     flex: 1,
-                    fontSize: 14,
-                    lineHeight: 20,
-                    textAlign: 'center',
+                    fontSize: 18,
                     fontWeight: 500,
+                    lineHeight: 30,
+                    textAlign: 'center',
                 }}
             >
                 {quantity}
@@ -75,44 +75,41 @@ const CartListItem = ({ item, quantity, ...props }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                alignItems: 'baseline',
+                gap: 10,
                 paddingVertical: 3,
                 marginBottom: 3,
+                paddingHorizontal: 10,
             }}
         >
-            <View
+            <Quantity quantity={quantity} />
+            
+            <ThemedText
                 style={{
                     flexBasis: 'auto',
                     flexGrow: 1,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
+                    fontSize: 20,
+                    lineHeight: 30,
+                    fontWeight: 500,
+                    textAlign: 'left',
                 }}
             >
-                <View
-                    style={{
-                        flexBasis: 'auto',
-                        flexGrow: 0,
-                        flexShrink: 0,
-                        paddingRight: 10,
-                    }}
-                >
-                    <Quantity quantity={quantity} />
-                    {/* <ProductThumb product={item} /> */}
-                </View>
-                    
-                <ThemedText
-                    style={{ flexBasis: 'auto', flexGrow: 1 }}
-                >
-                    {item.title}
-                </ThemedText>
-                
-                <ThemedText
-                    style={classes.itemPrice}
-                >
-                    {Number(item.price) * Number(quantity)}
-                </ThemedText>
-                
-            </View>
+                {item.title}
+            </ThemedText>
+            
+            <ThemedText
+                style={[
+                    classes.itemPrice,
+                    {
+                        fontSize: 18,
+                        lineHeight: 30,
+                        fontWeight: 400,
+                    },
+                ]}
+            >
+                {Number(item.price) * Number(quantity)}
+            </ThemedText>
+            
         </View>
     )
 }
@@ -129,20 +126,36 @@ const CartTotal = ({ order }) => (
     <View
         style={{
             marginTop: 5,
-            paddingTop: 5,
+            paddingTop: 15,
             borderTopWidth: 1,
             borderTopColor: '#ccc',
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
+            marginHorizontal: 10,
         }}
     >
-        <ThemedText bold>
+        <ThemedText
+            style={{
+                flex: 1,
+                fontSize: 22,
+                fontWeight: 400,
+            }}
+        >
             Total:
         </ThemedText>
 
         <ThemedText
-            style={classes.orderTotal}
+            style={[
+                classes.orderTotal,
+                {
+                    flex: 1,
+                    flexShrink: 0,
+                    fontSize: 22,
+                    fontWeight: 500,
+                    paddingLeft: 5,
+                }
+            ]}
         >
             ${getOrderTotal(order)}
         </ThemedText>

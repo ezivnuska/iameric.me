@@ -39,11 +39,11 @@ const reducer = (state = initialState, action) => {
             modal = action.modalName
             break
         case 'CLOSE_MODAL':
-            featured = null
-            image = null
+            // featured = null
+            // image = null
             modal = null
-            productData = null
-            profile = null
+            // productData = null
+            // profile = null
             break
         case 'SET_FEATURED':
             featured = action.featured

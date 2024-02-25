@@ -172,6 +172,7 @@ export default ({ order, children, ...props }) => {
                         marginTop: 10,
                         marginBottom: 5,
                         paddingVertical: 5,
+                        paddingHorizontal: 10,
                         // borderWidth: 1,
                         // borderStyle: 'dotted',
                         // borderColor: '#fff',
@@ -197,6 +198,7 @@ const styles = StyleSheet.create({
     },
     column: {
         flex: 1,
+        paddingBottom: 10,
     },
     heading: {
         marginBottom: 3,

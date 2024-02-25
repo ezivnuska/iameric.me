@@ -8,8 +8,6 @@ export default () => {
 
     const {
         dispatch,
-        loading,
-        // featured,
     } = useContext(AppContext)
 
     const uploadImageData = async imageData => {
@@ -30,8 +28,6 @@ export default () => {
             console.log('Error uploading image/thumb')
             return null
         }
-        
-        // setItems(items ? [...items, data] : [data])
     }
     
     return (

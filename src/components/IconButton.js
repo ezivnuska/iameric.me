@@ -66,7 +66,7 @@ export default ({
         >
             {(type === 'danger' || (iconName && alignIcon === 'left')) && (
                 <Icon
-                    name={type === 'danger' ? 'skull-outline' : iconName}
+                    name={type === 'danger' ? iconName ? iconName : 'skull-outline' : iconName}
                     size={18}
                     color={theme?.colors.backButtonLabel}
                     style={[

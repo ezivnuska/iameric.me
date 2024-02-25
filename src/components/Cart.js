@@ -46,20 +46,30 @@ export default ({ onSubmitted }) => {
             ))}
             
             <View
-                style={{ paddingTop: 10, paddingBottom: 7 }}
+                style={{
+                    marginTop: 20,
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                    gap: 10,
+                }}
             >
                 <IconButton
-                    type='primary'
-                    label='Submit Order'
+                    label='Order It!'
+                    iconName='restaurant-outline'
                     onPress={submitOrder}
+                    alignIcon='right'
+                    type='primary'
                     disabled={loading}
-                    style={{ marginBottom: 10 }}
+                    style={{ flex: 3 }}
                 />
                 
                 <IconButton
-                    label='Clear Cart'
+                    iconName='close-outline'
                     onPress={() => dispatch({ type: 'CLEAR_CART' })}
+                    type='danger'
                     disabled={loading}
+                    style={{ flex: 1 }}
                 />
             </View>
 

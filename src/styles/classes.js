@@ -11,6 +11,7 @@ export default {
         fontSize: sizes.headerSecondary,// 18
         fontWeight: 700,
         lineHeight: 22,
+        marginBottom: 5,
         // lineHeight: sizes.headerSecondary + 4,// 22
     },
     userTitle: {
@@ -48,7 +49,7 @@ export default {
     textSmaller: {
         fontSize: sizes.textSmaller,// 14
         fontWeight: 400,
-        lineHeight: sizes.textDefault + 4,// 20
+        lineHeight: sizes.textDefault + 6,// 20
     },
     buttonText: {
         fontSize: sizes.textDefault - 2,// 16
