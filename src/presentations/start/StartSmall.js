@@ -23,7 +23,7 @@ export default () => {
         dispatch,
     } = useContext(AppContext)
 
-    const dims = useWindowDimensions()
+    const theme = useTheme()
 
     useEffect(() => {
         initialize(dispatch)
@@ -107,7 +107,6 @@ export default () => {
                         iconName='arrow-forward-circle-outline'
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_CUSTOMER' })}
                         alignIcon='right'
-                        // textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}
                     />
                 </View>
@@ -120,6 +119,7 @@ export default () => {
                         alignIcon='right'
                         transparent
                         textStyles={{ color: '#fff' }}
+                        type='primary'
                     />
                 </View>
             </ImageSegment>
@@ -167,6 +167,7 @@ export default () => {
                         alignIcon='right'
                         transparent
                         textStyles={{ color: '#fff' }}
+                        type='primary'
                     />
                 </View>
             </ImageSegment>
@@ -214,6 +215,7 @@ export default () => {
                         alignIcon='right'
                         transparent
                         textStyles={{ color: '#fff' }}
+                        type='primary'
                     />
                 </View>
             </ImageSegment>

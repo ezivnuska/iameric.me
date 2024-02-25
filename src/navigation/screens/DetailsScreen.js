@@ -9,6 +9,7 @@ import {
 } from '@components'
 import {
     Screen,
+    ScreenTitle,
 } from '.'
 import { AppContext } from '../../AppContext'
 import { loadUserById } from '@utils/data'
@@ -108,37 +109,31 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <Screen title={userDetails ? userDetails.username : 'User' }>
+        <Screen>
+            <ScreenTitle title={userDetails ? userDetails.username : 'User' }>
+                <IconButton
+                    label='Return to Users'
+                    onPress={() => navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'UserList' }],
+                    })}
+                    textStyles={{ color: theme?.colors.textDefault }}
+                    transparent
+                    outline
+                />
+            </ScreenTitle>
             
-            {loading
-                ? <LoadingView label={loading} />
-                : userDetails
-                    ? (
-                        <>
-                            <IconButton
-                                iconName='arrow-back-outline'
-                                onPress={() => navigation.reset({
-                                    index: 0,
-                                    routes: [{ name: 'UserList' }],
-                                })}
-                                label='Users'
-                                align='left'
-                                textStyles={{ color: theme?.colors.textDefault }}
-                                transparent
-                            />
+            {loading && <LoadingView label={loading} />}
 
-                            {renderUserAvatar()}
-
-                            <ImageList
-                                images={images}
-                                username={userDetails.username}
-                                onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
-                            />
-                            {/* <UserImageModule user={userDetails} /> */}
-                        </>
-                    )
-                    : null
-            }
+            {userDetails
+                ? (
+                    <ImageList
+                        images={images}
+                        username={userDetails.username}
+                        onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
+                    />
+                )
+                : null}
             
         </Screen>
     )

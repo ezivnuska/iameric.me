@@ -4,28 +4,34 @@ import {
     Pressable,
     Text,
 } from 'react-native'
-// import { Button } from 'antd'
+import { useTheme } from 'react-native-paper'
 
-export default ({ onSelect, products, imageId }) => (
-    <FlatList
-        data={products}
-        listKey={() => 'products'}
-        keyExtractor={(item, index) => 'key' + index}
-        renderItem={({ item }) => (
-            <Pressable
-                type='primary'
-                key={item => `product-${item._id}`}
-                onPress={() => onSelect(item._id)}
-                style={{
-                    padding: 10,
-                    borderWidth: 1,
-                    borderColor: '#fff',
-                    borderRadius: 10,
-                }}
-                disabled={item.image && imageId === item.image._id}
-            >
-                <Text style={{ color: '#fff' }}>{item.title}</Text>
-            </Pressable>
-        )}
-    />
-)
+export default ({ onSelect, products, imageId }) => {
+    
+    const theme = useTheme()
+
+    return (
+        <FlatList
+            data={products}
+            listKey={() => 'products'}
+            keyExtractor={(item, index) => 'key' + index}
+            renderItem={({ item }) => (
+                <Pressable
+                    type='primary'
+                    key={item => `product-${item._id}`}
+                    onPress={() => onSelect(item._id)}
+                    style={{
+                        marginTop: 10,
+                        padding: 10,
+                        borderWidth: 1,
+                        borderColor: theme?.colors.borderColor,
+                        borderRadius: 10,
+                    }}
+                    disabled={item.image && imageId === item.image._id}
+                >
+                    <Text style={{ color: theme?.colors.textDefault }}>{item.title}</Text>
+                </Pressable>
+            )}
+        />
+    )
+}

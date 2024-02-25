@@ -43,6 +43,7 @@ export default ({ images, username, onSelected, uploadImage }) => {
                 flexWrap: 'wrap',
                 gap: 10,
                 width: '100%',
+                // paddingHorizontal: 10,
                 // opacity: loading ? 0.5 : 1.0,
             }}
         >

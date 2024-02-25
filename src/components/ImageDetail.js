@@ -9,6 +9,7 @@ import {
 import {
     IconButton,
     ProductSelector,
+    ThemedText,
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
@@ -146,29 +147,25 @@ export default ({ onDelete = null }) => {
                 justifyContent: 'flex-start',
                 width: '100%',
                 alignItems: 'center',
-                paddingTop: 100,
-                paddingBottom: 200,
+                paddingTop: 20,
+                paddingBottom: 40,
             }}
         >
             <View
                 style={{
                     flexBasis: 'auto',
                     flexGrow: 1,
+                    marginVertical: 20,
                 }}
             >
                 <Image
-                    // width={width}
-                    // height={height}
                     source={{
                         uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
                     }}
                     style={{
                         resizeMode: 'contain',
-                        maxHeight: '95%',
-                        maxWidth: '95%',
                         height: image.height,
                         width: image.width,
-                        borderWidth: 1,
                         marginHorizontal: 'auto',
                     }}
                 />
@@ -178,11 +175,7 @@ export default ({ onDelete = null }) => {
                 <View
                     style={{
                         flexBasis: 'auto',
-                        // flexShrink: 1,
-                        // flexGrow: 1,
                         marginHorizontal: 'auto',
-                        // borderWidth: 1,
-                        // borderColor: 'red',
                     }}
                 >
                     <View
@@ -194,7 +187,8 @@ export default ({ onDelete = null }) => {
                             width: '100%',
                             // height: 50,
                             // marginVertical: layout.verticalPadding,
-                            paddingHorizontal: layout.horizontalPadding,
+                            paddingHorizontal: 'auto',//layout.horizontalPadding,
+                            marginBottom: 10,
                         }}
                     >
                         
@@ -233,22 +227,15 @@ export default ({ onDelete = null }) => {
                             flex: 1,
                             width: '100%',
                         }}>
-                            <Text
-                                style={{
-                                    color: '#fff',
-                                    marginVertical: 7,
-                                }}
-                            >
-                                Make product image:
-                            </Text>
-                            
-                            <View>
-                                <ProductSelector
-                                    onSelect={setProductImage}
-                                    products={products}
-                                    imageId={image._id}
-                                />
-                            </View>
+                            <ThemedText bold>
+                                Set as Product Image
+                            </ThemedText>
+
+                            <ProductSelector
+                                onSelect={setProductImage}
+                                products={products}
+                                imageId={image._id}
+                            />
                         </View>
                     ) : null}
                 </View>

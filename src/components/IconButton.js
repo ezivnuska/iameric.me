@@ -116,7 +116,7 @@ export default ({
                 <Icon
                     name={iconName}
                     size={22}
-                    color={theme?.colors.buttonLabel}
+                    color={type === 'primary' ? theme?.colors.buttonPrimaryLabel : theme?.colors.buttonLabel}
                     style={{
                         // flexBasis: 'auto',
                         // flexShrink: 1,
@@ -124,6 +124,7 @@ export default ({
                         fontWeight: 800,
                         // marginLeft: 5,
                     }}
+                    {...props}
                 />
             )}
         </Pressable>
