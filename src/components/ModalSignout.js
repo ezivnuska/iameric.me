@@ -19,8 +19,6 @@ export default () => {
         await signout(dispatch, user._id)
         
         dispatch({ type: 'CLOSE_MODAL' })
-        
-        // navigationRef.navigate('Start')
     }
     
     return (

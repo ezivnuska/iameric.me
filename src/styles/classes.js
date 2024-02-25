@@ -2,7 +2,7 @@ import sizes from './sizes'
 
 export default {
     pageTitle: {
-        marginVertical: 15,
+        marginVertical: 10,
         fontSize: sizes.headerPrimary,
         fontWeight: 700,
         lineHeight: sizes.headerPrimary + 4,
@@ -98,6 +98,7 @@ export default {
         // borderWidth: 1,
         // borderColor: 'yellow',
         marginHorizontal: 'auto',
+        paddingBottom: 50,
 	},
 	formColumns: {
 		display: 'flex',

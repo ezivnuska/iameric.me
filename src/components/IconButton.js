@@ -44,20 +44,23 @@ export default ({
                 flexDirection: 'row',
                 justifyContent: align,
                 alignItems: 'center',
-                // flex: 1,
                 flexShrink: 0,
                 flexGrow: 0,
-                // minWidth: 180,
-                // marginVertical: 5,
                 paddingRight: padded ? 8 : 0,
-                // paddingVertical: 3,
                 paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
                 backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                 borderRadius: 10,
-                borderWidth: outline ? 1 : 0,
+                // borderWidth: outline ? 1 : 0,
+                shadowColor: outline ? theme?.colors.shadow : 'none',
+                shadowOffset: outline ? {
+                    width: 0,
+                    height: 0,
+                } : {},
+                shadowOpacity: 0.25,
+                shadowRadius: 3,
+                elevation: 1,
                 borderColor: theme?.colors.border,
                 textAlign: 'center',
-                // height: padded ? 30 : 'auto',
                 ...props.style,
             }}
         >
@@ -109,7 +112,7 @@ export default ({
                         flexBasis: 'auto',
                         flexShrink: 1,
                         lineHeight: 30,
-                        marginLeft: 8,
+                        marginLeft: 5,
                     }}
                 />
             )}

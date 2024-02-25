@@ -266,6 +266,12 @@ export default () => {
                 )}
             />
         ) : (
-            <ThemedText>No current orders.</ThemedText>
+            <ThemedText
+                style={{
+                    marginHorizontal: 10,
+                }}
+            >
+                You have no pending orders.
+            </ThemedText>
         )
 }

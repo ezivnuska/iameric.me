@@ -15,8 +15,9 @@ export default ({ onPress }) => {
         <TouchableOpacity
             style={{
                 flex: 1,
-                paddingHorizontal: layout.horizontalPadding,
+                paddingHorizontal: 5,
                 paddingVertical: 3,
+                minWidth: 120,
             }}
             onPress={onPress}
         >
@@ -25,6 +26,7 @@ export default ({ onPress }) => {
                 fontSize: 26,
                 fontWeight: 700,
                 color: theme?.colors.brandLight,
+                flexShrink: 0,
             }}>
                 iam
                 <Text style={{ color: theme?.colors.brandDark }}>

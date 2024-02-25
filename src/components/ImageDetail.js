@@ -143,14 +143,9 @@ export default ({ onDelete = null }) => {
         <Pressable
             onPress={() => dispatch({ type: 'CLOSE_MODAL' })}
             style={{
-                // display: 'flex',
-                // flexDirection: orientation === 'portrait' ? 'column' : 'row',
                 justifyContent: 'flex-start',
                 width: '100%',
                 alignItems: 'center',
-                // borderWidth: 1,
-                // borderColor: 'red',
-                // borderStyle: 'dotted',
                 paddingTop: 100,
                 paddingBottom: 200,
             }}
@@ -168,14 +163,11 @@ export default ({ onDelete = null }) => {
                         uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
                     }}
                     style={{
-                        // flex: 1,
                         resizeMode: 'contain',
                         maxHeight: '95%',
                         maxWidth: '95%',
                         height: image.height,
                         width: image.width,
-                        // width: 'auto',
-                        // height: 'auto',
                         borderWidth: 1,
                         marginHorizontal: 'auto',
                     }}

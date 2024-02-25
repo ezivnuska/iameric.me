@@ -11,6 +11,7 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
+import LinearGradient from 'react-native-linear-gradient'
 import { useTheme } from 'react-native-paper'
 import { AppContext } from '../AppContext'
 import { navigationRef } from '../navigation/RootNavigation'
@@ -44,8 +45,8 @@ const UserButton = ({ user }) => {
                     width: 0,
                     height: 0,
                 },
-                shadowOpacity: 0.5,
-                shadowRadius: 4,
+                shadowOpacity: 0.25,
+                shadowRadius: 3,
                 elevation: 1,
                 height: 30,
             }}
@@ -101,13 +102,15 @@ export default ({ user, size, orientation }) => {
     const renderDims = () => {
         let showDims = false
         let showFull = false
-        if ((dims.width >= 300 && dims.width < 350) || dims.width >= 400) showFull = true
+        if ((dims.width >= 350 && dims.width < 375) || dims.width >= 400) showFull = true
         if (dims.width >= 350) showDims = true
         return (
             <ThemedText
                 style={{
                     flex: 1,
-                    fontSize: 14,
+                    fontSize: 12,
+                    flexGrow: 1,
+                    flexShrink: 1,
                 }}
             >
                 {showFull
@@ -124,23 +127,20 @@ export default ({ user, size, orientation }) => {
     }
     
     return (
-        <View
+        <LinearGradient
             style={{
-                display: 'flex',
+                flex: 1,
                 flexDirection: 'row',
-                justifyContent: 'space-between',
                 alignItems: 'flex-end',
-                width: '100%',
-                minWidth: 280,
-                marginHorizontal: 'auto',
-                height: 50,
-                minHeight: 50,
-                maxHeight: 50,
-                paddingBottom: 10,
-                // borderWidth: 1,
-                // borderStyle: 'dotted',
-                // borderColor: 'yellow',
+                justifyContent: 'space-between',
+                paddingVertical: 7,
+                paddingHorizontal: 5,
+                opacity: 1,
             }}
+            colors={isThemeDark
+                ? [ '#222222', '#000000' ]
+                : [ '#ffffff', '#dddddd' ]
+            }
         >
             <Brand onPress={toggleTheme} />
 
@@ -150,12 +150,8 @@ export default ({ user, size, orientation }) => {
                 iconName={`${isThemeDark ? 'sunny' : 'moon'}-outline`}
                 onPress={toggleTheme}
                 transparent
-                // outline
-                // textStyles={{
-                //     color: theme?.colors.textDefault,
-                // }}
-                // styles={{ flex: 1 }}
-                // padded={false}
+                outline
+                style={{ marginHorizontal: 5 }}
             />
 
             {user && cart?.length && <CartButton />}
@@ -171,6 +167,7 @@ export default ({ user, size, orientation }) => {
                     transparent
                 />
             )}
+            
             {!user && (
                 <IconButton
                     iconName='log-in-outline'
@@ -179,8 +176,9 @@ export default ({ user, size, orientation }) => {
                     disabled={loading}
                     alignIcon='right'
                     transparent
+                    textStyles={{ marginHorizontal: 0 }}
                 />
             )}
-        </View>
+        </LinearGradient>
     )
 }

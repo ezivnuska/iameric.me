@@ -50,7 +50,13 @@ export default () => {
 
     return (
         <View
-            style={classes.formContainer}
+            style={[
+                classes.formContainer,
+                {
+                    justifyContent: 'center',
+                    height: 'auto',
+                },
+        ]}
             onKeyPress={onEnter}
         >
             
