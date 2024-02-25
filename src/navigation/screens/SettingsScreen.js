@@ -24,7 +24,12 @@ export default () => {
             <ScreenTitle title='Settings' />
             
             {user && (
-                <View>
+                <View
+                    style={{
+                        paddingHorizontal: 10,
+                        maxWidth: 300,
+                    }}
+                >
                     <UserDetails userId={user._id} />
 
                     {user.role !== 'driver' && <LocationModule userId={user._id} />}

@@ -20,6 +20,7 @@ export default ({ users, ...props }) => (
                     style={{
                         paddingTop: 7,
                         paddingBottom: 4,
+                        paddingHorizontal: 10,
                         borderBottomWidth: 1,
                     }}
                 >

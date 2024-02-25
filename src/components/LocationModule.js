@@ -42,7 +42,7 @@ export default ({ userId }) => {
     }
 
     return (
-        <View style={{ marginVertical: 10 }}>
+        <View style={{ marginVertical: 20 }}>
             
             <IconButton
                 iconName={location ? 'create-outline' : 'add-outline'}

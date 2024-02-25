@@ -50,7 +50,7 @@ export default props => {
                         {
                             vendors
                                 ? <VendorList users={vendors} {...props} />
-                                : <ThemedText>No participating vendors.</ThemedText>
+                                : <ThemedText style={{ paddingHorizontal: 10 }}>No participating vendors.</ThemedText>
                         }
 
                     </View>

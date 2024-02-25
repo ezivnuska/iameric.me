@@ -8,6 +8,9 @@ import {
     Screen,
     ScreenTitle,
 } from '.'
+import {
+    View,
+} from 'react-native'
 import axios from 'axios'
 import { AppContext } from '../../AppContext'
 
@@ -48,18 +51,20 @@ export default () => {
         <Screen>
             <ScreenTitle title='Images' />
             
-            {loading
-                ? <LoadingView loading={loading} />
-                : images && images.length
-                ? (
-                    <ImageList
-                        images={images}
-                        username={user.username}
-                        onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
-                    />
-                )
-                : <ThemedText>No images to display.</ThemedText>
-            }
+            <View style={{ paddingHorizontal: 10 }}>
+                {loading
+                    ? <LoadingView loading={loading} />
+                    : images && images.length
+                    ? (
+                        <ImageList
+                            images={images}
+                            username={user.username}
+                            onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
+                        />
+                    )
+                    : <ThemedText>No images to display.</ThemedText>
+                }
+            </View>
         </Screen>
     )
 }

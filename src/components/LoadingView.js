@@ -4,6 +4,8 @@ import {
     View,
 } from 'react-native'
 import { AppContext } from '../AppContext'
+import ThemedText from './ThemedText'
+import classes from '@styles/classes'
 
 export default ({ label = null }) => {
 
@@ -20,13 +22,9 @@ export default ({ label = null }) => {
             }}
         >
 
-            <Text
-                style={{
-                    color: '#fff',
-                }}
-            >
+            <ThemedText style={classes.headerPrimary}>
                 {label || loading || 'Loading...'}
-            </Text>
+            </ThemedText>
 
         </View>
     )
