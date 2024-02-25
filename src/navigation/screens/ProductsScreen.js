@@ -24,7 +24,7 @@ export default () => {
                     iconName='add-outline'
                     onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })}
                     disabled={loading}
-                    align='left'
+                    // align='left'
                     transparent
                     style={{
                         paddingHorizontal: 10,

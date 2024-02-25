@@ -8,6 +8,7 @@ import {
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import { useTheme } from 'react-native-paper'
 
 export default ({ onSubmitted }) => {
 
@@ -17,6 +18,8 @@ export default ({ onSubmitted }) => {
         loading,
         user,
     } = useContext(AppContext)
+
+    const theme = useTheme()
 
     const submitOrder = async () => {
         const newOrder = {
@@ -56,12 +59,10 @@ export default ({ onSubmitted }) => {
             >
                 <IconButton
                     label='Order It!'
-                    iconName='restaurant-outline'
                     onPress={submitOrder}
-                    alignIcon='right'
                     type='primary'
                     disabled={loading}
-                    style={{ flex: 3 }}
+                    style={{ flex: 7 }}
                 />
                 
                 <IconButton

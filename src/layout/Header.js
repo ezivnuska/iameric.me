@@ -35,6 +35,7 @@ const UserButton = ({ user }) => {
                 flexShrink: 0,
                 flexBasis: 'auto',
                 paddingHorizontal: 7,
+                marginLeft: 10,
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -113,7 +114,7 @@ export default ({ user, size, orientation }) => {
     ) : null
     
     return (
-        <LinearGradient
+        <View
             style={{
                 flex: 1,
                 flexDirection: 'row',
@@ -123,10 +124,10 @@ export default ({ user, size, orientation }) => {
                 paddingHorizontal: 5,
                 opacity: 1,
             }}
-            colors={isThemeDark
-                ? [ '#222222', '#000000' ]
-                : [ '#ffffff', '#dddddd' ]
-            }
+            // colors={isThemeDark
+            //     ? [ '#222222', '#000000' ]
+            //     : [ '#ffffff', '#dddddd' ]
+            // }
         >
             <Brand onPress={toggleTheme} />
 
@@ -137,10 +138,10 @@ export default ({ user, size, orientation }) => {
                 onPress={toggleTheme}
                 transparent
                 outline
-                style={{ marginHorizontal: 5 }}
+                style={{ marginLeft: 10 }}
             />
 
-            {user && cart?.length && <CartButton />}
+            {user && cart && cart.length && <CartButton style={{ marginLeft: 10 }} />}
 
             {user && <UserButton user={user} />}
 
@@ -165,6 +166,6 @@ export default ({ user, size, orientation }) => {
                     textStyles={{ marginHorizontal: 0 }}
                 />
             )}
-        </LinearGradient>
+        </View>
     )
 }

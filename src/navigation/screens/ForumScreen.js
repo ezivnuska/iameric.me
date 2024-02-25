@@ -1,5 +1,8 @@
 import React, { useContext } from 'react'
 import {
+    View,
+} from 'react-native'
+import {
     EntryModule,
     IconButton,
 } from '@components'
@@ -21,12 +24,16 @@ export default () => {
                     label='Comment'
                     iconName='add-outline'
                     onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'FEEDBACK' })}
-                    align='left'
+                    // align='left'
                     style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
                     transparent
                 />
             </ScreenTitle>
-            <EntryModule />
+            <View
+                style={{ marginTop: 15 }}
+            >
+                <EntryModule />
+            </View>
         </Screen>
     )
 }

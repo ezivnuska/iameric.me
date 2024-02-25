@@ -121,7 +121,7 @@ export default ({ navigation, route }) => {
                     width,
                     height,
                     resizeMode: 'cover',
-                    marginBottom: 10,
+                    marginBottom: 20,
                 }}
             />
         )
@@ -147,25 +147,25 @@ export default ({ navigation, route }) => {
                 />
             </ScreenTitle>
             
-            {loading
-                ? <LoadingView label={loading} />
-                : userDetails
-                    ? (
-                        <View>
-                            <View
-                                style={{ paddingHorizontal: 10 }}
-                            >
-                                {renderUserAvatar()}
-                            </View>
-
-                            <Menu
-                                loading={loading}
-                                products={products}
-                                vendor={userDetails}
-                            />
+            {loading ? <LoadingView label={loading} /> : null}
+            
+            {userDetails
+                ? (
+                    <View style={{ paddingBottom: 20 }}>
+                        <View
+                            style={{ paddingHorizontal: 10 }}
+                        >
+                            {renderUserAvatar()}
                         </View>
-                    )
-                    : null
+
+                        <Menu
+                            loading={loading}
+                            products={products}
+                            vendor={userDetails}
+                        />
+                    </View>
+                )
+                : null
             }
             
         </Screen>

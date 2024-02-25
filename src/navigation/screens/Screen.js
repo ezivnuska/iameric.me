@@ -34,7 +34,7 @@ export default ({ children, title = null, secure = true, tabs = true, padded = t
             <View
                 style={{
                     width: '100%',
-                    height: tabs ? dims.height - 100 : '100%',
+                    // height: tabs ? dims.height - 100 : '100%',
                     backgroundColor: theme?.colors.screen,
                 }}
             >
@@ -42,13 +42,28 @@ export default ({ children, title = null, secure = true, tabs = true, padded = t
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     style={{
-                        height: tabs ? dims.height - 100 : dims.height - 50,
+                        // flex: 1,
+                        width: '100%',
+                        height: 'auto',
+                        // height: tabs ? dims.height - 100 : dims.height - 50,
                         textAlign: 'left',
                     }}
+                    // contentContainerStyle={{
+                    //     borderWidth: 1,
+                    //     borderStyle: 'dashed',
+                    //     borderColor: 'red',
+                    // }}
                 >
                     <View
                         style={{
                             height: tabs ? dims.height - 100 : dims.height - 50,
+                            width: '100%',
+                            maxWidth: 600,
+                            minWidth: 280,
+                            marginHorizontal: 'auto',
+                            // borderWidth: 1,
+                            // borderStyle: 'dashed',
+                            // borderColor: 'green',
                         }}
                     >
                         {(!secure || secure && user) && children}

@@ -41,26 +41,21 @@ export default ({ children, user, filename, onPress = null }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
-                alignItems: 'baseline',
+                alignItems: 'flex-start',
             }}
         >
-            <View
+            <Image
                 style={{
                     flexBasis: 'auto',
                     marginRight: 10,
+                    width: 32,
+                    height: 32,
+                    resizeMode: 'stretch',
                 }}
-            >
-                <Image
-                    style={{
-                        width: 32,
-                        height: 32,
-                        resizeMode: 'stretch',
-                    }}
-                    // onLoadStart={() => setLoading(true)}
-                    // onLoadEnd={() => setLoading(false)}
-                    source={getSource()}
-                />
-            </View>
+                // onLoadStart={() => setLoading(true)}
+                // onLoadEnd={() => setLoading(false)}
+                source={getSource()}
+            />
             
             <View
                 style={{

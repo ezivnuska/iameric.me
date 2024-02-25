@@ -8,12 +8,11 @@ import {
     LoadingView,
     MenuItem,
 } from '.'
-import { AppContext } from '../AppContext'
-import axios from 'axios'
 
 export default ({ loading, products, vendor }) => {
     
-    if (loading) return <LoadingView label={loading} />
+    if (loading) return <LoadingView />
+
     return products && products.length
         ? (
             <FlatList

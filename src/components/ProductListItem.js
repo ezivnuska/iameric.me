@@ -26,8 +26,6 @@ export default ({ onDelete, product, onPress, ...props }) => {
             style={{
                 display: 'flex',
                 flexDirection: 'row',
-                borderBottomWidth: 1,
-                borderBottomColor: '#777',
                 marginBottom: 15,
                 paddingLeft: 10,
             }}
@@ -93,7 +91,8 @@ export default ({ onDelete, product, onPress, ...props }) => {
                                 justifyContent: 'flex-start',
                                 alignItems: 'flex-start',
                                 flexWrap: 'wrap',
-                                marginBottom: 5,
+                                gap: 15,
+                                marginBottom: 3,
                             }}
                         >
                             <ThemedText
@@ -102,7 +101,6 @@ export default ({ onDelete, product, onPress, ...props }) => {
                                     {
                                         flexBasis: 'auto',
                                         flexGrow: 0,
-                                        marginRight: 15,
                                     }
                                 ]}
                             >
@@ -132,7 +130,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                         onPress={() => onPress(product)}
                         disabled={loading}
                         transparent
-                        style={{ marginTop: -2 }}
+                        style={{ marginTop: -2, marginRight: 4 }}
                     />
 
                 </View>

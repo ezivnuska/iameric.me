@@ -54,6 +54,7 @@ export default () => {
 
     return products && products.length ? (
         <FlatList
+            showsVerticalScrollIndicator={false}
             data={products}
             listKey={() => 'products'}
             keyExtractor={(item, index) => 'key' + index}

@@ -48,7 +48,7 @@ const Quantity = ({ quantity }) => {
                 width: 30,
                 height: 30,
                 borderWidth: 2,
-                borderColor: theme?.colors.border,
+                backgroundColor: theme?.colors.quantityBackground,
                 borderRadius: 15,
             }}
         >
@@ -59,6 +59,7 @@ const Quantity = ({ quantity }) => {
                     fontWeight: 500,
                     lineHeight: 30,
                     textAlign: 'center',
+                    color: theme?.colors.quantityLabel,
                 }}
             >
                 {quantity}
@@ -140,6 +141,7 @@ const CartTotal = ({ order }) => (
                 flex: 1,
                 fontSize: 22,
                 fontWeight: 400,
+                textAlign: 'left',
             }}
         >
             Total:

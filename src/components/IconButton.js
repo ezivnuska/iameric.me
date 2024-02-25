@@ -67,8 +67,8 @@ export default ({
             {(type === 'danger' || (iconName && alignIcon === 'left')) && (
                 <Icon
                     name={type === 'danger' ? iconName ? iconName : 'skull-outline' : iconName}
-                    size={18}
-                    color={theme?.colors.backButtonLabel}
+                    size={24}
+                    color={type === 'primary' || type === 'danger' ? theme?.colors.buttonPrimaryLabel : theme?.colors.buttonLabel}
                     style={[
                         {
                             flexBasis: 'auto',
@@ -90,7 +90,11 @@ export default ({
                             flexBasis: 'auto',
                             flexGrow: 0,
                             flexShrink: 0,
-                            color: transparent ? theme?.colors.textDefault : theme?.colors.buttonLabel,
+                            color: transparent
+                                ? theme?.colors.textDefault
+                                : type === 'primary'
+                                    ? theme?.colors.buttonPrimaryLabel
+                                    : theme?.colors.buttonLabel,
                             lineHeight: 30,
                             letterSpacing: 0,
                             marginHorizontal: align === 'left' ? 0 : 8,

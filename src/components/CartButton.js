@@ -8,7 +8,7 @@ import {
 import { AppContext } from '../AppContext'
 import { useTheme } from 'react-native-paper'
 
-export default () => {
+export default props => {
 
     const theme = useTheme()
 
@@ -25,13 +25,14 @@ export default () => {
 
     return (
         <IconButton
+            {...props}
             type='primary'
             label={getItemCount(cart[0].items)}
             iconName='cart-outline'
             onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'CART' })}
             padded={true}
-            textStyles={{ color: theme?.colors.buttonLabel }}
-            styles={{ flexGrow: 0, flexShrink: 0 }}
+            textStyles={{ paddingVertical: 1, color: theme?.colors.buttonPrimaryLabel }}
+            // styles={{  }}
         />
     )
 }

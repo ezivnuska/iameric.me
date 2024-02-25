@@ -31,8 +31,6 @@ export default ({ entry, onDelete }) => {
                 paddingHorizontal: 10,
                 paddingBottom: 15,
                 marginBottom: 10,
-                borderBottomColor: 'white',
-                borderBottomWidth: 1,
             }}
         >
             <View

@@ -19,11 +19,8 @@ export default ({ users, onPress }) => (
             return (
                 <View
                     style={{
-                        // paddingTop: 7,
-                        // paddingBottom: 4,
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#333',
                         marginBottom: 10,
+                        paddingHorizontal: 10,
                     }}
                 >
                     <UserHeading

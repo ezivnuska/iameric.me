@@ -12,6 +12,7 @@ import {
 import {
     Header,
 } from '.'
+import LinearGradient from 'react-native-linear-gradient'
 import { getSize, getOrientation } from '@utils/metrics'
 import { useTheme } from 'react-native-paper'
 
@@ -21,6 +22,7 @@ export default () => {
         dispatch,
         modal,
         user,
+        isThemeDark,
     } = useContext(AppContext)
 
     const theme = useTheme()
@@ -36,33 +38,42 @@ export default () => {
                 backgroundColor: theme?.colors.background,
             }}
         >
-            <View
+            <LinearGradient
                 id='header-container'
                 style={{
-                    width: '100%',
-                    minWidth: 280,
-                    maxWidth: 600,
-                    marginHorizontal: 'auto',
+                    flexBasis: 50,
+                    flexGrow: 0,
                     backgroundColor: theme?.colors.background,
-                    // borderWidth: 1,
-                    // borderColor: '#f00',
                 }}
+                colors={isThemeDark
+                    ? [ '#222222', '#000000' ]
+                    : [ '#ffffff', '#dddddd' ]
+                }
             >
-                <Header
-                    user={user}
-                    size={getSize(dims)}
-                    orientation={getOrientation(dims)}
-                />
-            </View>
+                <View
+                    style={{
+                        width: '100%',
+                        height: 50,
+                        minWidth: 280,
+                        maxWidth: 600,
+                        marginHorizontal: 'auto',
+                    }}
+                >
+                    <Header
+                        user={user}
+                        size={getSize(dims)}
+                        orientation={getOrientation(dims)}
+                    />
+                </View>
+            </LinearGradient>
 
             <View
                 id='content-container'
                 style={{
                     flex: 1,
-                    // height: dims.height - 48,
                     width: '100%',
                     minWidth: 280,
-                    maxWidth: 600,
+                    // maxWidth: 600,
                     marginHorizontal: 'auto',
                     backgroundColor: theme?.colors.background,
                 }}
@@ -74,7 +85,7 @@ export default () => {
                         flex: 1,
                         width: '100%',
                         minWidth: 280,
-                        maxWidth: 600,
+                        // maxWidth: 600,
                         // height: dims.height - 44,
                         marginHorizontal: 'auto',
                         // borderWidth: 1,

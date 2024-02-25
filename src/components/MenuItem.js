@@ -31,8 +31,6 @@ export default ({ item, username }) => {
                 alignItems: 'flex-start',
                 paddingTop: 15,
                 paddingHorizontal: 10,
-                borderBottomWidth: 1,
-                borderBottomColor: '#777',
             }}
         >
             <View
@@ -111,11 +109,11 @@ export default ({ item, username }) => {
                         </View>
 
                         {(blurb && blurb.length) ? (
-                            <ThemedText>{blurb}</ThemedText>
+                            <ThemedText style={classes.productBlurb}>{blurb}</ThemedText>
                         ) : null}
 
                         {(desc && desc.length) ? (
-                            <ThemedText>{desc}</ThemedText>
+                            <ThemedText style={classes.textDefault}>{desc}</ThemedText>
                         ) : null}
 
                     </View>

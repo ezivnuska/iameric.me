@@ -9,6 +9,7 @@ export const dark = {
         buttonText: '#fff',
         buttonDefault: '#00a',
         buttonPrimary: '#e97451',
+        buttonPrimaryLabel: '#fff',
         buttonSecondary: '#aaf',
         buttonDanger: '#f00',
         buttonDisabled: '#aaa',
@@ -28,6 +29,8 @@ export const dark = {
         inputText: '#fff',
         inputBackground: '#333',
         inputPlaceholder: '#ccc',
+        quantityBackground: '#fff',
+        quantityLabel: '#000',
     },
 }
 
@@ -38,10 +41,10 @@ export const light = {
         background: '#eee',
         backgroundTransparent: '#fffff00',
         border: '#aaa',
-        buttonLabel: '#fff',
         buttonText: '#fff',
         buttonDefault: '#00a',
         buttonPrimary: '#e97451',
+        buttonPrimaryLabel: '#fff',
         buttonSecondary: '#aaf',
         buttonDanger: '#f00',
         buttonDisabled: '#aaa',
@@ -61,5 +64,7 @@ export const light = {
         inputText: '#000',
         inputBackground: '#ddd',
         inputPlaceholder: '#777',
+        quantityBackground: '#000',
+        quantityLabel: '#fff',
     },
 }
