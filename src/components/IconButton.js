@@ -45,13 +45,11 @@ export default ({
                     flexDirection: 'row',
                     justifyContent: align,
                     alignItems: 'center',
-                    flexShrink: 0,
+                    flexShrink: 1,
                     flexGrow: 0,
-                    paddingRight: padded ? 8 : 0,
-                    paddingLeft: align === 'left' ? 0 : padded ? 8 : 0,
+                    paddingHorizontal: padded ? 8 : 3,
                     backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                     borderRadius: 10,
-                    // borderWidth: outline ? 1 : 0,
                     shadowColor: outline ? theme?.colors.shadow : 'none',
                     shadowOffset: outline ? ({
                         width: 0,
@@ -64,7 +62,6 @@ export default ({
                     textAlign: 'center',
                     paddingVertical: 3,
                 },
-                props.style,
             ]}
         >
             {(type === 'danger' || (iconName && alignIcon === 'left')) && (
@@ -77,10 +74,8 @@ export default ({
                             flexBasis: 'auto',
                             flexShrink: 1,
                             flexGrow: 0,
-                            lineHeight: 30,
                             marginRight: label ? 0 : 0,
                         },
-                        textStyles,
                     ]}
                 />
             )}
@@ -91,18 +86,14 @@ export default ({
                         {
                             fontSize: 18,
                             flexBasis: 'auto',
-                            flexGrow: 0,
-                            flexShrink: 0,
+                            flexShrink: 1,
                             color: transparent
                                 ? theme?.colors.textDefault
                                 : type === 'primary'
                                     ? theme?.colors.buttonPrimaryLabel
                                     : theme?.colors.buttonLabel,
-                            lineHeight: 30,
                             letterSpacing: 0,
-                            marginHorizontal: 8,//align === 'left' ? 20 : 8,
-                            textAlign: align,
-                            // ...textStyles,
+                            marginHorizontal: 8,
                         },
                         textStyles,
                     ]}
@@ -115,16 +106,14 @@ export default ({
             {(iconName && alignIcon === 'right') && (
                 <Icon
                     name={iconName}
-                    size={22}
+                    size={24}
                     color={type === 'primary' ? theme?.colors.buttonPrimaryLabel : theme?.colors.buttonLabel}
-                    style={{
-                        // flexBasis: 'auto',
-                        // flexShrink: 1,
-                        lineHeight: 30,
-                        fontWeight: 800,
-                        // marginLeft: 5,
-                    }}
-                    {...props}
+                    style={[
+                        {
+                            flexBasis: 'auto',
+                            fontWeight: 800,
+                        },
+                    ]}
                 />
             )}
         </Pressable>

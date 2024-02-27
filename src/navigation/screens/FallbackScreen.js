@@ -9,8 +9,12 @@ import {
 } from '@components'
 
 export default ({ route, ...props }) => (
-    <Screen {...props}>
-        <ScreenTitle title={userDetails ? user.username : 'User' } />
+    <Screen
+        {...props}
+        titleComponent={
+            <ScreenTitle title={userDetails ? user.username : 'User' } />
+        }
+    >
         <CenteredView>
             <Text>404 Error: {route && route.path ? route.path : ''}</Text>
             <Text>Sorry. That page does not exist.</Text>

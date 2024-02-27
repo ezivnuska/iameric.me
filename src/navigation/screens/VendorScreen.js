@@ -131,26 +131,29 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <Screen>
-            <ScreenTitle
-                title={userDetails?.username || 'Vendor'}
-            >
-                <IconButton
-                    label='Return to Vendors'
-                    onPress={() => navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'VendorList' }],
-                    })}
-                    disabled={loading}
-                    textStyles={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        color: theme?.colors.textDefault,
-                    }}
-                    outline
-                    transparent
-                />
-            </ScreenTitle>
+        <Screen
+            titleComponent={
+                <ScreenTitle
+                    title={userDetails?.username || 'Vendor'}
+                >
+                    <IconButton
+                        label='Return to Vendors'
+                        onPress={() => navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'VendorList' }],
+                        })}
+                        disabled={loading}
+                        textStyles={{
+                            fontSize: 16,
+                            fontWeight: 400,
+                            color: theme?.colors.textDefault,
+                        }}
+                        outline
+                        transparent
+                    />
+                </ScreenTitle>
+            }
+        >
             
             {loading ? <LoadingView label={loading} /> : null}
             

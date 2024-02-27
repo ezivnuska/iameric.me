@@ -48,9 +48,9 @@ export default () => {
     }
 
     return (
-        <Screen>
-            <ScreenTitle title='Images' />
-            
+        <Screen
+            titleComponent={<ScreenTitle title='Images' />}
+        >
             <View style={{ paddingHorizontal: 10 }}>
                 {loading
                     ? <LoadingView loading={loading} />
@@ -60,6 +60,7 @@ export default () => {
                             images={images}
                             username={user.username}
                             onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
+                            uploadImage={() => console.log('uplading image...')}
                         />
                     )
                     : <ThemedText>No images to display.</ThemedText>

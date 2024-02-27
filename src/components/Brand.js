@@ -2,15 +2,31 @@ import React, { useContext } from 'react'
 import {
     Text,
     TouchableOpacity,
-    // useColorScheme,
+    View,
 } from 'react-native'
 import { useTheme } from 'react-native-paper'
-import layout from '../styles/layout'
 import { navigationRef } from 'src/navigation/RootNavigation'
+import { AppContext } from '../AppContext'
 
 export default () => {
 
     const theme = useTheme()
+
+    const {
+        user,
+    } = useContext(AppContext)
+
+    const navigateToInitialRoute = () => {
+        if (!user) navigationRef.navigate('Start')
+        else {
+            switch(user.role) {
+                case 'admin': navigationRef.navigate('Forum'); break
+                case 'customer': navigationRef.navigate('Vendors'); break
+                case 'driver': navigationRef.navigate('Orders'); break
+                case 'vendor': navigationRef.navigate('Products'); break
+            }
+        }
+    }
     
     return (
         <TouchableOpacity
@@ -20,23 +36,47 @@ export default () => {
                 paddingHorizontal: 5,
                 paddingVertical: 3,
             }}
-            onPress={() => navigationRef.reset({
-                index: 0,
-                routes: [{ name: 'Vendors' }],
-            })}
+            onPress={() => navigateToInitialRoute()}
         >
-            <Text style={{
-                lineHeight: 26,
-                fontSize: 26,
-                fontWeight: 700,
-                color: theme?.colors.brandLight,
-                flexShrink: 0,
-            }}>
-                iam
-                <Text style={{ color: theme?.colors.brandDark }}>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    flexWrap: 'wrap',
+                    alignItems: 'baseline',
+                    flexShrink: 1,
+                    height: 30,
+                    overflow: 'hidden',
+                }}
+            >
+
+                <Text
+                    style={{
+                        flexBasis: 'auto',
+                        flexShrink: 0,
+                        fontSize: 26,
+                        lineHeight: 30,
+                        fontWeight: 700,
+                        color: theme?.colors.brandLight,
+                    }}
+                >
+                    iam
+                </Text>
+
+                <Text
+                    style={{
+                        flexBasis: 'auto',
+                        flexShrink: 0,
+                        fontSize: 26,
+                        lineHeight: 30,
+                        fontWeight: 700,
+                        color: theme?.colors.brandDark,
+                    }}
+                >
                     eric
                 </Text>
-            </Text>
+
+            </View>
         </TouchableOpacity>
     )
 }

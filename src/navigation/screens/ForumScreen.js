@@ -18,24 +18,23 @@ export default () => {
     } = useContext(AppContext)
 
     return (
-        <Screen>
-            <ScreenTitle title='Forum'>
-                <IconButton
-                    label='Comment'
-                    iconName='add-outline'
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'FEEDBACK' })}
-                    alignIcon='right'
-                    align='left'
-                    outline
-                    style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
-                    transparent
-                />
-            </ScreenTitle>
-            <View
-                style={{ marginTop: 15 }}
-            >
-                <EntryModule />
-            </View>
+        <Screen
+            titleComponent={
+                <ScreenTitle title='Forum'>
+                    <IconButton
+                        label='Comment'
+                        iconName='add-outline'
+                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'FEEDBACK' })}
+                        alignIcon='right'
+                        align='left'
+                        outline
+                        style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
+                        transparent
+                    />
+                </ScreenTitle>
+            }
+        >
+            <EntryModule />
         </Screen>
     )
 }

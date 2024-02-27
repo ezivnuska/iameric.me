@@ -20,23 +20,26 @@ export default () => {
     const theme = useTheme()
 
     return (
-        <Screen>
-            <ScreenTitle title='Products'>
-                <IconButton
-                    label='New Product'
-                    iconName='add-outline'
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })}
-                    disabled={loading}
-                    alignIcon='right'
-                    textStyles={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        color: theme?.colors.textDefault,
-                    }}
-                    outline
-                    transparent
-                />
-            </ScreenTitle>
+        <Screen
+            titleComponent={
+                <ScreenTitle title='Products'>
+                    <IconButton
+                        label='New Product'
+                        iconName='add-outline'
+                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })}
+                        disabled={loading}
+                        alignIcon='right'
+                        textStyles={{
+                            fontSize: 16,
+                            fontWeight: 400,
+                            color: theme?.colors.textDefault,
+                        }}
+                        transparent
+                        padded={false}
+                    />
+                </ScreenTitle>
+            }
+        >
             <ProductList />
         </Screen>
     )

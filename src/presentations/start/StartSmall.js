@@ -1,9 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import {
     ImageBackground,
-    StyleSheet,
     Text,
-    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -22,8 +20,6 @@ export default () => {
     const {
         dispatch,
     } = useContext(AppContext)
-
-    const theme = useTheme()
 
     useEffect(() => {
         initialize(dispatch)
@@ -110,18 +106,28 @@ export default () => {
                         style={{ marginHorizontal: 3 }}
                     />
                 </View>
-
-                <View>
-                    <IconButton
-                        label='Preview'
-                        iconName='eye-outline'
-                        onPress={() => onConnect('customer')}
-                        alignIcon='right'
-                        transparent
-                        textStyles={{ color: '#fff' }}
-                        type='primary'
-                    />
-                </View>
+                
+                <IconButton
+                    label='Browse Vendors'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('customer')}
+                    alignIcon='right'
+                    transparent
+                    type='primary'
+                    align='flex-end'
+                    textStyles={{
+                        color: '#fff',
+                        flexBasis: 'auto',
+                        flexShrink: 1,
+                        flexWrap: 'wrap',
+                        textAlign: 'right',
+                    }}
+                    style={{
+                        color: '#fff',
+                        flexShrink: 1,
+                        flexGrow: 0,
+                    }}
+                />
             </ImageSegment>
 
             <ImageSegment
@@ -154,22 +160,32 @@ export default () => {
                         iconName='arrow-forward-circle-outline'
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_VENDOR' })}
                         alignIcon='right'
-                        // textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}
                     />
                 </View>
 
-                <View>
-                    <IconButton
-                        label='Preview'
-                        iconName='eye-outline'
-                        onPress={() => onConnect('vendor')}
-                        alignIcon='right'
-                        transparent
-                        textStyles={{ color: '#fff' }}
-                        type='primary'
-                    />
-                </View>
+                <IconButton
+                    label='Preview Sales'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('vendor')}
+                    alignIcon='right'
+                    transparent
+                    type='primary'
+                    align='flex-end'
+                    textStyles={{
+                        color: '#fff',
+                        flexBasis: 'auto',
+                        flexShrink: 1,
+                        flexWrap: 'wrap',
+                        textAlign: 'right',
+                    }}
+                    style={{
+                        color: '#fff',
+                        flexShrink: 1,
+                        flexGrow: 0,
+                    }}
+                />
+
             </ImageSegment>
 
             <ImageSegment
@@ -202,22 +218,32 @@ export default () => {
                         iconName='arrow-forward-circle-outline'
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNUP_DRIVER' })}
                         alignIcon='right'
-                        // textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}
                     />
                 </View>
+                
+                <IconButton
+                    label='Preview Delivery'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('driver')}
+                    alignIcon='right'
+                    transparent
+                    type='primary'
+                    align='flex-end'
+                    textStyles={{
+                        color: '#fff',
+                        flexBasis: 'auto',
+                        flexShrink: 1,
+                        flexWrap: 'wrap',
+                        textAlign: 'right',
+                    }}
+                    style={{
+                        color: '#fff',
+                        flexShrink: 1,
+                        flexGrow: 0,
+                    }}
+                />
 
-                <View>
-                    <IconButton
-                        label='Preview'
-                        iconName='eye-outline'
-                        onPress={() => onConnect('driver')}
-                        alignIcon='right'
-                        transparent
-                        textStyles={{ color: '#fff' }}
-                        type='primary'
-                    />
-                </View>
             </ImageSegment>
 
         </View>
@@ -240,7 +266,7 @@ const ImageSegment = ({ children, source }) => {
                     flexDirection: 'row',
                     alignItems: 'flex-end',
                     justifyContent: 'space-between',
-                    paddingVertical: 7,
+                    paddingVertical: 10,
                     paddingHorizontal: 5,
                     opacity: 1,
                 }}

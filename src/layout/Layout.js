@@ -41,13 +41,12 @@ export default () => {
             <LinearGradient
                 id='header-container'
                 style={{
-                    // flexBasis: 50,
                     flexGrow: 0,
                     backgroundColor: theme?.colors.background,
                 }}
                 colors={isThemeDark
-                    ? [ '#222222', '#000000' ]
-                    : [ '#ffffff', '#dddddd' ]
+                    ? [ '#333333', '#000000' ]
+                    : [ '#dddddd', '#ffffff' ]
                 }
             >
                 <View
@@ -73,7 +72,6 @@ export default () => {
                     flex: 1,
                     width: '100%',
                     minWidth: 280,
-                    // maxWidth: 600,
                     marginHorizontal: 'auto',
                     backgroundColor: theme?.colors.background,
                 }}
@@ -85,11 +83,7 @@ export default () => {
                         flex: 1,
                         width: '100%',
                         minWidth: 280,
-                        // maxWidth: 600,
-                        // height: dims.height - 44,
                         marginHorizontal: 'auto',
-                        // borderWidth: 1,
-                        // borderColor: 'yellow',
                     }}
                 >
                     

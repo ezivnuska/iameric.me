@@ -20,29 +20,28 @@ export default () => {
     } = useContext(AppContext)
 
     return (
-        <Screen>
-            <ScreenTitle title='Settings' />
+        <Screen
+            titleComponent={<ScreenTitle title='Settings' />}
+        >
             
-            {user && (
-                <View
-                    style={{
-                        paddingHorizontal: 10,
-                        maxWidth: 300,
-                    }}
-                >
-                    <UserDetails userId={user._id} />
+            <View
+                style={{
+                    paddingHorizontal: 10,
+                    maxWidth: 300,
+                }}
+            >
+                <UserDetails userId={user._id} />
 
-                    {user.role !== 'driver' && <LocationModule userId={user._id} />}
-                    
-                    {
-                        user.username !== 'Customer' &&
-                        user.username !== 'Driver' && 
-                        user.username !== 'Vendor' &&
-                        <DeleteAccountButton />
-                    }
-                    
-                </View>
-            )}
+                {user.role !== 'driver' && <LocationModule userId={user._id} />}
+                
+                {
+                    user.username !== 'Customer' &&
+                    user.username !== 'Driver' && 
+                    user.username !== 'Vendor' &&
+                    <DeleteAccountButton />
+                }
+                
+            </View>
 
         </Screen>
     )

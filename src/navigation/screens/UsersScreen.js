@@ -8,8 +8,9 @@ import {
 } from '.'
 
 export default ({ ...props }) => (
-    <Screen>
-        <ScreenTitle title='Users' />
+    <Screen
+        titleComponent={<ScreenTitle title='Users' />}
+    >
         <UserModule {...props} />
     </Screen>
 )

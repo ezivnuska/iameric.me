@@ -37,7 +37,7 @@ export default () => {
 
     useEffect(() => {
         if (!profile) setUserProfile(null)
-        else if (profile._id !== userProfile._id) {
+        else if (!userProfile || (userProfile && profile._id !== userProfile._id)) {
             setUserProfile(profile)
         }
     }, [profile])
@@ -87,7 +87,6 @@ export default () => {
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
                 alignItems: 'flex-start',
-                paddingVertical: 15,
             }}
         >
             <View style={{ flex: 1 }}>

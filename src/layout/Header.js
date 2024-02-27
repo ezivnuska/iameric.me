@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import {
-    useWindowDimensions,
     Image,
     Pressable,
     View,
@@ -29,11 +28,10 @@ const UserButton = ({ user }) => {
         <Pressable
             onPress={() => navigationRef.navigate('Settings')}
             style={{
-                flex: 1,
                 flexGrow: 0,
                 flexShrink: 0,
                 flexBasis: 'auto',
-                paddingHorizontal: 7,
+                paddingHorizontal: 8,
                 marginLeft: 10,
                 display: 'flex',
                 flexDirection: 'row',
@@ -48,32 +46,28 @@ const UserButton = ({ user }) => {
                 shadowOpacity: 0.25,
                 shadowRadius: 3,
                 elevation: 1,
-                height: 30,
+                paddingVertical: 3,
             }}
         >
-            <View
+            <Image
+                source={getSource()}
                 style={{
-                    width: 28,
-                    height: 28,
+                    flexBasis: 26,
+                    flexGrow: 0,
+                    width: 26,
+                    height: 26,
                     marginRight: 5,
-                    borderRadius: 14,
+                    borderRadius: 13,
                     overflow: 'hidden',
+                    resizeMode: 'cover',
                 }}
-            >
-                <Image
-                    source={getSource()}
-                    style={{
-                        width: 28,
-                        height: 28,
-                        resizeMode: 'center',
-                    }}
-                    // onLoadStart={() => setLoading(true)}
-                    // onLoadEnd={() => setLoading(false)}
-                />
-            </View>
-    
+                // onLoadStart={() => setLoading(true)}
+                // onLoadEnd={() => setLoading(false)}
+            />
+
             <ThemedText
                 style={{
+                    flex: 1,
                     fontWeight: 700,
                     lineHeight: 30,
                 }}
@@ -98,22 +92,6 @@ export default ({
     } = useContext(AppContext)
     
     const theme = useTheme()
-
-    // const dims = useWindowDimensions()
-
-    // const renderDims = () => dims.width >= 350 && !cart ? (
-    //     <ThemedText
-    //         style={{
-    //             flex: 1,
-    //             fontSize: 12,
-    //             flexGrow: 1,
-    //             flexShrink: 1,
-    //             lineHeight: 30,
-    //         }}
-    //     >
-    //         {dims.width}x{dims.height}
-    //     </ThemedText>
-    // ) : null
     
     return (
         <View
@@ -127,14 +105,8 @@ export default ({
                 opacity: 1,
                 flexWrap: 'wrap',
             }}
-            // colors={isThemeDark
-            //     ? [ '#222222', '#000000' ]
-            //     : [ '#ffffff', '#dddddd' ]
-            // }
         >
             <Brand onPress={toggleTheme} />
-
-            {/* {renderDims()} */}
 
             <IconButton
                 iconName={`${isThemeDark ? 'sunny' : 'moon'}-outline`}
@@ -142,6 +114,7 @@ export default ({
                 transparent
                 outline
                 style={{ flexGrow: 0 }}
+                textStyles={{ fontSize: 18 }}
             />
 
             {user && cart && cart.length && <CartButton style={{ marginLeft: 10 }} />}
@@ -167,7 +140,6 @@ export default ({
                     disabled={loading}
                     alignIcon='right'
                     transparent
-                    // textStyles={{ marginHorizontal: 0 }}
                 />
             )}
         </View>

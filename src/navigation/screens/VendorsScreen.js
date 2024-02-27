@@ -38,8 +38,9 @@ export default props => {
     }
     
     return (
-        <Screen>
-            <ScreenTitle title='Merchants' />
+        <Screen
+            titleComponent={<ScreenTitle title='Merchants' />}
+        >
             
             {loading
                 ? <LoadingView label={loading} />

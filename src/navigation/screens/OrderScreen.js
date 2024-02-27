@@ -8,8 +8,9 @@ import {
 } from '.'
 
 export default () => (
-    <Screen>
-        <ScreenTitle title='Orders' />
+    <Screen
+        titleComponent={<ScreenTitle title='Orders' />}
+    >
         <OrderList />
     </Screen>
 )

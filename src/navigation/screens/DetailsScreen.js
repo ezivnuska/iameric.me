@@ -109,19 +109,22 @@ export default ({ navigation, route }) => {
     }
 
     return (
-        <Screen>
-            <ScreenTitle title={userDetails ? userDetails.username : 'User' }>
-                <IconButton
-                    label='Return to Users'
-                    onPress={() => navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'UserList' }],
-                    })}
-                    textStyles={{ color: theme?.colors.textDefault }}
-                    transparent
-                    outline
-                />
-            </ScreenTitle>
+        <Screen
+            titleComponent={
+                <ScreenTitle title={userDetails ? userDetails.username : 'User' }>
+                    <IconButton
+                        label='Return to Users'
+                        onPress={() => navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'UserList' }],
+                        })}
+                        textStyles={{ color: theme?.colors.textDefault }}
+                        transparent
+                        outline
+                    />
+                </ScreenTitle>
+            }
+        >
             
             {loading && <LoadingView label={loading} />}
 
