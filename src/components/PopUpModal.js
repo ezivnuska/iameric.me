@@ -25,48 +25,60 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
         >
             <View
                 style={{
-                    position: 'relative',
-                    textAlign: 'center',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    width: '100%',
+                    height: dims.height,
                     backgroundColor: theme?.colors.modalBackground,
                 }}
             >
-
-                <IconButton
-                    iconName='close-outline'
-                    onPress={onRequestClose}
-                    transparent
+                <View
                     style={{
-                        position: 'absolute',
-                        top: 9,
-                        right: 5,
-                        zIndex: 100,
-                    }}
-                    textStyles={{
-                        color: theme?.colors.textDefault,
-                    }}
-                />
-
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    style={{
-                        minWidth: 300,
-                        maxWidth: 400,
-                        marginHorizontal: 'auto',
-                        textAlign: 'center',
+                        position: 'relative',
+                        width: '100%',
+                        maxWidth: 600,
+                        minWidth: 280,
                         height: dims.height,
-                    }}
-                    contentContainerStyle={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
                         marginHorizontal: 'auto',
-                        minHeight: dims.height,
                     }}
                 >
-                    {children}
-                </ScrollView>
+
+                    <IconButton
+                        iconName='close-outline'
+                        onPress={onRequestClose}
+                        transparent
+                        style={{
+                            flexBasis: 'auto',
+                            position: 'absolute',
+                            top: 9,
+                            right: 5,
+                            zIndex: 100,
+                        }}
+                        textStyles={{
+                            color: theme?.colors.textDefault,
+                        }}
+                        outline
+                        padded={false}
+                    />
+
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        style={{
+                            minWidth: 300,
+                            maxWidth: 400,
+                            marginHorizontal: 'auto',
+                            textAlign: 'center',
+                            height: dims.height,
+                        }}
+                        contentContainerStyle={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginHorizontal: 'auto',
+                            minHeight: dims.height,
+                        }}
+                    >
+                        {children}
+                    </ScrollView>
+                
+                </View>
                 
             </View>
 

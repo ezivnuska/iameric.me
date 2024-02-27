@@ -62,6 +62,7 @@ export default ({
                     textAlign: 'center',
                     paddingVertical: 3,
                 },
+                {...props.style},
             ]}
         >
             {(type === 'danger' || (iconName && alignIcon === 'left')) && (
