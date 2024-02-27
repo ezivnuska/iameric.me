@@ -112,7 +112,6 @@ export default ({
                 iconName={`${isThemeDark ? 'sunny' : 'moon'}-outline`}
                 onPress={toggleTheme}
                 transparent
-                outline
                 style={{ flexGrow: 0 }}
                 textStyles={{ fontSize: 18 }}
             />
@@ -126,7 +125,10 @@ export default ({
                     onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNOUT' })}
                     disabled={loading}
                     iconName='close-outline'
-                    textStyles={{ color: theme?.colors.textDefault }}
+                    textStyles={{
+                        color: theme?.colors.textDefault,
+                        fontSize: 22,
+                    }}
                     transparent
                     style={{ flexGrow: 0 }}
                 />

@@ -58,12 +58,10 @@ export default ({ userId }) => {
                 align='flex-start'
                 padded={false}
                 style={{
-                    // textAlign: 'left',
-                    // borderWidth: 1,
-                    // borderColor: 'white',
                     marginBottom: 5,
                     outlineColor: 'none',
                     outlineStyle: 'none',
+                    paddingHorizontal: 0,
                 }}
                 textStyles={{
                     marginTop: 5,

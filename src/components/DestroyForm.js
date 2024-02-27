@@ -72,7 +72,7 @@ export default () => {
             <FormInput
                 // label='Leave a comment'
                 value={confirmationText}
-                onChangeText={value => setConfirmationText(value)}
+                onChange={value => setConfirmationText(value)}
                 placeholder='username'
                 textContentType='none'
                 autoCapitalize='none'

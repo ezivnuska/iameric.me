@@ -54,6 +54,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         }}
                         textStyles={{
                             color: theme?.colors.textDefault,
+                            fontSize: 22,
                         }}
                         // outline
                         // padded={false}

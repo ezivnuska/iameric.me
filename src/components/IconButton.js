@@ -60,7 +60,7 @@ export default ({
                     elevation: 1,
                     borderColor: theme?.colors.border,
                     textAlign: 'center',
-                    paddingVertical: 3,
+                    paddingVertical: 5,
                     outlineColor: 'none',
                     outlineStyle: 'none',
                 },
@@ -70,7 +70,7 @@ export default ({
             {(type === 'danger' || (iconName && alignIcon === 'left')) && (
                 <Icon
                     name={type === 'danger' ? iconName ? iconName : 'skull-outline' : iconName}
-                    size={24}
+                    size={textStyles ? textStyles.fontSize : 20}
                     color={type === 'primary' || type === 'danger' ? theme?.colors.buttonPrimaryLabel : theme?.colors.buttonLabel}
                     style={[
                         {
@@ -92,7 +92,7 @@ export default ({
                             flexShrink: 1,
                             color: transparent
                                 ? theme?.colors.textDefault
-                                : type === 'primary'
+                                : type === 'primary' || type === 'danger'
                                     ? theme?.colors.buttonPrimaryLabel
                                     : theme?.colors.buttonLabel,
                             letterSpacing: 0,
