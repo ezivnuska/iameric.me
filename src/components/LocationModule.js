@@ -20,29 +20,33 @@ export default ({ userId }) => {
         location,
     } = useContext(AppContext)
 
-
     useEffect(() => {
-        getLocationData(userId)
+        if (!location) getLocationData(userId)
     }, [])
 
     const getLocationData = async userId => {
 
         dispatch({ type: 'SET_LOADING', loading: 'Fetching location...' })
 
-        const locationData = await getLocationWithUserId(userId)
+        const data = await getLocationWithUserId(userId)
+        
+        if (!data) {
+            console.log('could not get location data.')
+        } else {
+            dispatch({ type: 'SET_LOCATION', location: data.location })
+        }
         
         dispatch({ type: 'SET_LOADING', loading: null })
-
-        if (!locationData) {
-            console.log('could not get location data.')
-            return
-        }
-
-        dispatch({ type: 'SET_LOCATION', location: locationData })
     }
 
     return (
-        <View style={{ marginVertical: 20 }}>
+        <View
+            style={{
+                marginVertical: 20,
+                outlineColor: 'none',
+                outlineStyle: 'none',
+            }}
+        >
             
             <IconButton
                 iconName={location ? 'create-outline' : 'add-outline'}
@@ -51,7 +55,20 @@ export default ({ userId }) => {
                 onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'LOCATION' })}
                 alignIcon='right'
                 transparent
-                align='left'
+                align='flex-start'
+                padded={false}
+                style={{
+                    // textAlign: 'left',
+                    // borderWidth: 1,
+                    // borderColor: 'white',
+                    marginBottom: 5,
+                    outlineColor: 'none',
+                    outlineStyle: 'none',
+                }}
+                textStyles={{
+                    marginTop: 5,
+                    marginLeft: 0,
+                }}
             />
             
             {loading

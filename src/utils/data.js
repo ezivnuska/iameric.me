@@ -162,5 +162,5 @@ export const getLocationWithUserId = async id => {
         return null
     }
 
-    return data.location
+    return data
 }

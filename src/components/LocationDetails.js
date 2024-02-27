@@ -10,7 +10,7 @@ export default ({ location }) => {
 
     const theme = useTheme()
     
-    if (!location) return null
+    // if (!location) return null
     
     const { address1, address2, city, state, zip } = location
     

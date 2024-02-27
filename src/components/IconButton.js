@@ -61,6 +61,8 @@ export default ({
                     borderColor: theme?.colors.border,
                     textAlign: 'center',
                     paddingVertical: 3,
+                    outlineColor: 'none',
+                    outlineStyle: 'none',
                 },
                 {...props.style},
             ]}

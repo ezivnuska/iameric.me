@@ -73,7 +73,6 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_LOCATION':
             location = action.location
-            modal = null
             break
         case 'REMOVE_IMAGE':
             images = images.filter(i => i._id !== action.id)

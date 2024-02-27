@@ -55,8 +55,8 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                         textStyles={{
                             color: theme?.colors.textDefault,
                         }}
-                        outline
-                        padded={false}
+                        // outline
+                        // padded={false}
                     />
 
                     <ScrollView

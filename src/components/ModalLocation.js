@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     LocationForm,
 } from '.'
+import { AppContext } from '../AppContext'
 
-export default () => (
-    <LocationForm />
-)
+export default () => {
+    
+    const {
+        location,
+    } = useContext(AppContext)
+    
+    return (
+        <LocationForm location={location} />
+    )
+}

@@ -8,12 +8,12 @@ import {
     ModalDestroy,
     ModalFeatured,
     ModalImage,
+    ModalLocation,
     ModalProfile,
     ModalSignin,
     ModalSignup,
     ModalSignout,
     ModalImageSelector,
-    ModalLocation,
     ProductForm,
     PopUpModal,
 } from '.'

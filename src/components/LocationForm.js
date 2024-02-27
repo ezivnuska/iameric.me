@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -10,96 +10,117 @@ import { AppContext } from '../AppContext'
 import classes from '../styles/classes'
 import axios from 'axios'
 
-const initialState = {
-    address1: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
-}
-
-export default () => {
+export default ({ location }) => {
 
     const {
         dispatch,
         loading,
-        location,
         user,
     } = useContext(AppContext)
     
-    const [ address1, setAddress1 ] = useState(location?.address1 || initialState.address1)
-    const [ address2, setAddress2 ] = useState(location?.address2 || initialState.address2)
-    const [ city, setCity ] = useState(location?.city || initialState.city)
-    const [ state, setState ] = useState(location?.state || initialState.state)
-    const [ zip, setZip ] = useState(location?.zip || initialState.zip)
+    const [ initialState, setInitialState ] = useState(location || {
+        address1: '',
+        address2: '',
+        city: '',
+        state: '',
+        zip: '',
+    })
+    const [ address1, setAddress1 ] = useState(location.address1)
+    const [ address2, setAddress2 ] = useState(location.address2)
+    const [ city, setCity ] = useState(location.city)
+    const [ state, setState ] = useState(location.state)
+    const [ zip, setZip ] = useState(location.zip)
     const [ dirty, setDirty ] = useState(false)
+
+    useEffect(() => {
+        if (location) {
+            setInitialState(location)
+        }
+    }, [])
+
+    useEffect(() => {
+        setAddress1(location.address1)
+        setAddress2(location.address2)
+        setCity(location.city)
+        setState(location.state)
+        setZip(location.zip)
+    }, [location])
 
     const onChange = (name, value) => {
         switch(name) {
             case 'address1': {
-                setDirty(value !== location.address1)
+                setDirty(value !== initialState.address1)
                 setAddress1(value)
             }
             break
             case 'address2': {
-                setDirty(value !== location.address2)
+                setDirty(value !== initialState.address2)
                 setAddress2(value)
             }
             break
             case 'city': {
-                setDirty(value !== location.city)
+                setDirty(value !== initialState.city)
                 setCity(value)
             }
             break
             case 'state': {
-                setDirty(value !== location.state)
+                setDirty(value !== initialState.state)
                 setState(value)
             }
             break
             case 'zip': {
-                setDirty(value !== location.zip)
+                setDirty(value !== initialState.zip)
                 setZip(value)
             }
             break
         }
     }
 
-    const onSubmitAddress = async newLocation => {
+    const submitForm = async () => {
+        
+        if (!isValid()) return
+
+        const { _id, username } = user
+
+        const newLocation = {
+            userId: _id,
+            username,
+            address1,
+            address2,
+            city,
+            state,
+            zip,
+        }
         
         dispatch({ type: 'SET_LOADING', loading: 'Updating address...' })
 
         const { data } = await axios
             .post('/api/location', newLocation)
         
-        dispatch({ type: 'SET_LOADING', loading: null })
-        
         if (!data) {
             console.log('Error saving location', err)
-            return
+        } else {
+            dispatch({ type: 'SET_LOCATION', location: data.location })
+            dispatch({ type: 'CLOSE_MODAL' })
         }
-        
-        dispatch({ type: 'SET_LOCATION', location: data.location })
-    }
-
-    const submitForm = () => {
-        if (!isValid()) return
-        const { _id, username } = user
-        const newLocation = { userId: _id, username, address1, address2, city, state, zip }
-        onSubmitAddress(newLocation)
+            
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const isValid = () => {
-        return (
-            dirty &&
-            address1.length &&
-            city.length &&
-            state.length &&
-            zip.length
-        )
+        let valid = true
+        if (!dirty) valid = false
+        if (!address1.length) valid = false
+        if (!city.length) valid = false
+        if (!state.length) valid = false
+        if (!zip.length) valid = false
+        return valid
     }
 
 	const onEnter = e => {
-		if (e.code === 'Enter') submitForm()
+		if (e.code === 'Enter') {
+            submitForm()
+        }
 	}
 
     return (
@@ -108,17 +129,18 @@ export default () => {
             <FormInput
                 label='Address'
                 value={address1}
-                onChangeText={value => onChange('address1', value)}
+                onChange={value => onChange('address1', value)}
                 placeholder='address1'
                 textContentType='streetAddressLine1'
                 autoCapitalize='words'
                 keyboardType='default'
                 onKeyPress={onEnter}
+                invalid={address1.length < 1}
             />
             
             <FormInput
                 value={address2}
-                onChangeText={value => onChange('address2', value)}
+                onChange={value => onChange('address2', value)}
                 placeholder='Ste/Apt'
                 textContentType='streetAddressLine2'
                 autoCapitalize='words'
@@ -132,36 +154,39 @@ export default () => {
                 <FormInput
                     label='City'
                     value={city}
-                    onChangeText={value => onChange('city', value)}
+                    onChange={value => onChange('city', value)}
                     placeholder='city'
                     textContentType='addressCity'
                     autoCapitalize='words'
                     keyboardType='default'
 					onKeyPress={onEnter}
+                    invalid={city.length < 1}
                 />
                 
                 <FormInput
                     label='State'
                     value={state}
-                    onChangeText={value => onChange('state', value)}
+                    onChange={value => onChange('state', value)}
                     placeholder='state'
                     textContentType='addressState'
                     autoCapitalize='none'
                     keyboardType='default'
-                    style={[classes.formInput, { width: 100 }]}
+                    style={{ flexBasis: 100 }}
 					onKeyPress={onEnter}
+                    invalid={state.length !== 2}
                 />
             </View>
             
             <FormInput
                 label='Zip'
                 value={zip}
-                onChangeText={value => onChange('zip', value)}
+                onChange={value => onChange('zip', value)}
                 placeholder='zip'
                 textContentType='postalCode'
                 autoCapitalize='none'
                 keyboardType='default'
                 onKeyPress={onEnter}
+                invalid={zip.length < 1}
             />
 
             <IconButton
@@ -169,6 +194,7 @@ export default () => {
                 label='Update Location'
                 onPress={submitForm}
                 disabled={loading || !isValid()}
+                style={{ marginTop: 10 }}
             />
 
         </View>
