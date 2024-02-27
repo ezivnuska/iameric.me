@@ -20,20 +20,23 @@ import { loadProducts } from '@utils/data'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ onDelete = null }) => {
+export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const theme = useTheme()
     const dims = useWindowDimensions()
 
     const {
         dispatch,
-        image,
         loading,
         products,
         user,
     } = useContext(AppContext)
 
     const [orientation, setOrientation] = useState('portrait')
+
+    // useEffect(() => {
+    //     console.log('image', image)
+    // }, [])
 
     useEffect(() => {
         if (dims) {
@@ -52,92 +55,6 @@ export default ({ onDelete = null }) => {
         const updatedProducts = await loadProducts(id)
         dispatch({ type: 'SET_PRODUCTS', products: updatedProducts })
         dispatch({ type: 'SET_LOADING', loading: null })
-    }
-
-    const isImageProfileImage = id => user.profileImage === id
-
-    const isImageProductImage = id => {
-        let response = false
-        products.map(product => {
-            if (product.image === id || product.image._id === id) response = product
-        })
-        return response
-    }
-
-    const deleteImage = async () => {
-
-        dispatch({ type: 'REMOVE_IMAGE', id: image._id })
-
-        const isProfileImage = isImageProfileImage(image._id)
-
-        let isProductImage = null
-        if (user.role === 'vendor') {
-            isProductImage = isImageProductImage(image._id)
-        }
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Deleting Image...' })
-
-        const { data } = await axios
-            .post('/api/images/delete', {
-                imageId: image._id,
-                isProductImage,
-                isProfileImage,
-            })
-
-            
-        if (!data) {
-            console.log('Error deleting image.')
-        } else {
-            if (onDelete) onDelete(data.imageId, isProfileImage, isProductImage)
-        }
-
-        dispatch({ type: 'SET_LOADING', loading: null })
-        
-    }
-
-    const setAvatar = async () => {
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Setting Avatar...' })
-
-        const { data } = await axios
-            .post('/api/user/avatar', {
-                userId: user._id,
-                imageId: image._id,
-            })
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
-        
-        if (!data) {
-            console.log('Error setting profileImage.')
-            return
-        }
-        
-        dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: data })
-
-        dispatch({ type: 'CLOSE_MODAL' })
-    }
-
-    const setProductImage = async productId => {
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Setting product image...' })
-
-        const { data } = await axios
-            .post('/api/product/image', {
-                productId,
-                imageId: image._id,
-            })
-
-        dispatch({ type: 'SET_LOADING', loading: null })
-        
-        if (!data) {
-            console.log('Error setting image id for product.')
-        } else if (!data.image) {
-            console.log('no image found')
-        } else {
-            dispatch({ type: 'UPDATE_PRODUCT_IMAGE', productId, image: data.image })
-        }
-
-        dispatch({ type: 'CLOSE_MODAL' })
     }
 
     return (image && user) ? (

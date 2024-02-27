@@ -377,7 +377,7 @@ const uploadImage = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    const { image } = await saveUserImage(user, filename, height, width)
+    const { image } = await saveUserImage(user._id, filename, height, width)
 
     if (!image) {
         console.log('Error saving UserImage to User Images')
@@ -390,16 +390,15 @@ const uploadImage = async (req, res) => {
 const saveUserImage = async (userId, filename, height, width) => {
     
     const image = new UserImage({ user: userId, filename, height, width })
+    
     await image.save()
 
+    const savedImage = await UserImage
+        .findOne({ _id: image._id })
+        .populate('user', 'username')
+    
     return {
-        image: {
-            _id: image._id,
-            filename: image.filename,
-            height,
-            user: image.user._id,
-            width,
-        }
+        image: savedImage,
     }
 }
 

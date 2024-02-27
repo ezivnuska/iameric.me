@@ -36,7 +36,6 @@ import ModalFactory from './ModalFactory'
 import ModalFeatured from './ModalFeatured'
 import ModalImage from './ModalImage'
 import ModalImageSelector from './ModalImageSelector'
-import ModalImageUploader from './ModalImageUploader'
 import ModalLocation from './ModalLocation'
 import ModalProfile from './ModalProfile'
 import ModalSignin from './ModalSignin'
@@ -103,7 +102,6 @@ export {
     ModalFeatured,
     ModalImage,
     ModalImageSelector,
-    ModalImageUploader,
     ModalLocation,
     ModalProfile,
     ModalSignin,

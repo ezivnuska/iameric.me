@@ -3,6 +3,7 @@ import {
     ImageSelector,
 } from '.'
 import { AppContext } from '../AppContext'
+import axios from 'axios'
 
 export default () => {
 
@@ -21,13 +22,16 @@ export default () => {
 
         const { data } = await axios
             .post(`/api/image/upload`, imageData)
-
-        dispatch({ type: 'SET_LOADING', loading: null })
-
+    
         if (!data) {
             console.log('Error uploading image/thumb')
-            return null
+        } else {
+            dispatch({ type: 'ADD_IMAGE', image: data })
+            dispatch({ type: 'CLOSE_MODAL', image: data })
+            dispatch({ type: 'SET_IMAGE', image: null })
         }
+        
+        dispatch({ type: 'SET_LOADING', loading: null })
     }
     
     return (

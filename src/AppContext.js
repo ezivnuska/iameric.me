@@ -5,6 +5,7 @@ const initialState = {
     entries: null,
     featured: null,
     image: null,
+    images: null,
     loading: null,
     location: null,
     modal: null,
@@ -23,6 +24,7 @@ const reducer = (state = initialState, action) => {
         entries,
         featured,
         image,
+        images,
         loading,
         location,
         modal,
@@ -58,7 +60,13 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_IMAGE':
             image = action.image
-            modal = 'IMAGE'
+            if (image) modal = 'IMAGE'
+            break
+        case 'SET_IMAGES':
+            images = action.images
+            break
+        case 'ADD_IMAGE':
+            images = images ? [...images, action.image] : [action.image]
             break
         case 'SET_USER':
             user = action.user
@@ -68,6 +76,7 @@ const reducer = (state = initialState, action) => {
             modal = null
             break
         case 'REMOVE_IMAGE':
+            images = images.filter(i => i._id !== action.id)
             if (user.profileImage && user.profileImage._id === action.id) {
                 user.profileImage = null
             }
@@ -261,6 +270,7 @@ const reducer = (state = initialState, action) => {
             entries = null
             featured = null
             image = null
+            images = null
             loading = null
             location = null
             modal = null
@@ -280,6 +290,7 @@ const reducer = (state = initialState, action) => {
         entries,
         featured,
         image,
+        images,
         loading,
         location,
         modal,
@@ -314,6 +325,7 @@ export const AppProvider = ({ children, preferences }) => {
                 entries: state.entries,
                 featured: state.featured,
                 image: state.image,
+                images: state.images,
                 loading: state.loading,
                 location: state.location,
                 modal: state.modal,

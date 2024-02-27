@@ -132,8 +132,11 @@ export default ({ navigation, route }) => {
                 ? (
                     <ImageList
                         images={images}
-                        username={userDetails.username}
-                        onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
+                        // username={userDetails.username}
+                        onSelected={image => {
+                            console.log('image selected', image)
+                            dispatch({ type: 'SET_IMAGE', image })
+                        }}
                     />
                 )
                 : null}

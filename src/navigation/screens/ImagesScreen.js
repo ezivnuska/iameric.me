@@ -18,16 +18,21 @@ export default () => {
 
     const {
         dispatch,
+        images,
         loading,
         user,
     } = useContext(AppContext)
 
-    const [images, setImages] = useState(null)
+    const [items, setItems] = useState(null)
 
     useEffect(() => {
         if (!user) console.log('user not loaded')
         else if (!images) loadImages()
     }, [user])
+
+    useEffect(() => {
+        if (images) setItems(images)
+    }, [images])
 
     const loadImages = async () => {
         
@@ -39,9 +44,10 @@ export default () => {
             console.log('Error fetching user images.')
         } else if (!data.images || !data.images.length) {
             console.log('no images found.')
-            setImages([])
+            setItems(null)
         } else {
-            setImages(data.images)
+            setItems(data.images)
+            dispatch({ type: 'SET_IMAGES', images: data.images })
         }
         
         dispatch({ type: 'SET_LOADING', loading: null })
@@ -54,16 +60,17 @@ export default () => {
             <View style={{ paddingHorizontal: 10 }}>
                 {loading
                     ? <LoadingView loading={loading} />
-                    : images && images.length
-                    ? (
+                    : (
                         <ImageList
-                            images={images}
+                            images={items}
                             username={user.username}
-                            onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
-                            uploadImage={() => console.log('uplading image...')}
+                            onSelected={image => {
+                                dispatch({ type: 'SET_IMAGE', image })
+                                // dispatch({ type: 'SET_MODAL', modalName: 'IMAGE' })
+                            }}
+                            // uploadImage={() => console.log('uplading image...')}
                         />
                     )
-                    : <ThemedText>No images to display.</ThemedText>
                 }
             </View>
         </Screen>
