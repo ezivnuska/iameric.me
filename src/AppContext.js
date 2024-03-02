@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from 'react'
+import { useWindowDimensions } from 'react-native'
 
 const initialState = {
     cart: null,
@@ -313,6 +314,8 @@ export const AppProvider = ({ children, preferences }) => {
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
     const otherUsersByRole = role => (state.users && state.user) ? usersByRole(role).filter(u => u._id !== state.user._id) : null
     
+    const dims = useWindowDimensions()
+
     return (
         <AppContext.Provider
             value={{
@@ -334,6 +337,7 @@ export const AppProvider = ({ children, preferences }) => {
                 profile: state.profile,
                 user: state.user,
                 users: state.users,
+                isLandscape: dims.width > dims.height,
                 vendors: usersByRole('vendor'),
                 ...preferences,
             }}

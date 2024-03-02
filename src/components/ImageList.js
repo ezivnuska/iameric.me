@@ -21,6 +21,7 @@ export default ({ images, username, onSelected }) => {
     const {
         dispatch,
         loading,
+        user,
     } = useContext(AppContext)
 
     const buttonStyle = {
@@ -38,6 +39,7 @@ export default ({ images, username, onSelected }) => {
     }
 
     const showUploadButton = username => {
+        if (username === user.username) return true
         switch(username) {
             case 'Customer':
             case 'Driver':
@@ -57,7 +59,7 @@ export default ({ images, username, onSelected }) => {
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     flexWrap: 'wrap',
-                    gap: 10,
+                    gap: 8,
                     width: '100%',
                 }}
             >

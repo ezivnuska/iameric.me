@@ -9,6 +9,8 @@ import {
     uploadAsync,
 } from 'expo-file-system'
 
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+
 export const openImagePickerAsync = async () => {
     
     let permissionResult = await requestMediaLibraryPermissionsAsync()
@@ -67,4 +69,12 @@ export const getImageDataById = async id => {
         .get(`/api/image/${id}`)
     
     return data
+}
+
+export const getProfileImagePathFromUser = user => {
+    const { profileImage, username } = user
+    const filename = profileImage?.filename
+    return filename
+        ? `${IMAGE_PATH}/${username}/${filename}`
+        : `${IMAGE_PATH}/avatar-default-small.png`
 }

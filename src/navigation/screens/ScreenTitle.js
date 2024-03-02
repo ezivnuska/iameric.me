@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     View,
 } from 'react-native'
@@ -7,8 +7,13 @@ import {
 } from '@components'
 import classes from '@styles/classes'
 import { useTheme } from 'react-native-paper'
+import { AppContext } from '../../AppContext'
 
 export default ({ children, title = null }) => {
+
+    const {
+        isLandscape,
+    } = useContext(AppContext)
     
     const theme = useTheme()
     
@@ -26,14 +31,14 @@ export default ({ children, title = null }) => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     width: '100%',
-                    maxWidth: 600,
-                    minWidth: 280,
+                    maxWidth: isLandscape ? 900 : 600,
                     marginHorizontal: 'auto',
                     paddingHorizontal: 10,
                     marginVertical: 0,
                 }}
             >
                 <ThemedText
+                    align='left'
                     style={[
                         classes.pageTitle,
                         {

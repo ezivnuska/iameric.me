@@ -16,6 +16,7 @@ export default ({ label, onChange, value, style = null, multiline = false, inval
     const [initialValue] = useState(value)
     const [inputValue, setInputValue] = useState(value)
     const [dirty, setDirty] = useState(false)
+    const [inputHeight, setInputHeight] = useState()
 
     const onChangeText = value => {
         setInputValue(value)
@@ -46,8 +47,8 @@ export default ({ label, onChange, value, style = null, multiline = false, inval
             
             <View
                 style={{
-                    backgroundColor: theme?.colors.inputBackground,
-                    height: 40,
+                    backgroundColor: multiline ? theme?.colors.modalBackground : theme?.colors.inputBackground,
+                    height: multiline ? Math.max(35, inputHeight) : 40,
                 }}
             >
                 <TextInput
@@ -57,14 +58,19 @@ export default ({ label, onChange, value, style = null, multiline = false, inval
                             flex: 1,
                             color: theme?.colors.inputText,
                             placeholderTextColor: theme?.colors.inputPlaceholder,
-                            backgroundColor: theme?.colors.inputBackground,
-                            lineHeight: 40,
+                            backgroundColor: 'transparent',
+                            lineHeight: multiline ? 22 : 40,
+                            height: multiline ? Math.max(35, inputHeight) : 40,
+                            flexWrap: multiline ? 'wrap' : 'nowrap',
+                            maxWidth: 300,
                         },
                         style,
                     ]}
+                    multiline={multiline}
                     // onBlur={onBlur}
                     onChangeText={onChangeText}
                     value={inputValue}
+                    onContentSizeChange={(e) => setInputHeight(e.nativeEvent.contentSize.height)}
                     {...props}
                 />
             </View>

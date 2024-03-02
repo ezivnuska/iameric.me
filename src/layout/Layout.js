@@ -22,6 +22,7 @@ export default () => {
         dispatch,
         modal,
         user,
+        isLandscape,
         isThemeDark,
     } = useContext(AppContext)
 
@@ -53,8 +54,7 @@ export default () => {
                     style={{
                         width: '100%',
                         height: 50,
-                        minWidth: 280,
-                        maxWidth: 600,
+                        maxWidth: isLandscape ? 900 : 600,
                         marginHorizontal: 'auto',
                     }}
                 >
@@ -71,7 +71,6 @@ export default () => {
                 style={{
                     flex: 1,
                     width: '100%',
-                    minWidth: 280,
                     marginHorizontal: 'auto',
                     backgroundColor: theme?.colors.background,
                 }}

@@ -6,10 +6,18 @@ import {
 } from 'react-native'
 import { AppContext } from '../../AppContext'
 import { useTheme } from '@react-navigation/native'
+import { getOrientation } from '@utils/metrics'
 
-export default ({ children, titleComponent = null, secure = true, tabs = true, padded = true }) => {
+export default ({
+    children,
+    titleComponent = null,
+    secure = true,
+    tabs = true,
+    padded = true,
+}) => {
 
     const {
+        isLandscape,
         user,
     } = useContext(AppContext)
     
@@ -37,20 +45,35 @@ export default ({ children, titleComponent = null, secure = true, tabs = true, p
 
                 <ScrollView
                     showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    // horizontal={isLandscape}
                     style={{
+                        flex: 1,
                         width: '100%',
-                        height: 'auto',
                         textAlign: 'left',
+                        borderWidth: 1,
+                        margin: 0,
+                        padding: 0,
+                        horizontalMargin: isLandscape ? 0 : 'auto',
+                        textAlign: 'center',
+                    }}
+                    contentContainerStyle={{
+                        height: dims.height - 150,
+                        width: '100%',
+                        maxWidth: isLandscape ? 900 : 600,
+                        marginHorizontal: 'auto',
+                        // paddingVertical: 15,
                     }}
                 >
                     <View
                         style={{
-                            height: tabs ? dims.height - 150 : dims.height - 50,
+                            height: dims.height - 150,
                             width: '100%',
-                            maxWidth: 600,
-                            minWidth: 280,
+                            maxWidth: isLandscape ? 900 : 600,
+                            // minWidth: 280,
+                            // marginVertical: !landscape ? 0 : 0,
+                            // marginHorizontal: !landscape ? 'auto' : 0,
                             marginHorizontal: 'auto',
-                            paddingTop: tabs ? 15 : 0,
                         }}
                     >
                         {(!secure || secure && user) && children}

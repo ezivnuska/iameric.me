@@ -60,7 +60,7 @@ export default {
     userHeading: {
         fontSize: sizes.userTitle,
         fontWeight: 600,
-        lineHeight: 32,
+        // lineHeight: 32,
     },
     itemPrice: {
         textAlign: 'right',
@@ -99,6 +99,7 @@ export default {
         marginBottom: 10,
     },
     formContainer: {
+        flexDirection: 'column',
         width: '100%',
         minWidth: 300,
         maxWidth: 400,
@@ -146,8 +147,11 @@ export default {
         outlineStyle: 'none',
 	},
 	formTextArea: {
-        height: 80,
+        height: 'auto',
+        minHeight: 40,
+		paddingHorizontal: 10,
 		paddingVertical: 8,
+		fontSize: 18,
         lineHeight: 22,
         outlineColor: 'none',
         outlineStyle: 'none',

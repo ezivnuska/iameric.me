@@ -130,7 +130,11 @@ export default ({
                         fontSize: 22,
                     }}
                     transparent
-                    style={{ flexGrow: 0 }}
+                    style={{
+                        flexGrow: 0,
+                        marginHorizontal: 8,
+                    }}
+                    // outline
                 />
             )}
             

@@ -9,30 +9,36 @@ import {
     FeedbackForm,
     LoadingView,
     IconButton,
+    ForumList,
 } from '.'
 import { AppContext } from '../AppContext'
 import { deleteEntryWithId, loadEntries } from '../utils/data'
 
-export default ({ navigation }) => {
+export default () => {
     
     const {
         dispatch,
         entries,
+        isLandscape,
         loading,
     } = useContext(AppContext)
 
     const [items, setItems] = useState(null)
 
     useEffect(() => {
-        if (!entries) getEntries()
+        if (!entries) fetchEntries()
         else setItems(entries)
     }, [])
 
     useEffect(() => {
-        if (entries && entries.length !== items.length) setItems(entries)
+        if (entries && items) {
+            if (entries.length !== items.length) setItems(entries)
+        } else if (entries) {
+            setItems(entries)
+        }
     }, [entries])
 
-    const getEntries = async () => {
+    const fetchEntries = async () => {
 
         dispatch({ type: 'SET_LOADING', loading: 'loading forum...' })
 
@@ -40,12 +46,8 @@ export default ({ navigation }) => {
         
         if (!entriesLoaded) {
             console.log('Error loading forum entries')
-        } else if (!entriesLoaded.length) {
-            console.log('No forum entries yet.')
-            setItems([])
         } else {
-            dispatch({ type: 'SET_ENTRIES', entries: entriesLoaded })   
-            setItems(entriesLoaded)
+            dispatch({ type: 'SET_ENTRIES', entries: entriesLoaded })
         }
         
         dispatch({ type: 'SET_LOADING', loading: null })
@@ -69,24 +71,24 @@ export default ({ navigation }) => {
 
     const addItem = item => setItems([item, ...items])
 
+    if (loading) return <LoadingView />
+
     return items && items.length
         ? (
-            <FlatList
-                data={items}
-                keyExtractor={(item, index) => `${index}-entry-${item._id}`}
-                renderItem={({ item }) => (
-                    <EntryListItem
-                        entry={item}
-                        onDelete={removeItemById}
-                    />
-                )} 
-            />
-        ) : (
-            <ThemedText
+            <View
                 style={{
-                    marginLeft: 10,
+                    flex: 1,
+                    flexGrow: 1,
                 }}
             >
+                <ForumList
+                    horizontal={isLandscape}
+                    items={items}
+                    onDelete={id => removeItemById(id)}
+                />
+            </View>
+        ) : (
+            <ThemedText align='left'>
                 No entries yet.
             </ThemedText>
         )

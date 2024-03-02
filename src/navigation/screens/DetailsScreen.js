@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
+    View,
 } from 'react-native'
 import {
     IconButton,
@@ -130,14 +131,18 @@ export default ({ navigation, route }) => {
 
             {userDetails
                 ? (
-                    <ImageList
-                        images={images}
-                        // username={userDetails.username}
-                        onSelected={image => {
-                            console.log('image selected', image)
-                            dispatch({ type: 'SET_IMAGE', image })
-                        }}
-                    />
+                    <View
+                        style={{ marginHorizontal: 10 }}
+                    >
+                        <ImageList
+                            images={images}
+                            username={userDetails.username}
+                            onSelected={image => {
+                                console.log('image selected', image)
+                                dispatch({ type: 'SET_IMAGE', image })
+                            }}
+                        />
+                    </View>
                 )
                 : null}
             

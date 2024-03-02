@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react'
 import {
     Image,
     Pressable,
-    Text,
     View,
 } from 'react-native'
+import {
+    ThemedText,
+} from '.'
 import { ThunderboltOutlined } from '@ant-design/icons'
 import classes from '../styles/classes'
 import { useTheme } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ children, user, filename, onPress = null, ...props }) => {
+export default ({ children, user, filename, horizontal = false, onPress = null, ...props }) => {
 
     const theme = useTheme()
 
@@ -31,21 +33,30 @@ export default ({ children, user, filename, onPress = null, ...props }) => {
 
     return (
         <View
-            style={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                gap: 12,
-                ...props.style,
-            }}
+            style={[
+                {
+                    flexBasis: 'auto',
+                    flexGrow: 1,
+                    flexShrink: 0,
+                    display: 'flex',
+                    flexDirection: horizontal ? 'column' : 'row',
+                    justifyContent: horizontal ? 'center' : 'flex-start',
+                    alignItems: horizontal ? 'center' : 'baseline',
+                    // gap: 12,
+                    // borderWidth: 1,
+                    // borderColor: 'green',
+                    flexWrap: 'nowrap',
+                    paddingHorizontal: horizontal ? 0 : 10,
+                },
+                props.style,
+            ]}
         >
             <Image
                 style={{
                     flexBasis: 'auto',
                     flexGrow: 0,
-                    width: 32,
-                    height: 32,
+                    width: 50,
+                    height: 50,
                     resizeMode: 'stretch',
                 }}
                 // onLoadStart={() => setLoading(true)}
@@ -55,11 +66,13 @@ export default ({ children, user, filename, onPress = null, ...props }) => {
 
             <View
                 style={{
-                    flex: 1,
                     flexBasis: 'auto',
                     flexGrow: 1,
-                    justifyContent: 'center',
-                    flexWrap: 'wrap',
+                    justifyContent: 'flex-start',
+                    // borderWidth: 1,
+                    // borderColor: 'yellow',
+                    marginTop: horizontal ? 8 : 0,
+                    marginLeft: !horizontal ? 10 : 0,
                 }}
             >
                 <Pressable
@@ -67,19 +80,23 @@ export default ({ children, user, filename, onPress = null, ...props }) => {
                     onPress={onPress}
                     // style={{ marginBottom: 8 }}
                 >
-                    <Text
-                        style={[
-                            classes.userHeading,
-                            { color: theme?.colors.textDefault }
-                        ]}
+                    <ThemedText
+                        style={classes.userHeading}
                     >
                         {user.username}
                         {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
-                    </Text>
+                    </ThemedText>
 
                 </Pressable>
                 
-                {children}
+                <View
+                    style={{
+                        flexBasis: '100%',
+                        flexGrow: 0,
+                    }}
+                >
+                    {children}
+                </View>
 
             </View>
 

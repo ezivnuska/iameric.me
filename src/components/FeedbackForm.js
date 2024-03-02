@@ -54,7 +54,7 @@ export default () => {
                 classes.formContainer,
                 {
                     justifyContent: 'center',
-                    height: 'auto',
+                    flexBasis: 'auto',
                 },
         ]}
             onKeyPress={onEnter}
@@ -62,7 +62,7 @@ export default () => {
             
             <FormInput
                 value={entry}
-                onChangeText={onChangeEntry}
+                onChange={onChangeEntry}
                 placeholder='say something...'
                 textContentType='none'
                 autoCapitalize='sentences'
@@ -70,6 +70,12 @@ export default () => {
                 onKeyPress={onEnter}
                 autoFocus
                 multiline
+                style={{
+                    flexBasis: 'auto',
+                    flexWrap: 'wrap',
+                    flexGrow: 0,
+                    maxHeight: 300,
+                }}
             />
 
             <IconButton

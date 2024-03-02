@@ -5,7 +5,7 @@ import {
 import classes from '../styles/classes'
 import { useTheme } from 'react-native-paper'
 
-export default ({ children, bold = false, ...props }) => {
+export default ({ children, align = 'center', bold = false, ...props }) => {
     
     const theme = useTheme()
 
@@ -16,6 +16,7 @@ export default ({ children, bold = false, ...props }) => {
                 {
                     color: theme?.colors.textDefault,
                     fontWeight: bold ? 700 : 400,
+                    textAlign: align,
                 },
                 props.style,
             ]}

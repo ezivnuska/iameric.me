@@ -17,6 +17,7 @@ export default () => {
     
     const {
         dispatch,
+        isLandscape,
         loading,
         profile,
         users,
@@ -25,10 +26,18 @@ export default () => {
 
     const dims = useWindowDimensions()
 
+    const [items, setItems] = useState(null)
     const [userProfile, setUserProfile] = useState(null)
-    const [isPortrait, setIsPortrait] = useState(true)
 
     let interval = undefined
+    
+    useEffect(() => {
+        if (!users) loadUsers()
+        else setItems(users)
+    
+        interval = setInterval(loadUsers, 1000 * (60 * 10))
+        return () => unsubscribe()
+    }, [])
 
     const unsubscribe = () => {
         clearInterval(interval)
@@ -36,22 +45,19 @@ export default () => {
     }
 
     useEffect(() => {
+        if (users && items ) {
+            if (users.length !== items.length) setItems(users)
+        } else if (users) {
+            setItems(users)
+        }
+    }, [users])
+
+    useEffect(() => {
         if (!profile) setUserProfile(null)
         else if (!userProfile || (userProfile && profile._id !== userProfile._id)) {
             setUserProfile(profile)
         }
     }, [profile])
-
-    useEffect(() => {
-        const portrait = getOrientation(dims) === 'portrait'
-        if (!isPortrait || isPortrait !== portrait) setIsPortrait(portrait)
-    }, [dims])
-
-    useEffect(() => {
-        if (!users) loadUsers()
-        interval = setInterval(loadUsers, 1000 * (60 * 10))
-        return () => unsubscribe()
-    }, [])
 
     const loadUsers = async () => {
 
@@ -67,53 +73,38 @@ export default () => {
         
         dispatch({ type: 'SET_LOADING', loading: null })
     }
-
-    const showProfile = userData => {
-        setUserProfile(userData)
-        dispatch({ type: 'SET_PROFILE', profile: userData })
-    }
     
     useEffect(() => {
         if (userProfile) {
-            if (getOrientation(dims) === 'portrait') {
+            if (!isLandscape) {
                 dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
             }
         }
     }, [userProfile])
 
-    return (
-        <View
-            style={{
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                alignItems: 'flex-start',
-            }}
-        >
-            <View style={{ flex: 1 }}>
-                {loading
-                    ? <LoadingView label={loading} />
-                    : users && users.length
-                        ? (
-                            <UserList
-                                users={users}
-                                onPress={item => showProfile(item)}
-                            />
-                        )
-                        : <ThemedText>No users to display.</ThemedText>
-                }
-            </View>
+    if (loading) return <LoadingView />
 
-            {!isPortrait && (
-                <View style={{ flex: 1 }}>
-                    {userProfile && (
-                        <UserDetailsShort
-                            userId={userProfile._id}
-                            clear={() => dispatch({ type: 'SET_PROFILE', profile: null })}
-                        />
-                    )}
-                </View>
-            )}
-        
-        </View>
-    )
+    return users && users.length
+        ? (
+            <View
+                style={{
+                    flex: 1,
+                    flexGrow: 1,
+                }}
+            >
+                <UserList
+                    horizontal={isLandscape}
+                    items={users}
+                    onPress={item => {
+                        dispatch({ type: 'SET_PROFILE', profile: item })
+                        dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                    }}
+                />
+            </View>
+        )
+        : (
+            <ThemedText align='left'>
+                No users to display.
+            </ThemedText>
+        )
 }
