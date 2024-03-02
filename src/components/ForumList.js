@@ -56,27 +56,29 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
 
             <View
                 style={{
-                    flex: 1,
+                    flexBasis: 'auto',
                     flexGrow: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    alignItems: 'flex-start',
+                    flexShrink: 1,
                 }}
             >
                 <View
                     style={{
-                        flex: 1,
-                        flexBasis: 'auto',
-                        flexGrow: 0,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
                     }}
                 >
                     <Pressable
+                        style={{
+                            flexBasis: 'auto',
+                            flexGrow: 1,
+                        }}
                         onPress={() => {
                             dispatch({ type: 'SET_PROFILE', profile: author })
                             dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
                         }}
                     >
                         <ThemedText
+                            align='left'
                             style={classes.userHeading}
                         >
                             {author.username}
@@ -85,40 +87,34 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
 
                     </Pressable>
 
+                    {hasAuth ? (
+                        <View
+                            style={{
+                                flexBasis: 'auto',
+                                flexGrow: 0,
+                            }}
+                        >
+                            <IconButton
+                                iconName='trash-outline'
+                                onPress={() => onDelete ? onDelete(item._id) : null}
+                                textStyles={{ fontSize: 20 }}
+                                transparent
+                                padded={false}
+                            />
+                        </View>
+                    ) : null}
+
                 </View>
-                <View
-                    style={{
-                        flex: 1,
-                        flexBasis: 'auto',
-                    }}
+                
+                <ThemedText
+                    align='left'
+                    style={{ flex: 1, marginTop: 10 }}
                 >
-                    <ThemedText
-                        style={{
-                            marginTop: 10,
-                            textAlign: 'left',
-                        }}
-                    >
-                        {text}
-                    </ThemedText>
-                </View>
+                    {text}
+                </ThemedText>
 
             </View>
 
-            {hasAuth ? (
-                <View
-                    style={{
-                        flexBasis: 'auto',
-                        flexGrow: 0,
-                    }}
-                >
-                    <IconButton
-                        iconName='trash-outline'
-                        onPress={() => onDelete ? onDelete(item._id) : null}
-                        textStyles={{ fontSize: 20 }}
-                        transparent
-                    />
-                </View>
-            ) : null}
         </View>
     )
 }
@@ -137,125 +133,103 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
     }, [item])
 
     return (
-        <View
+        <ScrollView
+            showsVerticalScrollIndicator={false}
             style={{
-                flexBasis: dims.width - 50,
+                // width: dims.width * 0.9,
+                maxWidth: 600,
+                minWidth: '50%',
             }}
-            {...props}
         >
-            <ScrollView
-                showsVerticalScrollIndicator={false}
+            <View
                 style={{
-                    width: '100%',
-                    height: dims.height - 150,
-                    margin: 0,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    gap: 15,
+                    paddingHorizontal: 10,
+                    marginTop: '30%',
+                    // borderWidth: 1,
+                    // borderColor: 'green',
                 }}
-                contentContainerStyle={{
-                    minHeight: dims.height - 150,
-                    width: '100%',
-                }}
-                snapToInterval={dims.width - 50}
             >
                 <View
                     style={{
-                        paddingTop: dims.height * 0.05,
-                        paddingHorizontal: 10,
+                        flex: 1,
+                        flexBasis: 'auto',
+                        flexGrow: 0,
+                        flexShrink: 0,
                     }}
                 >
+                    
+                    <Image
+                        style={{
+                            width: 70,
+                            height: 70,
+                        }}
+                        source={imagePath}
+                    />
+                </View>
+
+                <View style={{ flex: 1 }}>
+                
                     <View
                         style={{
+                            flexBasis: 'auto',
                             flexDirection: 'row',
-                            justifyContent: 'stretch',
-                            alignItems: 'flex-start',
-                            gap: 15,
+                            justifyContent: 'space-between',
                         }}
                     >
-                        <View
+                        <Pressable
                             style={{
-                                flex: 1,
                                 flexBasis: 'auto',
-                                flexGrow: 0,
-                                flexShrink: 0,
+                            }}
+                            onPress={() => {
+                                dispatch({ type: 'SET_PROFILE', profile: author })
+                                dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
                             }}
                         >
-                            
-                            <Image
-                                style={{
-                                    width: 70,
-                                    height: 70,
-                                }}
-                                source={imagePath}
-                            />
-                        </View>
+                            <ThemedText
+                                align='left'
+                                style={classes.userHeading}
+                            >
+                                {author.username}
+                                {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
+                            </ThemedText>
 
-                        <View
-                            style={{
-                                flex: 1,
-                                flexBasis: 'auto',
-                                flexGrow: 1,
-                            }}
-                        >
+                        </Pressable>
+
+                        {hasAuth ? (
                             <View
                                 style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
+                                    flexBasis: 'auto',
+                                    flexGrow: 0,
                                 }}
                             >
-                                <Pressable
-                                    style={{
-                                        flexBasis: 'auto',
-                                        flexGrow: 1,
-                                    }}
-                                    onPress={() => {
-                                        dispatch({ type: 'SET_PROFILE', profile: author })
-                                        dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
-                                    }}
-                                >
-                                    <ThemedText
-                                        align='left'
-                                        style={classes.userHeading}
-                                    >
-                                        {author.username}
-                                        {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
-                                    </ThemedText>
-
-                                </Pressable>
-
-                                {hasAuth ? (
-                                    <View
-                                        style={{
-                                            flexBasis: 'auto',
-                                            flexGrow: 0,
-                                        }}
-                                    >
-                                        <IconButton
-                                            iconName='trash-outline'
-                                            onPress={() => onDelete ? onDelete(item._id) : null}
-                                            textStyles={{ fontSize: 20 }}
-                                            transparent
-                                        />
-                                    </View>
-                                ) : null}
-
+                                <IconButton
+                                    iconName='trash-outline'
+                                    onPress={() => onDelete ? onDelete(item._id) : null}
+                                    textStyles={{ fontSize: 20 }}
+                                    transparent
+                                />
                             </View>
-                            
-                            <ThemedText
-                                style={{
-                                    marginTop: 10,
-                                    textAlign: 'left',
-                                    paddingBottom: 20,
-                                }}
-                            >
-                                {text}
-                            </ThemedText>
-                        </View>
+                        ) : null}
 
                     </View>
-                
+                    
+                    <ThemedText
+                        style={{
+                            marginTop: 10,
+                            textAlign: 'left',
+                            paddingBottom: 20,
+                        }}
+                    >
+                        {text}
+                    </ThemedText>
                 </View>
-                
-            </ScrollView>
-        </View>
+            </View>
+
+        </ScrollView>
     )
 }
 
@@ -291,18 +265,23 @@ export default ({ items, onDelete, horizontal = false, ...props }) => {
             style={{
                 height: dims.height - 150,
                 margin: 0,
+                // borderWidth: 1,
+                // borderColor: 'yellow',
+                width: '100%',
             }}
             contentContainerStyle={{
-                minHeight: dims.height - 150,
-                width: '100%',
+                maxWidth: 900,
+                marginHorizontal: 'auto',
+                // borderWidth: 1,
+                // borderColor: 'red',
             }}
         >
             <View
                 style={{
-                    flex: 1,
+                    width: '100%',
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
-                    flexWrap: 'nowrap',
+
                 }}
             >
                 {items.map(((item, index) => (
