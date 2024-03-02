@@ -95,6 +95,7 @@ export default ({ item, username }) => {
                             }}
                         >
                             <ThemedText
+                                align='left'
                                 style={[
                                     classes.productTitle,
                                     {
@@ -109,11 +110,21 @@ export default ({ item, username }) => {
                         </View>
 
                         {(blurb && blurb.length) ? (
-                            <ThemedText style={classes.productBlurb}>{blurb}</ThemedText>
+                            <ThemedText
+                                align='left'
+                                style={classes.productBlurb}
+                            >
+                                {blurb}
+                            </ThemedText>
                         ) : null}
 
                         {(desc && desc.length) ? (
-                            <ThemedText style={classes.textDefault}>{desc}</ThemedText>
+                            <ThemedText
+                                align='left'
+                                style={classes.textDefault}
+                            >
+                                {desc}
+                            </ThemedText>
                         ) : null}
 
                     </View>
@@ -122,7 +133,6 @@ export default ({ item, username }) => {
                 
             </View>
             
-
             <IconButton
                 onPress={() => dispatch({ type: 'SET_FEATURED', featured: item })}
                 type='primary'

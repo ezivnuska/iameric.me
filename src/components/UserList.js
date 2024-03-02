@@ -126,6 +126,7 @@ export default ({ items, onPress, horizontal = false, ...props }) => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
                 paddingHorizontal: 10,
+                paddingBottom: 20,
             }}
         />
     ) : (
