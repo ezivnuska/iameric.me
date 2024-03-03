@@ -38,7 +38,6 @@ export default ({ children, title = null }) => {
                 }}
             >
                 <ThemedText
-                    align='left'
                     style={[
                         classes.pageTitle,
                         {

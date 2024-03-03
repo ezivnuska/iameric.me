@@ -4,10 +4,9 @@ import {
     View,
 } from 'react-native'
 import {
-    ThemedText,
     LoadingView,
     UserList,
-    UserDetailsShort,
+    EmptyStatus,
 } from '.'
 import { AppContext } from '../AppContext'
 import { loadUsersByRole } from '@utils/data'
@@ -61,7 +60,7 @@ export default () => {
 
     const loadUsers = async () => {
 
-        dispatch({ type: 'SET_LOADING', loading: `Loading ${user.role === 'admin' ? 'all users' : user.role}s...`})
+        dispatch({ type: 'SET_LOADING', loading: `Loading ${user.role === 'admin' ? 'all users' : `${user.role}s`}...`})
         
         const loadedUsers = await loadUsersByRole(user.role)
         
@@ -102,9 +101,5 @@ export default () => {
                 />
             </View>
         )
-        : (
-            <ThemedText align='left'>
-                No users to display.
-            </ThemedText>
-        )
+        : <EmptyStatus status='No users to display.' />
 }

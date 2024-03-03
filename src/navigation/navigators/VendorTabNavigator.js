@@ -23,22 +23,7 @@ export default () => {
     const iconSize = 24
     
     return (
-        <VendorTabStack.Navigator
-            initialRouteName='Products'
-            activeColor={theme?.colors.tabActive}
-            inactiveColor={theme?.colors.tabInactive}
-            barStyle={{
-                backgroundColor: 'transparent',
-                width: '100%',
-                minWidth: 300,
-                maxWidth: 900,
-                marginHorizontal: 'auto',
-                elevation: 0,
-            }}
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
+        <>
             <VendorTabStack.Screen
                 name='Orders'
                 component={OrderScreen}
@@ -83,7 +68,7 @@ export default () => {
                 }}
             />
 
-            <VendorTabStack.Screen
+            {/* <VendorTabStack.Screen
                 name='Images'
                 component={ImagesScreen}
                 options={{
@@ -92,9 +77,9 @@ export default () => {
                         <Icon name='images-outline' size={iconSize} color={color} />
                     ),
                 }}
-            />
+            /> */}
             
-            <VendorTabStack.Screen
+            {/* <VendorTabStack.Screen
                 name='Settings'
                 component={SettingsScreen}
                 options={{
@@ -103,8 +88,8 @@ export default () => {
                         <Icon name='cog' size={iconSize} color={color} />
                     ),
                 }}
-            />
+            /> */}
 
-        </VendorTabStack.Navigator>
+        </>
     )
 }

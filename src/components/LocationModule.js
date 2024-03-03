@@ -55,7 +55,7 @@ export default ({ userId }) => {
                 onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'LOCATION' })}
                 alignIcon='right'
                 transparent
-                align='flex-start'
+                justify='flex-start'
                 padded={false}
                 style={{
                     marginBottom: 5,

@@ -4,33 +4,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const navigationRef = createNavigationContainerRef()
 
-export const goBack = async () => {
+// export const goBack = async () => {
     
-    if (navigationRef.isReady()) {
-        const prevRoute = await AsyncStorage.getItem('prevRoute') || 'Home'
-        const detail = await AsyncStorage.getItem('detail')
-        if (detail && prevRoute !== 'Home' && prevRoute !== 'Forum') navigate(prevRoute, { id: detail })
-        else navigate(prevRoute)
-    }
-}
+//     if (navigationRef.isReady()) {
+//         const prevRoute = await AsyncStorage.getItem('prevRoute') || 'Home'
+//         const detail = await AsyncStorage.getItem('detail')
+//         if (detail && prevRoute !== 'Home' && prevRoute !== 'Forum') navigate(prevRoute, { id: detail })
+//         else navigate(prevRoute)
+//     }
+// }
 
-export const checkRoute = async () => {
-    console.log('checking route...')
-    const savedRoute = await AsyncStorage.getItem('route')
-    const detail = await AsyncStorage.getItem('detail')
+// export const checkRoute = async () => {
+//     console.log('checking route...')
+//     const savedRoute = await AsyncStorage.getItem('route')
+//     const detail = await AsyncStorage.getItem('detail')
     
-    if (savedRoute && savedRoute !== 'Start') {
-        console.log('savedRoute found', savedRoute)
-        if (savedRoute === 'User' && detail) {
-            navigate(savedRoute, { id: detail })
-            return
-        }
-        console.log('navigating to savedRoute', savedRoute)
-        navigate(savedRoute)
-        return
-    }
-    // navigate('Home')
-}
+//     if (savedRoute && savedRoute !== 'Start') {
+//         console.log('savedRoute found', savedRoute)
+//         if (savedRoute === 'User' && detail) {
+//             navigate(savedRoute, { id: detail })
+//             return
+//         }
+//         console.log('navigating to savedRoute', savedRoute)
+//         navigate(savedRoute)
+//         return
+//     }
+//     // navigate('Home')
+// }
 
 // const handleRouteChange = async (currentRoute, nextRoute, params) => {
     

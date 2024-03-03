@@ -27,7 +27,7 @@ export default () => {
             <View
                 style={{
                     paddingHorizontal: 10,
-                    maxWidth: 300,
+                    // maxWidth: 300,
                 }}
             >
                 <UserDetails userId={user._id} />

@@ -3,7 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
-    ThemedText,
+    EmptyStatus,
     LoadingView,
     VendorList,
 } from '@components'
@@ -51,7 +51,7 @@ export default props => {
                         {
                             vendors
                                 ? <VendorList users={vendors} {...props} />
-                                : <ThemedText style={{ paddingHorizontal: 10 }}>No participating vendors.</ThemedText>
+                                : <EmptyStatus status='No participating vendors.' />
                         }
 
                     </View>

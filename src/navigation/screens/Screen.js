@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import {
+    ScrollView,
     useWindowDimensions,
     View,
 } from 'react-native'
@@ -10,6 +11,7 @@ export default ({
     children,
     titleComponent = null,
     secure = true,
+    tabs = true,
 }) => {
 
     const {
@@ -39,16 +41,19 @@ export default ({
             >
                 {titleComponent}
 
-                <View
+                <ScrollView
                     style={{
-                        height: dims.height - 150,
+                        height: tabs ? dims.height - 150 : dims.height - 50,
                         width: '100%',
                         maxWidth: isLandscape ? '100%' : 600,
                         marginHorizontal: 'auto',
                     }}
+                    contentContainerStyle={{
+                        height: '100%',
+                    }}
                 >
                     {(!secure || secure && user) && children}
-                </View>
+                </ScrollView>
             </View>
         </View>
     )

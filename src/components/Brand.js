@@ -1,42 +1,25 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
+    Pressable,
     Text,
-    TouchableOpacity,
     View,
 } from 'react-native'
 import { useTheme } from 'react-native-paper'
 import { navigationRef } from 'src/navigation/RootNavigation'
-import { AppContext } from '../AppContext'
 
 export default () => {
 
     const theme = useTheme()
-
-    const {
-        user,
-    } = useContext(AppContext)
-
-    const navigateToInitialRoute = () => {
-        if (!user) navigationRef.navigate('Start')
-        else {
-            switch(user.role) {
-                case 'admin': navigationRef.navigate('Forum'); break
-                case 'customer': navigationRef.navigate('Vendors'); break
-                case 'driver': navigationRef.navigate('Orders'); break
-                case 'vendor': navigationRef.navigate('Products'); break
-            }
-        }
-    }
     
     return (
-        <TouchableOpacity
+        <Pressable
             style={{
                 flex: 1,
                 flexGrow: 1,
                 paddingHorizontal: 5,
                 paddingVertical: 3,
             }}
-            onPress={() => navigateToInitialRoute()}
+            onPress={() => navigationRef.navigate('Tabs')}
         >
             <View
                 style={{
@@ -77,6 +60,6 @@ export default () => {
                 </Text>
 
             </View>
-        </TouchableOpacity>
+        </Pressable>
     )
 }

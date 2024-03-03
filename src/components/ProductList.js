@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
 import { FlatList } from 'react-native'
 import {
+    EmptyStatus,
     LoadingView,
     ProductListItem,
-    ThemedText,
 } from '.'
 import { AppContext } from '../AppContext'
 import { deleteProductWithId, loadProducts } from '../utils/data'
@@ -63,13 +63,12 @@ export default () => {
                     product={item}
                     key={item => `product-${item._id}`}
                     onDelete={() => onDelete(item._id)}
-                    onPress={item => dispatch({ type: 'SET_PRODUCT', productData: item })}
+                    onPress={item => {
+                        dispatch({ type: 'SET_PRODUCT', productData: item })
+                        dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })
+                    }}
                 />
             )}
         />
-    ) : (
-        <ThemedText style={{ paddingHorizontal: 10 }}>
-            No products available at this time.
-        </ThemedText>
-    )
+    ) : <EmptyStatus status='No products available at this time.' />
 }

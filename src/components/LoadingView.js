@@ -1,29 +1,30 @@
 import React, { useContext } from 'react'
 import {
-    Text,
     View,
 } from 'react-native'
+import {
+    ThemedText,
+} from '.'
 import { AppContext } from '../AppContext'
-import ThemedText from './ThemedText'
 import classes from '@styles/classes'
 
-export default ({ label = null }) => {
-
-    const {
-        loading,
-    } = useContext(AppContext)
+export default () => {
+    
+    const { loading } = useContext(AppContext)
 
     return (
         <View
             style={{
-                display: 'flex',
-                flexDirection: 'row',
+                height: '100%',
+                flexDirection: 'column',
                 justifyContent: 'center',
             }}
         >
-
-            <ThemedText style={classes.headerPrimary}>
-                {label || loading || 'Loading...'}
+            <ThemedText
+                align='center'
+                style={classes.loadStatus}
+            >
+                {loading || 'Loading...'}
             </ThemedText>
 
         </View>

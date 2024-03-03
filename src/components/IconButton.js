@@ -13,7 +13,7 @@ export default ({
     disabled,
     type = 'default',
     padded = true,
-    align = 'center',
+    justify = 'center',
     alignIcon = 'left',
     transparent = false,
     label = null,
@@ -43,7 +43,7 @@ export default ({
                 {
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: align,
+                    justifyContent: justify,
                     alignItems: 'center',
                     flexShrink: 1,
                     flexGrow: 0,

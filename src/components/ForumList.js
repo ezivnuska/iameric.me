@@ -14,11 +14,13 @@ import {
 import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
 import { AppContext } from 'src/AppContext'
+import { useTheme } from 'react-native-paper'
 
-const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, ...props }) => {
+const ListItemVertical = ({ item, imagePath, dispatch, hasAuth = false, onDelete = null, ...props }) => {
     
     const { author, text } = item
     const [online, setOnline] = useState(false)
+    const theme = useTheme()
     
     useEffect(() => {
         if (author && author.exp) {
@@ -65,6 +67,11 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
                     style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
+                        paddingBottom: 6,
+                        marginBottom: 10,
+                        borderBottomWidth: 1,
+                        borderBottomStyle: 'dotted',
+                        borderBottomColor: theme?.colors.border,
                     }}
                 >
                     <Pressable
@@ -78,7 +85,6 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
                         }}
                     >
                         <ThemedText
-                            align='left'
                             style={classes.userHeading}
                         >
                             {author.username}
@@ -92,14 +98,14 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
                             style={{
                                 flexBasis: 'auto',
                                 flexGrow: 0,
+                                marginTop: -1,
                             }}
                         >
                             <IconButton
                                 iconName='trash-outline'
                                 onPress={() => onDelete ? onDelete(item._id) : null}
-                                textStyles={{ fontSize: 20 }}
+                                textStyles={{ fontSize: 15 }}
                                 transparent
-                                padded={false}
                             />
                         </View>
                     ) : null}
@@ -107,8 +113,12 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
                 </View>
                 
                 <ThemedText
-                    align='left'
-                    style={{ flex: 1, marginTop: 10 }}
+                    style={{
+                        flex: 1,
+                        // marginTop: 10,
+                        paddingRight: 30,
+                        paddingBottom: 20,
+                    }}
                 >
                     {text}
                 </ThemedText>
@@ -119,10 +129,11 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
     )
 }
 
-const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null, ...props }) => {
-    const dims = useWindowDimensions()
+const ListItemHorizontal = ({ item, imagePath, dispatch, hasAuth = false, onDelete = null, ...props }) => {
     const { author, text } = item
     const [online, setOnline] = useState(false)
+    const dims = useWindowDimensions()
+    const theme = useTheme()
     
     useEffect(() => {
         if (author && author.exp) {
@@ -136,19 +147,25 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
         <ScrollView
             showsVerticalScrollIndicator={false}
             style={{
-                // width: dims.width * 0.9,
+                width: '100%',
                 maxWidth: 600,
                 minWidth: '50%',
+                // borderColor: 'red',
+                // borderWidth: 1,
             }}
         >
             <View
                 style={{
+                    width: '100%',
+                    maxWidth: 600,
+                    // flexBasis: '100%',
+                    flexGrow: 1,
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     alignItems: 'flex-start',
                     gap: 15,
                     paddingHorizontal: 10,
-                    marginTop: '30%',
+                    marginTop: dims.height < 400 ? '5%' : dims.height < 600 ? '15%' : '33%',
                     // borderWidth: 1,
                     // borderColor: 'green',
                 }}
@@ -171,13 +188,22 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
                     />
                 </View>
 
-                <View style={{ flex: 1 }}>
+                <View
+                    style={{
+                        flex: 1,
+                        flexGrow: 1,
+                    }}
+                >
                 
                     <View
                         style={{
                             flexBasis: 'auto',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
+                            paddingBottom: 10,
+                            borderBottomWidth: 1,
+                            borderBottomStyle: 'dotted',
+                            borderBottomColor: theme?.colors.border,
                         }}
                     >
                         <Pressable
@@ -190,7 +216,6 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
                             }}
                         >
                             <ThemedText
-                                align='left'
                                 style={classes.userHeading}
                             >
                                 {author.username}
@@ -204,12 +229,13 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
                                 style={{
                                     flexBasis: 'auto',
                                     flexGrow: 0,
+                                    marginTop: -2,
                                 }}
                             >
                                 <IconButton
                                     iconName='trash-outline'
                                     onPress={() => onDelete ? onDelete(item._id) : null}
-                                    textStyles={{ fontSize: 20 }}
+                                    textStyles={{ fontSize: 15 }}
                                     transparent
                                 />
                             </View>
@@ -236,6 +262,7 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
 export default ({ items, onDelete, horizontal = false, ...props }) => {
     const dims = useWindowDimensions()
     const {
+        dispatch,
         user,
     } = useContext(AppContext)
     const authorized = item => (item.author._id === user._id || user.role === 'admin')
@@ -250,6 +277,7 @@ export default ({ items, onDelete, horizontal = false, ...props }) => {
                     imagePath={getProfileImagePathFromUser(item.author)}
                     hasAuth={authorized(item)}
                     onDelete={onDelete}
+                    dispatch={dispatch}
                 />
             )}
             showsVerticalScrollIndicator={false}
@@ -291,6 +319,7 @@ export default ({ items, onDelete, horizontal = false, ...props }) => {
                         key={'entry' + index}
                         hasAuth={authorized(item)}
                         onDelete={onDelete}
+                        dispatch={dispatch}
                     />
                 )))}
             </View>

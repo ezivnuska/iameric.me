@@ -55,10 +55,10 @@ const reducer = (state = initialState, action) => {
         case 'SET_PROFILE':
             profile = action.profile
             break
-        case 'SET_PRODUCT':
-            productData = action.productData
-            modal = 'PRODUCT'
-            break
+        // case 'SET_PRODUCT':
+        //     productData = action.productData
+        //     modal = 'PRODUCT'
+        //     break
         case 'SET_IMAGE':
             image = action.image
             if (image) modal = 'IMAGE'
@@ -88,7 +88,7 @@ const reducer = (state = initialState, action) => {
             })
             break
         case 'SET_PRODUCT':
-            productData = action.formData
+            productData = action.productData
             break
         case 'SET_PRODUCTS':
             products = action.products

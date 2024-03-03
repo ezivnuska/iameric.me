@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     Modal,
     useWindowDimensions,
@@ -9,12 +9,17 @@ import {
     IconButton,
 } from '.'
 import { useTheme } from 'react-native-paper'
+import { AppContext } from '../AppContext'
 
 export default ({ children, onRequestClose, transparent = false, ...props }) => {
     
     const theme = useTheme()
 
     const dims = useWindowDimensions()
+
+    const {
+        isLandscape,
+    } = useContext(AppContext)
 
     return (
         <Modal
@@ -34,7 +39,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                     style={{
                         position: 'relative',
                         width: '100%',
-                        maxWidth: 600,
+                        maxWidth: isLandscape ? '100%' : 600,
                         minWidth: 280,
                         height: dims.height,
                         marginHorizontal: 'auto',
@@ -56,15 +61,13 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                             color: theme?.colors.textDefault,
                             fontSize: 22,
                         }}
-                        // outline
-                        // padded={false}
                     />
 
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         style={{
-                            minWidth: 300,
-                            maxWidth: 400,
+                            minWidth: 280,
+                            maxWidth: isLandscape ? '100%' : 600,
                             marginHorizontal: 'auto',
                             textAlign: 'center',
                             height: dims.height,

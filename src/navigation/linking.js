@@ -2,36 +2,46 @@ export default linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
-            Start: 'start',
-            Orders: {
-                path: 'orders',
+            SignIn: 'signin',
+            Secure: {
+                path: '',
                 screens: {
-                    OrderList: '',
+                    Orders: {
+                        path: 'orders',
+                        screens: {
+                            OrderList: '',
+                        },
+                    },
+                    Users: {
+                        path: 'users',
+                        screens: {
+                            UserList: '',
+                            User: '/:id',
+                        },
+                    },
+                    Vendors: {
+                        path: 'vendors',
+                        screens: {
+                            VendorList: '',
+                            Vendor: '/:id',
+                        },
+                    },
+                    Forum: 'forum',
                 },
             },
-            Products: {
-                path: 'products',
+            Settings: {
+                path: 'settings',
                 screens: {
-                    ProductList: '',
-                },
+                    Profile: '',
+                    Images: 'images',
+                    Products: {
+                        path: 'products',
+                        screens: {
+                            ProductList: '',
+                        },
+                    },
+                }
             },
-            Users: {
-                path: 'users',
-                screens: {
-                    UserList: '',
-                    User: '/:id',
-                },
-            },
-            Vendors: {
-                path: 'vendors',
-                screens: {
-                    VendorList: '',
-                    Vendor: '/:id',
-                },
-            },
-            Forum: 'forum',
-            Images: 'images',
-            Settings: 'settings',
             Fallback: 'oops',
         },
     },

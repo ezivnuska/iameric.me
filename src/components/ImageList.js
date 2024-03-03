@@ -5,6 +5,7 @@ import {
     View,
 } from 'react-native'
 import {
+    EmptyStatus,
     ThemedText,
 } from '.'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -118,11 +119,7 @@ export default ({ images, username, onSelected }) => {
         ) : null
         {!showUploadButton(username)
             ? (
-                <ThemedText
-                    style={{ marginHorizontal: 10 }}
-                >
-                    No images to display.
-                </ThemedText>
+                <EmptyStatus status='No images to display.' />
             ) : null
         }
 }

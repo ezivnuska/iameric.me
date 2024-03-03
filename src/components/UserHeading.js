@@ -81,7 +81,6 @@ export default ({ children, user, filename, horizontal = false, onPress = null, 
                     // style={{ marginBottom: 8 }}
                 >
                     <ThemedText
-                        align='left'
                         style={classes.userHeading}
                     >
                         {user.username}

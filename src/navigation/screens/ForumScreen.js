@@ -26,7 +26,7 @@ export default () => {
                         iconName='add-outline'
                         onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'FEEDBACK' })}
                         alignIcon='right'
-                        align='left'
+                        justify='left'
                         outline
                         style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
                         transparent

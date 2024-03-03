@@ -11,7 +11,7 @@ import EXIF from 'exif-js'
 import { AppContext } from '../AppContext'
 import { openFileSelector } from 'src/utils/images'
 
-const initialSize = 300
+const initialSize = 280
 
 export default ({ onSelected }) => {
 

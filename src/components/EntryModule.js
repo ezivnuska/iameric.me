@@ -1,15 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    FlatList,
     View,
 } from 'react-native'
 import {
-    ThemedText,
-    EntryListItem,
-    FeedbackForm,
     LoadingView,
-    IconButton,
     ForumList,
+    EmptyStatus,
 } from '.'
 import { AppContext } from '../AppContext'
 import { deleteEntryWithId, loadEntries } from '../utils/data'
@@ -87,9 +83,5 @@ export default () => {
                     onDelete={id => removeItemById(id)}
                 />
             </View>
-        ) : (
-            <ThemedText align='left'>
-                No entries yet.
-            </ThemedText>
-        )
+        ) : <EmptyStatus status='No entries yet.' />
 }

@@ -23,12 +23,12 @@ export default  () => {
         user,
     } = useContext(AppContext)
 
-    const [initialState, setInitialState] = useState(null)
-    const [title, setTitle] = useState()
-    const [price, setPrice] = useState()
-    const [blurb, setBlurb] = useState()
-    const [desc, setDesc] = useState()
-    const [category, setCategory] = useState()
+    const [initialState, setInitialState] = useState(productData)
+    const [title, setTitle] = useState(productData.title || '')
+    const [price, setPrice] = useState(productData.price || '')
+    const [blurb, setBlurb] = useState(productData.blurb || '')
+    const [desc, setDesc] = useState(productData.desc || '')
+    const [category, setCategory] = useState(productData.category || 'main')
     const [image, setImage] = useState(null)
     const [attachment, setAttachment] = useState(null)
 
@@ -49,9 +49,9 @@ export default  () => {
     const onChangeDesc = value => setDesc(value)
     const onChangeCategory = value => setCategory(value)
 
-    useEffect(() => {
-        setFormData({ title, price, category, blurb, desc, image, attachment })
-    }, [title, price, category, blurb, desc, image, attachment])
+    // useEffect(() => {
+    //     setFormData({ title, price, category, blurb, desc, image, attachment })
+    // }, [title, price, category, blurb, desc, image, attachment])
     
     // useEffect(() => {
     //     // if editing, set initial form vars
@@ -62,17 +62,24 @@ export default  () => {
     //         setFormData(product)
     //     }
     // }, [])
+
+    // useEffect(() => {
+    //     console.log('initial product data', productData)
+    //     if (productData) {
+    //         setInitialState(productData)
+    //     }
+    // }, [])
+
+    // useEffect(() => {
+    //     setFormData(productData)
+    // }, [initialState])
     
-    useEffect(() => {
-        // if editing, set initial form vars
-        if (productData) {
-            if (!initialState) {
-                // console.log('PRODUCT_DATA', productData)
-                setInitialState(productData)
-                setFormData(productData)
-            }
-        }
-    }, [productData])
+    // useEffect(() => {
+    //     // if editing, set initial form vars
+    //     if (productData) {
+    //         setFormData(productData)
+    //     }
+    // }, [productData])
 
     // useEffect(() => {
     //     console.log('formData changed', formData)
@@ -80,7 +87,7 @@ export default  () => {
     // }, [formData])
 
     const setFormData = data => {
-        // console.log('data', data)
+        console.log('data', data)
         setTitle(data.title)
         setPrice(data.price)
         setBlurb(data.blurb)
@@ -88,16 +95,16 @@ export default  () => {
         setCategory(data.category)
         setImage(data.image)
 
-        dispatch({ type: 'SET_PRODUCT', productData: ({
-            _id: data._id,
-            vendor: user._id,
-            title: data.title,
-            price: data.price,
-            blurb: data.blurb,
-            desc: data.desc,
-            category: data.category,
-            image: data.image,
-        })})
+        // dispatch({ type: 'SET_PRODUCT', productData: ({
+        //     _id: data._id,
+        //     vendor: user._id,
+        //     title: data.title,
+        //     price: data.price,
+        //     blurb: data.blurb,
+        //     desc: data.desc,
+        //     category: data.category,
+        //     image: data.image,
+        // })})
     }
 
     const resetForm = () => {
@@ -212,7 +219,7 @@ export default  () => {
             
             <FormInput
                 label='Name'
-                value={title || ''}
+                value={title}
                 onChangeText={onChangeTitle}
                 placeholder='product name'
                 textContentType='default'
@@ -223,7 +230,7 @@ export default  () => {
 
             <FormInput
                 label='Price'
-                value={price || ''}
+                value={price}
                 onChangeText={onChangePrice}
                 placeholder='0.00'
                 keyboardType='decimal-pad'
@@ -232,7 +239,7 @@ export default  () => {
 
             <FormInput
                 label='Blurb'
-                value={blurb || ''}
+                value={blurb}
                 onChangeText={onChangeBlurb}
                 placeholder='blurb'
                 keyboardType='default'
@@ -242,7 +249,7 @@ export default  () => {
 
             <FormInput
                 label='Description'
-                value={desc || ''}
+                value={desc}
                 onChangeText={onChangeDesc}
                 placeholder='description'
                 keyboardType='default'

@@ -95,7 +95,6 @@ export default ({ item, username }) => {
                             }}
                         >
                             <ThemedText
-                                align='left'
                                 style={[
                                     classes.productTitle,
                                     {
@@ -111,7 +110,6 @@ export default ({ item, username }) => {
 
                         {(blurb && blurb.length) ? (
                             <ThemedText
-                                align='left'
                                 style={classes.productBlurb}
                             >
                                 {blurb}
@@ -120,7 +118,6 @@ export default ({ item, username }) => {
 
                         {(desc && desc.length) ? (
                             <ThemedText
-                                align='left'
                                 style={classes.textDefault}
                             >
                                 {desc}

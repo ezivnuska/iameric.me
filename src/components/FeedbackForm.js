@@ -67,7 +67,7 @@ export default () => {
                 textContentType='none'
                 autoCapitalize='sentences'
                 keyboardType='default'
-                onKeyPress={onEnter}
+                // onKeyPress={onEnter}
                 autoFocus
                 multiline
                 style={{

@@ -1,6 +1,10 @@
 import sizes from './sizes'
 
 export default {
+    loadingStatus: {
+        fontSize: 24,
+        fontWeight: 700,
+    },
     pageTitle: {
         marginVertical: 10,
         fontSize: sizes.headerPrimary,
@@ -101,7 +105,7 @@ export default {
     formContainer: {
         flexDirection: 'column',
         width: '100%',
-        minWidth: 300,
+        minWidth: 280,
         maxWidth: 400,
         flexShrink: 1,
         flexGrow: 1,
@@ -141,7 +145,7 @@ export default {
 		fontSize: 18,
 		lineHeight: 40,
         width: '100%',
-        minWidth: 300,
+        minWidth: 280,
 		outlineWidth: 0,
         outlineColor: 'none',
         outlineStyle: 'none',

@@ -50,7 +50,6 @@ const ListItemVertical = ({ item, onPress, ...props }) => {
             >
                 <ThemedText
                     style={classes.userHeading}
-                    align='left'
                 >
                     {item.username}
                     {/* {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />} */}
@@ -61,7 +60,7 @@ const ListItemVertical = ({ item, onPress, ...props }) => {
     )
 }
 
-const ListItemHorizontal = ({ item, onPress, ...props }) => {
+const ListItemHorizontal = ({ item, onPress, size, ...props }) => {
     const imagePath = getProfileImagePathFromUser(item)
     return (
         <View
@@ -84,8 +83,9 @@ const ListItemHorizontal = ({ item, onPress, ...props }) => {
             >
                 <Image
                     style={{
-                        width: 100,
-                        height: 100,
+                        width: size,
+                        height: size,
+                        resizeMode: 'cover',
                     }}
                     source={imagePath}
                 />
@@ -100,7 +100,6 @@ const ListItemHorizontal = ({ item, onPress, ...props }) => {
             >
                 <ThemedText
                     style={classes.userHeading}
-                    align='left'
                 >
                     {item.username}
                     {/* {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />} */}
@@ -113,6 +112,7 @@ const ListItemHorizontal = ({ item, onPress, ...props }) => {
 
 export default ({ items, onPress, horizontal = false, ...props }) => {
     const dims = useWindowDimensions()
+    const imageSize = dims.height < 300 ? 50 : 100
     return !horizontal ? (
         <FlatList
             data={items}
@@ -155,6 +155,7 @@ export default ({ items, onPress, horizontal = false, ...props }) => {
                         item={item}
                         key={'user' + index}
                         onPress={onPress}
+                        size={imageSize}
                     />
                 )))}
             </View>

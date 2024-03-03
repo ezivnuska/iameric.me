@@ -1,33 +1,35 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
     IconButton,
-    ImageList,
     LoadingView,
     ThemedText,
 } from '@components'
 import { AppContext } from '../AppContext'
 import { loadUserById } from '@utils/data'
-import { useTheme } from 'react-native-paper'
+import {
+    getProfileImagePathFromUser,
+    getMaxAvailableImageSize,
+} from '@utils/images'
 import classes from '@styles/classes'
 import { navigationRef } from 'src/navigation/RootNavigation'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-
-export default ({ userId, clear }) => {
-
-    const theme = useTheme()
+export default ({ userId }) => {
 
     const {
         dispatch,
+        isLandscape,
         loading,
     } = useContext(AppContext)
 
+    const dims = useWindowDimensions()
+
     const [userDetails, setUserDetails] = useState(null)
-    // const [images, setImages] = useState(null)
+    const [imageSize, setImageSize] = useState(null)
 
     useEffect(() => {
         if (!userId) console.log('missing required user id param')
@@ -40,16 +42,25 @@ export default ({ userId, clear }) => {
     }, [userId])
 
     useEffect(() => {
-        if (!userDetails) {
-            // setImages(null)
-        } else {
+        if (userDetails) {
             if (userDetails._id !== userId) {
                 loadUserDetails(userId)
-            // } else if (!images) {
-            //     loadImages()
+            }
+            if (userDetails.profileImage) {
+                getImageDims()
             }
         }
     }, [userDetails])
+
+    useEffect(() => {
+        if (userDetails && userDetails.profileImage) getImageDims()
+    }, [dims])
+
+    const getImageDims = () => {
+        const { width, height } = userDetails.profileImage
+        const imageDims = getMaxAvailableImageSize(dims, width, height)
+        setImageSize(imageDims)
+    }
 
     const loadUserDetails = async () => {
 
@@ -66,132 +77,92 @@ export default ({ userId, clear }) => {
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
-    // const loadImages = async () => {
-        
-    //     dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
-        
-    //     const { data } = await axios.get(`/api/user/images/${userId}`)
-        
-    //     if (!data) {
-    //         console.log('Error fetching user images.')
-    //     } else if (!data.images || !data.images.length) {
-    //         console.log('no images found.')
-    //         setImages([])
-    //     } else {
-    //         setImages(data.images)
-    //     }
-        
-    //     dispatch({ type: 'SET_LOADING', loading: null })
-    // }
-
-    const getImageDims = (w, h) => {
-        let scale = 1
-        let width = w
-        let height = h
-        if (w >= h) {// if landscape
-            if (w > 200) {
-                scale = 200 / width
-                width *= scale
-                height *= scale
-            }
-        } else {// if portrait
-            if (h > 200) {
-                scale = 200 / height
-                width *= scale
-                height *= scale
-            }
-        }
-        return {
-            width,
-            height,
-        }
-    }
-
-    // TODO: clean this.
-    const renderUserAvatar = () => {
-
-        const { profileImage, username } = userDetails
-
-        const filename = (profileImage && profileImage.filename)
-            ? profileImage.filename
-            : null
-        
-        const source = filename ?
-            `${IMAGE_PATH}/${username}/${filename}` :
-            `${IMAGE_PATH}/avatar-default.png`
-
-        const { width, height } = profileImage
-            ? getImageDims(profileImage.width, profileImage.height)
-            : { width: 200, height: 200 }
-        
-        return (
-            <Image
-                source={source}
-                style={{
-                    width,
-                    height,
-                    resizeMode: 'cover',
-                    // marginVertical: 15,
-                }}
-            />
-        )
-    }
-
+    if (loading) return <LoadingView />
     return (
         <View
             style={{
-                marginHorizontal: 'auto',
+                width: '100%',
+                // borderWidth: 1,
+                // borderColor: 'red',
             }}
         >
-            {loading
-                ? <LoadingView label={loading} />
-                : userDetails
-                    ? (
-                        <View>
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    height: 40,
-                                }}
-                            >
-                                <ThemedText style={[classes.headerSecondary, { paddingHorizontal: 7 }]}>
-                                    {userDetails.username}
-                                </ThemedText>
-                                
-                                <IconButton
-                                    iconName='close-outline'
-                                    onPress={clear}
-                                    transparent
-                                />
-
-                            </View>
-                            
-                            {renderUserAvatar()}
-                            
-                            <IconButton
-                                label='View Profile'
-                                onPress={() => {
-                                    navigationRef.navigate('Users', { screen: 'User', params: { id: userDetails._id} })
-                                    clear()
-                                }}
-                                style={{
-                                    marginTop: 10,
-                                }}
-                                textStyles={{ color: theme?.colors.buttonPrimaryLabel }}
-                            />
-
-                            {/* <ImageList
-                                images={images}
-                                username={userDetails.username}
-                                onSelected={image => dispatch({ type: 'SET_IMAGE', image })}
-                            /> */}
-                            {/* <UserImageModule user={userDetails} /> */}
-                        </View>
-                    )
-                    : null
-            }
+            {userDetails
+                ? isLandscape
+                    ? <LayoutHorizontal imageSize={imageSize} userDetails={userDetails} />
+                    : <LayoutVertical imageSize={imageSize} userDetails={userDetails} />
+                : null}
         </View>
     )
 }
+
+const LayoutVertical = ({ imageSize, userDetails }) => (
+    <View>
+        <View
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+            }}
+        >
+            <ThemedText
+                style={classes.headerSecondary}
+            >
+                {userDetails.username}
+            </ThemedText>
+
+        </View>
+        
+        <Image
+            source={getProfileImagePathFromUser(userDetails)}
+            style={imageSize}
+        />
+        
+        <IconButton
+            label='View Profile'
+            onPress={() => {
+                navigationRef.navigate('Users', { screen: 'User', params: { id: userDetails._id} })
+                clear()
+            }}
+            style={{
+                marginTop: 10,
+            }}
+        />
+    </View>
+)
+
+const LayoutHorizontal = ({ imageSize, userDetails }) => (
+    <View
+        style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            gap: 15,
+        }}
+    >
+        <Image
+            source={getProfileImagePathFromUser(userDetails)}
+            style={imageSize}
+        />
+        
+        <View>
+
+            <ThemedText
+                style={classes.headerSecondary}
+            >
+                {userDetails.username}
+            </ThemedText>
+            
+            <IconButton
+                label='View Profile'
+                onPress={() => {
+                    navigationRef.navigate('Users', { screen: 'User', params: { id: userDetails._id} })
+                    clear()
+                }}
+                style={{
+                    marginTop: 10,
+                }}
+            />
+        </View>
+        
+    </View>
+)

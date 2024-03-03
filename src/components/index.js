@@ -10,6 +10,7 @@ import DeleteAccountButton from './DeleteAccountButton'
 import DestroyForm from './DestroyForm'
 import DriverList from './DriverList'
 import DriverListItem from './DriverListItem'
+import EmptyStatus from './EmptyStatus'
 import EntryModule from './EntryModule'
 import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
@@ -77,6 +78,7 @@ export {
     DestroyForm,
     DriverList,
     DriverListItem,
+    EmptyStatus,
     EntryModule,
     EntryListItem,
     FeedbackForm,

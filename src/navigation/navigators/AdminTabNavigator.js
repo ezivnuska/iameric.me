@@ -22,22 +22,7 @@ export default () => {
     const iconSize = 24
 
     return (
-        <AdminTabStack.Navigator
-            initialRouteName={'Forum'}
-            activeColor={theme?.colors.tabActive}
-            inactiveColor={theme?.colors.tabInactive}
-            barStyle={{
-                backgroundColor: 'transparent',
-                width: '100%',
-                minWidth: 300,
-                maxWidth: 900,
-                marginHorizontal: 'auto',
-                elevation: 0,
-            }}
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
+        <>
             <AdminTabStack.Screen
                 name='Orders'
                 component={OrderScreen}
@@ -86,7 +71,7 @@ export default () => {
                 }}
             />
 
-            <AdminTabStack.Screen
+            {/* <AdminTabStack.Screen
                 name='Images'
                 component={ImagesScreen}
                 options={{
@@ -96,9 +81,9 @@ export default () => {
                         <Icon name='images-outline' size={iconSize} color={color} />
                     ),
                 }}
-            />
+            /> */}
             
-            <AdminTabStack.Screen
+            {/* <AdminTabStack.Screen
                 name='Settings'
                 component={SettingsScreen}
                 options={{
@@ -108,8 +93,8 @@ export default () => {
                         <Icon name='cog' size={iconSize} color={color} />
                     ),
                 }}
-            />
+            /> */}
 
-        </AdminTabStack.Navigator>
+        </>
     )
 }

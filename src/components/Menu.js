@@ -3,9 +3,9 @@ import {
     FlatList,
 } from 'react-native'
 import {
-    ThemedText,
     LoadingView,
     MenuItem,
+    EmptyStatus,
 } from '.'
 
 export default ({ loading, products, vendor }) => {
@@ -26,9 +26,5 @@ export default ({ loading, products, vendor }) => {
                 )}
             />
         )
-        : (
-            <ThemedText style={{ paddingHorizontal: 10 }}>
-                There are no available products at this time.
-            </ThemedText>
-        )
+        : <EmptyStatus status='There are no available products at this time.' />
 }

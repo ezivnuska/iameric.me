@@ -49,8 +49,8 @@ const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
                 paddingHorizontal: 10,
                 gap: 15,
                 borderBottomWidth: 1,
-                borderStyle: 'dotted',
-                borderColor: '#ccc',
+                borderBottomStyle: 'dotted',
+                borderBottomColor: '#ccc',
             }}
         >
             <View

@@ -26,6 +26,7 @@ const UserButton = ({ user }) => {
     
     return (
         <Pressable
+        // navigation.navigate('Root', { screen: 'Profile' });
             onPress={() => navigationRef.navigate('Settings')}
             style={{
                 flexGrow: 0,

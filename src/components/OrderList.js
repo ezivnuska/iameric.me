@@ -13,6 +13,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext'
 import moment from 'moment'
 import { getOrdersById } from '../utils/data'
+import EmptyStatus from './EmptyStatus'
 
 export default () => {
 
@@ -271,12 +272,6 @@ export default () => {
                 )}
             />
         ) : (
-            <ThemedText
-                style={{
-                    marginHorizontal: 10,
-                }}
-            >
-                You have no pending orders.
-            </ThemedText>
+            <EmptyStatus status='You have no pending orders.' />
         )
 }
