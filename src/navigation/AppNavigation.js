@@ -320,7 +320,7 @@ export default ({ user }) => {
     const checkAuth = async () => {
         const token = await AsyncStorage.getItem('userToken')
         const user = await authenticate(dispatch, token)
-        console.log('user', user)
+        // console.log('user', user)
         if (!user) return
         dispatch({ type: 'SET_USER', user })
     }

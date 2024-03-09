@@ -67,6 +67,8 @@ export default ({ label, onChange, value, style = null, multiline = false, inval
                         style,
                     ]}
                     multiline={multiline}
+                    autoCorrect={false}
+                    spellCheck={false}
                     // onBlur={onBlur}
                     onChangeText={onChangeText}
                     value={inputValue}
