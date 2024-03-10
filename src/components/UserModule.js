@@ -11,6 +11,7 @@ import {
 import { AppContext } from '../AppContext'
 import { loadUsersByRole } from '@utils/data'
 import { getOrientation } from '@utils/metrics'
+import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default () => {
     
@@ -95,8 +96,9 @@ export default () => {
                     horizontal={isLandscape}
                     items={users}
                     onPress={item => {
-                        dispatch({ type: 'SET_PROFILE', profile: item })
-                        dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                        // dispatch({ type: 'SET_PROFILE', profile: item })
+                        // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                        navigationRef.navigate('Users', { screen: 'User', params: { id: item._id } })
                     }}
                 />
             </View>

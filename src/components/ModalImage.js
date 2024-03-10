@@ -25,8 +25,10 @@ export default () => {
     }
 
     const deleteImage = async () => {
-
-        dispatch({ type: 'REMOVE_IMAGE', id: image._id })
+        console.log('removing image', image)
+        if (image.user._id === user._id) {
+            dispatch({ type: 'REMOVE_IMAGE', id: image._id })
+        }
 
         const isProfileImage = isImageProfileImage(image._id)
         const isProductImage = user.role === 'vendor' ? isImageProductImage(image._id) : null

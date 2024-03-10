@@ -37,6 +37,10 @@ export default ({ navigation, route }) => {
         if (!id) console.log('missing required user id param')
         else loadUserDetails(id)
     }, [])
+    
+    useEffect(() => {
+        console.log('images changed', images)
+    }, [images])
 
     useEffect(() => {
         if (!userDetails) {
@@ -49,6 +53,11 @@ export default ({ navigation, route }) => {
             }
         }
     }, [userDetails])
+
+    const removeImage = id => {
+        const filteredArray = images.filter(image => image._id !== id)
+        setImages(filteredArray)
+    }
 
     const loadUserDetails = async () => {
 
@@ -137,6 +146,7 @@ export default ({ navigation, route }) => {
                         <ImageList
                             images={images}
                             username={userDetails.username}
+                            // onDeleted={id => removeImage(id)}
                             onSelected={image => {
                                 console.log('image selected', image)
                                 dispatch({ type: 'SET_IMAGE', image })

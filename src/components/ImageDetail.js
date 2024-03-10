@@ -88,7 +88,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                 />
             </View>
 
-            {(user._id === image.user._id) ? (
+            {(user._id === image.user._id || user.role === 'admin') ? (
                 <View
                     style={{
                         flexBasis: 'auto',
@@ -109,7 +109,10 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                         }}
                     >
                         
-                        {(!user.profileImage || (user.profileImage && user.profileImage._id !== image._id)) ? (
+                        {(
+                            (!user.profileImage || user.profileImage._id !== image._id)
+                            && image.user._id === user._id
+                        ) ? (
                             <IconButton
                                 type='primary'
                                 label='Set as Avatar'
@@ -122,17 +125,18 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                             />
                         ) : null}
 
-                        {user.username !== 'Driver' &&
-                        user.username !== 'Customer' &&
-                        user.username !== 'Vendor' && (
+                        {(
+                            user.username !== 'Driver' &&
+                            user.username !== 'Customer' &&
+                            user.username !== 'Vendor' ||
+                            user.role === 'admin'
+                        ) && (
                             <IconButton
                                 type='danger'
                                 label='Delete Image'
                                 onPress={deleteImage}
                                 disabled={loading}
-                                style={{
-                                    flex: 1,
-                                }}
+                                style={{ flex: 1 }}
                             />
                         )}
 
