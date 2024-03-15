@@ -14,6 +14,7 @@ import { ThunderboltOutlined } from '@ant-design/icons'
 import classes from '../styles/classes'
 import { useTheme } from 'react-native-paper'
 import { getProfileImagePathFromUser } from '@utils/images'
+import { navigationRef } from 'src/navigation/RootNavigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -94,8 +95,10 @@ const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
                 >
                     <Pressable
                         onPress={() => {
-                            dispatch({ type: 'SET_PROFILE', profile: author })
-                            dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            // dispatch({ type: 'SET_PROFILE', profile: author })
+                            // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            console.log('author', author)
+                            navigationRef.navigate('Forum')
                         }}
                     >
                         <ThemedText
@@ -227,8 +230,11 @@ const ListItemHorizontal = ({ entry, onDelete = null, ...props }) => {
                 >
                     <Pressable
                         onPress={() => {
-                            dispatch({ type: 'SET_PROFILE', profile: author })
-                            dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            // dispatch({ type: 'SET_PROFILE', profile: author })
+                            // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            console.log('author', author)
+                            navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
+                            // navigate('Tabs', { screen: 'Forum' })
                         }}
                     >
                         <ThemedText

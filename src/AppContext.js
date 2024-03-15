@@ -1,5 +1,6 @@
 import React, { createContext, useReducer } from 'react'
 import { useWindowDimensions } from 'react-native'
+import { usersReducer } from './reducers'
 
 const initialState = {
     cart: null,
@@ -7,7 +8,7 @@ const initialState = {
     featured: null,
     image: null,
     images: null,
-    loading: null,
+    loading: 'init',
     location: null,
     modal: null,
     orders: null,
@@ -16,6 +17,7 @@ const initialState = {
     profile: null,
     user: null,
     users: null,
+    usersLoaded: false,
     vendor: null,
 }
 
@@ -35,6 +37,8 @@ const reducer = (state = initialState, action) => {
         profile,
         user,
         users,
+        usersLoaded,
+        vendor,
     } = state
     
     switch(action.type) {
@@ -75,6 +79,42 @@ const reducer = (state = initialState, action) => {
         case 'SET_LOCATION':
             location = action.location
             break
+        case 'UPDATE_USER_LOCATION':
+            if (action.userId === user._id) {
+                user.location = action.location
+            } else {
+                if (users) {
+                    users = users.map(u => {
+                        if (u._id === action.userId) {
+                            return {
+                                ...u,
+                                location: action.location,
+                            }
+                        } else {
+                            return u
+                        }
+                    })
+                }
+            }
+            break
+            case 'UPDATE_USER_LOCATION_WITH_LOCATION_ID':
+                if (action.location.userId === user._id) {
+                    user.location = action.location
+                } else {
+                    if (users) {
+                        users = users.map(u => {
+                            if (u._id === action.location.userId) {
+                                return {
+                                    ...u,
+                                    location: action.location,
+                                }
+                            } else {
+                                return u
+                            }
+                        })
+                    }
+                }
+                break
         case 'REMOVE_IMAGE':
             images = images.filter(i => i._id !== action.id)
             if (user.profileImage && user.profileImage._id === action.id) {
@@ -126,6 +166,7 @@ const reducer = (state = initialState, action) => {
             products = products.filter(product => product._id !== action.id)
             break
         case 'SET_LOADING':
+            console.log(action.loading == null ? `** DONE: ${loading}` : `** ${action.loading}`)
             loading = action.loading
             break
         case 'SET_PROFILE_IMAGE':
@@ -133,6 +174,114 @@ const reducer = (state = initialState, action) => {
             break
         case 'SET_USERS':
             users = action.users
+            break
+        case 'SET_USERS_LOADED':
+            usersLoaded = action.loaded
+            break
+        case 'UPDATE_USER':
+            users = users
+                ? users.map(u => {
+                    if (u._id === action.user._id) {
+                        return action.user
+                    }
+                    return u
+                })
+                : [action.user]
+            
+            if (action.user._id === user._id) user = action.user
+            
+            break
+        case 'UPDATE_USER_IMAGES':
+            console.log('updating user images')
+            if (action.userId === user._id) {
+                user.images = action.images
+                console.log('root user images updated', user)
+            } else {
+                if (users) {
+                    users = users.map(u => {
+                        if (u._id === action.userId) {
+                            console.log('updating user images', action.images)
+                            return {
+                                ...u,
+                                images: action.images,
+                            }
+                        }
+                        return u
+                    })
+                }
+            }
+            
+            break
+        case 'UPDATE_USER_PRODUCTS':
+            users = users.map(u => {
+                if (u._id === action.userId) {
+                    return {
+                        ...u,
+                        products: action.products,
+                    }
+                }
+                return u
+            })
+            break
+        case 'ADD_IMAGE_TO_USER':
+            users = users.map(u => {
+                if (!action.image) {
+                    console.log('no image reference to add')
+                    return
+                }
+                if (u._id === action.image.user) {
+                    return {
+                        ...u,
+                        images: [...images, action.image],
+                    }
+                }
+                return u
+            })
+            break
+        case 'REMOVE_IMAGE_FROM_USER':
+            users = users.map(u => {
+                if (!action.image) {
+                    console.log('no image reference to remove')
+                    return
+                }
+                if (u._id === action.image.user) {
+                    return {
+                        ...u,
+                        images: images.filter(image => image._id !== action.image._id),
+                    }
+                }
+                return u
+            })
+            break
+        case 'REMOVE_PRODUCT_FROM_USER':
+            users = users.map(u => {
+                if (!action.product) {
+                    console.log('no product reference to remove')
+                    return
+                }
+                if (u._id === action.product.user) {
+                    return {
+                        ...u,
+                        products: products.filter(products => prodoucts._id !== action.product._id),
+                    }
+                }
+                return u
+            })
+            break
+        case 'ADD_PRODUCT_TO_USER':
+            users = users.map(u => {
+                if (!action.product) {
+                    console.log('no product reference to remove')
+                    return
+                }
+                if (u._id === action.product.user) {
+                    return {
+                        ...u,
+                        products: [...products, action.product],
+                    }
+                }
+                return u
+            })
             break
         case 'ADD_TO_CART':
 
@@ -280,6 +429,8 @@ const reducer = (state = initialState, action) => {
             profile = null
             user = null
             users = null
+            usersLoaded = false
+            vendor = null
         break
         default:
             throw new Error('Not valid action type')
@@ -300,6 +451,18 @@ const reducer = (state = initialState, action) => {
         profile,
         user,
         users,
+        usersLoaded,
+        vendor,
+    }
+}
+
+const combineReducers = reducers => {  
+    return (state = {}, action) => {
+        const newState = {}
+        for (let key in reducers) {
+            newState[key] = reducers[key](state[key], action)
+        }
+        return newState
     }
 }
 
@@ -313,7 +476,8 @@ export const AppProvider = ({ children, preferences }) => {
     
     const usersByRole = role => state.users ? state.users.filter(u => u.role === role) : null
     const otherUsersByRole = role => (state.users && state.user) ? usersByRole(role).filter(u => u._id !== state.user._id) : null
-    
+    const getUserById = id => state.users ? state.users.filter(u => u._id === id)[0] : null
+    const getUserImagesById = id => state.users ? state.users.filter(u => u._id === id)[0].images : null
     const dims = useWindowDimensions()
 
     return (
@@ -321,6 +485,8 @@ export const AppProvider = ({ children, preferences }) => {
             value={{
                 state,
                 dispatch,
+                getUserById,
+                getUserImagesById,
                 cart: state.cart,
                 customers: otherUsersByRole('customer'),
                 drivers: otherUsersByRole('driver'),
@@ -337,7 +503,9 @@ export const AppProvider = ({ children, preferences }) => {
                 profile: state.profile,
                 user: state.user,
                 users: state.users,
+                usersLoaded: state.usersLoaded,
                 isLandscape: dims.width > dims.height,
+                vendor: state.vendor,
                 vendors: usersByRole('vendor'),
                 ...preferences,
             }}

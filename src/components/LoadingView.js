@@ -11,7 +11,7 @@ import classes from '@styles/classes'
 export default () => {
     
     const { loading } = useContext(AppContext)
-
+    
     return (
         <View
             style={{

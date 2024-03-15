@@ -25,9 +25,12 @@ export default () => {
     }
 
     const deleteImage = async () => {
-        console.log('removing image', image)
         if (image.user._id === user._id) {
+            console.log('removing image', image)
             dispatch({ type: 'REMOVE_IMAGE', id: image._id })
+        } else {
+            console.log('removing user image', image)
+            dispatch({ type: 'REMOVE_IMAGE_FROM_USER', image })
         }
 
         const isProfileImage = isImageProfileImage(image._id)

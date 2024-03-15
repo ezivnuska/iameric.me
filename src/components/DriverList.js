@@ -6,7 +6,7 @@ import {
 import {
     UserHeading,
 } from '.'
-import { navigate } from '../navigation/RootNavigation'
+import { navigationRef } from '../navigation/RootNavigation'
 
 export default ({ users }) => (
     <FlatList
@@ -26,7 +26,7 @@ export default ({ users }) => (
                     <UserHeading
                         user={item}
                         filename={profileImage && profileImage.filename ? profileImage.filename : null}
-                        onPress={() => navigate('Driver', { id: _id })}
+                        onPress={() => navigationRef.navigate('Driver', { id: _id })}
                         style={{ alignItems: 'center' }}
                     />
                 </View>

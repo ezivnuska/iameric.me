@@ -20,44 +20,32 @@ export default () => {
         isLandscape,
         loading,
         profile,
-        users,
         user,
+        users,
+        usersLoaded,
     } = useContext(AppContext)
 
-    const dims = useWindowDimensions()
-
-    const [items, setItems] = useState(null)
+    // const [items, setItems] = useState(null)
     const [userProfile, setUserProfile] = useState(null)
-
-    let interval = undefined
     
     useEffect(() => {
-        if (!users) loadUsers()
-        else setItems(users)
-    
-        interval = setInterval(loadUsers, 1000 * (60 * 10))
-        return () => unsubscribe()
+        if (!users || !usersLoaded) loadUsers()
     }, [])
 
-    const unsubscribe = () => {
-        clearInterval(interval)
-        interval = undefined
-    }
+    // useEffect(() => {
+    //     if (users && items ) {
+    //         if (users.length !== items.length) setItems(users)
+    //     } else if (users) {
+    //         setItems(users)
+    //     }
+    // }, [users])
 
-    useEffect(() => {
-        if (users && items ) {
-            if (users.length !== items.length) setItems(users)
-        } else if (users) {
-            setItems(users)
-        }
-    }, [users])
-
-    useEffect(() => {
-        if (!profile) setUserProfile(null)
-        else if (!userProfile || (userProfile && profile._id !== userProfile._id)) {
-            setUserProfile(profile)
-        }
-    }, [profile])
+    // useEffect(() => {
+    //     if (!profile) setUserProfile(null)
+    //     else if (!userProfile || (userProfile && profile._id !== userProfile._id)) {
+    //         setUserProfile(profile)
+    //     }
+    // }, [profile])
 
     const loadUsers = async () => {
 
@@ -69,18 +57,19 @@ export default () => {
             console.log('Error loading users')
         } else {
             dispatch({ type: 'SET_USERS', users: loadedUsers.filter(u => u._id !== user._id) })
+            dispatch({ type: 'SET_USERS_LOADED', loaded: true })
         }
         
         dispatch({ type: 'SET_LOADING', loading: null })
     }
     
-    useEffect(() => {
-        if (userProfile) {
-            if (!isLandscape) {
-                dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
-            }
-        }
-    }, [userProfile])
+    // useEffect(() => {
+    //     if (profile) {
+    //         if (!isLandscape) {
+    //             dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+    //         }
+    //     }
+    // }, [profile])
 
     if (loading) return <LoadingView />
 
@@ -98,7 +87,8 @@ export default () => {
                     onPress={item => {
                         // dispatch({ type: 'SET_PROFILE', profile: item })
                         // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
-                        navigationRef.navigate('Users', { screen: 'User', params: { id: item._id } })
+                        // navigate('Vendor', { id: _id })
+                        navigationRef.navigate('User', { id: item._id })
                     }}
                 />
             </View>

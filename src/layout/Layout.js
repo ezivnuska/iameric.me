@@ -21,9 +21,9 @@ export default () => {
     const {
         dispatch,
         modal,
-        user,
         isLandscape,
         isThemeDark,
+        user,
     } = useContext(AppContext)
 
     const theme = useTheme()
@@ -86,7 +86,7 @@ export default () => {
                     }}
                 >
                     
-                    <AppNavigation user={user} />
+                    <AppNavigation />
 
                 </View>
 

@@ -6,13 +6,13 @@ import {
     View,
 } from 'react-native'
 import { UserHeading } from '.'
-import { navigate } from '../navigation/RootNavigation'
+import { navigationRef } from '../navigation/RootNavigation'
 
 const UserFilterListItem = ({ user }) => (
     <UserHeading
         user={user}
         filename={(user.profileImage && user.profileImage.filename) ? user.profileImage.filename : null}
-        onPress={() => navigate('User', { id: user._id })}
+        onPress={() => navigationRef.navigate('User', { id: user._id })}
     />
 )
 

@@ -22,7 +22,7 @@ export default () => {
     } = useContext(AppContext)
 
     useEffect(() => {
-        initialize(dispatch)
+        // initialize(dispatch)
     }, [])
 
     const onConnect = async type => {

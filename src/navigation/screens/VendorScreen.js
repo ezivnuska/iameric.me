@@ -25,12 +25,14 @@ export default ({ navigation, route }) => {
     const {
         dispatch,
         loading,
+        getUserById,
     } = useContext(AppContext)
 
     const [products, setProducts] = useState(null)
-    const [userDetails, setUserDetails] = useState(null)
+    // const [userDetails, setUserDetails] = useState(null)
 
     const { id } = route.params
+    const userDetails = getUserById(id)
 
     const getProducts = async () => {
         

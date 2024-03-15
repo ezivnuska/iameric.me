@@ -58,8 +58,8 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
     }
 
     return (image && user) ? (
-        <Pressable
-            onPress={() => dispatch({ type: 'CLOSE_MODAL' })}
+        <View
+            // onPress={() => dispatch({ type: 'CLOSE_MODAL' })}
             style={{
                 justifyContent: 'flex-start',
                 width: '100%',
@@ -135,7 +135,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                                 type='danger'
                                 label='Delete Image'
                                 onPress={deleteImage}
-                                disabled={loading}
+                                disabled={loading || process.env.NODE_ENV === 'development'}
                                 style={{ flex: 1 }}
                             />
                         )}
@@ -161,6 +161,6 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                     ) : null}
                 </View>
             ) : null}
-        </Pressable>
+        </View>
     ) : null
 }

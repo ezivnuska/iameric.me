@@ -8,8 +8,27 @@ import {
 import {
     uploadAsync,
 } from 'expo-file-system'
+import axios from 'axios'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+
+export const loadImages = async (dispatch, userId) => {
+    
+    dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
+    
+    const { data } = await axios.get(`/api/user/images/${userId}`)
+    
+    if (!data) {
+        console.log('Error fetching user images.')
+    } else {
+        console.log('data.images', data.images)
+        dispatch({ type: 'UPDATE_USER_IMAGES', userId, images: data.images })
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
+
+    return data.images
+}
 
 export const openImagePickerAsync = async () => {
     

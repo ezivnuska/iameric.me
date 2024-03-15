@@ -64,7 +64,7 @@ export default ({ userId }) => {
 
     const loadUserDetails = async () => {
 
-        dispatch({ type: 'SET_LOADING', loading: 'Loading user...' })
+        dispatch({ type: 'SET_LOADING', loading: 'Loading user short...' })
         
         const user = await loadUserById(userId)
         

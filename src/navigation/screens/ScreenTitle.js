@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import {
+    Pressable,
     View,
 } from 'react-native'
 import {
@@ -8,8 +9,9 @@ import {
 import classes from '@styles/classes'
 import { useTheme } from 'react-native-paper'
 import { AppContext } from '../../AppContext'
+import { StackActions } from '@react-navigation/native'
 
-export default ({ children, title = null }) => {
+export default ({ children, navigation = null, backLabel = null, title = null }) => {
 
     const {
         isLandscape,
@@ -28,7 +30,7 @@ export default ({ children, title = null }) => {
                 style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    justifyContent: backLabel ? 'flex-start' : 'space-between',
                     alignItems: 'center',
                     width: '100%',
                     maxWidth: isLandscape ? 900 : 600,
@@ -37,6 +39,34 @@ export default ({ children, title = null }) => {
                     marginVertical: 0,
                 }}
             >
+                {backLabel && (
+                    <Pressable
+                        onPress={() => {
+                            const popAction = StackActions.replace('UserList')
+                            navigation.dispatch(popAction)
+                        }}
+                        style={{
+                            flexBasis: 'auto',
+                            flexGrow: 0,
+                            // marginTop: 5,
+                            // marginBottom: 5,
+                        }}
+                    >
+                        <ThemedText
+                            style={[
+                                classes.pageTitle,
+                                {
+                                    color: theme?.colors.headerPrimary,
+                                    // lineHeight: 30,
+                                    marginRight: 5,
+                                },
+                            ]}
+                        >
+                            {backLabel}:
+                        </ThemedText>
+                    </Pressable>
+                )}
+
                 <ThemedText
                     style={[
                         classes.pageTitle,
@@ -44,9 +74,9 @@ export default ({ children, title = null }) => {
                             flexBasis: 'auto',
                             flexGrow: 1,
                             color: theme?.colors.headerPrimary,
-                            lineHeight: 30,
-                            marginTop: 5,
-                            marginBottom: 5,
+                            // lineHeight: 30,
+                            // marginTop: 5,
+                            // marginBottom: 5,
                         },
                     ]}
                 >

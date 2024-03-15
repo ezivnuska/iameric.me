@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    DetailsScreen,
+    UserScreen,
     UsersScreen,
 } from '../screens'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -17,12 +17,14 @@ export default () => (
         <UsersStack.Screen
             name='UserList'
             component={UsersScreen}
-            options={{ title: 'Users' }}
+            options={{
+                title: 'Users',
+            }}
         />
 
         <UsersStack.Screen
             name='User'
-            component={DetailsScreen}
+            component={UserScreen}
             options={{
                 title: 'User',
                 unmountOnBlur: true,

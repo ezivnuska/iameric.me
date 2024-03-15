@@ -12,7 +12,7 @@ import DriverList from './DriverList'
 import DriverListItem from './DriverListItem'
 import EmptyStatus from './EmptyStatus'
 import EntryModule from './EntryModule'
-import EntryListItem from './EntryListItem'
+// import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormButton from './FormButton'
@@ -80,7 +80,7 @@ export {
     DriverListItem,
     EmptyStatus,
     EntryModule,
-    EntryListItem,
+    // EntryListItem,
     FeedbackForm,
     FileSelector,
     FormButton,

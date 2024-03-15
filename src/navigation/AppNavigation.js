@@ -99,6 +99,7 @@ const TabStackScreen = ({ user }) => {
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name='people-circle-outline' size={iconSize} color={color} />
                     ),
+                    unmountOnBlur: true,
                 })}
             />
 
@@ -305,28 +306,30 @@ const linking = {
     },
 }
 
-export default ({ user }) => {
+export default () => {
 
     const theme = useTheme()
 
     const {
         dispatch,
+        user,
     } = useContext(AppContext)
 
     useEffect(() => {
-        checkAuth()
+        checkUserStatus()
     }, [])
 
-    const checkAuth = async () => {
+    const checkUserStatus = async () => {
+        console.log('checking user status')
         const token = await AsyncStorage.getItem('userToken')
-        const user = await authenticate(dispatch, token)
-        // console.log('user', user)
-        if (!user) return
-        dispatch({ type: 'SET_USER', user })
+        await authenticate(dispatch, token)
     }
 
     useEffect(() => {
-        if (user) navigationRef.navigate('Tabs')
+        if (user) {
+            console.log('<navigating to tabs>')
+            navigationRef.navigate('Tabs')
+        }
     }, [user])
 
     return (

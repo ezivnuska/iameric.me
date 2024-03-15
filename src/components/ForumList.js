@@ -15,6 +15,7 @@ import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
 import { AppContext } from 'src/AppContext'
 import { useTheme } from 'react-native-paper'
+import { navigationRef } from '../navigation/RootNavigation'
 
 const ListItemVertical = ({ item, imagePath, dispatch, hasAuth = false, onDelete = null, ...props }) => {
     
@@ -80,8 +81,11 @@ const ListItemVertical = ({ item, imagePath, dispatch, hasAuth = false, onDelete
                             flexGrow: 1,
                         }}
                         onPress={() => {
-                            dispatch({ type: 'SET_PROFILE', profile: author })
-                            dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            // dispatch({ type: 'SET_PROFILE', profile: author })
+                            // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            // console.log('author', author)
+                            
+                            navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
                         }}
                     >
                         <ThemedText
@@ -211,8 +215,10 @@ const ListItemHorizontal = ({ item, imagePath, dispatch, hasAuth = false, onDele
                                 flexBasis: 'auto',
                             }}
                             onPress={() => {
-                                dispatch({ type: 'SET_PROFILE', profile: author })
-                                dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                                // dispatch({ type: 'SET_PROFILE', profile: author })
+                                // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                                console.log('author', author)
+                                navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
                             }}
                         >
                             <ThemedText

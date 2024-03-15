@@ -53,7 +53,23 @@ const getLocationByUserId = async (req, res) => {
     return res.json({ location })
 }
 
+const getUserLocationWithLocationId = async (req, res) => {
+    
+    const { locationId } = req.params
+    
+    const location = await Location
+        .findOne({ _id: locationId })
+
+    if (!location) {
+        console.log('No user location found.')
+        return res.json({ location: null })
+    }
+
+    return res.json({ location })
+}
+
 module.exports = {
     createOrUpdateLocation,
     getLocationByUserId,
+    getUserLocationWithLocationId,
 }

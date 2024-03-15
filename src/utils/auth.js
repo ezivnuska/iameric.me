@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export const authenticate = async (dispatch, token) => {
     
-    dispatch({ type: 'SET_LOADING', loading: 'User found. Verifying...' })
+    dispatch({ type: 'SET_LOADING', loading: 'Authenticating...' })
     
     const { data } = await axios.
         post('/api/authenticate', { token })
@@ -20,9 +20,8 @@ export const authenticate = async (dispatch, token) => {
     await setUserToken(user.token)
             
     dispatch({ type: 'SET_USER', user })
-    dispatch({ type: 'SET_LOADING', loading: null })
     
-    return user
+    dispatch({ type: 'SET_LOADING', loading: null })
 }
 
 export const connect = async type => {
@@ -63,7 +62,7 @@ export const initialize = async dispatch => {
     if (tokenFromStorage) {
         
         // if stored token found...
-        dispatch({ type: 'SET_LOADING', loading: 'User found. Verifying...' })
+        dispatch({ type: 'SET_LOADING', loading: 'Init: User found. Verifying...' })
 
         user = await authenticate(dispatch, tokenFromStorage)    
         

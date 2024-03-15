@@ -20,60 +20,61 @@ export default ({ userId }) => {
     const {
         dispatch,
         loading,
+        user,
     } = useContext(AppContext)
 
-    const [userDetails, setUserDetails] = useState(null)
-    const [images, setImages] = useState(null)
+    // const [userDetails, setUserDetails] = useState(null)
+    // const [images, setImages] = useState(null)
 
-    useEffect(() => {
-        if (!userId) console.log('missing required user id param')
-        else loadUserDetails(userId)
-    }, [])
+    // useEffect(() => {
+    //     if (!userId) console.log('missing required user id param')
+    //     else loadUserDetails(userId)
+    // }, [])
 
-    useEffect(() => {
-        if (userId && userDetails && userId !== userDetails._id)
-            loadUserDetails(userId)
-    }, [userId])
+    // useEffect(() => {
+    //     if (userId && userDetails && userId !== userDetails._id)
+    //         loadUserDetails(userId)
+    // }, [userId])
 
-    useEffect(() => {
-        if (!userDetails) {
-            setImages(null)
-        } else {
-            if (userDetails._id !== userId) {
-                loadUserDetails(userId)
-            } else if (!images) {
-                loadImages()
-            }
-        }
-    }, [userDetails])
+    // useEffect(() => {
+    //     if (!userDetails) {
+    //         setImages(null)
+    //     } else {
+    //         if (userDetails._id !== userId) {
+    //             loadUserDetails(userId)
+    //         } else if (!images) {
+    //             loadImages()
+    //         }
+    //     }
+    // }, [userDetails])
 
-    const loadUserDetails = async () => {
+    // const loadUserDetails = async () => {
 
-        dispatch({ type: 'SET_LOADING', loading: 'Loading user...' })
+    //     dispatch({ type: 'SET_LOADING', loading: 'Loading user details...' })
         
-        const user = await loadUserById(userId)
+    //     const user = await loadUserById(userId)
         
-        if (!user) {
-            console.log('could not load user details with id:', userId)
-        } else {
-            setUserDetails(user)
-        }
+    //     if (!user) {
+    //         console.log('could not load user details with id:', userId)
+    //     } else {
+    //         setUserDetails(user)
+    //     }
         
-        dispatch({ type: 'SET_LOADING', loading: null })
-    }
+    //     dispatch({ type: 'SET_LOADING', loading: null })
+    // }
 
-    const loadImages = async () => {
+    // const loadImages = async () => {
         
-        dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
+    //     dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
         
-        const { data } = await axios.get(`/api/user/images/${userId}`)
+    //     const { data } = await axios.get(`/api/user/images/${userId}`)
         
-        if (!data) {
-            console.log('Error fetching user images.')
-        }
+    //     if (!data) {
+    //         console.log('Error fetching user images.')
+    //     }
         
-        dispatch({ type: 'SET_LOADING', loading: null })
-    }
+    //     dispatch({ type: 'SET_LOADING', loading: null })
+    // }
 
     const getImageDims = (w, h) => {
         let scale = 1
@@ -96,7 +97,7 @@ export default ({ userId }) => {
     }
 
     // TODO: clean this.
-    const renderUserAvatar = () => {
+    const renderUserAvatar = userDetails => {
 
         const { profileImage, username } = userDetails
 
@@ -125,8 +126,8 @@ export default ({ userId }) => {
     }
 
     return loading
-        ? <LoadingView label={loading} />
-        : userDetails
-            ? renderUserAvatar()
+        ? <LoadingView />
+        : user
+            ? renderUserAvatar(user)
             : null
 }

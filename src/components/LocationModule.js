@@ -10,34 +10,26 @@ import {
     LocationDetails,
 } from '.'
 import { AppContext } from '../AppContext'
-import { getLocationWithUserId } from '../utils/data'
+import { getLocationByUserId, getUserLocationById } from '../utils/data'
 
 export default ({ userId }) => {
 
     const {
         dispatch,
         loading,
-        location,
+        // location,
+        user,
     } = useContext(AppContext)
 
     useEffect(() => {
-        if (!location) getLocationData(userId)
-    }, [])
-
-    const getLocationData = async userId => {
-
-        dispatch({ type: 'SET_LOADING', loading: 'Fetching location...' })
-
-        const data = await getLocationWithUserId(userId)
-        
-        if (!data) {
-            console.log('could not get location data.')
+        if (user.location && typeof user.location === 'string') {
+            getUserLocationById(dispatch, user.location)
         } else {
-            dispatch({ type: 'SET_LOCATION', location: data.location })
+            getLocationByUserId(dispatch, userId)
         }
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
-    }
+    }, [])
+    
+    if (loading) return <LoadingView />
 
     return (
         <View
@@ -49,7 +41,7 @@ export default ({ userId }) => {
         >
             
             <IconButton
-                iconName={location ? 'create-outline' : 'add-outline'}
+                iconName={user.location ? 'create-outline' : 'add-outline'}
                 label='Address'
                 disabled={loading}
                 onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'LOCATION' })}
@@ -69,17 +61,15 @@ export default ({ userId }) => {
                 }}
             />
             
-            {loading
-                ? <LoadingView label='Loading location...' />
-                : location
-                    ? <LocationDetails location={location} />
-                    : (
-                        <Pressable
-                            onPress={() => setModalVisible(true)}
-                        >
-                            <ThemedText>Add your location.</ThemedText>
-                        </Pressable>
-                    )
+            {user.location && typeof user.location !== 'string'
+                ? <LocationDetails location={user.location} />
+                : (
+                    <Pressable
+                        onPress={() => setModalVisible(true)}
+                    >
+                        <ThemedText>Add your location.</ThemedText>
+                    </Pressable>
+                )
             }
             
         </View>

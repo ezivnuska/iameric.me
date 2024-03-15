@@ -19,6 +19,8 @@ const {
 } = require('./api/auth')
 
 const {
+    getUsers,
+    getUserDetailsById,
     getUsersByRole,
     getNumberOfOnlineUsers,
     // getAllVendorIds,
@@ -51,6 +53,7 @@ const {
 const {
     createOrUpdateLocation,
     getLocationByUserId,
+    getUserLocationWithLocationId,
 } = require('./api/location')
 
 const {
@@ -107,6 +110,8 @@ app.post(   '/token',                  validateToken)
 
 // users
 app.get(    '/user/:id',                getUserById)
+app.get(    '/user/details/:id',        getUserDetailsById)
+app.get(    '/users',                   getUsers)
 app.get(    '/users/:role',             getUsersByRole)
 app.get(    '/users/online',            getNumberOfOnlineUsers)
 app.get(    '/vendors',                 getAllVendors)
@@ -119,6 +124,7 @@ app.delete( '/entry/delete/:id',        deleteEntryById)
 // location
 app.post(   '/location',                createOrUpdateLocation)
 app.get(    '/location/:userId',        getLocationByUserId)
+app.get(    '/user/location/:locationId', getUserLocationWithLocationId)
 
 // products
 app.post(   '/product',                 createOrUpdateProduct)

@@ -1,5 +1,22 @@
 const User = require('../../models/User')
 
+const getUsers = async (req, res) => {
+
+    const users = await User
+        .find({})
+        .populate({
+            path: 'profileImage',
+            select: 'filename width height',
+        })
+    
+    if (!users) {
+        console.log('Could not fetch users')
+        return res.status(200).json(null)
+    }
+
+    return res.status(200).json({ users })
+}
+
 const getUsersByRole = async (req, res) => {
     const { role } = req.params
     let query = role === 'admin' ? {} : { role }
@@ -87,10 +104,28 @@ const getUserById = async (req, res, next) => {
     return res.status(200).json({ user })
 }
 
+const getUserDetailsById = async (req, res) => {
+    
+    const user = await User
+        .findOne({ _id: req.params.id })
+        .populate('profileImage', 'filename width height')
+        .populate('location')
+        .populate('images')
+        
+    if (!user) {
+        console.log('could not get user by id.')
+        return res.status(406).json(null)
+    }
+        
+    return res.status(200).json({ user })
+}
+
 module.exports = {
+    getUsers,
     getUsersByRole,
     getNumberOfOnlineUsers,
     getAllVendorIds,
     getAllVendors,
     getUserById,
+    getUserDetailsById,
 }
