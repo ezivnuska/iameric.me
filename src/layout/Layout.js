@@ -3,12 +3,21 @@ import {
     StyleSheet,
     View,
 } from 'react-native'
-import TextInputForm from '../components/TextInputForm'
+import {
+    Body,
+    Header,
+} from '.'
+import {
+    HomeContent,
+} from '../components'
 // I don't know why this is causing errors when importing with curly brackets
 
 const Layout = () => (
     <View style={styles.container}>
-        <TextInputForm />
+        <Header />
+        <Body>
+            <HomeContent />
+        </Body>
     </View>
 )
 

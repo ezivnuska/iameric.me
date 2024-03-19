@@ -1,15 +1,39 @@
 import React from 'react'
 import {
+    Button,
+    Text,
+    TextInput,
+    View,
     StyleSheet,
 } from 'react-native'
 import {
-    Zach,
+    TextInputForm,
 } from '.'
 
 const HomeContent = () => {
-
     return (
-        <Zach />
+        <View>
+            <Text style={styles.header}>
+                socket client
+            </Text>
+            <View id='chat-box'>
+                {/* <ul id='messages'></ul> */}
+                {/* <!-- <textarea id='messages' disabled></textarea> --> */}
+                <Button
+                    id='leave'
+                    className='button-neu'
+                    title='Leave'
+                    style={styles.button}
+                />
+                <TextInput
+                    id='input'
+                    style={styles.input}
+                    autocomplete='off'
+                />
+                {/* <button class='button-neu'>Enter</button> */}
+            </View>
+            <TextInputForm />
+        </View>
     )
 }
 
@@ -35,5 +59,18 @@ const styles = StyleSheet.create({
     },
     aside: {
         flex: 1,        
+    },
+    input: {
+        borderWidth: 1,
+        marginBottom: 10,
+        padding: 10,
+        lineHeight: 24,
+        fontSize: 20,
+    },
+    button: {
+        borderRadius: 10,
+    },
+    header: {
+
     },
 })

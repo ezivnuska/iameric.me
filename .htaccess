@@ -1,0 +1,17 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .  /index.html [L]
+
+#RewriteCond %{REQUEST_URI} /(.+)/$
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^ https://www.iameric.me [R=301,L]
+
+#RewriteCond %{REQUEST_URI} !(.+)/$
+#RewriteCond %{REQUEST_FILENAME} -d
+#RewriteRule ^(.+)$ https://www.iameric.me [R=301,L]
+
+#RewriteCond %{HTTP_POST} !^www\.(.*)$ [OR,NC]
+#RewriteCond %{https} off
+#RewriteRule ^(.*)$ https://www.iameric.me [R=301,L]
