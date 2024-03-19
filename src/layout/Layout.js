@@ -19,11 +19,11 @@ import { useTheme } from 'react-native-paper'
 export default () => {
 
     const {
-        dispatch,
+        loading,
         modal,
+        user,
         isLandscape,
         isThemeDark,
-        user,
     } = useContext(AppContext)
 
     const theme = useTheme()
@@ -92,10 +92,7 @@ export default () => {
 
             </View>
 
-            <ModalFactory
-                name={modal}
-                close={() => dispatch({ type: 'CLOSE_MODAL' })}
-            />
+            {modal && <ModalFactory modal={modal} />}
 
         </SafeAreaView>
     )

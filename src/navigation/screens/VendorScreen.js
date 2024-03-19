@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
-    Image,
+    Text,
 } from 'react-native'
 import {
     IconButton,
@@ -12,70 +12,52 @@ import {
     ScreenTitle,
 } from '.'
 import { AppContext } from '../../AppContext'
-import { loadUserById } from '@utils/data'
+import { loadUserProducts } from '@utils/data'
 import { useTheme } from 'react-native-paper'
-import axios from 'axios'
-
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+import { loadUser, loadUsers } from '@utils/data'
 
 export default ({ navigation, route }) => {
+    
+    const { id } = route.params
 
     const theme = useTheme()
 
     const {
         dispatch,
         loading,
-        getUserById,
     } = useContext(AppContext)
 
-    const [products, setProducts] = useState(null)
-    // const [userDetails, setUserDetails] = useState(null)
+    const [currentUser, setCurrentUser] = useState(null)
+    
+    useEffect(() => {
+        init()
+    }, [])
 
-    const { id } = route.params
-    const userDetails = getUserById(id)
-
-    const getProducts = async () => {
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Loading menu...' })
-        
-        const { data } = await axios.get(`/api/products/${id}`)
-        
-        if (!data) {
-            console.log('could not get vendor products')
-        } else if (!data.products || !data.products.length) {
-            console.log('No products found')
-            setProducts([])
-        } else {
-            setProducts(data.products)
-        }
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
+    const init = async () => {
+        const user = await loadUser(dispatch, id)
+        if (!user) console.log('no user could be loaded')
+        else setCurrentUser(user)
     }
 
     useEffect(() => {
-        if (!id) console.log('missing required id param')
-        else if (!userDetails || (userDetails && userDetails._id !== id)) {
-            loadUserDetails(id)
+        if (currentUser) {
+            console.log('found currentUser', currentUser)
+            if (!currentUser.products) {
+                initProducts()
+            }
         }
-    }, [])
+    }, [currentUser])
 
-    useEffect(() => {
-        if (userDetails && !products) getProducts()
-    }, [userDetails])
-    
-    const loadUserDetails = async id => {
-
-        dispatch({ type: 'SET_LOADING', loading: 'Loading vendor details...' })
-        
-        const user = await loadUserById(id)
-
-        if (!user) {
-            console.log('Error loading user details.')
+    const initProducts = async () => {
+        const loadedProducts = await loadUserProducts(dispatch, currentUser._id)
+        if (loadedProducts) {
+            setCurrentUser({
+                ...currentUser,
+                products: loadedProducts,
+            })
         } else {
-            setUserDetails(user)
+            console.log('could not load user products')
         }
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     if (loading) return <LoadingView />
@@ -84,7 +66,7 @@ export default ({ navigation, route }) => {
         <Screen
             titleComponent={
                 <ScreenTitle
-                    title={userDetails?.username || 'Restaurant'}
+                    title={currentUser?.username || 'Restaurant'}
                 >
                     <IconButton
                         label='Return to Vendors'
@@ -103,12 +85,11 @@ export default ({ navigation, route }) => {
                     />
                 </ScreenTitle>
             }
-        >       
-            {userDetails ? (
+        >
+            {currentUser ? (
                 <Menu
                     loading={loading}
-                    products={products}
-                    vendor={userDetails}
+                    vendor={currentUser}
                 />
             ) : null}
         </Screen>

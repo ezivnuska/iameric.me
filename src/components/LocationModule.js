@@ -44,7 +44,7 @@ export default ({ userId }) => {
                 iconName={user.location ? 'create-outline' : 'add-outline'}
                 label='Address'
                 disabled={loading}
-                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'LOCATION' })}
+                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'LOCATION' })}
                 alignIcon='right'
                 transparent
                 justify='flex-start'

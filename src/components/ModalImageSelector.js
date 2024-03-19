@@ -28,7 +28,7 @@ export default () => {
         } else {
             dispatch({ type: 'ADD_IMAGE', image: data })
             dispatch({ type: 'CLOSE_MODAL', image: data })
-            dispatch({ type: 'SET_IMAGE', image: null })
+            // dispatch({ type: 'SET_FEATURED_IMAGE', image: null })
         }
         
         dispatch({ type: 'SET_LOADING', loading: null })

@@ -30,19 +30,20 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
         >
             <View
                 style={{
-                    width: '100%',
+                    width: dims.width,
+                    maxWidth: dims.width,//isLandscape ? dims.width : 600,
                     height: dims.height,
+                    marginHorizontal: 'auto',
                     backgroundColor: theme?.colors.modalBackground,
+                    flexDirection: 'column',
+                    justifyContent: 'center',
                 }}
             >
                 <View
                     style={{
                         position: 'relative',
-                        width: '100%',
-                        maxWidth: isLandscape ? '100%' : 600,
-                        minWidth: 280,
+                        width: dims.width,
                         height: dims.height,
-                        marginHorizontal: 'auto',
                     }}
                 >
 
@@ -66,17 +67,21 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                     <ScrollView
                         showsVerticalScrollIndicator={false}
                         style={{
+                            width: '100%',
                             minWidth: 280,
-                            maxWidth: isLandscape ? '100%' : 600,
+                            maxWidth: isLandscape ? '100%' : 580,
                             marginHorizontal: 'auto',
                             textAlign: 'center',
                             height: dims.height,
                         }}
                         contentContainerStyle={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
+                            width: '100%',
+                            minWidth: 280,
+                            maxWidth: isLandscape ? '100%' : 600,
+                            // flexDirection: 'row',
+                            // alignItems: 'center',
                             marginHorizontal: 'auto',
-                            minHeight: dims.height,
+                            height: dims.height,
                         }}
                     >
                         {children}

@@ -96,7 +96,7 @@ const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
                     <Pressable
                         onPress={() => {
                             // dispatch({ type: 'SET_PROFILE', profile: author })
-                            // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            // dispatch({ type: 'SET_MODAL', modalType: 'PROFILE' })
                             console.log('author', author)
                             navigationRef.navigate('Forum')
                         }}
@@ -231,7 +231,7 @@ const ListItemHorizontal = ({ entry, onDelete = null, ...props }) => {
                     <Pressable
                         onPress={() => {
                             // dispatch({ type: 'SET_PROFILE', profile: author })
-                            // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            // dispatch({ type: 'SET_MODAL', modalType: 'PROFILE' })
                             console.log('author', author)
                             navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
                             // navigate('Tabs', { screen: 'Forum' })

@@ -98,7 +98,7 @@ export default ({ images, username, onSelected }) => {
             {showUploadButton(user.username) && (
                 <Pressable
                     key={`image-${images ? images.length : '0'}`}
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SELECT_IMAGE' })}
+                    onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SELECT_IMAGE' })}
                     style={[
                         {
                             flexBasis: 'auto',

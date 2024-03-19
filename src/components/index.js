@@ -35,7 +35,7 @@ import MenuItem from './MenuItem'
 import ModalCart from './ModalCart'
 import ModalDestroy from './ModalDestroy'
 import ModalFactory from './ModalFactory'
-import ModalFeatured from './ModalFeatured'
+// import ModalProductDetails from './ModalProductDetils'
 import ModalImage from './ModalImage'
 import ModalImageSelector from './ModalImageSelector'
 import ModalLocation from './ModalLocation'
@@ -103,7 +103,7 @@ export {
     ModalCart,
     ModalDestroy,
     ModalFactory,
-    ModalFeatured,
+    // ModalProductDetails,
     ModalImage,
     ModalImageSelector,
     ModalLocation,

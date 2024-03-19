@@ -114,7 +114,8 @@ const getProductById = async (req, res) => {
     
     const product = await Product
         .findOne({ _id: req.params.id })
-        .populate('image', 'filename')
+        .populate('vendor', 'username')
+        .populate('image', 'filename width height')
     
     if (!product) {
         console.log('Error getting product.')

@@ -14,25 +14,11 @@ export default () => {
         dispatch,
         loading,
         user,
-        products,
     } = useContext(AppContext)
 
     useEffect(() => {
-        if (!products) init()
-    }, [])
-
-    const init = async () => {
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
-
-        const productsLoaded = await loadProducts(user._id)
-        
-        if (productsLoaded) {
-            dispatch({ type: 'SET_PRODUCTS', products: productsLoaded })
-        }
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
-    }
+        if (user && !user.products) loadProducts(dispatch, user._id)
+    }, [user])
 
     const onDelete = async id => {
 
@@ -52,10 +38,10 @@ export default () => {
 
     if (loading) return <LoadingView />
 
-    return products && products.length ? (
+    return user.products && user.products.length ? (
         <FlatList
             showsVerticalScrollIndicator={false}
-            data={products}
+            data={user.products}
             listKey={() => 'products'}
             keyExtractor={(item, index) => 'key' + index}
             renderItem={({ item }) => (
@@ -64,8 +50,7 @@ export default () => {
                     key={item => `product-${item._id}`}
                     onDelete={() => onDelete(item._id)}
                     onPress={item => {
-                        dispatch({ type: 'SET_PRODUCT', productData: item })
-                        dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })
+                        dispatch({ type: 'SET_MODAL', modalType: 'PRODUCT', id: item._id })
                     }}
                 />
             )}

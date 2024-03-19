@@ -41,7 +41,7 @@ export default () => {
             <IconButton
                 type='danger'
                 label='Delete Account'
-                onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'DESTROY' })}
+                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'DESTROY' })}
                 disabled={loading}
             />
 

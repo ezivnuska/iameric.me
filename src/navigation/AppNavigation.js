@@ -17,11 +17,6 @@ import {
 import {
     ProductNavigator,
     UserNavigator,
-    // VendorNavigator,
-    AdminTabNavigator,
-    CustomerTabNavigator,
-    DriverTabNavigator,
-    VendorTabNavigator,
 } from './navigators'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { navigationRef } from './RootNavigation'
@@ -312,23 +307,31 @@ export default () => {
 
     const {
         dispatch,
+        loading,
         user,
     } = useContext(AppContext)
 
     useEffect(() => {
-        checkUserStatus()
+        checkAuthStatus()
     }, [])
 
-    const checkUserStatus = async () => {
-        console.log('checking user status')
+    const checkAuthStatus = async () => {
+        console.log('checking auth status')
         const token = await AsyncStorage.getItem('userToken')
-        await authenticate(dispatch, token)
+        if (!token) {
+            console.log('user not verified')
+        } else {
+            await authenticate(dispatch, token)
+        }
     }
 
     useEffect(() => {
         if (user) {
-            console.log('<navigating to tabs>')
-            navigationRef.navigate('Tabs')
+            const currentRoute = navigationRef.getCurrentRoute()
+            if (currentRoute.name === 'SignIn') {
+                console.log('<navigating to tabs>')
+                navigationRef.navigate('Tabs')
+            }
         }
     }, [user])
 

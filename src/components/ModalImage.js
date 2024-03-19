@@ -1,18 +1,32 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
     ImageDetail,
+    LoadingView,
 } from '.'
 import { AppContext } from '../AppContext'
 import axios from 'axios'
+import { loadUnknownImage } from '@utils/images'
 
-export default () => {
+export default ({ id }) => {
 
     const {
         dispatch,
-        image,
+        loading,
         products,
         user,
     } = useContext(AppContext)
+
+    const [image, setImage] = useState(null)
+    
+    useEffect(() => {
+        init()
+    }, [])
+
+    const init = async () => {
+        const loadedImage = await loadUnknownImage(dispatch, id, user._id)
+        if (!loadedImage) return console.log('problem loading unknow image.')
+        setImage(loadedImage)
+    }
 
     const isImageProfileImage = id => user.profileImage === id
 
@@ -25,12 +39,12 @@ export default () => {
     }
 
     const deleteImage = async () => {
-        if (image.user._id === user._id) {
+        if (feature.user._id === user._id) {
             console.log('removing image', image)
-            dispatch({ type: 'REMOVE_IMAGE', id: image._id })
+            dispatch({ type: 'REMOVE_IMAGE', imageId: image._id })
         } else {
             console.log('removing user image', image)
-            dispatch({ type: 'REMOVE_IMAGE_FROM_USER', image })
+            dispatch({ type: 'REMOVE_USER_IMAGE', image })
         }
 
         const isProfileImage = isImageProfileImage(image._id)
@@ -50,7 +64,7 @@ export default () => {
         } else {
             // if (onDelete) onDelete(data.imageId, isProfileImage, isProductImage)
             dispatch({ type: 'CLOSE_MODAL' })
-            dispatch({ type: 'SET_IMAGE', image: null })
+            // dispatch({ type: 'SET_FEATURED_IMAGE', image: null })
         }
 
         dispatch({ type: 'SET_LOADING', loading: null })
@@ -72,7 +86,7 @@ export default () => {
         } else {
             dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: data })
             dispatch({ type: 'CLOSE_MODAL' })
-            dispatch({ type: 'SET_IMAGE', image: null })
+            // dispatch({ type: 'SET_FEATURED_IMAGE', image: null })
         }
         
         dispatch({ type: 'SET_LOADING', loading: null })
@@ -100,12 +114,14 @@ export default () => {
         dispatch({ type: 'SET_LOADING', loading: null })
     }
     
-    return image ? (
+    if (loading) return <LoadingView />
+    
+    return image && (
         <ImageDetail
             image={image}
             deleteImage={deleteImage}
             setAvatar={setAvatar}
             setProductImage={setProductImage}
         />
-    ) : null
+    )
 }

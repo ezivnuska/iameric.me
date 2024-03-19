@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
     View,
 } from 'react-native'
@@ -6,7 +6,6 @@ import {
     FeedbackForm,
     ModalCart,
     ModalDestroy,
-    ModalFeatured,
     ModalImage,
     ModalLocation,
     ModalProfile,
@@ -14,19 +13,27 @@ import {
     ModalSignup,
     ModalSignout,
     ModalImageSelector,
-    ProductForm,
     PopUpModal,
+    ProductDetails,
+    ProductForm,
 } from '.'
+import { AppContext } from '../AppContext'
 
-export default ({ name, close }) => {
+export default ({ modal }) => {
+
+    const {
+        dispatch,
+    } = useContext(AppContext)
+
+    const { id, type } = modal
 
     const resolveModalContent = () => {
-        switch(name) {
+        switch(type) {
             case 'CART': return <ModalCart />; break
             case 'DESTROY': return <ModalDestroy />; break
-            case 'FEATURED': return <ModalFeatured />; break
+            case 'SHOW_PRODUCT': return <ProductDetails id={id} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
-            case 'IMAGE': return <ModalImage />; break
+            case 'IMAGE': return <ModalImage id={id} />; break
             case 'LOCATION': return <ModalLocation />; break
             case 'PRODUCT': return <ProductForm />; break
             case 'PROFILE': return <ModalProfile />; break
@@ -42,14 +49,16 @@ export default ({ name, close }) => {
 
     return (
         <PopUpModal
-            visible={name}
-            onRequestClose={close}
+            visible={modal}
+            onRequestClose={() => dispatch({ type: 'CLOSE_MODAL' })}
             transparent={true}
         >
             <View
                 style={{
+                    flexBasis: 'auto',
+                    flexGrow: 1,
                     width: '100%',
-                    justifyContent: 'center',
+                    justifyContent: 'space-evenly',
                 }}
             >
                 {resolveModalContent()}

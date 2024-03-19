@@ -34,9 +34,9 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const [orientation, setOrientation] = useState('portrait')
 
-    // useEffect(() => {
-    //     console.log('image', image)
-    // }, [])
+    useEffect(() => {
+        console.log('image', image)
+    }, [])
 
     useEffect(() => {
         if (dims) {
@@ -45,19 +45,19 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
         }
     }, [dims])
 
-    useEffect(() => {
-        if (!products) fetchProducts(user._id)
-    }, [products])
+    // useEffect(() => {
+    //     if (!products) fetchProducts(user._id)
+    // }, [products])
 
     const fetchProducts = async id => {
 
         dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
-        const updatedProducts = await loadProducts(id)
+        const updatedProducts = await loadProducts(dispatch, id)
         dispatch({ type: 'SET_PRODUCTS', products: updatedProducts })
         dispatch({ type: 'SET_LOADING', loading: null })
     }
 
-    return (image && user) ? (
+    return (
         <View
             // onPress={() => dispatch({ type: 'CLOSE_MODAL' })}
             style={{
@@ -92,19 +92,17 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                 <View
                     style={{
                         flexBasis: 'auto',
-                        marginHorizontal: 'auto',
+                        flexGrow: isLandscape ? 1 : 0,
                     }}
                 >
                     <View
                         style={{
                             flex: 1,
                             display: 'flex',
-                            flexDirection: orientation === 'portrait' ? 'row' : 'column',
+                            flexDirection: 'row',
                             justifyContent: 'space-evenly',
                             width: '100%',
-                            // height: 50,
-                            // marginVertical: layout.verticalPadding,
-                            paddingHorizontal: 'auto',//layout.horizontalPadding,
+                            paddingHorizontal: 'auto',
                             marginBottom: 10,
                         }}
                     >
@@ -162,5 +160,5 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                 </View>
             ) : null}
         </View>
-    ) : null
+    )
 }

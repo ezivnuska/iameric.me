@@ -8,15 +8,12 @@ import {
     ThemedText,
 } from '@components'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
 import { AppContext } from '../AppContext'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item, username }) => {
-
-    const theme = useTheme()
 
     const {
         dispatch,
@@ -131,19 +128,12 @@ export default ({ item, username }) => {
             </View>
             
             <IconButton
-                onPress={() => dispatch({ type: 'SET_FEATURED', featured: item })}
+                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SHOW_PRODUCT', id: item._id })}
                 type='primary'
                 iconName='add-outline'
                 label={`$${price}`}
-                // padded={false}
                 align='center'
-                style={{
-                    // flexBasis: 'auto',
-                    flexGrow: 0,
-                }}
-                textStyles={{
-                    // marginRight: 0,
-                }}
+                style={{ flexGrow: 0 }}
             />
 
         </View>

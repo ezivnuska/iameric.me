@@ -29,7 +29,7 @@ export default props => {
             type='primary'
             label={getItemCount(cart[0].items)}
             iconName='cart-outline'
-            onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'CART' })}
+            onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'CART' })}
             padded={true}
             textStyles={{ paddingVertical: 1, color: theme?.colors.buttonPrimaryLabel }}
             styles={{ flexGrow: 0 }}

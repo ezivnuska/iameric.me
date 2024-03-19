@@ -33,7 +33,7 @@ export default () => {
         
         if (data) {
             setEntry('')
-            dispatch({ type: 'NEW_ENTRY', entry: data.entry })
+            dispatch({ type: 'ADD_ENTRY', entry: data.entry })
         } else console.log('Error submitting feedback')
 
         dispatch({ type: 'SET_LOADING', loading: null })

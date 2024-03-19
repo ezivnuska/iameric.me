@@ -8,14 +8,14 @@ import {
     EmptyStatus,
 } from '.'
 
-export default ({ loading, products, vendor }) => {
+export default ({ loading, vendor }) => {
     
     if (loading) return <LoadingView />
 
-    return products && products.length
+    return vendor.products && vendor.products.length
         ? (
             <FlatList
-                data={products}
+                data={vendor.products}
                 keyExtractor={item => `product-${item._id}`}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (

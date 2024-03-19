@@ -26,7 +26,7 @@ export default () => {
                     <IconButton
                         label='New Product'
                         iconName='add-outline'
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'PRODUCT' })}
+                        onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'PRODUCT' })}
                         disabled={loading}
                         alignIcon='right'
                         textStyles={{

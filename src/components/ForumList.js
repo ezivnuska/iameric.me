@@ -82,7 +82,7 @@ const ListItemVertical = ({ item, imagePath, dispatch, hasAuth = false, onDelete
                         }}
                         onPress={() => {
                             // dispatch({ type: 'SET_PROFILE', profile: author })
-                            // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                            // dispatch({ type: 'SET_MODAL', modalType: 'PROFILE' })
                             // console.log('author', author)
                             
                             navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
@@ -216,7 +216,7 @@ const ListItemHorizontal = ({ item, imagePath, dispatch, hasAuth = false, onDele
                             }}
                             onPress={() => {
                                 // dispatch({ type: 'SET_PROFILE', profile: author })
-                                // dispatch({ type: 'SET_MODAL', modalName: 'PROFILE' })
+                                // dispatch({ type: 'SET_MODAL', modalType: 'PROFILE' })
                                 console.log('author', author)
                                 navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
                             }}

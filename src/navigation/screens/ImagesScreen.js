@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import {
     ImageList,
     LoadingView,
@@ -18,23 +18,19 @@ export default () => {
     const {
         dispatch,
         loading,
+        modal,
         user,
     } = useContext(AppContext)
 
-    // useEffect(() => {
-    //     console.log('hello')
-    //     console.log('user', user)
-    //     if (!user) console.log('user not loaded')
-    // }, [])
+    // const userImages = useMemo(() => [user.images], [user])
 
     useEffect(() => {
-        init()
-    }, [])
-
-    const init = async () => {
-        console.log('loading images for root user')
-        loadImages(dispatch, user._id)
-    }
+        if (user) {
+            if (!user.images) {
+                loadImages(dispatch, user._id)
+            }
+        }
+    }, [user])
 
     if (loading) return <LoadingView />
 
@@ -42,17 +38,18 @@ export default () => {
         <Screen
             titleComponent={<ScreenTitle title='Images' />}
         >
-            <View style={{ paddingHorizontal: 10 }}>
-                <ImageList
-                    images={user.images}
-                    username={user.username}
-                    onSelected={image => {
-                        dispatch({ type: 'SET_IMAGE', image })
-                        // dispatch({ type: 'SET_MODAL', modalName: 'IMAGE' })
-                    }}
-                    // uploadImage={() => console.log('uplading image...')}
-                />
-            </View>
+            {user && user.images && (
+                <View style={{ paddingHorizontal: 10 }}>
+                    <ImageList
+                        images={user.images}
+                        username={user.username}
+                        onSelected={image => {
+                            console.log('selected image', image)
+                            dispatch({ type: 'SET_MODAL', modalType: 'IMAGE', id: image._id })
+                        }}
+                    />
+                </View>
+            )}
         </Screen>
     )
 }

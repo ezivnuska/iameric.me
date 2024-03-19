@@ -123,7 +123,7 @@ export default ({
 
             {user && (
                 <IconButton
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNOUT' })}
+                    onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNOUT' })}
                     disabled={loading}
                     iconName='close-outline'
                     textStyles={{
@@ -143,7 +143,7 @@ export default ({
                 <IconButton
                     iconName='log-in-outline'
                     label='Sign In'
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'SIGNIN' })}
+                    onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNIN' })}
                     disabled={loading}
                     alignIcon='right'
                     transparent

@@ -21,13 +21,77 @@ export const loadImages = async (dispatch, userId) => {
     if (!data) {
         console.log('Error fetching user images.')
     } else {
-        console.log('data.images', data.images)
+        dispatch({ type: 'UPDATE_IMAGES', userId, images: data.images })
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
+}
+
+export const loadUserImages = async (dispatch, userId) => {
+    
+    dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
+    
+    const { data } = await axios.get(`/api/user/images/${userId}`)
+    
+    if (!data) {
+        console.log('Error fetching user images.')
+    } else {
         dispatch({ type: 'UPDATE_USER_IMAGES', userId, images: data.images })
     }
 
     dispatch({ type: 'SET_LOADING', loading: null })
+}
 
-    return data.images
+export const loadImage = async (dispatch, imageId) => {
+    
+    dispatch({ type: 'SET_LOADING', loading: 'Fetching image...' })
+    
+    const image = await axios.get(`/api/image/${imageId}`)
+    
+    if (!image) {
+        console.log('Error fetching image.')
+    } else {
+        dispatch({ type: 'UPDATE_IMAGE', image })
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
+}
+
+export const loadUnknownImage = async (dispatch, imageId, userId) => {
+    
+    dispatch({ type: 'SET_LOADING', loading: 'Fetching image...' })
+    
+    const { data } = await axios.get(`/api/image/${imageId}`)
+    
+    if (!data) {
+        console.log('Error fetching image.')
+    } else {
+        console.log('image------>>>>>.', data)
+        if (data.user === userId) {
+            dispatch({ type: 'UPDATE_IMAGE', image: data })
+        } else {
+            dispatch({ type: 'UPDATE_USER_IMAGE', image: data })
+        }
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
+
+    return data
+}
+
+export const loadUserImage = async (dispatch, imageId) => {
+    
+    dispatch({ type: 'SET_LOADING', loading: 'Fetching user image...' })
+    
+    const image = await axios.get(`/api/image/${imageId}`)
+    
+    if (!image) {
+        console.log('Error fetching user image.')
+    } else {
+        dispatch({ type: 'UPDATE_USER_IMAGE', image })
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
 }
 
 export const openImagePickerAsync = async () => {

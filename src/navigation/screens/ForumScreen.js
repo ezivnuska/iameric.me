@@ -24,7 +24,7 @@ export default () => {
                     <IconButton
                         label='Comment'
                         iconName='add-outline'
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalName: 'FEEDBACK' })}
+                        onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'FEEDBACK' })}
                         alignIcon='right'
                         justify='left'
                         outline

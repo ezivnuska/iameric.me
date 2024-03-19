@@ -23,10 +23,7 @@ export default () => {
             {profile && (
                 <UserDetailsShort
                     userId={profile._id}
-                    clear={() => {
-                        dispatch({ type: 'SET_PROFILE', profile: null })
-                        dispatch({ type: 'CLOSE_MODAL' })
-                    }}
+                    clear={() => dispatch({ type: 'CLOSE_MODAL' })}
                 />
             )}
         </View>

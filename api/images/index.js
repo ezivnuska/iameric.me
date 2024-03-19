@@ -46,9 +46,9 @@ const getImageWithUsernameByImageId = async (req, res) => {
         return res.status(200).json(null)
     }
     
-    const { _id, filename, user } = image
+    const { _id, filename, user, height, width } = image
     
-    const data = { _id, filename, user }
+    const data = { _id, filename, user, height, width }
     
     return res.status(200).json(data)
 }

@@ -24,7 +24,7 @@ export default () => {
         user,
     } = useContext(AppContext)
 
-    const [featured, setFeatured] = useState(null)
+    const [feature, setFeatured] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
     const [items, setItems] = useState(orders)
     // const [showCompletedOrders, setShowCompletedOrders] = useState(true)
@@ -62,8 +62,8 @@ export default () => {
     }
 
     useEffect(() => {
-        setFeaturedItem(getFeaturedItem(featured))
-    }, [featured])
+        setFeaturedItem(getFeaturedItem(feature))
+    }, [feature])
 
     const deleteOrder = async id => {
         console.log('deleting order')

@@ -54,16 +54,21 @@ export const loadUsers = async dispatch => {
     dispatch({ type: 'SET_LOADING', loading: null })
 }
 
-export const loadUserById = async id => {
+export const loadUserById = async (dispatch, userId) => {
+
+    dispatch({ type: 'SET_LOADING', loading: 'Loading user...' })
     
-    const { data } = await axios.get(`/api/user/${id}`)
+    const { data } = await axios.get(`/api/user/${userId}`)
     
-    if (!data.user) {
+    if (!data) {
         console.log('could not load user details.')
-        return null
+    } else if (!data.user) {
+        console.log('no user found')
+    } else {
+        dispatch({ type: 'UPDATE_USER', user: data.user })
     }
 
-    return data.user
+    dispatch({ type: 'SET_LOADING', loading: null })
 }
 
 export const loadUserDetails = async (dispatch, userId) => {
@@ -89,14 +94,57 @@ export const loadUserDetails = async (dispatch, userId) => {
  *  
  */
 
-export const loadProducts = async vendorId => {
+export const loadProduct = async (dispatch, productId) => {
+
+    dispatch({ type: 'SET_LOADING', loading: 'Loading product...' })
+
+    const product = await axios.get(`/api/product/${productId}`)
+    
+    if (!product) {
+        console.log('could not load product')
+    // } else if (!data.products || !data.products.length) {
+    //     console.log('no products to load')
+    } else {
+        dispatch({ type: 'UPDATE_PRODUCT', userId: product.vendor, product })
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
+
+    return product
+}
+
+export const loadProducts = async (dispatch, vendorId) => {
+
+    dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
 
     const { data } = await axios.get(`/api/products/${vendorId}`)
     
     if (!data) {
-        console.log('could not load products.')
-        return null
+        console.log('could not load products')
+    } else if (!data.products || !data.products.length) {
+        console.log('no products to load')
+    } else {
+        dispatch({ type: 'UPDATE_PRODUCTS', userId: vendorId, products: data.products })
     }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
+}
+
+export const loadUserProducts = async (dispatch, vendorId) => {
+
+    dispatch({ type: 'SET_LOADING', loading: 'Loading products...' })
+
+    const { data } = await axios.get(`/api/products/${vendorId}`)
+    
+    if (!data) {
+        console.log('could not load products')
+    } else if (!data.products || !data.products.length) {
+        console.log('no products to load')
+    } else {
+        dispatch({ type: 'UPDATE_USER_PRODUCTS', userId: vendorId, products: data.products })
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
 
     return data.products
 }
@@ -222,8 +270,7 @@ export const getUserLocationById = async (dispatch, locationId) => {
     } else if (!data.location) {
         console.log('No location found.')
     } else {
-        console.log('data.location===>', data.location)
-        dispatch({ type: 'UPDATE_USER_LOCATION_WITH_LOCATION_ID', location: data.location })
+        dispatch({ type: 'UPDATE_USERS_LOCATION_WITH_LOCATION_ID', location: data.location })
     }
 
     dispatch({ type: 'SET_LOADING', loading: null })
@@ -240,8 +287,7 @@ export const getLocationByUserId = async (dispatch, userId) => {
     } else if (!data.location) {
         console.log('No location found.')
     } else {
-        console.log('data.location===>', data.location)
-        dispatch({ type: 'UPDATE_USER_LOCATION', userId, location: data.location })
+        dispatch({ type: 'UPDATE_USERS_LOCATION', userId, location: data.location })
     }
 
     dispatch({ type: 'SET_LOADING', loading: null })

@@ -12,16 +12,16 @@ export const authenticate = async (dispatch, token) => {
     if (!data) {
         console.log('Error authenticating token')
         await clearStorage()
-        return null
+    } else {
+        console.log('token authenticated')
+        const { user } = data
+        await setUserToken(user.token)
+        dispatch({ type: 'SET_USER', user })
     }
 
-    const { user } = data
-
-    await setUserToken(user.token)
-            
-    dispatch({ type: 'SET_USER', user })
-    
     dispatch({ type: 'SET_LOADING', loading: null })
+
+    return data?.user || null
 }
 
 export const connect = async type => {
