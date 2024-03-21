@@ -50,7 +50,7 @@ export default () => {
                     key={item => `product-${item._id}`}
                     onDelete={() => onDelete(item._id)}
                     onPress={item => {
-                        dispatch({ type: 'SET_MODAL', modalType: 'PRODUCT', id: item._id })
+                        dispatch({ type: 'SET_MODAL', modalType: 'PRODUCT', data: { product: item } })
                     }}
                 />
             )}

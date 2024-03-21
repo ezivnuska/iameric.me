@@ -1,5 +1,8 @@
 import React, { useContext } from 'react'
 import {
+    View,
+} from 'react-native'
+import {
     IconButton,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -22,11 +25,17 @@ export default () => {
     }
     
     return (
-        <IconButton
-            type='primary'
-            label='Sign Out'
-            onPress={initSignout}
-            disabled={loading}
-        />
+        <View
+            style={{
+                marginHorizontal: 10,
+            }}
+        >
+            <IconButton
+                type='primary'
+                label='Sign Out'
+                onPress={initSignout}
+                disabled={loading}
+            />
+        </View>
     )
 }

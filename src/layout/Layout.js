@@ -13,7 +13,7 @@ import {
     Header,
 } from '.'
 import LinearGradient from 'react-native-linear-gradient'
-import { getSize, getOrientation } from '@utils/metrics'
+import { getSize } from '@utils/metrics'
 import { useTheme } from 'react-native-paper'
 
 export default () => {
@@ -61,7 +61,6 @@ export default () => {
                     <Header
                         user={user}
                         size={getSize(dims)}
-                        orientation={getOrientation(dims)}
                     />
                 </View>
             </LinearGradient>
@@ -92,7 +91,7 @@ export default () => {
 
             </View>
 
-            {modal && <ModalFactory modal={modal} />}
+            {modal && <ModalFactory />}
 
         </SafeAreaView>
     )

@@ -107,7 +107,7 @@ export default ({ item, username }) => {
                             </ThemedText>
             
                             <IconButton
-                                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SHOW_PRODUCT', id: item._id })}
+                                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SHOW_PRODUCT', data: { product: item } })}
                                 type='primary'
                                 label={`$${price}`}
                                 align='center'

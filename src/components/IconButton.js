@@ -96,6 +96,7 @@ export default ({
                                     ? theme?.colors.buttonPrimaryLabel
                                     : theme?.colors.buttonLabel,
                             letterSpacing: 0,
+                            lineHeight: 35,
                             marginHorizontal: 8,
                         },
                         textStyles,

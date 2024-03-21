@@ -41,7 +41,6 @@ export default ({ navigation, route }) => {
 
     useEffect(() => {
         if (currentUser) {
-            console.log('found currentUser', currentUser)
             if (!currentUser.products) {
                 initProducts()
             }

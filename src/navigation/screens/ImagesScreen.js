@@ -45,7 +45,7 @@ export default () => {
                         // username={user.username}
                         onSelected={image => {
                             console.log('selected image', image)
-                            dispatch({ type: 'SET_MODAL', modalType: 'IMAGE', id: image._id })
+                            dispatch({ type: 'SET_MODAL', modalType: 'IMAGE', data: { id: image._id } })
                         }}
                     />
                 </View>

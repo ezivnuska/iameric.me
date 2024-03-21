@@ -12,6 +12,44 @@ import axios from 'axios'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
+export const getImageDims = (w, h, dims) => {
+    const isLandscape = dims.width > dims.height
+    const maxHeight = isLandscape ? dims.height - 30 : dims.height / 2
+    let maxWidth = isLandscape ? (dims.width * 0.5) : dims.width - 20
+    if (maxWidth > 300) maxWidth = 300
+    // console.log('w/h', w, h)
+    // console.log('maxWidth', maxWidth)
+    // console.log('maxHeight', maxHeight)
+    let scale = 1
+    let width = w
+    let height = h
+    if (width >= height) {// if landscape
+        if (width > maxWidth) {
+            scale = maxWidth / width
+            width *= scale
+            height *= scale
+        }
+        if (height > maxHeight) {
+            scale = maxHeight / height
+            width *= scale
+            height *= scale
+        } 
+    } else {// if portrait
+        if (height > maxHeight) {
+            scale = maxHeight / height
+            width *= scale
+            height *= scale
+        }
+        if (width > maxWidth) {
+            scale = maxWidth / width
+            width *= scale
+            height *= scale
+        }
+    }
+    // console.log('width/height', width, height)
+    return { width, height }
+}
+
 export const loadImages = async (dispatch, userId) => {
     
     dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
@@ -66,12 +104,12 @@ export const loadUnknownImage = async (dispatch, imageId, userId) => {
     if (!data) {
         console.log('Error fetching image.')
     } else {
-        console.log('image------>>>>>.', data)
-        if (data.user === userId) {
-            dispatch({ type: 'UPDATE_IMAGE', image: data })
-        } else {
-            dispatch({ type: 'UPDATE_USER_IMAGE', image: data })
-        }
+        dispatch({
+            type: data.user === userId
+                ? 'UPDATE_IMAGE'
+                : 'UPDATE_USER_IMAGE',
+            image: data,
+        })
     }
 
     dispatch({ type: 'SET_LOADING', loading: null })

@@ -14,29 +14,30 @@ import {
     ModalSignout,
     ModalImageSelector,
     PopUpModal,
-    ProductDetailsFake,
+    ProductDetails,
     ProductForm,
 } from '.'
 import { AppContext } from '../AppContext'
 
-export default ({ modal }) => {
+export default () => {
 
     const {
         dispatch,
+        modal,
     } = useContext(AppContext)
 
-    const { id, type } = modal
+    const { data, type } = modal
 
     const resolveModalContent = () => {
         switch(type) {
             case 'CART': return <ModalCart />; break
             case 'DESTROY': return <ModalDestroy />; break
             // case 'SHOW_PRODUCT': return <ProductDetails id={id} />; break
-            case 'SHOW_PRODUCT': return <ProductDetailsFake id={id} />; break
+            case 'SHOW_PRODUCT': return <ProductDetails product={data.product} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
-            case 'IMAGE': return <ModalImage id={id} />; break
+            case 'IMAGE': return <ModalImage id={data.id} />; break
             case 'LOCATION': return <ModalLocation />; break
-            case 'PRODUCT': return <ProductForm />; break
+            case 'PRODUCT': return <ProductForm product={data.product} />; break
             case 'PROFILE': return <ModalProfile />; break
             case 'SELECT_IMAGE': return <ModalImageSelector />; break
             case 'SIGNIN': return <ModalSignin />; break

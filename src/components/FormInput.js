@@ -18,6 +18,7 @@ export default ({ label, onChange, value, style = null, multiline = false, inval
     const [dirty, setDirty] = useState(false)
     const [inputHeight, setInputHeight] = useState()
 
+
     const onChangeText = value => {
         setInputValue(value)
         setDirty(true)
@@ -71,7 +72,7 @@ export default ({ label, onChange, value, style = null, multiline = false, inval
                     spellCheck={false}
                     // onBlur={onBlur}
                     onChangeText={onChangeText}
-                    value={inputValue}
+                    value={value}
                     onContentSizeChange={(e) => setInputHeight(e.nativeEvent.contentSize.height)}
                     {...props}
                 />

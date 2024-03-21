@@ -13,10 +13,11 @@ import {
 import { useTheme } from 'react-native-paper'
 import { AppContext } from '../AppContext'
 import { loadProduct } from '@utils/data'
+import { getImageDims } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ id }) => {
+export default ({ product }) => {
 
     const theme = useTheme()
 
@@ -28,65 +29,29 @@ export default ({ id }) => {
         loading,
     } = useContext(AppContext)
 
-    const [product, setProduct] = useState(null)
+    // const [product, setProduct] = useState(null)
 
     const [imageDims, setImageDims] = useState(null)
     
     const [quantity, setQuantity] = useState(1)
-    
-    const getImageDims = (w, h) => {
-        const maxHeight = isLandscape ? dims.height - 50 : dims.height / 2
-        let maxWidth = isLandscape ? (dims.width * 0.4) - 20 : dims.width - 20
-        if (maxWidth > 300) maxWidth = 300
-        console.log('maxWidth', maxWidth)
-        console.log('maxHeight', maxHeight)
-        let scale = 1
-        let width = w
-        let height = h
-        if (w >= h) {// if landscape
-            if (h >= maxHeight) {
-                scale = maxHeight / height
-                width *= scale
-                height *= scale
-            } 
-            if (w >= maxWidth) {
-                scale = maxWidth / width
-                width *= scale
-                height *= scale
-            }
-        } else {// if portrait
-            if (w >= maxWidth) {
-                scale = maxWidth / width
-                width *= scale
-                height *= scale
-            }
-            if (h >= maxHeight) {
-                scale = maxHeight / height
-                width *= scale
-                height *= scale
-            }
-        }
-        console.log('width/height', width, height)
-        return { width, height }
-    }
 
-    useEffect(() => {
-        init()
-    }, [])
+    // useEffect(() => {
+    //     init()
+    // }, [])
 
-    const init = async () => {
-        const { data } = await loadProduct(dispatch, id)
-        if (!data) return console.log('could not load product')
-        else {
-            console.log('loadedProduct', data)
-            setProduct(data)
-        }
-    }
+    // const init = async () => {
+    //     const { data } = await loadProduct(dispatch, id)
+    //     if (!data) return console.log('could not load product')
+    //     else {
+    //         console.log('loadedProduct', data)
+    //         setProduct(data)
+    //     }
+    // }
 
     useEffect(() => {
         if (product)
-            setImageDims(getImageDims(product.image.width, product.image.height))
-    }, [product])
+            setImageDims(getImageDims(product.image.width, product.image.height, dims))
+    }, [])
 
     const addToCart = (item, quantity) => {
         dispatch({ type: 'ADD_TO_CART', product: item, quantity })
@@ -94,7 +59,7 @@ export default ({ id }) => {
 
     useEffect(() => {
         if (dims && product)
-            setImageDims(getImageDims(product.image.width, product.image.height))
+            setImageDims(getImageDims(product.image.width, product.image.height, dims))
     }, [dims])
     
     if (loading) return <LoadingView />

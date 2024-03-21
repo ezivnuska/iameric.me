@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -14,21 +14,32 @@ import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default  () => {
+export default  ({ product }) => {
     
     const {
         dispatch,
         loading,
-        productData,
         user,
     } = useContext(AppContext)
 
-    const [initialState, setInitialState] = useState(productData)
-    const [title, setTitle] = useState(productData.title || '')
-    const [price, setPrice] = useState(productData.price || '')
-    const [blurb, setBlurb] = useState(productData.blurb || '')
-    const [desc, setDesc] = useState(productData.desc || '')
-    const [category, setCategory] = useState(productData.category || 'main')
+    const original = useMemo(() => product, [product])
+
+    const initialState = {
+        title: '',
+        price: '',
+        blurb: '',
+        desc: '',
+        category: 'main',
+        image: null,
+        attachment: null,
+    }
+
+    // const [formData, setFormData] = useState(initialState)
+    const [title, setTitle] = useState('')
+    const [price, setPrice] = useState('')
+    const [blurb, setBlurb] = useState('')
+    const [desc, setDesc] = useState('')
+    const [category, setCategory] = useState('main')
     const [image, setImage] = useState(null)
     const [attachment, setAttachment] = useState(null)
 
@@ -54,14 +65,14 @@ export default  () => {
     // }, [title, price, category, blurb, desc, image, attachment])
     
     // useEffect(() => {
-    //     // if editing, set initial form vars
-    //     console.log('INIT_PRODUCT_FORM', productData)
-    //     if (product) {
-    //         console.log('DATA', product)
-    //         setInitialState(product)
-    //         setFormData(product)
-    //     }
+    //     console.log('product-->', product)
+    //     updateFormData(initialState)
     // }, [])
+    
+    useEffect(() => {
+        // if editing, set initial form vars
+        updateFormData(product || initialState)
+    }, [])
 
     // useEffect(() => {
     //     console.log('initial product data', productData)
@@ -70,9 +81,9 @@ export default  () => {
     //     }
     // }, [])
 
-    // useEffect(() => {
-    //     setFormData(productData)
-    // }, [initialState])
+    useEffect(() => {
+        console.log('title changed', title)
+    }, [title])
     
     // useEffect(() => {
     //     // if editing, set initial form vars
@@ -86,7 +97,7 @@ export default  () => {
     //     dispatch({ type: 'SET_PRODUCT', productData: formData })
     // }, [formData])
 
-    const setFormData = data => {
+    const updateFormData = data => {
         console.log('data', data)
         setTitle(data.title)
         setPrice(data.price)
@@ -94,6 +105,7 @@ export default  () => {
         setDesc(data.desc)
         setCategory(data.category)
         setImage(data.image)
+        // setFormData(data)
 
         // dispatch({ type: 'SET_PRODUCT', productData: ({
         //     _id: data._id,
@@ -108,8 +120,8 @@ export default  () => {
     }
 
     const resetForm = () => {
-        if (initialState) {
-            setFormData(initialState)
+        if (product) {
+            updateFormData(product)
         } else {
             clearForm()
         }
@@ -120,7 +132,7 @@ export default  () => {
         setPrice('')
         setDesc('')
         setBlurb('')
-        setCategory('')
+        setCategory('main')
         setImage(null)
         setAttachment(null)
     }
@@ -141,10 +153,10 @@ export default  () => {
             image,
         }
 
-        if (initialState._id) {
+        if (product) {
             newProduct = {
                 ...newProduct,
-                _id: initialState._id,
+                _id: product._id,
             }
         }
 
@@ -162,18 +174,17 @@ export default  () => {
         if (!data) {
             console.log('Error saving product', data)
         } else {
-            if (!initialState._id) {
-                dispatch({ type: 'ADD_PRODUCT', product: data })
-            } else {
-                dispatch({ type: 'UPDATE_PRODUCT', product: data })
-            }
+            dispatch({
+                type: product
+                    ? 'ADD_PRODUCT'
+                    : 'UPDATE_PRODUCT',
+                product: data,
+            })
         }
         
         clearForm()
         
         dispatch({ type: 'SET_LOADING', loading: null })
-
-        // dispatch({ type: 'CLOSE_MODAL' })
     }
 
     const removeImage = () => {
@@ -270,7 +281,7 @@ export default  () => {
             />
 
             <IconButton
-                label={initialState ? 'Reset Form' : 'Clear Form'}
+                label={product ? 'Reset Form' : 'Clear Form'}
                 onPress={resetForm}
                 disabled={loading}
                 style={{ marginVertical: 5 }}

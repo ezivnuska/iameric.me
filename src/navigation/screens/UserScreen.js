@@ -25,16 +25,12 @@ export default ({ navigation, route }) => {
     const [currentUser, setCurrentUser] = useState(null)
 
     useEffect(() => {
-        console.log('initializing UserScreen...')
         init()
     }, [])
 
     const init = async () => {
         const result = await loadFullUser(dispatch, id)
-        console.log('result-->', result)
         setCurrentUser(result)
-        console.log('UserScreen initialized.')
-        console.log('setCurrentUser =>', result)
     }
 
     if (loading) return  <LoadingView />
@@ -57,7 +53,7 @@ export default ({ navigation, route }) => {
                         images={currentUser.images}
                         // username={currentUser.username}
                         onSelected={image => {
-                            dispatch({ type: 'SET_MODAL', modalType: 'IMAGE', id: image._id })
+                            dispatch({ type: 'SET_MODAL', modalType: 'IMAGE', data: { id: image._id } })
                         }}
                     />
                 </View>

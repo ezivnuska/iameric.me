@@ -13,7 +13,6 @@ import {
     loadUsers,
     loadUsersByRole,
 } from '@utils/data'
-import { getOrientation } from '@utils/metrics'
 import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default () => {

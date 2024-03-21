@@ -3,9 +3,9 @@ export default (state, action) => {
         case 'SET_MODAL':
             const newModal = {
                 type: action.modalType,
-                id: action.id || null,
+                data: action.data || null,
             }
-            console.log('SET_MODAL(newModal)', newModal)
+            // console.log('SET_MODAL(newModal)', newModal)
             return newModal
             break
         case 'CLOSE_MODAL':
