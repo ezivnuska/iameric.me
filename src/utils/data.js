@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import { loadUserImages } from './images'
 
 /**
  * 
@@ -29,6 +29,47 @@ export const loadUser = async (dispatch, userId) => {
     } else if (!data.user) {
         console.log('User not found')
     } else {
+
+        dispatch({ type: 'UPDATE_USER', user: data.user })
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
+
+    return data.user
+}
+
+export const loadFullUser = async (dispatch, userId) => {
+
+    dispatch({ type: 'SET_LOADING', loading: 'Fetching user with images...' })
+
+    const { data } = await axios.get(`/api/user/full/${userId}`)
+
+    if (!data) {
+        console.log('Error fetching user with images')
+    } else if (!data.user) {
+        console.log('User not found')
+    } else {
+
+        dispatch({ type: 'UPDATE_USER', user: data.user })
+    }
+
+    dispatch({ type: 'SET_LOADING', loading: null })
+
+    return data.user
+}
+
+export const loadUserAndImages = async (dispatch, userId) => {
+
+    dispatch({ type: 'SET_LOADING', loading: 'Fetching user and images...' })
+
+    const { data } = await axios.get(`/api/user/${userId}`)
+
+    if (!data) {
+        console.log('Error fetching user')
+    } else if (!data.user) {
+        console.log('User not found')
+    } else {
+
         dispatch({ type: 'UPDATE_USER', user: data.user })
     }
 

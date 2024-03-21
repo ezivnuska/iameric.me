@@ -42,7 +42,7 @@ export default () => {
                 <View style={{ paddingHorizontal: 10 }}>
                     <ImageList
                         images={user.images}
-                        username={user.username}
+                        // username={user.username}
                         onSelected={image => {
                             console.log('selected image', image)
                             dispatch({ type: 'SET_MODAL', modalType: 'IMAGE', id: image._id })

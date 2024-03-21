@@ -27,6 +27,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const {
         dispatch,
+        isLandscape,
         loading,
         products,
         user,

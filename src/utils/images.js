@@ -29,7 +29,7 @@ export const loadImages = async (dispatch, userId) => {
 
 export const loadUserImages = async (dispatch, userId) => {
     
-    dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
+    dispatch({ type: 'SET_LOADING', loading: 'Fetching user images...' })
     
     const { data } = await axios.get(`/api/user/images/${userId}`)
     

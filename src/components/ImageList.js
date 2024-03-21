@@ -17,7 +17,9 @@ import { AppContext } from '../AppContext'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, username, onSelected }) => {
+export default ({ images,
+    // username,
+    onSelected }) => {
 
     const theme = useTheme()
 
@@ -28,8 +30,8 @@ export default ({ images, username, onSelected }) => {
     } = useContext(AppContext)
 
     // useEffect(() => {
-    //     console.log('USER-->', user)
-    // }, [user])
+    //     console.log('USERNAME-->', username)
+    // }, [username])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -70,56 +72,62 @@ export default ({ images, username, onSelected }) => {
             }}
         >
             {images && images.map((image, index) => (
-                <Pressable
+                <View
                     key={`image-${index}`}
-                    onPress={() => onSelected(image)}
-                    disabled={loading}
-                    style={[
-                        {
-                            flexBasis: 'auto',
-                            width: IMAGE_SIZE,
-                            height: IMAGE_SIZE,
-                        },
-                        buttonStyle,
-                    ]}
                 >
-                    <Image
-                        width={IMAGE_SIZE}
-                        height={IMAGE_SIZE}
-                        source={{ uri: `${IMAGE_PATH}/${username}/thumb/${image.filename}` }}
-                        style={{
-                            resizeMode: 'cover',
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    />
-                </Pressable>
-            ))}
-            {showUploadButton(user.username) && (
-                <Pressable
-                    key={`image-${images ? images.length : '0'}`}
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SELECT_IMAGE' })}
-                    style={[
-                        {
-                            flexBasis: 'auto',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: IMAGE_SIZE,
-                            height: IMAGE_SIZE,
-                        },
-                        buttonStyle,
-                    ]}
-                >
-                    <Icon
-                        name='add-outline'
-                        size={32}
-                        color={theme?.colors.textDefault}
-                    />
+                    
+                    <Pressable
+                        onPress={() => onSelected(image)}
+                        disabled={loading}
+                        style={[
+                            {
+                                flexBasis: 'auto',
+                                width: IMAGE_SIZE,
+                                height: IMAGE_SIZE,
+                            },
+                            buttonStyle,
+                        ]}
+                    >
+                        <Image
+                            width={IMAGE_SIZE}
+                            height={IMAGE_SIZE}
+                            source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
+                            style={{
+                                resizeMode: 'cover',
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        />
+                    </Pressable>
 
-                </Pressable>
-            )}
+                    {showUploadButton(image.user.username) && (
+                        <Pressable
+                            onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SELECT_IMAGE' })}
+                            style={[
+                                {
+                                    flexBasis: 'auto',
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    width: IMAGE_SIZE,
+                                    height: IMAGE_SIZE,
+                                },
+                                buttonStyle,
+                            ]}
+                        >
+                            <Icon
+                                name='add-outline'
+                                size={32}
+                                color={theme?.colors.textDefault}
+                            />
+
+                        </Pressable>
+                    )}
+
+                </View>
+            ))}
+            
         </View>
     )
 }

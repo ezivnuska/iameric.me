@@ -3,6 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
+    EmptyStatus,
     ImageList,
     LoadingView,
 } from '@components'
@@ -11,8 +12,7 @@ import {
     ScreenTitle,
 } from '.'
 import { AppContext } from '../../AppContext'
-import { loadImages } from '@utils/images'
-import { loadUser } from '@utils/data'
+import { loadFullUser } from '@utils/data'
 
 export default ({ navigation, route }) => {
     
@@ -30,13 +30,8 @@ export default ({ navigation, route }) => {
     }, [])
 
     const init = async () => {
-        let result = await loadUser(dispatch, id)
+        const result = await loadFullUser(dispatch, id)
         console.log('result-->', result)
-        const images = await loadImages(dispatch, result._id)
-        result = {
-            ...result,
-            images,
-        }
         setCurrentUser(result)
         console.log('UserScreen initialized.')
         console.log('setCurrentUser =>', result)
@@ -54,17 +49,19 @@ export default ({ navigation, route }) => {
                 />
             }
         >
-            <View
-                style={{ marginHorizontal: 10 }}
-            >
-                <ImageList
-                    images={currentUser.images}
-                    username={currentUser.username}
-                    onSelected={image => {
-                        dispatch({ type: 'SET_MODAL', modalType: 'IMAGE', id: image._id })
-                    }}
-                />
-            </View>
+            {currentUser.images ? (
+                <View
+                    style={{ marginHorizontal: 10 }}
+                >
+                    <ImageList
+                        images={currentUser.images}
+                        // username={currentUser.username}
+                        onSelected={image => {
+                            dispatch({ type: 'SET_MODAL', modalType: 'IMAGE', id: image._id })
+                        }}
+                    />
+                </View>
+            ) : <EmptyStatus status='No images yet.' />}
             
         </Screen>
     ) : null

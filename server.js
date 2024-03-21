@@ -25,6 +25,7 @@ const {
     getNumberOfOnlineUsers,
     // getAllVendorIds,
     getAllVendors,
+    getFullUserById,
     getUserById,
 } = require('./api/users')
 
@@ -110,6 +111,7 @@ app.post(   '/token',                  validateToken)
 
 // users
 app.get(    '/user/:id',                getUserById)
+app.get(    '/user/full/:id',           getFullUserById)
 app.get(    '/user/details/:id',        getUserDetailsById)
 app.get(    '/users',                   getUsers)
 app.get(    '/users/:role',             getUsersByRole)
