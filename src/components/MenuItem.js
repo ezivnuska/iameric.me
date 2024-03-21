@@ -17,6 +17,7 @@ export default ({ item, username }) => {
 
     const {
         dispatch,
+        isLandscape,
     } = useContext(AppContext)
     
     const { _id, price, title, desc, vendor, blurb, category, image } = item
@@ -85,10 +86,10 @@ export default ({ item, username }) => {
                             style={{
                                 flex: 1,
                                 flexDirection: 'row',
-                                justifyContent: 'flex-start',
+                                justifyContent: 'space-between',
                                 alignItems: 'flex-start',
-                                flexWrap: 'wrap',
-                                marginBottom: 5,
+                                flexWrap: isLandscape ? 'nowrap' : 'wrap',
+                                marginBottom: 10,
                             }}
                         >
                             <ThemedText
@@ -97,12 +98,23 @@ export default ({ item, username }) => {
                                     {
                                         flexBasis: 'auto',
                                         flexGrow: 0,
-                                        marginRight: 15,
+                                        marginBottom: 10,
+                                        lineHeight: 35,
                                     }
                                 ]}
                             >
                                 {title}
                             </ThemedText>
+            
+                            <IconButton
+                                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SHOW_PRODUCT', id: item._id })}
+                                type='primary'
+                                label={`$${price}`}
+                                align='center'
+                                // style={{ flexGrow: 0 }}
+                                padded={isLandscape ? true : false}
+                                textStyles={{ lineHeight: 35 }}
+                            />
                         </View>
 
                         {(blurb && blurb.length) ? (
@@ -126,15 +138,6 @@ export default ({ item, username }) => {
                 </View>
                 
             </View>
-            
-            <IconButton
-                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SHOW_PRODUCT', id: item._id })}
-                type='primary'
-                iconName='add-outline'
-                label={`$${price}`}
-                align='center'
-                style={{ flexGrow: 0 }}
-            />
 
         </View>
     )

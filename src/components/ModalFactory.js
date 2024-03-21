@@ -14,7 +14,7 @@ import {
     ModalSignout,
     ModalImageSelector,
     PopUpModal,
-    ProductDetails,
+    ProductDetailsFake,
     ProductForm,
 } from '.'
 import { AppContext } from '../AppContext'
@@ -31,7 +31,8 @@ export default ({ modal }) => {
         switch(type) {
             case 'CART': return <ModalCart />; break
             case 'DESTROY': return <ModalDestroy />; break
-            case 'SHOW_PRODUCT': return <ProductDetails id={id} />; break
+            // case 'SHOW_PRODUCT': return <ProductDetails id={id} />; break
+            case 'SHOW_PRODUCT': return <ProductDetailsFake id={id} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ModalImage id={id} />; break
             case 'LOCATION': return <ModalLocation />; break

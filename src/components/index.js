@@ -53,6 +53,7 @@ import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import ProductSelector from './ProductSelector'
+import QuantityControl from './QuantityControl'
 import SignInForm from './SignInForm'
 import SignInFormLandscape from './SignInFormLandscape'
 import SignUpForm from './SignUpForm'
@@ -121,6 +122,7 @@ export {
     ProductList,
     ProductListItem,
     ProductSelector,
+    QuantityControl,
     SignInForm,
     SignInFormLandscape,
     SignUpForm,

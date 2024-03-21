@@ -31,8 +31,7 @@ export default () => {
         const tokenFromStorage = await AsyncStorage.getItem('userToken')
         if (tokenFromStorage) {
             const verifiedUser = await authenticate(dispatch, tokenFromStorage)
-            if (verifiedUser) console.log('user verified', verifiedUser)
-        }
+            if (verifiedUser) console.log(`${verifiedUser.username} verified`)        }
     }
 
     const onConnect = async type => {
