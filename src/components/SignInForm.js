@@ -13,7 +13,7 @@ import { isValidEmail, signin } from '../utils/auth'
 import { saveLocally, getLocally } from '../utils/storage'
 import { AppContext } from '../AppContext'
 
-export default ({ onComplete }) => {
+export default () => {
 
 	const {
 		dispatch,
@@ -38,6 +38,36 @@ export default ({ onComplete }) => {
 		if (email.length && !isValidEmail(email)) addError('email')
 		else removeError('email')
 	}, [email])
+
+    const setUser = async ({
+        _id,
+        email,
+        images,
+        profileImage,
+        role,
+        token,
+        username,
+        exp,
+    }) => {
+        dispatch({
+            type: 'SET_USER',
+            user: {
+                _id,
+                email,
+                images,
+                profileImage,
+                role,
+                token,
+                username,
+                exp,
+            },
+        })
+    }
+
+    const onComplete = response => {
+        setUser(response)
+        dispatch({ type: 'CLOSE_MODAL' })
+    }
 
 	const addError = value => {
 		if (!hasError(value)) setErrors([ ...errors, value ])
@@ -130,55 +160,63 @@ export default ({ onComplete }) => {
     return formReady
 		? (
 			<View
-				style={classes.formContainer}
+				style={{
+					// classes.formContainer,
+					// {
+					// 	paddingHorizontal: 10,
+					// 	background: 'red',
+					// },
+					// textAlign: 'center',
+				}}
 			>
-	
-				<ThemedText
-					style={[
-						classes.headerSecondary,
-						{ textAlign: 'center' },
-					]}
-				>
-					Sign In
-				</ThemedText>
-	
-				<FormInput
-					label='Email'
-					value={email}
-					onChange={value => setEmail(value)}
-					placeholder='Email'
-					textContentType='emailAddress'
-					autoCapitalize='none'
-					keyboardType='email-address'
-					invalid={hasError('email')}
-					onKeyPress={onEnter}
-					autoFocus={!email.length}
-				/>
-	
-				<FormInput
-					label='Password'
-					value={password}
-					onChange={value => setPassword(value)}
-					placeholder='Password'
-					textContentType='password'
-					autoCapitalize='none'
-					secureTextEntry={true}
-					invalid={hasError('password')}
-					onKeyPress={onEnter}
-					autoFocus={email.length}
-				/>
-	
-				
-				<ThemedText style={{ marginBottom: 15 }}>
-					{errorMessage || ' '}
-				</ThemedText>
-	
-				<IconButton
-					type='primary'
-					label={loading ? 'Signing In' : 'Sign In'}
-					disabled={loading || !isValid() || errors.length}
-					onPress={submitData}
-				/>
+				<View style={{ marginHorizontal: 10 }}>
+					<ThemedText
+						style={[
+							classes.headerSecondary,
+							{ textAlign: 'center' },
+						]}
+					>
+						Sign In
+					</ThemedText>
+		
+					<FormInput
+						label='Email'
+						value={email}
+						onChange={value => setEmail(value)}
+						placeholder='Email'
+						textContentType='emailAddress'
+						autoCapitalize='none'
+						keyboardType='email-address'
+						invalid={hasError('email')}
+						onKeyPress={onEnter}
+						autoFocus={!email.length}
+					/>
+		
+					<FormInput
+						label='Password'
+						value={password}
+						onChange={value => setPassword(value)}
+						placeholder='Password'
+						textContentType='password'
+						autoCapitalize='none'
+						secureTextEntry={true}
+						invalid={hasError('password')}
+						onKeyPress={onEnter}
+						autoFocus={email.length}
+					/>
+		
+					
+					<ThemedText style={{ marginBottom: 15 }}>
+						{errorMessage || ' '}
+					</ThemedText>
+		
+					<IconButton
+						type='primary'
+						label={loading ? 'Signing In' : 'Sign In'}
+						disabled={loading || !isValid() || errors.length}
+						onPress={submitData}
+					/>
+				</View>
 	
 			</View>
 		) : <LoadingView label='loading form...' />

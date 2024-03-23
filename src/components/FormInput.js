@@ -13,8 +13,6 @@ export default ({ label, onChange, value, style = null, multiline = false, inval
     
     const theme = useTheme()
 
-    const [initialValue] = useState(value)
-    const [inputValue, setInputValue] = useState(value)
     const [dirty, setDirty] = useState(false)
     const [inputHeight, setInputHeight] = useState()
 

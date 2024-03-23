@@ -4,18 +4,19 @@ import {
 } from 'react-native'
 import {
     FeedbackForm,
+    Form,
     ModalCart,
     ModalDestroy,
     ModalImage,
     ModalLocation,
     ModalProfile,
-    ModalSignin,
     ModalSignup,
     ModalSignout,
     ModalImageSelector,
     PopUpModal,
     ProductDetails,
     ProductForm,
+    SignInForm,
 } from '.'
 import { AppContext } from '../AppContext'
 
@@ -40,7 +41,8 @@ export default () => {
             case 'PRODUCT': return <ProductForm product={data.product} />; break
             case 'PROFILE': return <ModalProfile />; break
             case 'SELECT_IMAGE': return <ModalImageSelector />; break
-            case 'SIGNIN': return <ModalSignin />; break
+            case 'SIGNIN': return <Form />; break
+            // case 'SIGNIN': return <SignInForm />; break
             case 'SIGNOUT': return <ModalSignout />; break
             case 'SIGNUP_CUSTOMER': return <ModalSignup role='customer' />; break
             case 'SIGNUP_VENDOR': return <ModalSignup role='vendor' />; break

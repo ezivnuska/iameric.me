@@ -15,6 +15,7 @@ import EntryModule from './EntryModule'
 // import EntryListItem from './EntryListItem'
 import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
+import Form from './Form'
 import FormButton from './FormButton'
 import FormInput from './FormInput'
 import ForumList from './ForumList'
@@ -84,6 +85,7 @@ export {
     // EntryListItem,
     FeedbackForm,
     FileSelector,
+    Form,
     FormButton,
     FormInput,
     ForumList,

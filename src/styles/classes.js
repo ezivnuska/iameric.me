@@ -103,10 +103,10 @@ export default {
         marginBottom: 10,
     },
     formContainer: {
-        flexDirection: 'column',
+        flexBasis: 'auto',
         width: '100%',
         minWidth: 280,
-        maxWidth: 400,
+        maxWidth: 280,
         flexShrink: 1,
         flexGrow: 1,
         textAlign: 'left',
@@ -122,16 +122,14 @@ export default {
 		columnGap: 10,
 	},
     formInputLabel: {
-        marginTop: 5,
-        marginBottom: 8,
-        fontSize: sizes.formInputLabel,// 18
+		fontSize: 18,
+		lineHeight: 40,
         fontWeight: 500,
-        lineHeight: sizes.formInputLabel + 4,// 22
+        // lineHeight: sizes.formInputLabel + 4,// 22
     },
 	formInputContainer: {
 		borderBottomWidth: 2,
 		borderBottomColor: '#ccc',
-		marginBottom: 10,
 		paddingBottom: 2,
         outlineColor: 'none',
         outlineStyle: 'none',
@@ -145,7 +143,8 @@ export default {
 		fontSize: 18,
 		lineHeight: 40,
         width: '100%',
-        minWidth: 280,
+        minWidth: 260,
+        maxWidth: 400,
 		outlineWidth: 0,
         outlineColor: 'none',
         outlineStyle: 'none',
