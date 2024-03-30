@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 import {
-    useWindowDimensions,
+    Keyboard,
     SafeAreaView,
+    useWindowDimensions,
     View,
 } from 'react-native'
 import AppNavigation from '../navigation/AppNavigation'

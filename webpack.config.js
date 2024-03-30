@@ -24,6 +24,8 @@ const babelLoaderConfiguration = {
     path.resolve(__dirname, 'index.web.js'), // Entry to your application
     path.resolve(__dirname, 'App.web.js'), // Change this to your main App file
     path.resolve(__dirname, 'src'),
+    path.resolve(__dirname, 'node_modules/react-native-modal'),
+    path.resolve(__dirname, 'node_modules/react-native-'),
     ...compileNodeModules,
   ],
   use: [{
@@ -38,6 +40,7 @@ const babelLoaderConfiguration = {
           { libraryName: 'antd', style: true },
           'antd',
         ],
+        'react-native-reanimated/plugin',
       ],
     },
   }],

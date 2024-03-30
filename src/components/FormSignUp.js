@@ -10,10 +10,10 @@ import {
 import classes from '../styles/classes'
 import { AppContext } from '../AppContext'
 import { saveLocally, getLocally } from '../utils/storage'
-import { isValidEmail, signin } from '../utils/auth'
+import { isValidEmail, signup } from '../utils/auth'
 import { useTheme } from 'react-native-paper'
 
-export default props => {
+export default ({ role }) => {
     
     const {
         dispatch,
@@ -21,19 +21,16 @@ export default props => {
         loading,
     } = useContext(AppContext)
 
-    let fieldNames = [
-        'email',
-        'password',
-    ]
-
     const [focused, setFocused] = useState(0)
     
-    const [email, setEmail] = useState('')
+	const [email, setEmail] = useState('')
+	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const [confirmPassword, setConfirmPassword] = useState('')
 	const [error, setError] = useState(null)
 	const [formReady, setFormReady] = useState(false)
     
-    const formFields = useMemo(() => ({ email, password }), [email, password])
+    const formFields = useMemo(() => ({ email, username, password, confirmPassword }), [email, username, password, confirmPassword])
 
 	useEffect(() => {
 		initForm()
@@ -41,43 +38,39 @@ export default props => {
 
 	const initForm = async () => {
 		const savedEmail = await getLocally('email')
-		if (savedEmail) {
-			setEmail(savedEmail)
-		}
-        validateFields()
+		if (savedEmail) setEmail(savedEmail)
 	}
 
     useEffect(() => {
         validateFields()
-    }, [email, password])
-
-    // useEffect(() => {
-    //     console.log('error', error)
-    // }, [error])
-
-    // useEffect(() => {
-    //     console.log('formReady', formReady)
-    // }, [formReady])
+    }, [email, username, password, confirmPassword])
     
     useEffect(() => {
-        // console.log('focused', focused)
-        if (!formReady) setFormReady(true)
+        if (focused) setFormReady(true)
     }, [focused])
+
+    useEffect(() => {
+        if (formReady) {
+            // console.log('formFields---------->', formFields)
+        }
+    }, [formReady])
 
     const validateFields = async () => {
         const keys = Object.keys(formFields)
         let index = 0
-        let field = null
-        while (index <= keys.length && !field) {
-            const key = keys[index]
-            const isValid = await isFieldValid(key)
+        while (index < keys.length) {
+            const currentField = keys[index]
+            const isValid = await isFieldValid(currentField)
+            // console.log(currentField, isValid)
             if (!isValid) {
-                field = true
                 setFocused(index)
+                return
             } else {
                 index++
             }
         }
+        
+        setFormReady(true)
     }
 
     const isFieldValid = async fieldName => {
@@ -89,15 +82,26 @@ export default props => {
                 setError({ name: fieldName, message: 'Email is not valid.' })
                 return false
             }
-        } else {
-            if (!password.length) {
-                setError({
-                    name: fieldName,
-                    message: `${fieldName} is required.`,
-                })
-                return false
-            } else return true
+        } else if (fieldName === 'username' && !username.length) {
+            setError({
+                name: fieldName,
+                message: `${fieldName} is required.`,
+            })
+            return false
+        } else if (fieldName === 'password' && !password.length) {
+            setError({
+                name: fieldName,
+                message: `${fieldName} is required.`,
+            })
+            return false
+        } else if (fieldName === 'confirmPassword') {
+            if(password !== confirmPassword) setError({
+                name: fieldName,
+                message: 'Password is not confirmed.'
+            })
+            return false
         }
+        return true
         
     }
 
@@ -135,7 +139,7 @@ export default props => {
 
 		await saveLocally('email', email)
 
-		const data = await signin(email, password)
+		const data = await signup(email, password, role, username)
         
 		if (!data || !data.user) {
 			console.log('Error authenticating user')
@@ -151,7 +155,8 @@ export default props => {
     return formReady ? (
         <View
             style={{
-                flex: 1,
+                height: '100%',
+                width: '100%',
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -164,6 +169,7 @@ export default props => {
                     justifyContent: 'flex-start',
                     alignItems: isLandscape ? 'flex-start' : 'stretch',
                     gap: 7,
+                    paddingVertical: isLandscape ? 50 : 0,
                 }}
             >
                 <FormInput
@@ -180,6 +186,19 @@ export default props => {
                 />
 
                 <FormInput
+                    label='Username'
+                    value={username}
+                    onChange={setUsername}
+                    placeholder='username'
+                    textContentType='none'
+                    keyboardType='default'
+                    autoCapitalize='none'
+                    invalid={hasError('username')}
+                    autoFocus={isFieldFocused('username')}
+                    onKeyPress={onEnter}
+                />
+
+                <FormInput
                     label='Password'
                     value={password}
                     onChange={setPassword}
@@ -189,6 +208,19 @@ export default props => {
                     secureTextEntry={true}
                     invalid={hasError('password')}
                     autoFocus={isFieldFocused('password')}
+                    onKeyPress={onEnter}
+                />
+
+                <FormInput
+                    label='Confirm Password'
+                    value={confirmPassword}
+                    onChange={setConfirmPassword}
+                    placeholder='password again'
+                    textContentType='password'
+                    autoCapitalize='none'
+                    secureTextEntry={true}
+                    invalid={hasError('confirmPassword')}
+                    autoFocus={isFieldFocused('confirmPassword')}
                     onKeyPress={onEnter}
                 />
 
@@ -209,7 +241,7 @@ export default props => {
         
                     <IconButton
                         type='primary'
-                        label={loading ? 'Signing In' : 'Sign In'}
+                        label={loading ? 'Signing Up' : 'Sign Up'}
                         disabled={loading || error}
                         onPress={submitData}
                     />

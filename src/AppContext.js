@@ -4,6 +4,7 @@ import { useWindowDimensions } from 'react-native'
 import {
     cartReducer,
     entriesReducer,
+    keyboardReducer,
     loadingReducer,
     modalReducer,
     userReducer,
@@ -25,8 +26,7 @@ const combineReducers = (reducers) => {
 const initialState = {
     cart: null,
     entries: null,
-    feature: null,
-    image: null,
+    keyboard: false,
     loading: null,
     modal: null,
     user: null,
@@ -39,6 +39,7 @@ export const AppProvider = ({ children, preferences }) => {
         combineReducers({
             cart: cartReducer,
             entries: entriesReducer,
+            keyboard: keyboardReducer,
             loading: loadingReducer,
             modal: modalReducer,
             user: userReducer,
@@ -51,6 +52,7 @@ export const AppProvider = ({ children, preferences }) => {
     const {
         cart,
         entries,
+        keyboard,
         loading,
         modal,
         user,
@@ -64,6 +66,7 @@ export const AppProvider = ({ children, preferences }) => {
                 state,
                 cart,
                 entries,
+                keyboard,
                 loading,
                 modal,
                 user,

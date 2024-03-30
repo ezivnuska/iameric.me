@@ -3,6 +3,7 @@ import data from './data'
 import images from './images'
 import metrics from './metrics'
 import storage from './storage'
+import useKeyboard from './useKeyboard'
 
 export default {
     auth,
@@ -10,4 +11,5 @@ export default {
     images,
     metrics,
     storage,
+    useKeyboard,
 }

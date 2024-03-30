@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     ScrollView,
     useWindowDimensions,
@@ -6,6 +6,7 @@ import {
 } from 'react-native'
 import { AppContext } from '../../AppContext'
 import { useTheme } from '@react-navigation/native'
+// import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default ({
     children,
@@ -16,6 +17,7 @@ export default ({
 
     const {
         isLandscape,
+        // modal,
         user,
     } = useContext(AppContext)
     
@@ -23,12 +25,20 @@ export default ({
 
     const dims = useWindowDimensions()
 
+    // useEffect(() => {
+    //     if (modal) {
+    //         console.log('modal', modal)
+    //         // alert('modal', modal)
+    //     }
+    // }, [modal])
+
     return (
         <View
             style={[
                 {
+                    // flex: 1,
                     alignItems: 'flex-start',
-                    height: dims.height - 50,
+                    // height: dims.height - 50,
                     backgroundColor: theme?.colors.background,
                 },
             ]}

@@ -1,27 +1,29 @@
 import React, { useContext } from 'react'
 import {
+    useWindowDimensions,
     View,
 } from 'react-native'
 import {
     FeedbackForm,
-    Form,
+    // Form,
     ModalCart,
     ModalDestroy,
     ModalImage,
     ModalLocation,
     ModalProfile,
-    ModalSignup,
+    // ModalSignup,
     ModalSignout,
     ModalImageSelector,
     PopUpModal,
     ProductDetails,
     ProductForm,
-    SignInForm,
+    FormSignIn,
+    FormSignUp,
 } from '.'
 import { AppContext } from '../AppContext'
 
 export default () => {
-
+    const dims = useWindowDimensions()
     const {
         dispatch,
         modal,
@@ -41,28 +43,32 @@ export default () => {
             case 'PRODUCT': return <ProductForm product={data.product} />; break
             case 'PROFILE': return <ModalProfile />; break
             case 'SELECT_IMAGE': return <ModalImageSelector />; break
-            case 'SIGNIN': return <Form />; break
+            case 'SIGNIN': return <FormSignIn />; break
             // case 'SIGNIN': return <SignInForm />; break
             case 'SIGNOUT': return <ModalSignout />; break
-            case 'SIGNUP_CUSTOMER': return <ModalSignup role='customer' />; break
-            case 'SIGNUP_VENDOR': return <ModalSignup role='vendor' />; break
-            case 'SIGNUP_DRIVER': return <ModalSignup role='driver' />; break
+            case 'SIGNUP_CUSTOMER': return <FormSignUp role='customer' />; break
+            case 'SIGNUP_VENDOR': return <FormSignUp role='vendor' />; break
+            case 'SIGNUP_DRIVER': return <FormSignUp role='driver' />; break
             default: return null
         }
     }
 
     return (
         <PopUpModal
-            visible={modal}
+            isVisible={modal !== undefined}
             onRequestClose={() => dispatch({ type: 'CLOSE_MODAL' })}
             transparent={true}
         >
             <View
                 style={{
+                    // flex: 1,
                     flexBasis: 'auto',
-                    flexGrow: 1,
+                    // flexGrow: 1,
                     width: '100%',
-                    justifyContent: 'space-evenly',
+                    height: dims.height,
+                    borderWidth: 1,
+                    borderStyle: 'dotted',
+                    borderColor: 'white',
                 }}
             >
                 {resolveModalContent()}
