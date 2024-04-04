@@ -9,11 +9,10 @@ import {
 import {
     IconButton,
 } from '@components'
-import { AppContext } from '../../AppContext'
+import { AppContext, useApp } from '../../context/AppContext'
 import { connect, initialize } from '@utils/auth'
 import classes from '@styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
-import { useTheme } from 'react-native-paper'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { authenticate } from '@utils/auth'
 
@@ -241,7 +240,7 @@ export default () => {
 
 const ImageSegment = ({ children, source }) => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
 
     return (
         <ImageBackground

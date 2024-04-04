@@ -6,7 +6,7 @@ import {
 import {
     LoadingView,
 } from '@components'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import { loadUserById } from '@utils/data'
 import axios from 'axios'
 

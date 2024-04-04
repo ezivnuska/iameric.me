@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import {
     ImageBackground,
     View,
@@ -7,32 +7,16 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import { AppContext } from '../../AppContext'
-import { connect, initialize } from '@utils/auth'
+import { useApp, useModal } from '@context'
+import { connect } from '@utils/auth'
 import classes from '@styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
-import { useTheme } from 'react-native-paper'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { authenticate } from '@utils/auth'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default () => {
 
-    const {
-        dispatch,
-    } = useContext(AppContext)
-
-    // useEffect(() => {
-    //     init()
-    // }, [])
-
-    // const init = async () => {
-    //     const tokenFromStorage = await AsyncStorage.getItem('userToken')
-    //     if (tokenFromStorage) {
-    //         const verifiedUser = await authenticate(dispatch, tokenFromStorage)
-    //         if (verifiedUser) console.log(`${verifiedUser.username} verified`)        }
-    // }
+    const { setModal } = useModal()
 
     const onConnect = async type => {
         
@@ -106,7 +90,7 @@ export default () => {
                         type='primary'
                         label='Find It'
                         iconName='arrow-forward-circle-outline'
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNUP_CUSTOMER' })}
+                        onPress={() => setModal('SIGNUP_CUSTOMER')}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
                         style={{ marginVertical: 5 }}
@@ -149,7 +133,7 @@ export default () => {
                         type='primary'
                         label='Offer It'
                         iconName='arrow-forward-circle-outline'
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNUP_VENDOR' })}
+                        onPress={() => setModal('SIGNUP_VENDOR')}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
                         style={{ marginVertical: 5 }}
@@ -193,7 +177,7 @@ export default () => {
                         type='primary'
                         label='Move It'
                         iconName='arrow-forward-circle-outline'
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNUP_DRIVER' })}
+                        onPress={() => setModal('SIGNUP_DRIVER')}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
                         style={{ marginVertical: 5 }}
@@ -218,7 +202,7 @@ export default () => {
 
 const ImageSegment = ({ children, source }) => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
 
     return (
         <ImageBackground

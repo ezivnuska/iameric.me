@@ -7,7 +7,7 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import classes from '../styles/classes'
 
 const IMAGE_SIZE = 50

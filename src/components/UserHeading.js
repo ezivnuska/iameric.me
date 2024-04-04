@@ -9,13 +9,13 @@ import {
 } from '.'
 import { ThunderboltOutlined } from '@ant-design/icons'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ children, user, filename, horizontal = false, onPress = null, ...props }) => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
 
     const [online, setOnline] = useState(false)
 

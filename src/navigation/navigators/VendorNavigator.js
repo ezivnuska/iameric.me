@@ -2,7 +2,7 @@ import React from 'react'
 import {
     VendorsScreen,
     VendorScreen,
-} from '../screens'
+} from '../../screens'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const VendorStack = createNativeStackNavigator()

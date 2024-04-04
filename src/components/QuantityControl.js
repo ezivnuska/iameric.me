@@ -6,11 +6,11 @@ import {
     ThemedText,
     IconButton,
 } from '.'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 export default ({ value, onChange }) => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
     
     const increase = () => {onChange(value + 1)}
     const decrease = () => onChange(value - 1)

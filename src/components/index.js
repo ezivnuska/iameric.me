@@ -5,6 +5,8 @@ import CartButton from './CartButton'
 import CartProductPreview from './CartProductPreview'
 import CategoryPicker from './CategoryPicker'
 import CenteredView from './CenteredView'
+import ContactList from './ContactList'
+import ContactView from './ContactView'
 import ThemedText from './ThemedText'
 import DeleteAccountButton from './DeleteAccountButton'
 import DestroyForm from './DestroyForm'
@@ -20,6 +22,7 @@ import FormSignUp from './FormSignUp'
 import FormButton from './FormButton'
 import FormInput from './FormInput'
 import ForumList from './ForumList'
+import ForumView from './ForumView'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
 import ImageDetail from './ImageDetail'
@@ -37,14 +40,13 @@ import MenuItem from './MenuItem'
 import ModalCart from './ModalCart'
 import ModalDestroy from './ModalDestroy'
 import ModalFactory from './ModalFactory'
-// import ModalProductDetails from './ModalProductDetils'
 import ModalImage from './ModalImage'
 import ModalImageSelector from './ModalImageSelector'
 import ModalLocation from './ModalLocation'
 import ModalProfile from './ModalProfile'
-import ModalSignin from './ModalSignin'
 import ModalSignup from './ModalSignup'
 import ModalSignout from './ModalSignout'
+import ModalView from './ModalView'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
@@ -56,8 +58,6 @@ import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import ProductSelector from './ProductSelector'
 import QuantityControl from './QuantityControl'
-import SignInForm from './SignInForm'
-import SignInFormLandscape from './SignInFormLandscape'
 import SignUpForm from './SignUpForm'
 import TimeSelector from './TimeSelector'
 import UserDetails from './UserDetails'
@@ -76,6 +76,8 @@ export {
     CartProductPreview,
     CategoryPicker,
     CenteredView,
+    ContactList,
+    ContactView,
     ThemedText,
     DeleteAccountButton,
     DestroyForm,
@@ -91,6 +93,7 @@ export {
     FormButton,
     FormInput,
     ForumList,
+    ForumView,
     HoverableView,
     IconButton,
     ImageDetail,
@@ -108,13 +111,12 @@ export {
     ModalCart,
     ModalDestroy,
     ModalFactory,
-    // ModalProductDetails,
     ModalImage,
     ModalImageSelector,
     ModalLocation,
     ModalProfile,
-    ModalSignin,
     ModalSignup,
+    ModalView,
     ModalSignout,
     OrderList,
     OrderDetails,
@@ -127,8 +129,6 @@ export {
     ProductListItem,
     ProductSelector,
     QuantityControl,
-    SignInForm,
-    SignInFormLandscape,
     SignUpForm,
     TimeSelector,
     UserHeading,

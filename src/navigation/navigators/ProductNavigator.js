@@ -1,7 +1,7 @@
 import React from 'react'
 import {
     ProductsScreen,
-} from '../screens'
+} from '../../screens'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const ProductStack = createNativeStackNavigator()

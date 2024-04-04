@@ -4,11 +4,11 @@ import {
     View,
 } from 'react-native'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 export default ({ location }) => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
     
     if (!location) return null
     // else console.log('location', location)

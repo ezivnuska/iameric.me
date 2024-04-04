@@ -20,16 +20,11 @@ import {
     FormSignIn,
     FormSignUp,
 } from '.'
-import { AppContext } from '../AppContext'
+import { useModal } from '@context'
 
 export default () => {
     const dims = useWindowDimensions()
-    const {
-        dispatch,
-        modal,
-    } = useContext(AppContext)
-
-    const { data, type } = modal
+    const { closeModal, data, type } = useModal()
 
     const resolveModalContent = () => {
         switch(type) {
@@ -55,8 +50,8 @@ export default () => {
 
     return (
         <PopUpModal
-            isVisible={modal !== undefined}
-            onRequestClose={() => dispatch({ type: 'CLOSE_MODAL' })}
+            isVisible={type !== undefined}
+            onRequestClose={() => closeModal()}
             transparent={true}
         >
             <View

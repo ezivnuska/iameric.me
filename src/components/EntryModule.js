@@ -7,7 +7,7 @@ import {
     ForumList,
     EmptyStatus,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import { deleteEntryWithId, loadEntries } from '../utils/data'
 
 export default () => {
@@ -43,7 +43,7 @@ export default () => {
         //     console.log('could not delete entry')
         // } else {
         //     setItems(items.filter(item => item._id !== id))
-        //     dispatch({ type: 'DELETE_ENTRY', id: entryDeleted._id })
+        //     dispatch({ type: 'DELETE_ENTRY', payload: entryDeleted._id })
         // }
         
         // dispatch({ type: 'SET_LOADING', loading: null })

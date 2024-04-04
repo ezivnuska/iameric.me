@@ -1,29 +1,39 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export const cleanStorage = async () => await AsyncStorage.multiRemove(['userToken', 'route', 'detail', 'prevRoute'])
-export const clearStorage = async () => await AsyncStorage.multiRemove(['userToken', 'route', 'detail', 'prevRoute', 'email'])
-
-export const saveLocally = async (key, value) => {
-    try {
-        await AsyncStorage.setItem(key, value)
-        return value
-    } catch (err) {
-        console.log(`Error storing ${key}.`, err)
-        return null
-    }
+export const getItem = async key => {
+    const value = await AsyncStorage.getItem(key)
+    return value || null
 }
 
-export const getLocally = async key => {
-    try {
-        const item = await AsyncStorage.getItem(key)
-        return item
-    } catch (err) {
-        console.log(`Error storing ${key}.`, err)
-        return null
-    }
+export const setItem = async (key, value) => {
+    return AsyncStorage.setItem(key, value)
 }
 
-export const setUserToken = async token => {
-    return await AsyncStorage.setItem('userToken', token)
+export const getToken = async () => {
+    const value = await AsyncStorage.getItem('userToken')
+    return value || null
 }
-export const getUserToken = async () => await AsyncStorage.getItem('userToken')
+
+export const setToken = async value => {
+    return AsyncStorage.setItem('userToken', value)
+}
+
+export const removeToken = async () => {
+    return AsyncStorage.removeItem('userToken')
+}
+
+export const removeItem = async key => {
+    return AsyncStorage.removeItem(key)
+}
+
+export const removeItems = async keys => {
+    return AsyncStorage.multiRemove(keys)
+}
+
+export const cleanStorage = async () => {
+    return removeItems(['userToken', 'route'])
+}
+
+export const clearStorage = async () => {
+    return AsyncStorage.multiRemove(['userToken', 'route', 'email'])
+}

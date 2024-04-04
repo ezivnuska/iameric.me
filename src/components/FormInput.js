@@ -7,11 +7,11 @@ import {
     ThemedText,
 } from '.'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 export default ({ label, onChange, value, style = null, multiline = false, invalid = false, ...props }) => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
 
     const [dirty, setDirty] = useState(false)
     const [inputHeight, setInputHeight] = useState()

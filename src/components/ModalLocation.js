@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import {
     LocationForm,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 
 export default () => {
     

@@ -1,8 +1,9 @@
 import React from 'react'
 import {
+    ContactListScreen,
     UserScreen,
     UsersScreen,
-} from '../screens'
+} from '../../screens'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const UsersStack = createNativeStackNavigator()
@@ -16,7 +17,7 @@ export default () => (
     >
         <UsersStack.Screen
             name='UserList'
-            component={UsersScreen}
+            component={ContactListScreen}
             options={{
                 title: 'Users',
             }}

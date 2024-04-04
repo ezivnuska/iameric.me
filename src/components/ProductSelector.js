@@ -4,11 +4,11 @@ import {
     Pressable,
     Text,
 } from 'react-native'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 export default ({ onSelect, products, imageId }) => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
 
     return (
         <FlatList

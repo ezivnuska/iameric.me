@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import {
     ImageSelector,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import axios from 'axios'
 
 export default () => {

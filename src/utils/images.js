@@ -50,86 +50,81 @@ export const getImageDims = (w, h, dims) => {
     return { width, height }
 }
 
-export const loadImages = async (dispatch, userId) => {
+export const loadImages = async userId => {
     
-    dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
-    
-    const { data } = await axios.get(`/api/user/images/${userId}`)
-    
-    if (!data) {
-        console.log('Error fetching user images.')
-    } else {
-        dispatch({ type: 'UPDATE_IMAGES', userId, images: data.images })
-    }
-
-    dispatch({ type: 'SET_LOADING', loading: null })
-}
-
-export const loadUserImages = async (dispatch, userId) => {
-    
-    dispatch({ type: 'SET_LOADING', loading: 'Fetching user images...' })
+    // dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
     
     const { data } = await axios.get(`/api/user/images/${userId}`)
     
     if (!data) {
         console.log('Error fetching user images.')
-    } else {
-        dispatch({ type: 'UPDATE_USER_IMAGES', userId, images: data.images })
     }
+    //  else {
+    //     dispatch({ type: 'UPDATE_IMAGES', userId, images: data.images })
+    // }
 
-    dispatch({ type: 'SET_LOADING', loading: null })
+    // dispatch({ type: 'SET_LOADING', loading: null })
+
+    return data.images
 }
 
-export const loadImage = async (dispatch, imageId) => {
+// NOT USED
+// export const loadUserImages = async (dispatch, userId) => {
     
-    dispatch({ type: 'SET_LOADING', loading: 'Fetching image...' })
+//     const { data } = await axios.get(`/api/user/images/${userId}`)
     
-    const image = await axios.get(`/api/image/${imageId}`)
-    
-    if (!image) {
-        console.log('Error fetching image.')
-    } else {
-        dispatch({ type: 'UPDATE_IMAGE', image })
-    }
+//     if (!data) {
+//         console.log('Error fetching user images.')
+//     } else {
+//         dispatch({
+//             type: 'UPDATE_USER_IMAGES',
+//             payload: {
+//                 userId,
+//                 images: data.images,
+//             },
+//         })
+//     }
+// }
 
-    dispatch({ type: 'SET_LOADING', loading: null })
-}
-
-export const loadUnknownImage = async (dispatch, imageId, userId) => {
+// NOT USED
+// export const loadImage = async imageId => {
     
-    dispatch({ type: 'SET_LOADING', loading: 'Fetching image...' })
+//     const image = await axios.get(`/api/image/${imageId}`)
+    
+//     if (image) return image
+
+//     console.log('Error fetching image.')
+//     return null
+// }
+
+export const loadUnknownImage = async (imageId, userId) => {
     
     const { data } = await axios.get(`/api/image/${imageId}`)
     
     if (!data) {
         console.log('Error fetching image.')
     } else {
-        dispatch({
-            type: data.user === userId
-                ? 'UPDATE_IMAGE'
-                : 'UPDATE_USER_IMAGE',
-            image: data,
-        })
+        return data
+        // if (data.user === userId) {
+        //     console.log('update_image')
+        //     // dispatch({ type: 'UPDATE_IMAGE', payload: data })
+        // } else {
+        //     console.log('update_user_image')
+        //     // dispatch({ type: 'UPDATE_USER_IMAGE', payload: data })
+        // }
     }
-
-    dispatch({ type: 'SET_LOADING', loading: null })
 
     return data
 }
 
-export const loadUserImage = async (dispatch, imageId) => {
-    
-    dispatch({ type: 'SET_LOADING', loading: 'Fetching user image...' })
+export const loadUserImage = async imageId => {
     
     const image = await axios.get(`/api/image/${imageId}`)
     
-    if (!image) {
-        console.log('Error fetching user image.')
-    } else {
-        dispatch({ type: 'UPDATE_USER_IMAGE', image })
-    }
-
-    dispatch({ type: 'SET_LOADING', loading: null })
+    if (image) return image
+    
+    console.log('Error fetching user image.')
+    return null
 }
 
 export const openImagePickerAsync = async () => {

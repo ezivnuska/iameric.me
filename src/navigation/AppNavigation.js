@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import {
     NavigationContainer,
 } from '@react-navigation/native'
@@ -13,17 +13,14 @@ import {
     StartScreen,
     VendorScreen,
     VendorsScreen,
-} from './screens'
+} from '../screens'
 import {
     ProductNavigator,
     UserNavigator,
 } from './navigators'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { navigationRef } from './RootNavigation'
-import { useTheme } from 'react-native-paper'
-import { authenticate } from '@utils/auth'
-import { AppContext } from '../AppContext'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useApp, useAuthorization } from '@context'
 
 const iconSize = 24
 
@@ -54,13 +51,13 @@ const VendorStackScreen = () => (
 )
 
 const TabStack = createMaterialBottomTabNavigator()
-const TabStackScreen = ({ user }) => {
+const TabStackScreen = () => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
 
     return (
         <TabStack.Navigator
-            initialRouteName={'Forum'}
+            initialRouteName={'Orders'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -109,29 +106,27 @@ const TabStackScreen = ({ user }) => {
                 }}
             />
 
-            {user.role !== 'vendor' && user.role !== 'driver' && (
-                <TabStack.Screen
-                    name='Vendors'
-                    component={VendorStackScreen}
-                    options={{
-                        tabBarLabel: 'Vendors',
-                        tabBarIcon: ({ focused, color }) => (
-                            <Icon name='fast-food-outline' size={iconSize} color={color} />
-                        ),
-                    }}
-                />
-            )}
+            <TabStack.Screen
+                name='Vendors'
+                component={VendorStackScreen}
+                options={{
+                    tabBarLabel: 'Vendors',
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='fast-food-outline' size={iconSize} color={color} />
+                    ),
+                }}
+            />
 
         </TabStack.Navigator>
     )
 }
 
 const SettingsStack = createMaterialBottomTabNavigator()
-const SettingsStackScreen = ({ user }) => {
-    const theme = useTheme()
+const SettingsStackScreen = () => {
+    const { theme } = useApp()
     return (
         <SettingsStack.Navigator
-            initialRouteName={'Profile'}
+            initialRouteName='Profile'
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -168,95 +163,66 @@ const SettingsStackScreen = ({ user }) => {
                 })}
             />
 
-            {user.role === 'vendor' && (
-                <SettingsStack.Screen
-                    name='Products'
-                    component={ProductNavigator}
-                    options={{
-                        tabBarLabel: 'Products',
-                        tabBarIcon: ({ focused, color }) => (
-                            <Icon name='grid-outline' size={iconSize} color={color} />
-                        ),
-                    }}
-                />
-            )}
+            <SettingsStack.Screen
+                name='Products'
+                component={ProductNavigator}
+                options={{
+                    tabBarLabel: 'Products',
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='grid-outline' size={iconSize} color={color} />
+                    ),
+                }}
+            />
+
         </SettingsStack.Navigator>
     )
 }
 
-const SecureStack = createNativeStackNavigator()
-const SecureStackScreen = () => (
-    <SecureStack.Navigator
-        initialRouteName='Tabs'
-        screenOptions={() => ({
-            headerShown: false,
-        })}
-    >
-        <SecureStack.Screen
-            name='Tabs'
-            component={TabStackScreen}
-            // options={{ title: 'Tabs' }}
-        />
-
-        <SecureStack.Screen
-            name='Settings'
-            component={SettingsStackScreen}
-            options={{ title: 'Settings' }}
-        />
-
-    </SecureStack.Navigator>
-)
-
 const AppStack = createNativeStackNavigator()
-const AppStackScreen = ({ user }) => (
-    <AppStack.Navigator
-        initialRouteName='SignIn'
-        screenOptions={() => ({
-            headerShown: false,
-        })}
-    >
-        <AppStack.Screen
-            name='SignIn'
-            component={StartScreen}
-            options={{ title: 'Sign In' }}
-        />
-        {/* <AppStack.Screen
-            name='Secure'
-            component={SecureStackScreen}
-            // options={{ title: 'Tabs' }}
-        /> */}
+const AppStackScreen = () => {
+    const { status } = useAuthorization()
+    return (
+        <AppStack.Navigator
+            initialRouteName='Start'
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
 
-        {user && (
-            <AppStack.Group>
-                <AppStack.Screen
-                    name='Tabs'
-                    // component={TabStackScreen}
-                    children={() => <TabStackScreen user={user} />}
-                    // options={{ title: 'Tabs' }}
-                />
+            <AppStack.Screen
+                name='Start'
+                component={StartScreen}
+                options={{ title: 'Start' }}
+            />
 
-                <AppStack.Screen
-                    name='Settings'
-                    children={() => <SettingsStackScreen user={user} />}
-                    // component={SettingsStackScreen}
-                    options={{ title: 'Settings' }}
-                />
-            </AppStack.Group>
-        )}
+            {status === 'in' && (
+                <>
+                    <AppStack.Screen
+                        name='Tabs'
+                        component={TabStackScreen}
+                    />
 
-        <AppStack.Screen
-            name='Fallback'
-            component={FallbackScreen}
-            options={{ title: 'Page not found' }}
-        />
-    </AppStack.Navigator>
-)
+                    <AppStack.Screen
+                        name='Settings'
+                        component={SettingsStackScreen}
+                    />
+                </>
+            )}
+
+            <AppStack.Screen
+                name='Fallback'
+                component={FallbackScreen}
+                options={{ title: 'Page not found' }}
+            />
+        </AppStack.Navigator>
+    )
+}
 
 const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
-            SignIn: 'signin',
+            Start: 'start',
             Tabs: {
                 path: '',
                 screens: {
@@ -302,48 +268,17 @@ const linking = {
 }
 
 export default () => {
-
-    const theme = useTheme()
-
-    const {
-        dispatch,
-        loading,
-        user,
-    } = useContext(AppContext)
-
-    useEffect(() => {
-        checkAuthStatus()
-    }, [])
-
-    const checkAuthStatus = async () => {
-        console.log('checking auth status')
-        const token = await AsyncStorage.getItem('userToken')
-        if (!token) {
-            console.log('user not verified')
-        } else {
-            await authenticate(dispatch, token)
-        }
-    }
-
-    useEffect(() => {
-        if (user) {
-            const currentRoute = navigationRef.getCurrentRoute()
-            if (currentRoute.name === 'SignIn') {
-                console.log('<navigating to tabs>')
-                navigationRef.navigate('Tabs')
-            }
-        }
-    }, [user])
-
+    
+    const { theme } = useApp()
+    
     return (
         <NavigationContainer
             ref={navigationRef}
             linking={linking}
             fallback={<FallbackScreen />}
             theme={theme}
-            // onStateChange={async state => {}}
         >
-            <AppStackScreen user={user} />
+            <AppStackScreen />
         </NavigationContainer>
     )
 }

@@ -13,8 +13,8 @@ import {
 	isValidEmail,
 	signup,
 } from '../utils/auth'
-import { saveLocally, getLocally } from '../utils/storage'
-import { AppContext } from '../AppContext'
+import { setItem, getItem } from '../utils/storage'
+import { AppContext } from '@context'
 
 export default ({ role, onComplete }) => {
 
@@ -60,7 +60,7 @@ export default ({ role, onComplete }) => {
 	}
 
 	const initForm = async () => {
-		const savedEmail = await getLocally('email')
+		const savedEmail = await getItem('email')
 		if (savedEmail) setEmail(savedEmail)
 	}
 
@@ -145,7 +145,7 @@ export default ({ role, onComplete }) => {
 
 		dispatch({ type: 'SET_LOADING', loading: 'Singing up...' })
 
-		await saveLocally('email', email)
+		await setItem('email', email)
 		
 		const { data } = await signup(email, password, role, username)
 		

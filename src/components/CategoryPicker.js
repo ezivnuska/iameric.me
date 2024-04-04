@@ -6,12 +6,13 @@ import {
 import {
     ThemedText,
 } from '.'
-import { useTheme } from 'react-native-paper'
+// import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 import classes from '../styles/classes'
 
 export default ({ label, onChange, category = 'main', disabled = null }) => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
 
     return (
         <View>

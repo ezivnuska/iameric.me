@@ -6,7 +6,7 @@ import {
     FormInput,
     IconButton,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import classes from '../styles/classes'
 import axios from 'axios'
 

@@ -9,7 +9,7 @@ import {
 import { Avatar } from './'
 import axios from 'axios'
 import EXIF from 'exif-js'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 
 const ImageHandler = () => {
 

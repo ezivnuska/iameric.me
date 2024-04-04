@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     View,
 } from 'react-native'
@@ -6,47 +6,51 @@ import {
     CartProductPreview,
     IconButton,
 } from '.'
-import { AppContext } from '../AppContext'
+import {
+    AppContext,
+    useCart,
+    useModal,
+    useOrders,
+    useUser,
+} from '@context'
 import axios from 'axios'
-import { useTheme } from 'react-native-paper'
 
-export default ({ onSubmitted }) => {
+export default () => {
+    const { profile } = useUser()
+    const { clearCart, items } = useCart()
+    const { addOrder } = useOrders()
+    const { closeModal } = useModal()
 
     const {
-        cart,
-        dispatch,
         loading,
-        user,
     } = useContext(AppContext)
-
-    const theme = useTheme()
 
     const submitOrder = async () => {
         const newOrder = {
-            customer: user._id,
-            items: cart[0].items,
+            customer: profile._id,
+            items,
         }
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Submitting order...' })
 
         const { data } = await axios.
             post('/api/order', newOrder)
-
-            dispatch({ type: 'SET_LOADING', loading: null })
         
         if (!data) {
             console.log('Order submission failed')
-            return
+        } else {
+            addOrder(data)
+            clearCart()
+            closeModal()
         }
-
-        onSubmitted(data)
     }
-
-    return cart && cart.length ? (
+    
+    return (
         <View>
-            {cart.map((order, orderIndex) => (
-                <CartProductPreview order={order} key={`order-${orderIndex}`} />
-            ))}
+            <CartProductPreview
+                order={{
+                    items,
+                    customer: profile._id,
+                }}
+            />
             
             <View
                 style={{
@@ -67,7 +71,7 @@ export default ({ onSubmitted }) => {
                 
                 <IconButton
                     iconName='close-outline'
-                    onPress={() => dispatch({ type: 'CLEAR_CART' })}
+                    onPress={() => clearCart()}
                     type='danger'
                     disabled={loading}
                     style={{ flex: 1 }}
@@ -75,5 +79,5 @@ export default ({ onSubmitted }) => {
             </View>
 
         </View>
-    ) : null
+    )
 }

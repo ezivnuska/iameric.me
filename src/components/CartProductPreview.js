@@ -2,14 +2,13 @@ import React from 'react'
 import {
     FlatList,
     Image,
-    Text,
     View,
 } from 'react-native'
 import {
     ThemedText
 } from '.'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
+import { useApp, useCart } from '@context'
 
 const IMAGE_SIZE = 24
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -39,7 +38,8 @@ const ProductThumb = ({ product }) => (
 
 const Quantity = ({ quantity }) => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
+
     return (
         <View
             style={{
@@ -68,7 +68,7 @@ const Quantity = ({ quantity }) => {
     )
 }
 
-const CartListItem = ({ item, quantity, ...props }) => {
+const CartListItem = ({ product, quantity, ...props }) => {
     return (
         <View
             {...props}
@@ -81,6 +81,9 @@ const CartListItem = ({ item, quantity, ...props }) => {
                 paddingVertical: 3,
                 marginBottom: 3,
                 paddingHorizontal: 10,
+                borderWidth: 1,
+                borderStyle: 'dotted',
+                borderColor: 'pink'
             }}
         >
             <Quantity quantity={quantity} />
@@ -95,7 +98,7 @@ const CartListItem = ({ item, quantity, ...props }) => {
                     textAlign: 'left',
                 }}
             >
-                {item.title}
+                {product.title}
             </ThemedText>
             
             <ThemedText
@@ -108,71 +111,74 @@ const CartListItem = ({ item, quantity, ...props }) => {
                     },
                 ]}
             >
-                {Number(item.price) * Number(quantity)}
+                {Number(product.price) * Number(quantity)}
             </ThemedText>
             
         </View>
     )
 }
 
-const getOrderTotal = items => {
-    let total = 0
-    items.map(({ product, quantity }) => {
-        total += Number(product.price) * quantity
-    })
-    return total.toFixed(2)
-}
+const CartTotal = ({ items }) => {
 
-const CartTotal = ({ order }) => (
-    <View
-        style={{
-            marginTop: 5,
-            paddingTop: 15,
-            borderTopWidth: 1,
-            borderTopColor: '#ccc',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'flex-end',
-            marginHorizontal: 10,
-        }}
-    >
-        <ThemedText
+    const getOrderTotal = items => {
+        let total = 0
+        items.map(({ product, quantity }) => {
+            total += Number(product.price) * quantity
+        })
+        return total.toFixed(2)
+    }
+    
+    return (
+        <View
             style={{
-                flex: 1,
-                fontSize: 22,
-                fontWeight: 400,
-                textAlign: 'left',
+                marginTop: 5,
+                paddingTop: 15,
+                borderTopWidth: 1,
+                borderTopColor: '#ccc',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginHorizontal: 10,
             }}
         >
-            Total:
-        </ThemedText>
-
-        <ThemedText
-            style={[
-                classes.orderTotal,
-                {
+            <ThemedText
+                style={{
                     flex: 1,
-                    flexShrink: 0,
                     fontSize: 22,
-                    fontWeight: 500,
-                    paddingLeft: 5,
-                }
-            ]}
-        >
-            ${getOrderTotal(order)}
-        </ThemedText>
-    </View>
-)
+                    fontWeight: 400,
+                    textAlign: 'left',
+                }}
+            >
+                Total:
+            </ThemedText>
+
+            <ThemedText
+                style={[
+                    classes.orderTotal,
+                    {
+                        flex: 1,
+                        flexShrink: 0,
+                        fontSize: 22,
+                        fontWeight: 500,
+                        paddingLeft: 5,
+                    }
+                ]}
+            >
+                ${getOrderTotal(items)}
+            </ThemedText>
+        </View>
+    )
+}
 
 export default ({ order }) => {
-    
+
     const listItems = order.items.map(({ product, quantity }, index) => (
-        <CartListItem item={product} quantity={quantity} key={`item-${index}`} />
+        <CartListItem product={product} quantity={quantity} key={`item-${index}`} />
     ))
 
     return (
         <FlatList
-            data={[...listItems, <CartTotal order={order.items} key={`item-${order.items.length}`} />]}
+            data={[...listItems, <CartTotal items={order.items} key={`item-${order.items.length}`} />]}
             listKey={() => 'order-items'}
             keyExtractor={(item, index) => 'order-item-key' + index}
             renderItem={({ item, index }) => item}

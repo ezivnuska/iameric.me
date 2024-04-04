@@ -6,11 +6,11 @@ import {
 } from 'react-native'
 import classes from '../styles/classes'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 export default ({ onPress, disabled, label, iconName = null }) => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
 
     return (
         <View

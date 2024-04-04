@@ -3,54 +3,60 @@ import {
     ImageDetail,
     LoadingView,
 } from '.'
-import { AppContext } from '../AppContext'
+import {
+    AppContext,
+    useContacts,
+    useModal,
+    useProducts,
+    useUser,
+} from '@context'
 import axios from 'axios'
 import { loadUnknownImage } from '@utils/images'
 
 export default ({ id }) => {
+    const { profile, removeImage, setProfileImage } = useUser()
+    const { closeModal, data } = useModal()
+    const { removeUserImage } = useContacts()
+    const { items, updateProductImage } = useProducts()
 
     const {
-        dispatch,
         loading,
-        products,
-        user,
     } = useContext(AppContext)
 
     const [image, setImage] = useState(null)
     
     useEffect(() => {
+        console.log('modal data', data)
         init()
     }, [])
 
     const init = async () => {
-        const loadedImage = await loadUnknownImage(dispatch, id, user._id)
+        const loadedImage = await loadUnknownImage(data._id, profile._id)
         if (!loadedImage) return console.log('problem loading unknow image.')
         setImage(loadedImage)
     }
 
-    const isImageProfileImage = id => user.profileImage === id
+    const isImageProfileImage = id => profile.profileImage === id
 
     const isImageProductImage = id => {
         let response = false
-        products.map(product => {
+        items.map(product => {
             if (product.image === id || product.image._id === id) response = product
         })
         return response
     }
 
     const deleteImage = async () => {
-        if (feature.user._id === user._id) {
+        if (feature.user._id === profile._id) {
             console.log('removing image', image)
-            dispatch({ type: 'REMOVE_IMAGE', imageId: image._id })
+            removeImage(image._id)
         } else {
             console.log('removing user image', image)
-            dispatch({ type: 'REMOVE_USER_IMAGE', image })
+            removeUserImage(image)
         }
 
         const isProfileImage = isImageProfileImage(image._id)
-        const isProductImage = user.role === 'vendor' ? isImageProductImage(image._id) : null
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Deleting Image...' })
+        const isProductImage = profile.role === 'vendor' ? isImageProductImage(image._id) : null
 
         const { data } = await axios
             .post('/api/images/delete', {
@@ -63,17 +69,13 @@ export default ({ id }) => {
             console.log('Error deleting image.')
         } else {
             // if (onDelete) onDelete(data.imageId, isProfileImage, isProductImage)
-            dispatch({ type: 'CLOSE_MODAL' })
+            closeModal()
             // dispatch({ type: 'SET_FEATURED_IMAGE', image: null })
         }
-
-        dispatch({ type: 'SET_LOADING', loading: null })
         
     }
 
     const setAvatar = async () => {
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Setting Avatar...' })
 
         const { data } = await axios
             .post('/api/user/avatar', {
@@ -84,17 +86,13 @@ export default ({ id }) => {
         if (!data) {
             console.log('Error setting profileImage.')
         } else {
-            dispatch({ type: 'SET_PROFILE_IMAGE', profileImage: data })
-            dispatch({ type: 'CLOSE_MODAL' })
+            setProfileImage(data)
+            closeModal()
             // dispatch({ type: 'SET_FEATURED_IMAGE', image: null })
         }
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const setProductImage = async productId => {
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Setting product image...' })
 
         const { data } = await axios
             .post('/api/product/image', {
@@ -107,11 +105,10 @@ export default ({ id }) => {
         } else if (!data.image) {
             console.log('no image found')
         } else {
-            dispatch({ type: 'UPDATE_PRODUCT_IMAGE', productId, image: data.image })
+            updateProductImage(productId, data.image)
         }
         
-        dispatch({ type: 'CLOSE_MODAL' })
-        dispatch({ type: 'SET_LOADING', loading: null })
+        closeModal()
     }
     
     if (loading) return <LoadingView />

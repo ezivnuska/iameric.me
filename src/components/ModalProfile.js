@@ -5,7 +5,7 @@ import {
 import {
     UserDetailsShort,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 
 export default () => {
 

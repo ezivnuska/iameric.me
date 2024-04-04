@@ -10,7 +10,10 @@ import {
     ThemedText,
     LocationDetails,
 } from '.'
-import { AppContext } from '../AppContext'
+import {
+    AppContext,
+    useUser,
+} from '@context'
 import classes from '../styles/classes'
 import moment from 'moment'
 import {
@@ -20,6 +23,7 @@ import {
 
 export default ({ order, children, ...props }) => {
 
+    const { profile } = useUser()
     const {
         user,
     } = useContext(AppContext)
@@ -27,8 +31,8 @@ export default ({ order, children, ...props }) => {
     const [expanded, setExpanded] = useState(false)
 
     const renderLocation = () => {
-        if (user.role === 'vendor') return null
-        if (user.role === 'driver' && order.status < 2) return null
+        if (profile.role === 'vendor') return null
+        if (profile.role === 'driver' && order.status < 2) return null
         return <LocationDetails location={order.customer.location} />
     }
 
@@ -70,14 +74,14 @@ export default ({ order, children, ...props }) => {
     )
 
     const showCustomerLocation = () => {
-        if (user.role === 'vendor') return null
+        if (profile.role === 'vendor') return null
         else {
             return (
-                user.role === 'customer'
+                profile.role === 'customer'
                 ||
-                user.role === 'admin'
+                profile.role === 'admin'
                 ||
-                (order.driver && order.driver._id === user._id && order.accepted)
+                (order.driver && order.driver._id === profile._id && order.accepted)
             ) ? renderCustomer() : null
         }
     }
@@ -109,24 +113,24 @@ export default ({ order, children, ...props }) => {
             {/* {user.role === 'admin' && renderStatus(`status: ${order.status}`)} */}
             {!order.confirmed && order.vendor && <Text style={classes.emergency}>Waiting on vendor confirmation</Text>}
             {(order.confirmed && !order.accepted)
-                ? user.role === 'driver'
+                ? profile.role === 'driver'
                     ? <Text style={classes.emergency}>DRIVER NEEDED</Text>
                     : <Text style={classes.emergency}>Looking for driver...</Text>
                 : null
             }
-            {(user.role === 'driver' && order.pickup && !order.received) && renderStatus(`Pick-up by ${moment(order.pickup).format('LT')}`)}
-            {(user.role !== 'driver' && order.accepted && !order.arrived) && <Text style={classes.calm}>{order.driver.username} is headed to pickup location.</Text>}
+            {(profile.role === 'driver' && order.pickup && !order.received) && renderStatus(`Pick-up by ${moment(order.pickup).format('LT')}`)}
+            {(profile.role !== 'driver' && order.accepted && !order.arrived) && <Text style={classes.calm}>{order.driver.username} is headed to pickup location.</Text>}
             {order.ready && !order.received && <Text style={classes.calm}>Order is ready.</Text>}
-            {(user.role !== 'driver' && order.arrived && !order.received) && <Text style={classes.calm}>{order.driver.username} is at merchant.</Text>}
+            {(profile.role !== 'driver' && order.arrived && !order.received) && <Text style={classes.calm}>{order.driver.username} is at merchant.</Text>}
             {(order.received && !order.delivered)
-                ? user.role === 'customer'
+                ? profile.role === 'customer'
                     ? <Text style={classes.calm}>Driver is on the way.</Text>
-                    : user.role === 'driver'
+                    : profile.role === 'driver'
                         ? <Text style={classes.emergency}>Proceed to delivery address.</Text>
                         : null
                 : null}
             {order.delivered
-                ? user.role === 'driver'
+                ? profile.role === 'driver'
                     ? <Text style={classes.calm}>Waiting for customer confirmation.</Text>
                     : <Text style={classes.emergency}>Confirmation Requested</Text>
                 : null

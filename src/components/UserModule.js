@@ -8,7 +8,7 @@ import {
     UserList,
     EmptyStatus,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import {
     loadUsers,
     loadUsersByRole,

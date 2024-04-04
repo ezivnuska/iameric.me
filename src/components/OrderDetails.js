@@ -7,7 +7,7 @@ import {
     LocationDetails,
 } from '.'
 import moment from 'moment'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import classes from 'src/styles/classes'
 
 export default ({ order }) => {

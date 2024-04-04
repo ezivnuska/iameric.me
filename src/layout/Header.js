@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     Image,
     Pressable,
@@ -10,15 +10,19 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import { useTheme } from 'react-native-paper'
-import { AppContext } from '../AppContext'
+import {
+    AppContext,
+    useApp,
+    useModal,
+    useUser,
+} from '@context'
 import { navigationRef } from '../navigation/RootNavigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const UserButton = ({ user }) => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
     
     const getSource = () => user.profileImage
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
@@ -26,7 +30,6 @@ const UserButton = ({ user }) => {
     
     return (
         <Pressable
-        // navigation.navigate('Root', { screen: 'Profile' });
             onPress={() => navigationRef.navigate('Settings')}
             style={{
                 flexGrow: 0,
@@ -80,19 +83,16 @@ const UserButton = ({ user }) => {
     )
 }
 
-export default ({
-    user,
-}) => {
-    
+export default () => {
+    const { profile } = useUser()
     const {
-        cart,
-        dispatch,
         isThemeDark,
-        loading,
         toggleTheme,
+    } = useApp()
+
+    const {
+        loading,
     } = useContext(AppContext)
-    
-    const theme = useTheme()
     
     return (
         <View
@@ -117,38 +117,55 @@ export default ({
                 textStyles={{ fontSize: 18 }}
             />
 
-            {user && cart && cart.length && <CartButton style={{ marginLeft: 10 }} />}
-
-            {user && <UserButton user={user} />}
-
-            {user && (
-                <IconButton
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNOUT' })}
-                    disabled={loading}
-                    iconName='close-outline'
-                    textStyles={{
-                        color: theme?.colors.textDefault,
-                        fontSize: 22,
-                    }}
-                    transparent
-                    style={{
-                        flexGrow: 0,
-                        marginHorizontal: 8,
-                    }}
-                    // outline
-                />
-            )}
-            
-            {!user && (
-                <IconButton
-                    iconName='log-in-outline'
-                    label='Sign In'
-                    onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNIN' })}
-                    disabled={loading}
-                    alignIcon='right'
-                    transparent
-                />
-            )}
+            {profile
+                ? (
+                    <>
+                        <CartButton style={{ marginLeft: 10 }} />
+                        <UserButton user={profile} />
+                        <SignOutButton loading={loading} />
+                    </>
+                ) : (
+                    <SignInButton loading={loading} />
+                )
+            }
         </View>
+    )
+}
+
+const SignInButton = ({ loading }) => {
+
+    const { setModal } = useModal()
+    
+    return (
+        <IconButton
+            iconName='log-in-outline'
+            label='Sign In'
+            onPress={() => setModal('SIGNIN')}
+            disabled={loading}
+            alignIcon='right'
+            transparent
+        />
+    )
+}
+
+const SignOutButton = ({ loading }) => {
+    const { setModal } = useModal()
+    const { theme } = useApp()
+    return (
+        <IconButton
+            onPress={() => setModal('SIGNOUT')}
+            disabled={loading}
+            iconName='close-outline'
+            textStyles={{
+                color: theme?.colors.textDefault,
+                fontSize: 22,
+            }}
+            transparent
+            style={{
+                flexGrow: 0,
+                marginHorizontal: 8,
+            }}
+            // outline
+        />
     )
 }

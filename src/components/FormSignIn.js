@@ -8,18 +8,29 @@ import {
     ThemedText,
 } from '.'
 import classes from '../styles/classes'
-import { AppContext } from '../AppContext'
-import { saveLocally, getLocally } from '../utils/storage'
-import { isValidEmail, signin } from '../utils/auth'
-import { useTheme } from 'react-native-paper'
+import {
+    AppContext,
+    useModal,
+    useUser,
+} from '@context'
+import { getItem, setItem } from '@utils/storage'
+import { isValidEmail, signin } from '@utils/auth'
+import { useApp, useAuthorization } from '@context'
+// import { useTheme } from 'react-native-paper'
+import { useFormInput } from '../utils/useFormInput'
 
 export default () => {
-    
+    const { signIn } = useAuthorization()
+    const { profile, setUser } = useUser()
+    const { closeModal } = useModal()
+
     const {
-        dispatch,
-        isLandscape,
         loading,
+        isLandscape,
     } = useContext(AppContext)
+
+    const formInputEmail = useFormInput('')
+    const formInputPassword = useFormInput('')
 
     const [focused, setFocused] = useState(0)
     
@@ -31,16 +42,17 @@ export default () => {
     const formFields = useMemo(() => ({ email, password }), [email, password])
 
 	useEffect(() => {
+
+        const initForm = async () => {
+            const savedEmail = await getItem('email')
+            if (savedEmail) {
+                setEmail(savedEmail)
+            }
+            validateFields()
+        }
+
 		initForm()
 	}, [])
-
-	const initForm = async () => {
-		const savedEmail = await getLocally('email')
-		if (savedEmail) {
-			setEmail(savedEmail)
-		}
-        validateFields()
-	}
 
     useEffect(() => {
         validateFields()
@@ -87,23 +99,9 @@ export default () => {
         
     }
 
-    const setUser = ({
-        _id, email, images, profileImage, role, token, username, exp,
-    }) => dispatch({
-        type: 'SET_USER',
-        user: {
-            _id, email, images, profileImage, role, token, username, exp,
-        },
-    })
-
     const isFieldFocused = name => {
         const keys = Object.keys(formFields)
         return keys[focused] === name
-    }
-
-    const onComplete = response => {
-        setUser(response)
-        dispatch({ type: 'CLOSE_MODAL' })
     }
 
     const hasError = name => error && error.name === name
@@ -117,21 +115,22 @@ export default () => {
 			return console.log('Please correct form errors.')
 		}
 
-		dispatch({ type: 'SET_LOADING', loading: 'Signing in...' })
+		await setItem('email', email)
 
-		await saveLocally('email', email)
-
-		const data = await signin(email, password)
+		const user = await signin(email, password)
         
-		if (!data || !data.user) {
+		if (!user) {
 			console.log('Error authenticating user')
             setError({ name: 'email', message: 'Authentication failed.' })
 		} else {
             if (error) setError(null)
-			onComplete(data.user)
+            else {
+                const { _id, email, images, profileImage, role, token, username, exp } = user
+                signIn(token)
+                setUser({ _id, email, images, profileImage, role, token, username, exp })
+                closeModal()
+            }
 		}
-
-		dispatch({ type: 'SET_LOADING', loading: null })
 	}
 
     return formReady ? (
@@ -215,7 +214,7 @@ const FormInput = ({
     ...props
 }) => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
     
     const {
         isLandscape,

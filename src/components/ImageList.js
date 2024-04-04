@@ -9,8 +9,12 @@ import {
 //     ThemedText,
 // } from '.'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { useTheme } from 'react-native-paper'
-import { AppContext } from '../AppContext'
+// import { useTheme } from 'react-native-paper'
+import {
+    AppContext,
+    ModalContext,
+    useApp,
+} from '@context'
 // import { loadUsers } from '@utils/data'
 // import { loadImages } from '@utils/images'
 
@@ -21,10 +25,13 @@ export default ({ images,
     // username,
     onSelected }) => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
 
     const {
         dispatch,
+    } = useContext(ModalContext)
+
+    const {
         loading,
         user,
     } = useContext(AppContext)
@@ -102,7 +109,12 @@ export default ({ images,
 
                     {showUploadButton(image.user.username) && (
                         <Pressable
-                            onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SELECT_IMAGE' })}
+                            onPress={() => dispatch({
+                                type: 'SET_MODAL',
+                                payload: {
+                                    type: 'SELECT_IMAGE',
+                                },
+                            })}
                             style={[
                                 {
                                     flexBasis: 'auto',

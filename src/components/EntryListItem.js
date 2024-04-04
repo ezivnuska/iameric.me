@@ -7,12 +7,10 @@ import {
 import {
     IconButton,
     ThemedText,
-    UserHeading,
 } from '@components'
-import { AppContext } from '../AppContext'
+import { AppContext, useUser } from '@context'
 import { ThunderboltOutlined } from '@ant-design/icons'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
 import { getProfileImagePathFromUser } from '@utils/images'
 import { navigationRef } from 'src/navigation/RootNavigation'
 
@@ -20,22 +18,19 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
     const imagePath = getProfileImagePathFromUser(entry.author)
-    const {
-        dispatch,
-        user,
-    } = useContext(AppContext)
+    const { profile } = useUser()
 
     const { author, text } = entry
 
     const [online, setOnline] = useState(false)
 
     useEffect(() => {
-        if (user && user.exp) {
-            const newDate = new Date(user.exp) - Date.now()
+        if (profile && profile.exp) {
+            const newDate = new Date(profile.exp) - Date.now()
             const expired = (newDate > 0)
             setOnline(!expired)
         }
-    }, [user])
+    }, [profile])
         
     return (
         <View
@@ -89,14 +84,10 @@ const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
                         flex: 1,
                         flexBasis: 'auto',
                         flexGrow: 0,
-                        // borderWidth: 1,
-                        // borderColor: 'yellow',
                     }}
                 >
                     <Pressable
                         onPress={() => {
-                            // dispatch({ type: 'SET_PROFILE', profile: author })
-                            // dispatch({ type: 'SET_MODAL', modalType: 'PROFILE' })
                             console.log('author', author)
                             navigationRef.navigate('Forum')
                         }}
@@ -104,7 +95,7 @@ const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
                         <ThemedText
                             style={classes.userHeading}
                         >
-                            {user.username}
+                            {profile.username}
                             {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
                         </ThemedText>
 
@@ -115,8 +106,6 @@ const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
                     style={{
                         flex: 1,
                         flexBasis: 'auto',
-                        // borderWidth: 1,
-                        // borderColor: 'red',
                     }}
                 >
                     <ThemedText
@@ -132,7 +121,7 @@ const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
 
             </View>
 
-            {(author._id === user._id || user.role === 'admin') ? (
+            {(author._id === profile._id || profile.role === 'admin') ? (
                 <View
                     style={{
                         flexBasis: 'auto',
@@ -153,10 +142,7 @@ const ListItemVertical = ({ entry, onDelete = null, ...props }) => {
 
 const ListItemHorizontal = ({ entry, onDelete = null, ...props }) => {
 
-    const {
-        dispatch,
-        user,
-    } = useContext(AppContext)
+    const { profile } = useUser()
 
     const { author, text } = entry
 
@@ -224,23 +210,18 @@ const ListItemHorizontal = ({ entry, onDelete = null, ...props }) => {
                         flex: 1,
                         flexBasis: 'auto',
                         flexGrow: 0,
-                        // borderWidth: 1,
-                        // borderColor: 'yellow',
                     }}
                 >
                     <Pressable
                         onPress={() => {
-                            // dispatch({ type: 'SET_PROFILE', profile: author })
-                            // dispatch({ type: 'SET_MODAL', modalType: 'PROFILE' })
                             console.log('author', author)
                             navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
-                            // navigate('Tabs', { screen: 'Forum' })
                         }}
                     >
                         <ThemedText
                             style={classes.userHeading}
                         >
-                            {user.username}
+                            {profile.username}
                             {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
                         </ThemedText>
 
@@ -251,8 +232,6 @@ const ListItemHorizontal = ({ entry, onDelete = null, ...props }) => {
                     style={{
                         flex: 1,
                         flexBasis: 'auto',
-                        // borderWidth: 1,
-                        // borderColor: 'red',
                     }}
                 >
                     <ThemedText
@@ -268,7 +247,7 @@ const ListItemHorizontal = ({ entry, onDelete = null, ...props }) => {
 
             </View>
 
-            {(author._id === user._id || user.role === 'admin') ? (
+            {(author._id === profile._id || profile.role === 'admin') ? (
                 <View
                     style={{
                         flexBasis: 'auto',

@@ -1,21 +1,21 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     Cart,
 } from '.'
-import { AppContext } from '../AppContext'
+import { useCart, useModal, useOrders } from '@context'
 import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default () => {
 
-    const {
-        dispatch,
-    } = useContext(AppContext)
+    const { items } = useCart()
+    const { addOrder } = useOrders()
+    const { closeModal } = useModal()
 
     const onSubmitted = order => {
+        console.log('Hay', order)
+        addOrder(order)
         
-        dispatch({ type: 'ADD_ORDER', order })
-        
-        dispatch({ type: 'CLOSE_MODAL' })
+        closeModal()
         
         navigationRef.navigate('Orders')
     }

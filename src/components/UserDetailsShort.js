@@ -9,7 +9,7 @@ import {
     LoadingView,
     ThemedText,
 } from '@components'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import { loadUserById } from '@utils/data'
 import {
     getProfileImagePathFromUser,
@@ -21,7 +21,6 @@ import { navigationRef } from 'src/navigation/RootNavigation'
 export default ({ userId }) => {
 
     const {
-        dispatch,
         isLandscape,
         loading,
     } = useContext(AppContext)
@@ -32,22 +31,24 @@ export default ({ userId }) => {
     const [imageSize, setImageSize] = useState(null)
 
     useEffect(() => {
-        if (!userId) console.log('missing required user id param')
-        else loadUserDetails(userId)
+        const loadUserDetails = async () => {
+            const user = await loadUserById(userId)
+            
+            if (!user) {
+                console.log('could not load user details with id:', userId)
+            } else {
+                setUserDetails(user)
+            }
+        }
+        loadUserDetails(userId)
     }, [])
-
-    useEffect(() => {
-        if (userId && userDetails && userId !== userDetails._id)
-            loadUserDetails(userId)
-    }, [userId])
 
     useEffect(() => {
         if (userDetails) {
             if (userDetails._id !== userId) {
-                loadUserDetails(userId)
-            }
-            if (userDetails.profileImage) {
-                getImageDims()
+                if (userDetails.profileImage) {
+                    getImageDims()
+                }
             }
         }
     }, [userDetails])
@@ -60,21 +61,6 @@ export default ({ userId }) => {
         const { width, height } = userDetails.profileImage
         const imageDims = getMaxAvailableImageSize(dims, width, height)
         setImageSize(imageDims)
-    }
-
-    const loadUserDetails = async () => {
-
-        dispatch({ type: 'SET_LOADING', loading: 'Loading user short...' })
-        
-        const user = await loadUserById(userId)
-        
-        if (!user) {
-            console.log('could not load user details with id:', userId)
-        } else {
-            setUserDetails(user)
-        }
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     if (loading) return <LoadingView />

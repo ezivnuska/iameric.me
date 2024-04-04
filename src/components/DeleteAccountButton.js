@@ -6,13 +6,14 @@ import {
     ThemedText,
     IconButton,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext, useModal } from '@context'
 import classes from '../styles/classes'
 
 export default () => {
 
+    const { setModal } = useModal()
+
     const {
-        dispatch,
         loading,
     } = useContext(AppContext)
 
@@ -41,7 +42,7 @@ export default () => {
             <IconButton
                 type='danger'
                 label='Delete Account'
-                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'DESTROY' })}
+                onPress={() => setModal('DESTROY')}
                 disabled={loading}
             />
 

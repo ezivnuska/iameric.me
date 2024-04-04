@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import {
     SignUpForm,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 
 export default ({ role }) => {
 

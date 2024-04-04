@@ -1,6 +1,6 @@
 import { useContext, useEffect } from 'react'
 import { Keyboard } from 'react-native'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 
 export const useKeyboard = () => {
 

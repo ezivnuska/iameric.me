@@ -76,13 +76,15 @@ const handleSignin = async (req, res) => {
         .findOne({ email })
         .populate({ path: 'profileImage', select: 'filename width height' })
         
-        if (!user)
+    if (!user) {
         return res.status(200).json({ error: true, invalidField: 'email', msg: 'No user found with that email.' })
-    
+    }
+
     const passwordsMatch = await bcrypt.compare(password, user.password)
 
-    if (!passwordsMatch)
+    if (!passwordsMatch) {
         return res.status(200).json({ error: true, invalidField: 'password', msg: 'Incorrect password.' })
+    }
     
     const { token, exp } = createToken(user)
 
@@ -95,7 +97,7 @@ const handleSignin = async (req, res) => {
 
     console.log(`\nUser signed in: ${user.username}`)
     
-    return res.status(200).json({ user: sanitizedUser })
+    return res.status(200).json(sanitizedUser)
 }
 
 const validateToken = async (req, res) => {

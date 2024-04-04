@@ -3,12 +3,12 @@ import {
     Text,
 } from 'react-native'
 import classes from '../styles/classes'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 export default ({ children, align = 'left', bold = false, ...props }) => {
     
-    const theme = useTheme()
-
+    const { theme } = useApp()
+    
     return (
         <Text
             style={[

@@ -15,6 +15,7 @@ module.exports = {
           '@images': './src/images',
           '@styles': './src/styles',
           '@utils': './src/utils',
+          '@context': './src/context',
         },
       },
     ],

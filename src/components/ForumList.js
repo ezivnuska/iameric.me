@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     FlatList,
     Image,
@@ -13,15 +13,15 @@ import {
 } from '.'
 import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
-import { AppContext } from 'src/AppContext'
-import { useTheme } from 'react-native-paper'
+import { useApp, useUser } from '@context'
+// import { useTheme } from 'react-native-paper'
 import { navigationRef } from '../navigation/RootNavigation'
 
-const ListItemVertical = ({ item, imagePath, dispatch, hasAuth = false, onDelete = null, ...props }) => {
+const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, ...props }) => {
     
     const { author, text } = item
     const [online, setOnline] = useState(false)
-    const theme = useTheme()
+    const { theme } = useApp()
     
     useEffect(() => {
         if (author && author.exp) {
@@ -81,10 +81,6 @@ const ListItemVertical = ({ item, imagePath, dispatch, hasAuth = false, onDelete
                             flexGrow: 1,
                         }}
                         onPress={() => {
-                            // dispatch({ type: 'SET_PROFILE', profile: author })
-                            // dispatch({ type: 'SET_MODAL', modalType: 'PROFILE' })
-                            // console.log('author', author)
-                            
                             navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
                         }}
                     >
@@ -119,7 +115,6 @@ const ListItemVertical = ({ item, imagePath, dispatch, hasAuth = false, onDelete
                 <ThemedText
                     style={{
                         flex: 1,
-                        // marginTop: 10,
                         paddingRight: 30,
                         paddingBottom: 20,
                     }}
@@ -133,11 +128,11 @@ const ListItemVertical = ({ item, imagePath, dispatch, hasAuth = false, onDelete
     )
 }
 
-const ListItemHorizontal = ({ item, imagePath, dispatch, hasAuth = false, onDelete = null, ...props }) => {
+const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null, ...props }) => {
     const { author, text } = item
     const [online, setOnline] = useState(false)
     const dims = useWindowDimensions()
-    const theme = useTheme()
+    const { theme } = useApp()
     
     useEffect(() => {
         if (author && author.exp) {
@@ -154,15 +149,12 @@ const ListItemHorizontal = ({ item, imagePath, dispatch, hasAuth = false, onDele
                 width: '100%',
                 maxWidth: 600,
                 minWidth: '50%',
-                // borderColor: 'red',
-                // borderWidth: 1,
             }}
         >
             <View
                 style={{
                     width: '100%',
                     maxWidth: 600,
-                    // flexBasis: '100%',
                     flexGrow: 1,
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
@@ -170,8 +162,6 @@ const ListItemHorizontal = ({ item, imagePath, dispatch, hasAuth = false, onDele
                     gap: 15,
                     paddingHorizontal: 10,
                     marginTop: dims.height < 400 ? '5%' : dims.height < 600 ? '15%' : '33%',
-                    // borderWidth: 1,
-                    // borderColor: 'green',
                 }}
             >
                 <View
@@ -215,8 +205,6 @@ const ListItemHorizontal = ({ item, imagePath, dispatch, hasAuth = false, onDele
                                 flexBasis: 'auto',
                             }}
                             onPress={() => {
-                                // dispatch({ type: 'SET_PROFILE', profile: author })
-                                // dispatch({ type: 'SET_MODAL', modalType: 'PROFILE' })
                                 console.log('author', author)
                                 navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
                             }}
@@ -267,11 +255,8 @@ const ListItemHorizontal = ({ item, imagePath, dispatch, hasAuth = false, onDele
 
 export default ({ items, onDelete, horizontal = false, ...props }) => {
     const dims = useWindowDimensions()
-    const {
-        dispatch,
-        user,
-    } = useContext(AppContext)
-    const authorized = item => (item.author._id === user._id || user.role === 'admin')
+    const { profile } = useUser()
+    const authorized = item => (item.author._id === profile._id || profile.role === 'admin')
     return !horizontal ? (
         <FlatList
             data={items}
@@ -283,7 +268,6 @@ export default ({ items, onDelete, horizontal = false, ...props }) => {
                     imagePath={getProfileImagePathFromUser(item.author)}
                     hasAuth={authorized(item)}
                     onDelete={onDelete}
-                    dispatch={dispatch}
                 />
             )}
             showsVerticalScrollIndicator={false}
@@ -299,15 +283,11 @@ export default ({ items, onDelete, horizontal = false, ...props }) => {
             style={{
                 height: dims.height - 150,
                 margin: 0,
-                // borderWidth: 1,
-                // borderColor: 'yellow',
                 width: '100%',
             }}
             contentContainerStyle={{
                 maxWidth: 900,
                 marginHorizontal: 'auto',
-                // borderWidth: 1,
-                // borderColor: 'red',
             }}
         >
             <View
@@ -325,7 +305,6 @@ export default ({ items, onDelete, horizontal = false, ...props }) => {
                         key={'entry' + index}
                         hasAuth={authorized(item)}
                         onDelete={onDelete}
-                        dispatch={dispatch}
                     />
                 )))}
             </View>

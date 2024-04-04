@@ -1,38 +1,28 @@
-import React, { useContext } from 'react'
-import {
-    View,
-} from 'react-native'
-import {
-    IconButton,
-} from '.'
-import { AppContext } from '../AppContext'
-import { useTheme } from 'react-native-paper'
+import React from 'react'
+import { IconButton } from '.'
+import { useApp, useCart, useModal } from '@context'
 
-export default props => {
+export default () => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
+    const { setModal } = useModal()
+    const { items } = useCart()
 
-    const {
-        cart,
-        dispatch,
-    } = useContext(AppContext)
-
-    const getItemCount = items => {
+    const getItemCount = () => {
         let count = 0
         items.map(item => count += item.quantity)
         return count
     }
 
-    return (
+    return items.length ? (
         <IconButton
-            {...props}
             type='primary'
-            label={getItemCount(cart[0].items)}
+            label={getItemCount(items)}
             iconName='cart-outline'
-            onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'CART' })}
+            onPress={() => setModal('CART')}
             padded={true}
             textStyles={{ paddingVertical: 1, color: theme?.colors.buttonPrimaryLabel }}
             styles={{ flexGrow: 0 }}
         />
-    )
+    ) : null
 }

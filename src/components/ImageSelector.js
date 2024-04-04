@@ -8,7 +8,7 @@ import {
     Preview,
 } from '.'
 import EXIF from 'exif-js'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import { openFileSelector } from 'src/utils/images'
 
 const initialSize = 280

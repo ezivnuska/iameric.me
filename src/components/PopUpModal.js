@@ -1,23 +1,24 @@
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import {
-    Keyboard,
-    KeyboardAvoidingView,
+    // Keyboard,
+    // KeyboardAvoidingView,
     // Modal,
     ScrollView,
-    TouchableWithoutFeedback,
+    // TouchableWithoutFeedback,
     useWindowDimensions,
     View,
 } from 'react-native'
 import {
-    IconButton, ThemedText,
+    IconButton,
+    // ThemedText,
 } from '.'
-import { useTheme } from 'react-native-paper'
-import { AppContext } from '../AppContext'
+// import { useTheme } from 'react-native-paper'
+import { AppContext, useApp } from '@context'
 import Modal from 'react-native-modal'
 
 export default ({ children, onRequestClose, transparent = false, ...props }) => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
 
     const dims = useWindowDimensions()
 
@@ -26,32 +27,32 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
     const {
         dispatch,
         isLandscape,
-        keyboard,
+        // keyboard,
     } = useContext(AppContext)
 
     // useEffect(() => {
     //     alert('keyboard changed', keyboard)
     // }, [keyboard])
 
-    useEffect(() => {
-        const onKeyboardDidShow = e => {
-            // alert('keyboard did show', e.target)
-            dispatch({ type: 'SET_KEYBOARD_STATUS', visible: true})
-            console.log('Keyboard.metrics', Keyboard.metrics)
-        }
-        const onKeyboardWillHide = e => {
-            // alert('keyboard will hide', e.target)
-            dispatch({ type: 'SET_KEYBOARD_STATUS', visible: false})
-        }
+    // useEffect(() => {
+    //     const onKeyboardDidShow = e => {
+    //         // alert('keyboard did show', e.target)
+    //         dispatch({ type: 'SET_KEYBOARD_STATUS', visible: true})
+    //         console.log('Keyboard.metrics', Keyboard.metrics)
+    //     }
+    //     const onKeyboardWillHide = e => {
+    //         // alert('keyboard will hide', e.target)
+    //         dispatch({ type: 'SET_KEYBOARD_STATUS', visible: false})
+    //     }
 
-        const showSubscription = Keyboard.addListener('keyboardDidShow', onKeyboardDidShow)
-        const hideSubscription = Keyboard.addListener('keyboardWillHide', onKeyboardWillHide)
+    //     const showSubscription = Keyboard.addListener('keyboardDidShow', onKeyboardDidShow)
+    //     const hideSubscription = Keyboard.addListener('keyboardWillHide', onKeyboardWillHide)
 
-        return () => {
-            showSubscription.remove()
-            hideSubscription.remove()
-        }
-    }, [])
+    //     return () => {
+    //         showSubscription.remove()
+    //         hideSubscription.remove()
+    //     }
+    // }, [])
 
     // const keyboardMetrics = useMemo(() => Keyboard.metrics, [Keyboard])
     

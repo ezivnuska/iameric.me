@@ -6,7 +6,7 @@ import {
     ThemedText,
 } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 export default ({
     onPress,
@@ -23,7 +23,7 @@ export default ({
     ...props
 }) => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
 
     const getBackgroundColor = () => {
         if (transparent) return transparent

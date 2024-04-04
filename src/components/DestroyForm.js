@@ -7,7 +7,7 @@ import {
     IconButton,
     ThemedText,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import { clearStorage } from '../utils/storage'
 import { unsubscribe } from '../utils/auth'
 import classes from '../styles/classes'

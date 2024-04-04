@@ -1,29 +1,38 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import {
     View,
 } from 'react-native'
 import {
     IconButton,
 } from '.'
-import { AppContext } from '../AppContext'
-import { signout } from '../utils/auth'
-import { navigationRef } from 'src/navigation/RootNavigation'
+import { AppContext, useAuthorization, useModal, useUser } from '@context'
+import { signout } from '@utils/auth'
 
 export default () => {
 
+    const { closeModal } = useModal()
+    const { profile, clearUser } = useUser()
+    const { status, signOut } = useAuthorization()
+
     const {
-        dispatch,
         loading,
-        user,
     } = useContext(AppContext)
 
     const initSignout = async () => {
-        
-        await signout(dispatch, user._id)
-        
-        dispatch({ type: 'CLOSE_MODAL' })
+        const signedOut = await signout(profile._id)
+        console.log('SIGNEDOUT', signedOut)
+        if (!signedOut) throw new Error()
+        else {
+            signOut()
+            clearUser()
+            closeModal()
+        }
     }
-    
+
+    useEffect(() => {
+        console.log('status', status)
+    }, [status])
+
     return (
         <View
             style={{

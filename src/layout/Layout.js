@@ -1,33 +1,33 @@
 import React, { useContext } from 'react'
 import {
-    Keyboard,
     SafeAreaView,
     useWindowDimensions,
     View,
 } from 'react-native'
 import AppNavigation from '../navigation/AppNavigation'
-import { AppContext } from '../AppContext'
 import {
-    ModalFactory,
+    ModalView,
 } from '@components'
 import {
     Header,
 } from '.'
 import LinearGradient from 'react-native-linear-gradient'
 import { getSize } from '@utils/metrics'
-import { useTheme } from 'react-native-paper'
+import {
+    AppContext,
+    useApp,
+    useUser,
+} from '@context'
 
 export default () => {
-
+    const { profile } = useUser()
+    
     const {
-        loading,
-        modal,
-        user,
         isLandscape,
         isThemeDark,
     } = useContext(AppContext)
 
-    const theme = useTheme()
+    const { theme } = useApp()
 
     const dims = useWindowDimensions()
 
@@ -60,7 +60,7 @@ export default () => {
                     }}
                 >
                     <Header
-                        user={user}
+                        user={profile}
                         size={getSize(dims)}
                     />
                 </View>
@@ -92,7 +92,7 @@ export default () => {
 
             </View>
 
-            {modal && <ModalFactory />}
+            <ModalView />
 
         </SafeAreaView>
     )

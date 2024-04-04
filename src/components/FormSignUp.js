@@ -8,10 +8,9 @@ import {
     ThemedText,
 } from '.'
 import classes from '../styles/classes'
-import { AppContext } from '../AppContext'
-import { saveLocally, getLocally } from '../utils/storage'
+import { useApp, AppContext } from '@context'
+import { setItem, getItem } from '../utils/storage'
 import { isValidEmail, signup } from '../utils/auth'
-import { useTheme } from 'react-native-paper'
 
 export default ({ role }) => {
     
@@ -37,7 +36,7 @@ export default ({ role }) => {
 	}, [])
 
 	const initForm = async () => {
-		const savedEmail = await getLocally('email')
+		const savedEmail = await getItem('email')
 		if (savedEmail) setEmail(savedEmail)
 	}
 
@@ -137,7 +136,7 @@ export default ({ role }) => {
 
 		dispatch({ type: 'SET_LOADING', loading: 'Signing in...' })
 
-		await saveLocally('email', email)
+		await setItem('email', email)
 
 		const data = await signup(email, password, role, username)
         
@@ -261,7 +260,7 @@ const FormInput = ({
     ...props
 }) => {
     
-    const theme = useTheme()
+    const { theme } = useApp()
     
     const {
         isLandscape,

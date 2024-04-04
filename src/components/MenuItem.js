@@ -8,15 +8,16 @@ import {
     ThemedText,
 } from '@components'
 import classes from '../styles/classes'
-import { AppContext } from '../AppContext'
+import { AppContext, useModal } from '@context'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item, username }) => {
 
+    const { setModal } = useModal()
+
     const {
-        dispatch,
         isLandscape,
     } = useContext(AppContext)
     
@@ -107,7 +108,7 @@ export default ({ item, username }) => {
                             </ThemedText>
             
                             <IconButton
-                                onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SHOW_PRODUCT', data: { product: item } })}
+                                onPress={() => setModal('SHOW_PRODUCT', item)}
                                 type='primary'
                                 label={`$${price}`}
                                 align='center'

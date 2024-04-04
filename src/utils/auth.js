@@ -1,10 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { cleanStorage, clearStorage, setUserToken } from './storage'
+import { cleanStorage, clearStorage, setToken } from './storage'
 import axios from 'axios'
 
-export const authenticate = async (dispatch, token) => {
-    
-    dispatch({ type: 'SET_LOADING', loading: 'Authenticating...' })
+export const authenticate = async token => {
     
     const { data } = await axios.
         post('/api/authenticate', { token })
@@ -12,16 +9,12 @@ export const authenticate = async (dispatch, token) => {
     if (!data) {
         console.log('Error authenticating token')
         await clearStorage()
+        return null
     } else {
-        console.log('token authenticated')
         const { user } = data
-        await setUserToken(user.token)
-        dispatch({ type: 'SET_USER', user })
+        await setToken(user.token)
+        return user
     }
-
-    dispatch({ type: 'SET_LOADING', loading: null })
-
-    return data?.user || null
 }
 
 export const connect = async type => {
@@ -37,50 +30,16 @@ export const connect = async type => {
     const { data } = await axios.
         post('/api/signin', { email, password })
     
-    if (data && data.user) {
-        
-        await setUserToken(data.user.token)
-    } else if (data && data.error) {
-        console.log('Error authenticating user', data.msg)
-        return null
-    } else {
+    if (!data) {
         console.log('error connecting user.')
-        return null
+    } else if (data.error) {
+        console.log('Error authenticating user', data.msg)
+    } else {
+        await setToken(data.token)
+        return data
     }
     
-    return data.user
-}
-
-export const initialize = async dispatch => {
-
-    dispatch({ type: 'SET_LOADING', loading: 'Looking for user...' })
-    
-    const tokenFromStorage = await AsyncStorage.getItem('userToken')
-    
-    let user
-
-    if (tokenFromStorage) {
-        
-        // if stored token found...
-        dispatch({ type: 'SET_LOADING', loading: 'Init: User found. Verifying...' })
-
-        user = await authenticate(dispatch, tokenFromStorage)    
-        
-        // if user token could not be verified...
-        if (user) {
-            // if token verified...
-            await setUserToken(user.token)
-            
-            dispatch({ type: 'SET_USER', user })
-
-        } else {
-            await clearStorage()
-        }
-    }
-
-    dispatch({ type: 'SET_LOADING', loading: null })
-
-    return user
+    return null
 }
 
 export const signin = async (email, password) => {
@@ -91,33 +50,27 @@ export const signin = async (email, password) => {
     if (!data) {
         console.log('Error: No data returned when authenticating user')
         return null
-    } else if (data.user) {
-        await setUserToken(data.user.token)
-        console.log('signin successful')
+    } else if (data.error) {
+        console.log('Error:', data.error)
     } else {
-        console.log('Error: No data returned when authenticating user')
+        console.log(`${data.username} connected.`)
+        await setToken(data.token)
     }
-
     return data
 }
 
-export const signout = async (dispatch, _id) => {
-
-    dispatch({ type: 'SET_LOADING', loading: 'Signing out...' })
+export const signout = async userId => {
     
     const { data } = await axios
-        .post('/api/signout', { _id })
+        .post('/api/signout', { _id: userId })
     
     if (!data) {
         console.log('could not sign out user')
+        return false
     } else {
-        
         await cleanStorage()
-        
-        console.log('signed out user')
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
-        dispatch({ type: 'SIGNOUT' })
+        console.log('signed out')
+        return true
     }
 }
 
@@ -130,7 +83,7 @@ export const signup = async (email, password, role, username) => {
         console.log('Error authenticating user')
         return null
     } else {
-        await setUserToken(newUser.token)
+        await setToken(newUser.token)
         console.log('signup successful')
     }
 

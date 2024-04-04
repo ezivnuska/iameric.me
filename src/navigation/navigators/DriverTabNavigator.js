@@ -4,20 +4,20 @@ import {
     ImagesScreen,
     OrderScreen,
     SettingsScreen,
-} from '../screens'
+} from '../../screens'
 import {
     UserNavigator,
     VendorNavigator,
 } from '.'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { useTheme } from 'react-native-paper'
+import { useApp } from '@context'
 
 const DriverTabStack = createMaterialBottomTabNavigator()
 
 export default () => {
 
-    const theme = useTheme()
+    const { theme } = useApp()
 
     const iconSize = 24
 

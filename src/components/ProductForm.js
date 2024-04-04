@@ -9,20 +9,20 @@ import {
     ImageFormModule,
 } from '.'
 import axios from 'axios'
-import { AppContext } from '../AppContext'
+import { AppContext, useProducts, useUser } from '@context'
 import classes from '../styles/classes'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default  ({ product }) => {
     
+    const { addProduct, updateProduct } = useProducts()
+    const { profile } = useUser()
+
     const {
         dispatch,
         loading,
-        user,
     } = useContext(AppContext)
-
-    const original = useMemo(() => product, [product])
 
     const initialState = {
         title: '',
@@ -141,7 +141,7 @@ export default  ({ product }) => {
         
         dispatch({ type: 'SET_LOADING', loading: 'Submitting product...' })
 
-        const { _id } = user
+        const { _id } = profile
 
         let newProduct = {
             vendor: _id,
@@ -174,17 +174,14 @@ export default  ({ product }) => {
         if (!data) {
             console.log('Error saving product', data)
         } else {
-            dispatch({
-                type: product
-                    ? 'ADD_PRODUCT'
-                    : 'UPDATE_PRODUCT',
-                product: data,
-            })
+            if (product) {
+                addProduct(data)
+            } else {
+                updateProduct(data)
+            }
         }
         
         clearForm()
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const removeImage = () => {
@@ -198,7 +195,7 @@ export default  ({ product }) => {
         const uri = attachment
             ? attachment.thumbData.uri
             : image
-                ? `${IMAGE_PATH}/${user.username}/thumb/${image.filename}`
+                ? `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}`
                 :  null
 
         return (

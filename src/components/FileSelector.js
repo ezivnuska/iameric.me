@@ -3,7 +3,7 @@ import {
   IconButton,
 } from '.'
 import { openFileSelector } from '../utils/images'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 
 export default ({ onSelected }) => {
 

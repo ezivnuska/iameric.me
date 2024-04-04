@@ -8,7 +8,7 @@ import {
     ImageWithURI,
 } from '.'
 import EXIF from 'exif-js'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 
 export default ({ onImageSelected, removeImage, uri }) => {
 

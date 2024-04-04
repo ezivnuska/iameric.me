@@ -5,7 +5,7 @@ import {
 import {
     ThemedText,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
 import classes from '@styles/classes'
 
 export default () => {

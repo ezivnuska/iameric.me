@@ -5,7 +5,8 @@ import {
     LoadingView,
     ProductListItem,
 } from '.'
-import { AppContext } from '../AppContext'
+import { AppContext } from '@context'
+import { ProductContext } from '../context/ProductContext'
 import { deleteProductWithId, loadProducts } from '../utils/data'
 
 export default () => {
@@ -50,7 +51,13 @@ export default () => {
                     key={item => `product-${item._id}`}
                     onDelete={() => onDelete(item._id)}
                     onPress={item => {
-                        dispatch({ type: 'SET_MODAL', modalType: 'PRODUCT', data: { product: item } })
+                        dispatch({
+                            type: 'SET_MODAL',
+                            payload: {
+                                type: 'PRODUCT',
+                                data: { product: item },
+                            },
+                        })
                     }}
                 />
             )}
