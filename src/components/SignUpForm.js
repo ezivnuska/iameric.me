@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     View,
 } from 'react-native'
@@ -27,10 +27,16 @@ export default ({ role }) => {
     const {
         clearForm,
         clearFormError,
+        focused,
         formError,
         formFields,
         formLoading,
+        getDirty,
+        getError,
+        getFocus,
         initForm,
+        markDirty,
+        setFocus,
         setFormError,
         setFormLoading,
         setFormValues,
@@ -48,9 +54,6 @@ export default ({ role }) => {
         ...formFields,
     }), [formFields, initialValues])
 
-    const [focused, setFocused] = useState(null)
-    const dirtyFields = useMemo(() => [], [])
-
     useEffect(() => {
         initForm({ email, username, password, confirmPassword })
     }, [])
@@ -63,8 +66,7 @@ export default ({ role }) => {
         } else {
             fields.map(key => {
                 if (formFields[key].length) {
-                    dirtyFields.push(key)
-                    console.log('pushed dirty', dirtyFields)
+                    markDirty(key)
                 }
             })
         }
@@ -72,7 +74,7 @@ export default ({ role }) => {
     }, [formFields])
 
     const onChange = (key, value) => {
-        dirtyFields.push(key)
+        markDirty(key)
         setFormValues({ ...formFields, [key]: value })
     }
 
@@ -83,12 +85,12 @@ export default ({ role }) => {
             const key = keys[index]
             const isValid = validateField(key)
             if (!isValid) {
-                setFocused(index)
+                setFocus(index)
                 return
             }
             else index++
         }
-        setFocused(index)
+        setFocus(keys[0])
     }
 
     const validateField = name => {
@@ -122,33 +124,11 @@ export default ({ role }) => {
                 console.log('No field to validate')
         }
 
-        if (isValid && formError && formError.name === name) {
+        if (isValid && getError(name)) {
             clearFormError()
         }
 
         return isValid
-    }
-
-    const hasError = name => {
-        if (formError && formError.name === name) {
-            return formError.message
-        }
-        else return false
-    }
-
-    const isFieldFocused = name => {
-        if (focused) {
-            const keys = Object.keys(formFields)
-            const keyFocused = keys[focused]
-            if (keyFocused === name) {
-                return true
-            }
-        }
-        return false
-    }
-
-    const isFieldDirty = key => {
-        return dirtyFields.indexOf(key) > -1
     }
     
     const onEnter = e => {
@@ -191,54 +171,54 @@ export default ({ role }) => {
             <FormField
                 label='Email'
                 value={email}
-                error={hasError('email')}
+                error={getError('email')}
                 placeholder='email'
                 textContentType='emailAddress'
                 keyboardType='email-address'
                 autoCapitalize='none'
                 onChangeText={value => onChange('email', value)}
-                autoFocus={isFieldFocused('email')}
+                autoFocus={getFocus('email')}
                 onKeyPress={onEnter}
-                dirty={isFieldDirty('email')}
+                dirty={getDirty('email')}
             />
             <FormField
                 label='Username'
                 value={username}
-                error={hasError('username')}
+                error={getError('username')}
                 placeholder='username'
                 textContentType='none'
                 keyboardType='default'
                 autoCapitalize='none'
                 onChangeText={value => onChange('username', value)}
-                autoFocus={isFieldFocused('username')}
+                autoFocus={getFocus('username')}
                 onKeyPress={onEnter}
-                dirty={isFieldDirty('username')}
+                dirty={getDirty('username')}
             />
             <FormField
                 label='Password'
                 value={password}
-                error={hasError('password')}
+                error={getError('password')}
                 placeholder='password'
                 textContentType='password'
                 autoCapitalize='none'
                 secureTextEntry={true}
                 onChangeText={value => onChange('password', value)}
-                autoFocus={isFieldFocused('password')}
+                autoFocus={getFocus('password')}
                 onKeyPress={onEnter}
-                dirty={isFieldDirty('password')}
+                dirty={getDirty('password')}
             />
             <FormField
                 label='Confirm Password'
                 value={confirmPassword}
-                error={hasError('confirmPassword')}
+                error={getError('confirmPassword')}
                 placeholder='confirm password'
                 textContentType='password'
                 autoCapitalize='none'
                 secureTextEntry={true}
                 onChangeText={value => onChange('confirmPassword', value)}
-                autoFocus={isFieldFocused('confirmPassword')}
+                autoFocus={getFocus('confirmPassword')}
                 onKeyPress={onEnter}
-                dirty={isFieldDirty('confirmPassword')}
+                dirty={getDirty('confirmPassword')}
             />
         </>
     )

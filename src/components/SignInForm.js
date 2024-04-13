@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     View,
 } from 'react-native'
@@ -8,9 +8,7 @@ import {
 } from '@components'
 import { setItem } from '@utils/storage'
 import { isValidEmail, signin } from '@utils/auth'
-import classes from '@styles/classes'
 import {
-    useApp,
     useAuth,
     useForm,
     useModal,
@@ -27,10 +25,18 @@ export default () => {
     const {
         clearForm,
         clearFormError,
+        dirtyFields,
+        focused,
         formError,
         formFields,
         formLoading,
+        formReady,
+        getDirty,
+        getError,
+        getFocus,
         initForm,
+        markDirty,
+        setFocus,
         setFormError,
         setFormLoading,
         setFormValues,
@@ -43,66 +49,45 @@ export default () => {
     const { closeModal } = useModal()
     const { setUser } = useUser()
 
-    const { email, password } = useMemo(() => ({
-        ...initialValues,
-        ...formFields,
-    }), [formFields, initialValues])
-
-    const [focused, setFocused] = useState(null)
-    const dirtyFields = useMemo(() => [], [])
-
     useEffect(() => {
-        initForm({ email, password })
+        initForm(initialValues)
     }, [])
 
     useEffect(() => {
-        const fields = Object.keys(formFields)
         const values = Object.keys(initialValues)
-        if (fields.length === values.length) {
+        const fields = Object.keys(formFields)
+        if (formReady && values.length === fields.length) {
             validateFields()
-        } else {
-            fields.map(key => {
-                if (formFields[key].length) {
-                    dirtyFields.push(key)
-                    console.log('pushed dirty', dirtyFields)
-                }
-            })
         }
-        
-    }, [formFields])
-
-    const onChange = (key, value) => {
-        dirtyFields.push(key)
-        setFormValues({ ...formFields, [key]: value })
-    }
+    }, [formReady, formFields])
 
     const validateFields = () => {
-        const keys = Object.keys(formFields)
+        const values = Object.keys(initialValues)
+        const fields = Object.keys(formFields)
         let index = 0
-        while (index < keys.length) {
-            const key = keys[index]
+        while (index < fields.length) {
+            const key = fields[index]
             const isValid = validateField(key)
             if (!isValid) {
-                console.log(`${key} is invalid`)
-                setFocused(index)
+                setFocus(key)
                 return
             }
-            else index++
+            index++
         }
-        setFocused(index)
+        setFocus(values[0])
     }
 
     const validateField = name => {
         let isValid = true
         switch (name) {
             case 'email':
-                if (!isValidEmail(email)) {
+                if (!isValidEmail(formFields.email)) {
                     setFormError({ name, message: 'Email invalid.'})
                     isValid = false
                 }
                 break
             case 'password':
-                if (!password.length) {
+                if (!formFields.password.length) {
                     setFormError({ name, message: 'Password required.'})
                     isValid = false
                 }
@@ -111,32 +96,16 @@ export default () => {
                 console.log('No field to validate')
         }
 
-        if (isValid && formError && formError.name === name) {
+        if (isValid && getError(name)) {
             clearFormError()
         }
 
         return isValid
     }
 
-    const hasError = name => {
-        if (formError && formError.name === name) {
-            return formError.message
-        }
-        else return false
-    }
-
-    const isFieldFocused = name => {
-        if (focused) {
-            const keys = Object.keys(formFields)
-            const keyFocused = keys[focused]
-            if (keyFocused === name) {
-                return true
-            }
-        }
-        return false
-    }
-    const isFieldDirty = key => {
-        return dirtyFields.indexOf(key) > -1
+    const onChange = (key, value) => {
+        if (!getDirty(key)) markDirty(key)
+        setFormValues({ ...formFields, [key]: value })
     }
     
     const onEnter = e => {
@@ -151,9 +120,9 @@ export default () => {
 
         setFormLoading(true)
 
-		await setItem('email', email)
+		await setItem('email', formFields.email)
         
-		const data = await signin(email, password)
+		const data = await signin(formFields.email, formFields.password)
         
         setFormLoading(false)
         
@@ -178,29 +147,29 @@ export default () => {
         <>
             <FormField
                 label='Email'
-                value={email}
-                error={hasError('email')}
+                value={formFields.email}
+                error={getError('email')}
                 placeholder='email'
                 textContentType='emailAddress'
                 keyboardType='email-address'
                 autoCapitalize='none'
                 onChangeText={value => onChange('email', value)}
-                autoFocus={isFieldFocused('email')}
+                autoFocus={getFocus('email')}
                 onKeyPress={onEnter}
-                dirty={isFieldDirty('email')}
+                dirty={getDirty('email')}
             />
             <FormField
                 label='Password'
-                value={password}
-                error={hasError('password')}
+                value={formFields.password}
+                error={getError('password')}
                 placeholder='password'
                 textContentType='password'
                 autoCapitalize='none'
                 secureTextEntry={true}
                 onChangeText={value => onChange('password', value)}
-                autoFocus={isFieldFocused('password')}
+                autoFocus={getFocus('password')}
                 onKeyPress={onEnter}
-                dirty={isFieldDirty('password')}
+                dirty={getDirty('password')}
             />
         </>
     )

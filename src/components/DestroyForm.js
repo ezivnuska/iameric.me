@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
-    Text,
-    TextInput,
     View,
 } from 'react-native'
 import {
+    FormField,
     IconButton,
     ThemedText,
 } from '@components'
@@ -12,7 +11,6 @@ import { unsubscribe } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import classes from '@styles/classes'
 import {
-    useApp,
     useAuth,
     useForm,
     useModal,
@@ -21,13 +19,27 @@ import {
 
 export default () => {
 
+    const initialValues = {
+        username: '',
+    }
+
     const {
         clearForm,
         clearFormError,
+        focused,
         formError,
+        formFields,
         formLoading,
+        formReady,
+        getDirty,
+        getError,
+        getFocus,
+        initForm,
+        markDirty,
+        setFocus,
         setFormError,
         setFormLoading,
+        setFormValues,
     } = useForm()
 
     const {
@@ -37,43 +49,55 @@ export default () => {
     const { closeModal } = useModal()
     const { profile, clearUser } = useUser()
 
-    const [confirmUsername, setConfirmUsername] = useState('')
-
-    const [focused, setFocused] = useState(null)
+    useEffect(() => {
+        initForm(initialValues)
+    }, [])
 
     useEffect(() => {
-        validateFields()
-    }, [confirmUsername])
+        if (formReady) {
+            validateFields()
+        }
+    }, [formReady, formFields])
 
     const validateFields = () => {
-        const isValid = validateField()
-        if (!isValid) console.log(`username is invalid`)
-        setFocused(0)
+        const values = Object.keys(initialValues)
+        const fields = Object.keys(formFields)
+        let index = 0
+        while (index < values.length) {
+            const key = fields[index]
+            const isValid = validateField(key)
+            if (!isValid) {
+                setFocus(key)
+                return
+            }
+            index++
+        }
+        setFocus(values[0])
     }
 
-    const validateField = () => {
+    const validateField = name => {
         let isValid = true
-        if (confirmUsername !== profile.username) {
-            setFormError({ name: 'confirmUsername', message: 'Incorrect username.'})
-            isValid = false
+        switch (name) {
+            case 'username':
+                if (formFields.username !== profile.username) {
+                    setFormError({ name: 'username', message: 'Incorrect username.' })
+                    isValid = false
+                }
+                break
+            default:
+                console.log('No field to validate')
         }
-
-        if (isValid && formError && formError.name === 'confirmUsername') {
+        
+        if (isValid && getError(name)) {
             clearFormError()
         }
 
         return isValid
     }
 
-    const onChange = value => {
-        setConfirmUsername(value)
-    }
-
-    const hasError = () => {
-        if (formError && formError.name === 'confirmUsername') {
-            return formError.message
-        }
-        else return false
+    const onChange = (key, value) => {
+        if (!getDirty(key)) markDirty(key)
+        setFormValues({ ...formFields, [key]: value })
     }
     
     const onEnter = e => {
@@ -105,33 +129,29 @@ export default () => {
 		}
     }
 
-    const renderForm = () => (
-        <View>
+    const renderFields = () => (
+        <>
             <FormField
                 label='Confirm Username'
-                value={confirmUsername}
-                error={hasError()}
+                value={formFields.username}
+                error={getError('username')}
                 placeholder='username'
                 textContentType='none'
                 keyboardType='default'
                 autoCapitalize='none'
-                onChangeText={value => onChange(value)}
-                autoFocus={true}
+                onChangeText={value => onChange('username', value)}
+                autoFocus={getFocus('username')}
                 onKeyPress={onEnter}
+                dirty={getDirty('username')}
             />
-            <IconButton
-                type='primary'
-                label={formLoading ? 'Burning...' : 'Burn it all.'}
-                disabled={formLoading || formError}
-                onPress={submitFormData}
-            />
-        </View>
+        </>
     )
     
     return (
         <View>
+
             <View
-                style={{ marginBottom: 20 }}
+                style={{ paddingVertical: 20 }}
             >
                 <ThemedText style={classes.headerSecondary}>
                     Delete Account and Data
@@ -141,77 +161,21 @@ export default () => {
                     Enter your username to close your account and 
                     permanently delete all of your data.
                 </ThemedText>
-            </View>
 
-            {focused !== null ? renderForm() : null}
-        </View>
-    )
-}
+                {focused !== null ? (
+                    <>
+                        <View style={{ marginBottom: 10 }}>
+                            {renderFields()}
+                        </View>
 
-const FormField = ({ error, label, value, ...props }) => {
-
-    const { isLandscape, theme } = useApp()
-
-    const [initialValue, setInitialValue] = useState(null)
-    const [dirty, setDirty] = useState(false)
-
-    useEffect(() => {
-        if (!initialValue) {
-            setInitialValue(value)
-        }
-    }, [])
-
-    useEffect(() => {
-        if (initialValue) console.log(`initial ${label} value set:`, initialValue)
-    }, [initialValue])
-
-    return (
-        <View>
-            <ThemedText
-                style={[
-                    classes.formInputLabel,
-                    {
-                        paddingBottom: 2,
-                        color: theme?.colors.inputLabel,
-                    },
-                ]}
-            >
-                {label}
-            </ThemedText>
-
-            <View
-                style={[
-                    classes.formInputContainer,
-                    { borderBottomColor: error ? '#f00' : '#1f1' },
-                ]}
-            >
-                <View
-                    style={{
-                        backgroundColor: theme?.colors.inputBackground,
-                        height: 40,
-                    }}
-                >
-                    <TextInput
-                        value={value}
-                        multiline={false}
-                        autoCorrect={false}
-                        spellCheck={false}
-                        style={[
-                            classes.formInput,
-                            {
-                                color: theme?.colors.inputText,
-                                placeholderTextColor: theme?.colors.inputPlaceholder,
-                                backgroundColor: 'transparent',
-                                lineHeight: 40,
-                                height: 40,
-                                flexWrap: 'nowrap',
-                                maxWidth: 300,
-                            },
-                        ]}
-                        {...props}
-                    />
-                </View>
-                {error && <Text style={{ color: '#f00' }}>{error.message}</Text>}
+                        <IconButton
+                            type='primary'
+                            label={formLoading ? 'Burning...' : 'Burn it all.'}
+                            disabled={formLoading || formError}
+                            onPress={submitFormData}
+                        />
+                    </>
+                ) : null}
             </View>
         </View>
     )

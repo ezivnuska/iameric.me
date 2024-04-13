@@ -1,19 +1,26 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import {
     getItem,
-    // removeToken,
-    // setToken,
 } from '@utils/storage'
 
 const initialState = {
     error: null,
+    dirtyFields: [],
+    focused: null,
     formFields: {},
     formLoading: false,
+    formReady: false,
     clearForm: () => {},
     clearFormError: () => {},
+    getDirty: () => {},
+    getError: () => {},
+    getFocus: () => {},
     initForm: () => {},
+    markDirty: () => {},
+    setFocus: () => {},
     setFormError: () => {},
     setFormLoading: () => {},
+    setFormReady: () => {},
     setFormValues: () => {},
 }
 
@@ -55,15 +62,39 @@ export const FormContextProvider = props => {
         clearFormError: async () => {
             dispatch({ type: 'CLEAR_FORM_ERROR' })
         },
-        initForm: async payload => {
-            console.log('init form-->', payload)
-            dispatch({ type: 'SET_FORM_VALUES', payload })
+        getDirty: payload => {
+            return state.dirtyFields.indexOf(payload) > -1
+        },
+        getError: payload => {
+            if (state.formError && state.formError.name === payload) {
+                return state.formError.message
+            }
+            return false
+        },
+        getFocus: payload => state.focused === payload,
+        initForm: payload => {
+            dispatch({
+                type: 'INIT_FORM',
+                payload: {
+                    ...payload,
+                    ...state.formFields,
+                },
+            })
+        },
+        markDirty: async payload => {
+            dispatch({ type: 'MARK_DIRTY', payload })
+        },
+        setFocus: async payload => {
+            dispatch({ type: 'SET_FOCUS', payload })
         },
         setFormError: async payload => {
             dispatch({ type: 'SET_FORM_ERROR', payload })
         },
         setFormLoading: async payload => {
             dispatch({ type: 'SET_FORM_LOADING', payload })
+        },
+        setFormReady: async payload => {
+            dispatch({ type: 'SET_FORM_READY', payload })
         },
         setFormValues: async payload => {
             dispatch({ type: 'SET_FORM_VALUES', payload })
@@ -79,11 +110,15 @@ export const FormContextProvider = props => {
 
 const reducer = (state, action) => {
     const { payload, type } = action
+
     switch(type) {
         case 'CLEAR_FORM':
             return {
                 ...state,
+                focused: null,
                 formFields: { email: state.formFields.email },
+                formReady: false,
+                dirtyFields: [],
             }
             break
         case 'CLEAR_FORM_ERROR':
@@ -96,10 +131,28 @@ const reducer = (state, action) => {
         case 'INIT_FORM':
             return {
                 ...state,
-                formFields: {
-                    ...state.formFields,
-                    ...payload,
-                },
+                formFields: payload,
+                dirtyFields: Object.keys(state.formFields),
+                formReady: true,
+            }
+            break
+        case 'MARK_DIRTY':
+            return {
+                ...state,
+                dirtyFields: [ ...state.dirtyFields, payload ],
+            }
+            break
+        case 'SET_DIRTY_FIELDS':
+            console.log('SET_DIRTY_FIELDS', payload)
+            return {
+                ...state,
+                dirtyFields: payload,
+            }
+            break
+        case 'SET_FOCUS':
+            return {
+                ...state,
+                focused: payload,
             }
             break
         case 'SET_FORM_ERROR':
@@ -112,6 +165,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 formLoading: payload,
+            }
+            break
+        case 'SET_FORM_READY':
+            return {
+                ...state,
+                formReady: payload,
             }
             break
         case 'SET_FORM_VALUES':
