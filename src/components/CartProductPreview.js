@@ -1,40 +1,13 @@
 import React from 'react'
 import {
     FlatList,
-    Image,
     View,
 } from 'react-native'
 import {
     ThemedText
 } from '.'
 import classes from '../styles/classes'
-import { useApp, useCart } from '@context'
-
-const IMAGE_SIZE = 24
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-
-const ProductThumb = ({ product }) => (
-    <Image
-        width={IMAGE_SIZE}
-        height={IMAGE_SIZE}
-        source={{ uri: `${IMAGE_PATH}/${product.vendor.username}/thumb/${product.image.filename}` }}
-        style={{
-            resizeMode: 'cover',
-            width: IMAGE_SIZE,
-            height: IMAGE_SIZE,
-            borderWidth: 1,
-            borderColor: '#999',
-            shadowColor: '#000',
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 4,
-            elevation: 5,
-        }}
-    />
-)
+import { useApp } from '@context'
 
 const Quantity = ({ quantity }) => {
     

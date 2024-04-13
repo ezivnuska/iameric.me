@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Picker } from '@react-native-picker/picker'
 import {
     View,
@@ -6,7 +6,6 @@ import {
 import {
     ThemedText,
 } from '.'
-// import { useTheme } from 'react-native-paper'
 import { useApp } from '@context'
 import classes from '../styles/classes'
 

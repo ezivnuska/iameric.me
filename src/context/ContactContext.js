@@ -1,12 +1,10 @@
-import React, { createContext, useContext, useReducer } from 'react'
+import React, { createContext, useContext, useMemo, useReducer } from 'react'
 
 const initialState = {
     contacts: [],
     error: null,
-    loaded: false,
     loading: false,
-    setLoading: () => {},
-    setLoaded: () => {},
+    setLoadingContacts: () => {},
     setContacts: () => {},
     updateContact: () => {},
     updateContactProducts: () => {},
@@ -27,8 +25,26 @@ export const ContactContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
+    const actions = useMemo(() => ({
+        setLoadingContacts: async payload => {
+            dispatch({ type: 'SET_LOADING_CONTACTS', payload })
+        },
+        setContacts: async payload => {
+            dispatch({ type: 'SET_USERS', payload })
+        },
+        updateContact: async payload => {
+            dispatch({ type: 'UPDATE_USER', payload })
+        },
+        updateContactProducts: async payload => {
+            dispatch({ type: 'UPDATE_USER_PRODUCTS', payload })
+        },
+        updateContactImages: async payload => {
+            dispatch({ type: 'UPDATE_USER_IMAGES', payload })
+        },
+    }), [state, dispatch])
+
     return (
-        <ContactContext.Provider value={{state, dispatch}}>
+        <ContactContext.Provider value={{ ...state, ...actions }}>
             {props.children}
         </ContactContext.Provider>
     )
@@ -37,11 +53,8 @@ export const ContactContextProvider = props => {
 const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
-        case 'LOADING_CONTACTS':
+        case 'SET_LOADING_CONTACTS':
             return { ...state, loading: payload }
-            break
-        case 'CONTACTS_LOADED':
-            return { ...state, loaded: payload }
             break
         case 'SET_USERS':
             return { ...state, contacts: payload }

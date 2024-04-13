@@ -5,30 +5,25 @@ import {
     ThemedText,
 } from '@components'
 import axios from 'axios'
-import { ContactContext } from '../context/ContactContext'
+import { useContacts } from '@context'
 
 export default () => {
 
-    const {
-        state,
-        dispatch,
-    } = useContext(ContactContext)
+    const { setContacts, setLoadingContacts } = useContacts()
 
     useEffect(() => {
-        if (!state.loaded) init()
-    }, [])
-
-    const init = async () => {
-        dispatch({ type: 'LOADING_CONTACTS', payload: true })
-        const { data } = await axios.get('/api/users')
-    
-        if (data && data.users) {
-            dispatch({ type: 'SET_USERS', payload: data.users })
-        }
+        const init = async () => {
+            setLoadingContacts(true)
+            const { data } = await axios.get('/api/users')
         
-        dispatch({ type: 'LOADING_CONTACTS', payload: false })
-        dispatch({ type: 'CONTACTS_LOADED', payload: true })
-    }
+            if (data && data.users) {
+                setContacts(data.users)
+            }
+            
+            setLoadingContacts(false)
+        }
+        init()
+    }, [])
 
     return (
         <ContactList />

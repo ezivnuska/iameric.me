@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {
     Image,
-    useWindowDimensions,
+    // useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -21,26 +21,19 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
-    const { theme } = useApp()
-    const dims = useWindowDimensions()
+    const { dims, isLandscape, theme } = useApp()
+    // const dims = useWindowDimensions()
     const { profile } = useUser()
     const { items } = useProducts()
 
     const {
-        isLandscape,
         loading,
     } = useContext(AppContext)
 
     const [imageDims, setImageDims] = useState(null)
 
     useEffect(() => {
-        console.log('image', image)
-    }, [])
-
-    useEffect(() => {
-        if (dims) {
-            setImageDims(getImageDims(image.width, image.height, dims))
-        }
+        setImageDims(getImageDims(image.width, image.height, dims))
     }, [dims])
 
     return (

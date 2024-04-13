@@ -12,7 +12,6 @@ export const authenticate = async token => {
         return null
     } else {
         const { user } = data
-        await setToken(user.token)
         return user
     }
 }
@@ -35,7 +34,6 @@ export const connect = async type => {
     } else if (data.error) {
         console.log('Error authenticating user', data.msg)
     } else {
-        await setToken(data.token)
         return data
     }
     
@@ -46,16 +44,31 @@ export const signin = async (email, password) => {
     
     const { data } = await axios.
         post('/api/signin', { email, password })
-    
+        
     if (!data) {
         console.log('Error: No data returned when authenticating user')
+    } else if (data.error) {
+        console.log('Error:', data.error)
+    } else {
+        console.log(`${data.user.username} connected.`)
+    }
+    return data
+}
+
+export const signup = async (email, password, role, username) => {
+    
+    const data = await axios.
+        post('/api/signup', { email, password, role, username })
+    
+    if (!data) {
+        console.log('Error authenticating user')
         return null
     } else if (data.error) {
         console.log('Error:', data.error)
     } else {
-        console.log(`${data.username} connected.`)
-        await setToken(data.token)
+        console.log('signup successful')
     }
+
     return data
 }
 
@@ -74,22 +87,6 @@ export const signout = async userId => {
     }
 }
 
-export const signup = async (email, password, role, username) => {
-    
-    const newUser = await axios.
-        post('/api/signup', { email, password, role, username })
-    
-    if (!newUser) {
-        console.log('Error authenticating user')
-        return null
-    } else {
-        await setToken(newUser.token)
-        console.log('signup successful')
-    }
-
-    return newUser
-}
-
 export const unsubscribe = async id => {
     
     const { data } = await axios.
@@ -97,12 +94,13 @@ export const unsubscribe = async id => {
     
     if (!data) {
         console.log('Error closing user account.')
-        return null
+    } else if (data.error) {
+        console.log(`Error unsubscribing:`, data.error)
     } else {
         console.log('Account closed.')
+        return true
     }
-
-    return data
+    return false
 }
 
 // export const validateToken = async token => {

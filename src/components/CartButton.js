@@ -1,6 +1,10 @@
 import React from 'react'
 import { IconButton } from '.'
-import { useApp, useCart, useModal } from '@context'
+import {
+    useApp,
+    useCart,
+    useModal,
+} from '@context'
 
 export default () => {
 

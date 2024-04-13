@@ -7,46 +7,42 @@ import {
     IconButton,
 } from '.'
 import axios from 'axios'
-import { AppContext } from '@context'
+import { AppContext, useForum, useModal, useUser } from '@context'
 import classes from '../styles/classes'
 
 export default () => {
 
     const {
-        state,
-        dispatch,
         loading,
     } = useContext(AppContext)
 
-    const { user } = state
+    const { profile } = useUser()
+    const { addEntry } = useForum()
+    const { closeModal } = useModal()
     const [ entry, setEntry ] = useState('')
 
     const onChangeEntry = value => setEntry(value)
     
     const onSubmit = async () => {
-        const { username, _id } = user
+        const { username, _id } = profile
         const newEntry = { user: _id, text: entry }
-        
-        dispatch({ type: 'SET_LOADING', payload: 'Submitting feedback...' })
         
         const { data } = await axios.post('/api/entry', newEntry)
         
         if (data) {
             setEntry('')
-            dispatch({ type: 'ADD_ENTRY', payload: data.entry })
+            addEntry(data.entry)
         } else console.log('Error submitting feedback')
 
-        dispatch({ type: 'SET_LOADING', payload: null })
-
-        dispatch({ type: 'CLOSE_MODAL' })
+        closeModal()
     }
 
-    const onEnter = e => {
-        if (e.code === 'Enter') {
-            if (entry.length) onSubmit()
-            else onComplete()
-        }
-    }
+    // const onEnter = e => {
+    //     if (e.code === 'Enter') {
+    //         if (entry.length) onSubmit()
+    //         else onComplete()
+    //     }
+    // }
 
     return (
         <View

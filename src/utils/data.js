@@ -32,44 +32,35 @@ export const loadUser = async userId => {
 
 export const loadFullUser = async userId => {
 
-    // dispatch({ type: 'SET_LOADING', loading: 'Fetching user with images...' })
-
     const { data } = await axios.get(`/api/user/full/${userId}`)
 
-    if (!data) {
-        console.log('Error fetching user with images')
-    } else if (!data.user) {
-        console.log('User not found')
-    }
-    //  else {
+    if (data) return data.user
 
-    //     dispatch({ type: 'UPDATE_USER', user: data.user })
-    // }
+    console.log('Error fetching user with images')
 
-    // dispatch({ type: 'SET_LOADING', payload: null })
-
-    return data.user
+    return null
 }
 
-export const loadUserAndImages = async (dispatch, userId) => {
+// NOT USED
+// export const loadUserAndImages = async (dispatch, userId) => {
 
-    dispatch({ type: 'SET_LOADING', payload: 'Fetching user and images...' })
+//     dispatch({ type: 'SET_LOADING', payload: 'Fetching user and images...' })
 
-    const { data } = await axios.get(`/api/user/${userId}`)
+//     const { data } = await axios.get(`/api/user/${userId}`)
 
-    if (!data) {
-        console.log('Error fetching user')
-    } else if (!data.user) {
-        console.log('User not found')
-    } else {
+//     if (!data) {
+//         console.log('Error fetching user')
+//     } else if (!data.user) {
+//         console.log('User not found')
+//     } else {
 
-        dispatch({ type: 'UPDATE_USER', payload: data.user })
-    }
+//         dispatch({ type: 'UPDATE_USER', payload: data.user })
+//     }
 
-    dispatch({ type: 'SET_LOADING', payload: null })
+//     dispatch({ type: 'SET_LOADING', payload: null })
 
-    return data.user
-}
+//     return data.user
+// }
 
 export const loadUsers = async () => {
 
@@ -80,21 +71,14 @@ export const loadUsers = async () => {
         : null
 }
 
-export const loadUserById = async (dispatch, userId) => {
-
-    dispatch({ type: 'SET_LOADING', payload: 'Loading user...' })
+export const loadUserById = async userId => {
     
     const { data } = await axios.get(`/api/user/${userId}`)
     
-    if (!data) {
-        console.log('could not load user details.')
-    } else if (!data.user) {
-        console.log('no user found')
-    } else {
-        dispatch({ type: 'UPDATE_USER', payload: data.user })
-    }
+    if (data && data.user) return data.user
 
-    dispatch({ type: 'SET_LOADING', payload: null })
+    console.log('could not load user details.')
+    return null
 }
 
 // NOT USED
@@ -132,22 +116,19 @@ export const loadProduct = async productId => {
     return product
 }
 
-// export const loadProducts = async (dispatch, vendorId) => {
+export const loadProducts = async vendorId => {
 
-//     dispatch({ type: 'SET_LOADING', payload: 'Loading products...' })
-
-//     const { data } = await axios.get(`/api/products/${vendorId}`)
+    const { data } = await axios.get(`/api/products/${vendorId}`)
     
-//     if (!data) {
-//         console.log('could not load products')
-//     } else if (!data.products || !data.products.length) {
-//         console.log('no products to load')
-//     } else {
-//         dispatch({ type: 'UPDATE_PRODUCTS', userId: vendorId, products: data.products })
-//     }
-
-//     dispatch({ type: 'SET_LOADING', payload: null })
-// }
+    if (!data) {
+        console.log('could not load products')
+    } else if (!data.products || !data.products.length) {
+        console.log('no products to load')
+    } else {
+        return data.products
+    }
+    return null
+}
 
 export const loadUserProducts = async vendorId => {
 
@@ -196,21 +177,14 @@ export const loadVendors = async () => {
  * @returns array of entry objects
  */
 
-export const loadEntries = async dispatch => {
-
-    dispatch({ type: 'SET_LOADING', payload: 'loading forum...' })
+export const loadEntries = async () => {
 
     const { data } = await axios.get('/api/entries')
 
-    if (!data) {
-        console.log('could not load entries.')
-    } else if (!data.entries) {
-        console.log('no entries found.')
-    } else {
-        dispatch({ type: 'SET_ENTRIES', payload: data.entries })
-    }
-
-    dispatch({ type: 'SET_LOADING', payload: null })
+    if (data && data.entries) return data.entries
+    
+    console.log('could not load entries.')
+    return null
 }
 
 export const deleteEntryWithId = async id => {
@@ -272,45 +246,22 @@ export const deleteOrderWithId = async id => {
  * @returns 
  */
 
-export const getUserLocationById = async (dispatch, locationId) => {
-
-    dispatch({ type: 'SET_LOADING', payload: 'Loading user location...' })
+export const getUserLocationById = async locationId => {
 
     const { data } = await axios.get(`/api/user/location/${locationId}`)
 
-    if (!data) {
-        console.log('could not get location data.')
-    } else if (!data.location) {
-        console.log('No location found.')
-    } else {
-        dispatch({
-            type: 'UPDATE_USERS_LOCATION_WITH_LOCATION_ID',
-            payload: data.location,
-        })
-    }
+    if (data && data.location) return data.location
 
-    dispatch({ type: 'SET_LOADING', payload: null })
+    console.log('could not get location data.')
+    return null
 }
 
-export const getLocationByUserId = async (dispatch, userId) => {
-
-    dispatch({ type: 'SET_LOADING', payload: 'Loading user location...' })
+export const getLocationByUserId = async userId => {
 
     const { data } = await axios.get(`/api/location/${userId}`)
 
-    if (!data) {
-        console.log('could not get location data.')
-    } else if (!data.location) {
-        console.log('No location found.')
-    } else {
-        dispatch({
-            type: 'UPDATE_USERS_LOCATION',
-            payload: {
-                userId,
-                location: data.location,
-            },
-        })
-    }
-
-    dispatch({ type: 'SET_LOADING', payload: null })
+    if (data && data.location) return data.location
+    
+    console.log('could not get location data.')
+    return null
 }

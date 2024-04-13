@@ -13,7 +13,7 @@ import {
 import classes from '@styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
 import {
-    useAuthorization,
+    useAuth,
     useApp,
     useModal,
     useUser,
@@ -27,7 +27,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ navigation }) => {
 
-    const { authToken, signIn, status } = useAuthorization()
+    const { authToken, signIn, status } = useAuth()
     const { profile, setUser } = useUser()
     const { setModal } = useModal()
 
@@ -38,7 +38,6 @@ export default ({ navigation }) => {
     }, [profile])
 
     useEffect(() => {
-        
         const checkToken = async () => {
             console.log('token found. checking...')
             const user = await authenticate(authToken)

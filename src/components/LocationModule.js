@@ -6,30 +6,30 @@ import {
 import {
     ThemedText,
     IconButton,
-    LoadingView,
     LocationDetails,
 } from '.'
-import { AppContext } from '@context'
+import {
+    AppContext,
+    useModal,
+    useUser,
+} from '@context'
 import { getLocationByUserId, getUserLocationById } from '../utils/data'
 
 export default ({ userId }) => {
-
+    const { profile } = useUser()
+    const { setModal } = useModal()
     const {
-        dispatch,
         loading,
-        // location,
-        user,
     } = useContext(AppContext)
 
     useEffect(() => {
-        if (user.location && typeof user.location === 'string') {
-            getUserLocationById(dispatch, user.location)
+        let userLocation = null
+        if (profile.location && typeof profile.location === 'string') {
+             userLocation = getUserLocationById(profile.location)
         } else {
-            getLocationByUserId(dispatch, userId)
+            userLocation = getLocationByUserId(userId)
         }
     }, [])
-    
-    if (loading) return <LoadingView />
 
     return (
         <View
@@ -41,15 +41,10 @@ export default ({ userId }) => {
         >
             
             <IconButton
-                iconName={user.location ? 'create-outline' : 'add-outline'}
+                iconName={profile.location ? 'create-outline' : 'add-outline'}
                 label='Address'
                 disabled={loading}
-                onPress={() => dispatch({
-                    type: 'SET_MODAL',
-                    payload: {
-                        type: 'LOCATION',
-                    },
-                })}
+                onPress={() => setModal('LOCATION')}
                 alignIcon='right'
                 transparent
                 justify='flex-start'
@@ -66,11 +61,11 @@ export default ({ userId }) => {
                 }}
             />
             
-            {user.location && typeof user.location !== 'string'
-                ? <LocationDetails location={user.location} />
+            {profile.location && typeof profile.location !== 'string'
+                ? <LocationDetails location={profile.location} />
                 : (
                     <Pressable
-                        onPress={() => setModalVisible(true)}
+                        onPress={() => setModal('LOCATION')}
                     >
                         <ThemedText>Add your location.</ThemedText>
                     </Pressable>

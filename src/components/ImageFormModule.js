@@ -1,22 +1,22 @@
 import React, { useContext, useState } from 'react'
 import {
+    Image,
     View,
 } from 'react-native'
 import {
     FileSelector,
     IconButton,
-    ImageWithURI,
 } from '.'
 import EXIF from 'exif-js'
-import { AppContext } from '@context'
+import { AppContext, useUser } from '@context'
 
 export default ({ onImageSelected, removeImage, uri }) => {
 
     const {
-        dispatch,
         loading,
-        user,
     } = useContext(AppContext)
+
+    const { profile } = useUser()
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
@@ -37,7 +37,7 @@ export default ({ onImageSelected, removeImage, uri }) => {
         image.onload = async () => {
             const data = await handleImageData(image, exif)
             
-            const { uri, height, width } = data.imageData
+            // const { uri, height, width } = data.imageData
             
             onImageSelected(data)
             
@@ -47,7 +47,7 @@ export default ({ onImageSelected, removeImage, uri }) => {
     }
 
     const handleImageData = async (image, srcOrientation) => {
-        const userId = user._id
+        const userId = profile._id
         const imageData = await getImageData(image, srcOrientation)
         const thumbData = await getThumbData(image, srcOrientation)
         const filename = `${userId}-${Date.now()}.png`
@@ -171,8 +171,8 @@ export default ({ onImageSelected, removeImage, uri }) => {
             
             {uri ? (
                 <View style={{ paddingRight: 10 }}>
-                    <ImageWithURI
-                        source={{ uri }}
+                    <Image
+                        uri={{ uri }}
                         style={{
                             width: 50,
                             height: 50,

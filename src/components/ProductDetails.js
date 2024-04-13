@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Image,
-    useWindowDimensions,
+    // useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -10,7 +10,7 @@ import {
     QuantityControl,
 } from '.'
 import {
-    AppContext,
+    // AppContext,
     useApp,
     useCart,
     useModal,
@@ -21,15 +21,15 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ product }) => {
 
-    const { theme } = useApp()
+    const { dims, isLandscape, theme } = useApp()
     const { addToCart } = useCart()
     const { closeModal } = useModal()
 
-    const dims = useWindowDimensions()
+    // const dims = useWindowDimensions()
 
-    const {
-        isLandscape,
-    } = useContext(AppContext)
+    // const {
+        
+    // } = useContext(AppContext)
 
     const [imageDims, setImageDims] = useState(null)
     

@@ -73,6 +73,7 @@ export const AppContextProvider = ({ children }) => {
             <AppContext.Provider
                 value={{
                     ...state,
+                    dims,
                     isLandscape: dims.width > dims.height,
                     ...actions,
                 }}

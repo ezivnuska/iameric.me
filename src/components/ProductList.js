@@ -1,48 +1,59 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { FlatList } from 'react-native'
 import {
     EmptyStatus,
     LoadingView,
     ProductListItem,
 } from '.'
-import { AppContext } from '@context'
-import { ProductContext } from '../context/ProductContext'
-import { deleteProductWithId, loadProducts } from '../utils/data'
+import {
+    useModal,
+    useProducts,
+    useUser,
+} from '@context'
+import { deleteProductWithId, loadProducts } from '@utils/data'
 
 export default () => {
 
     const {
-        dispatch,
-        loading,
-        user,
-    } = useContext(AppContext)
+        deleteProduct,
+        products,
+        productsLoading,
+        setProductsLoading,
+    } = useProducts()
+    const { closeModal, setModal } = useModal()
+    const { profile } = useUser()
 
     useEffect(() => {
-        if (user && !user.products) loadProducts(dispatch, user._id)
-    }, [user])
+        const initProducts = async () => {
+            setProductsLoading(true)
+            await loadProducts(profile._id)
+            setProductsLoading(false)
+        }
+        initProducts()
+    }, [])
 
     const onDelete = async id => {
 
-        dispatch({ type: 'SET_LOADING', loading: 'Deleting product...' })
-
+        setProductsLoading(true)
+        
         const productDeleted = await deleteProductWithId(id)
         
         if (productDeleted) {
-            dispatch({ type: 'DELETE_PRODUCT', id: productDeleted._id })
+            deleteProduct(productDeleted._id)
             console.log(`${productDeleted.title} deleted`)
         }
-            
-        dispatch({ type: 'SET_LOADING', loading: null })
         
-        dispatch({ type: 'CLOSE_MODAL' })
+        setProductsLoading(false)
+        
+        closeModal()
     }
 
-    if (loading) return <LoadingView />
+    if (productsLoading) return <LoadingView />
 
-    return user.products && user.products.length ? (
+    return products && products.length ? (
         <FlatList
             showsVerticalScrollIndicator={false}
-            data={user.products}
+            data={products}
             listKey={() => 'products'}
             keyExtractor={(item, index) => 'key' + index}
             renderItem={({ item }) => (
@@ -51,13 +62,7 @@ export default () => {
                     key={item => `product-${item._id}`}
                     onDelete={() => onDelete(item._id)}
                     onPress={item => {
-                        dispatch({
-                            type: 'SET_MODAL',
-                            payload: {
-                                type: 'PRODUCT',
-                                data: { product: item },
-                            },
-                        })
+                        setModal('PRODUCT', { product: item })
                     }}
                 />
             )}

@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native'
-import { Avatar } from './'
+import { Avatar } from '.'
 import axios from 'axios'
 import EXIF from 'exif-js'
 import { AppContext } from '@context'

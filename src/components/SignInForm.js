@@ -7,21 +7,21 @@ import {
     FormField,
 } from '@components'
 import { setItem } from '@utils/storage'
-import { isValidEmail, signup } from '@utils/auth'
+import { isValidEmail, signin } from '@utils/auth'
+import classes from '@styles/classes'
 import {
+    useApp,
     useAuth,
     useForm,
     useModal,
     useUser,
 } from '@context'
 
-export default ({ role }) => {
+export default () => {
 
     const initialValues = {
         email: '',
-        username: '',
         password: '',
-        confirmPassword: '',
     }
 
     const {
@@ -43,7 +43,7 @@ export default ({ role }) => {
     const { closeModal } = useModal()
     const { setUser } = useUser()
 
-    const { email, username, password, confirmPassword } = useMemo(() => ({
+    const { email, password } = useMemo(() => ({
         ...initialValues,
         ...formFields,
     }), [formFields, initialValues])
@@ -52,7 +52,7 @@ export default ({ role }) => {
     const dirtyFields = useMemo(() => [], [])
 
     useEffect(() => {
-        initForm({ email, username, password, confirmPassword })
+        initForm({ email, password })
     }, [])
 
     useEffect(() => {
@@ -83,6 +83,7 @@ export default ({ role }) => {
             const key = keys[index]
             const isValid = validateField(key)
             if (!isValid) {
+                console.log(`${key} is invalid`)
                 setFocused(index)
                 return
             }
@@ -100,21 +101,9 @@ export default ({ role }) => {
                     isValid = false
                 }
                 break
-            case 'username':
-                if (!username.length) {
-                    setFormError({ name, message: 'Username required.'})
-                    isValid = false
-                }
-                break
             case 'password':
                 if (!password.length) {
                     setFormError({ name, message: 'Password required.'})
-                    isValid = false
-                }
-                break
-            case 'confirmPassword':
-                if (password.length && confirmPassword !== password) {
-                    setFormError({ name, message: 'Passwords must match.'})
                     isValid = false
                 }
                 break
@@ -146,7 +135,6 @@ export default ({ role }) => {
         }
         return false
     }
-
     const isFieldDirty = key => {
         return dirtyFields.indexOf(key) > -1
     }
@@ -165,15 +153,15 @@ export default ({ role }) => {
 
 		await setItem('email', email)
         
-		const { data } = await signup(email, password, role, username)
+		const data = await signin(email, password)
         
         setFormLoading(false)
         
 		if (!data) {
             console.log('Error authenticating user: NULL')
-            setFormError({ name: 'email', message: 'Signup failed.' })
+            setFormError({ name: 'email', message: 'Signin failed.' })
         } else if (data.error) {
-			console.log(`Signup error: ${data.error}`)
+			console.log(`Signin error: ${data.error}`)
             setFormError({ name: 'email', message: 'Authentication failed.' })
 		} else {
             if (formError) clearFormError()
@@ -202,19 +190,6 @@ export default ({ role }) => {
                 dirty={isFieldDirty('email')}
             />
             <FormField
-                label='Username'
-                value={username}
-                error={hasError('username')}
-                placeholder='username'
-                textContentType='none'
-                keyboardType='default'
-                autoCapitalize='none'
-                onChangeText={value => onChange('username', value)}
-                autoFocus={isFieldFocused('username')}
-                onKeyPress={onEnter}
-                dirty={isFieldDirty('username')}
-            />
-            <FormField
                 label='Password'
                 value={password}
                 error={hasError('password')}
@@ -227,19 +202,6 @@ export default ({ role }) => {
                 onKeyPress={onEnter}
                 dirty={isFieldDirty('password')}
             />
-            <FormField
-                label='Confirm Password'
-                value={confirmPassword}
-                error={hasError('confirmPassword')}
-                placeholder='confirm password'
-                textContentType='password'
-                autoCapitalize='none'
-                secureTextEntry={true}
-                onChangeText={value => onChange('confirmPassword', value)}
-                autoFocus={isFieldFocused('confirmPassword')}
-                onKeyPress={onEnter}
-                dirty={isFieldDirty('confirmPassword')}
-            />
         </>
     )
     
@@ -247,13 +209,16 @@ export default ({ role }) => {
         <View
             style={{ paddingVertical: 20 }}
         >
-            {renderFields()}
+            <View style={{ marginBottom: 10 }}>
+                {renderFields()}
+            </View>
+
             <IconButton
                 type='primary'
-                label={formLoading ? 'Signing Up' : 'Sign Up'}
+                label={formLoading ? 'Signing In' : 'Sign In'}
                 disabled={formLoading || formError}
                 onPress={submitFormData}
-            />            
+            />
         </View>
     ) : null
 }

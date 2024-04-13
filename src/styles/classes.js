@@ -123,7 +123,7 @@ export default {
 	},
     formInputLabel: {
 		fontSize: 18,
-		lineHeight: 40,
+		lineHeight: 24,
         fontWeight: 500,
         // lineHeight: sizes.formInputLabel + 4,// 22
     },

@@ -97,7 +97,7 @@ const handleSignin = async (req, res) => {
 
     console.log(`\nUser signed in: ${user.username}`)
     
-    return res.status(200).json(sanitizedUser)
+    return res.status(200).json({ user: sanitizedUser })
 }
 
 const validateToken = async (req, res) => {
@@ -155,6 +155,7 @@ const createUser = async (email, username, password, role) => {
 const handleSignup = async (req, res) => {
     const { email, password, username, role } = req.body
     console.log('password', password)
+    
     return bcrypt.genSalt(10, async (err, salt) => {
         console.log('salt', salt)
         bcrypt.hash(password, salt, async (err, hash) => {

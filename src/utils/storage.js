@@ -31,9 +31,9 @@ export const removeItems = async keys => {
 }
 
 export const cleanStorage = async () => {
-    return removeItems(['userToken', 'route'])
+    return removeItems(['userToken'])
 }
 
 export const clearStorage = async () => {
-    return AsyncStorage.multiRemove(['userToken', 'route', 'email'])
+    return AsyncStorage.multiRemove(['userToken', 'email'])
 }

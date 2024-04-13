@@ -4,8 +4,9 @@ const initialState = {
     products: [],
     error: null,
     loaded: false,
-    loading: false,
+    productsLoading: false,
     removeProductImage: () => {},
+    setLoadingProducts: () => {},
     setProducts: () => {},
     addProduct: () => {},
     updateProduct: () => {},
@@ -30,6 +31,9 @@ export const ProductContextProvider = props => {
     const actions = useMemo(() => ({
         removeProductImage: imageId => {
             dispatch({ type: 'REMOVE_PRODUCT_IMAGE', payload: imageId })
+        },
+        setProductsLoading: payload => {
+            dispatch({ type: 'SET_PRODUCTS_LOADING', payload })
         },
         setProducts: products => {
             dispatch({ type: 'SET_PRODUCTS', payload: products })
@@ -64,7 +68,7 @@ export const ProductContextProvider = props => {
 const reducer = (state, action) => {
     const { type, payload } = action
     switch(type) {
-        case 'LOADING_PRODUCTS':
+        case 'SET_PRODUCTS_LOADING':
             return {
                 ...state,
                 loading: payload,

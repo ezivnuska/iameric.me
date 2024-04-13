@@ -11,13 +11,14 @@ const initialState = {
     error: null,
     loaded: false,
     loading: false,
+    setLoading: () => {},
     signIn: () => {},
     signOut: () => {},
 }
 
 export const AuthContext = createContext(initialState)
 
-export const useAuthorization = () => {
+export const useAuth = () => {
     const context = useContext(AuthContext)
     if (!context) {
         throw new Error()

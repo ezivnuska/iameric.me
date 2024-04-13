@@ -1,52 +1,44 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
 } from 'react-native'
 import {
     EmptyStatus,
     ImageList,
-    LoadingView,
 } from '@components'
 import {
     Screen,
     ScreenTitle,
 } from '.'
 import {
-    AppContext,
-    ModalContext,
     useModal,
 } from '@context'
 import { loadFullUser } from '@utils/data'
 
 export default ({ navigation, route }) => {
     const { setModal } = useModal()
-    const {
-        dispatch,
-    } = useContext(ModalContext)
-    const {
-        loading,
-    } = useContext(AppContext)
 
     const { id } = route.params
     const [currentUser, setCurrentUser] = useState(null)
 
     useEffect(() => {
+        const init = async () => {
+            const result = await loadFullUser(id)
+            setCurrentUser(result)
+        }
         init()
     }, [])
 
-    const init = async () => {
-        const result = await loadFullUser(id)
-        setCurrentUser(result)
-    }
-
-    if (loading) return  <LoadingView />
+    useEffect(() => {
+        if (currentUser && id !== currentUser._id) init()
+    }, [id])
 
     return currentUser ? (
         <Screen
             titleComponent={
                 <ScreenTitle
                     backLabel='Users'
-                    title={currentUser ? currentUser.username : 'User' }
+                    title={currentUser.username}
                     navigation={navigation}
                 />
             }
@@ -57,7 +49,6 @@ export default ({ navigation, route }) => {
                 >
                     <ImageList
                         images={currentUser.images}
-                        // username={currentUser.username}
                         onSelected={image => {
                             setModal('IMAGE', image)
                         }}

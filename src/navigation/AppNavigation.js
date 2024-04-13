@@ -20,7 +20,7 @@ import {
 } from './navigators'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { navigationRef } from './RootNavigation'
-import { useApp, useAuthorization } from '@context'
+import { useApp, useAuth } from '@context'
 
 const iconSize = 24
 
@@ -180,7 +180,7 @@ const SettingsStackScreen = () => {
 
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
-    const { status } = useAuthorization()
+    const { status } = useAuth()
     return (
         <AppStack.Navigator
             initialRouteName='Start'

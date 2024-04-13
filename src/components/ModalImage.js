@@ -19,22 +19,16 @@ export default ({ id }) => {
     const { removeUserImage } = useContacts()
     const { items, updateProductImage } = useProducts()
 
-    const {
-        loading,
-    } = useContext(AppContext)
-
     const [image, setImage] = useState(null)
     
     useEffect(() => {
-        console.log('modal data', data)
+        const init = async () => {
+            const loadedImage = await loadUnknownImage(data._id, profile._id)
+            if (!loadedImage) return console.log('problem loading unknow image.')
+            setImage(loadedImage)
+        }
         init()
     }, [])
-
-    const init = async () => {
-        const loadedImage = await loadUnknownImage(data._id, profile._id)
-        if (!loadedImage) return console.log('problem loading unknow image.')
-        setImage(loadedImage)
-    }
 
     const isImageProfileImage = id => profile.profileImage === id
 
@@ -65,14 +59,11 @@ export default ({ id }) => {
                 isProfileImage,
             })
             
-        if (!data) {
+        if (data) {
             console.log('Error deleting image.')
-        } else {
-            // if (onDelete) onDelete(data.imageId, isProfileImage, isProductImage)
-            closeModal()
-            // dispatch({ type: 'SET_FEATURED_IMAGE', image: null })
         }
         
+        closeModal()
     }
 
     const setAvatar = async () => {
@@ -87,9 +78,9 @@ export default ({ id }) => {
             console.log('Error setting profileImage.')
         } else {
             setProfileImage(data)
-            closeModal()
-            // dispatch({ type: 'SET_FEATURED_IMAGE', image: null })
         }
+
+        closeModal()
     }
 
     const setProductImage = async productId => {
@@ -110,8 +101,6 @@ export default ({ id }) => {
         
         closeModal()
     }
-    
-    if (loading) return <LoadingView />
     
     return image && (
         <ImageDetail

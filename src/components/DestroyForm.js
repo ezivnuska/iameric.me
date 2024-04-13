@@ -1,58 +1,132 @@
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
+    Text,
+    TextInput,
     View,
 } from 'react-native'
 import {
-    FormInput,
     IconButton,
     ThemedText,
-} from '.'
-import { AppContext } from '@context'
-import { clearStorage } from '../utils/storage'
-import { unsubscribe } from '../utils/auth'
-import classes from '../styles/classes'
+} from '@components'
+import { unsubscribe } from '@utils/auth'
+import { cleanStorage } from '@utils/storage'
+import classes from '@styles/classes'
+import {
+    useApp,
+    useAuth,
+    useForm,
+    useModal,
+    useUser,
+} from '@context'
 
 export default () => {
 
     const {
-        dispatch,
-        user,
-    } = useContext(AppContext)
+        clearForm,
+        clearFormError,
+        formError,
+        formLoading,
+        setFormError,
+        setFormLoading,
+    } = useForm()
 
-    const [confirmationText, setConfirmationText] = useState('')
+    const {
+        signOut,
+    } = useAuth()
 
-    const deleteAccount = async () => {
+    const { closeModal } = useModal()
+    const { profile, clearUser } = useUser()
 
-        if (!isValid()) return
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Deleting account...' })
-        
-        await clearStorage()
-        
-        const response = await unsubscribe(user._id)
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
+    const [confirmUsername, setConfirmUsername] = useState('')
 
-        if (response) {
+    const [focused, setFocused] = useState(null)
 
-            if (response.success) {
-                console.log('Successfully deleted account.')
-                dispatch({ type: 'SIGNOUT' })
-            } else if (response.msg) {
-                console.log('Error unsubscribing:', response.msg)
-            }
-        } else {
-            console.log('Error deleting account.')
-        }
+    useEffect(() => {
+        validateFields()
+    }, [confirmUsername])
+
+    const validateFields = () => {
+        const isValid = validateField()
+        if (!isValid) console.log(`username is invalid`)
+        setFocused(0)
     }
 
+    const validateField = () => {
+        let isValid = true
+        if (confirmUsername !== profile.username) {
+            setFormError({ name: 'confirmUsername', message: 'Incorrect username.'})
+            isValid = false
+        }
+
+        if (isValid && formError && formError.name === 'confirmUsername') {
+            clearFormError()
+        }
+
+        return isValid
+    }
+
+    const onChange = value => {
+        setConfirmUsername(value)
+    }
+
+    const hasError = () => {
+        if (formError && formError.name === 'confirmUsername') {
+            return formError.message
+        }
+        else return false
+    }
+    
     const onEnter = e => {
-        if (e.code === 'Enter') {
-            deleteAccount()
-        }
+		if (e.code === 'Enter') submitFormData()
+	}
+
+    const submitFormData = async () => {
+        if (formError) {
+			console.log(`Error in form field ${formError.name}: ${formError.message}`)
+            return
+		}
+
+        setFormLoading(true)
+        
+		const unsubscribed = await unsubscribe(profile._id)
+        
+        setFormLoading(false)
+
+		if (!unsubscribed) {
+            console.log('Error unsubscribing user: NULL')
+            setFormError({ name: 'confirmUsername', message: 'Unsubscribe failed.' })
+        } else {
+            if (formError) clearFormError()
+            signOut()
+            clearUser()
+            cleanStorage()
+            clearForm()
+            closeModal()
+		}
     }
 
-    const isValid = () => confirmationText === user.username
+    const renderForm = () => (
+        <View>
+            <FormField
+                label='Confirm Username'
+                value={confirmUsername}
+                error={hasError()}
+                placeholder='username'
+                textContentType='none'
+                keyboardType='default'
+                autoCapitalize='none'
+                onChangeText={value => onChange(value)}
+                autoFocus={true}
+                onKeyPress={onEnter}
+            />
+            <IconButton
+                type='primary'
+                label={formLoading ? 'Burning...' : 'Burn it all.'}
+                disabled={formLoading || formError}
+                onPress={submitFormData}
+            />
+        </View>
+    )
     
     return (
         <View>
@@ -69,23 +143,76 @@ export default () => {
                 </ThemedText>
             </View>
 
-            <FormInput
-                // label='Leave a comment'
-                value={confirmationText}
-                onChange={value => setConfirmationText(value)}
-                placeholder='username'
-                textContentType='none'
-                autoCapitalize='none'
-                keyboardType='default'
-                onKeyPress={onEnter}
-            />
+            {focused !== null ? renderForm() : null}
+        </View>
+    )
+}
 
-            <IconButton
-                type='danger'
-                label='Delete Account'
-                onPress={deleteAccount}
-                disabled={!isValid()}
-            />
+const FormField = ({ error, label, value, ...props }) => {
+
+    const { isLandscape, theme } = useApp()
+
+    const [initialValue, setInitialValue] = useState(null)
+    const [dirty, setDirty] = useState(false)
+
+    useEffect(() => {
+        if (!initialValue) {
+            setInitialValue(value)
+        }
+    }, [])
+
+    useEffect(() => {
+        if (initialValue) console.log(`initial ${label} value set:`, initialValue)
+    }, [initialValue])
+
+    return (
+        <View>
+            <ThemedText
+                style={[
+                    classes.formInputLabel,
+                    {
+                        paddingBottom: 2,
+                        color: theme?.colors.inputLabel,
+                    },
+                ]}
+            >
+                {label}
+            </ThemedText>
+
+            <View
+                style={[
+                    classes.formInputContainer,
+                    { borderBottomColor: error ? '#f00' : '#1f1' },
+                ]}
+            >
+                <View
+                    style={{
+                        backgroundColor: theme?.colors.inputBackground,
+                        height: 40,
+                    }}
+                >
+                    <TextInput
+                        value={value}
+                        multiline={false}
+                        autoCorrect={false}
+                        spellCheck={false}
+                        style={[
+                            classes.formInput,
+                            {
+                                color: theme?.colors.inputText,
+                                placeholderTextColor: theme?.colors.inputPlaceholder,
+                                backgroundColor: 'transparent',
+                                lineHeight: 40,
+                                height: 40,
+                                flexWrap: 'nowrap',
+                                maxWidth: 300,
+                            },
+                        ]}
+                        {...props}
+                    />
+                </View>
+                {error && <Text style={{ color: '#f00' }}>{error.message}</Text>}
+            </View>
         </View>
     )
 }

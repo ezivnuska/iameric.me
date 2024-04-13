@@ -1,80 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import {
     Image,
     useWindowDimensions,
 } from 'react-native'
-import {
-    LoadingView,
-} from '@components'
-import { AppContext } from '@context'
-import { loadUserById } from '@utils/data'
-import axios from 'axios'
+import { useUser } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const MAX_IMAGE_HEIGHT = 120
 
-export default ({ userId }) => {
+export default () => {
 
     const dims = useWindowDimensions()
 
-    const {
-        dispatch,
-        loading,
-        user,
-    } = useContext(AppContext)
-
-    // const [userDetails, setUserDetails] = useState(null)
-    // const [images, setImages] = useState(null)
-
-    // useEffect(() => {
-    //     if (!userId) console.log('missing required user id param')
-    //     else loadUserDetails(userId)
-    // }, [])
-
-    // useEffect(() => {
-    //     if (userId && userDetails && userId !== userDetails._id)
-    //         loadUserDetails(userId)
-    // }, [userId])
-
-    // useEffect(() => {
-    //     if (!userDetails) {
-    //         setImages(null)
-    //     } else {
-    //         if (userDetails._id !== userId) {
-    //             loadUserDetails(userId)
-    //         } else if (!images) {
-    //             loadImages()
-    //         }
-    //     }
-    // }, [userDetails])
-
-    // const loadUserDetails = async () => {
-
-    //     dispatch({ type: 'SET_LOADING', loading: 'Loading user details...' })
-        
-    //     const user = await loadUserById(userId)
-        
-    //     if (!user) {
-    //         console.log('could not load user details with id:', userId)
-    //     } else {
-    //         setUserDetails(user)
-    //     }
-        
-    //     dispatch({ type: 'SET_LOADING', loading: null })
-    // }
-
-    // const loadImages = async () => {
-        
-    //     dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
-        
-    //     const { data } = await axios.get(`/api/user/images/${userId}`)
-        
-    //     if (!data) {
-    //         console.log('Error fetching user images.')
-    //     }
-        
-    //     dispatch({ type: 'SET_LOADING', loading: null })
-    // }
+    const { profile } = useUser()
 
     const getImageDims = (w, h) => {
         let scale = 1
@@ -97,9 +35,11 @@ export default ({ userId }) => {
     }
 
     // TODO: clean this.
-    const renderUserAvatar = userDetails => {
+    const renderUserAvatar = () => {
 
-        const { profileImage, username } = userDetails
+        if (!profile) return null
+
+        const { profileImage, username } = profile
 
         const filename = (profileImage && profileImage.filename)
             ? profileImage.filename
@@ -125,9 +65,5 @@ export default ({ userId }) => {
         )
     }
 
-    return loading
-        ? <LoadingView />
-        : user
-            ? renderUserAvatar(user)
-            : null
+    return renderUserAvatar(profile)
 }

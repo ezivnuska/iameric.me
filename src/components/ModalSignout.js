@@ -1,18 +1,19 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import {
     View,
 } from 'react-native'
 import {
+    CenterVertical,
     IconButton,
 } from '.'
-import { AppContext, useAuthorization, useModal, useUser } from '@context'
+import { AppContext, useAuth, useModal, useUser } from '@context'
 import { signout } from '@utils/auth'
 
 export default () => {
 
     const { closeModal } = useModal()
     const { profile, clearUser } = useUser()
-    const { status, signOut } = useAuthorization()
+    const { signOut } = useAuth()
 
     const {
         loading,
@@ -20,31 +21,29 @@ export default () => {
 
     const initSignout = async () => {
         const signedOut = await signout(profile._id)
-        console.log('SIGNEDOUT', signedOut)
         if (!signedOut) throw new Error()
         else {
             signOut()
             clearUser()
             closeModal()
+            console.log('USER SIGNED OUT')
         }
     }
 
-    useEffect(() => {
-        console.log('status', status)
-    }, [status])
-
     return (
-        <View
-            style={{
-                marginHorizontal: 10,
-            }}
-        >
-            <IconButton
-                type='primary'
-                label='Sign Out'
-                onPress={initSignout}
-                disabled={loading}
-            />
-        </View>
+        <CenterVertical>
+            <View
+                style={{
+                    marginHorizontal: 10,
+                }}
+            >
+                <IconButton
+                    type='primary'
+                    label='Sign Out'
+                    onPress={initSignout}
+                    disabled={loading}
+                />
+            </View>
+        </CenterVertical>
     )
 }

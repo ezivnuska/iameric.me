@@ -1,16 +1,8 @@
-import React, { useContext } from 'react'
-import {
-  IconButton,
-} from '.'
-import { openFileSelector } from '../utils/images'
-import { AppContext } from '@context'
+import React from 'react'
+import { IconButton } from '.'
+import { openFileSelector } from '@utils/images'
 
 export default ({ onSelected }) => {
-
-  const {
-    dispatch,
-    loading,
-  } = useContext(AppContext)
 
   const handlePress = async () => {
     const uri = await openFileSelector()
@@ -22,7 +14,7 @@ export default ({ onSelected }) => {
       type='primary'
       label='Select'
       onPress={handlePress}
-      disabled={loading}
+      // disabled={loading}
     />
   )
 }
