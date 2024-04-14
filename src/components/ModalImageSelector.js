@@ -2,36 +2,41 @@ import React, { useContext } from 'react'
 import {
     ImageSelector,
 } from '.'
-import { AppContext } from '@context'
+import {
+    useModal,
+    useUser,
+} from '@context'
 import axios from 'axios'
 
 export default () => {
 
-    const {
-        dispatch,
-    } = useContext(AppContext)
+    const { closeModal } = useModal()
+    const { addImage, userLoading, setUserLoading } = useUser()
 
     const uploadImageData = async imageData => {
-        
-        if (!imageData) {
-            dispatch({ type: 'CLOSE_MODAL' })
+        if (process.env.NODE_ENV === 'development') {
+            console.log('cant upload in dev')
             return null
         }
 
-        dispatch({ type: 'SET_LOADING', loading: 'Uploading image...' })
+        if (!imageData) {
+            closeModal()
+            return null
+        }
 
+        setUserLoading(true)
+        
         const { data } = await axios
             .post(`/api/image/upload`, imageData)
-    
+        
+        setUserLoading(false)
+
         if (!data) {
             console.log('Error uploading image/thumb')
         } else {
-            dispatch({ type: 'ADD_IMAGE', image: data })
-            dispatch({ type: 'CLOSE_MODAL', image: data })
-            // dispatch({ type: 'SET_FEATURED_IMAGE', image: null })
+            addImage(data)
+            closeModal()
         }
-        
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
     
     return (

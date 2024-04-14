@@ -28,14 +28,14 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default ({ navigation }) => {
 
     const { authToken, signIn, status } = useAuth()
-    const { profile, setUser } = useUser()
+    const { setUser } = useUser()
     const { setModal } = useModal()
 
     useEffect(() => {
-        if (profile) {
+        if (status === 'in') {
             navigation.navigate('Tabs')
         }
-    }, [profile])
+    }, [status])
 
     useEffect(() => {
         const checkToken = async () => {
@@ -47,8 +47,9 @@ export default ({ navigation }) => {
                 setUser(user)
             }
         }
+        
         if (authToken) checkToken()
-    }, [status])
+    }, [authToken])
 
     const onConnect = async type => {
         

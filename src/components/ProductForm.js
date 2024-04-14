@@ -181,9 +181,9 @@ export default  () => {
             console.log('Error saving product', data)
         } else {
             if (product) {
-                addProduct(data)
-            } else {
                 updateProduct(data)
+            } else {
+                addProduct(data)
             }
             clearForm()
             closeModal()

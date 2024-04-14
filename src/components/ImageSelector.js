@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     useWindowDimensions,
     View,
@@ -8,7 +8,9 @@ import {
     Preview,
 } from '.'
 import EXIF from 'exif-js'
-import { AppContext } from '@context'
+import {
+    useUser,
+} from '@context'
 import { openFileSelector } from 'src/utils/images'
 
 const initialSize = 280
@@ -16,10 +18,10 @@ const initialSize = 280
 export default ({ onSelected }) => {
 
     const {
-        dispatch,
-        loading,
-        user,
-    } = useContext(AppContext)
+        profile,
+        setUserLoading,
+        userLoading,
+    } = useUser()
     
     const dims = useWindowDimensions()
 
@@ -59,7 +61,7 @@ export default ({ onSelected }) => {
 
         const blob = await dataURItoBlob(uri)
 
-        dispatch({ type: 'SET_LOADING', loading: 'Processing selected image...' })
+        setUserLoading(true)
         
         reader.readAsArrayBuffer(blob)
     }
@@ -69,7 +71,7 @@ export default ({ onSelected }) => {
         image.onload = async () => {
             const data = await handleImageData(image, exif)
             
-            dispatch({ type: 'SET_LOADING', loading: null })
+            setUserLoading(false)
 
             setPayload(data)
             
@@ -89,7 +91,7 @@ export default ({ onSelected }) => {
     }, [payload])
 
     const handleImageData = async (image, srcOrientation) => {
-        const userId = user._id
+        const userId = profile._id
         const imageData = await getImageData(image, srcOrientation)
         const thumbData = await getThumbData(image, srcOrientation)
         const filename = `${userId}-${Date.now()}.png`
@@ -232,13 +234,13 @@ export default ({ onSelected }) => {
                         <IconButton
                             type='primary'
                             label='Upload Image'
-                            disabled={loading}
+                            disabled={userLoading}
                             onPress={onSubmit}
                         />
 
                         <IconButton
                             label='Change Image'
-                            disabled={loading}
+                            disabled={userLoading}
                             onPress={initFileSelector}
                         />
 
@@ -248,7 +250,7 @@ export default ({ onSelected }) => {
                     <IconButton
                         type='primary'
                         label='Select Image'
-                        disabled={loading}
+                        disabled={userLoading}
                         onPress={initFileSelector}
                     />
                 )}

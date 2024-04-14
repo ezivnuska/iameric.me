@@ -3,7 +3,7 @@ import React, { createContext, useContext, useMemo, useReducer } from 'react'
 const initialState = {
     contacts: [],
     error: null,
-    loading: false,
+    contactsLoading: false,
     setLoadingContacts: () => {},
     setContacts: () => {},
     updateContact: () => {},
@@ -54,7 +54,7 @@ const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
         case 'SET_LOADING_CONTACTS':
-            return { ...state, loading: payload }
+            return { ...state, contactsLoading: payload }
             break
         case 'SET_USERS':
             return { ...state, contacts: payload }

@@ -4,7 +4,6 @@ import {
     Text,
     View,
 } from 'react-native'
-// import { useTheme } from 'react-native-paper'
 import { useApp } from '@context'
 import { navigationRef } from 'src/navigation/RootNavigation'
 

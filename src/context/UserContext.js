@@ -2,17 +2,17 @@ import React, { createContext, useContext, useMemo, useReducer } from 'react'
 
 const initialState = {
     profile: null,
-    loading: false,
-    loaded: false,
+    userLoading: false,
     error: null,
-    setUser: () => {},
-    setProfileImage: () => {},
-    setLocation: () => {},
-    updateImages: () => {},
-    updateImage: () => {},
     addImage: () => {},
-    removeImage: () => {},
     clearUser: () => {},
+    removeImage: () => {},
+    setLocation: () => {},
+    setProfileImage: () => {},
+    setUser: () => {},
+    setUserLoading: () => {},
+    updateImage: () => {},
+    updateImages: () => {},
 }
 
 export const UserContext = createContext(initialState)
@@ -36,17 +36,20 @@ export const UserContextProvider = props => {
         setProfileImage: payload => {
             dispatch({ type: 'SET_PROFILE_IMAGE', payload })
         },
+        setUserLoading: payload => {
+            dispatch({ type: 'SET_USER_LOADING', payload })
+        },
         setLocation: payload => {
             dispatch({ type: 'SET_LOCATION', payload })
-        },
-        updateImages: payload => {
-            dispatch({ type: 'UPDATE_IMAGES', payload })
         },
         addImage: payload => {
             dispatch({ type: 'ADD_IMAGE', payload })
         },
         updateImage: payload => {
             dispatch({ type: 'UPDATE_IMAGE', payload })
+        },
+        updateImages: payload => {
+            dispatch({ type: 'UPDATE_IMAGES', payload })
         },
         removeImage: payload => {
             dispatch({ type: 'REMOVE_IMAGE', payload })
@@ -66,11 +69,8 @@ export const UserContextProvider = props => {
 const reducer = (state, action) => {
     const { type, payload } = action
     switch(type) {
-        case 'SET_LOADING':
-            return { ...state, loading: payload }
-            break
-        case 'SET__LOADED':
-            return { ...state, loaded: payload }
+        case 'SET_USER_LOADING':
+            return { ...state, userLoading: payload }
             break
         case 'SET_USER':
             return { ...state, profile: payload }
@@ -108,22 +108,13 @@ const reducer = (state, action) => {
                 profile: {
                     ...state.profile,
                     images: [
-                        ...state.images,
+                        ...state.profile.images,
                         payload,
                     ],
                 },
             }
             break
         case 'UPDATE_IMAGE':
-            if (!state.profile.images) {
-                return {
-                    ...state,
-                    profile: {
-                        ...state.profile,
-                        images: [payload],
-                    }
-                }
-            }
             return {
                 ...state,
                 profile: {

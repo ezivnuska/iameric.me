@@ -155,12 +155,12 @@ const SettingsStackScreen = () => {
             <SettingsStack.Screen
                 name='Images'
                 component={ImagesScreen}
-                options={({ route, navigation }) => ({
+                options={{
                     tabBarLabel: 'Images',
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name='images-outline' size={iconSize} color={color} />
                     ),
-                })}
+                }}
             />
 
             <SettingsStack.Screen

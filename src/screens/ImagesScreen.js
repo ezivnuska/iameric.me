@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     ImageList,
 } from '@components'
@@ -17,12 +17,15 @@ import { loadImages } from '@utils/images'
 
 export default () => {
 
-    const { profile, updateImages } = useUser()
+    const { profile, setUserLoading, updateImages } = useUser()
     const { setModal } = useModal()
+    const profileImages = useMemo(() => profile.images, [profile])
 
     useEffect(() => {
         const init = async () => {
+            setUserLoading(true)
             const images = await loadImages(profile._id)
+            setUserLoading(false)
             updateImages(images)
         }
         init()
@@ -32,18 +35,17 @@ export default () => {
         <Screen
             titleComponent={<ScreenTitle title='Images' />}
         >
-            {profile.images && (
-                <View style={{ paddingHorizontal: 10 }}>
+            <View style={{ paddingHorizontal: 10 }}>
+                {profileImages && (
                     <ImageList
-                        images={profile.images}
-                        // username={user.username}
+                        images={profileImages}
                         onSelected={image => {
                             console.log('selected image', image)
                             setModal('IMAGE', image._id)
                         }}
                     />
-                </View>
-            )}
+                )}
+            </View>
         </Screen>
     )
 }
