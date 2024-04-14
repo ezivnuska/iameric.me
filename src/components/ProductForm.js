@@ -60,7 +60,6 @@ export default  () => {
     const { profile } = useUser()
     
     useEffect(() => {
-        console.log('product on initialization...', product)
         initForm({ ...initialValues, ...product })
     }, [])
 
@@ -181,7 +180,11 @@ export default  () => {
         if (!data) {
             console.log('Error saving product', data)
         } else {
-            addProduct(data)
+            if (product) {
+                addProduct(data)
+            } else {
+                updateProduct(data)
+            }
             clearForm()
             closeModal()
         }
