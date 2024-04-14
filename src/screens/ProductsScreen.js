@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     IconButton,
     ProductList,
@@ -7,13 +7,12 @@ import {
     Screen,
     ScreenTitle,
 } from '.'
-import { AppContext, useApp, useModal } from '@context'
+import {
+    useApp,
+    useModal,
+} from '@context'
 
 export default () => {
-
-    const {
-        loading,
-    } = useContext(AppContext)
 
     const { theme } = useApp()
     const { setModal } = useModal()
@@ -26,7 +25,6 @@ export default () => {
                         label='New Product'
                         iconName='add-outline'
                         onPress={() => setModal('PRODUCT')}
-                        disabled={loading}
                         alignIcon='right'
                         textStyles={{
                             fontSize: 16,

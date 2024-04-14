@@ -18,6 +18,7 @@ export default () => {
         deleteProduct,
         products,
         productsLoading,
+        setProducts,
         setProductsLoading,
     } = useProducts()
     const { closeModal, setModal } = useModal()
@@ -26,8 +27,10 @@ export default () => {
     useEffect(() => {
         const initProducts = async () => {
             setProductsLoading(true)
-            await loadProducts(profile._id)
+            const items = await loadProducts(profile._id)
+            console.log('products-->', items)
             setProductsLoading(false)
+            setProducts(items)
         }
         initProducts()
     }, [])
@@ -38,12 +41,12 @@ export default () => {
         
         const productDeleted = await deleteProductWithId(id)
         
+        setProductsLoading(false)
+
         if (productDeleted) {
             deleteProduct(productDeleted._id)
             console.log(`${productDeleted.title} deleted`)
         }
-        
-        setProductsLoading(false)
         
         closeModal()
     }

@@ -7,16 +7,15 @@ import {
     Screen,
     ScreenTitle,
 } from '.'
-import { AppContext, useApp, useModal } from '@context'
+import {
+    useApp,
+    useModal,
+} from '@context'
 
 export default () => {
 
     const { theme } = useApp()
-    const { setModal } = useModal()
-
-    const {
-        loading,
-    } = useContext(AppContext)
+    const { data, setModal } = useModal()
 
     return (
         <Screen
@@ -25,8 +24,7 @@ export default () => {
                     <IconButton
                         label='New Product'
                         iconName='add-outline'
-                        onPress={() => setModal('PRODUCT')}
-                        disabled={loading}
+                        onPress={() => setModal('PRODUCT', data)}
                         alignIcon='right'
                         textStyles={{
                             fontSize: 16,

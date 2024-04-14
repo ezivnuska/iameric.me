@@ -156,6 +156,7 @@ const reducer = (state, action) => {
             }
             break
         case 'SET_FORM_ERROR':
+            console.log('FormError:', payload)
             return {
                 ...state,
                 formError: payload,

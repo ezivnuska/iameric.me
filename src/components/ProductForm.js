@@ -1,30 +1,26 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
     View,
 } from 'react-native'
 import {
     CategoryPicker,
-    FormInput,
+    FormField,
     IconButton,
     ImageFormModule,
 } from '.'
 import axios from 'axios'
-import { AppContext, useProducts, useUser } from '@context'
-import classes from '../styles/classes'
+import {
+    useForm,
+    useModal,
+    useProducts,
+    useUser,
+} from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default  ({ product }) => {
-    
-    const { addProduct, updateProduct } = useProducts()
-    const { profile } = useUser()
+export default  () => {
 
-    const {
-        dispatch,
-        loading,
-    } = useContext(AppContext)
-
-    const initialState = {
+    const initialValues = {
         title: '',
         price: '',
         blurb: '',
@@ -34,123 +30,131 @@ export default  ({ product }) => {
         attachment: null,
     }
 
-    // const [formData, setFormData] = useState(initialState)
-    const [title, setTitle] = useState('')
-    const [price, setPrice] = useState('')
-    const [blurb, setBlurb] = useState('')
-    const [desc, setDesc] = useState('')
-    const [category, setCategory] = useState('main')
-    const [image, setImage] = useState(null)
-    const [attachment, setAttachment] = useState(null)
-
-    // let formData = {
-    //     vendor: user._id,
-    //     title,
-    //     price,
-    //     blurb,
-    //     desc,
-    //     category,
-    //     image,
-    //     attachment,
-    // }
-
-    const onChangeTitle = value => setTitle(value)
-    const onChangePrice = value => setPrice(value)
-    const onChangeBlurb = value => setBlurb(value)
-    const onChangeDesc = value => setDesc(value)
-    const onChangeCategory = value => setCategory(value)
-
-    // useEffect(() => {
-    //     setFormData({ title, price, category, blurb, desc, image, attachment })
-    // }, [title, price, category, blurb, desc, image, attachment])
+    const {
+        clearForm,
+        clearFormError,
+        focused,
+        formError,
+        formFields,
+        formLoading,
+        formReady,
+        getDirty,
+        getError,
+        getFocus,
+        initForm,
+        markDirty,
+        setFocus,
+        setFormError,
+        setFormLoading,
+        setFormValues,
+    } = useForm()
     
-    // useEffect(() => {
-    //     console.log('product-->', product)
-    //     updateFormData(initialState)
-    // }, [])
+    const {
+        addProduct,
+        updateProduct,
+    } = useProducts()
+
+    const { closeModal } = useModal()
+    const modalData = useModal().data
+    const { product } = modalData
+    const { profile } = useUser()
     
     useEffect(() => {
-        // if editing, set initial form vars
-        updateFormData(product || initialState)
+        console.log('product on initialization...', product)
+        initForm({ ...initialValues, ...product })
     }, [])
 
-    // useEffect(() => {
-    //     console.log('initial product data', productData)
-    //     if (productData) {
-    //         setInitialState(productData)
-    //     }
-    // }, [])
-
     useEffect(() => {
-        console.log('title changed', title)
-    }, [title])
-    
-    // useEffect(() => {
-    //     // if editing, set initial form vars
-    //     if (productData) {
-    //         setFormData(productData)
-    //     }
-    // }, [productData])
+        if (formReady) validateFields()
+    }, [formReady, formFields])
 
-    // useEffect(() => {
-    //     console.log('formData changed', formData)
-    //     dispatch({ type: 'SET_PRODUCT', productData: formData })
-    // }, [formData])
-
-    const updateFormData = data => {
-        console.log('data', data)
-        setTitle(data.title)
-        setPrice(data.price)
-        setBlurb(data.blurb)
-        setDesc(data.desc)
-        setCategory(data.category)
-        setImage(data.image)
-        // setFormData(data)
-
-        // dispatch({ type: 'SET_PRODUCT', productData: ({
-        //     _id: data._id,
-        //     vendor: user._id,
-        //     title: data.title,
-        //     price: data.price,
-        //     blurb: data.blurb,
-        //     desc: data.desc,
-        //     category: data.category,
-        //     image: data.image,
-        // })})
+    const validateFields = () => {
+        const values = Object.keys(initialValues)
+        const fields = Object.keys(formFields)
+        let index = 0
+        while (index < fields.length) {
+            const key = fields[index]
+            const isValid = validateField(key)
+            if (!isValid) {
+                setFocus(key)
+                return
+            }
+            index++
+        }
+        setFocus(values[0])
     }
+
+    const validateField = name => {
+        let isValid = true
+        switch (name) {
+            case 'title':
+                if (!formFields.title.length) {
+                    setFormError({ name, message: 'Title required.'})
+                    isValid = false
+                }
+                break
+            case 'price':
+                if (!formFields.price.length) {
+                    setFormError({ name, message: 'Price required.'})
+                    isValid = false
+                }
+                break
+            case 'blurb':
+                if (!formFields.blurb.length) {
+                    setFormError({ name, message: 'Blurb required.'})
+                    isValid = false
+                }
+                break
+            case 'desc':
+                if (!formFields.desc.length) {
+                    setFormError({ name, message: 'Description required.'})
+                    isValid = false
+                }
+                break
+            default:
+                console.log('No field to validate')
+        }
+
+        if (isValid && getError(name)) {
+            clearFormError()
+        }
+
+        return isValid
+    }
+
+    const onChange = (key, value) => {
+        if (!getDirty(key)) markDirty(key)
+        setFormValues({ ...formFields, [key]: value })
+    }
+    
+    const onEnter = e => {
+		if (e.code === 'Enter') submitFormData()
+	}
 
     const resetForm = () => {
         if (product) {
-            updateFormData(product)
+            setFormValues(product)
         } else {
             clearForm()
         }
     }
 
-    const clearForm = () => {
-        setTitle('')
-        setPrice('')
-        setDesc('')
-        setBlurb('')
-        setCategory('main')
-        setImage(null)
-        setAttachment(null)
-    }
-
-    const onSubmit = async () => {
-        
-        dispatch({ type: 'SET_LOADING', loading: 'Submitting product...' })
+    const submitFormData = async () => {
+        if (formError) {
+			console.log(`Error in form field ${formError.name}: ${formError.message}`)
+            return
+		}
 
         const { _id } = profile
-
+        
         let newProduct = {
             vendor: _id,
-            title,
-            price,
-            blurb,
-            desc,
-            category,
-            image,
+            title: formFields.title,
+            price: formFields.price,
+            blurb: formFields.blurb,
+            desc: formFields.desc,
+            category: formFields.category,
+            image: formFields.image,
         }
 
         if (product) {
@@ -160,119 +164,144 @@ export default  ({ product }) => {
             }
         }
 
-        if (attachment) {
+        if (formFields.attachment) {
             newProduct = {
                 ...newProduct,
-                attachment,
+                attachment: formFields.attachment,
             }
         }
-
+        
+        setFormLoading(true)
+        
         const { data } = await axios
             .post('/api/product', newProduct)
-
+        
+        setFormLoading(false)
             
         if (!data) {
             console.log('Error saving product', data)
         } else {
-            if (product) {
-                addProduct(data)
-            } else {
-                updateProduct(data)
-            }
+            addProduct(data)
+            clearForm()
+            closeModal()
         }
-        
-        clearForm()
     }
 
     const removeImage = () => {
-        if (attachment) {
-            setAttachment(null)
-        } else if (image) setImage(null)
+        const { attachment, image } = formFields
+        if (attachment || image) {
+            setFormValues({
+                ...formFields,
+                attachment: null,
+                image: null,
+            })
+        }
     }
 
     const renderImageFormModule = () => {
         
-        const uri = attachment
-            ? attachment.thumbData.uri
-            : image
-                ? `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}`
+        const uri = formFields.attachment
+            ? formFields.attachment.thumbData.uri
+            : formFields.image
+                ? `${IMAGE_PATH}/${profile.username}/thumb/${formFields.image.filename}`
                 :  null
 
         return (
             <ImageFormModule
-                onImageSelected={setAttachment}
+                onImageSelected={attachment => {
+                    setFormValues({ attachment })
+                }}
                 removeImage={removeImage}
                 uri={uri}
             />
         )
     }
 
-    return (
-        <View
-            style={[
-                classes.formContainer,
-                { paddingTop: 20 },
-            ]}
-        >
-
+    const renderFields = () => (
+        <>
             <CategoryPicker
                 style={{ marginBottom: 10 }}
                 label='Category'
-                onChange={onChangeCategory}
-                category={category}
-                disabled={loading}
+                onChange={value => onChange('category', value)}
+                category={formFields.category}
+                disabled={formLoading}
             />
 
             {renderImageFormModule()}
-            
-            <FormInput
-                label='Name'
-                value={title}
-                onChangeText={onChangeTitle}
-                placeholder='product name'
+
+            <FormField
+                label='Title'
+                value={formFields.title}
+                error={getError('title')}
+                placeholder='title'
                 textContentType='default'
-                autoCapitalize='true'
                 keyboardType='default'
-                disabled={loading}
+                autoCapitalize='true'
+                onChangeText={value => onChange('title', value)}
+                autoFocus={getFocus('title')}
+                onKeyPress={onEnter}
+                dirty={getDirty('title')}
             />
 
-            <FormInput
+            <FormField
                 label='Price'
-                value={price}
-                onChangeText={onChangePrice}
+                value={formFields.price}
+                error={getError('price')}
                 placeholder='0.00'
-                keyboardType='decimal-pad'
-                disabled={loading}
+                textContentType='default'
+                keyboardType='default'
+                onChangeText={value => onChange('price', value)}
+                autoFocus={getFocus('price')}
+                onKeyPress={onEnter}
+                dirty={getDirty('price')}
             />
-
-            <FormInput
+            <FormField
                 label='Blurb'
-                value={blurb}
-                onChangeText={onChangeBlurb}
+                value={formFields.blurb}
+                error={getError('blurb')}
                 placeholder='blurb'
                 keyboardType='default'
+                textContentType='default'
+                autoCapitalize='true'
+                onChangeText={value => onChange('blurb', value)}  
+                autoFocus={getFocus('blurb')}
+                onKeyPress={onEnter}
+                dirty={getDirty('blurb')}
                 multiline
-                disabled={loading}
             />
-
-            <FormInput
+            <FormField
                 label='Description'
-                value={desc}
-                onChangeText={onChangeDesc}
+                value={formFields.desc}
+                error={getError('desc')}
                 placeholder='description'
                 keyboardType='default'
+                textContentType='default'
+                autoCapitalize='true'
+                onChangeText={value => onChange('desc', value)}  
+                autoFocus={getFocus('desc')}
+                onKeyPress={onEnter}
+                dirty={getDirty('desc')}
                 multiline
-                disabled={loading}
             />
+        </>
+    )
+
+    return focused !== null ? (
+        <View
+            style={{ paddingVertical: 20 }}
+        >
+            <View style={{  marginBottom: 10 }}>
+                {renderFields()}
+            </View>
 
             <IconButton
                 type='primary'
                 label='Save'
-                onPress={onSubmit}
+                onPress={submitFormData}
                 disabled={
-                    loading
-                    || (title && !title.length)
-                    || (price && !price.length)
+                    formLoading
+                    || getError('title')
+                    || getError('price')
                 }
                 style={{ marginVertical: 5 }}
             />
@@ -280,10 +309,10 @@ export default  ({ product }) => {
             <IconButton
                 label={product ? 'Reset Form' : 'Clear Form'}
                 onPress={resetForm}
-                disabled={loading}
+                disabled={formLoading}
                 style={{ marginVertical: 5 }}
             />
 
         </View>
-    )
+    ) : null
 }

@@ -10,7 +10,6 @@ import {
 import classes from '@styles/classes'
 import {
     useApp,
-    useForm,
 } from '@context'
 
 export default ({ dirty, error, label, value, ...props }) => {
@@ -31,7 +30,7 @@ export default ({ dirty, error, label, value, ...props }) => {
             <View
                 style={[
                     classes.formInputContainer,
-                    { borderBottomColor: props.autoFocus ? '#0f0' : error && !dirty ? '#ccc' : error && dirty ? '#f00' : '#00f' },
+                    { borderBottomColor: dirty ? error ? '#f00' : '#1f1' : '#00f' },
                 ]}
             >
                 <View
@@ -62,7 +61,7 @@ export default ({ dirty, error, label, value, ...props }) => {
 
             <Text
                 style={{
-                    color: error && dirty ? '#f00' : !dirty ? '#00f' : '#ccc',
+                    color: error ? '#f00' : dirty ? '#00f' : '#ccc',
                     marginTop: 2,
                     fontSize: 12,
                     lineHeight: 16,

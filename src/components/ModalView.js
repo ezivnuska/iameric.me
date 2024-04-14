@@ -39,7 +39,7 @@ export default () => {
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ModalImage id={data.id} />; break
             case 'LOCATION': return <ModalLocation />; break
-            case 'PRODUCT': return <ProductForm product={data} />; break
+            case 'PRODUCT': return <ProductForm />; break
             case 'PROFILE': return <ModalProfile />; break
             case 'SELECT_IMAGE': return <ModalImageSelector />; break
             case 'SIGNIN': return <SignInForm />; break
