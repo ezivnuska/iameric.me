@@ -40,8 +40,8 @@ export default () => {
                     <ImageList
                         images={profileImages}
                         onSelected={image => {
-                            console.log('selected image', image)
-                            setModal('IMAGE', image._id)
+                            // console.log('selected image', image)
+                            setModal('IMAGE', image)
                         }}
                     />
                 )}

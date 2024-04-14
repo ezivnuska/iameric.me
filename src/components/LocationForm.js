@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -6,17 +6,17 @@ import {
     FormInput,
     IconButton,
 } from '.'
-import { AppContext } from '@context'
+import {
+    useModal,
+    useUser,
+} from '@context'
 import classes from '../styles/classes'
 import axios from 'axios'
 
 export default ({ location }) => {
 
-    const {
-        dispatch,
-        loading,
-        user,
-    } = useContext(AppContext)
+    const { profile, setLocation, setUserLoading, userLoading } = useUser()
+    const { closeModal } = useModal()
     
     const [ initialState, setInitialState ] = useState(location || {
         address1: '',
@@ -80,7 +80,7 @@ export default ({ location }) => {
         
         if (!isValid()) return
 
-        const { _id, username } = user
+        const { _id, username } = profile
 
         const newLocation = {
             userId: _id,
@@ -92,19 +92,19 @@ export default ({ location }) => {
             zip,
         }
         
-        dispatch({ type: 'SET_LOADING', loading: 'Updating address...' })
-
+        setUserLoading(true)
+        
         const { data } = await axios
             .post('/api/location', newLocation)
         
+        setUserLoading(false)
+
         if (!data) {
             console.log('Error saving location', err)
         } else {
-            dispatch({ type: 'SET_LOCATION', location: data.location })
-            dispatch({ type: 'CLOSE_MODAL' })
+            setLoaction(data.location)
+            closeModal()
         }
-            
-        dispatch({ type: 'SET_LOADING', loading: null })
     }
 
     const isValid = () => {
@@ -193,7 +193,7 @@ export default ({ location }) => {
                 type='primary'
                 label='Update Location'
                 onPress={submitForm}
-                disabled={loading || !isValid()}
+                disabled={userLoading || !isValid()}
                 style={{ marginTop: 10 }}
             />
 

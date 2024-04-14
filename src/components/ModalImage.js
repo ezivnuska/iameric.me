@@ -1,31 +1,27 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
     ImageDetail,
     LoadingView,
 } from '.'
 import {
-    AppContext,
     useContacts,
     useModal,
     useProducts,
     useUser,
 } from '@context'
 import axios from 'axios'
-import { loadUnknownImage } from '@utils/images'
+import { loadUserImage } from '@utils/images'
 
-export default ({ id }) => {
+export default () => {
     const { profile, removeImage, setProfileImage } = useUser()
     const { closeModal, data } = useModal()
     const { removeUserImage } = useContacts()
     const { items, updateProductImage } = useProducts()
-
-    const [image, setImage] = useState(null)
     
     useEffect(() => {
         const init = async () => {
-            const loadedImage = await loadUnknownImage(data._id, profile._id)
-            if (!loadedImage) return console.log('problem loading unknow image.')
-            setImage(loadedImage)
+            const loadedImage = await loadUserImage(data._id)
+            if (!loadedImage) return console.log('problem loading user image.')
         }
         init()
     }, [])
@@ -41,25 +37,23 @@ export default ({ id }) => {
     }
 
     const deleteImage = async () => {
-        if (feature.user._id === profile._id) {
-            console.log('removing image', image)
-            removeImage(image._id)
+        if (data.user._id === profile._id) {
+            removeImage(data._id)
         } else {
-            console.log('removing user image', image)
-            removeUserImage(image)
+            removeUserImage(data)
         }
 
-        const isProfileImage = isImageProfileImage(image._id)
-        const isProductImage = profile.role === 'vendor' ? isImageProductImage(image._id) : null
+        const isProfileImage = isImageProfileImage(data._id)
+        const isProductImage = profile.role === 'vendor' ? isImageProductImage(data._id) : null
 
-        const { data } = await axios
+        const response = await axios
             .post('/api/images/delete', {
-                imageId: image._id,
+                imageId: data._id,
                 isProductImage,
                 isProfileImage,
             })
             
-        if (data) {
+        if (!response.data) {
             console.log('Error deleting image.')
         }
         
@@ -68,16 +62,16 @@ export default ({ id }) => {
 
     const setAvatar = async () => {
 
-        const { data } = await axios
+        const response = await axios
             .post('/api/user/avatar', {
-                userId: user._id,
-                imageId: image._id,
+                userId: profile._id,
+                imageId: data._id,
             })
         
-        if (!data) {
+        if (!response.data) {
             console.log('Error setting profileImage.')
         } else {
-            setProfileImage(data)
+            setProfileImage(response.data)
         }
 
         closeModal()
@@ -85,26 +79,26 @@ export default ({ id }) => {
 
     const setProductImage = async productId => {
 
-        const { data } = await axios
+        const response = await axios
             .post('/api/product/image', {
                 productId,
-                imageId: image._id,
+                imageId: data._id,
             })
 
-        if (!data) {
+        if (!response.data) {
             console.log('Error setting image id for product.')
-        } else if (!data.image) {
+        } else if (!response.data.image) {
             console.log('no image found')
         } else {
-            updateProductImage(productId, data.image)
+            updateProductImage(productId, response.data.image)
         }
         
         closeModal()
     }
     
-    return image && (
+    return data && (
         <ImageDetail
-            image={image}
+            image={data}
             deleteImage={deleteImage}
             setAvatar={setAvatar}
             setProductImage={setProductImage}

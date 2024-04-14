@@ -28,7 +28,6 @@ export default () => {
         const initProducts = async () => {
             setProductsLoading(true)
             const items = await loadProducts(profile._id)
-            console.log('products-->', items)
             setProductsLoading(false)
             setProducts(items)
         }

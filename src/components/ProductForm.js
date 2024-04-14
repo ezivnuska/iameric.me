@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     View,
 } from 'react-native'
@@ -58,6 +58,15 @@ export default  () => {
     const modalData = useModal().data
     const { product } = modalData
     const { profile } = useUser()
+    const {
+        title,
+        price,
+        blurb,
+        desc,
+        category,
+        image,
+        attachment,
+    } = useMemo(() => formFields, [formFields])
     
     useEffect(() => {
         initForm({ ...initialValues, ...product })
@@ -87,25 +96,25 @@ export default  () => {
         let isValid = true
         switch (name) {
             case 'title':
-                if (!formFields.title.length) {
+                if (!title.length) {
                     setFormError({ name, message: 'Title required.'})
                     isValid = false
                 }
                 break
             case 'price':
-                if (!formFields.price.length) {
+                if (!price.length) {
                     setFormError({ name, message: 'Price required.'})
                     isValid = false
                 }
                 break
             case 'blurb':
-                if (!formFields.blurb.length) {
+                if (!blurb.length) {
                     setFormError({ name, message: 'Blurb required.'})
                     isValid = false
                 }
                 break
             case 'desc':
-                if (!formFields.desc.length) {
+                if (!desc.length) {
                     setFormError({ name, message: 'Description required.'})
                     isValid = false
                 }
@@ -148,12 +157,12 @@ export default  () => {
         
         let newProduct = {
             vendor: _id,
-            title: formFields.title,
-            price: formFields.price,
-            blurb: formFields.blurb,
-            desc: formFields.desc,
-            category: formFields.category,
-            image: formFields.image,
+            title,
+            price,
+            blurb,
+            desc,
+            category,
+            image,
         }
 
         if (product) {
@@ -163,10 +172,10 @@ export default  () => {
             }
         }
 
-        if (formFields.attachment) {
+        if (attachment) {
             newProduct = {
                 ...newProduct,
-                attachment: formFields.attachment,
+                attachment,
             }
         }
         
@@ -191,7 +200,6 @@ export default  () => {
     }
 
     const removeImage = () => {
-        const { attachment, image } = formFields
         if (attachment || image) {
             setFormValues({
                 ...formFields,
@@ -203,19 +211,19 @@ export default  () => {
 
     const renderImageFormModule = () => {
         
-        const uri = formFields.attachment
-            ? formFields.attachment.thumbData.uri
-            : formFields.image
-                ? `${IMAGE_PATH}/${profile.username}/thumb/${formFields.image.filename}`
-                :  null
+        const source = image
+            ? `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}`
+            : attachment
+                ? { uri: attachment.thumbData.uri }
+                : null
 
         return (
             <ImageFormModule
-                onImageSelected={attachment => {
-                    setFormValues({ attachment })
+                onImageSelected={att => {
+                    setFormValues({ attachment: att })
                 }}
                 removeImage={removeImage}
-                uri={uri}
+                source={source}
             />
         )
     }
@@ -226,7 +234,7 @@ export default  () => {
                 style={{ marginBottom: 10 }}
                 label='Category'
                 onChange={value => onChange('category', value)}
-                category={formFields.category}
+                category={category}
                 disabled={formLoading}
             />
 
@@ -234,7 +242,7 @@ export default  () => {
 
             <FormField
                 label='Title'
-                value={formFields.title}
+                value={title}
                 error={getError('title')}
                 placeholder='title'
                 textContentType='default'
@@ -248,7 +256,7 @@ export default  () => {
 
             <FormField
                 label='Price'
-                value={formFields.price}
+                value={price}
                 error={getError('price')}
                 placeholder='0.00'
                 textContentType='default'
@@ -260,7 +268,7 @@ export default  () => {
             />
             <FormField
                 label='Blurb'
-                value={formFields.blurb}
+                value={blurb}
                 error={getError('blurb')}
                 placeholder='blurb'
                 keyboardType='default'
@@ -274,7 +282,7 @@ export default  () => {
             />
             <FormField
                 label='Description'
-                value={formFields.desc}
+                value={desc}
                 error={getError('desc')}
                 placeholder='description'
                 keyboardType='default'

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
     Image,
     Pressable,
@@ -14,11 +14,12 @@ import {
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, onSelected }) => {
+export default ({ onSelected }) => {
 
     const { theme } = useApp()
     const { setModal } = useModal()
     const { profile, userLoading } = useUser()
+    const profileImages = useMemo(() => profile.images, [profile])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -61,7 +62,7 @@ export default ({ images, onSelected }) => {
                 marginVertical: 15,
             }}
         >
-            {images && images.map((image, index) => (
+            {profileImages && profileImages.map((image, index) => (
                 <View
                     key={`image-${index}`}
                 >
@@ -96,7 +97,7 @@ export default ({ images, onSelected }) => {
 
             {showUploadButton() && (
                 <Pressable
-                    key={`image-${images.length}`}
+                    key={`image-${profileImages.length}`}
                     onPress={() => setModal('SELECT_IMAGE')}
                     style={[
                         {

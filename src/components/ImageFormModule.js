@@ -1,134 +1,51 @@
-import React, { useContext, useState } from 'react'
+import React from 'react'
 import {
-    Image,
     View,
 } from 'react-native'
 import {
     FileSelector,
     IconButton,
+    ImageView,
 } from '.'
 import EXIF from 'exif-js'
-import { AppContext, useUser } from '@context'
+import {
+    useUser,
+} from '@context'
+import { handleImageUpload } from '@utils/images'
 
-export default ({ onImageSelected, removeImage, uri }) => {
+export default ({ onImageSelected, removeImage, source = null }) => {
 
-    const {
-        loading,
-    } = useContext(AppContext)
-
-    const { profile } = useUser()
+    const { profile, setUserLoading, userLoading } = useUser()
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
-
-    const handleDrop = async uri => {
-
+    
+    const handleDrop = async uriData => {
+        
         const reader = new FileReader()
+
         reader.onload = ({ target }) => {
             const exif = EXIF.readFromBinaryFile(target.result)
-            loadImage(uri, exif)
+            loadImage(uriData, exif)
         }
 
-        const blob = await dataURItoBlob(uri)
+        const blob = await dataURItoBlob(uriData)
         reader.readAsArrayBuffer(blob)
     }
 
     const loadImage = async (src, exif) => {
-        const image = new Image()
-        image.onload = async () => {
-            const data = await handleImageData(image, exif)
-            
-            // const { uri, height, width } = data.imageData
+        const imageLoader = new Image()
+
+        imageLoader.onload = async () => {
+
+            setUserLoading(true)
+
+            const data = await handleImageUpload(profile._id, imageLoader, exif)
+
+            setUserLoading(false)
             
             onImageSelected(data)
-            
-            // dispatch({ type: 'SET_LOADING', loading: null })
         }
-        image.src = src
-    }
-
-    const handleImageData = async (image, srcOrientation) => {
-        const userId = profile._id
-        const imageData = await getImageData(image, srcOrientation)
-        const thumbData = await getThumbData(image, srcOrientation)
-        const filename = `${userId}-${Date.now()}.png`
-
-        return {
-            imageData: { ...imageData, filename },
-            thumbData: { ...thumbData, filename },
-            userId,
-        }
-    }
-
-    const getImageData = async (image, srcOrientation) => {
-        
-        const { height, width } = image
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
-
-        let imageWidth = width
-        let imageHeight = height
-
-        if (srcOrientation > 4 && srcOrientation < 9) {
-            imageWidth = height
-            imageHeight = width
-        }
-
-        const MAX_WIDTH = 340
-
-        if (imageWidth >= MAX_WIDTH) {
-            imageWidth = MAX_WIDTH
-            imageHeight *= MAX_WIDTH / width
-        }
-
-        canvas.width = imageWidth
-        canvas.height = imageHeight
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
-
-        const imageURI = canvas.toDataURL('image/png:base64;')
-
-        return {
-            height: imageHeight,
-            width: imageWidth,
-            uri: imageURI,
-        }
-    }
-
-    const getThumbData = async (image, srcOrientation) => {
-        
-        const { height, width } = image
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
-
-        let imageWidth = width
-        let imageHeight = height
-
-        if (srcOrientation > 4 && srcOrientation < 9) {
-            imageWidth = height
-            imageHeight = width
-        }
-
-        const THUMB_WIDTH = 50
-
-        if (imageWidth >= THUMB_WIDTH) {
-            imageWidth = THUMB_WIDTH
-            imageHeight *= THUMB_WIDTH / width
-        }
-
-        canvas.width = imageWidth
-        canvas.height = imageHeight
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
-
-        const imageURI = canvas.toDataURL('image/png:base64;')
-
-        return {
-            height: imageHeight,
-            width: imageWidth,
-            uri: imageURI,
-        }
+        imageLoader.src = src
     }
 
     const renderControls = () => (
@@ -140,14 +57,14 @@ export default ({ onImageSelected, removeImage, uri }) => {
             height: 50,
         }}>
             
-            {uri ? (
+            {(source !== null && typeof source === 'object') && (
                 <IconButton
                     type='danger'
                     label='Delete'
                     onPress={removeImage}
-                    disabled={loading}
+                    disabled={userLoading}
                 />
-            ) : null}
+            )}
 
             <FileSelector
                 onSelected={handleDrop}
@@ -168,19 +85,22 @@ export default ({ onImageSelected, removeImage, uri }) => {
                 borderColor: '#fff',
             }}
         >
-            
-            {uri ? (
+            {source && (
                 <View style={{ paddingRight: 10 }}>
-                    <Image
-                        uri={{ uri }}
+                    <ImageView
+                        source={source}
+                        width={50}
+                        height={50}
                         style={{
                             width: 50,
                             height: 50,
                             resizeMode: 'stretch',
+                            borderWidth: 1,
+                            borderColor: 'pink',
                         }}
                     />
                 </View>
-            ) : null}
+            )}
                 
             {renderControls()}
 

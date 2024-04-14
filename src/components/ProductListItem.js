@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useMemo } from 'react'
 import {
     Image,
     View,
@@ -7,7 +7,9 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import { AppContext } from '@context'
+import {
+    useUser,
+} from '@context'
 import classes from '../styles/classes'
 
 const IMAGE_SIZE = 50
@@ -15,12 +17,10 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ onDelete, product, onPress, ...props }) => {
 
-    const {
-        loading,
-        user,
-    } = useContext(AppContext)
+    const { profile, userLoading } = useUser()
+    const { title, price, blurb, desc, image } = useMemo(() => product, [product])
 
-    return product ? (
+    return (
         <View
             {...props}
             style={{
@@ -47,7 +47,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                         // marginBottom: 2,
                     }}
                 >
-                    {product.image ? (
+                    {image ? (
                         <View
                             style={{
                                 flexBasis: IMAGE_SIZE + 12,
@@ -56,7 +56,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                             <Image
                                 width={IMAGE_SIZE}
                                 height={IMAGE_SIZE}
-                                source={{ uri: `${IMAGE_PATH}/${user.username}/thumb/${product.image.filename}` }}
+                                source={{ uri: `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}` }}
                                 style={{
                                     resizeMode: 'stretch',
                                     width: IMAGE_SIZE,
@@ -104,7 +104,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                                     }
                                 ]}
                             >
-                                {product.title}
+                                {title}
                             </ThemedText>
 
                             <ThemedText
@@ -116,19 +116,19 @@ export default ({ onDelete, product, onPress, ...props }) => {
                                     },
                                 ]}
                             >
-                                ${product.price}
+                                ${price}
                             </ThemedText>
                         </View>
 
-                        <ThemedText style={classes.productBlurb}>{product.blurb}</ThemedText>
-                        <ThemedText style={classes.textDefault}>{product.desc}</ThemedText>
+                        <ThemedText style={classes.productBlurb}>{blurb}</ThemedText>
+                        <ThemedText style={classes.textDefault}>{desc}</ThemedText>
 
                     </View>
             
                     <IconButton
                         iconName='create-outline'
                         onPress={() => onPress(product)}
-                        disabled={loading}
+                        disabled={userLoading}
                         transparent
                         style={{ marginTop: -2, marginRight: 4 }}
                     />
@@ -137,5 +137,5 @@ export default ({ onDelete, product, onPress, ...props }) => {
                 
             </View>
         </View>
-    ) : null
+    )
 }
