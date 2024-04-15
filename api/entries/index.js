@@ -2,8 +2,8 @@ const Entry = require('../../models/Entry')
 
 const createEntry = async (req, res) => {
     
-    const { user, text } = req.body
-    const newEntry = await Entry.create({ author: user, text })
+    const { author, text } = req.body
+    const newEntry = await Entry.create({ author, text })
 
     if (!newEntry) {
         console.log('Problem creating entry.')

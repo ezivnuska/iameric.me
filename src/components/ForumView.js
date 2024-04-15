@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {
     View,
 } from 'react-native'
@@ -6,28 +6,39 @@ import {
     ForumList,
     EmptyStatus,
 } from '.'
-import { AppContext } from '@context'
-import { useForum } from '../context/ForumContext'
+import {
+    useApp,
+    useForum,
+} from '@context'
+import { deleteEntryWithId } from '@utils/data'
 import axios from 'axios'
 
 export default () => {
     
+    const { isLandscape } = useApp()
     const {
-        isLandscape,
-    } = useContext(AppContext)
-
-    const { entries, setEntries } = useForum()
+        deleteEntry,
+        entries,
+        setEntries,
+        setForumLoading,
+    } = useForum()
 
     useEffect(() => {
         const init = async () => {
+            setForumLoading(true)
             const { data } = await axios.get('/api/entries')
-        
-            if (data && data.entries) {
-                setEntries(data.entries)
-            }
+            setForumLoading(false)
+            if (data && data.entries) setEntries(data.entries)
         }
         init()
     }, [])
+
+    const removeEntry = async id => {
+        setForumLoading(true)
+        await deleteEntryWithId(id)
+        setForumLoading(false)
+        deleteEntry(id)
+    }
 
     return (
         <View style={{ flex: 1, flexGrow: 1 }}>
@@ -36,7 +47,7 @@ export default () => {
                     <ForumList
                         horizontal={isLandscape}
                         items={entries}
-                        onDelete={id => removeItemById(id)}
+                        onDelete={removeEntry}
                     />
                 )
                 : <EmptyStatus status='No entries yet.' />
