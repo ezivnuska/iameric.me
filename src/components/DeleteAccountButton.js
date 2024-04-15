@@ -6,16 +6,16 @@ import {
     ThemedText,
     IconButton,
 } from '.'
-import { AppContext, useModal } from '@context'
+import {
+    useForm,
+    useModal,
+} from '@context'
 import classes from '../styles/classes'
 
 export default () => {
 
     const { setModal } = useModal()
-
-    const {
-        loading,
-    } = useContext(AppContext)
+    const { formLoading } = useForm()
 
     return (
         <View
@@ -43,7 +43,7 @@ export default () => {
                 type='danger'
                 label='Delete Account'
                 onPress={() => setModal('DESTROY')}
-                disabled={loading}
+                disabled={formLoading}
             />
 
         </View>

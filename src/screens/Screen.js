@@ -1,11 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     ScrollView,
     useWindowDimensions,
     View,
 } from 'react-native'
 import {
-    AppContext,
     useApp,
 } from '@context'
 
@@ -14,12 +13,8 @@ export default ({
     titleComponent = null,
     tabs = true,
 }) => {
-
-    const {
-        isLandscape,
-    } = useContext(AppContext)
     
-    const { theme } = useApp()
+    const { isLandscape, theme } = useApp()
 
     const dims = useWindowDimensions()
 

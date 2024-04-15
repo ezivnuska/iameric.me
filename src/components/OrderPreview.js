@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import {
     Pressable,
     StyleSheet,
@@ -11,7 +11,6 @@ import {
     LocationDetails,
 } from '.'
 import {
-    AppContext,
     useUser,
 } from '@context'
 import classes from '../styles/classes'
@@ -24,9 +23,6 @@ import {
 export default ({ order, children, ...props }) => {
 
     const { profile } = useUser()
-    const {
-        user,
-    } = useContext(AppContext)
 
     const [expanded, setExpanded] = useState(false)
 

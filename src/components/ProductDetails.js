@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
     Image,
-    // useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -10,7 +9,6 @@ import {
     QuantityControl,
 } from '.'
 import {
-    // AppContext,
     useApp,
     useCart,
     useModal,
@@ -24,12 +22,6 @@ export default ({ product }) => {
     const { dims, isLandscape, theme } = useApp()
     const { addToCart } = useCart()
     const { closeModal } = useModal()
-
-    // const dims = useWindowDimensions()
-
-    // const {
-        
-    // } = useContext(AppContext)
 
     const [imageDims, setImageDims] = useState(null)
     
@@ -154,7 +146,7 @@ export default ({ product }) => {
                         >
                             <QuantityControl
                                 value={quantity}
-                                onChange={value => setQuantity(value)}
+                                onChange={setQuantity}
                             />
                         </View>
                         <View
@@ -167,7 +159,6 @@ export default ({ product }) => {
                                 label={`${quantity > 1 ? `${quantity} ` : ''} ($${Number(Number(product.price) * quantity).toFixed(2)})`}
                                 onPress={() => onProductAdded(product, quantity)}
                                 textStyles={{ color: theme?.colors.buttonLabel, wrap: 'nowrap', lineHeight: 35, }}
-                                // style={{ flex: 1 }}
                             />
                         </View>
                     </View>

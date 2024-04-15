@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     Image,
     View,
@@ -7,8 +7,11 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
+import {
+    useApp,
+    useModal,
+} from '@context'
 import classes from '../styles/classes'
-import { AppContext, useModal } from '@context'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -17,9 +20,7 @@ export default ({ item, username }) => {
 
     const { setModal } = useModal()
 
-    const {
-        isLandscape,
-    } = useContext(AppContext)
+    const { isLandscape } = useApp()
     
     const { _id, price, title, desc, vendor, blurb, category, image } = item
     
@@ -112,7 +113,6 @@ export default ({ item, username }) => {
                                 type='primary'
                                 label={`$${price}`}
                                 align='center'
-                                // style={{ flexGrow: 0 }}
                                 padded={isLandscape ? true : false}
                                 textStyles={{ lineHeight: 35 }}
                             />

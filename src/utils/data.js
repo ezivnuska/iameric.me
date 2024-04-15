@@ -27,7 +27,7 @@ export const loadUser = async userId => {
         console.log('User not found')
     }
 
-    return data.user
+    return data
 }
 
 export const loadFullUser = async userId => {
@@ -66,9 +66,11 @@ export const loadUsers = async () => {
 
     const { data } = await axios.get('/api/users')
 
-    return data && data.users
-        ? data.users
-        : null
+    if (!data || !data.users) {
+        console.log('Error: could not load users')
+        return null
+    }
+    return data
 }
 
 export const loadUserById = async userId => {
@@ -136,11 +138,11 @@ export const loadUserProducts = async vendorId => {
     
     if (!data) {
         console.log('could not load products')
-    } else if (!data.products || !data.products.length) {
+    } else if (!data.products) {
         console.log('no products to load')
     }
 
-    return data.products
+    return data
 }
 
 export const deleteProductWithId = async id => {
@@ -208,12 +210,12 @@ export const getOrdersById = async id => {
     
     const { data } = await axios.get(`/api/orders/${id}`)
     
-    if (!data.orders) {
+    if (!data) {
         console.log('could not load orders.')
         return null
     }
     
-    return data.orders
+    return data
 }
 
 export const loadUserOrders = async userId => {

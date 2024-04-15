@@ -3,12 +3,12 @@ import React, { createContext, useContext, useMemo, useReducer } from 'react'
 const initialState = {
     error: null,
     items: [],
-    loaded: false,
-    loading: false,
+    cartLoading: false,
     vendor: null,
     addToCart: () => {},
     clearCart: () => {},
     removeCart: () => {},
+    setCartLoading: () => {},
 }
 
 export const CartContext = createContext(initialState)
@@ -29,11 +29,11 @@ export const CartContextProvider = props => {
         addToCart: (product, quantity) => {
             dispatch({
                 type: 'ADD_TO_CART',
-                payload: {
-                    product,
-                    quantity,
-                },
+                payload: { product, quantity },
             })
+        },
+        clearCart: () => {
+            dispatch({ type: 'CLEAR_CART' })
         },
         removeFromCart: productId => {
             dispatch({
@@ -41,8 +41,11 @@ export const CartContextProvider = props => {
                 payload: productId,
             })
         },
-        clearCart: () => {
-            dispatch({ type: 'CLEAR_CART' })
+        setCartLoading: payload => {
+            dispatch({
+                type: 'SET_CART_LOADING',
+                payload: payload,
+            })
         },
     }), [state, dispatch])
 
@@ -67,6 +70,19 @@ const reducer = (state, action) => {
                 vendor: product.vendor,
             }
             break
+            case 'CLEAR_CART':
+                return {
+                    ...state,
+                    items: [],
+                    vendor: null,
+                }
+                break
+            case 'SET_CART_LOADING':
+                return {
+                    ...state,
+                    cartLoading: payload,
+                }
+                break
         case 'REMOVE_FROM_CART':
             const indexToRemove = state.items.findIndex(item => item._id === payload)
             if (indexToRemove < 0) {
@@ -81,13 +97,6 @@ const reducer = (state, action) => {
                     ...state,
                     items: [...start, ...end],
                 }
-            }
-            break
-        case 'CLEAR_CART':
-            return {
-                ...state,
-                items: [],
-                vendor: null,
             }
             break
         default:

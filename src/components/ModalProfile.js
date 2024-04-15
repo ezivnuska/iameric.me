@@ -1,18 +1,19 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     View,
 } from 'react-native'
 import {
     UserDetailsShort,
 } from '.'
-import { AppContext } from '@context'
+import {
+    useModal,
+    useUser,
+} from '@context'
 
 export default () => {
 
-    const {
-        dispatch,
-        profile,
-    } = useContext(AppContext)
+    const { closeModal } = useModal()
+    const { profile } = useUser()
     
     return (
         <View
@@ -23,7 +24,7 @@ export default () => {
             {profile && (
                 <UserDetailsShort
                     userId={profile._id}
-                    clear={() => dispatch({ type: 'CLOSE_MODAL' })}
+                    clear={closeModal}
                 />
             )}
         </View>

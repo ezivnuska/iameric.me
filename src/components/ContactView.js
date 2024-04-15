@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react'
 import {
-    FlatList,
     Image,
     Pressable,
-    useWindowDimensions,
-    ScrollView,
     View,
 } from 'react-native'
 import {

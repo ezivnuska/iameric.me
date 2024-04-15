@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     IconButton,
     Menu,
@@ -7,7 +7,10 @@ import {
     Screen,
     ScreenTitle,
 } from '.'
-import { AppContext, useApp, useProducts } from '@context'
+import {
+    useApp,
+    useContacts,
+} from '@context'
 import { loadUser, loadUserProducts } from '@utils/data'
 
 export default ({ navigation, route }) => {
@@ -15,19 +18,25 @@ export default ({ navigation, route }) => {
     const { id } = route.params
 
     const { theme } = useApp()
-    const { setProducts } = useProducts()
-
     const {
-        loading,
-    } = useContext(AppContext)
-
-    const [currentUser, setCurrentUser] = useState(null)
+        contacts,
+        contactsLoading,
+        setContactsLoading,
+        updateContact,
+        updateContactProducts,
+    } = useContacts()
+    
+    const currentUser = useMemo(() => {
+        return contacts.map(contact => contact._id === id)[0]
+    }, [contacts, id])
     
     useEffect(() => {
         const init = async () => {
-            const user = await loadUser(id)
-            if (!user) console.log('no user could be loaded')
-            else setCurrentUser(user)
+            setContactsLoading(true)
+            const { data } = await loadUser(id)
+            setContactsLoading(false)
+            if (!data) console.log('no user could be loaded')
+            else updateContact(user)
         }
         init()
     }, [])
@@ -41,13 +50,11 @@ export default ({ navigation, route }) => {
     }, [currentUser])
 
     const initProducts = async () => {
-        const loadedProducts = await loadUserProducts(currentUser._id)
-        if (loadedProducts) {
-            setProducts(loadedProducts)
-            setCurrentUser({
-                ...currentUser,
-                products: loadedProducts,
-            })
+        setContactsLoading(true)
+        const { data } = await loadUserProducts(currentUser._id)
+        setContactsLoading(false)
+        if (data) {
+            updateContactProducts(data.products)
         } else {
             console.log('could not load user products')
         }
@@ -65,7 +72,7 @@ export default ({ navigation, route }) => {
                             index: 0,
                             routes: [{ name: 'VendorList' }],
                         })}
-                        disabled={loading}
+                        disabled={contactsLoading}
                         textStyles={{
                             fontSize: 16,
                             fontWeight: 400,
@@ -79,7 +86,7 @@ export default ({ navigation, route }) => {
         >
             {currentUser ? (
                 <Menu
-                    loading={loading}
+                    loading={contactsLoading}
                     vendor={currentUser}
                 />
             ) : null}

@@ -2,10 +2,10 @@ import React, { createContext, useContext, useMemo, useReducer } from 'react'
 
 const initialState = {
     error: null,
-    loaded: false,
-    loading: false,
     orders: [],
+    ordersLoading: false,
     setOrders: () => {},
+    setOrdersLoading: () => {},
     addOrder: () => {},
     markOrderConfirmed: () => {},
     markOrderReady: () => {},
@@ -32,35 +32,38 @@ export const OrderContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
-        setOrders: orders => {
-            dispatch({ type: 'SET_ORDERS', payload: orders })
+        addOrder: payload => {
+            dispatch({ type: 'ADD_ORDER', payload })
         },
-        addOrder: order => {
-            dispatch({ type: 'ADD_ORDER', payload: order })
+        setOrders: payload => {
+            dispatch({ type: 'SET_ORDERS', payload })
         },
-        markOrderConfirmed: order => {
-            dispatch({ type: 'CONFIRM_ORDER', payload: order })
+        setOrdersLoading: payload => {
+            dispatch({ type: 'SET_ORDERS_LOADING', payload })
         },
-        markOrderReady: order => {
-            dispatch({ type: 'ORDER_READY', payload: order })
+        markOrderConfirmed: payload => {
+            dispatch({ type: 'CONFIRM_ORDER', payload })
         },
-        markOrderAccepted: order => {
-            dispatch({ type: 'ACCEPT_ORDER', payload: order })
+        markOrderReady: payload => {
+            dispatch({ type: 'ORDER_READY', payload })
         },
-        markDriverArrived: order => {
-            dispatch({ type: 'DRIVER_ARRIVED', payload: order })
+        markOrderAccepted: payload => {
+            dispatch({ type: 'ACCEPT_ORDER', payload })
         },
-        markOrderReceived: order => {
-            dispatch({ type: 'ORDER_RECEIVED', payload: order })
+        markDriverArrived: payload => {
+            dispatch({ type: 'DRIVER_ARRIVED', payload })
         },
-        markOrderCompleted: order => {
-            dispatch({ type: 'COMPLETE_ORDER', payload: order })
+        markOrderReceived: payload => {
+            dispatch({ type: 'ORDER_RECEIVED', payload })
         },
-        closeOrder: order => {
-            dispatch({ type: 'CLOSE_ORDER', payload: order })
+        markOrderCompleted: payload => {
+            dispatch({ type: 'COMPLETE_ORDER', payload })
         },
-        removeOrder: order => {
-            dispatch({ type: 'REMOVE_ORDER', payload: order })
+        closeOrder: payload => {
+            dispatch({ type: 'CLOSE_ORDER', payload })
+        },
+        removeOrder: payload => {
+            dispatch({ type: 'REMOVE_ORDER', payload })
         },
     }), [state, dispatch])
 
@@ -78,6 +81,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 orders: payload,
+            }
+            break
+        case 'SET_ORDERS_LOADING':
+            return {
+                ...state,
+                ordersLoading: payload,
             }
             break
         case 'ADD_ORDER':

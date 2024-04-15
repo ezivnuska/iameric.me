@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     View,
 } from 'react-native'
@@ -6,21 +6,19 @@ import {
     ThemedText,
     LocationDetails,
 } from '.'
-import moment from 'moment'
-import { AppContext } from '@context'
+import { useUser } from '@context'
 import classes from 'src/styles/classes'
+import moment from 'moment'
 
 export default ({ order }) => {
     
     const { pickup, customer, driver, vendor } = order
 
-    const {
-        user,
-    } = useContext(AppContext)
+    const { profile } = useUser()
 
     const renderLocation = () => {
-        if (user.role === 'vendor') return null
-        if (user.role === 'driver' && order.status < 2) return null
+        if (profile.role === 'vendor') return null
+        if (profile.role === 'driver' && order.status < 2) return null
         return <LocationDetails location={customer.location} style={{ color: '#000' }} />
     }
 
@@ -51,7 +49,7 @@ export default ({ order }) => {
         </View>
     ) : <ThemedText>Looking for driver...</ThemedText>
 
-    const renderDetails = () => user.role !== 'vendor'
+    const renderDetails = () => profile.role !== 'vendor'
         ? (
             <View>
                 {renderVendorInfo()}

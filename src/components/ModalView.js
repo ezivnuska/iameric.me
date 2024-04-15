@@ -34,7 +34,6 @@ export default () => {
         switch(type) {
             case 'CART': return <Cart />; break
             case 'DESTROY': return <DestroyForm />; break
-            // case 'SHOW_PRODUCT': return <ProductDetails id={id} />; break
             case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ModalImage image={data} />; break
@@ -43,8 +42,6 @@ export default () => {
             case 'PROFILE': return <ModalProfile />; break
             case 'SELECT_IMAGE': return <ModalImageSelector />; break
             case 'SIGNIN': return <SignInForm />; break
-            // case 'SIGNIN': return <FormSignIn />; break
-            // case 'SIGNIN': return <SignInForm />; break
             case 'SIGNOUT': return <ModalSignout />; break
             case 'SIGNUP_CUSTOMER': return <SignUpForm role='customer' />; break
             case 'SIGNUP_VENDOR': return <SignUpForm role='vendor' />; break

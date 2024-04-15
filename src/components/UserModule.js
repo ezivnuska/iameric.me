@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
-    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -8,30 +7,38 @@ import {
     UserList,
     EmptyStatus,
 } from '.'
-import { AppContext } from '@context'
+import {
+    useApp,
+    useContacts,
+} from '@context'
 import {
     loadUsers,
-    loadUsersByRole,
 } from '@utils/data'
 import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default () => {
     
+    const { isLandscape } = useApp()
     const {
-        dispatch,
-        isLandscape,
-        loading,
-        users,
-        usersLoaded,
-    } = useContext(AppContext)
+        contacts,
+        contactsLoading,
+        setContacts,
+        setContactsLoading,
+    } = useContacts()
     
     useEffect(() => {
-        if (!users || !usersLoaded) loadUsers(dispatch)
+        const init = async () => {
+            setContactsLoading(true)
+            const { data } = await loadUsers()
+            setContactsLoading(false)
+            if (data && data.users) setContacts(data.users)
+        }
+        init()
     }, [])
 
-    if (loading) return <LoadingView />
+    if (contactsLoading) return <LoadingView />
 
-    return users && users.length
+    return contacts.length
         ? (
             <View
                 style={{
@@ -41,9 +48,9 @@ export default () => {
             >
                 <UserList
                     horizontal={isLandscape}
-                    items={users}
-                    onPress={item => {
-                        navigationRef.navigate('User', { id: item._id })
+                    items={contacts}
+                    onPress={contact => {
+                        navigationRef.navigate('User', { id: contact._id })
                     }}
                 />
             </View>

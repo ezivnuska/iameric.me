@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import {
     Image,
     Pressable,
@@ -11,7 +11,6 @@ import {
     ThemedText,
 } from '@components'
 import {
-    AppContext,
     useApp,
     useModal,
     useUser,
@@ -20,12 +19,13 @@ import { navigationRef } from '../navigation/RootNavigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const UserButton = ({ user }) => {
+const UserButton = () => {
 
     const { theme } = useApp()
+    const { profile } = useUser()
     
-    const getSource = () => user.profileImage
-        ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+    const getSource = () => profile.profileImage
+        ? `${IMAGE_PATH}/${profile.username}/${profile.profileImage.filename}`
         : `${IMAGE_PATH}/avatar-default-small.png`
     
     return (
@@ -76,7 +76,7 @@ const UserButton = ({ user }) => {
                     lineHeight: 30,
                 }}
             >
-                {user.username}
+                {profile.username}
             </ThemedText>
             
         </Pressable>
@@ -84,15 +84,9 @@ const UserButton = ({ user }) => {
 }
 
 export default () => {
-    const { profile } = useUser()
-    const {
-        isThemeDark,
-        toggleTheme,
-    } = useApp()
 
-    const {
-        loading,
-    } = useContext(AppContext)
+    const { profile } = useUser()
+    const { isThemeDark, toggleTheme } = useApp()
     
     return (
         <View
@@ -122,39 +116,42 @@ export default () => {
                     <>
                         <CartButton style={{ marginLeft: 10 }} />
                         <UserButton user={profile} />
-                        <SignOutButton loading={loading} />
+                        <SignOutButton />
                     </>
                 ) : (
-                    <SignInButton loading={loading} />
+                    <SignInButton />
                 )
             }
         </View>
     )
 }
 
-const SignInButton = ({ loading }) => {
+const SignInButton = () => {
 
     const { setModal } = useModal()
+    const { authLoading } = useAuth()
     
     return (
         <IconButton
             iconName='log-in-outline'
             label='Sign In'
             onPress={() => setModal('SIGNIN')}
-            disabled={loading}
+            disabled={authLoading}
             alignIcon='right'
             transparent
         />
     )
 }
 
-const SignOutButton = ({ loading }) => {
+const SignOutButton = () => {
+
     const { setModal } = useModal()
-    const { theme } = useApp()
+    const { authLoading, theme } = useApp()
+    
     return (
         <IconButton
             onPress={() => setModal('SIGNOUT')}
-            disabled={loading}
+            disabled={authLoading}
             iconName='close-outline'
             textStyles={{
                 color: theme?.colors.textDefault,
@@ -165,7 +162,6 @@ const SignOutButton = ({ loading }) => {
                 flexGrow: 0,
                 marginHorizontal: 8,
             }}
-            // outline
         />
     )
 }

@@ -1,35 +1,27 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     SafeAreaView,
-    useWindowDimensions,
     View,
 } from 'react-native'
 import AppNavigation from '../navigation/AppNavigation'
+import { ModalView } from '@components'
+import { Header } from '.'
 import {
-    ModalView,
-} from '@components'
-import {
-    Header,
-} from '.'
-import LinearGradient from 'react-native-linear-gradient'
-import { getSize } from '@utils/metrics'
-import {
-    AppContext,
     useApp,
     useUser,
 } from '@context'
+import { getSize } from '@utils/metrics'
+import LinearGradient from 'react-native-linear-gradient'
 
 export default () => {
-    const { profile } = useUser()
     
     const {
+        dims,
         isLandscape,
         isThemeDark,
-    } = useContext(AppContext)
-
-    const { theme } = useApp()
-
-    const dims = useWindowDimensions()
+        theme,
+    } = useApp()
+    const { profile } = useUser()
 
     return (
         <SafeAreaView

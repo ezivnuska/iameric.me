@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Image,
     useWindowDimensions,
@@ -6,10 +6,9 @@ import {
 } from 'react-native'
 import {
     IconButton,
-    LoadingView,
     ThemedText,
 } from '@components'
-import { AppContext } from '@context'
+import { useApp } from '@context'
 import { loadUserById } from '@utils/data'
 import {
     getProfileImagePathFromUser,
@@ -20,10 +19,7 @@ import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default ({ userId }) => {
 
-    const {
-        isLandscape,
-        loading,
-    } = useContext(AppContext)
+    const { isLandscape } = useApp()
 
     const dims = useWindowDimensions()
 
@@ -63,13 +59,10 @@ export default ({ userId }) => {
         setImageSize(imageDims)
     }
 
-    if (loading) return <LoadingView />
     return (
         <View
             style={{
                 width: '100%',
-                // borderWidth: 1,
-                // borderColor: 'red',
             }}
         >
             {userDetails

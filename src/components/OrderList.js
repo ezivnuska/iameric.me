@@ -1,42 +1,39 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     FlatList,
     View,
 } from 'react-native'
 import {
-    ThemedText,
+    EmptyStatus,
     IconButton,
-    OrderPreview,
+    ThemedText,
     TimeSelector,
+    OrderPreview,
 } from '.'
 import axios from 'axios'
 import {
-    AppContext,
     useOrders,
     useUser,
 } from '@context'
-import moment from 'moment'
 import { getOrdersById } from '../utils/data'
-import EmptyStatus from './EmptyStatus'
+import moment from 'moment'
 
 export default () => {
-    const { profile } = useUser()
-    const { orders } = useOrders()
     const {
         closeOrder,
-        setOrders,
-        removeOrder,
+        orders,
+        ordersLoading,
         markDriverArrived,
         markOrderAccepted,
         markOrderComplete,
         markOrderConfirmed,
         markOrderReady,
         markOrderReceived,
+        setOrders,
+        setOrdersLoading,
+        removeOrder,
     } = useOrders()
-
-    const {
-        loading,
-    } = useContext(AppContext)
+    const { profile } = useUser()
 
     const [feature, setFeatured] = useState(null)
     const [featuredItem, setFeaturedItem] = useState(null)
@@ -46,8 +43,10 @@ export default () => {
     }, [profile])
 
     const loadOrders = async () => {
-        const loadedOrders = await getOrdersById(profile._id)
-        setOrders(loadedOrders)
+        setOrdersLoading(true)
+        const { data } = await getOrdersById(profile._id)
+        setOrdersLoading(false)
+        if (data.orders) setOrders(data.orders)
     }
 
     useEffect(() => {
@@ -162,7 +161,7 @@ export default () => {
             type='primary'
             label={label}
             onPress={action}
-            disabled={loading}
+            disabled={ordersLoading}
         />
     )
 

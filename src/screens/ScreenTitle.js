@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     Pressable,
     View,
@@ -7,16 +7,12 @@ import {
     ThemedText,
 } from '@components'
 import classes from '@styles/classes'
-import { AppContext, useApp } from '@context'
+import { useApp } from '@context'
 import { StackActions } from '@react-navigation/native'
 
 export default ({ children, navigation = null, backLabel = null, title = null }) => {
-
-    const {
-        isLandscape,
-    } = useContext(AppContext)
     
-    const { theme } = useApp()
+    const { isLandscape, theme } = useApp()
     
     return (
         <View
@@ -47,8 +43,6 @@ export default ({ children, navigation = null, backLabel = null, title = null })
                         style={{
                             flexBasis: 'auto',
                             flexGrow: 0,
-                            // marginTop: 5,
-                            // marginBottom: 5,
                         }}
                     >
                         <ThemedText
@@ -56,7 +50,6 @@ export default ({ children, navigation = null, backLabel = null, title = null })
                                 classes.pageTitle,
                                 {
                                     color: theme?.colors.headerPrimary,
-                                    // lineHeight: 30,
                                     marginRight: 5,
                                 },
                             ]}
@@ -73,9 +66,6 @@ export default ({ children, navigation = null, backLabel = null, title = null })
                             flexBasis: 'auto',
                             flexGrow: 1,
                             color: theme?.colors.headerPrimary,
-                            // lineHeight: 30,
-                            // marginTop: 5,
-                            // marginBottom: 5,
                         },
                     ]}
                 >

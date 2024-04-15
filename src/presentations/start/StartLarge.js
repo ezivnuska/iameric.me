@@ -1,42 +1,27 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import {
     ImageBackground,
-    StyleSheet,
     Text,
-    useWindowDimensions,
     View,
 } from 'react-native'
 import {
     IconButton,
 } from '@components'
-import { AppContext, useApp } from '../../context/AppContext'
-import { connect, initialize } from '@utils/auth'
+import {
+    useApp,
+    useModal,
+    useUser,
+} from '@context'
+import { connect } from '@utils/auth'
 import classes from '@styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { authenticate } from '@utils/auth'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default () => {
 
-    const {
-        dispatch,
-    } = useContext(AppContext)
-
-    const dims = useWindowDimensions()
-
-    // useEffect(() => {
-    //     init()
-    // }, [])
-
-    // const init = async () => {
-    //     const tokenFromStorage = await AsyncStorage.getItem('userToken')
-    //     if (tokenFromStorage) {
-    //         const verifiedUser = await authenticate(dispatch, tokenFromStorage)
-    //         if (verifiedUser) console.log(`${verifiedUser.username} verified`)
-    //     }
-    // }
+    const { setModal } = useModal()
+    const { setUser } = useUser()
 
     const onConnect = async type => {
         
@@ -44,25 +29,9 @@ export default () => {
         
         if (!connectedUser) {
             console.log('Error: Could not connect user.')
-            return
+            return false
         } else {
-            setUser(connectedUser)
-            return
-        }
-    }
-
-    const setUser = async ({
-        _id,
-        email,
-        images,
-        profileImage,
-        role,
-        token,
-        username,
-    }) => {
-        dispatch({
-            type: 'SET_USER',
-            user: {
+            const {
                 _id,
                 email,
                 images,
@@ -70,8 +39,19 @@ export default () => {
                 role,
                 token,
                 username,
-            },
-        })
+            } = connectedUser
+
+            setUser({
+                _id,
+                email,
+                images,
+                profileImage,
+                role,
+                token,
+                username,
+            })
+            return true
+        }
     }
 
     return (
@@ -84,10 +64,6 @@ export default () => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-evenly',
-                // // height: '100%',
-                // borderWidth: 2,
-                // borderColor: 'white',
-                // borderStyle: 'dotted',
             }}
         >
 
@@ -120,7 +96,7 @@ export default () => {
                         type='primary'
                         label='Find It'
                         iconName='arrow-forward-circle-outline'
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNUP_CUSTOMER' })}
+                        onPress={() => setModal('SIGNUP_CUSTOMER')}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}
@@ -168,7 +144,7 @@ export default () => {
                         type='primary'
                         label='Offer It'
                         iconName='arrow-forward-circle-outline'
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNUP_VENDOR' })}
+                        onPress={() => setModal('SIGNUP_VENDOR')}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}
@@ -216,7 +192,7 @@ export default () => {
                         type='primary'
                         label='Move It'
                         iconName='arrow-forward-circle-outline'
-                        onPress={() => dispatch({ type: 'SET_MODAL', modalType: 'SIGNUP_DRIVER' })}
+                        onPress={() => setModal('SIGNUP_DRIVER')}
                         alignIcon='right'
                         textStyles={{ color: '#fff' }}
                         style={{ marginHorizontal: 3 }}

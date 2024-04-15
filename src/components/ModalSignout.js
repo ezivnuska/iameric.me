@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     View,
 } from 'react-native'
@@ -6,18 +6,21 @@ import {
     CenterVertical,
     IconButton,
 } from '.'
-import { AppContext, useAuth, useModal, useUser } from '@context'
+import {
+    useAuth,
+    useModal,
+    useUser,
+} from '@context'
 import { signout } from '@utils/auth'
 
 export default () => {
 
     const { closeModal } = useModal()
     const { profile, clearUser } = useUser()
-    const { signOut } = useAuth()
-
     const {
-        loading,
-    } = useContext(AppContext)
+        authLoading,
+        signOut,
+    } = useAuth()
 
     const initSignout = async () => {
         const signedOut = await signout(profile._id)
@@ -41,7 +44,7 @@ export default () => {
                     type='primary'
                     label='Sign Out'
                     onPress={initSignout}
-                    disabled={loading}
+                    disabled={authLoading}
                 />
             </View>
         </CenterVertical>

@@ -7,7 +7,6 @@ import {
     IconButton,
 } from '.'
 import {
-    AppContext,
     useCart,
     useModal,
     useOrders,
@@ -16,24 +15,28 @@ import {
 import axios from 'axios'
 
 export default () => {
-    const { profile } = useUser()
-    const { clearCart, items } = useCart()
+    const {
+        cartLoading,
+        clearCart,
+        items,
+        setCartLoading,
+    } = useCart()
     const { addOrder } = useOrders()
     const { closeModal } = useModal()
-
-    const {
-        loading,
-    } = useContext(AppContext)
+    const { profile } = useUser()
 
     const submitOrder = async () => {
         const newOrder = {
             customer: profile._id,
             items,
         }
-
+        setCartLoading(true)
+        
         const { data } = await axios.
             post('/api/order', newOrder)
         
+        setCartLoading(false)
+
         if (!data) {
             console.log('Order submission failed')
         } else {
@@ -65,15 +68,15 @@ export default () => {
                     label='Order It!'
                     onPress={submitOrder}
                     type='primary'
-                    disabled={loading}
+                    disabled={cartLoading}
                     style={{ flex: 7 }}
                 />
                 
                 <IconButton
                     iconName='close-outline'
-                    onPress={() => clearCart()}
+                    onPress={clearCart}
                     type='danger'
-                    disabled={loading}
+                    disabled={cartLoading}
                     style={{ flex: 1 }}
                 />
             </View>

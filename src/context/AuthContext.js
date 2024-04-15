@@ -10,9 +10,8 @@ const initialState = {
     status: 'idle',
     authToken: null,
     error: null,
-    loaded: false,
-    loading: false,
-    setLoading: () => {},
+    authLoading: false,
+    setAuthLoading: () => {},
     signIn: () => {},
     signOut: () => {},
 }
@@ -53,6 +52,9 @@ export const AuthContextProvider = props => {
     }, [])
 
     const actions = useMemo(() => ({
+        setAuthLoading: async payload => {
+            dispatch({ type: 'SET_AUTH_LOADING', payload })
+        },
         signIn: async token => {
             dispatch({ type: 'SIGN_IN', payload: token })
             await setToken(token)
@@ -74,6 +76,12 @@ export const AuthContextProvider = props => {
 const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
+        case 'SET_AUTH_LOADING':
+            return {
+                ...state,
+                authLoading: payload,
+            }
+            break
         case 'SIGN_IN':
             return {
                 ...state,
