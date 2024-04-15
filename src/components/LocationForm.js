@@ -1,84 +1,153 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     View,
 } from 'react-native'
 import {
-    FormInput,
+    FormField,
     IconButton,
 } from '.'
 import {
+    useForm,
     useModal,
     useUser,
 } from '@context'
 import classes from '../styles/classes'
 import axios from 'axios'
 
-export default ({ location }) => {
-
-    const { profile, setLocation, setUserLoading, userLoading } = useUser()
-    const { closeModal } = useModal()
+export default () => {
     
-    const [ initialState, setInitialState ] = useState(location || {
+    const initialValues = {
         address1: '',
         address2: '',
         city: '',
         state: '',
         zip: '',
-    })
-    const [ address1, setAddress1 ] = useState(location.address1)
-    const [ address2, setAddress2 ] = useState(location.address2)
-    const [ city, setCity ] = useState(location.city)
-    const [ state, setState ] = useState(location.state)
-    const [ zip, setZip ] = useState(location.zip)
-    const [ dirty, setDirty ] = useState(false)
-
-    useEffect(() => {
-        if (location) {
-            setInitialState(location)
-        }
-    }, [])
-
-    useEffect(() => {
-        setAddress1(location.address1)
-        setAddress2(location.address2)
-        setCity(location.city)
-        setState(location.state)
-        setZip(location.zip)
-    }, [location])
-
-    const onChange = (name, value) => {
-        switch(name) {
-            case 'address1': {
-                setDirty(value !== initialState.address1)
-                setAddress1(value)
-            }
-            break
-            case 'address2': {
-                setDirty(value !== initialState.address2)
-                setAddress2(value)
-            }
-            break
-            case 'city': {
-                setDirty(value !== initialState.city)
-                setCity(value)
-            }
-            break
-            case 'state': {
-                setDirty(value !== initialState.state)
-                setState(value)
-            }
-            break
-            case 'zip': {
-                setDirty(value !== initialState.zip)
-                setZip(value)
-            }
-            break
-        }
     }
 
-    const submitForm = async () => {
+    const {
+        clearForm,
+        clearFormError,
+        focused,
+        formError,
+        formFields,
+        formLoading,
+        formReady,
+        getDirty,
+        getError,
+        getFocus,
+        initForm,
+        markDirty,
+        setFocus,
+        setFormError,
+        setFormLoading,
+        setFormValues,
+    } = useForm()
+
+    const { profile, setLocation } = useUser()
+    const { closeModal, data } = useModal()
+    const {
+        address1,
+        address2,
+        city,
+        state,
+        zip,
+    } = useMemo(() => ({
+        ...initialValues,
+        ...data,
+    }), [initialValues, data])
+
+    useEffect(() => {
+        initForm({
+            ...initialValues,
+            ...data,
+        })
+    }, [])
+    
+    useEffect(() => {
+        const values = Object.keys(initialValues)
+        const fields = Object.keys(formFields)
+        console.log('values', values)
+        console.log('fields', fields)
+        if (formReady && values.length === fields.length) {
+            validateFields()
+        }
+    }, [formReady, formFields])
+
+    const validateFields = () => {
+        const values = Object.keys(initialValues)
+        const fields = Object.keys(formFields)
+        let index = 0
+        while (index < fields.length) {
+            const key = fields[index]
+            const isValid = validateField(key)
+            if (!isValid) {
+                setFocus(key)
+                return
+            }
+            index++
+        }
+        setFocus(values[0])
+    }
+
+    const validateField = name => {
+        let isValid = true
+        switch (name) {
+            case 'address1':
+                if (!address1.length) {
+                    setFormError({ name, message: 'Address1 invalid.'})
+                    isValid = false
+                }
+                break
+            case 'address2':
+                if (!address2.length) {
+                    setFormError({ name, message: 'Address2 required.'})
+                    isValid = false
+                }
+                break
+            case 'city':
+                if (!city.length) {
+                    setFormError({ name, message: 'City invalid.'})
+                    isValid = false
+                }
+                break
+            case 'state':
+                if (state.length < 2) {
+                    setFormError({ name, message: 'State required.'})
+                    isValid = false
+                }
+                break
+            case 'zip':
+                if (!zip.length) {
+                    setFormError({ name, message: 'Zip required.'})
+                    isValid = false
+                }
+                break
+            default:
+                console.log('No field to validate')
+        }
+
+        if (isValid && getError(name)) {
+            clearFormError()
+        }
+
+        return isValid
+    }
+
+    const onChange = (key, value) => {
+        if (!getDirty(key)) markDirty(key)
+        setFormValues({ ...formFields, [key]: value })
+    }
+    
+    const onEnter = e => {
+		if (e.code === 'Enter') submitFormData()
+	}
+
+    const submitFormData = async () => {
         
-        if (!isValid()) return
+        if (formError) {
+			console.log(`Error in form field ${formError.name}: ${formError.message}`)
+            return
+		}
 
         const { _id, username } = profile
 
@@ -92,111 +161,112 @@ export default ({ location }) => {
             zip,
         }
         
-        setUserLoading(true)
+        setFormLoading(true)
         
-        const { data } = await axios
+        const response = await axios
             .post('/api/location', newLocation)
         
-        setUserLoading(false)
+        setFormLoading(false)
 
-        if (!data) {
+        if (!response.data) {
             console.log('Error saving location', err)
         } else {
-            setLoaction(data.location)
+            setLocation(response.data.location)
+            clearForm()
             closeModal()
         }
     }
 
-    const isValid = () => {
-        let valid = true
-        if (!dirty) valid = false
-        if (!address1.length) valid = false
-        if (!city.length) valid = false
-        if (!state.length) valid = false
-        if (!zip.length) valid = false
-        return valid
-    }
-
-	const onEnter = e => {
-		if (e.code === 'Enter') {
-            submitForm()
-        }
-	}
-
-    return (
-        <View style={classes.formContainer}>
-            
-            <FormInput
+    const renderFields = () => (
+        <>
+            <FormField
                 label='Address'
                 value={address1}
-                onChange={value => onChange('address1', value)}
-                placeholder='address1'
+                error={getError('address1')}
+                placeholder='street address'
                 textContentType='streetAddressLine1'
-                autoCapitalize='words'
                 keyboardType='default'
+                autoCapitalize='words'
+                onChangeText={value => onChange('address1', value)}
+                autoFocus={getFocus('address1')}
                 onKeyPress={onEnter}
-                invalid={address1.length < 1}
+                dirty={getDirty('address1')}
             />
-            
-            <FormInput
+            <FormField
                 value={address2}
-                onChange={value => onChange('address2', value)}
-                placeholder='Ste/Apt'
+                error={getError('address2')}
+                placeholder='ste/apt'
                 textContentType='streetAddressLine2'
-                autoCapitalize='words'
                 keyboardType='default'
+                autoCapitalize='words'
+                onChangeText={value => onChange('address2', value)}
+                autoFocus={getFocus('address2')}
                 onKeyPress={onEnter}
+                dirty={getDirty('address2')}
             />
-            
             <View
                 style={classes.formColumns}
             >
-                <FormInput
+                <FormField
                     label='City'
                     value={city}
-                    onChange={value => onChange('city', value)}
+                    error={getError('city')}
                     placeholder='city'
                     textContentType='addressCity'
-                    autoCapitalize='words'
                     keyboardType='default'
-					onKeyPress={onEnter}
-                    invalid={city.length < 1}
+                    autoCapitalize='words'
+                    onChangeText={value => onChange('city', value)}
+                    autoFocus={getFocus('city')}
+                    onKeyPress={onEnter}
+                    dirty={getDirty('city')}
                 />
-                
-                <FormInput
+
+                <FormField
                     label='State'
                     value={state}
-                    onChange={value => onChange('state', value)}
+                    error={getError('state')}
                     placeholder='state'
                     textContentType='addressState'
-                    autoCapitalize='none'
                     keyboardType='default'
-                    style={{ flexBasis: 100 }}
-					onKeyPress={onEnter}
-                    invalid={state.length !== 2}
+                    autoCapitalize='words'
+                    onChangeText={value => onChange('state', value)}
+                    autoFocus={getFocus('state')}
+                    onKeyPress={onEnter}
+                    dirty={getDirty('state')}
                 />
             </View>
-            
-            <FormInput
+
+            <FormField
                 label='Zip'
                 value={zip}
-                onChange={value => onChange('zip', value)}
+                error={getError('zip')}
                 placeholder='zip'
                 textContentType='postalCode'
-                autoCapitalize='none'
                 keyboardType='default'
+                autoCapitalize='words'
+                onChangeText={value => onChange('zip', value)}
+                autoFocus={getFocus('zip')}
                 onKeyPress={onEnter}
-                invalid={zip.length < 1}
+                dirty={getDirty('zip')}
             />
+        </>
+    )
+    return focused !== null ? (
+        <View
+            style={{ paddingVertical: 20 }}
+        >
+            <View style={{ marginBottom: 10 }}>
+                {renderFields()}
+            </View>
 
             <IconButton
                 type='primary'
-                label='Update Location'
-                onPress={submitForm}
-                disabled={userLoading || !isValid()}
+                label={formLoading ? 'Updating Location' : 'Update Location'}
+                onPress={submitFormData}
+                disabled={formLoading || formError}
                 style={{ marginTop: 10 }}
             />
 
         </View>
-    )
+    ) : null
 }

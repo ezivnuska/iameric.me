@@ -6,8 +6,8 @@ import {
     Cart,
     FeedbackForm,
     DestroyForm,
+    LocationForm,
     ModalImage,
-    ModalLocation,
     ModalProfile,
     ModalSignout,
     ModalImageSelector,
@@ -38,7 +38,7 @@ export default () => {
             case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ModalImage image={data} />; break
-            case 'LOCATION': return <ModalLocation />; break
+            case 'LOCATION': return <LocationForm />; break
             case 'PRODUCT': return <ProductForm />; break
             case 'PROFILE': return <ModalProfile />; break
             case 'SELECT_IMAGE': return <ModalImageSelector />; break

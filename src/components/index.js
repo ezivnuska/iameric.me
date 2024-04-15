@@ -34,7 +34,6 @@ import ModalCart from './ModalCart'
 import ModalDestroy from './ModalDestroy'
 import ModalImage from './ModalImage'
 import ModalImageSelector from './ModalImageSelector'
-import ModalLocation from './ModalLocation'
 import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
 import ModalView from './ModalView'
@@ -97,7 +96,6 @@ export {
     ModalDestroy,
     ModalImage,
     ModalImageSelector,
-    ModalLocation,
     ModalProfile,
     ModalView,
     ModalSignout,

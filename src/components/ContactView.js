@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     FlatList,
     Image,
-    LoadingView,
     Pressable,
     useWindowDimensions,
     ScrollView,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
+import {
+    LoadingView,
+    ThemedText,
+} from '@components'
 import { useContacts } from '@context'
 import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
@@ -20,17 +22,17 @@ export default ContactList = () => {
         contacts,
         contactsLoading,
         setContacts,
-        setLoadingContacts,
+        setContactsLoading,
     } = useContacts()
 
     useEffect(() => {
         const init = async () => {
             
-            setLoadingContacts(true)
+            setContactsLoading(true)
             
             const { data } = await axios.get('/api/users')
             
-            setLoadingContacts(false)
+            setContactsLoading(false)
             
             if (data && data.users) {
                 setContacts(data.users)

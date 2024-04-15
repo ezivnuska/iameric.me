@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Image,
-    // useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -13,7 +12,6 @@ import {
     useApp,
     useProducts,
     useUser,
-    AppContext,
 } from '@context'
 import { getImageDims } from '@utils/images'
 
@@ -22,13 +20,8 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const { dims, isLandscape, theme } = useApp()
-    // const dims = useWindowDimensions()
-    const { profile } = useUser()
+    const { profile, setUserLoading, userLoading } = useUser()
     const { items } = useProducts()
-
-    const {
-        loading,
-    } = useContext(AppContext)
 
     const [imageDims, setImageDims] = useState(null)
 
@@ -102,7 +95,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                                     type='primary'
                                     label='Set as Avatar'
                                     onPress={setAvatar}
-                                    disabled={loading}
+                                    disabled={userLoading}
                                     style={{
                                         color: theme?.colors.textDefault,
                                     }}
@@ -119,7 +112,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                                     type='danger'
                                     label='Delete'
                                     onPress={deleteImage}
-                                    disabled={loading || process.env.NODE_ENV === 'development'}
+                                    disabled={userLoading || process.env.NODE_ENV === 'development'}
                                     style={{ flex: 1 }}
                                 />
                             )}

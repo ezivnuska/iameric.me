@@ -12,20 +12,22 @@ import {
     useApp,
 } from '@context'
 
-export default ({ dirty, error, label, value, ...props }) => {
+export default ({ dirty, error, value, label = null, ...props }) => {
 
     const { theme } = useApp()
 
     return (
         <View>
-            <ThemedText
-                style={[
-                    classes.formInputLabel,
-                    { color: theme?.colors.inputLabel },
-                ]}
-            >
-                {label}
-            </ThemedText>
+            {label && (
+                <ThemedText
+                    style={[
+                        classes.formInputLabel,
+                        { color: theme?.colors.inputLabel },
+                    ]}
+                >
+                    {label}
+                </ThemedText>
+            )}
 
             <View
                 style={[

@@ -4,8 +4,8 @@ const initialState = {
     contacts: [],
     error: null,
     contactsLoading: false,
-    setLoadingContacts: () => {},
     setContacts: () => {},
+    setContactsLoading: () => {},
     updateContact: () => {},
     updateContactProducts: () => {},
     updateContactImages: () => {},
@@ -26,8 +26,8 @@ export const ContactContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
-        setLoadingContacts: async payload => {
-            dispatch({ type: 'SET_LOADING_CONTACTS', payload })
+        setContactsLoading: async payload => {
+            dispatch({ type: 'SET_CONTACTS_LOADING', payload })
         },
         setContacts: async payload => {
             dispatch({ type: 'SET_USERS', payload })
@@ -53,7 +53,7 @@ export const ContactContextProvider = props => {
 const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
-        case 'SET_LOADING_CONTACTS':
+        case 'SET_CONTACTS_LOADING':
             return { ...state, contactsLoading: payload }
             break
         case 'SET_USERS':

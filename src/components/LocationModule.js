@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     Pressable,
     View,
@@ -9,23 +9,22 @@ import {
     LocationDetails,
 } from '.'
 import {
-    AppContext,
+    useForm,
     useModal,
     useUser,
 } from '@context'
-import { getLocationByUserId, getUserLocationById } from '../utils/data'
+import { getLocationByUserId, getUserLocationById } from '@utils/data'
 
 export default ({ userId }) => {
     const { profile } = useUser()
     const { setModal } = useModal()
-    const {
-        loading,
-    } = useContext(AppContext)
+    const { formLoading } = useForm()
+    const { location } = useMemo(() => profile, [profile])
 
     useEffect(() => {
         let userLocation = null
-        if (profile.location && typeof profile.location === 'string') {
-             userLocation = getUserLocationById(profile.location)
+        if (location && typeof location === 'string') {
+             userLocation = getUserLocationById(location)
         } else {
             userLocation = getLocationByUserId(userId)
         }
@@ -41,10 +40,10 @@ export default ({ userId }) => {
         >
             
             <IconButton
-                iconName={profile.location ? 'create-outline' : 'add-outline'}
+                iconName={location ? 'create-outline' : 'add-outline'}
                 label='Address'
-                disabled={loading}
-                onPress={() => setModal('LOCATION')}
+                disabled={formLoading}
+                onPress={() => setModal('LOCATION', location)}
                 alignIcon='right'
                 transparent
                 justify='flex-start'
@@ -61,8 +60,8 @@ export default ({ userId }) => {
                 }}
             />
             
-            {profile.location && typeof profile.location !== 'string'
-                ? <LocationDetails location={profile.location} />
+            {location && typeof location !== 'string'
+                ? <LocationDetails location={location} />
                 : (
                     <Pressable
                         onPress={() => setModal('LOCATION')}

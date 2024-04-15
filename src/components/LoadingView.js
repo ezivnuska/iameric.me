@@ -1,16 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     View,
 } from 'react-native'
 import {
     ThemedText,
 } from '.'
-import { AppContext } from '@context'
 import classes from '@styles/classes'
 
-export default () => {
-    
-    const { loading } = useContext(AppContext)
+export default ({ loading = null }) => {
     
     return (
         <View
