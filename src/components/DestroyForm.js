@@ -9,6 +9,7 @@ import {
 } from '@components'
 import { unsubscribe } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
+import { getFields } from '@utils/form'
 import classes from '@styles/classes'
 import {
     useAuth,
@@ -19,7 +20,7 @@ import {
 
 export default () => {
 
-    const initialValues = {
+    const initialState = {
         username: '',
     }
 
@@ -39,47 +40,49 @@ export default () => {
         setFocus,
         setFormError,
         setFormLoading,
+        setFormReady,
         setFormValues,
     } = useForm()
 
-    const {
-        signOut,
-    } = useAuth()
-
-    const { closeModal } = useModal()
+    const { signOut } = useAuth()
+    const { closeModal, data } = useModal()
     const { profile, clearUser } = useUser()
 
-    useEffect(() => {
-        initForm(initialValues)
-    }, [])
+    const [initialValues, setInitialValues] = useState(null)
+
+    const {
+        username,
+    } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        if (formReady) {
-            validateFields()
-        }
-    }, [formReady, formFields])
+        const fields = getFields(initialState, data)
+        setInitialValues(fields)
+    }, [])
+    
+    useEffect(() => {
+        if (initialValues) initForm(initialValues)
+    }, [initialValues])
+
+    useEffect(() => {
+        if (formReady) validateFields()
+    }, [username])
 
     const validateFields = () => {
-        const values = Object.keys(initialValues)
-        const fields = Object.keys(formFields)
+        const keys = Object.keys(formFields)
         let index = 0
-        while (index < values.length) {
-            const key = fields[index]
+        while (index < keys.length) {
+            const key = keys[index]
             const isValid = validateField(key)
-            if (!isValid) {
-                setFocus(key)
-                return
-            }
-            index++
+            if (!isValid) return
+            else index++
         }
-        setFocus(values[0])
     }
 
     const validateField = name => {
         let isValid = true
         switch (name) {
             case 'username':
-                if (formFields.username !== profile.username) {
+                if (username !== profile.username) {
                     setFormError({ name: 'username', message: 'Incorrect username.' })
                     isValid = false
                 }
@@ -87,9 +90,12 @@ export default () => {
             default:
                 console.log('No field to validate')
         }
-        
+
         if (isValid && getError(name)) {
             clearFormError()
+            setFocus(0)
+        } else {
+            setFocus(name)
         }
 
         return isValid
@@ -133,7 +139,7 @@ export default () => {
         <>
             <FormField
                 label='Confirm Username'
-                value={formFields.username}
+                value={username}
                 error={getError('username')}
                 placeholder='username'
                 textContentType='none'

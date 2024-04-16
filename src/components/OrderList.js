@@ -15,7 +15,7 @@ import {
     useOrders,
     useUser,
 } from '@context'
-import { getOrdersById } from '../utils/data'
+import { getOrdersById } from '@utils/orders'
 import moment from 'moment'
 
 export default () => {

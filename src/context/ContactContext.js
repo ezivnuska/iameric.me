@@ -1,9 +1,12 @@
 import React, { createContext, useContext, useMemo, useReducer } from 'react'
 
 const initialState = {
+    lastContact: null,
+    contact: null,
     contacts: [],
     error: null,
     contactsLoading: false,
+    setContact: () => {},
     setContacts: () => {},
     setContactsLoading: () => {},
     updateContact: () => {},
@@ -26,20 +29,24 @@ export const ContactContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
+        setContact: async payload => {
+            // dispatch({ type: 'UPDATE_CONTACT', payload })
+            dispatch({ type: 'SET_CONTACT', payload })
+        },
         setContactsLoading: async payload => {
             dispatch({ type: 'SET_CONTACTS_LOADING', payload })
         },
         setContacts: async payload => {
-            dispatch({ type: 'SET_USERS', payload })
+            dispatch({ type: 'SET_CONTACTS', payload })
         },
         updateContact: async payload => {
-            dispatch({ type: 'UPDATE_USER', payload })
+            dispatch({ type: 'UPDATE_CONTACT', payload })
+        },
+        updateContactImages: async payload => {
+            dispatch({ type: 'UPDATE_CONTACT_IMAGES', payload })
         },
         updateContactProducts: async payload => {
             dispatch({ type: 'UPDATE_USER_PRODUCTS', payload })
-        },
-        updateContactImages: async payload => {
-            dispatch({ type: 'UPDATE_USER_IMAGES', payload })
         },
     }), [state, dispatch])
 
@@ -53,20 +60,34 @@ export const ContactContextProvider = props => {
 const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
+        case 'SET_CONTACT':
+            return {
+                ...state,
+                contact: payload,
+                lastContact: state.contact,
+            }
+            break
+        case 'SET_CONTACTS':
+            return { ...state, contacts: payload }
+            break
         case 'SET_CONTACTS_LOADING':
             return { ...state, contactsLoading: payload }
             break
-        case 'SET_USERS':
-            return { ...state, contacts: payload }
-            break
-        case 'UPDATE_USER':
+        case 'UPDATE_CONTACT':
+            let contact = state.contact
+            const contacts = state.contacts.length
+                ? state.contacts.map(user => {
+                    if (user._id === payload._id) {
+                        contact = { ...user, ...payload }
+                        return contact
+                    }
+                    return user
+                }) : [payload]
+
             return {
                 ...state,
-                contacts: state.contacts.map(
-                    user => user._id === payload._id
-                        ? payload
-                        : user
-                ),
+                contact,
+                contacts,
             }
             break
         case 'UPDATE_USER_PRODUCTS':
@@ -79,7 +100,7 @@ const reducer = (state, action) => {
                 ),
             }
             break
-        case 'UPDATE_USER_IMAGES':
+        case 'UPDATE_CONTACT_IMAGES':
             return {
                 ...state,
                 contacts: state.contacts.map(
@@ -89,17 +110,6 @@ const reducer = (state, action) => {
                 ),
             }
             break
-        // NOT USED
-        // case 'ADD_USER_IMAGE':
-        //     return {
-        //         ...state,
-        //         contacts: state.contacts.map(
-        //             user => user._id === action.image.user
-        //             ? ({ ...user, images: [...user.images, action.image] })
-        //             : user
-        //         ),
-        //     }
-        //     break
         case 'UPDATE_USER_IMAGE':
             
             return {
@@ -141,51 +151,6 @@ const reducer = (state, action) => {
                 }),
             }
             break
-        // NOT USED
-        // case 'REMOVE_PRODUCT_FROM_SINGLE_USER':
-        //     return {
-        //         ...state,
-        //         contacts: state.contacts.map(user => {
-        //             if (user._id === action.product.user) {
-        //                 return {
-        //                     ...user,
-        //                     products: user.products.filter(products => products._id !== action.product._id),
-        //                 }
-        //             }
-        //             return user
-        //         }),
-        //     }
-        //     break
-        // NOT USED
-        // case 'ADD_PRODUCT_TO_SINGLE_USER':
-        //     return {
-        //         ...state,
-        //         contacts: state.contacts.map(user => {
-        //             if (user._id === action.product.user) {
-        //                 return {
-        //                     ...user,
-        //                     products: [...user.products, action.product],
-        //                 }
-        //             }
-        //             return user
-        //         }),
-        //     }
-        //     break
-        // NOT USED
-        // case 'UPDATE_USER_PRODUCT':
-        //     return {
-        //         ...state,
-        //         contacts: state.contacts.map(user => {
-        //             if (user._id === action.userId) {
-        //                 return {
-        //                     ...user,
-        //                     products: user.products.map(p => p._id === action.product._id ? action.product : p),
-        //                 }
-        //             }
-        //             return user
-        //         }),
-        //     }
-        //     break
         case 'UPDATE_USERS_LOCATION':
             return {
                 ...state,

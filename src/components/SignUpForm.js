@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -8,6 +8,7 @@ import {
 } from '@components'
 import { setItem } from '@utils/storage'
 import { isValidEmail, signup } from '@utils/auth'
+import { getFields } from '@utils/form'
 import {
     useAuth,
     useForm,
@@ -17,7 +18,7 @@ import {
 
 export default ({ role }) => {
 
-    const initialValues = {
+    const initialState = {
         email: '',
         username: '',
         password: '',
@@ -31,6 +32,7 @@ export default ({ role }) => {
         formError,
         formFields,
         formLoading,
+        formReady,
         getDirty,
         getError,
         getFocus,
@@ -42,41 +44,31 @@ export default ({ role }) => {
         setFormValues,
     } = useForm()
 
-    const {
-        signIn,
-    } = useAuth()
-
-    const { closeModal } = useModal()
+    const { signIn } = useAuth()
+    const { closeModal, data } = useModal()
     const { setUser } = useUser()
 
-    const { email, username, password, confirmPassword } = useMemo(() => ({
-        ...initialValues,
-        ...formFields,
-    }), [formFields, initialValues])
+    const [initialValues, setInitialValues] = useState(null)
+
+    const {
+        email,
+        username,
+        password,
+        confirmPassword,
+    } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        initForm({ email, username, password, confirmPassword })
+        const fields = getFields(initialState, data)
+        setInitialValues(fields)
     }, [])
+    
+    useEffect(() => {
+        if (initialValues) initForm(initialValues)
+    }, [initialValues])
 
     useEffect(() => {
-        const fields = Object.keys(formFields)
-        const values = Object.keys(initialValues)
-        if (fields.length === values.length) {
-            validateFields()
-        } else {
-            fields.map(key => {
-                if (formFields[key].length) {
-                    markDirty(key)
-                }
-            })
-        }
-        
-    }, [formFields])
-
-    const onChange = (key, value) => {
-        markDirty(key)
-        setFormValues({ ...formFields, [key]: value })
-    }
+        if (formReady) validateFields()
+    }, [email, username, password, confirmPassword])
 
     const validateFields = () => {
         const keys = Object.keys(formFields)
@@ -84,13 +76,9 @@ export default ({ role }) => {
         while (index < keys.length) {
             const key = keys[index]
             const isValid = validateField(key)
-            if (!isValid) {
-                setFocus(index)
-                return
-            }
+            if (!isValid) return
             else index++
         }
-        setFocus(keys[0])
     }
 
     const validateField = name => {
@@ -126,9 +114,17 @@ export default ({ role }) => {
 
         if (isValid && getError(name)) {
             clearFormError()
+            setFocus(0)
+        } else {
+            setFocus(name)
         }
 
         return isValid
+    }
+
+    const onChange = (key, value) => {
+        if (!getDirty(key)) markDirty(key)
+        setFormValues({ ...formFields, [key]: value })
     }
     
     const onEnter = e => {

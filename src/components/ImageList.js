@@ -14,12 +14,12 @@ import {
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ onSelected }) => {
+export default ({ images, onSelected }) => {
 
     const { theme } = useApp()
     const { setModal } = useModal()
     const { profile, userLoading } = useUser()
-    const profileImages = useMemo(() => profile.images, [profile])
+    // const images = useMemo(() => profile.images, [profile])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -62,7 +62,7 @@ export default ({ onSelected }) => {
                 marginVertical: 15,
             }}
         >
-            {profileImages && profileImages.map((image, index) => (
+            {images && images.map((image, index) => (
                 <View
                     key={`image-${index}`}
                 >
@@ -83,7 +83,7 @@ export default ({ onSelected }) => {
                             width={IMAGE_SIZE}
                             height={IMAGE_SIZE}
                             // source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
-                            source={{ uri: `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}` }}
+                            source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
                             style={{
                                 resizeMode: 'cover',
                                 width: '100%',
@@ -97,7 +97,7 @@ export default ({ onSelected }) => {
 
             {showUploadButton() && (
                 <Pressable
-                    key={`image-${profileImages.length}`}
+                    key={`image-${images.length}`}
                     onPress={() => setModal('SELECT_IMAGE')}
                     style={[
                         {

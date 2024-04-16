@@ -143,7 +143,6 @@ const reducer = (state, action) => {
             }
             break
         case 'SET_DIRTY_FIELDS':
-            console.log('SET_DIRTY_FIELDS', payload)
             return {
                 ...state,
                 dirtyFields: payload,
@@ -156,7 +155,6 @@ const reducer = (state, action) => {
             }
             break
         case 'SET_FORM_ERROR':
-            console.log('FormError:', payload)
             return {
                 ...state,
                 formError: payload,

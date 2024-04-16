@@ -10,7 +10,7 @@ import {
     useProducts,
     useUser,
 } from '@context'
-import { deleteProductWithId, loadProducts } from '@utils/data'
+import { deleteProductWithId, loadProducts } from '@utils/products'
 
 export default () => {
 
@@ -50,7 +50,7 @@ export default () => {
         closeModal()
     }
 
-    if (productsLoading) return <LoadingView />
+    if (productsLoading) return <LoadingView loading='Loading products' />
 
     return products && products.length ? (
         <FlatList

@@ -11,14 +11,14 @@ import {
     useApp,
     useContacts,
 } from '@context'
-import { loadUser, loadUserProducts } from '@utils/data'
+import { loadContact, loadUserProducts } from '@utils/contacts'
+import { loadImages } from '@utils/images'
 
-export default ({ navigation, route }) => {
-    
-    const { id } = route.params
+export default ({ navigation }) => {
 
     const { theme } = useApp()
     const {
+        contact,
         contacts,
         contactsLoading,
         setContactsLoading,
@@ -26,32 +26,39 @@ export default ({ navigation, route }) => {
         updateContactProducts,
     } = useContacts()
     
-    const currentUser = useMemo(() => {
-        return contacts.map(contact => contact._id === id)[0]
-    }, [contacts, id])
+    const {
+        _id,
+        images,
+        username,
+    } = useMemo(() => contact, [contact])
     
     useEffect(() => {
+        let loadedContact = contact
         const init = async () => {
-            setContactsLoading(true)
-            const { data } = await loadUser(id)
-            setContactsLoading(false)
-            if (!data) console.log('no user could be loaded')
-            else updateContact(user)
+            const images = await loadImages(_id)
+            console.log('images', images)
+            if (images) {
+                loadedContact = {
+                    ...loadedContact,
+                    images,
+                }
+            }
+            updateContact(loadedContact)
         }
         init()
     }, [])
 
     useEffect(() => {
-        if (currentUser) {
-            if (!currentUser.products) {
+        if (contact) {
+            if (!contact.products) {
                 initProducts()
             }
         }
-    }, [currentUser])
+    }, [contact])
 
     const initProducts = async () => {
         setContactsLoading(true)
-        const { data } = await loadUserProducts(currentUser._id)
+        const { data } = await loadUserProducts(_id)
         setContactsLoading(false)
         if (data) {
             updateContactProducts(data.products)
@@ -64,7 +71,7 @@ export default ({ navigation, route }) => {
         <Screen
             titleComponent={
                 <ScreenTitle
-                    title={currentUser?.username || 'Restaurant'}
+                    title={contact?.username || 'Restaurant'}
                 >
                     <IconButton
                         label='Return to Vendors'
@@ -84,10 +91,10 @@ export default ({ navigation, route }) => {
                 </ScreenTitle>
             }
         >
-            {currentUser ? (
+            {contact ? (
                 <Menu
                     loading={contactsLoading}
-                    vendor={currentUser}
+                    vendor={contact}
                 />
             ) : null}
         </Screen>

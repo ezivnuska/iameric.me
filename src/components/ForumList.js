@@ -13,11 +13,13 @@ import {
 } from '.'
 import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
-import { useApp, useUser } from '@context'
-// import { useTheme } from 'react-native-paper'
+import {
+    useApp,
+    useContacts,
+} from '@context'
 import { navigationRef } from '../navigation/RootNavigation'
 
-const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, ...props }) => {
+const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props }) => {
     
     const { author, text } = item
     const [online, setOnline] = useState(false)
@@ -76,13 +78,8 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
                     }}
                 >
                     <Pressable
-                        style={{
-                            flexBasis: 'auto',
-                            flexGrow: 1,
-                        }}
-                        onPress={() => {
-                            navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
-                        }}
+                        style={{ flexBasis: 'auto', flexGrow: 1 }}
+                        onPress={onPress}
                     >
                         <ThemedText
                             style={classes.userHeading}
@@ -93,22 +90,20 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
 
                     </Pressable>
 
-                    {hasAuth ? (
-                        <View
-                            style={{
-                                flexBasis: 'auto',
-                                flexGrow: 0,
-                                marginTop: -1,
-                            }}
-                        >
-                            <IconButton
-                                iconName='trash-outline'
-                                onPress={() => onDelete ? onDelete(item._id) : null}
-                                textStyles={{ fontSize: 15 }}
-                                transparent
-                            />
-                        </View>
-                    ) : null}
+                    <View
+                        style={{
+                            flexBasis: 'auto',
+                            flexGrow: 0,
+                            marginTop: -1,
+                        }}
+                    >
+                        <IconButton
+                            iconName='trash-outline'
+                            onPress={() => onDelete ? onDelete(item._id) : null}
+                            textStyles={{ fontSize: 15 }}
+                            transparent
+                        />
+                    </View>
 
                 </View>
                 
@@ -128,11 +123,10 @@ const ListItemVertical = ({ item, imagePath, hasAuth = false, onDelete = null, .
     )
 }
 
-const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null, ...props }) => {
+const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null, ...props }) => {
     const { author, text } = item
     const [online, setOnline] = useState(false)
-    const dims = useWindowDimensions()
-    const { theme } = useApp()
+    const { dims, theme } = useApp()
     
     useEffect(() => {
         if (author && author.exp) {
@@ -201,13 +195,8 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
                         }}
                     >
                         <Pressable
-                            style={{
-                                flexBasis: 'auto',
-                            }}
-                            onPress={() => {
-                                console.log('author', author)
-                                navigationRef.navigate('Users', { screen: 'User', params: { id: author._id } })
-                            }}
+                            style={{ flexBasis: 'auto' }}
+                            onPress={onPress}
                         >
                             <ThemedText
                                 style={classes.userHeading}
@@ -218,22 +207,20 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
 
                         </Pressable>
 
-                        {hasAuth ? (
-                            <View
-                                style={{
-                                    flexBasis: 'auto',
-                                    flexGrow: 0,
-                                    marginTop: -2,
-                                }}
-                            >
-                                <IconButton
-                                    iconName='trash-outline'
-                                    onPress={() => onDelete ? onDelete(item._id) : null}
-                                    textStyles={{ fontSize: 15 }}
-                                    transparent
-                                />
-                            </View>
-                        ) : null}
+                        <View
+                            style={{
+                                flexBasis: 'auto',
+                                flexGrow: 0,
+                                marginTop: -2,
+                            }}
+                        >
+                            <IconButton
+                                iconName='trash-outline'
+                                onPress={() => onDelete ? onDelete(item._id) : null}
+                                textStyles={{ fontSize: 15 }}
+                                transparent
+                            />
+                        </View>
 
                     </View>
                     
@@ -253,10 +240,14 @@ const ListItemHorizontal = ({ item, imagePath, hasAuth = false, onDelete = null,
     )
 }
 
-export default ({ items, onDelete, horizontal = false, ...props }) => {
-    const dims = useWindowDimensions()
-    const { profile } = useUser()
-    const authorized = item => (item.author._id === profile._id || profile.role === 'admin')
+export default ({ items, onDelete, horizontal = false }) => {
+    const { dims } = useApp()
+    const { contact, setContact } = useContacts()
+
+    useEffect(() => {
+        if (contact) navigationRef.navigate('Users', { screen: 'User' })
+    }, [contact])
+
     return !horizontal ? (
         <FlatList
             data={items}
@@ -266,8 +257,8 @@ export default ({ items, onDelete, horizontal = false, ...props }) => {
                 <ListItemVertical
                     item={item}
                     imagePath={getProfileImagePathFromUser(item.author)}
-                    hasAuth={authorized(item)}
                     onDelete={onDelete}
+                    onPress={() => setContact(item.author)}
                 />
             )}
             showsVerticalScrollIndicator={false}
@@ -303,8 +294,8 @@ export default ({ items, onDelete, horizontal = false, ...props }) => {
                         item={item}
                         imagePath={getProfileImagePathFromUser(item.author)}
                         key={'entry' + index}
-                        hasAuth={authorized(item)}
                         onDelete={onDelete}
+                        onPress={() => setContact(item.author)}
                     />
                 )))}
             </View>

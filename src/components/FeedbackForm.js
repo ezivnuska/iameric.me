@@ -13,6 +13,7 @@ import {
     useModal,
     useUser,
 } from '@context'
+import { getFields } from '@utils/form'
 
 export default () => {
 
@@ -36,6 +37,7 @@ export default () => {
         setFocus,
         setFormError,
         setFormLoading,
+        setFormReady,
         setFormValues,
     } = useForm()
 
@@ -43,79 +45,34 @@ export default () => {
     const { closeModal, data } = useModal()
     const { profile } = useUser()
 
-    const [initialValues, setInitialValues] = useState(initialState)
-
-    const getFields = () => {
-        console.log('')
-        console.log('getting fields, data:', data)
-        let values = initialState
-        if (data) {
-            console.log('getting fields, data:', data)
-            const formKeys = Object.keys(values)
-            const fields = {}
-            formKeys.map(key => {
-                if (data[key] !== undefined) {
-                    fields[key] = data[key]
-                }
-            })
-            console.log('filtered fields', fields)
-            values = fields
-        }
-        console.log('values', values)
-        return values
-    }
+    const [initialValues, setInitialValues] = useState(null)
 
     const {
         entry,
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        const fields = getFields()
-        console.log('setting initialValues', fields)
+        const fields = getFields(initialState, data)
         setInitialValues(fields)
     }, [])
     
     useEffect(() => {
-        console.log('initialValues changed')
-        console.log('initialValues', initialValues)
-        if (formReady) {
-            console.log('formReady', formReady)
-            // const values = Object.keys(initialValues)
-            // console.log('')
-            // console.log('formFields', formFields)
-            // console.log('initialValues', values)
-            // console.log('')
-            validateFields()
-        } else {
-            console.log('initForm', initialValues)
-            initForm(initialValues)
-        }
+        if (initialValues) initForm(initialValues)
     }, [initialValues])
 
     useEffect(() => {
-        if (formReady) {
-            // const fields = Object.keys(formFields)
-            // console.log('')
-            // console.log('formFields', formFields)
-            // console.log('fields', fields)
-            // console.log('')
-            validateFields()
-        }
+        if (formReady) validateFields()
     }, [entry])
 
     const validateFields = () => {
-        const values = Object.keys(initialValues)
+        const keys = Object.keys(formFields)
         let index = 0
-        while (index < values.length) {
-            const key = values[index]
+        while (index < keys.length) {
+            const key = keys[index]
             const isValid = validateField(key)
-            if (!isValid) {
-                setFocus(key)
-                return
-            }
-            index++
+            if (!isValid) return
+            else index++
         }
-        setFocus(values[0])
     }
 
     const validateField = name => {
@@ -133,6 +90,9 @@ export default () => {
 
         if (isValid && getError(name)) {
             clearFormError()
+            setFocus(0)
+        } else {
+            setFocus(name)
         }
 
         return isValid

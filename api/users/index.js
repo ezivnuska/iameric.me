@@ -105,34 +105,6 @@ const getUserById = async (req, res, next) => {
     return res.status(200).json({ user })
 }
 
-const getFullUserById = async (req, res) => {
-    
-    let user = await User
-        .findOne({ _id: req.params.id })
-        .populate({
-            path: 'profileImage',
-            select: 'filename width height',
-        })
-        
-    if (!user) {
-        console.log('could not get user by id.')
-        return res.status(406).json(null)
-    }
-
-    const images = await UserImage
-        .find({ user: req.params.id })
-        .populate('user', 'username')
-    
-    if (images) {
-        user = {
-            ...user,
-            images,
-        }
-    }
-
-    return res.status(200).json({ user })
-}
-
 const getUserDetailsById = async (req, res) => {
     
     const user = await User
@@ -155,7 +127,6 @@ module.exports = {
     getNumberOfOnlineUsers,
     getAllVendorIds,
     getAllVendors,
-    getFullUserById,
     getUserById,
     getUserDetailsById,
 }

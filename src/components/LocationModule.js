@@ -7,29 +7,39 @@ import {
     ThemedText,
     IconButton,
     LocationDetails,
+    LoadingView,
 } from '.'
 import {
     useForm,
     useModal,
     useUser,
 } from '@context'
-import { getLocationByUserId, getUserLocationById } from '@utils/data'
+import {
+    getUserLocation,
+} from '@utils/location'
 
-export default ({ userId }) => {
-    const { profile } = useUser()
+export default () => {
+    const { profile, setUserLocation, setUserLoading, userLoading } = useUser()
     const { setModal } = useModal()
     const { formLoading } = useForm()
     const { location } = useMemo(() => profile, [profile])
 
     useEffect(() => {
-        let userLocation = null
-        if (location && typeof location === 'string') {
-             userLocation = getUserLocationById(location)
-        } else {
-            userLocation = getLocationByUserId(userId)
+        const init = async () => {
+            if (!location) {
+                setUserLoading(true)
+                const data = await getUserLocation(profile._id)
+                console.log('data', data)
+                setUserLoading(false)
+                if (!location) console.log('Error fetching user location')
+                else setUserLocation(location)
+            }
         }
+        init()
     }, [])
-
+    
+    if (userLoading) return <LoadingView loading='Loading user location' />
+    
     return (
         <View
             style={{
@@ -60,7 +70,7 @@ export default ({ userId }) => {
                 }}
             />
             
-            {location && typeof location !== 'string'
+            {location
                 ? <LocationDetails location={location} />
                 : (
                     <Pressable
@@ -68,8 +78,7 @@ export default ({ userId }) => {
                     >
                         <ThemedText>Add your location.</ThemedText>
                     </Pressable>
-                )
-            }
+                )}
             
         </View>
     )

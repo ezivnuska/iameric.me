@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -15,12 +15,13 @@ import {
     useProducts,
     useUser,
 } from '@context'
+import { getFields } from '@utils/form'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default  () => {
 
-    const initialValues = {
+    const initialState = {
         title: '',
         price: '',
         blurb: '',
@@ -45,6 +46,7 @@ export default  () => {
         markDirty,
         setFocus,
         setFormError,
+        setFormReady,
         setFormLoading,
         setFormValues,
     } = useForm()
@@ -54,10 +56,11 @@ export default  () => {
         updateProduct,
     } = useProducts()
 
-    const { closeModal } = useModal()
-    const modalData = useModal().data
-    const { product } = modalData
+    const { closeModal, data } = useModal()
     const { profile } = useUser()
+
+    const [initialValues, setInitialValues] = useState(null)
+
     const {
         title,
         price,
@@ -69,27 +72,27 @@ export default  () => {
     } = useMemo(() => formFields, [formFields])
     
     useEffect(() => {
-        initForm({ ...initialValues, ...product })
+        const fields = getFields(initialState)
+        setInitialValues(fields)
     }, [])
+    
+    useEffect(() => {
+        if (initialValues) initForm(initialValues)
+    }, [initialValues])
 
     useEffect(() => {
         if (formReady) validateFields()
-    }, [formReady, formFields])
+    }, [title, price, blurb, desc, category, image, attachment])
 
     const validateFields = () => {
-        const values = Object.keys(initialValues)
-        const fields = Object.keys(formFields)
+        const keys = Object.keys(formFields)
         let index = 0
-        while (index < fields.length) {
-            const key = fields[index]
+        while (index < keys.length) {
+            const key = keys[index]
             const isValid = validateField(key)
-            if (!isValid) {
-                setFocus(key)
-                return
-            }
-            index++
+            if (!isValid) return
+            else index++
         }
-        setFocus(values[0])
     }
 
     const validateField = name => {
@@ -125,6 +128,9 @@ export default  () => {
 
         if (isValid && getError(name)) {
             clearFormError()
+            setFocus(0)
+        } else {
+            setFocus(name)
         }
 
         return isValid
@@ -140,8 +146,8 @@ export default  () => {
 	}
 
     const resetForm = () => {
-        if (product) {
-            setFormValues(product)
+        if (data.product) {
+            setFormValues(data.product)
         } else {
             clearForm()
         }
@@ -165,10 +171,10 @@ export default  () => {
             image,
         }
 
-        if (product) {
+        if (data.product) {
             newProduct = {
                 ...newProduct,
-                _id: product._id,
+                _id: data.product._id,
             }
         }
 
@@ -181,18 +187,18 @@ export default  () => {
         
         setFormLoading(true)
         
-        const { data } = await axios
+        const response = await axios
             .post('/api/product', newProduct)
         
         setFormLoading(false)
             
-        if (!data) {
+        if (!response.data) {
             console.log('Error saving product', data)
         } else {
-            if (product) {
-                updateProduct(data)
+            if (data.product) {
+                updateProduct(response.data)
             } else {
-                addProduct(data)
+                addProduct(response.data)
             }
             clearForm()
             closeModal()
@@ -318,7 +324,7 @@ export default  () => {
             />
 
             <IconButton
-                label={product ? 'Reset Form' : 'Clear Form'}
+                label={data.product ? 'Reset Form' : 'Clear Form'}
                 onPress={resetForm}
                 disabled={formLoading}
                 style={{ marginVertical: 5 }}

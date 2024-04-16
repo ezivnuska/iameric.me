@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     View,
 } from 'react-native'
 import {
+    LoadingView,
     EmptyStatus,
     ImageList,
 } from '@components'
@@ -11,48 +12,78 @@ import {
     ScreenTitle,
 } from '.'
 import {
+    useContacts,
     useModal,
 } from '@context'
-import { loadFullUser } from '@utils/data'
+import { loadContact, getContactImages } from '@utils/contacts'
 
-export default ({ navigation, route }) => {
+export default ({ navigation }) => {
+    
+    const {
+        contact,
+        contactsLoading,
+        lastContact,
+        setContact,
+        setContactsLoading,
+        updateContact,
+    } = useContacts()
     const { setModal } = useModal()
 
-    const { id } = route.params
-    const [currentUser, setCurrentUser] = useState(null)
-
     useEffect(() => {
-        const init = async () => {
-            const result = await loadFullUser(id)
-            setCurrentUser(result)
-        }
         init()
     }, [])
 
     useEffect(() => {
-        if (currentUser && id !== currentUser._id) init()
-    }, [id])
+        if (lastContact && contact._id !== lastContact._id) {
+            init()
+        }
+    }, [contact])
 
-    return currentUser ? (
+    const init = async () => {
+        let user = contact
+        setContactsLoading(true)
+        const response = await loadContact(user._id)
+        setContactsLoading(false)
+        if (!response || !response.user) {
+            console.log('Error loading user')
+        } else {
+            const loadedImages = await getContactImages(response.user._id)
+            user = {
+                ...user,
+                ...response.user,
+            }
+            if (loadedImages) {
+                user = {
+                    ...user,
+                    images: loadedImages,
+                }
+            }
+        }
+        setContact(user)
+        updateContact(user)
+    }
+
+    if (contactsLoading) return <LoadingView loading='Loading contact' />
+
+    return contact ? (
         <Screen
             titleComponent={
                 <ScreenTitle
                     backLabel='Users'
-                    title={currentUser.username}
+                    title={contact.username}
                     navigation={navigation}
                 />
             }
         >
-            {currentUser.images ? (
+            {contact.images && contact.images.length ? (
                 <View
                     style={{ marginHorizontal: 10 }}
                 >
                     <ImageList
-                        images={currentUser.images}
-                        onSelected={image => {
-                            setModal('IMAGE', image)
-                        }}
+                        images={contact.images}
+                        onSelected={image => setModal('IMAGE', image)}
                     />
+
                 </View>
             ) : <EmptyStatus status='No images yet.' />}
             

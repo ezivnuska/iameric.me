@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -8,6 +8,7 @@ import {
 } from '@components'
 import { setItem } from '@utils/storage'
 import { isValidEmail, signin } from '@utils/auth'
+import { getFields } from '@utils/form'
 import {
     useAuth,
     useForm,
@@ -17,7 +18,7 @@ import {
 
 export default () => {
 
-    const initialValues = {
+    const initialState = {
         email: '',
         password: '',
     }
@@ -25,7 +26,6 @@ export default () => {
     const {
         clearForm,
         clearFormError,
-        dirtyFields,
         focused,
         formError,
         formFields,
@@ -42,52 +42,52 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const {
-        signIn,
-    } = useAuth()
-
-    const { closeModal } = useModal()
+    const { signIn } = useAuth()
+    const { closeModal, data } = useModal()
     const { setUser } = useUser()
 
-    useEffect(() => {
-        initForm(initialValues)
-    }, [])
+    const [initialValues, setInitialValues] = useState(null)
+
+    const {
+        email,
+        password,
+    } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        const values = Object.keys(initialValues)
-        const fields = Object.keys(formFields)
-        if (formReady && values.length === fields.length) {
-            validateFields()
-        }
-    }, [formReady, formFields])
+        const fields = getFields(initialState, data)
+        setInitialValues(fields)
+    }, [])
+    
+    useEffect(() => {
+        if (initialValues) initForm(initialValues)
+    }, [initialValues])
+
+    useEffect(() => {
+        if (formReady) validateFields()
+    }, [email, password])
 
     const validateFields = () => {
-        const values = Object.keys(initialValues)
-        const fields = Object.keys(formFields)
+        const keys = Object.keys(formFields)
         let index = 0
-        while (index < fields.length) {
-            const key = fields[index]
+        while (index < keys.length) {
+            const key = keys[index]
             const isValid = validateField(key)
-            if (!isValid) {
-                setFocus(key)
-                return
-            }
-            index++
+            if (!isValid) return
+            else index++
         }
-        setFocus(values[0])
     }
 
     const validateField = name => {
         let isValid = true
         switch (name) {
             case 'email':
-                if (!isValidEmail(formFields.email)) {
+                if (!isValidEmail(email)) {
                     setFormError({ name, message: 'Email invalid.'})
                     isValid = false
                 }
                 break
             case 'password':
-                if (!formFields.password.length) {
+                if (!password.length) {
                     setFormError({ name, message: 'Password required.'})
                     isValid = false
                 }
@@ -98,6 +98,9 @@ export default () => {
 
         if (isValid && getError(name)) {
             clearFormError()
+            setFocus(0)
+        } else {
+            setFocus(name)
         }
 
         return isValid
@@ -120,9 +123,9 @@ export default () => {
 
         setFormLoading(true)
 
-		await setItem('email', formFields.email)
+		await setItem('email', email)
         
-		const data = await signin(formFields.email, formFields.password)
+		const data = await signin(email, password)
         
         setFormLoading(false)
         
@@ -147,7 +150,7 @@ export default () => {
         <>
             <FormField
                 label='Email'
-                value={formFields.email}
+                value={email}
                 error={getError('email')}
                 placeholder='email'
                 textContentType='emailAddress'
@@ -160,7 +163,7 @@ export default () => {
             />
             <FormField
                 label='Password'
-                value={formFields.password}
+                value={password}
                 error={getError('password')}
                 placeholder='password'
                 textContentType='password'

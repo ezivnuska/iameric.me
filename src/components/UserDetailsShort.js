@@ -9,7 +9,7 @@ import {
     ThemedText,
 } from '@components'
 import { useApp } from '@context'
-import { loadUserById } from '@utils/data'
+import { loadUserById } from '@utils/contacts'
 import {
     getProfileImagePathFromUser,
     getMaxAvailableImageSize,

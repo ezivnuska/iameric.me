@@ -13,15 +13,17 @@ import {
 } from '@context'
 import {
     loadUsers,
-} from '@utils/data'
+} from '@utils/contacts'
 import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default () => {
     
     const { isLandscape } = useApp()
     const {
+        contact,
         contacts,
         contactsLoading,
+        setContact,
         setContacts,
         setContactsLoading,
     } = useContacts()
@@ -31,12 +33,17 @@ export default () => {
             setContactsLoading(true)
             const { data } = await loadUsers()
             setContactsLoading(false)
+            console.log('data-------------', data)
             if (data && data.users) setContacts(data.users)
         }
         init()
     }, [])
 
-    if (contactsLoading) return <LoadingView />
+    useEffect(() => {
+        if (contact) navigationRef.navigate('User')
+    }, [contact])
+
+    if (contactsLoading) return <LoadingView loading='Loading contacts' />
 
     return contacts.length
         ? (
@@ -49,9 +56,7 @@ export default () => {
                 <UserList
                     horizontal={isLandscape}
                     items={contacts}
-                    onPress={contact => {
-                        navigationRef.navigate('User', { id: contact._id })
-                    }}
+                    onPress={setContact}
                 />
             </View>
         )

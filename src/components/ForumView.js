@@ -10,7 +10,7 @@ import {
     useApp,
     useForum,
 } from '@context'
-import { deleteEntryWithId } from '@utils/data'
+import { deleteEntryWithId } from '@utils/forum'
 import axios from 'axios'
 
 export default () => {

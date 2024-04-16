@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -11,12 +11,13 @@ import {
     useModal,
     useUser,
 } from '@context'
-import classes from '../styles/classes'
+import classes from '@styles/classes'
+import { getFields } from '@utils/form'
 import axios from 'axios'
 
 export default () => {
     
-    const initialValues = {
+    const initialState = {
         address1: '',
         address2: '',
         city: '',
@@ -43,50 +44,41 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { profile, setLocation } = useUser()
+    const { profile, setUserLocation } = useUser()
     const { closeModal, data } = useModal()
+
+    const [initialValues, setInitialValues] = useState(null)
+
     const {
         address1,
         address2,
         city,
         state,
         zip,
-    } = useMemo(() => ({
-        ...initialValues,
-        ...data,
-    }), [initialValues, data])
+    } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        initForm({
-            ...initialValues,
-            ...data,
-        })
+        const fields = getFields(initialState, data)
+        setInitialValues(fields)
     }, [])
     
     useEffect(() => {
-        const values = Object.keys(initialValues)
-        const fields = Object.keys(formFields)
-        console.log('values', values)
-        console.log('fields', fields)
-        if (formReady && values.length === fields.length) {
-            validateFields()
-        }
-    }, [formReady, formFields])
+        if (initialValues) initForm(initialValues)
+    }, [initialValues])
+
+    useEffect(() => {
+        if (formReady) validateFields()
+    }, [address1, address2, city, state, zip])
 
     const validateFields = () => {
-        const values = Object.keys(initialValues)
-        const fields = Object.keys(formFields)
+        const keys = Object.keys(formFields)
         let index = 0
-        while (index < fields.length) {
-            const key = fields[index]
+        while (index < keys.length) {
+            const key = keys[index]
             const isValid = validateField(key)
-            if (!isValid) {
-                setFocus(key)
-                return
-            }
-            index++
+            if (!isValid) return
+            else index++
         }
-        setFocus(values[0])
     }
 
     const validateField = name => {
@@ -128,6 +120,9 @@ export default () => {
 
         if (isValid && getError(name)) {
             clearFormError()
+            setFocus(0)
+        } else {
+            setFocus(name)
         }
 
         return isValid
@@ -171,7 +166,7 @@ export default () => {
         if (!response.data) {
             console.log('Error saving location', err)
         } else {
-            setLocation(response.data.location)
+            setUserLocation(response.data.location)
             clearForm()
             closeModal()
         }
@@ -261,10 +256,9 @@ export default () => {
 
             <IconButton
                 type='primary'
-                label={formLoading ? 'Updating Location' : 'Update Location'}
-                onPress={submitFormData}
+                label={formLoading ? 'Updating' : 'Update'}
                 disabled={formLoading || formError}
-                style={{ marginTop: 10 }}
+                onPress={submitFormData}
             />
 
         </View>

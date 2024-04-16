@@ -37,7 +37,6 @@ export const AuthContextProvider = props => {
                 const authToken = await getToken()
                 // if token exists
                 if (authToken !== null) {
-                    console.log('found token')
                     // need to validate token, but for now...
                     // sign in
                     dispatch({ type: 'SIGN_IN', payload: authToken })

@@ -10,7 +10,7 @@ import {
     Screen,
     ScreenTitle,
 } from '.'
-import { loadUsersByRole } from '@utils/data'
+import { loadUsersByRole } from '@utils/contacts'
 
 export default props => {
 

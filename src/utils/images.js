@@ -56,18 +56,11 @@ export const getImageDims = (w, h, dims) => {
 
 export const loadImages = async userId => {
     
-    // dispatch({ type: 'SET_LOADING', loading: 'Fetching images...' })
-    
     const { data } = await axios.get(`/api/user/images/${userId}`)
     
     if (!data) {
         console.log('Error fetching user images.')
     }
-    //  else {
-    //     dispatch({ type: 'UPDATE_IMAGES', userId, images: data.images })
-    // }
-
-    // dispatch({ type: 'SET_LOADING', loading: null })
 
     return data.images
 }

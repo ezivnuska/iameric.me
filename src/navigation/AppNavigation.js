@@ -236,7 +236,7 @@ const linking = {
                         path: 'users',
                         screens: {
                             UserList: '',
-                            User: '/:id',
+                            User: 'profile',
                         },
                     },
                     Vendors: {

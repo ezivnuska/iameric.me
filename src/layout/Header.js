@@ -11,6 +11,7 @@ import {
     ThemedText,
 } from '@components'
 import {
+    useAuth,
     useApp,
     useModal,
     useUser,

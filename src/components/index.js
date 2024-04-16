@@ -49,7 +49,6 @@ import SignUpForm from './SignUpForm'
 import TimeSelector from './TimeSelector'
 import UserDetails from './UserDetails'
 import UserDetailsShort from './UserDetailsShort'
-import UserFilter from './UserFilter'
 import UserHeading from './UserHeading'
 import UserList from './UserList'
 import UserModule from './UserModule'
@@ -107,7 +106,6 @@ export {
     FormField,
     TimeSelector,
     UserHeading,
-    UserFilter,
     UserList,
     UserModule,
     UserDetails,

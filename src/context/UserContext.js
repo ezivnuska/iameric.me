@@ -7,7 +7,7 @@ const initialState = {
     addImage: () => {},
     clearUser: () => {},
     removeImage: () => {},
-    setLocation: () => {},
+    setUserLocation: () => {},
     setProfileImage: () => {},
     setUser: () => {},
     setUserLoading: () => {},
@@ -39,8 +39,8 @@ export const UserContextProvider = props => {
         setUserLoading: payload => {
             dispatch({ type: 'SET_USER_LOADING', payload })
         },
-        setLocation: payload => {
-            dispatch({ type: 'SET_LOCATION', payload })
+        setUserLocation: payload => {
+            dispatch({ type: 'SET_USER_LOCATION', payload })
         },
         addImage: payload => {
             dispatch({ type: 'ADD_IMAGE', payload })
@@ -84,7 +84,7 @@ const reducer = (state, action) => {
                 },
             }
             break
-        case 'SET_LOCATION':
+        case 'SET_USER_LOCATION':
             return {
                 ...state,
                 profile: {
