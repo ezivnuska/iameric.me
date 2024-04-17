@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     FlatList,
 } from 'react-native'
@@ -7,21 +7,44 @@ import {
     MenuItem,
     EmptyStatus,
 } from '.'
+import { useContacts } from '@context'
+import { loadVendorProducts } from '@utils/products'
 
-export default ({ loading, vendor }) => {
+export default ({ vendor }) => {
+
+    const {
+        contact,
+        contactLoading,
+        setContact,
+        setContactLoading,
+    } = useContacts()
+
+    useEffect(() => {
+        init()
+    }, [])
+
+    const init = async () => {
+        setContactLoading(true)
+        const products = await loadVendorProducts(vendor._id)
+        setContactLoading(false)
+        setContact({
+            ...vendor,
+            products,
+        })
+    }
     
-    if (loading) return <LoadingView />
+    if (contactLoading) return <LoadingView label='Loading products' />
 
-    return vendor.products && vendor.products.length
+    return contact && contact.products
         ? (
             <FlatList
-                data={vendor.products}
+                data={contact.products}
                 keyExtractor={item => `product-${item._id}`}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <MenuItem
                         item={item}
-                        username={vendor.username}
+                        username={contact.username}
                     />
                 )}
             />

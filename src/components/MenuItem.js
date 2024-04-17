@@ -22,7 +22,7 @@ export default ({ item, username }) => {
 
     const { isLandscape } = useApp()
     
-    const { _id, price, title, desc, vendor, blurb, category, image } = item
+    const { price, title, desc, blurb, image } = item
     
     return (
         <View

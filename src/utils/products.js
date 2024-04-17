@@ -31,17 +31,11 @@ export const loadProducts = async vendorId => {
     return null
 }
 
-export const loadUserProducts = async vendorId => {
-
+export const loadVendorProducts = async vendorId => {
     const { data } = await axios.get(`/api/products/${vendorId}`)
-    
-    if (!data) {
-        console.log('could not load products')
-    } else if (!data.products) {
-        console.log('no products to load')
-    }
-
-    return data
+    if (!data) console.log('could not load products')
+    else if (!data.products) console.log('no products to load')
+    return data.products
 }
 
 export const deleteProductWithId = async id => {

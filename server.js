@@ -25,6 +25,7 @@ const {
     getAllVendors,
     getUserById,
     getUserAndImagesById,
+    getVendor,
 } = require('./api/users')
 
 const {
@@ -113,6 +114,7 @@ app.get(    '/user/full/:id',           getUserAndImagesById)
 app.get(    '/user/details/:id',        getUserDetailsById)
 app.get(    '/users',                   getUsers)
 app.get(    '/users/online',            getNumberOfOnlineUsers)
+app.get(    '/vendor/:id',              getVendor)
 app.get(    '/vendors',                 getAllVendors)
 
 // entries

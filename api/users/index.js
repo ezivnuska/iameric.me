@@ -1,5 +1,6 @@
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
+const Product = require('../../models/Product')
 
 const getUsers = async (req, res) => {
 
@@ -72,24 +73,64 @@ const getAllVendors = async (req, res) => {
             path: 'profileImage',
             select: 'filename width height'
         })
-    console.log('VENDORS', vendors)
-    if (!vendors) {
+    
+    if (!vendors)
         console.log('could not fetch all vendors.')
-    } else {
-        // vendors = vendors.map(({
-        //     _id,
-        //     profileImage,
-        //     username,
-        // }) => ({
-        //     _id,
-        //     profileImage,
-        //     username,
-        // }))
-        
-        console.log('VENDORS', vendors)
-        return res.status(200).json({ vendors })
-    }
+    else return res.status(200).json({ vendors })
+
     return res.status(200).json(null)
+}
+
+const getVendor = async (req, res) => {
+
+    const { id } = req.params
+    
+    let user = null
+
+    let vendor = await User
+        .findOne({ _id: id })
+        .populate('location')
+        .populate({
+            path: 'profileImage',
+            select: 'filename width height'
+        })
+        
+    if (!vendor) {
+        console.log('could not fetch vendor')
+        return res.status(200).json(null)
+    }
+
+    user = vendor.toObject()
+    
+    const images = await UserImage
+        .find({ user: id })
+        .populate({
+            path: 'user',
+            select: 'username',
+        })
+
+    if (!images) {
+        console.log('could not fetch vendor images')
+        return res.status(200).json(null)
+    }
+    
+    user = { ...user, images }
+
+    const products = await Product
+        .find({ vendor: id })
+        .populate({
+            path: 'image',
+            select: 'filename width height',
+        })
+    
+    if (!products) {
+        console.log('could not load products for vendor')
+        return res.status(200).json(null)
+    }
+
+    user = { ...user, products }
+
+    return res.status(200).json({ vendor: user })
 }
 
 const getUserById = async (req, res) => {
@@ -163,4 +204,5 @@ module.exports = {
     getUserById,
     getUserAndImagesById,
     getUserDetailsById,
+    getVendor,
 }

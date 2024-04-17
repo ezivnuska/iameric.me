@@ -8,27 +8,37 @@ import axios from 'axios'
 
 export const loadUsersByRole = async role => {
     const { data } = await axios.get(`/api/${role}s`)
-    if (!data.vendors) console.log(`could not load ${role}s.`)
-    else return data
+    if (!data || !data.vendors) console.log(`could not load ${role}s.`)
+    else return data.vendors
     return null
 }
 
 export const loadContact = async id => {
     const { data } = await axios.get(`/api/user/${id}`)
     if (!data || !data.user) console.log('Error fetching user')
-    return { data }
+    else return data.user
+    return null
 }
 
 export const getContactImages = async id => {
     const { data } = await axios.get(`/api/user/images/${id}`)
-    if (!data) console.log(`\nError loading contact images`)
+    if (!data || !data.images) console.log(`\nError loading contact images`)
     else return data.images
+    return null
 }
 
 export const loadFullContact = async id => {
     const { data } = await axios.get(`/api/user/full/${id}`)
-    if (!data) console.log(`\nError loading full user`)
+    if (!data || !data.user) console.log(`\nError loading full user`)
     else return data.user
+    return null
+}
+
+export const loadVendor = async vendorId => {
+    const { data } = await axios.get(`/api/vendor/${vendorId}`)
+    if (!data || !data.vendor) console.log('could not load vendor')
+    else return data.vendor
+    return null
 }
 
 // NOT USED

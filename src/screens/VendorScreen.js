@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     IconButton,
+    LoadingView,
     Menu,
 } from '@components'
 import {
@@ -11,61 +12,34 @@ import {
     useApp,
     useContacts,
 } from '@context'
-import { loadContact, loadUserProducts } from '@utils/contacts'
-import { loadImages } from '@utils/images'
+import { loadVendor } from '@utils/contacts'
 
-export default ({ navigation }) => {
+export default ({ navigation, route }) => {
+
+    const idFromParams = route.params.id
 
     const { theme } = useApp()
     const {
-        contact,
-        contacts,
-        contactsLoading,
-        setContactsLoading,
+        contactLoading,
+        setContactLoading,
         updateContact,
-        updateContactProducts,
     } = useContacts()
-    
-    const {
-        _id,
-        images,
-        username,
-    } = useMemo(() => contact, [contact])
+    const [contact, setContact] = useState(null)
+
     
     useEffect(() => {
-        let loadedContact = contact
         const init = async () => {
-            const images = await loadImages(_id)
-            console.log('images', images)
-            if (images) {
-                loadedContact = {
-                    ...loadedContact,
-                    images,
-                }
+            setContactLoading(true)
+            const vendor = await loadVendor(idFromParams)
+            setContactLoading(false)
+            if (!vendor) console.log('error loading vendor')
+            else {
+                setContact(vendor)
+                updateContact(vendor)
             }
-            updateContact(loadedContact)
         }
         init()
     }, [])
-
-    useEffect(() => {
-        if (contact) {
-            if (!contact.products) {
-                initProducts()
-            }
-        }
-    }, [contact])
-
-    const initProducts = async () => {
-        setContactsLoading(true)
-        const { data } = await loadUserProducts(_id)
-        setContactsLoading(false)
-        if (data) {
-            updateContactProducts(data.products)
-        } else {
-            console.log('could not load user products')
-        }
-    }
 
     return (
         <Screen
@@ -79,7 +53,7 @@ export default ({ navigation }) => {
                             index: 0,
                             routes: [{ name: 'VendorList' }],
                         })}
-                        disabled={contactsLoading}
+                        disabled={contactLoading}
                         textStyles={{
                             fontSize: 16,
                             fontWeight: 400,
@@ -91,12 +65,11 @@ export default ({ navigation }) => {
                 </ScreenTitle>
             }
         >
+
             {contact ? (
-                <Menu
-                    loading={contactsLoading}
-                    vendor={contact}
-                />
-            ) : null}
+                <Menu vendor={contact} />
+            ) : <LoadingView label='Loading vendor' />}
+
         </Screen>
     )
 }

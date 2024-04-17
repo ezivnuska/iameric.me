@@ -36,7 +36,7 @@ export default () => {
             case 'CART': return <Cart />; break
             case 'CONTACT': return <ContactView user={data} />; break
             case 'DESTROY': return <DestroyForm />; break
-            case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
+            case 'SHOW_PRODUCT': return <ProductDetails />; break
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ModalImage image={data} />; break
             case 'LOCATION': return <LocationForm />; break

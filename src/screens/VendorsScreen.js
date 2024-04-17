@@ -18,8 +18,7 @@ export default props => {
     }, [])
 
     const loadVendors = async () => {
-        const { vendors } = await loadUsersByRole('vendor')
-        console.log('vendors', vendors)
+        const vendors = await loadUsersByRole('vendor')
         setVendors(vendors)
     }
     

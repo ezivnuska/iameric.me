@@ -14,7 +14,7 @@ export default ({ users, ...props }) => (
         keyExtractor={(item, index) => 'user' + index}
         renderItem={({ item }) => {
             const { _id, profileImage } = item
-            const { filename } = item
+            const { filename } = profileImage
             return (
                 <View
                     style={{
@@ -23,7 +23,7 @@ export default ({ users, ...props }) => (
                 >
                     <UserHeading
                         user={item}
-                        filename={profileImage && filename ? filename : null}
+                        filename={filename}
                         onPress={() => props.navigation.navigate('Vendor', { id: _id })}
                         style={{ alignItems: 'center' }}
                     />
