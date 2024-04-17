@@ -4,6 +4,7 @@ import {
 } from 'react-native'
 import {
     Cart,
+    ContactView,
     FeedbackForm,
     DestroyForm,
     LocationForm,
@@ -33,6 +34,7 @@ export default () => {
     const resolveModalContent = () => {
         switch(type) {
             case 'CART': return <Cart />; break
+            case 'CONTACT': return <ContactView user={data} />; break
             case 'DESTROY': return <DestroyForm />; break
             case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
             case 'FEEDBACK': return <FeedbackForm />; break

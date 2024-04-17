@@ -19,11 +19,10 @@ export default props => {
     useEffect(() => {
         loadVendors()
     }, [])
-
+    
     const loadVendors = async () => {
-        
-        const users = await loadUsersByRole('vendor')
-        setVendors(users)
+        const { vendors } = await loadUsersByRole('vendor')
+        setVendors(vendors)
     }
     
     return (

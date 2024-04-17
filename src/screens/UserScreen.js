@@ -21,49 +21,59 @@ export default ({ navigation }) => {
     
     const {
         contact,
-        contactsLoading,
-        lastContact,
+        contactLoading,
         setContact,
         setContactsLoading,
         updateContact,
     } = useContacts()
     const { setModal } = useModal()
 
+    // const contactId = useMemo(() => contact._id, [contact])
+
     useEffect(() => {
-        init()
+        console.log('screen init-->contact', contact)
+        // init()
     }, [])
 
-    useEffect(() => {
-        if (lastContact && contact._id !== lastContact._id) {
-            init()
-        }
-    }, [contact])
+    // useEffect(() => {
+    //     console.log('contactId', contactId)
+    //     // init()
+    // }, [contactId])
+    
+    // useEffect(() => {
+    //     console.log('contact change', contact)
+    //     if (lastContact && contact._id !== lastContact._id) {
+    //         init()
+    //     }
+    // }, [contact])
 
-    const init = async () => {
-        let user = contact
-        setContactsLoading(true)
-        const response = await loadContact(user._id)
-        setContactsLoading(false)
-        if (!response || !response.user) {
-            console.log('Error loading user')
-        } else {
-            const loadedImages = await getContactImages(response.user._id)
-            user = {
-                ...user,
-                ...response.user,
-            }
-            if (loadedImages) {
-                user = {
-                    ...user,
-                    images: loadedImages,
-                }
-            }
-        }
-        setContact(user)
-        updateContact(user)
-    }
+    // const init = async () => {
+    //     if (contact) {
+    //         let user = contact
+    //         setContactsLoading(true)
+    //         const response = await loadContact(user._id)
+    //         setContactsLoading(false)
+    //         if (!response || !response.user) {
+    //             console.log('Error loading user')
+    //         } else {
+    //             const loadedImages = await getContactImages(response.user._id)
+    //             user = {
+    //                 ...user,
+    //                 ...response.user,
+    //             }
+    //             if (loadedImages) {
+    //                 user = {
+    //                     ...user,
+    //                     images: loadedImages,
+    //                 }
+    //             }
+    //         }
+    //         setContact(user)
+    //         updateContact(user)
+    //     }
+    // }
 
-    if (contactsLoading) return <LoadingView loading='Loading contact' />
+    if (contactLoading) return <LoadingView loading='Loading contact' />
 
     return contact ? (
         <Screen

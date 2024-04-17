@@ -5,9 +5,11 @@ const initialState = {
     contact: null,
     contacts: [],
     error: null,
+    contactLoading: false,
     contactsLoading: false,
     setContact: () => {},
     setContacts: () => {},
+    setContactLoading: () => {},
     setContactsLoading: () => {},
     updateContact: () => {},
     updateContactProducts: () => {},
@@ -30,14 +32,16 @@ export const ContactContextProvider = props => {
 
     const actions = useMemo(() => ({
         setContact: async payload => {
-            // dispatch({ type: 'UPDATE_CONTACT', payload })
             dispatch({ type: 'SET_CONTACT', payload })
         },
-        setContactsLoading: async payload => {
-            dispatch({ type: 'SET_CONTACTS_LOADING', payload })
+        setContactLoading: async payload => {
+            dispatch({ type: 'SET_CONTACT_LOADING', payload })
         },
         setContacts: async payload => {
             dispatch({ type: 'SET_CONTACTS', payload })
+        },
+        setContactsLoading: async payload => {
+            dispatch({ type: 'SET_CONTACTS_LOADING', payload })
         },
         updateContact: async payload => {
             dispatch({ type: 'UPDATE_CONTACT', payload })
@@ -66,6 +70,9 @@ const reducer = (state, action) => {
                 contact: payload,
                 lastContact: state.contact,
             }
+            break
+        case 'SET_CONTACT_LOADING':
+            return { ...state, contactLoading: payload }
             break
         case 'SET_CONTACTS':
             return { ...state, contacts: payload }

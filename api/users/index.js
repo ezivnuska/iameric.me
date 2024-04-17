@@ -88,7 +88,7 @@ const getAllVendors = async (req, res) => {
     return res.json({ vendors })
 }
 
-const getUserById = async (req, res, next) => {
+const getUserById = async (req, res) => {
     
     const user = await User
         .findOne({ _id: req.params.id })
@@ -103,6 +103,35 @@ const getUserById = async (req, res, next) => {
     }
         
     return res.status(200).json({ user })
+}
+
+const getUserAndImagesById = async (req, res) => {
+    
+    const user = await User
+        .findOne({ _id: req.params.id })
+        .populate({
+            path: 'profileImage',
+            select: 'filename width height',
+        })
+
+    if (!user) {
+        console.log('could not get user by id.')
+        return res.status(406).json(null)
+    }
+    
+    const images = await UserImage
+        .find({ user: req.params.id })
+        .populate({
+            path: 'user',
+            select: 'username',
+        })
+
+    return res.status(200).json({
+        user: {
+            ...user,
+            images,
+        }
+    })
 }
 
 const getUserDetailsById = async (req, res) => {
@@ -128,5 +157,6 @@ module.exports = {
     getAllVendorIds,
     getAllVendors,
     getUserById,
+    getUserAndImagesById,
     getUserDetailsById,
 }

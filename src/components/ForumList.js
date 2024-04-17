@@ -16,6 +16,7 @@ import { getProfileImagePathFromUser } from '@utils/images'
 import {
     useApp,
     useContacts,
+    useModal,
 } from '@context'
 import { navigationRef } from '../navigation/RootNavigation'
 
@@ -242,11 +243,9 @@ const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null, ...prop
 
 export default ({ items, onDelete, horizontal = false }) => {
     const { dims } = useApp()
-    const { contact, setContact } = useContacts()
+    const { setModal } = useModal()
 
-    useEffect(() => {
-        if (contact) navigationRef.navigate('Users', { screen: 'User' })
-    }, [contact])
+    const [contact, setContact] = useState()
 
     return !horizontal ? (
         <FlatList
@@ -258,7 +257,7 @@ export default ({ items, onDelete, horizontal = false }) => {
                     item={item}
                     imagePath={getProfileImagePathFromUser(item.author)}
                     onDelete={onDelete}
-                    onPress={() => setContact(item.author)}
+                    onPress={() => setModal('CONTACT', item.author)}
                 />
             )}
             showsVerticalScrollIndicator={false}

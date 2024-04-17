@@ -6,6 +6,7 @@ import CategoryPicker from './CategoryPicker'
 import CenteredView from './CenteredView'
 import CenterVertical from './CenterVertical'
 import ContactView from './ContactView'
+import ContactsView from './ContactsView'
 import ThemedText from './ThemedText'
 import DeleteAccountButton from './DeleteAccountButton'
 import DestroyForm from './DestroyForm'
@@ -64,6 +65,7 @@ export {
     CenteredView,
     CenterVertical,
     ContactView,
+    ContactsView,
     ThemedText,
     DeleteAccountButton,
     DestroyForm,

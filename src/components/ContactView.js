@@ -1,103 +1,58 @@
 import React, { useEffect } from 'react'
 import {
-    Image,
-    Pressable,
     View,
 } from 'react-native'
 import {
     LoadingView,
-    ThemedText,
+    EmptyStatus,
+    ImageList,
 } from '@components'
-import { useContacts } from '@context'
-import classes from '@styles/classes'
-import { getProfileImagePathFromUser } from '@utils/images'
-import axios from 'axios'
+import {
+    useContacts,
+    useModal,
+} from '@context'
+import { loadFullContact } from '@utils/contacts'
 
-export default ContactList = () => {
-
+export default () => {
+    
     const {
-        contacts,
-        contactsLoading,
-        setContacts,
-        setContactsLoading,
+        contact,
+        contactLoading,
+        setContact,
+        setContactLoading,
     } = useContacts()
 
+    const { setModal, data } = useModal()
+
     useEffect(() => {
-        const init = async () => {
-            
-            setContactsLoading(true)
-            
-            const { data } = await axios.get('/api/users')
-            
-            setContactsLoading(false)
-            
-            if (data && data.users) {
-                setContacts(data.users)
-            }
-        }
         init()
     }, [])
 
-    const renderContacts = () => contacts.map((contact, index) => (
-        <ContactListItem
-            item={contact}
-            key={`contact-${index}`}
-            onPress={() => null}
-        />
-    ))
+    const init = async () => {
+        setContactLoading(true)
+        const user = await loadFullContact(data._id)
+        if (!user) console.log('Error loading user')
+        else setContact(user)
 
-    if (contactsLoading) return <LoadingView loading='Loading contacts...' />
+        setContactLoading(false)
+    }
 
-    return (
+    if (contactLoading) return <LoadingView loading='Loading contact' />
+
+    return contact ? (
         <View>
-            {renderContacts()}
-        </View>
-    )
-}
-
-const ContactListItem = ({ item, onPress, ...props }) => {
-    const imagePath = getProfileImagePathFromUser(item)
-    return (
-        <View
-            style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                gap: 15,
-                paddingTop: 10,
-            }}
-            {...props}
-        >
-            <View
-                style={{
-                    flexBasis: 'auto',
-                    flexGrow: 0,
-                }}
-            >
-                <Image
-                    style={{
-                        width: 30,
-                        height: 30,
-                    }}
-                    source={imagePath}
-                />
-            </View>
-
-            <Pressable
-                onPress={() => onPress(item)}
-                style={{
-                    flex: 1,
-                    glexGrow: 1,
-                }}
-            >
-                <ThemedText
-                    style={classes.userHeading}
+            {contact.images && contact.images.length ? (
+                <View
+                    style={{ marginHorizontal: 10 }}
                 >
-                    {item.username}
-                    {/* {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />} */}
-                </ThemedText>
+                    <ImageList
+                        images={contact.images}
+                        onSelected={image => setModal('IMAGE', image)}
+                    />
 
-            </Pressable>
+                </View>
+            ) : <EmptyStatus status='No images yet.' />}
+            
         </View>
-    )
+    ) : null
 }

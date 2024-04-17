@@ -7,31 +7,28 @@ import axios from 'axios'
  */
 
 export const loadUsersByRole = async role => {
-    const { data } = await axios.get(`/api/users/${role}`)
-    
-    if (!data.users) {
-        console.log(`could not load ${role}s.`)
-        return null
-    }
-
-    return data.users
+    const { data } = await axios.get(`/api/${role}s`)
+    if (!data.vendors) console.log(`could not load ${role}s.`)
+    else return data
+    return null
 }
 
 export const loadContact = async id => {
-
     const { data } = await axios.get(`/api/user/${id}`)
-
-    if (!data || !data.user) {
-        console.log('Error fetching user')
-    }
-
-    return data
+    if (!data || !data.user) console.log('Error fetching user')
+    return { data }
 }
 
 export const getContactImages = async id => {
     const { data } = await axios.get(`/api/user/images/${id}`)
     if (!data) console.log(`\nError loading contact images`)
     else return data.images
+}
+
+export const loadFullContact = async id => {
+    const { data } = await axios.get(`/api/user/full/${id}`)
+    if (!data) console.log(`\nError loading full user`)
+    else return data.user
 }
 
 // NOT USED
@@ -76,37 +73,14 @@ export const loadUserById = async userId => {
     return null
 }
 
-// NOT USED
-// export const loadUserDetails = async (dispatch, userId) => {
-
-//     dispatch({ type: 'SET_LOADING', payload: 'Loading user details...' })
-        
-//     const { data } = await axios.get(`/api/user/details/${userId}`)
-    
-//     if (!data) {
-//         console.log('could not load user details with id:', userId)
-//     } else if (!data.user) {
-//         console.log('No user found with id:', userId)
-//     } else {
-//         dispatch({ type: 'SET_USER', payload: data.user })
-//     }
-    
-//     dispatch({ type: 'SET_LOADING', payload: null })
-// }
-
 /**
  * 
  * @returns array of users with role, 'vendor'
  */
 
 export const loadVendors = async () => {
-    
     const { data } = await axios.get('/api/vendors')
-    
-    if (!data.vendors) {
-        console.log('could not load vendors.')
-        return null
-    }
-    
-    return data.vendors
+    if (!data.vendors) console.log('could not load vendors.')
+    else return data.vendors
+    return null
 }

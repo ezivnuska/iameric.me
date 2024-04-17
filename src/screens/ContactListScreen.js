@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    ContactView,
+    ContactsView,
 } from '@components'
 import {
     Screen,
@@ -13,7 +13,7 @@ export default () => (
         titleComponent={<ScreenTitle title='Contacts' />}
     >
         <ContactContextProvider>
-            <ContactView />
+            <ContactsView />
         </ContactContextProvider>
     </Screen>
 )

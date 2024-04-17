@@ -21,10 +21,10 @@ const {
 const {
     getUsers,
     getUserDetailsById,
-    getUsersByRole,
     getNumberOfOnlineUsers,
     getAllVendors,
     getUserById,
+    getUserAndImagesById,
 } = require('./api/users')
 
 const {
@@ -109,9 +109,9 @@ app.post(   '/token',                  validateToken)
 
 // users
 app.get(    '/user/:id',                getUserById)
+app.get(    '/user/full/:id',           getUserAndImagesById)
 app.get(    '/user/details/:id',        getUserDetailsById)
 app.get(    '/users',                   getUsers)
-app.get(    '/users/:role',             getUsersByRole)
 app.get(    '/users/online',            getNumberOfOnlineUsers)
 app.get(    '/vendors',                 getAllVendors)
 
