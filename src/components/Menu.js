@@ -7,33 +7,15 @@ import {
     MenuItem,
     EmptyStatus,
 } from '.'
-import { useContacts } from '@context'
-import { loadVendorProducts } from '@utils/products'
+import {
+    useContacts,
+} from '@context'
 
 export default ({ vendor }) => {
 
-    const {
-        contact,
-        contactLoading,
-        setContact,
-        setContactLoading,
-    } = useContacts()
-
-    useEffect(() => {
-        init()
-    }, [])
-
-    const init = async () => {
-        setContactLoading(true)
-        const products = await loadVendorProducts(vendor._id)
-        setContactLoading(false)
-        setContact({
-            ...vendor,
-            products,
-        })
-    }
+    const { contactLoading } = useContacts()
     
-    if (contactLoading) return <LoadingView label='Loading products' />
+    if (contactLoading) return <LoadingView label={`Loading ${vendor.username}`} />
 
     return contact && contact.products
         ? (

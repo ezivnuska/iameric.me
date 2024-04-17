@@ -93,6 +93,8 @@ const reducer = (state, action) => {
                 ...state,
                 status: 'idle',
                 authToken: null,
+                error: null,
+                authLoading: false,
             }
             break
         default:

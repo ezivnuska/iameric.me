@@ -8,6 +8,7 @@ import {
 } from '.'
 import {
     useAuth,
+    useCart,
     useModal,
     useUser,
 } from '@context'
@@ -15,17 +16,16 @@ import { signout } from '@utils/auth'
 
 export default () => {
 
+    const { clearCart } = useCart()
     const { closeModal } = useModal()
     const { profile, clearUser } = useUser()
-    const {
-        authLoading,
-        signOut,
-    } = useAuth()
+    const { authLoading, signOut } = useAuth()
 
     const initSignout = async () => {
         const signedOut = await signout(profile._id)
         if (!signedOut) throw new Error()
         else {
+            clearCart()
             signOut()
             clearUser()
             closeModal()
