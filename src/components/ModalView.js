@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
     View,
 } from 'react-native'
@@ -21,6 +21,7 @@ import {
 } from '.'
 import {
     useApp,
+    useContacts,
     useForm,
     useModal,
 } from '@context'
@@ -28,17 +29,21 @@ import {
 export default () => {
 
     const { dims } = useApp()
-    const { closeModal, data, type } = useModal()
+    const { closeModal, modals } = useModal()
     const { clearForm } = useForm()
+    const { contact, setContact } = useContacts()
+
+    const modal = useMemo(() => modals[modals.length - 1], [modals])
 
     const resolveModalContent = () => {
-        switch(type) {
+        if (!modal) return null
+        switch(modal.type) {
             case 'CART': return <Cart />; break
-            case 'CONTACT': return <ContactView user={data} />; break
+            case 'CONTACT': return <ContactView user={modal.data} />; break
             case 'DESTROY': return <DestroyForm />; break
-            case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
+            case 'SHOW_PRODUCT': return <ProductDetails product={modal.data} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
-            case 'IMAGE': return <ModalImage image={data} />; break
+            case 'IMAGE': return <ModalImage image={modal.data} />; break
             case 'LOCATION': return <LocationForm />; break
             case 'PRODUCT': return <ProductForm />; break
             case 'PROFILE': return <ModalProfile />; break
@@ -54,8 +59,9 @@ export default () => {
 
     return (
         <PopUpModal
-            isVisible={type !== null}
+            isVisible={modals.length > 0}
             onRequestClose={() => {
+                if (contact && modals.length === 1) setContact(null)
                 clearForm()
                 closeModal()
             }}

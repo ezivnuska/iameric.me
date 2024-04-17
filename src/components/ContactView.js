@@ -25,7 +25,7 @@ export default () => {
     const { setModal, data } = useModal()
 
     useEffect(() => {
-        init()
+        if (!contact) init()
     }, [])
 
     const init = async () => {
@@ -33,7 +33,6 @@ export default () => {
         const user = await loadFullContact(data._id)
         if (!user) console.log('Error loading user')
         else setContact(user)
-
         setContactLoading(false)
     }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
     FlatList,
     View,
@@ -25,7 +25,7 @@ export default () => {
         ordersLoading,
         markDriverArrived,
         markOrderAccepted,
-        markOrderComplete,
+        markOrderCompleted,
         markOrderConfirmed,
         markOrderReady,
         markOrderReceived,
@@ -34,9 +34,6 @@ export default () => {
         removeOrder,
     } = useOrders()
     const { profile } = useUser()
-
-    const [feature, setFeatured] = useState(null)
-    const [featuredItem, setFeaturedItem] = useState(null)
 
     useEffect(() => {
         if (profile && !orders) loadOrders()
@@ -49,10 +46,6 @@ export default () => {
         if (data.orders) setOrders(data.orders)
     }
 
-    useEffect(() => {
-        setFeaturedItem(getFeaturedItem(feature))
-    }, [feature])
-
     const deleteOrder = async id => {
         console.log('deleting order')
         await axios.delete(`/api/order/${id}`)
@@ -62,8 +55,6 @@ export default () => {
     const cancelOrder = async id => {
 
         deleteOrder(id)
-
-        setFeatured(null)
     }
 
     const confirmOrder = async (id, time) => {
@@ -87,8 +78,6 @@ export default () => {
         if (!data) console.log('Error accepting delivery')
 
         markOrderAccepted(data)
-
-        setFeatured(null)
     }
 
     const onOrderReady = async id => {
@@ -99,8 +88,6 @@ export default () => {
         if (!data) console.log('Error marking order ready')
 
         markOrderReady(data)
-
-        setFeatured(null)
     }
 
     const driverArrived = async id => {
@@ -111,8 +98,6 @@ export default () => {
         if (!data) console.log('Error updating driver status')
         
         markDriverArrived(data)
-
-        setFeatured(null)
     }
 
     const receivedOrder = async id => {
@@ -123,8 +108,6 @@ export default () => {
         if (!data) console.log('Error marking order picked up')
         
         markOrderReceived(data)
-
-        setFeatured(null)
     }
 
     const completeDelivery = async id => {
@@ -133,11 +116,10 @@ export default () => {
             post('/api/order/complete', { id })
 
         if (!data) console.log('Error completing order')
-
-        markOrderComplete(data)
-        removeOrder(data.id)
-
-        setFeatured(null)
+        else {
+            markOrderCompleted(data)
+            removeOrder(data._id)
+        }
     }
 
     const onOrderClosed = async id => {
@@ -152,8 +134,6 @@ export default () => {
 
         closeOrder(data)
         removeOrder(data.id)
-
-        setFeatured(null)
     }
 
     const renderButton = (label, action) => (
@@ -193,14 +173,6 @@ export default () => {
             default:
                 return null
         }
-    }
-
-    const getFeaturedItem = id => {
-        return orders ? orders.filter((order, index) => order._id === id)[0] : []
-    }
-
-    const onPress = order => {
-        setFeatured(order._id)
     }
 
     return orders && orders.length

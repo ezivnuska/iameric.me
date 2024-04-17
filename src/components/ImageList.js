@@ -19,7 +19,6 @@ export default ({ images, onSelected }) => {
     const { theme } = useApp()
     const { setModal } = useModal()
     const { profile, userLoading } = useUser()
-    // const images = useMemo(() => profile.images, [profile])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -98,7 +97,7 @@ export default ({ images, onSelected }) => {
             {showUploadButton() && (
                 <Pressable
                     key={`image-${images.length}`}
-                    onPress={() => setModal('SELECT_IMAGE')}
+                    onPress={() => setModal({ type: 'SELECT_IMAGE' })}
                     style={[
                         {
                             flexBasis: 'auto',

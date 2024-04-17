@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useMemo, useReducer } from 'react'
 
 const initialState = {
+    modals: [],
     data: null,
     error: null,
     loaded: false,
@@ -51,6 +52,10 @@ const reducer = (state, action) => {
                 ...state,
                 type: payload?.type,
                 data: payload?.data,
+                modals: [
+                    ...state.modals,
+                    payload,
+                ],
             }
             break
         case 'CLOSE_MODAL':
@@ -58,6 +63,7 @@ const reducer = (state, action) => {
                 ...state,
                 type: null,
                 data: null,
+                modals: state.modals.slice(0, state.modals.length - 1),
             }
             break
         default:

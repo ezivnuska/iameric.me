@@ -71,7 +71,7 @@ const {
     getRelevantOrdersByUserId,
     markDriverAtVendorLocation,
     markOrderAsReady,
-    markOrderComplete,
+    markOrderCompleted,
     markOrderReceivedByDriver,
 } = require('./api/orders')
     
@@ -159,7 +159,7 @@ app.post(   '/order/accept',            acceptOrder)
 app.post(   '/order/ready',             markOrderAsReady)
 app.post(   '/order/arrived',           markDriverAtVendorLocation)
 app.post(   '/order/received',          markOrderReceivedByDriver)
-app.post(   '/order/complete',          markOrderComplete)
+app.post(   '/order/complete',          markOrderCompleted)
 app.post(   '/order/close',             closeOrder)
 app.delete( '/order/:id',               deleteOrderByOrderId)
 

@@ -36,7 +36,7 @@ export default ({ dirty, error, value, label = null, ...props }) => {
                 ]}
             >
                 <View
-                    style={{ background: theme?.colors.inputBackground }}
+                    style={{ background: props.autoFocus ? '#ddd' : theme?.colors.inputBackground }}
                 >
                     <TextInput
                         value={value}

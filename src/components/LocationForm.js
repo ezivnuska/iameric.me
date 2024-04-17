@@ -7,6 +7,7 @@ import {
     IconButton,
 } from '.'
 import {
+    useApp,
     useForm,
     useModal,
     useUser,
@@ -16,6 +17,8 @@ import { getFields } from '@utils/form'
 import axios from 'axios'
 
 export default () => {
+
+    const { isLandscape } = useApp()
     
     const initialState = {
         address1: '',
@@ -200,7 +203,12 @@ export default () => {
                 dirty={getDirty('address2')}
             />
             <View
-                style={classes.formColumns}
+                style={{
+                    display: 'flex',
+                    flexDirection: isLandscape ? 'row' : 'column',
+                    justifyContent: isLandscape ? 'space-between' : 'flex-start',
+                    gap: isLandscape ? 10 : 0,
+                }}
             >
                 <FormField
                     label='City'

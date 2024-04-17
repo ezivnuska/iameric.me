@@ -549,7 +549,7 @@ const markOrderReceivedByDriver = async (req, res) => {
     return res.status(200).json(order)
 }
 
-const markOrderComplete = async (req, res) => {
+const markOrderCompleted = async (req, res) => {
     
     const order = await Order
         .findOneAndUpdate(
@@ -586,14 +586,12 @@ const markOrderComplete = async (req, res) => {
             ],
         })
         
-    if (!order) {
-        console.log('Could not complete order')
-        return res.status(406).json({ err: 'Error completing order'})
-    }
+    if (!order) console.log('Could not complete order')
+    else return res.status(200).json(order)
 
     // console.log(`${order.driver.username} completed order from ${order.vendor.username} to ${order.customer.username}`)
 
-    return res.status(200).json(order)
+    return res.status(406).json({ err: 'Error completing order'})
 }
 
 const closeOrder = async (req, res) => {
@@ -667,6 +665,6 @@ module.exports = {
     getRelevantOrdersByUserId,
     markDriverAtVendorLocation,
     markOrderAsReady,
-    markOrderComplete,
+    markOrderCompleted,
     markOrderReceivedByDriver,
 }

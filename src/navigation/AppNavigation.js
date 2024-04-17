@@ -5,6 +5,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
 import {
+    ContactListScreen,
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
@@ -16,7 +17,6 @@ import {
 } from '../screens'
 import {
     ProductNavigator,
-    UserNavigator,
 } from './navigators'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { navigationRef } from './RootNavigation'
@@ -57,7 +57,7 @@ const TabStackScreen = () => {
 
     return (
         <TabStack.Navigator
-            initialRouteName={'Orders'}
+            initialRouteName={'Vendors'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -85,7 +85,7 @@ const TabStackScreen = () => {
 
             <TabStack.Screen
                 name='Users'
-                component={UserNavigator}
+                component={ContactListScreen}
                 options={({ route, navigation }) => ({
                     tabBarLabel: 'Users',
                     tabBarIcon: ({ focused, color }) => (
@@ -232,13 +232,7 @@ const linking = {
                             OrderList: '',
                         },
                     },
-                    Users: {
-                        path: 'users',
-                        screens: {
-                            UserList: '',
-                            User: 'profile',
-                        },
-                    },
+                    Users: 'users',
                     Vendors: {
                         path: 'vendors',
                         screens: {
