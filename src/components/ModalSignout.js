@@ -25,11 +25,10 @@ export default () => {
         const signedOut = await signout(profile._id)
         if (!signedOut) throw new Error()
         else {
-            clearCart()
             signOut()
-            clearUser()
             closeModal()
-            console.log('USER SIGNED OUT')
+            clearUser()
+            clearCart()
         }
     }
 

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import {
-    clearStorage,
+    cleanStorage,
     getToken,
     removeToken,
     setToken,
@@ -61,7 +61,7 @@ export const AuthContextProvider = props => {
         signOut: async () => {
             dispatch({ type: 'SIGN_OUT' })
             await removeToken()
-            await clearStorage()
+            await cleanStorage()
         },
     }), [state, dispatch])
     

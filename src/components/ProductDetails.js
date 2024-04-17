@@ -17,32 +17,30 @@ import { getImageDims } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default () => {
+export default ({ product }) => {
 
     const { dims, isLandscape, theme } = useApp()
     const { addToCart } = useCart()
-    const { closeModal, data } = useModal()
+    const { closeModal } = useModal()
 
     const [imageDims, setImageDims] = useState(null)
     
     const [quantity, setQuantity] = useState(1)
 
     useEffect(() => {
-        if (data)
-            setImageDims(getImageDims(data.image.width, data.image.height, dims))
+        setImageDims(getImageDims(product.image.width, product.image.height, dims))
     }, [])
 
     useEffect(() => {
-        if (dims && data)
-            setImageDims(getImageDims(data.image.width, data.image.height, dims))
+        if (dims) setImageDims(getImageDims(product.image.width, product.image.height, dims))
     }, [dims])
 
-    const onProductAdded = (product, quantity) => {
-        addToCart(product, quantity)
+    const onProductAdded = (item, quantity) => {
+        addToCart(item, quantity)
         closeModal()
     }
 
-    return data ? (
+    return (
         <View
             style={{
                 width: '100%',
@@ -67,7 +65,7 @@ export default () => {
                 >
                     <Image
                         source={{
-                            uri: `${IMAGE_PATH}/${data.vendor.username}/${data.image.filename}`
+                            uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}`
                         }}
                         style={{
                             marginHorizontal: 'auto',
@@ -105,7 +103,7 @@ export default () => {
                                     flexBasis: '80%',
                                 }}
                             >
-                                {data.title}
+                                {product.title}
                             </ThemedText>
 
                             <ThemedText
@@ -117,16 +115,16 @@ export default () => {
                                     flexGrow: 0,
                                 }}
                             >
-                                ${data.price}
+                                ${product.price}
                             </ThemedText>
                         </View>
                             
                         <ThemedText>
-                            {data.blurb}
+                            {product.blurb}
                         </ThemedText>
                         
                         <ThemedText>
-                            {data.desc}
+                            {product.desc}
                         </ThemedText>
                     </View>
                     <View
@@ -156,8 +154,8 @@ export default () => {
                         >
                             <IconButton
                                 type='primary'
-                                label={`${quantity > 1 ? `${quantity} ` : ''} ($${Number(Number(data.price) * quantity).toFixed(2)})`}
-                                onPress={() => onProductAdded(data, quantity)}
+                                label={`${quantity > 1 ? `${quantity} ` : ''} ($${Number(Number(product.price) * quantity).toFixed(2)})`}
+                                onPress={() => onProductAdded(product, quantity)}
                                 textStyles={{ color: theme?.colors.buttonLabel, wrap: 'nowrap', lineHeight: 35, }}
                             />
                         </View>
@@ -165,5 +163,5 @@ export default () => {
                 </View>
             </View>
         </View>
-    ) : null
+    )
 }

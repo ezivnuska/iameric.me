@@ -141,19 +141,16 @@ export default ({ role }) => {
 
 		await setItem('email', email)
         
-		const { data } = await signup(email, password, role, username)
+		const user = await signup(email, password, role, username)
         
         setFormLoading(false)
         
-		if (!data) {
+		if (!user) {
             console.log('Error authenticating user: NULL')
             setFormError({ name: 'email', message: 'Signup failed.' })
-        } else if (data.error) {
-			console.log(`Signup error: ${data.error}`)
-            setFormError({ name: 'email', message: 'Authentication failed.' })
-		} else {
+        } else {
             if (formError) clearFormError()
-            const { _id, email, images, profileImage, role, token, username, exp } = data.user
+            const { _id, email, images, profileImage, role, token, username, exp } = user
             signIn(token)
             setUser({ _id, email, images, profileImage, role, token, username, exp })
             clearForm()

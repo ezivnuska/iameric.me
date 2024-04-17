@@ -17,16 +17,16 @@ export default ({ vendor }) => {
     
     if (contactLoading) return <LoadingView label={`Loading ${vendor.username}`} />
 
-    return contact && contact.products
+    return vendor && vendor.products
         ? (
             <FlatList
-                data={contact.products}
+                data={vendor.products}
                 keyExtractor={item => `product-${item._id}`}
                 showsVerticalScrollIndicator={false}
                 renderItem={({ item }) => (
                     <MenuItem
                         item={item}
-                        username={contact.username}
+                        username={vendor.username}
                     />
                 )}
             />

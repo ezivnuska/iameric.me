@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
     IconButton,
     LoadingView,
@@ -15,17 +15,11 @@ import {
 import { loadVendor } from '@utils/contacts'
 
 export default ({ navigation, route }) => {
-import { loadVendor } from '@utils/contacts'
 
-export default ({ navigation, route }) => {
-
-    const idFromParams = route.params.id
     const idFromParams = route.params.id
 
     const { theme } = useApp()
     const {
-        contactLoading,
-        setContactLoading,
         contact,
         contactLoading,
         setContactLoading,
@@ -38,15 +32,6 @@ export default ({ navigation, route }) => {
             setContactLoading(true)
             const vendor = await loadVendor(idFromParams)
             setContactLoading(false)
-            if (!vendor) console.log('error loading vendor')
-            else {
-                setContact(vendor)
-                updateContact(vendor)
-            }
-            setContactLoading(true)
-            const vendor = await loadVendor(idFromParams)
-            setContactLoading(false)
-            console.log('vendor', vendor)
             if (!vendor) console.log('error loading vendor')
             else {
                 setContact(vendor)
@@ -83,7 +68,7 @@ export default ({ navigation, route }) => {
 
             {contact ? (
                 <Menu
-                    loading={contactsLoading}
+                    loading={contactLoading}
                     vendor={contact}
                 />
             ) : null}

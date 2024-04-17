@@ -122,6 +122,10 @@ const getVendor = async (req, res) => {
             path: 'image',
             select: 'filename width height',
         })
+        .populate({
+            path: 'vendor',
+            select: 'username',
+        })
     
     if (!products) {
         console.log('could not load products for vendor')

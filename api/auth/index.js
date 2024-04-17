@@ -28,23 +28,17 @@ const updateUserById = async (_id, data) => {
             { new: true },
         )
     
-    if (!updatedUser) {
-        console.log('could not update user.')
-        return null
-    }
+    if (!updatedUser) console.log('could not update user.')
+    else return updatedUser
 
-    return updatedUser
+    return null
 }
 
 const clearUserToken = async _id => {
-    
     const user = await updateUserById(_id, { token: null })
-    
-    if (!user) {
-        console.log('could not clear user token on sign out.')
-        return null
-    }
-    return user
+    if (!user) console.log('could not clear user token on sign out.')
+    else return user
+    return null
 }
 
 // returns new token from user data
@@ -229,14 +223,13 @@ const handleSignout = async (req, res) => {
     
     const user = await updateUserById(req.body._id, { token: null, exp: null })
 
-    if (!user) {
-        console.log('could not update user.')
-        return res.status(200).json(null)
+    if (!user) console.log('could not update user.')
+    else {
+        console.log(`\nUser signed out: ${user.username}`)
+        return res.status(200).json({ user })
     }
-
-    console.log(`\nUser signed out: ${user.username}`)
-
-    return res.status(200).json({ user })
+    
+    return res.status(200).json(null)
 }
 
 const deleteAccount = async (req, res) => {

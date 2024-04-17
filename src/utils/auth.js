@@ -6,14 +6,13 @@ export const authenticate = async token => {
     const { data } = await axios.
         post('/api/authenticate', { token })
     
-    if (!data) {
+    if (!data || !data.user) {
         console.log('Error authenticating token')
         await clearStorage()
-        return null
     } else {
-        const { user } = data
-        return user
+        return data.user
     }
+    return null
 }
 
 export const connect = async type => {
@@ -25,16 +24,19 @@ export const connect = async type => {
     }
     
     const { email, password } = creds[type]
+
+    console.log(`connecting with emeil: ${email}`)
     
     const { data } = await axios.
         post('/api/signin', { email, password })
     
-    if (!data) {
+    if (!data || !data.user) {
         console.log('error connecting user.')
     } else if (data.error) {
         console.log('Error authenticating user', data.msg)
     } else {
-        return data
+        console.log(`${data.user.username} connected.`)
+        return data.user
     }
     
     return null
@@ -50,26 +52,28 @@ export const signin = async (email, password) => {
     } else if (data.error) {
         console.log('Error:', data.error)
     } else {
-        console.log(`${data.user.username} connected.`)
+        console.log(`${data.user.username} signed in.`)
+        return data.user
     }
-    return data
+
+    return null
 }
 
 export const signup = async (email, password, role, username) => {
     
-    const data = await axios.
+    const { data } = await axios.
         post('/api/signup', { email, password, role, username })
     
     if (!data) {
         console.log('Error authenticating user')
-        return null
     } else if (data.error) {
         console.log('Error:', data.error)
     } else {
-        console.log('signup successful')
+        console.log(`${data.user.username} signed up.`)
+        return data.user
     }
-
-    return data
+    
+    return null
 }
 
 export const signout = async userId => {
@@ -77,14 +81,14 @@ export const signout = async userId => {
     const { data } = await axios
         .post('/api/signout', { _id: userId })
     
-    if (!data) {
-        console.log('could not sign out user')
-        return false
-    } else {
+    if (!data || !data.user) console.log('could not sign out user')
+    else {
         await cleanStorage()
         console.log('signed out')
         return true
     }
+    
+    return false
 }
 
 export const unsubscribe = async id => {
