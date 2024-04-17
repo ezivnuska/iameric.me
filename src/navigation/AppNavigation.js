@@ -10,14 +10,12 @@ import {
     ForumScreen,
     ImagesScreen,
     OrderScreen,
+    ProductsScreen,
     SettingsScreen,
     StartScreen,
     VendorScreen,
     VendorsScreen,
 } from '../screens'
-import {
-    ProductNavigator,
-} from './navigators'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { navigationRef } from './RootNavigation'
 import { useApp, useAuth } from '@context'
@@ -48,6 +46,24 @@ const VendorStackScreen = () => (
         />
         
     </VendorStack.Navigator>
+)
+
+const ProductStack = createNativeStackNavigator()
+
+const ProductStackScreen = () => (
+    <ProductStack.Navigator
+        initialRouteName='ProductList'
+        screenOptions={{
+            headerShown: false,
+        }}
+    >
+        <ProductStack.Screen
+            name='ProductList'
+            component={ProductsScreen}
+            options={{ title: 'Products' }}
+        />
+        
+    </ProductStack.Navigator>
 )
 
 const TabStack = createMaterialBottomTabNavigator()
