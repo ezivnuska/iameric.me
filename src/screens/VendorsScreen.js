@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-    View,
-} from 'react-native'
-import {
     EmptyStatus,
     VendorList,
 } from '@components'
@@ -19,9 +16,10 @@ export default props => {
     useEffect(() => {
         loadVendors()
     }, [])
-    
+
     const loadVendors = async () => {
         const { vendors } = await loadUsersByRole('vendor')
+        console.log('vendors', vendors)
         setVendors(vendors)
     }
     
@@ -29,16 +27,10 @@ export default props => {
         <Screen
             titleComponent={<ScreenTitle title='Merchants' />}
         >
-            <View
-                style={{ display: vendors ? 'visible' : 'hidden' }}
-            >
-                {
-                    vendors
-                        ? <VendorList users={vendors} {...props} />
-                        : <EmptyStatus status='No participating vendors.' />
-                }
-
-            </View>
+            {vendors
+                ? <VendorList users={vendors} {...props} />
+                : <EmptyStatus status='No participating vendors.' />
+            }
 
         </Screen>
     )

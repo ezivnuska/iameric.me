@@ -68,24 +68,28 @@ const getAllVendors = async (req, res) => {
     
     let vendors = await User
         .find({ role: 'vendor' })
-        .populate({ path: 'profileImage', select: 'filename width height' })
-    
+        .populate({
+            path: 'profileImage',
+            select: 'filename width height'
+        })
+    console.log('VENDORS', vendors)
     if (!vendors) {
         console.log('could not fetch all vendors.')
-        return res.json(null)
+    } else {
+        // vendors = vendors.map(({
+        //     _id,
+        //     profileImage,
+        //     username,
+        // }) => ({
+        //     _id,
+        //     profileImage,
+        //     username,
+        // }))
+        
+        console.log('VENDORS', vendors)
+        return res.status(200).json({ vendors })
     }
-
-    vendors = vendors.map(({
-        _id,
-        profileImage,
-        username,
-    }) => ({
-        _id,
-        profileImage: profileImage || null,
-        username,
-    }))
-    
-    return res.json({ vendors })
+    return res.status(200).json(null)
 }
 
 const getUserById = async (req, res) => {

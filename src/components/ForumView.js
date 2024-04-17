@@ -45,7 +45,6 @@ export default () => {
             {entries
                 ? (
                     <ForumList
-                        horizontal={isLandscape}
                         items={entries}
                         onDelete={removeEntry}
                     />

@@ -6,7 +6,6 @@ import {
 import {
     UserHeading,
 } from '.'
-// import { navigationRef } from '../navigators/RootNavigation'
 
 export default ({ users, ...props }) => (
     <FlatList
@@ -14,17 +13,17 @@ export default ({ users, ...props }) => (
         listKey={() => 'users'}
         keyExtractor={(item, index) => 'user' + index}
         renderItem={({ item }) => {
-            const { _id, profileImage, username, token } = item
+            const { _id, profileImage } = item
+            const { filename } = item
             return (
                 <View
                     style={{
-                        paddingVertical: 5,
-                        paddingHorizontal: 10,
+                        paddingVertical: 10,
                     }}
                 >
                     <UserHeading
                         user={item}
-                        filename={profileImage && profileImage.filename ? profileImage.filename : null}
+                        filename={profileImage && filename ? filename : null}
                         onPress={() => props.navigation.navigate('Vendor', { id: _id })}
                         style={{ alignItems: 'center' }}
                     />

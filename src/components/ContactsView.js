@@ -50,7 +50,7 @@ export default () => {
     if (contactsLoading) return <LoadingView loading='Loading contacts...' />
 
     return (
-        <View>
+        <View style={{ marginHorizontal: 10 }}>
             {renderContacts()}
         </View>
     )

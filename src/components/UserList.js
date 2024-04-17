@@ -3,15 +3,15 @@ import {
     FlatList,
     Image,
     Pressable,
-    useWindowDimensions,
     ScrollView,
     View,
 } from 'react-native'
 import {
     ThemedText,
 } from '.'
-import classes from '@styles/classes'
+import { useApp } from '@context'
 import { getProfileImagePathFromUser } from '@utils/images'
+import classes from '@styles/classes'
 
 const ListItemVertical = ({ item, onPress, ...props }) => {
     const imagePath = getProfileImagePathFromUser(item)
@@ -110,10 +110,10 @@ const ListItemHorizontal = ({ item, onPress, size, ...props }) => {
     )
 }
 
-export default ({ items, onPress, horizontal = false, ...props }) => {
-    const dims = useWindowDimensions()
+export default ({ items, onPress }) => {
+    const { isLandscape, dims } = useApp()
     const imageSize = dims.height < 300 ? 50 : 100
-    return !horizontal ? (
+    return !isLandscape ? (
         <FlatList
             data={items}
             listKey={() => 'users'}
@@ -122,7 +122,8 @@ export default ({ items, onPress, horizontal = false, ...props }) => {
                 <ListItemVertical
                     item={item}
                     onPress={onPress}
-                />)}
+                />
+            )}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
                 paddingHorizontal: 10,

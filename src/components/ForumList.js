@@ -3,7 +3,6 @@ import {
     FlatList,
     Image,
     Pressable,
-    useWindowDimensions,
     ScrollView,
     View,
 } from 'react-native'
@@ -15,10 +14,8 @@ import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
 import {
     useApp,
-    useContacts,
     useModal,
 } from '@context'
-import { navigationRef } from '../navigation/RootNavigation'
 
 const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props }) => {
     
@@ -124,7 +121,7 @@ const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props 
     )
 }
 
-const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null, ...props }) => {
+const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null }) => {
     const { author, text } = item
     const [online, setOnline] = useState(false)
     const { dims, theme } = useApp()
@@ -241,13 +238,13 @@ const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null, ...prop
     )
 }
 
-export default ({ items, onDelete, horizontal = false }) => {
-    const { dims } = useApp()
+export default ({ items, onDelete }) => {
+    const { isLandscape, dims } = useApp()
     const { setModal } = useModal()
 
     const [contact, setContact] = useState()
 
-    return !horizontal ? (
+    return !isLandscape ? (
         <FlatList
             data={items}
             listKey={() => 'entries'}
