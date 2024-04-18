@@ -13,7 +13,7 @@ import {
     useModal,
     useUser,
 } from '@context'
-import { getFields } from '@utils/form'
+import { getFields, validateFields } from '@utils/form'
 
 export default () => {
 
@@ -61,21 +61,10 @@ export default () => {
     }, [initialValues])
 
     useEffect(() => {
-        if (formReady) validateFields()
+        if (formReady) validateFields(formFields, validate)
     }, [entry])
 
-    const validateFields = () => {
-        const keys = Object.keys(formFields)
-        let index = 0
-        while (index < keys.length) {
-            const key = keys[index]
-            const isValid = validateField(key)
-            if (!isValid) return
-            else index++
-        }
-    }
-
-    const validateField = name => {
+    const validate = name => {
         let isValid = true
         switch (name) {
             case 'entry':

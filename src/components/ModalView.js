@@ -11,7 +11,7 @@ import {
     ModalImage,
     ModalProfile,
     ModalSignout,
-    ModalImageSelector,
+    ImageSelector,
     PopUpModal,
     ProductDetails,
     ProductForm,
@@ -47,7 +47,7 @@ export default () => {
             case 'LOCATION': return <LocationForm />; break
             case 'PRODUCT': return <ProductForm />; break
             case 'PROFILE': return <ModalProfile />; break
-            case 'SELECT_IMAGE': return <ModalImageSelector />; break
+            case 'SELECT_IMAGE': return <ImageSelector />; break
             case 'SIGNIN': return <SignInForm />; break
             case 'SIGNOUT': return <ModalSignout />; break
             case 'SIGNUP_CUSTOMER': return <SignUpForm role='customer' />; break

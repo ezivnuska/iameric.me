@@ -39,10 +39,7 @@ export default () => {
                 {profileImages && (
                     <ImageList
                         images={profileImages}
-                        onSelected={image => {
-                            // console.log('selected image', image)
-                            setModal('IMAGE', image)
-                        }}
+                        onSelected={image => setModal('IMAGE', image)}
                     />
                 )}
             </View>

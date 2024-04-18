@@ -21,7 +21,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const { dims, isLandscape, theme } = useApp()
     const { profile, setUserLoading, userLoading } = useUser()
-    const { items } = useProducts()
+    const { products } = useProducts()
 
     const [imageDims, setImageDims] = useState(null)
 
@@ -120,7 +120,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                         </View>
 
                         {
-                            (profile.role === 'vendor' && items.length)
+                            (profile.role === 'vendor' && products.length)
                                 ? (
                                     <View style={{
                                         flex: 1,
@@ -132,7 +132,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
                                         <ProductSelector
                                             onSelect={setProductImage}
-                                            products={items}
+                                            products={products}
                                             imageId={image._id}
                                         />
                                     </View>

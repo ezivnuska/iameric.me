@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import {
     Image,
     Pressable,
@@ -7,6 +7,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import {
     useApp,
+    useContacts,
     useModal,
     useUser,
 } from '@context'
@@ -17,6 +18,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default ({ images, onSelected }) => {
 
     const { theme } = useApp()
+    const { contact } = useContacts()
     const { setModal } = useModal()
     const { profile, userLoading } = useUser()
 
@@ -34,18 +36,18 @@ export default ({ images, onSelected }) => {
         backgroundColor: theme?.colors.background,
     }
 
-    const showUploadButton = () => {
-        if (process.env.NODE_ENV === 'development') {
-            console.log('cant upload in dev')
-            return false
-        }
+    const isDev = process.env.NODE_ENV === 'development'
+    
+    const restrictUpload = () => {
         switch(profile.username) {
             case 'Customer':
             case 'Driver':
             case 'Vendor':
-                return false
+                console.log('upload restricted')
+                return profile.role === 'admin' ? true : false
             default:
-                return true
+                if (contact && contact._id !== profile._id) return false
+                else return true
         }
     }
     
@@ -62,9 +64,7 @@ export default ({ images, onSelected }) => {
             }}
         >
             {images && images.map((image, index) => (
-                <View
-                    key={`image-${index}`}
-                >
+                <View key={`image-${index}`}>
                     
                     <Pressable
                         onPress={() => onSelected(image)}
@@ -94,10 +94,11 @@ export default ({ images, onSelected }) => {
                 </View>
             ))}
 
-            {showUploadButton() && (
+            {!restrictUpload() && (
                 <Pressable
                     key={`image-${images.length}`}
-                    onPress={() => setModal({ type: 'SELECT_IMAGE' })}
+                    onPress={() => setModal('SELECT_IMAGE')}
+                    disabled={userLoading || isDev}
                     style={[
                         {
                             flexBasis: 'auto',

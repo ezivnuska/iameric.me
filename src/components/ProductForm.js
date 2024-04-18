@@ -15,7 +15,7 @@ import {
     useProducts,
     useUser,
 } from '@context'
-import { getFields } from '@utils/form'
+import { getFields, validateFields } from '@utils/form'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -46,7 +46,6 @@ export default  () => {
         markDirty,
         setFocus,
         setFormError,
-        setFormReady,
         setFormLoading,
         setFormValues,
     } = useForm()
@@ -72,7 +71,7 @@ export default  () => {
     } = useMemo(() => formFields, [formFields])
     
     useEffect(() => {
-        const fields = getFields(initialState)
+        const fields = getFields(initialState, data)
         setInitialValues(fields)
     }, [])
     
@@ -81,21 +80,10 @@ export default  () => {
     }, [initialValues])
 
     useEffect(() => {
-        if (formReady) validateFields()
+        if (formReady) validateFields(formFields, validate)
     }, [title, price, blurb, desc, category, image, attachment])
 
-    const validateFields = () => {
-        const keys = Object.keys(formFields)
-        let index = 0
-        while (index < keys.length) {
-            const key = keys[index]
-            const isValid = validateField(key)
-            if (!isValid) return
-            else index++
-        }
-    }
-
-    const validateField = name => {
+    const validate = name => {
         let isValid = true
         switch (name) {
             case 'title':
@@ -146,8 +134,8 @@ export default  () => {
 	}
 
     const resetForm = () => {
-        if (data.product) {
-            setFormValues(data.product)
+        if (data) {
+            setFormValues(data)
         } else {
             clearForm()
         }
@@ -171,10 +159,10 @@ export default  () => {
             image,
         }
 
-        if (data.product) {
+        if (data) {
             newProduct = {
                 ...newProduct,
-                _id: data.product._id,
+                _id: data._id,
             }
         }
 
@@ -186,20 +174,16 @@ export default  () => {
         }
         
         setFormLoading(true)
-        
-        const response = await axios
-            .post('/api/product', newProduct)
-        
+        const response = await axios.post('/api/product', newProduct)
         setFormLoading(false)
             
-        if (!response.data) {
+        if (!response || !response.data) {
             console.log('Error saving product', data)
         } else {
-            if (data.product) {
-                updateProduct(response.data)
-            } else {
-                addProduct(response.data)
-            }
+
+            if (data) updateProduct(response.data)
+            else addProduct(response.data)
+            
             clearForm()
             closeModal()
         }
@@ -324,7 +308,7 @@ export default  () => {
             />
 
             <IconButton
-                label={data.product ? 'Reset Form' : 'Clear Form'}
+                label={data ? 'Reset Form' : 'Clear Form'}
                 onPress={resetForm}
                 disabled={formLoading}
                 style={{ marginVertical: 5 }}

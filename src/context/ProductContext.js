@@ -109,7 +109,10 @@ const reducer = (state, action) => {
                 ...state,
                 products: [
                     ...state.products.slice(0, i),
-                    payload,
+                    {
+                        ...state.products[i],
+                        ...payload,
+                    },
                     ...state.products.slice(i + 1),
                 ],
             }

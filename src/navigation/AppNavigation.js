@@ -181,7 +181,7 @@ const SettingsStackScreen = () => {
 
             <SettingsStack.Screen
                 name='Products'
-                component={ProductNavigator}
+                component={ProductStackScreen}
                 options={{
                     tabBarLabel: 'Products',
                     tabBarIcon: ({ focused, color }) => (

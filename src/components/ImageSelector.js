@@ -1,38 +1,49 @@
 import React, { useEffect, useState } from 'react'
 import {
-    useWindowDimensions,
     View,
 } from 'react-native'
 import {
     IconButton,
     Preview,
+    ThemedText,
 } from '.'
 import EXIF from 'exif-js'
 import {
+    useApp,
+    useModal,
     useUser,
 } from '@context'
-import { openFileSelector } from 'src/utils/images'
+import { openSelector, uploadImageData } from '@utils/images'
 
 const initialSize = 280
 
-export default ({ onSelected }) => {
+export default () => {
 
+    const { dims } = useApp()
     const {
+        addImage,
         profile,
         setUserLoading,
         userLoading,
     } = useUser()
-    
-    const dims = useWindowDimensions()
+    const { closeModal } = useModal()
 
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
 
     useEffect(() => {
-
+        const init = async () => {
+            setUserLoading(true)
+            const selection = await openSelector()
+            setUserLoading(false)
+            setPayload(selection)
+        }
+        init()
+    }, [])
+    
+    useEffect(() => {
         const dropzone = document.getElementById('dropzone')
-        
         if (dropzone) {
             const maxWidth = size
             const actualWidth = dropzone.offsetWidth
@@ -40,44 +51,36 @@ export default ({ onSelected }) => {
             setSize(width)
         }
     }, [dims])
+    
+    // const openSelector = async () => {
+    //     const uri = await openFileSelector()
+    //     if (uri) handleSelectedImage(uri)
+    //     else console.log('no uri recieved from selector')
+    //     return uri
+    // }
 
-    const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
+    // const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
-    useEffect(() => {
-        initFileSelector()
-    }, [])
+    // const handleSelectedImage = async uri => {
+    //     setUserLoading(true)
+    //     const blob = await dataURItoBlob(uri)
+    //     const reader = new FileReader()
+    //     reader.onload = ({ target }) => {
+    //         const exif = EXIF.readFromBinaryFile(target.result)
+    //         loadImage(uri, exif)
+    //     }
+    //     reader.readAsArrayBuffer(blob)
+    // }
 
-    const initFileSelector = async () => {
-        const uri = await openFileSelector()
-        if (uri) handleSelectedImage(uri)
-    }
-
-    const handleSelectedImage = async uri => {
-        const reader = new FileReader()
-        reader.onload = ({ target }) => {
-            const exif = EXIF.readFromBinaryFile(target.result)
-            loadImage(uri, exif)
-        }
-
-        const blob = await dataURItoBlob(uri)
-
-        setUserLoading(true)
-        
-        reader.readAsArrayBuffer(blob)
-    }
-
-    const loadImage = async (src, exif) => {
-        const image = new Image()
-        image.onload = async () => {
-            const data = await handleImageData(image, exif)
-            
-            setUserLoading(false)
-
-            setPayload(data)
-            
-        }
-        image.src = src
-    }
+    // const loadImage = async (src, exif) => {
+    //     const image = new Image()
+    //     image.onload = async () => {
+    //         const data = await handleImageData(image, exif)
+    //         setUserLoading(false)
+    //         setPayload(data)
+    //     }
+    //     image.src = src
+    // }
 
     useEffect(() => {
         if (payload) {
@@ -85,10 +88,23 @@ export default ({ onSelected }) => {
             setPreview({ uri, height, width })
         } else if (preview) {
             setPreview(null)
-
-            onSelected(null)
+            closeModal()
         }
     }, [payload])
+
+    const handleUpload = async imageData => {
+        if (process.env.NODE_ENV === 'development') {
+            console.log('cant upload in dev')
+            return null
+        }
+
+        setUserLoading(true)
+        const image = await uploadImageData(imageData)
+        setUserLoading(false)
+        if (!image) conaole.log('error uploading image')
+        else addImage(image)
+        closeModal()
+    }
 
     const handleImageData = async (image, srcOrientation) => {
         const userId = profile._id
@@ -176,17 +192,12 @@ export default ({ onSelected }) => {
     }
 
     const onSubmit = async () => {
-
-        if (!payload) {
-            console.log('no image data to submit.')
-            return
+        if (!payload) console.log('no image data to submit.')
+        else {
+            const { imageData, thumbData, userId } = payload
+            handleUpload({ imageData, thumbData, userId })
+            setPayload(null)
         }
-
-        const { imageData, thumbData, userId } = payload
-        setPayload(null)
-
-        onSelected({ imageData, thumbData, userId })
-
     }
 
     return (
@@ -199,7 +210,7 @@ export default ({ onSelected }) => {
                 alignItems: 'center',
             }}
         >
-            
+            <ThemedText>Hello</ThemedText>
             {preview ? (
                 <View
                     style={{
@@ -241,7 +252,7 @@ export default ({ onSelected }) => {
                         <IconButton
                             label='Change Image'
                             disabled={userLoading}
-                            onPress={initFileSelector}
+                            onPress={openSelector}
                         />
 
                     </View>
@@ -251,7 +262,7 @@ export default ({ onSelected }) => {
                         type='primary'
                         label='Select Image'
                         disabled={userLoading}
-                        onPress={initFileSelector}
+                        onPress={openSelector}
                     />
                 )}
 

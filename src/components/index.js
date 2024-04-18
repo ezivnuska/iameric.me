@@ -30,7 +30,6 @@ import LocationForm from './LocationForm'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
 import ModalImage from './ModalImage'
-import ModalImageSelector from './ModalImageSelector'
 import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
 import ModalView from './ModalView'
@@ -88,7 +87,6 @@ export {
     Menu,
     MenuItem,
     ModalImage,
-    ModalImageSelector,
     ModalProfile,
     ModalView,
     ModalSignout,

@@ -33,6 +33,7 @@ export const ModalContextProvider = props => {
             })
         },
         closeModal: () => {
+            if (state.modals.length > 1) dispatch({ type: 'SET_CONTACT', data: null })
             dispatch({ type: 'CLOSE_MODAL' })
         },
     }), [state, dispatch])

@@ -124,14 +124,27 @@ export default ({ onDelete, product, onPress, ...props }) => {
                         <ThemedText style={classes.textDefault}>{desc}</ThemedText>
 
                     </View>
-            
-                    <IconButton
-                        iconName='create-outline'
-                        onPress={() => onPress(product)}
-                        disabled={userLoading}
-                        transparent
-                        style={{ marginTop: -2, marginRight: 4 }}
-                    />
+                                
+                    <View
+                        style={{
+                            paddingVertical: 4,
+                            gap: 6,
+                        }}
+                    >
+                        <IconButton
+                            iconName='create-outline'
+                            onPress={() => onPress(product)}
+                            disabled={userLoading}
+                            transparent
+                        />
+                
+                        <IconButton
+                            iconName='trash-outline'
+                            onPress={() => onDelete(product)}
+                            disabled={userLoading}
+                            transparent
+                        />
+                    </View>
 
                 </View>
                 

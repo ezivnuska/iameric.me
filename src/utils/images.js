@@ -65,76 +65,28 @@ export const loadImages = async userId => {
     return data.images
 }
 
-// NOT USED
-// export const loadUserImages = async (dispatch, userId) => {
-    
-//     const { data } = await axios.get(`/api/user/images/${userId}`)
-    
-//     if (!data) {
-//         console.log('Error fetching user images.')
-//     } else {
-//         dispatch({
-//             type: 'UPDATE_USER_IMAGES',
-//             payload: {
-//                 userId,
-//                 images: data.images,
-//             },
-//         })
-//     }
-// }
-
-// NOT USED
-// export const loadImage = async imageId => {
-    
-//     const image = await axios.get(`/api/image/${imageId}`)
-    
-//     if (image) return image
-
-//     console.log('Error fetching image.')
-//     return null
-// }
-
-export const loadUnknownImage = async (imageId, userId) => {
-    
+export const loadUnknownImage = async (imageId) => {
     const { data } = await axios.get(`/api/image/${imageId}`)
-    
-    if (!data) {
-        console.log('Error fetching image.')
-    } else {
-        return data
-        // if (data.user === userId) {
-        //     console.log('update_image')
-        //     // dispatch({ type: 'UPDATE_IMAGE', payload: data })
-        // } else {
-        //     console.log('update_user_image')
-        //     // dispatch({ type: 'UPDATE_USER_IMAGE', payload: data })
-        // }
-    }
-
-    return data
+    if (!data) console.log('Error fetching image.')
+    else return data
+    return null
 }
 
-export const loadUserImage = async imageId => {
-    
+export const loadUserImage = async imageId => {    
     const image = await axios.get(`/api/image/${imageId}`)
-    
-    if (image) return image
-    
-    console.log('Error fetching user image.')
+    if (!image) console.log('Error fetching user image.')
+    else return image
     return null
 }
 
 export const openImagePickerAsync = async () => {
-    
     let permissionResult = await requestMediaLibraryPermissionsAsync()
-    
     if (permissionResult.granted === false) {
         alert('Permission to access camera roll is required!')
         return null
     }
 
     let pickerResult = await launchImageLibraryAsync()
-    
     if (!pickerResult.canceled) {
         const uploadResult = await uploadAsync('/api/upload/avatar', pickerResult.uri, {
             httpMethod: 'POST',
@@ -162,26 +114,25 @@ export const openImageSelector = async () => {
         quality: 1,
     })
     
-    if (!data || data.canceled) return null
-
-    return data.assets[0].uri
+    if (!data || data.canceled) console.log('image selection cancelled')
+    else return data.assets[0].uri
+    return null
   }
 
  export const openFileSelector = async () => {
     let uri = null
-    
     if (Platform.OS === 'web') uri = await openImageSelector()
     else uri = await openImagePickerAsync()
-
+    console.log('uri', uri)
     return(uri)
 }
 
 export const getImageDataById = async id => {
-    
     const { data } = await axios
         .get(`/api/image/${id}`)
-    
-    return data
+    if (!data) console.log('error getting image data')
+    else return data
+    return null
 }
 
 export const getProfileImagePathFromUser = user => {
@@ -322,4 +273,41 @@ const getThumbData = async (image, srcOrientation) => {
         width: imageWidth,
         uri: imageURI,
     }
+}
+
+export const uploadImageData = async imageData => {
+    const { data } = await axios.post(`/api/image/upload`, imageData)
+    if (!data) console.log('Error uploading image/thumb')
+    else return data
+    return null
+}
+
+
+    
+export const openSelector = async () => {
+    const uri = await openFileSelector()
+    if (uri) handleSelectedImage(uri)
+    else console.log('no uri recieved from selector')
+    return uri
+}
+
+const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
+
+const handleSelectedImage = async uri => {
+    setUserLoading(true)
+    const blob = await dataURItoBlob(uri)
+    const reader = new FileReader()
+    reader.onload = ({ target }) => {
+        const exif = EXIF.readFromBinaryFile(target.result)
+        loadImage(uri, exif)
+    }
+    reader.readAsArrayBuffer(blob)
+}
+
+const loadImage = async (src, exif) => {
+    const image = new Image()
+    image.onload = async () => {
+        const data = await handleImageData(image, exif)
+    }
+    image.src = src
 }
