@@ -8,6 +8,7 @@ import {
     ImageList,
 } from '@components'
 import {
+    useApp,
     useContacts,
     useModal,
 } from '@context'
@@ -15,6 +16,7 @@ import { loadFullContact } from '@utils/contacts'
 
 export default () => {
     
+    const { dims } = useApp()
     const {
         contact,
         contactLoading,
@@ -38,20 +40,18 @@ export default () => {
 
     if (contactLoading) return <LoadingView loading='Loading contact' />
 
-    return contact ? (
-        <View>
-            {contact.images && contact.images.length ? (
-                <View
-                    style={{ marginHorizontal: 10 }}
-                >
-                    <ImageList
-                        images={contact.images}
-                        onSelected={image => setModal('IMAGE', image)}
-                    />
+    return contact && contact.images && contact.images.length ? (
+        <View
+            style={{
+                width: '100%',
+                maxWidth: dims.width - 20,
+            }}
+        >
+            <ImageList
+                images={contact.images}
+                onSelected={image => setModal('IMAGE', image)}
+            />
 
-                </View>
-            ) : <EmptyStatus status='No images yet.' />}
-            
         </View>
-    ) : null
+    ) : <EmptyStatus status='No images yet.' />
 }

@@ -43,11 +43,9 @@ export default ({ images, onSelected }) => {
             case 'Customer':
             case 'Driver':
             case 'Vendor':
-                console.log('upload restricted')
-                return profile.role === 'admin' ? true : false
+                return true
             default:
-                if (contact && contact._id !== profile._id) return false
-                else return true
+                return contact ? true : false
         }
     }
     
@@ -57,6 +55,7 @@ export default ({ images, onSelected }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
+                alignItems: 'space-between',
                 flexWrap: 'wrap',
                 gap: 8,
                 width: '100%',
@@ -64,34 +63,32 @@ export default ({ images, onSelected }) => {
             }}
         >
             {images && images.map((image, index) => (
-                <View key={`image-${index}`}>
-                    
-                    <Pressable
-                        onPress={() => onSelected(image)}
-                        disabled={userLoading}
-                        style={[
-                            {
-                                flexBasis: 'auto',
-                                width: IMAGE_SIZE,
-                                height: IMAGE_SIZE,
-                            },
-                            buttonStyle,
-                        ]}
-                    >
-                        <Image
-                            width={IMAGE_SIZE}
-                            height={IMAGE_SIZE}
-                            // source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
-                            source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
-                            style={{
-                                resizeMode: 'cover',
-                                width: '100%',
-                                height: '100%',
-                            }}
-                        />
-                    </Pressable>
+                <Pressable
+                    key={`image-${index}`}
+                    onPress={() => onSelected(image)}
+                    disabled={userLoading}
+                    style={[
+                        {
+                            flexBasis: 'auto',
+                            width: IMAGE_SIZE,
+                            height: IMAGE_SIZE,
+                        },
+                        buttonStyle,
+                    ]}
+                >
+                    <Image
+                        width={IMAGE_SIZE}
+                        height={IMAGE_SIZE}
+                        // source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
+                        source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
+                        style={{
+                            resizeMode: 'cover',
+                            width: '100%',
+                            height: '100%',
+                        }}
+                    />
+                </Pressable>
 
-                </View>
             ))}
 
             {!restrictUpload() && (

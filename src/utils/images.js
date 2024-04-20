@@ -123,8 +123,7 @@ export const openImageSelector = async () => {
     let uri = null
     if (Platform.OS === 'web') uri = await openImageSelector()
     else uri = await openImagePickerAsync()
-    console.log('uri', uri)
-    return(uri)
+    return uri
 }
 
 export const getImageDataById = async id => {
@@ -282,32 +281,14 @@ export const uploadImageData = async imageData => {
     return null
 }
 
+export const handleImageData = async (image, srcOrientation, userId) => {
+    const imageData = await getImageData(image, srcOrientation)
+    const thumbData = await getThumbData(image, srcOrientation)
+    const filename = `${userId}-${Date.now()}.png`
 
-    
-export const openSelector = async () => {
-    const uri = await openFileSelector()
-    if (uri) handleSelectedImage(uri)
-    else console.log('no uri recieved from selector')
-    return uri
-}
-
-const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
-
-const handleSelectedImage = async uri => {
-    setUserLoading(true)
-    const blob = await dataURItoBlob(uri)
-    const reader = new FileReader()
-    reader.onload = ({ target }) => {
-        const exif = EXIF.readFromBinaryFile(target.result)
-        loadImage(uri, exif)
+    return {
+        imageData: { ...imageData, filename },
+        thumbData: { ...thumbData, filename },
+        userId,
     }
-    reader.readAsArrayBuffer(blob)
-}
-
-const loadImage = async (src, exif) => {
-    const image = new Image()
-    image.onload = async () => {
-        const data = await handleImageData(image, exif)
-    }
-    image.src = src
 }
