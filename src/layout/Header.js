@@ -22,16 +22,17 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const UserButton = () => {
 
+    const { authStatus, profile, username, setAuthModal } = useAuth()
     const { theme } = useApp()
-    const { profile } = useUser()
+    const { profileImage } = useUser()
     
-    const getSource = () => profile.profileImage
-        ? `${IMAGE_PATH}/${profile.username}/${profile.profileImage.filename}`
+    const getSource = () => profileImage
+        ? `${IMAGE_PATH}/${username}/${profileImage.filename}`
         : `${IMAGE_PATH}/avatar-default-small.png`
     
     return (
         <Pressable
-            onPress={() => navigationRef.navigate('Settings')}
+            onPress={() => navigationRef.navigate('Profile')}
             style={{
                 flexGrow: 0,
                 flexShrink: 0,
@@ -77,7 +78,7 @@ const UserButton = () => {
                     lineHeight: 30,
                 }}
             >
-                {profile.username}
+                {authStatus}
             </ThemedText>
             
         </Pressable>
@@ -86,15 +87,15 @@ const UserButton = () => {
 
 export default () => {
 
-    const { profile } = useUser()
-    const { isThemeDark, toggleTheme } = useApp()
+    const { authStatus } = useAuth()
+    const { night, toggleTheme } = useApp()
     
     return (
         <View
             style={{
-                flex: 1,
+                // flex: 1,
                 flexDirection: 'row',
-                alignItems: 'flex-end',
+                // alignItems: 'flex-end',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingHorizontal: 5,
@@ -105,18 +106,18 @@ export default () => {
             <Brand onPress={toggleTheme} />
 
             <IconButton
-                iconName={`${isThemeDark ? 'sunny' : 'moon'}-outline`}
+                iconName={`${night ? 'sunny' : 'moon'}-outline`}
                 onPress={toggleTheme}
                 transparent
                 style={{ flexGrow: 0 }}
                 textStyles={{ fontSize: 18 }}
             />
 
-            {profile
+            {authStatus
                 ? (
                     <>
                         <CartButton style={{ marginLeft: 10 }} />
-                        <UserButton user={profile} />
+                        <UserButton user={authStatus} />
                         <SignOutButton />
                     </>
                 ) : (
@@ -129,14 +130,13 @@ export default () => {
 
 const SignInButton = () => {
 
-    const { setModal } = useModal()
-    const { authLoading } = useAuth()
+    const { authLoading, setAuthModal } = useAuth()
     
     return (
         <IconButton
             iconName='log-in-outline'
             label='Sign In'
-            onPress={() => setModal('SIGNIN')}
+            onPress={() => setAuthModal('SIGN_IN')}
             disabled={authLoading}
             alignIcon='right'
             transparent
@@ -147,11 +147,12 @@ const SignInButton = () => {
 const SignOutButton = () => {
 
     const { setModal } = useModal()
-    const { authLoading, theme } = useApp()
+    const { theme } = useApp()
+    const { authLoading, setAuthModal } = useAuth()
     
     return (
         <IconButton
-            onPress={() => setModal('SIGNOUT')}
+            onPress={() => setAuthModal('SIGN_OUT')}
             disabled={authLoading}
             iconName='close-outline'
             textStyles={{

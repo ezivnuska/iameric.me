@@ -9,12 +9,12 @@ export const setItem = async (key, value) => {
     return AsyncStorage.setItem(key, value)
 }
 
-export const getToken = async () => {
+export const getStoredToken = async () => {
     const value = await AsyncStorage.getItem('userToken')
     return value || null
 }
 
-export const setToken = async value => {
+export const storeToken = async value => {
     return AsyncStorage.setItem('userToken', value)
 }
 

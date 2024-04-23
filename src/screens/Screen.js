@@ -1,22 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     ScrollView,
-    useWindowDimensions,
     View,
 } from 'react-native'
 import {
+    Nav,
+} from '@components'
+import {
+    useAuth,
     useApp,
+    useUser,
 } from '@context'
+import { navigationRef } from '@navigation/RootNavigation'
 
 export default ({
     children,
+    navigation,
+    route,
+    secure = true,
     titleComponent = null,
-    tabs = true,
 }) => {
     
-    const { isLandscape, theme } = useApp()
+    // const { clearCart } = useCart()
+    const { dims, landscape, theme } = useApp()
+    const { authStatus, signOut } = useAuth()
+    const { profile } = useUser()
 
-    const dims = useWindowDimensions()
+    // useEffect(() => {
+    //     console.log('route', route)
+    // }, [])
+    
+    useEffect(() => {
+        if (!authStatus) {
+            if (profile) signOut()
+            else if (route) navigationRef.navigate(route.name !== 'Start' ? route.name : 'Profile')
+        }
+    }, [profile])
 
     return (
         <View
@@ -34,12 +53,13 @@ export default ({
                 }}
             >
                 {titleComponent}
+                {authStatus && <Nav />}
 
                 <ScrollView
                     style={{
-                        height: tabs ? dims.height - 150 : dims.height - 50,
+                        height: dims.height - 50,
                         width: '100%',
-                        maxWidth: isLandscape ? '100%' : 600,
+                        maxWidth: landscape ? '100%' : 600,
                         marginHorizontal: 'auto',
                     }}
                     contentContainerStyle={{

@@ -20,11 +20,9 @@ const CombinedDefaultTheme = merge(defaultTheme, light)
 const CombinedDarkTheme = merge(darkTheme, dark)
 
 const initialState = {
-    loading: false,
-    loaded: false,
+    admin: false,
     theme: CombinedDefaultTheme,
-    isThemeDark: false,
-    setLoading: () => {},
+    night: false,
     toggleTheme: () => {},
     setDarkTheme: () => {},
 }
@@ -45,9 +43,6 @@ export const AppContextProvider = ({ children }) => {
     const dims = useWindowDimensions()
 
     const actions = useMemo(() => ({
-        setLoading: async payload => {
-            dispatch({ type: 'SET_LOADING', payload })
-        },
         toggleTheme: () => {
             dispatch({ type: 'TOGGLE_THEME' })
         },
@@ -74,7 +69,7 @@ export const AppContextProvider = ({ children }) => {
                 value={{
                     ...state,
                     dims,
-                    isLandscape: dims.width > dims.height,
+                    landscape: dims.width > dims.height,
                     ...actions,
                 }}
             >
@@ -85,19 +80,12 @@ export const AppContextProvider = ({ children }) => {
 }
 
 const reducer = (state, action) => {
-
     const { payload, type } = action
     switch(type) {
-        case 'SET_LOADING':
-            return {
-                ...state,
-                loading: payload,
-            }
-            break
         case 'SET_DARK_THEME':
             return {
                 ...state,
-                isThemeDark: payload,
+                night: payload,
                 theme: payload
                     ? CombinedDarkTheme
                     : CombinedDefaultTheme,
@@ -106,8 +94,8 @@ const reducer = (state, action) => {
         case 'TOGGLE_THEME':
             return {
                 ...state,
-                isThemeDark: !state.isThemeDark,
-                theme: !state.isThemeDark
+                night: !state.night,
+                theme: !state.night
                     ? CombinedDarkTheme
                     : CombinedDefaultTheme,
             }

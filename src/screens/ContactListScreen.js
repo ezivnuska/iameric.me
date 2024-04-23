@@ -6,14 +6,12 @@ import {
     Screen,
     ScreenTitle,
 } from '.'
-import { ContactContextProvider } from '../context/ContactContext'
 
-export default () => (
+export default props => (
     <Screen
         titleComponent={<ScreenTitle title='Contacts' />}
+        {...props}
     >
-        <ContactContextProvider>
-            <ContactsView />
-        </ContactContextProvider>
+        <ContactsView />
     </Screen>
 )

@@ -15,7 +15,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ children, user, filename, onPress = null, ...props }) => {
 
-    const { isLandscape, theme } = useApp()
+    const { landscape, theme } = useApp()
 
     const [online, setOnline] = useState(false)
 
@@ -39,14 +39,14 @@ export default ({ children, user, filename, onPress = null, ...props }) => {
                     flexGrow: 1,
                     flexShrink: 0,
                     display: 'flex',
-                    flexDirection: isLandscape ? 'column' : 'row',
-                    justifyContent: isLandscape ? 'center' : 'flex-start',
-                    alignItems: isLandscape ? 'center' : 'baseline',
+                    flexDirection: landscape ? 'column' : 'row',
+                    justifyContent: landscape ? 'center' : 'flex-start',
+                    alignItems: landscape ? 'center' : 'baseline',
                     // gap: 12,
                     // borderWidth: 1,
                     // borderColor: 'green',
                     flexWrap: 'nowrap',
-                    paddingHorizontal: isLandscape ? 0 : 10,
+                    paddingHorizontal: landscape ? 0 : 10,
                 },
                 props.style,
             ]}
@@ -71,8 +71,8 @@ export default ({ children, user, filename, onPress = null, ...props }) => {
                     justifyContent: 'flex-start',
                     // borderWidth: 1,
                     // borderColor: 'yellow',
-                    marginTop: isLandscape ? 8 : 0,
-                    marginLeft: isLandscape ? 0 : 10,
+                    marginTop: landscape ? 8 : 0,
+                    marginLeft: landscape ? 0 : 10,
                 }}
             >
                 <Pressable

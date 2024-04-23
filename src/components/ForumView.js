@@ -15,7 +15,7 @@ import axios from 'axios'
 
 export default () => {
     
-    const { isLandscape } = useApp()
+    const { landscape } = useApp()
     const {
         deleteEntry,
         entries,

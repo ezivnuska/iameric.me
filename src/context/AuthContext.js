@@ -1,19 +1,22 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import {
     cleanStorage,
-    getToken,
+    getStoredToken,
     removeToken,
-    setToken,
+    storeToken,
 } from '@utils/storage'
+import { authenticate, validateToken } from '@utils/auth'
+// import { navigationRef } from '@navigation/RootNavigation'
 
 const initialState = {
-    status: 'idle',
-    authToken: null,
-    error: null,
     authLoading: false,
+    authModal: null,
+    authToken: null,
+    authStatus: null,
+    error: null,
+    token: null,
     setAuthLoading: () => {},
-    signIn: () => {},
-    signOut: () => {},
+    setAuthModal: () => {},
 }
 
 export const AuthContext = createContext(initialState)
@@ -23,23 +26,29 @@ export const useAuth = () => {
     if (!context) {
         throw new Error()
     }
+
     return context
 }
 
 export const AuthContextProvider = props => {
 
     const [state, dispatch ] = useReducer(reducer, initialState)
-    
+
     useEffect(() => {
         const initState = async () => {
             try {
                 // check for token in local storage
-                const authToken = await getToken()
+                const authToken = await getStoredToken()
                 // if token exists
                 if (authToken !== null) {
+                    console.log('found token, verifying...')
                     // need to validate token, but for now...
                     // sign in
-                    dispatch({ type: 'SIGN_IN', payload: authToken })
+                    const payload = await validateToken(authToken)
+                    if (payload) {
+                        console.log('token verified.')
+                        dispatch({ type: 'SIGN_IN', payload })
+                    }
                 } else {
                     console.log('no token found')
                 }
@@ -54,14 +63,20 @@ export const AuthContextProvider = props => {
         setAuthLoading: async payload => {
             dispatch({ type: 'SET_AUTH_LOADING', payload })
         },
-        signIn: async token => {
-            dispatch({ type: 'SIGN_IN', payload: token })
-            await setToken(token)
+        setAuthModal: async payload => {
+            dispatch({ type: 'SET_AUTH_MODAL', payload })
+        },
+        // setAuthStatus: async payload => {
+        //     dispatch({ type: 'SET_AUTH_STATUS', payload })
+        // },
+        signIn: async payload => {
+            await storeToken(payload.token)
+            dispatch({ type: 'SIGN_IN', payload })
         },
         signOut: async () => {
+            // await removeToken()
+            // await cleanStorage()
             dispatch({ type: 'SIGN_OUT' })
-            await removeToken()
-            await cleanStorage()
         },
     }), [state, dispatch])
     
@@ -81,20 +96,33 @@ const reducer = (state, action) => {
                 authLoading: payload,
             }
             break
-        case 'SIGN_IN':
+        case 'SET_AUTH_MODAL':
             return {
                 ...state,
-                status: 'in',
-                authToken: payload,
+                authModal: payload,
+            }
+            break
+        case 'SET_AUTH_STATUS':
+            return {
+                ...state,
+                authStatus: payload,
+            }
+            break
+        case 'SIGN_IN':
+            const { token, username } = payload
+            return {
+                ...state,
+                authModal: null,
+                authStatus: username,
+                authToken: token,
             }
             break
         case 'SIGN_OUT':
             return {
                 ...state,
-                status: 'idle',
+                authModal: null,
+                authStatus: null,
                 authToken: null,
-                error: null,
-                authLoading: false,
             }
             break
         default:

@@ -15,7 +15,6 @@ import {
     useAuth,
     useForm,
     useModal,
-    useUser,
 } from '@context'
 
 export default () => {
@@ -44,9 +43,8 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { signOut } = useAuth()
+    const { profile, clearUser, signOut } = useAuth()
     const { closeModal, data } = useModal()
-    const { profile, clearUser } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 

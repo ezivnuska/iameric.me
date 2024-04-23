@@ -19,7 +19,7 @@ import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default ({ userId }) => {
 
-    const { isLandscape } = useApp()
+    const { landscape } = useApp()
 
     const dims = useWindowDimensions()
 
@@ -66,7 +66,7 @@ export default ({ userId }) => {
             }}
         >
             {userDetails
-                ? isLandscape
+                ? landscape
                     ? <LayoutHorizontal imageSize={imageSize} userDetails={userDetails} />
                     : <LayoutVertical imageSize={imageSize} userDetails={userDetails} />
                 : null}

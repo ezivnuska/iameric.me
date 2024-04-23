@@ -13,13 +13,13 @@ import {
 } from '.'
 import { useUser } from '@context'
 
-export default () => {
+export default props => {
 
     const { profile } = useUser()
 
-    return (
+    return profile && (
         <Screen
-            titleComponent={<ScreenTitle title='Settings' />}
+            {...props}
         >
             
             <View
@@ -29,7 +29,7 @@ export default () => {
             >
                 <UserDetails userId={profile._id} />
 
-                {profile.role !== 'driver' && <LocationModule userId={profile._id} />}
+                <LocationModule userId={profile._id} />
                 
                 {
                     profile.username !== 'Customer' &&

@@ -6,7 +6,9 @@
             "images/*": ["./src/images/*"],
             "styles/*": ["./src/styles/*"],
             "utils/*": ["./src/utils/*"],
-            "context/*": ["./src/context/*"]
+            "context/*": ["./src/context/*"],
+            "navigation/*": ["./src/navigation/*"],
+            "layers/*": ["src/layout/*"]
         }
     }
 }

@@ -8,44 +8,24 @@ import {
 } from '.'
 import {
     useAuth,
-    useCart,
-    useModal,
-    useUser,
 } from '@context'
 import { signout } from '@utils/auth'
 
 export default () => {
 
-    const { clearCart } = useCart()
-    const { closeModal } = useModal()
-    const { profile, clearUser } = useUser()
-    const { authLoading, signOut } = useAuth()
+    const { authLoading, authToken, signOut } = useAuth()
 
     const initSignout = async () => {
-        const signedOut = await signout(profile._id)
+        const signedOut = await signout(authToken)
         if (!signedOut) throw new Error()
-        else {
-            signOut()
-            closeModal()
-            clearUser()
-            clearCart()
-        }
+        else signOut()
     }
-
     return (
-        <CenterVertical>
-            <View
-                style={{
-                    marginHorizontal: 10,
-                }}
-            >
-                <IconButton
-                    type='primary'
-                    label='Sign Out'
-                    onPress={initSignout}
-                    disabled={authLoading}
-                />
-            </View>
-        </CenterVertical>
+        <IconButton
+            type='primary'
+            label='Sign Out'
+            onPress={initSignout}
+            disabled={authLoading}
+        />
     )
 }

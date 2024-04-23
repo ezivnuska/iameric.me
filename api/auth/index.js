@@ -20,6 +20,14 @@ const getSanitizedUser = ({ _id, email, location, profileImage, role, username, 
     exp,
 })
 
+const getBaseUser = ({ _id, profileImage, role, username, token }) => ({
+    _id,
+    profileImage,
+    role,
+    username,
+    token,
+})
+
 const updateUserById = async (_id, data) => {
     const updatedUser = await User
         .findOneAndUpdate(
@@ -28,7 +36,26 @@ const updateUserById = async (_id, data) => {
             { new: true },
         )
     
-    if (!updatedUser) console.log('could not update user.')
+    if (!updatedUser) console.log('could not update user with id.')
+    else return updatedUser
+
+    return null
+}
+
+const clearUserTokenWithToken = async token => {
+    const updatedUser = await User
+        .findOneAndUpdate(
+            { token },
+            {
+                $set: {
+                    token: null,
+                    exp: null,
+                },
+            },
+            { new: true },
+        )
+    
+    if (!updatedUser) console.log('could not update user with token.')
     else return updatedUser
 
     return null
@@ -87,28 +114,33 @@ const handleSignin = async (req, res) => {
     
     await user.save()
 
-    const sanitizedUser = getSanitizedUser(user)
+    const baseUser = getBaseUser(user)
 
     console.log(`\nUser signed in: ${user.username}`)
     
-    return res.status(200).json({ user: sanitizedUser })
+    return res.status(200).json({ user: baseUser })
 }
 
 const validateToken = async (req, res) => {
-    const { id } = req.body
-    const user = await User
-        .findOne({ _id: id })
+    const { token } = req.params
     
-    if (!user) return res.status(200).json(false)
+    const decodedUser = getDecodedUser(token)
+    
+    const { _id, exp } = decodedUser
 
-    const userFromToken = getDecodedUser(user.token)
+    if (!_id) return res.status(200).json(null)
+    
+    const user = await User
+        .findOne({ _id })
+    
+    if (!user) return res.status(200).json(null)
 
-    if (!userFromToken) return res.status(200).json(false)
-    console.log('userFromToken', userFromToken)
-    const newDate = new Date(userFromToken.exp) - Date.now()
-    // console.log('newDate', newDate, newDate > 0)
+    const newDate = new Date(exp) - Date.now()
     const expired = (newDate > 0)
-    return res.status(200).json(!expired)
+
+    if (expired) return res.status(200).json(null)
+
+    return res.status(200).json({ token: user.token, username: user.username })
 }
 
 const createUser = async (email, username, password, role) => {
@@ -221,12 +253,12 @@ const authenticate = async (req, res) => {
 
 const handleSignout = async (req, res) => {
     
-    const user = await updateUserById(req.body._id, { token: null, exp: null })
+    const user = await clearUserTokenWithToken(req.params.token)
 
     if (!user) console.log('could not update user.')
     else {
         console.log(`\nUser signed out: ${user.username}`)
-        return res.status(200).json({ user })
+        return res.status(200).json(user)
     }
     
     return res.status(200).json(null)

@@ -9,13 +9,13 @@ import {
 } from '.'
 import EXIF from 'exif-js'
 import {
-    useUser,
+    useAuth,
 } from '@context'
 import { handleImageUpload } from '@utils/images'
 
 export default ({ onImageSelected, removeImage, source = null }) => {
 
-    const { profile, setUserLoading, userLoading } = useUser()
+    const { profile, setUserLoading, userLoading } = useAuth()
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
     

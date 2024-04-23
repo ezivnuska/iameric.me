@@ -12,7 +12,7 @@ import {
     useModal,
 } from '@context'
 
-export default () => {
+export default props => {
 
     const { theme } = useApp()
     const { setModal } = useModal()
@@ -36,6 +36,7 @@ export default () => {
                     />
                 </ScreenTitle>
             }
+            {...props}
         >
             <ProductList />
         </Screen>

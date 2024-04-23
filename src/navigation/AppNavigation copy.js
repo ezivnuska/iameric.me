@@ -198,7 +198,7 @@ const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
     return (
         <AppStack.Navigator
-            initialRouteName='Profile'
+            initialRouteName='Start'
             screenOptions={{
                 headerShown: false,
             }}

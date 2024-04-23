@@ -11,7 +11,7 @@ import Modal from 'react-native-modal'
 
 export default ({ children, onRequestClose, transparent = false, ...props }) => {
     
-    const { dims, isLandscape, theme } = useApp()
+    const { dims, landscape, theme } = useApp()
     
     return (
         <Modal
@@ -59,7 +59,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                     contentContainerStyle={{
                         width: '100%',
                         minWidth: 280,
-                        maxWidth: isLandscape ? '100%' : 600,
+                        maxWidth: landscape ? '100%' : 600,
                     }}
                 >
                     {children}

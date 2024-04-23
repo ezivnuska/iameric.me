@@ -19,7 +19,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ product }) => {
 
-    const { dims, isLandscape, theme } = useApp()
+    const { dims, landscape, theme } = useApp()
     const { addToCart } = useCart()
     const { closeModal } = useModal()
 
@@ -45,7 +45,7 @@ export default ({ product }) => {
             style={{
                 width: '100%',
                 minWidth: 280,
-                maxWidth: isLandscape ? 600 : 300,
+                maxWidth: landscape ? 600 : 300,
                 marginHorizontal: 'auto',
             }}
         >
@@ -53,8 +53,8 @@ export default ({ product }) => {
                 style={{
                     width: '100%',
                     display: 'flex',
-                    flexDirection: isLandscape ? 'row' : 'column',
-                    justifyContent: isLandscape ? 'flex-start' : 'center',
+                    flexDirection: landscape ? 'row' : 'column',
+                    justifyContent: landscape ? 'flex-start' : 'center',
                     gap: 15,
                 }}
             >

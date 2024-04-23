@@ -16,58 +16,34 @@ import {
     useAuth,
     useApp,
     useModal,
-    useUser,
 } from '@context'
 import {
     connect,
 } from '@utils/auth'
-import { authenticate } from '@utils/auth'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ navigation }) => {
+export default props => {
 
-    const { authToken, signIn, status } = useAuth()
-    const { setUser } = useUser()
+    const { signIn } = useAuth()
     const { setModal } = useModal()
-
-    useEffect(() => {
-        if (status === 'in') {
-            navigation.navigate('Tabs')
-        }
-    }, [status])
-
-    useEffect(() => {
-        const checkToken = async () => {
-            console.log('token found. checking...')
-            const user = await authenticate(authToken)
-            if (user) {
-                console.log('token verified.')
-                signIn(authToken)
-                setUser(user)
-            }
-        }
-        
-        if (authToken) checkToken()
-    }, [authToken])
 
     const onConnect = async type => {
         
-        const connectedUser = await connect(type)
+        const user = await connect(type)
         
-        if (!connectedUser) {
+        if (!user) {
             console.log('Error: Could not connect user.')
         } else {
-            signIn(connectedUser.token)
-            setUser(connectedUser)
+            signIn(user)
         }
-        return connectedUser
+        return user
     }
 
     return (
         <Screen
-            tabs={false}
-            padded={false}
+            secure={false}
+            {...props}
         >
             <View
                 style={{

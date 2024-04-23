@@ -11,7 +11,7 @@ import {
     useForm,
     useForum,
     useModal,
-    useUser,
+    useAuth,
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
 
@@ -43,7 +43,7 @@ export default () => {
 
     const { addEntry } = useForum()
     const { closeModal, data } = useModal()
-    const { profile } = useUser()
+    const { profile } = useAuth()
 
     const [initialValues, setInitialValues] = useState(null)
 

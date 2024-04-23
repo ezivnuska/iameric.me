@@ -71,7 +71,7 @@ export const AppProvider = ({ children, preferences }) => {
                 modal,
                 user,
                 users,
-                isLandscape: dims.width > dims.height,
+                landscape: dims.width > dims.height,
                 ...preferences,
             }}
         >

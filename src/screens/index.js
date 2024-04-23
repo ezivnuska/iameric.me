@@ -4,7 +4,7 @@ import ForumScreen from './ForumScreen'
 import ImagesScreen from './ImagesScreen'
 import OrderScreen from './OrderScreen'
 import ProductsScreen from './ProductsScreen'
-import SettingsScreen from './SettingsScreen'
+import ProfileScreen from './ProfileScreen'
 import Screen from './Screen'
 import ScreenTitle from './ScreenTitle'
 import StartScreen from './StartScreen'
@@ -18,9 +18,9 @@ export {
     ImagesScreen,
     OrderScreen,
     ProductsScreen,
+    ProfileScreen,
     Screen,
     ScreenTitle,
-    SettingsScreen,
     StartScreen,
     VendorScreen,
     VendorsScreen,

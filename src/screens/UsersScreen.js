@@ -10,10 +10,11 @@ import {
     ScreenTitle,
 } from '.'
 
-export default ({ ...props }) => {
+export default props => {
     return (
         <Screen
             titleComponent={<ScreenTitle title='Users' />}
+            {...props}
         >
             <UserModule {...props} />
         </Screen>

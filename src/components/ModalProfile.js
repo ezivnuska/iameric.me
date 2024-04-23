@@ -6,14 +6,14 @@ import {
     UserDetailsShort,
 } from '.'
 import {
+    useAuth,
     useModal,
-    useUser,
 } from '@context'
 
 export default () => {
 
     const { closeModal } = useModal()
-    const { profile } = useUser()
+    const { profile } = useAuth()
     
     return (
         <View

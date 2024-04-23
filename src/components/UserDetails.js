@@ -1,17 +1,22 @@
 import React from 'react'
 import {
     Image,
-    useWindowDimensions,
+    View,
 } from 'react-native'
-import { useUser } from '@context'
+import {
+    ThemedText,
+} from '@components'
+import {
+    useApp,
+    useUser,
+} from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const MAX_IMAGE_HEIGHT = 120
 
 export default () => {
 
-    const dims = useWindowDimensions()
-
+    const { dims } = useApp()
     const { profile } = useUser()
 
     const getImageDims = (w, h) => {
@@ -34,10 +39,37 @@ export default () => {
         return { width, height }
     }
 
+    const renderImage = () => {
+        const { profileImage, username } = profile
+
+        const filename = (profileImage && profileImage.filename)
+            ? profileImage.filename
+            : null
+
+        if (!filename) return null
+        
+        const source = filename ?
+            `${IMAGE_PATH}/${username}/${filename}` :
+            `${IMAGE_PATH}/avatar-default.png`
+
+        const { width, height } = profileImage
+            ? getImageDims(profileImage.width, profileImage.height)
+            : { width: 200, height: 200 }
+
+        return (
+            <Image
+                source={source}
+                style={{
+                    width,
+                    height,
+                    resizeMode: 'cover',
+                }}
+            />
+        )
+    }
+
     // TODO: clean this.
     const renderUserAvatar = () => {
-
-        if (!profile) return null
 
         const { profileImage, username } = profile
 
@@ -65,5 +97,11 @@ export default () => {
         )
     }
 
-    return renderUserAvatar(profile)
+    return profile && (
+        <View>
+            {renderImage(profile)}
+            <ThemedText>{profile.username}</ThemedText>
+            <ThemedText>{profile.role}</ThemedText>
+        </View>
+    )
 }

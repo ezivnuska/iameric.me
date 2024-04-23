@@ -7,11 +7,17 @@ import {
     ThemedText,
 } from '@components'
 
-export default ({ route }) => (
-    <Screen>
-        <CenteredView>
-            <ThemedText>404 Error: {route && route.path ? route.path : ''}</ThemedText>
-            <ThemedText>Sorry. That page does not exist.</ThemedText>
-        </CenteredView>
-    </Screen>
-)
+export default props => {
+    const { route } = props
+    return (
+        <Screen
+            secure={false}
+            {...props}
+        >
+            <CenteredView>
+                <ThemedText>404 Error: {route && route.path ? route.path : ''}</ThemedText>
+                <ThemedText>Sorry. That page does not exist.</ThemedText>
+            </CenteredView>
+        </Screen>
+    )
+}

@@ -25,6 +25,7 @@ export default props => {
     return (
         <Screen
             titleComponent={<ScreenTitle title='Merchants' />}
+            {...props}
         >
             {vendors
                 ? <VendorList users={vendors} {...props} />

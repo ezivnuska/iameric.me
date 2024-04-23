@@ -8,7 +8,7 @@ import {
     ThemedText,
 } from '@components'
 import {
-    useUser,
+    useAuth,
 } from '@context'
 import classes from '../styles/classes'
 
@@ -17,7 +17,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ onDelete, product, onPress, ...props }) => {
 
-    const { profile, userLoading } = useUser()
+    const { profile, userLoading } = useAuth()
     const { title, price, blurb, desc, image } = useMemo(() => product, [product])
 
     return (

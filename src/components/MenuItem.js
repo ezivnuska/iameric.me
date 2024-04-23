@@ -20,7 +20,7 @@ export default ({ item, username }) => {
 
     const { setModal } = useModal()
 
-    const { isLandscape } = useApp()
+    const { landscape } = useApp()
     
     const { price, title, desc, blurb, image } = item
     
@@ -90,7 +90,7 @@ export default ({ item, username }) => {
                                 flexDirection: 'row',
                                 justifyContent: 'space-between',
                                 alignItems: 'flex-start',
-                                flexWrap: isLandscape ? 'nowrap' : 'wrap',
+                                flexWrap: landscape ? 'nowrap' : 'wrap',
                                 marginBottom: 10,
                             }}
                         >
@@ -113,7 +113,7 @@ export default ({ item, username }) => {
                                 type='primary'
                                 label={`$${price}`}
                                 align='center'
-                                padded={isLandscape ? true : false}
+                                padded={landscape ? true : false}
                                 textStyles={{ lineHeight: 35 }}
                             />
                         </View>

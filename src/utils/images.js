@@ -11,15 +11,15 @@ import {
 import axios from 'axios'
 import EXIF from 'exif-js'
 import {
-    useUser,
+    useAuth,
 } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export const getImageDims = (w, h, dims) => {
-    const isLandscape = dims.width > dims.height
-    const maxHeight = isLandscape ? dims.height - 30 : dims.height / 2
-    let maxWidth = isLandscape ? (dims.width * 0.5) : dims.width - 20
+    const landscape = dims.width > dims.height
+    const maxHeight = landscape ? dims.height - 30 : dims.height / 2
+    let maxWidth = landscape ? (dims.width * 0.5) : dims.width - 20
     if (maxWidth > 300) maxWidth = 300
     // console.log('w/h', w, h)
     // console.log('maxWidth', maxWidth)
@@ -146,14 +146,14 @@ export const getMaxAvailableImageSize = (dims, width, height) => {
     let maxHeight = dims.height - 100
     let maxWidth = dims.width - 100
 
-    const isLandscape = dims.width > dims.height
+    const landscape = dims.width > dims.height
 
     let imageHeight = height
     let imageWidth = width
 
     let scale = 1
 
-    if (isLandscape) {
+    if (landscape) {
         if (imageWidth > imageHeight) {
             if (imageWidth > maxWidth) {
                 scale = maxWidth / imageWidth 

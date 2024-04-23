@@ -11,7 +11,7 @@ import {
 import {
     useModal,
     useProducts,
-    useUser,
+    useAuth,
 } from '@context'
 import { deleteProductWithId, loadProducts } from '@utils/products'
 
@@ -25,7 +25,7 @@ export default () => {
         setProductsLoading,
     } = useProducts()
     const { closeModal, setModal } = useModal()
-    const { profile } = useUser()
+    const { profile } = useAuth()
 
     useEffect(() => {
         const initProducts = async () => {

@@ -1,3 +1,4 @@
+import AuthModal from './AuthModal'
 import Brand from './Brand'
 import Cart from './Cart'
 import CartButton from './CartButton'
@@ -23,6 +24,7 @@ import ImageFormModule from './ImageFormModule'
 import ImageList from './ImageList'
 import ImageSelector from './ImageSelector'
 import ImageView from './ImageView'
+import Label from './Label'
 import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
 import LocationModule from './LocationModule'
@@ -33,6 +35,7 @@ import ModalImage from './ModalImage'
 import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
 import ModalView from './ModalView'
+import Nav from './Nav'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
@@ -55,7 +58,7 @@ import UserModule from './UserModule'
 import VendorList from './VendorList'
 
 export {
-    // Avatar,
+    AuthModal,
     Brand,
     Cart,
     CartButton,
@@ -80,6 +83,7 @@ export {
     ImageList,
     ImageSelector,
     ImageView,
+    Label,
     LoadingView,
     LocationDetails,
     LocationModule,
@@ -90,6 +94,7 @@ export {
     ModalProfile,
     ModalView,
     ModalSignout,
+    Nav,
     OrderList,
     OrderDetails,
     OrderPreview,

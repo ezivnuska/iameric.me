@@ -7,7 +7,7 @@ import {
 import {
     IconButton,
 } from '@components'
-import { useApp, useModal, useUser } from '@context'
+import { useAuth, useApp, useModal } from '@context'
 import { connect } from '@utils/auth'
 import classes from '@styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
@@ -17,7 +17,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default () => {
 
     const { setModal } = useModal()
-    const { setUser } = useUser()
+    const { setUser } = useAuth()
 
     const onConnect = async type => {
         

@@ -1,10 +1,22 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { loadUser } from '@utils/user'
+import {
+    cleanStorage,
+    getStoredToken,
+    removeToken,
+    storeToken,
+} from '@utils/storage'
+import { authenticate } from '@utils/auth'
+// import { navigationRef } from '@navigation/RootNavigation'
 
 const initialState = {
+    status: 'out',
+    authLoading: false,
+    error: null,
     profile: null,
     userLoading: false,
-    error: null,
+    setAuthLoading: () => {},
+    signIn: () => {},
+    signOut: () => {},
     addImage: () => {},
     clearUser: () => {},
     removeImage: () => {},
@@ -16,31 +28,69 @@ const initialState = {
     updateImages: () => {},
 }
 
-export const UserContext = createContext(initialState)
+export const AuthContext = createContext(initialState)
 
-export const useUser = () => {
-    const context = useContext(UserContext)
+// export const useAuth = () => {
+//     const context = useContext(AuthContext)
+//     if (!context) {
+//         throw new Error()
+//     }
+//     return context
+// }
+
+export const useAuth = () => {
+    const context = useContext(AuthContext)
     if (!context) {
         throw new Error()
     }
+
     return context
 }
 
-export const UserContextProvider = ({ token, ...props }) => {
-    
-    const [state, dispatch] = useReducer(reducer, initialState)
+export const AuthContextProvider = props => {
+
+    const [state, dispatch ] = useReducer(reducer, initialState)
 
     useEffect(() => {
-        const init = async () => {
-            const payload = await loadUser(token)
-            if (!payload) console.log('could not load user')
-            else dispatch({ type: 'SET_USER', payload })
-            return null
+        const initState = async () => {
+            try {
+                console.log('initializing auth context')
+                // check for token in local storage
+                const authToken = await getStoredToken()
+                // if token exists
+                if (authToken !== null) {
+                    console.log('found token')
+                    // need to validate token, but for now...
+                    // sign in
+                    console.log('verifying token')
+                    const payload = await authenticate(authToken)
+                    if (payload) {
+                        console.log('user verified, dispatching signin event')
+                        dispatch({ type: 'SIGN_IN', payload })
+                    }
+                } else {
+                    console.log('no token found')
+                }
+            } catch (e) {
+                console.log('Error:', e)
+            }
         }
-        init()
+        initState()
     }, [])
 
     const actions = useMemo(() => ({
+        setAuthLoading: async payload => {
+            dispatch({ type: 'SET_AUTH_LOADING', payload })
+        },
+        signIn: async payload => {
+            // await storeToken(payload.token)
+            dispatch({ type: 'SIGN_IN', payload })
+        },
+        signOut: async () => {
+            // await removeToken()
+            // await cleanStorage()
+            dispatch({ type: 'SIGN_OUT' })
+        },
         setUser: payload => {
             dispatch({ type: 'SET_USER', payload })
         },
@@ -69,17 +119,38 @@ export const UserContextProvider = ({ token, ...props }) => {
             dispatch({ type: 'CLEAR_USER' })
         },
     }), [state, dispatch])
-
+    
     return (
-        <UserContext.Provider value={{ ...state, ...actions }}>
+        <AuthContext.Provider value={{ ...state, ...actions }}>
             {props.children}
-        </UserContext.Provider>
+        </AuthContext.Provider>
     )
 }
 
 const reducer = (state, action) => {
-    const { type, payload } = action
+    const { payload, type } = action
+    console.log(type, payload)
     switch(type) {
+        case 'SET_AUTH_LOADING':
+            return {
+                ...state,
+                authLoading: payload,
+            }
+            break
+        case 'SIGN_IN':
+            return {
+                ...state,
+                profile: payload,
+                status: 'in',
+            }
+            break
+        case 'SIGN_OUT':
+            return {
+                ...state,
+                profile: null,
+                status: 'out',
+            }
+            break
         case 'SET_USER_LOADING':
             return { ...state, userLoading: payload }
             break

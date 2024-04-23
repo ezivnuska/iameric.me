@@ -10,14 +10,14 @@ import {
     View,
 } from 'react-native'
 import {
-    useUser,
+    useAuth,
     useModal,
 } from '@context'
 import { loadImages } from '@utils/images'
 
-export default () => {
+export default props => {
 
-    const { profile, setUserLoading, updateImages } = useUser()
+    const { profile, setUserLoading, updateImages } = useAuth()
     const { setModal } = useModal()
     const profileImages = useMemo(() => profile.images, [profile])
 
@@ -34,6 +34,7 @@ export default () => {
     return (
         <Screen
             titleComponent={<ScreenTitle title='Images' />}
+            {...props}
         >
             <View style={{ paddingHorizontal: 10 }}>
                 {profileImages && (

@@ -10,7 +10,7 @@ import {
     useApp,
     useForm,
     useModal,
-    useUser,
+    useAuth,
 } from '@context'
 import classes from '@styles/classes'
 import { getFields } from '@utils/form'
@@ -18,7 +18,7 @@ import axios from 'axios'
 
 export default () => {
 
-    const { isLandscape } = useApp()
+    const { landscape } = useApp()
     
     const initialState = {
         address1: '',
@@ -47,7 +47,7 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { profile, setUserLocation } = useUser()
+    const { profile, setUserLocation } = useAuth()
     const { closeModal, data } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
@@ -205,9 +205,9 @@ export default () => {
             <View
                 style={{
                     display: 'flex',
-                    flexDirection: isLandscape ? 'row' : 'column',
-                    justifyContent: isLandscape ? 'space-between' : 'flex-start',
-                    gap: isLandscape ? 10 : 0,
+                    flexDirection: landscape ? 'row' : 'column',
+                    justifyContent: landscape ? 'space-between' : 'flex-start',
+                    gap: landscape ? 10 : 0,
                 }}
             >
                 <FormField

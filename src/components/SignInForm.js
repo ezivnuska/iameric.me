@@ -13,7 +13,6 @@ import {
     useAuth,
     useForm,
     useModal,
-    useUser,
 } from '@context'
 
 export default () => {
@@ -42,9 +41,8 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { signIn } = useAuth()
-    const { closeModal, data } = useModal()
-    const { setUser } = useUser()
+    const { setUser, signIn, setAuthModal, data } = useAuth()
+    // const { closeModal, data } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -134,11 +132,9 @@ export default () => {
             setFormError({ name: 'email', message: 'Signin failed.' })
         } else {
             if (formError) clearFormError()
-            const { _id, email, images, profileImage, role, token, username, exp } = user
-            signIn(token)
-            setUser({ _id, email, images, profileImage, role, token, username, exp })
+            const { token, username } = user
+            signIn({ token, username })
             clearForm()
-            closeModal()
 		}
 
     }

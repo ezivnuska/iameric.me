@@ -19,6 +19,10 @@ const {
 } = require('./api/auth')
 
 const {
+    getUser,
+} = require('./api/user')
+
+const {
     getUsers,
     getUserDetailsById,
     getNumberOfOnlineUsers,
@@ -104,9 +108,12 @@ app.use(session({
 app.post(   '/signin',                 handleSignin)
 app.post(   '/signup',                 handleSignup)
 app.post(   '/authenticate',           authenticate)
-app.post(   '/signout',                handleSignout)
+app.get(    '/signout/:token',         handleSignout)
 app.post(   '/unsubscribe',            deleteAccount)
-app.post(   '/token',                  validateToken)
+app.get(    '/token/:token',           validateToken)
+
+// user
+app.get(    '/user/:token',             getUser)
 
 // users
 app.get(    '/user/:id',                getUserById)

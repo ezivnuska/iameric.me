@@ -10,6 +10,7 @@ import {
     LoadingView,
 } from '.'
 import {
+    useAuth,
     useForm,
     useModal,
     useUser,
@@ -19,7 +20,7 @@ import {
 } from '@utils/location'
 
 export default () => {
-    const { profile, setUserLocation, setUserLoading, userLoading } = useUser()
+    const { profile, setUserLoading, setUserLocation, userLoading } = useUser()
     const { setModal } = useModal()
     const { formLoading } = useForm()
     const { location } = useMemo(() => profile, [profile])
@@ -29,10 +30,10 @@ export default () => {
             if (!location) {
                 setUserLoading(true)
                 const data = await getUserLocation(profile._id)
-                console.log('data', data)
                 setUserLoading(false)
-                if (!location) console.log('Error fetching user location')
-                else setUserLocation(location)
+                console.log('data.location', data.location)
+                if (!data || !data.location) console.log('Error fetching user location')
+                else setUserLocation(data.location)
             }
         }
         init()

@@ -11,7 +11,7 @@ import {
 import {
     useApp,
     useProducts,
-    useUser,
+    useAuth,
 } from '@context'
 import { getImageDims } from '@utils/images'
 
@@ -19,8 +19,8 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
-    const { dims, isLandscape, theme } = useApp()
-    const { profile, setUserLoading, userLoading } = useUser()
+    const { dims, landscape, theme } = useApp()
+    const { profile, setUserLoading, userLoading } = useAuth()
     const { products } = useProducts()
 
     const [imageDims, setImageDims] = useState(null)
@@ -32,8 +32,8 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
     return (
         <View
             style={{
-                flexDirection: isLandscape ? 'row' : 'column',
-                justifyContent: isLandscape ? 'center' : 'flex-start',
+                flexDirection: landscape ? 'row' : 'column',
+                justifyContent: landscape ? 'center' : 'flex-start',
                 alignItems: 'flex-start',
                 gap: 10,
                 width: '100%',
@@ -72,15 +72,15 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                     <View
                         style={{
                             flexBasis: 'auto',
-                            flexGrow: isLandscape ? 0 : 0,
+                            flexGrow: landscape ? 0 : 0,
                         }}
                     >
                         <View
                             style={{
                                 flexBasis: 'auto',
                                 display: 'flex',
-                                flexDirection: isLandscape ? 'column' : 'row',
-                                justifyContent: isLandscape ? 'flex-start' : 'stretch',
+                                flexDirection: landscape ? 'column' : 'row',
+                                justifyContent: landscape ? 'flex-start' : 'stretch',
                                 width: '100%',
                                 paddingHorizontal: 'auto',
                                 marginBottom: 10,

@@ -239,12 +239,12 @@ const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null }) => {
 }
 
 export default ({ items, onDelete }) => {
-    const { isLandscape, dims } = useApp()
+    const { landscape, dims } = useApp()
     const { setModal } = useModal()
 
     const [contact, setContact] = useState()
 
-    return !isLandscape ? (
+    return !landscape ? (
         <FlatList
             data={items}
             listKey={() => 'entries'}

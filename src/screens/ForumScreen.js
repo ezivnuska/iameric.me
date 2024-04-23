@@ -14,7 +14,7 @@ import {
     useModal,
 } from '@context'
 
-export default () => {
+export default props => {
 
     const { setModal } = useModal()
 
@@ -34,6 +34,7 @@ export default () => {
                     />
                 </ScreenTitle>
             }
+            {...props}
         >
             <ForumView />
         </Screen>

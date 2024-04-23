@@ -7,13 +7,13 @@ import {
     useContacts,
     useModal,
     useProducts,
-    useUser,
+    useAuth,
 } from '@context'
 import axios from 'axios'
 import { loadUserImage } from '@utils/images'
 
 export default () => {
-    const { profile, removeImage, setProfileImage } = useUser()
+    const { profile, removeImage, setProfileImage } = useAuth()
     const { closeModal, data } = useModal()
     const { removeUserImage } = useContacts()
     const { items, updateProductImage } = useProducts()

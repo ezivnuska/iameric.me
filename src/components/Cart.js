@@ -10,7 +10,7 @@ import {
     useCart,
     useModal,
     useOrders,
-    useUser,
+    useAuth,
 } from '@context'
 import axios from 'axios'
 
@@ -23,7 +23,7 @@ export default () => {
     } = useCart()
     const { addOrder } = useOrders()
     const { closeModal } = useModal()
-    const { profile } = useUser()
+    const { profile } = useAuth()
 
     const submitOrder = async () => {
         const newOrder = {

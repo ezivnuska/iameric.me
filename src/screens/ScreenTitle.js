@@ -12,7 +12,7 @@ import { StackActions } from '@react-navigation/native'
 
 export default ({ children, navigation = null, backLabel = null, title = null }) => {
     
-    const { isLandscape, theme } = useApp()
+    const { landscape, theme } = useApp()
     
     return (
         <View
@@ -28,7 +28,7 @@ export default ({ children, navigation = null, backLabel = null, title = null })
                     justifyContent: backLabel ? 'flex-start' : 'space-between',
                     alignItems: 'center',
                     width: '100%',
-                    maxWidth: isLandscape ? 900 : 600,
+                    maxWidth: landscape ? 900 : 600,
                     marginHorizontal: 'auto',
                     paddingHorizontal: 10,
                     marginVertical: 0,

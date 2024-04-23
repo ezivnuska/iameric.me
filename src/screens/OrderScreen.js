@@ -7,9 +7,10 @@ import {
     ScreenTitle,
 } from '.'
 
-export default () => (
+export default props => (
     <Screen
         titleComponent={<ScreenTitle title='Orders' />}
+        {...props}
     >
         <OrderList />
     </Screen>

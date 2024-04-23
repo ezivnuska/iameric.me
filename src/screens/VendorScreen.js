@@ -14,8 +14,9 @@ import {
 } from '@context'
 import { loadVendor } from '@utils/contacts'
 
-export default ({ navigation, route }) => {
+export default props => {
 
+    const { navigation, route } = props
     const idFromParams = route.params.id
 
     const { theme } = useApp()
@@ -64,6 +65,7 @@ export default ({ navigation, route }) => {
                     />
                 </ScreenTitle>
             }
+            {...props}
         >
 
             {contact ? (

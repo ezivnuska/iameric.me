@@ -13,7 +13,7 @@ import {
 import axios from 'axios'
 import {
     useOrders,
-    useUser,
+    useAuth,
 } from '@context'
 import { getOrdersById } from '@utils/orders'
 import moment from 'moment'
@@ -33,7 +33,7 @@ export default () => {
         setOrdersLoading,
         removeOrder,
     } = useOrders()
-    const { profile } = useUser()
+    const { profile } = useAuth()
 
     useEffect(() => {
         if (profile && !orders) loadOrders()

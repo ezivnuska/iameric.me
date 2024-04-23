@@ -111,9 +111,9 @@ const ListItemHorizontal = ({ item, onPress, size, ...props }) => {
 }
 
 export default ({ items, onPress }) => {
-    const { isLandscape, dims } = useApp()
+    const { landscape, dims } = useApp()
     const imageSize = dims.height < 300 ? 50 : 100
-    return !isLandscape ? (
+    return !landscape ? (
         <FlatList
             data={items}
             listKey={() => 'users'}
