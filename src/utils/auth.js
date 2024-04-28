@@ -17,7 +17,7 @@ export const authenticate = async token => {
 }
 
 export const connect = async type => {
-    console.log('connect', type)
+    // console.log('connect', type)
     const creds = {
         customer: { email: 'customer@iameric.me', password: 'customer' },
         driver: { email: 'driver@iameric.me', password: 'driver' },
@@ -27,7 +27,7 @@ export const connect = async type => {
     const { email, password } = creds[type]
 
     const user = await signin(email, password)
-    console.log('connected user', user)
+    // console.log('connected user', user)
     return user
 
     // console.log(`connecting with emeil: ${email}`)
@@ -48,19 +48,10 @@ export const connect = async type => {
 }
 
 export const signin = async (email, password) => {
-    
-    const { data } = await axios.
-        post('/api/signin', { email, password })
-        
-    if (!data) {
-        console.log('Error: No data returned when authenticating user')
-    } else if (data.error) {
-        console.log('Error:', data.error)
-    } else {
-        console.log(`${data.user.username} signed in.`)
-        return data.user
-    }
-
+    const { data } = await axios.post('/api/signin', { email, password })
+    if (!data) console.log('Error: No data returned when authenticating user')
+    else if (data.error) console.log('Error:', data.error)
+    else return data.user
     return null
 }
 
@@ -81,17 +72,13 @@ export const signup = async (email, password, role, username) => {
     return null
 }
 
-export const signout = async token => {
-    
-    const { data } = await axios
-        .get(`/api/signout/${token}`)
-    
+export const signout = async id => {
+    const { data } = await axios.get(`/api/signout/${id}`)
     if (!data) console.log('could not sign out user')
     else {
         await cleanStorage()
         return data
     }
-    
     return null
 }
 
@@ -112,11 +99,8 @@ export const unsubscribe = async id => {
 }
 
 export const validateToken = async token => {
-    const { data } = await axios
-        .get(`/api/token/${token}`)
-
+    const { data } = await axios.get(`/api/token/${token}`)
     const expired = (new Date(data.exp) - Date.now() > 0)
-    
     if (!data) console.log('error validating token')
     else if (expired) console.log('token expired')
     else return data

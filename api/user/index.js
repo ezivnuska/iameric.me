@@ -3,8 +3,8 @@ const UserImage = require('../../models/UserImage')
 const Product = require('../../models/Product')
 
 const getUser = async (req, res) => {
-    const user = await User
-        .findOne({ token: req.params.token })
+    const { id } = req.params
+    const user = await User.findOne({ _id: id })
         .populate('profileImage', 'filename width height')
         .populate('location')
     

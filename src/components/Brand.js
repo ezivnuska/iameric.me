@@ -19,7 +19,7 @@ export default () => {
                 paddingHorizontal: 5,
                 paddingVertical: 3,
             }}
-            onPress={() => navigationRef.navigate('Profile')}
+            onPress={() => navigationRef.navigate('Auth', { screen: 'Main' })}
         >
             <View
                 style={{

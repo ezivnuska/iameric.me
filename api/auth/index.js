@@ -140,7 +140,12 @@ const validateToken = async (req, res) => {
 
     if (expired) return res.status(200).json(null)
 
-    return res.status(200).json({ token: user.token, username: user.username })
+    return res.status(200).json({
+        _id,
+        profileImage: user.profileImage,
+        token: user.token,
+        username: user.username,
+    })
 }
 
 const createUser = async (email, username, password, role) => {

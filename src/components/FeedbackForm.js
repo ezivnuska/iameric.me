@@ -10,8 +10,7 @@ import axios from 'axios'
 import {
     useForm,
     useForum,
-    useModal,
-    useAuth,
+    useUser,
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
 
@@ -41,9 +40,8 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { addEntry } = useForum()
-    const { closeModal, data } = useModal()
-    const { profile } = useAuth()
+    const { addEntry, closeForumModal, getData } = useForum()
+    const { profile } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -52,6 +50,7 @@ export default () => {
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
+        const { data } = getData()
         const fields = getFields(initialState, data)
         setInitialValues(fields)
     }, [])
@@ -124,7 +123,7 @@ export default () => {
         } else {
             addEntry(response.data.entry)
             clearForm()
-            closeModal()
+            closeForumModal()
         }
     }
 

@@ -108,12 +108,12 @@ app.use(session({
 app.post(   '/signin',                 handleSignin)
 app.post(   '/signup',                 handleSignup)
 app.post(   '/authenticate',           authenticate)
-app.get(    '/signout/:token',         handleSignout)
+app.get(    '/signout/:id',            handleSignout)
 app.post(   '/unsubscribe',            deleteAccount)
 app.get(    '/token/:token',           validateToken)
 
 // user
-app.get(    '/user/:token',             getUser)
+app.get(    '/profile/:id',             getUser)
 
 // users
 app.get(    '/user/:id',                getUserById)

@@ -28,7 +28,7 @@ const getUsersByRole = async (req, res) => {
             path: 'profileImage',
             select: 'filename width height',
         })
-    
+    console.log('USERS', users)
     if (!users) {
         console.log('Could not fetch users')
         return res.status(200).json(null)

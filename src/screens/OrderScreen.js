@@ -8,10 +8,8 @@ import {
 } from '.'
 
 export default props => (
-    <Screen
-        titleComponent={<ScreenTitle title='Orders' />}
-        {...props}
-    >
+    <Screen {...props}>
+        <ScreenTitle title='Orders' />
         <OrderList />
     </Screen>
 )

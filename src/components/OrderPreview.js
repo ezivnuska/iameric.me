@@ -11,7 +11,7 @@ import {
     LocationDetails,
 } from '.'
 import {
-    useAuth,
+    useUser,
 } from '@context'
 import classes from '../styles/classes'
 import moment from 'moment'
@@ -22,7 +22,7 @@ import {
 
 export default ({ order, children, ...props }) => {
 
-    const { profile } = useAuth()
+    const { profile } = useUser()
 
     const [expanded, setExpanded] = useState(false)
 

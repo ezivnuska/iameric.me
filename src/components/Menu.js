@@ -15,7 +15,7 @@ export default ({ vendor }) => {
 
     const { contactLoading } = useContacts()
     
-    if (contactLoading) return <LoadingView label={`Loading ${vendor.username}`} />
+    if (contactLoading) return <LoadingView loading={`Loading ${vendor.username}`} />
 
     return vendor && vendor.products
         ? (

@@ -1,56 +1,58 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
     View,
 } from 'react-native'
 import {
-    ForumList,
     EmptyStatus,
-} from '.'
+    ForumList,
+    IconButton,
+    TitleBar,
+} from '@components'
 import {
-    useApp,
     useForum,
 } from '@context'
 import { deleteEntryWithId } from '@utils/forum'
-import axios from 'axios'
 
 export default () => {
-    
-    const { landscape } = useApp()
+
     const {
+        closeForumModal,
         deleteEntry,
         entries,
-        setEntries,
         setForumLoading,
+        setForumModal,
     } = useForum()
-
-    useEffect(() => {
-        const init = async () => {
-            setForumLoading(true)
-            const { data } = await axios.get('/api/entries')
-            setForumLoading(false)
-            if (data && data.entries) setEntries(data.entries)
-        }
-        init()
-    }, [])
 
     const removeEntry = async id => {
         setForumLoading(true)
         await deleteEntryWithId(id)
         setForumLoading(false)
+
+        // handle forum state
         deleteEntry(id)
+        closeForumModal()
     }
 
+    if (!entries || !entries.length) return <EmptyStatus status='No entries yet.' />
+
     return (
-        <View style={{ flex: 1, flexGrow: 1 }}>
-            {entries
-                ? (
-                    <ForumList
-                        items={entries}
-                        onDelete={removeEntry}
-                    />
-                )
-                : <EmptyStatus status='No entries yet.' />
-            }
+        <View>
+            <TitleBar title='Forum'>
+                <IconButton
+                    label='Comment'
+                    iconName='add-outline'
+                    onPress={() => setForumModal({ type: 'FEEDBACK' })}
+                    alignIcon='right'
+                    justify='left'
+                    outline
+                    style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
+                    transparent
+                />
+            </TitleBar>
+            <ForumList
+                items={entries}
+                onDelete={removeEntry}
+            />
         </View>
     )
 }

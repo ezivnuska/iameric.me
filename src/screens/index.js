@@ -7,6 +7,7 @@ import ProductsScreen from './ProductsScreen'
 import ProfileScreen from './ProfileScreen'
 import Screen from './Screen'
 import ScreenTitle from './ScreenTitle'
+import SplashScreen from './SplashScreen'
 import StartScreen from './StartScreen'
 import VendorScreen from './VendorScreen'
 import VendorsScreen from './VendorsScreen'
@@ -21,6 +22,7 @@ export {
     ProfileScreen,
     Screen,
     ScreenTitle,
+    SplashScreen,
     StartScreen,
     VendorScreen,
     VendorsScreen,

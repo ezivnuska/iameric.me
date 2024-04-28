@@ -7,27 +7,17 @@ import axios from 'axios'
  */
 
 export const loadProduct = async productId => {
-
     const product = await axios.get(`/api/product/${productId}`)
-    
-    if (!product) {
-        console.log('could not load product')
-    }
-
-    return product
+    if (!product) console.log('could not load product')
+    else return product
+    return null
 }
 
 export const loadProducts = async vendorId => {
-
     const { data } = await axios.get(`/api/products/${vendorId}`)
-    
-    if (!data) {
-        console.log('could not load products')
-    } else if (!data.products || !data.products.length) {
-        console.log('no products to load')
-    } else {
-        return data.products
-    }
+    if (!data) console.log('could not load products')
+    else if (!data.products || !data.products.length) console.log('no products to load')
+    else return data.products
     return null
 }
 

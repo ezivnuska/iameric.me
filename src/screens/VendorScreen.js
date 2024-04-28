@@ -43,31 +43,26 @@ export default props => {
     }, [])
 
     return (
-        <Screen
-            titleComponent={
-                <ScreenTitle
-                    title={contact?.username || 'Restaurant'}
-                >
-                    <IconButton
-                        label='Return to Vendors'
-                        onPress={() => navigation.reset({
-                            index: 0,
-                            routes: [{ name: 'VendorList' }],
-                        })}
-                        disabled={contactLoading}
-                        textStyles={{
-                            fontSize: 16,
-                            fontWeight: 400,
-                            color: theme?.colors.textDefault,
-                        }}
-                        outline
-                        transparent
-                    />
-                </ScreenTitle>
-            }
-            {...props}
-        >
-
+        <Screen {...props}>
+            <ScreenTitle
+                title={contact?.username || 'Restaurant'}
+            >
+                <IconButton
+                    label='Return to Vendors'
+                    onPress={() => navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'VendorList' }],
+                    })}
+                    disabled={contactLoading}
+                    textStyles={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        color: theme?.colors.textDefault,
+                    }}
+                    outline
+                    transparent
+                />
+            </ScreenTitle>
             {contact ? (
                 <Menu
                     loading={contactLoading}

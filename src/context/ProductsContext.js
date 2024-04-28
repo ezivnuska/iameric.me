@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useMemo, useReducer } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+// import { loadProducts } from '@utils/products'
 
 const initialState = {
     products: [],
@@ -14,35 +15,35 @@ const initialState = {
     deleteProduct: () => {},
 }
 
-export const ProductContext = createContext(initialState)
+export const ProductsContext = createContext(initialState)
 
 export const useProducts = () => {
-    const context = useContext(ProductContext)
+    const context = useContext(ProductsContext)
     if (!context) {
         throw new Error()
     }
     return context
 }
 
-export const ProductContextProvider = props => {
+export const ProductsContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
-        removeProductImage: imageId => {
-            dispatch({ type: 'REMOVE_PRODUCT_IMAGE', payload: imageId })
+        removeProductImage: payload => {
+            dispatch({ type: 'REMOVE_PRODUCT_IMAGE', payload })
         },
         setProductsLoading: payload => {
             dispatch({ type: 'SET_PRODUCTS_LOADING', payload })
         },
-        setProducts: products => {
-            dispatch({ type: 'SET_PRODUCTS', payload: products })
+        setProducts: payload => {
+            dispatch({ type: 'SET_PRODUCTS', payload })
         },
-        addProduct: product => {
-            dispatch({ type: 'ADD_PRODUCT', payload: product })
+        addProduct: payload => {
+            dispatch({ type: 'ADD_PRODUCT', payload })
         },
-        updateProduct: product => {
-            dispatch({ type: 'UPDATE_PRODUCT', payload: product })
+        updateProduct: payload => {
+            dispatch({ type: 'UPDATE_PRODUCT', payload })
         },
         updateProductImage: (productId, image) => {
             dispatch({
@@ -53,15 +54,15 @@ export const ProductContextProvider = props => {
                 },
             })
         },
-        deleteProduct: productId => {
-            dispatch({ type: 'DELETE_PRODUCT', payload: productId })
+        deleteProduct: payload => {
+            dispatch({ type: 'DELETE_PRODUCT', payload })
         },
     }), [state, dispatch])
 
     return (
-        <ProductContext.Provider value={{ ...state, ...actions }}>
+        <ProductsContext.Provider value={{ ...state, ...actions }}>
             {props.children}
-        </ProductContext.Provider>
+        </ProductsContext.Provider>
     )
 }
 

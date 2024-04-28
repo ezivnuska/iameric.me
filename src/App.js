@@ -1,13 +1,20 @@
 import React from 'react'
 import {
-  AppView,
+  Layout,
 } from '@layout'
 import {
   AppContextProvider,
+  FormContextProvider,
 } from '@context'
+import Compose from './Compose'
 
 export default () => (
-  <AppContextProvider>
-    <AppView />
-  </AppContextProvider>
+	<Compose
+		components={[
+			FormContextProvider,
+			AppContextProvider,
+		]}
+	>
+		<Layout />
+	</Compose>
 )

@@ -11,7 +11,7 @@ import EXIF from 'exif-js'
 import {
     useApp,
     useModal,
-    useAuth,
+    useUser,
 } from '@context'
 import { handleImageData, openFileSelector, uploadImageData } from '@utils/images'
 
@@ -25,7 +25,7 @@ export default () => {
         profile,
         setUserLoading,
         userLoading,
-    } = useAuth()
+    } = useUser()
     const { closeModal } = useModal()
 
     const [size, setSize] = useState(initialSize)

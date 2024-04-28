@@ -10,7 +10,6 @@ import {
     LoadingView,
 } from '.'
 import {
-    useAuth,
     useForm,
     useModal,
     useUser,
@@ -25,19 +24,19 @@ export default () => {
     const { formLoading } = useForm()
     const { location } = useMemo(() => profile, [profile])
 
-    useEffect(() => {
-        const init = async () => {
-            if (!location) {
-                setUserLoading(true)
-                const data = await getUserLocation(profile._id)
-                setUserLoading(false)
-                console.log('data.location', data.location)
-                if (!data || !data.location) console.log('Error fetching user location')
-                else setUserLocation(data.location)
-            }
-        }
-        init()
-    }, [])
+    // useEffect(() => {
+    //     const init = async () => {
+    //         if (!location) {
+    //             setUserLoading(true)
+    //             const data = await getUserLocation(profile._id)
+    //             setUserLoading(false)
+    //             console.log('data.location', data.location)
+    //             if (!data || !data.location) console.log('Error fetching user location')
+    //             else setUserLocation(data.location)
+    //         }
+    //     }
+    //     init()
+    // }, [])
     
     if (userLoading) return <LoadingView loading='Loading user location' />
     

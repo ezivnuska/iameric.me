@@ -16,6 +16,7 @@ import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormField from './FormField'
 import ForumList from './ForumList'
+import ForumModal from './ForumModal'
 import ForumView from './ForumView'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
@@ -45,11 +46,14 @@ import ProductDetails from './ProductDetails'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
+import Products from './Products'
 import ProductSelector from './ProductSelector'
+import Profile from './Profile'
 import QuantityControl from './QuantityControl'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import TimeSelector from './TimeSelector'
+import TitleBar from './TitleBar'
 import UserDetails from './UserDetails'
 import UserDetailsShort from './UserDetailsShort'
 import UserHeading from './UserHeading'
@@ -75,6 +79,7 @@ export {
     FeedbackForm,
     FileSelector,
     ForumList,
+    ForumModal,
     ForumView,
     HoverableView,
     IconButton,
@@ -104,12 +109,15 @@ export {
     ProductForm,
     ProductList,
     ProductListItem,
+    Products,
     ProductSelector,
+    Profile,
     QuantityControl,
     SignInForm,
     SignUpForm,
     FormField,
     TimeSelector,
+    TitleBar,
     UserHeading,
     UserList,
     UserModule,

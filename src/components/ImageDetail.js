@@ -11,7 +11,7 @@ import {
 import {
     useApp,
     useProducts,
-    useAuth,
+    useUser,
 } from '@context'
 import { getImageDims } from '@utils/images'
 
@@ -20,7 +20,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const { dims, landscape, theme } = useApp()
-    const { profile, setUserLoading, userLoading } = useAuth()
+    const { profile, userLoading } = useUser()
     const { products } = useProducts()
 
     const [imageDims, setImageDims] = useState(null)

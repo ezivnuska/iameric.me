@@ -1,7 +1,4 @@
-import React, { useContext } from 'react'
-import {
-    useWindowDimensions,
-} from 'react-native'
+import React from 'react'
 import {
     UserModule,
 } from '@components'
@@ -12,10 +9,8 @@ import {
 
 export default props => {
     return (
-        <Screen
-            titleComponent={<ScreenTitle title='Users' />}
-            {...props}
-        >
+        <Screen {...props}>
+            <ScreenTitle title='Users' />
             <UserModule {...props} />
         </Screen>
     )

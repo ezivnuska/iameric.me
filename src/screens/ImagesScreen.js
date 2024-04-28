@@ -10,32 +10,44 @@ import {
     View,
 } from 'react-native'
 import {
-    useAuth,
+    useApp,
+    useUser,
     useModal,
 } from '@context'
 import { loadImages } from '@utils/images'
+import { loadUser } from '@utils/user'
 
 export default props => {
 
-    const { profile, setUserLoading, updateImages } = useAuth()
+    const { userId } = useApp()
+    const { profile, setUserLoading, updateImages } = useUser()
     const { setModal } = useModal()
-    const profileImages = useMemo(() => profile.images, [profile])
+    const profileImages = useMemo(() => profile ? profile.images : null, [profile])
+
+    // useEffect(() => {
+        
+    //     init()
+    // }, [])
 
     useEffect(() => {
         const init = async () => {
-            setUserLoading(true)
-            const images = await loadImages(profile._id)
-            setUserLoading(false)
-            updateImages(images)
+            if (!profile) {
+                loadUser(userId)
+            } else {
+                if (!profileImages) {
+                    setUserLoading(true)
+                    const images = await loadImages(userId)
+                    setUserLoading(false)
+                    updateImages(images)
+                }
+            }
         }
         init()
-    }, [])
+    }, [profile])
 
-    return (
-        <Screen
-            titleComponent={<ScreenTitle title='Images' />}
-            {...props}
-        >
+    return profileImages ? (
+        <Screen {...props}>
+            <ScreenTitle title='Images' />
             <View style={{ paddingHorizontal: 10 }}>
                 {profileImages && (
                     <ImageList
@@ -45,5 +57,5 @@ export default props => {
                 )}
             </View>
         </Screen>
-    )
+    ) : null
 }

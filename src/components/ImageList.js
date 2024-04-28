@@ -9,7 +9,7 @@ import {
     useApp,
     useContacts,
     useModal,
-    useAuth,
+    useUser,
 } from '@context'
 
 const IMAGE_SIZE = 50
@@ -20,7 +20,7 @@ export default ({ images, onSelected }) => {
     const { theme } = useApp()
     const { contact } = useContacts()
     const { setModal } = useModal()
-    const { profile, userLoading } = useAuth()
+    const { profile, userLoading } = useUser()
 
     const buttonStyle = {
         borderWidth: 1,

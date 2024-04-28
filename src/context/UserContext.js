@@ -1,17 +1,19 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { loadUser } from '@utils/user'
+import { useApp } from '@context'
 
 const initialState = {
     profile: null,
+    userLoaded: false,
     userLoading: false,
     error: null,
     addImage: () => {},
     clearUser: () => {},
     removeImage: () => {},
-    setUserLocation: () => {},
-    setProfileImage: () => {},
     setUser: () => {},
     setUserLoading: () => {},
+    setUserLocation: () => {},
+    setProfileImage: () => {},
     updateImage: () => {},
     updateImages: () => {},
 }
@@ -20,25 +22,30 @@ export const UserContext = createContext(initialState)
 
 export const useUser = () => {
     const context = useContext(UserContext)
-    if (!context) {
-        throw new Error()
-    }
+    if (!context) throw new Error()
     return context
 }
 
-export const UserContextProvider = ({ token, ...props }) => {
-    
+export const UserContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
+    const { userId } = useApp()
 
     useEffect(() => {
         const init = async () => {
-            const payload = await loadUser(token)
-            if (!payload) console.log('could not load user')
-            else dispatch({ type: 'SET_USER', payload })
-            return null
+            if (userId) {
+                console.log('user authorized. loading user...')
+                dispatch({ type: 'SET_USER_LOADING', payload: true })
+                const { data } = await loadUser(userId)
+                dispatch({ type: 'SET_USER_LOADING', payload: false })
+                if (!data) console.log('could not load user')
+                else dispatch({ type: 'SET_USER', payload: data })
+            } else console.log('user not verified.')
+            dispatch({ type: 'SET_USER_LOADED' })
         }
+        
         init()
-    }, [])
+
+    }, [userId])
 
     const actions = useMemo(() => ({
         setUser: payload => {
@@ -80,6 +87,12 @@ export const UserContextProvider = ({ token, ...props }) => {
 const reducer = (state, action) => {
     const { type, payload } = action
     switch(type) {
+        case 'SET_USER_LOADED':
+            return {
+                ...state,
+                userLoaded: true,
+            }
+            break
         case 'SET_USER_LOADING':
             return { ...state, userLoading: payload }
             break

@@ -1,42 +1,20 @@
 import React from 'react'
 import {
-    View,
-} from 'react-native'
-import {
+    ForumModal,
     ForumView,
-    IconButton,
 } from '@components'
 import {
     Screen,
-    ScreenTitle,
 } from '.'
 import {
-    useModal,
+    ForumContextProvider,
 } from '@context'
 
-export default props => {
-
-    const { setModal } = useModal()
-
-    return (
-        <Screen
-            titleComponent={
-                <ScreenTitle title='Forum'>
-                    <IconButton
-                        label='Comment'
-                        iconName='add-outline'
-                        onPress={() => setModal('FEEDBACK')}
-                        alignIcon='right'
-                        justify='left'
-                        outline
-                        style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
-                        transparent
-                    />
-                </ScreenTitle>
-            }
-            {...props}
-        >
+export default props => (
+    <Screen {...props}>
+        <ForumContextProvider>
             <ForumView />
-        </Screen>
-    )
-}
+            <ForumModal />
+        </ForumContextProvider>
+    </Screen>
+)

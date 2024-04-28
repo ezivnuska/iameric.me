@@ -10,9 +10,8 @@ import {
     useApp,
     useForm,
     useModal,
-    useAuth,
+    useUser,
 } from '@context'
-import classes from '@styles/classes'
 import { getFields } from '@utils/form'
 import axios from 'axios'
 
@@ -47,7 +46,7 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { profile, setUserLocation } = useAuth()
+    const { profile, setUserLocation } = useUser()
     const { closeModal, data } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)

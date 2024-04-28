@@ -3,44 +3,40 @@ import {
     View,
 } from 'react-native'
 import {
-    ModalSignout,
+    FeedbackForm,
     PopUpModal,
-    SignInForm,
-    SignUpForm,
     CenterVertical,
 } from '.'
 import {
     useApp,
     useForm,
+    useForum,
 } from '@context'
 
 export default () => {
 
-    const { appModals, dims, closeAppModal } = useApp()
+    const { dims } = useApp()
     const { clearForm } = useForm()
+    const { closeForumModal, forumModals } = useForum()
 
-    const modal = useMemo(() => appModals[appModals.length - 1], [appModals])
+    const modal = useMemo(() => forumModals[forumModals.length - 1], [forumModals])
 
     const resolveModalContent = () => {
         if (!modal) return null
         switch(modal.type) {
-            case 'SIGN_IN': return <SignInForm />; break
-            case 'SIGN_OUT': return <ModalSignout />; break
-            case 'SIGNUP_CUSTOMER': return <SignUpForm role='customer' />; break
-            case 'SIGNUP_VENDOR': return <SignUpForm role='vendor' />; break
-            case 'SIGNUP_DRIVER': return <SignUpForm role='driver' />; break
+            case 'FEEDBACK': return <FeedbackForm />; break
             default: return null
         }
     }
 
     const handleClose = () => {
         clearForm()
-        closeAppModal(null)
+        closeForumModal()
     }
 
     return (
         <PopUpModal
-            isVisible={appModals.length > 0}
+            isVisible={forumModals.length > 0}
             onRequestClose={handleClose}
             transparent={true}
         >

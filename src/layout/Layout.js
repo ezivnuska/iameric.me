@@ -1,29 +1,24 @@
 import React from 'react'
 import {
     SafeAreaView,
-    View,
 } from 'react-native'
 import AppNavigation from '../navigation/AppNavigation'
-import { ModalView } from '@components'
+import {
+    AuthModal,
+    LoadingView,
+} from '@components'
 import { Header } from '.'
 import {
     useApp,
-    useAuth,
+    UserContextProvider,
 } from '@context'
-import { getSize } from '@utils/metrics'
-import LinearGradient from 'react-native-linear-gradient'
 
 export default () => {
     
-    const {
-        dims,
-        landscape,
-        night,
-        theme,
-    } = useApp()
-    const { profile } = useAuth()
+    const { appLoaded, dims, theme } = useApp()
 
     return (
+        
         <SafeAreaView
             id='layout-container'
             style={{
@@ -32,60 +27,15 @@ export default () => {
                 backgroundColor: theme?.colors.background,
             }}
         >
-            <LinearGradient
-                id='header-container'
-                style={{
-                    flexGrow: 0,
-                    backgroundColor: theme?.colors.background,
-                }}
-                colors={night
-                    ? [ '#333333', '#000000' ]
-                    : [ '#dddddd', '#ffffff' ]
-                }
-            >
-                <View
-                    style={{
-                        width: '100%',
-                        height: 50,
-                        maxWidth: landscape ? 900 : 600,
-                        marginHorizontal: 'auto',
-                    }}
-                >
-                    <Header
-                        user={profile}
-                        size={getSize(dims)}
-                    />
-                </View>
-            </LinearGradient>
-
-            <View
-                id='content-container'
-                style={{
-                    flex: 1,
-                    width: '100%',
-                    marginHorizontal: 'auto',
-                    backgroundColor: theme?.colors.background,
-                }}
-            >
-                
-                <View
-                    id='content'
-                    style={{
-                        flex: 1,
-                        width: '100%',
-                        minWidth: 280,
-                        marginHorizontal: 'auto',
-                    }}
-                >
-                    
-                    <AppNavigation />
-
-                </View>
-
-            </View>
-
-            <ModalView />
-
+            {appLoaded
+                ? (
+                    <UserContextProvider>
+                        <Header />
+                        <AppNavigation />
+                        <AuthModal />
+                    </UserContextProvider>
+                ) : <LoadingView loading='Initializing App...' />}
+           
         </SafeAreaView>
     )
 }

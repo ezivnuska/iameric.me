@@ -6,23 +6,16 @@ import axios from 'axios'
  */
 
 export const loadEntries = async () => {
-
     const { data } = await axios.get('/api/entries')
-
-    if (data && data.entries) return data.entries
-    
-    console.log('could not load entries.')
+    if (!data || !data.entries) console.log('could not load entries.')
+    else return data.entries
     return null
 }
 
 export const deleteEntryWithId = async id => {
-    
     const { data } = await axios.delete(`/api/entry/delete/${id}`)
+    if (!data.entry) console.log('Error deleting product')
+    else return data.entry
+    return null
 
-    if (!data.entry) {
-        console.log('Error deleting product')
-        return null
-    }
-
-    return data.entry
 }

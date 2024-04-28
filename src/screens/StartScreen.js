@@ -9,36 +9,39 @@ import {
 } from '.'
 import {
     IconButton,
-} from '../components'
-import classes from '@styles/classes'
-import LinearGradient from 'react-native-linear-gradient'
+    LoadingView,
+} from '@components'
 import {
-    useAuth,
     useApp,
     useModal,
+    useUser,
 } from '@context'
 import {
     connect,
 } from '@utils/auth'
+import classes from '@styles/classes'
+import LinearGradient from 'react-native-linear-gradient'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default props => {
 
-    const { signIn } = useAuth()
+    const { appLoaded, signIn } = useApp()
     const { setModal } = useModal()
+    const { profile } = useUser()
+
+    useEffect(() => {
+        if (profile) props.navigation.navigate('Auth')
+    }, [profile])
 
     const onConnect = async type => {
-        
         const user = await connect(type)
-        
-        if (!user) {
-            console.log('Error: Could not connect user.')
-        } else {
-            signIn(user)
-        }
+        if (!user) console.log('Error: Could not connect user.')
+        else await signIn(user)
         return user
     }
+
+    if (!appLoaded) return <LoadingView loading='Doing Auth Stuff' />
 
     return (
         <Screen

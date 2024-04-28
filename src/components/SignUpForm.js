@@ -10,9 +10,10 @@ import { setItem } from '@utils/storage'
 import { isValidEmail, signup } from '@utils/auth'
 import { getFields } from '@utils/form'
 import {
-    useAuth,
+    useApp,
     useForm,
     useModal,
+    useUser,
 } from '@context'
 
 export default ({ role }) => {
@@ -44,7 +45,8 @@ export default ({ role }) => {
     } = useForm()
 
     const { closeModal, data } = useModal()
-    const { setUser, signIn } = useAuth()
+    const { signIn } = useApp()
+    const { setUser } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 

@@ -23,10 +23,8 @@ export default props => {
     }
     
     return (
-        <Screen
-            titleComponent={<ScreenTitle title='Merchants' />}
-            {...props}
-        >
+        <Screen {...props}>
+            <ScreenTitle title='Merchants' />
             {vendors
                 ? <VendorList users={vendors} {...props} />
                 : <EmptyStatus status='No participating vendors.' />

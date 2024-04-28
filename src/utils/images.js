@@ -10,9 +10,6 @@ import {
 } from 'expo-file-system'
 import axios from 'axios'
 import EXIF from 'exif-js'
-import {
-    useAuth,
-} from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 

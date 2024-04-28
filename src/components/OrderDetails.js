@@ -6,7 +6,7 @@ import {
     ThemedText,
     LocationDetails,
 } from '@components'
-import { useAuth } from '@context'
+import { useUser } from '@context'
 import classes from '@styles/classes'
 import moment from 'moment'
 
@@ -14,7 +14,7 @@ export default ({ order }) => {
     
     const { pickup, customer, driver, vendor } = order
 
-    const { profile } = useAuth()
+    const { profile } = useUser()
 
     const renderLocation = () => {
         if (profile.role === 'vendor') return null

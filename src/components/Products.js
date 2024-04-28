@@ -9,6 +9,7 @@ import {
     ProductListItem,
 } from '.'
 import {
+    useApp,
     useModal,
     useProducts,
     useUser,
@@ -17,6 +18,8 @@ import { deleteProductWithId, loadProducts } from '@utils/products'
 
 export default () => {
 
+    const { userId, userLoading } = useApp()
+    const { closeModal, setModal } = useModal()
     const {
         deleteProduct,
         products,
@@ -24,18 +27,26 @@ export default () => {
         setProducts,
         setProductsLoading,
     } = useProducts()
-    const { closeModal, setModal } = useModal()
     const { profile } = useUser()
 
+    // useEffect(() => {
+    //     init()
+    // }, [])
+
     useEffect(() => {
-        const initProducts = async () => {
-            setProductsLoading(true)
-            const items = await loadProducts(profile._id)
-            setProductsLoading(false)
-            setProducts(items)
+        const init = async () => {
+
+            if (!profile) {
+                loadProfile(userId)
+            } else {
+                setProductsLoading(true)
+                const items = await loadProducts(profile._id)
+                setProductsLoading(false)
+                setProducts(items)
+            }
         }
-        initProducts()
-    }, [])
+        if (profile) init()
+    }, [profile])
 
     const onDelete = async id => {
         setProductsLoading(true)
@@ -50,8 +61,8 @@ export default () => {
     }
 
     if (productsLoading) return <LoadingView loading='Loading products' />
-
-    return products && products.length ? (
+    if (!products || !products.length) return <EmptyStatus status='No products available at this time.' />
+    return (
         <View
             style={{ paddingVertical: 10 }}
         >
@@ -70,5 +81,5 @@ export default () => {
                 )}
             />
         </View>
-    ) : <EmptyStatus status='No products available at this time.' />
+    )
 }

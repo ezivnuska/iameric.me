@@ -10,9 +10,8 @@ import { setItem } from '@utils/storage'
 import { isValidEmail, signin } from '@utils/auth'
 import { getFields } from '@utils/form'
 import {
-    useAuth,
+    useApp,
     useForm,
-    useModal,
 } from '@context'
 
 export default () => {
@@ -41,8 +40,7 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { setUser, signIn, setAuthModal, data } = useAuth()
-    // const { closeModal, data } = useModal()
+    const { signIn, data } = useApp()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -131,9 +129,10 @@ export default () => {
             console.log('Error authenticating user: NULL')
             setFormError({ name: 'email', message: 'Signin failed.' })
         } else {
+            console.log('found user', user)
             if (formError) clearFormError()
-            const { token, username } = user
-            signIn({ token, username })
+            const { _id, profileImage, token, username } = user
+            signIn({ _id, token, username })
             clearForm()
 		}
 

@@ -15,13 +15,17 @@ import { getProfileImagePathFromUser } from '@utils/images'
 import {
     useApp,
     useModal,
+    useUser,
 } from '@context'
 
 const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props }) => {
     
-    const { author, text } = item
-    const [online, setOnline] = useState(false)
     const { theme } = useApp()
+    const { profile } = useUser()
+    
+    const { author, text } = item
+
+    const [online, setOnline] = useState(false)
     
     useEffect(() => {
         if (author && author.exp) {
@@ -88,20 +92,22 @@ const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props 
 
                     </Pressable>
 
-                    <View
-                        style={{
-                            flexBasis: 'auto',
-                            flexGrow: 0,
-                            marginTop: -1,
-                        }}
-                    >
-                        <IconButton
-                            iconName='trash-outline'
-                            onPress={() => onDelete ? onDelete(item._id) : null}
-                            textStyles={{ fontSize: 15 }}
-                            transparent
-                        />
-                    </View>
+                    {profile._id === author._id && (
+                        <View
+                            style={{
+                                flexBasis: 'auto',
+                                flexGrow: 0,
+                                marginTop: -1,
+                            }}
+                        >
+                            <IconButton
+                                iconName='trash-outline'
+                                onPress={() => onDelete ? onDelete(item._id) : null}
+                                textStyles={{ fontSize: 15 }}
+                                transparent
+                            />
+                        </View>
+                    )}
 
                 </View>
                 
@@ -205,20 +211,22 @@ const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null }) => {
 
                         </Pressable>
 
-                        <View
-                            style={{
-                                flexBasis: 'auto',
-                                flexGrow: 0,
-                                marginTop: -2,
-                            }}
-                        >
-                            <IconButton
-                                iconName='trash-outline'
-                                onPress={() => onDelete ? onDelete(item._id) : null}
-                                textStyles={{ fontSize: 15 }}
-                                transparent
-                            />
-                        </View>
+                        {profile._id === author._id && (
+                            <View
+                                style={{
+                                    flexBasis: 'auto',
+                                    flexGrow: 0,
+                                    marginTop: -1,
+                                }}
+                            >
+                                <IconButton
+                                    iconName='trash-outline'
+                                    onPress={() => onDelete ? onDelete(item._id) : null}
+                                    textStyles={{ fontSize: 15 }}
+                                    transparent
+                                />
+                            </View>
+                        )}
 
                     </View>
                     
