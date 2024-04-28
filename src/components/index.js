@@ -6,6 +6,7 @@ import CartProductPreview from './CartProductPreview'
 import CategoryPicker from './CategoryPicker'
 import CenteredView from './CenteredView'
 import CenterVertical from './CenterVertical'
+import ContactModal from './ContactModal'
 import ContactView from './ContactView'
 import ContactsView from './ContactsView'
 import ThemedText from './ThemedText'
@@ -35,8 +36,6 @@ import MenuItem from './MenuItem'
 import ModalImage from './ModalImage'
 import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
-import ModalView from './ModalView'
-import Nav from './Nav'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
@@ -57,8 +56,9 @@ import TitleBar from './TitleBar'
 import UserDetails from './UserDetails'
 import UserDetailsShort from './UserDetailsShort'
 import UserHeading from './UserHeading'
-import UserList from './UserList'
-import UserModule from './UserModule'
+import UserModal from './UserModal'
+// import UserList from './UserList'
+// import UserModule from './UserModule'
 import VendorList from './VendorList'
 
 export {
@@ -70,6 +70,7 @@ export {
     CategoryPicker,
     CenteredView,
     CenterVertical,
+    ContactModal,
     ContactView,
     ContactsView,
     ThemedText,
@@ -97,9 +98,7 @@ export {
     MenuItem,
     ModalImage,
     ModalProfile,
-    ModalView,
     ModalSignout,
-    Nav,
     OrderList,
     OrderDetails,
     OrderPreview,
@@ -119,9 +118,10 @@ export {
     TimeSelector,
     TitleBar,
     UserHeading,
-    UserList,
-    UserModule,
+    // UserList,
+    // UserModule,
     UserDetails,
     UserDetailsShort,
+    UserModal,
     VendorList,
 }

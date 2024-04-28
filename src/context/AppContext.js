@@ -62,14 +62,10 @@ export const AppContextProvider = ({ children }) => {
     const dims = useWindowDimensions()
 
     useEffect(() => {
-        console.log('* APP CONTEXT *')
         const init = async () => {
             
-            console.log('getting theme...')
             let dark = await getItem('dark')
-            if (dark === null) {
-                await setItem('dark', false)
-            }
+            if (dark === null) await setItem('dark', false)
             else {
                 const isDark = dark === 'true'
                 if (state.dark !== isDark) {
@@ -77,7 +73,6 @@ export const AppContextProvider = ({ children }) => {
                     dispatch({ type: 'TOGGLE_THEME' })
                 }
             }
-            console.log('theme set')
 
             const authToken = await getStoredToken()
             let payload = null
@@ -106,8 +101,11 @@ export const AppContextProvider = ({ children }) => {
         setApp: async payload => {
             dispatch({ type: 'SET_APP_LOADING', payload })
         },
-        setAppModal: async payload => {
-            dispatch({ type: 'SET_APP_MODAL', payload })
+        setAppModal: async (type, data) => {
+            dispatch({
+                type: 'SET_APP_MODAL',
+                payload: { data, type },
+            })
         },
         signIn: async payload => {
             await storeToken(payload.token)

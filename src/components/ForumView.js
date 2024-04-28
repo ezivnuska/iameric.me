@@ -41,7 +41,7 @@ export default () => {
                 <IconButton
                     label='Comment'
                     iconName='add-outline'
-                    onPress={() => setForumModal({ type: 'FEEDBACK' })}
+                    onPress={() => setForumModal('FEEDBACK')}
                     alignIcon='right'
                     justify='left'
                     outline

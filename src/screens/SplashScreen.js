@@ -1,9 +1,6 @@
 import React, { useEffect } from 'react'
 import {
-    Screen,
-} from '.'
-import {
-    CenteredView,
+    CenteredVertical,
     ThemedText,
 } from '@components'
 import {
@@ -13,17 +10,15 @@ import {
 export default props => {
     const { profile, userLoaded } = useUser()
     useEffect(() => {
-        console.log('route............', props.route)
-        if (profile) console.log('profile', profile)
-        if (profile) console.log('userLoaded', userLoaded)
         if (userLoaded) {
             if (profile) props.navigation.navigate('Auth')
             else props.navigation.navigate('Start')
         }
     }, [profile, userLoaded])
+    
     return (
-        <CenteredView>
+        <CenteredVertical>
             <ThemedText>Splash</ThemedText>
-        </CenteredView>
+        </CenteredVertical>
     )
 }

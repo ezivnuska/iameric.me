@@ -7,6 +7,7 @@ import {
 import {
     LoadingView,
     ThemedText,
+    TitleBar,
 } from '@components'
 import { useContacts, useModal } from '@context'
 import classes from '@styles/classes'
@@ -16,12 +17,13 @@ import axios from 'axios'
 export default () => {
 
     const {
+        closeContactModal,
         contacts,
         contactsLoading,
         setContacts,
         setContactsLoading,
+        setContactModal,
     } = useContacts()
-    const { setModal } = useModal()
     
     useEffect(() => {
         const init = async () => {
@@ -43,14 +45,15 @@ export default () => {
         <ContactListItem
             item={contact}
             key={`contact-${index}`}
-            onPress={() => setModal('CONTACT', contact)}
+            onPress={() => setContactModal('CONTACT', contact)}
         />
     ))
 
     if (contactsLoading) return <LoadingView loading='Loading contacts...' />
 
     return (
-        <View style={{ marginHorizontal: 10 }}>
+        <View>
+            <TitleBar title='Contacts' />
             {renderContacts()}
         </View>
     )
@@ -66,6 +69,7 @@ const ContactListItem = ({ item, onPress, ...props }) => {
                 alignItems: 'center',
                 gap: 15,
                 paddingTop: 10,
+                paddingHorizontal: 10,
             }}
             {...props}
         >

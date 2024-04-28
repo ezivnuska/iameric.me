@@ -8,7 +8,6 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import {
     useApp,
     useContacts,
-    useModal,
     useUser,
 } from '@context'
 
@@ -19,8 +18,7 @@ export default ({ images, onSelected }) => {
 
     const { theme } = useApp()
     const { contact } = useContacts()
-    const { setModal } = useModal()
-    const { profile, userLoading } = useUser()
+    const { profile, setUserModal, userLoading } = useUser()
 
     const buttonStyle = {
         borderWidth: 1,
@@ -39,6 +37,11 @@ export default ({ images, onSelected }) => {
     const isDev = process.env.NODE_ENV === 'development'
     
     const restrictUpload = () => {
+        if (userLoading || isDev) return true
+        return false
+    }
+    const hideUpload = () => {
+        if (!profile) return true
         switch(profile.username) {
             case 'Customer':
             case 'Driver':
@@ -60,6 +63,7 @@ export default ({ images, onSelected }) => {
                 gap: 8,
                 width: '100%',
                 marginVertical: 15,
+                paddingHorizontal: 10,
             }}
         >
             {images && images.map((image, index) => (
@@ -91,11 +95,11 @@ export default ({ images, onSelected }) => {
 
             ))}
 
-            {!restrictUpload() && (
+            {!hideUpload() && (
                 <Pressable
                     key={`image-${images.length}`}
-                    onPress={() => setModal('SELECT_IMAGE')}
-                    disabled={userLoading || isDev}
+                    onPress={() => setUserModal('SELECT_IMAGE')}
+                    disabled={restrictUpload()}
                     style={[
                         {
                             flexBasis: 'auto',
@@ -105,6 +109,7 @@ export default ({ images, onSelected }) => {
                             alignItems: 'center',
                             width: IMAGE_SIZE,
                             height: IMAGE_SIZE,
+                            opacity: restrictUpload() ? 0.5 : 1,
                         },
                         buttonStyle,
                     ]}

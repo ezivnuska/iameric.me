@@ -4,13 +4,16 @@ const initialState = {
     lastContact: null,
     contact: null,
     contacts: [],
-    error: null,
     contactLoading: false,
     contactsLoading: false,
+    contactModals: [],
+    error: null,
+    closeContactModal: () => {},
     setContact: () => {},
     setContacts: () => {},
     setContactLoading: () => {},
     setContactsLoading: () => {},
+    setContactModal: () => {},
     updateContact: () => {},
     updateContactProducts: () => {},
     updateContactImages: () => {},
@@ -31,6 +34,9 @@ export const ContactContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
+        closeContactModal: async () => {
+            dispatch({ type: 'CLOSE_CONTACT_MODAL' })
+        },
         setContact: async payload => {
             dispatch({ type: 'SET_CONTACT', payload })
         },
@@ -42,6 +48,12 @@ export const ContactContextProvider = props => {
         },
         setContactsLoading: async payload => {
             dispatch({ type: 'SET_CONTACTS_LOADING', payload })
+        },
+        setContactModal: async (type, data) => {
+            dispatch({
+                type: 'SET_CONTACT_MODAL',
+                payload: { data, type },
+            })
         },
         updateContact: async payload => {
             dispatch({ type: 'UPDATE_CONTACT', payload })
@@ -79,6 +91,25 @@ const reducer = (state, action) => {
             break
         case 'SET_CONTACTS_LOADING':
             return { ...state, contactsLoading: payload }
+            break
+        case 'SET_CONTACT_MODAL':
+            if (!payload) return state
+            console.log('adding payload to contact modal array', payload)
+            return {
+                ...state,
+                contactModals: [
+                    ...state.contactModals,
+                    payload,
+                ],
+            }
+            break
+        case 'CLOSE_CONTACT_MODAL':
+            const newContactModals = state.contactModals.slice(0, state.contactModals.length - 1)
+            console.log('newContactModals', newContactModals)
+            return {
+                ...state,
+                contactModals: newContactModals,
+            }
             break
         case 'UPDATE_CONTACT':
             let contact = state.contact

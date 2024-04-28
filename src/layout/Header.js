@@ -133,7 +133,7 @@ const SignInButton = () => {
         <IconButton
             iconName='log-in-outline'
             label='Sign In'
-            onPress={() => setAppModal({ type: 'SIGN_IN' })}
+            onPress={() => setAppModal('SIGN_IN')}
             disabled={appLoading}
             alignIcon='right'
             transparent
@@ -147,7 +147,7 @@ const SignOutButton = () => {
     
     return (
         <IconButton
-            onPress={() => setAppModal({ type: 'SIGN_OUT' })}
+            onPress={() => setAppModal('SIGN_OUT')}
             disabled={appLoading}
             iconName='close-outline'
             textStyles={{

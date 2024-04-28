@@ -1,10 +1,10 @@
 import React from 'react'
 import {
+    ContactModal,
     ContactsView,
 } from '@components'
 import {
     Screen,
-    ScreenTitle,
 } from '.'
 import {
     ContactContextProvider,
@@ -13,8 +13,8 @@ import {
 export default props => (
     <Screen {...props}>
         <ContactContextProvider>
-            <ScreenTitle title='Contacts' />
             <ContactsView />
+            <ContactModal />
         </ContactContextProvider>
     </Screen>
 )

@@ -1,18 +1,14 @@
 import React, { useEffect, useMemo } from 'react'
 import {
     ImageList,
+    UserModal,
 } from '@components'
 import {
     Screen,
-    ScreenTitle,
 } from '.'
-import {
-    View,
-} from 'react-native'
 import {
     useApp,
     useUser,
-    useModal,
 } from '@context'
 import { loadImages } from '@utils/images'
 import { loadUser } from '@utils/user'
@@ -20,21 +16,23 @@ import { loadUser } from '@utils/user'
 export default props => {
 
     const { userId } = useApp()
-    const { profile, setUserLoading, updateImages } = useUser()
-    const { setModal } = useModal()
-    const profileImages = useMemo(() => profile ? profile.images : null, [profile])
-
-    // useEffect(() => {
-        
-    //     init()
-    // }, [])
+    const {
+        profile,
+        setUser,
+        setUserLoading,
+        setUserModal,
+        updateImages,
+    } = useUser()
+    // const profileImages = useMemo(() => profile ? profile.images : null, [profile])
 
     useEffect(() => {
         const init = async () => {
             if (!profile) {
-                loadUser(userId)
+                console.log('* warning * ImagesScreen needs to load user')
+                const loadedUser = await loadUser(userId)
+                if (loadedUser) setUser(loadedUser)
             } else {
-                if (!profileImages) {
+                if (!profile.images) {
                     setUserLoading(true)
                     const images = await loadImages(userId)
                     setUserLoading(false)
@@ -45,17 +43,15 @@ export default props => {
         init()
     }, [profile])
 
-    return profileImages ? (
+    return profile && profile.images ? (
         <Screen {...props}>
-            <ScreenTitle title='Images' />
-            <View style={{ paddingHorizontal: 10 }}>
-                {profileImages && (
-                    <ImageList
-                        images={profileImages}
-                        onSelected={image => setModal('IMAGE', image)}
-                    />
-                )}
-            </View>
+            <ImageList
+                images={profile.images}
+                onSelected={image => {
+                    console.log('image selected', image)
+                    setUserModal('IMAGE', image)
+                }}
+            />
         </Screen>
     ) : null
 }

@@ -6,6 +6,7 @@ import AppNavigation from '../navigation/AppNavigation'
 import {
     AuthModal,
     LoadingView,
+    UserModal,
 } from '@components'
 import { Header } from '.'
 import {
@@ -33,6 +34,7 @@ export default () => {
                         <Header />
                         <AppNavigation />
                         <AuthModal />
+                        <UserModal />
                     </UserContextProvider>
                 ) : <LoadingView loading='Initializing App...' />}
            

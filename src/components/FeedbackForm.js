@@ -14,7 +14,7 @@ import {
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
 
-export default () => {
+export default ({ data }) => {
 
     const initialState = {
         entry: '',
@@ -40,7 +40,11 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { addEntry, closeForumModal, getData } = useForum()
+    const {
+        addEntry,
+        closeForumModal,
+    } = useForum()
+
     const { profile } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
@@ -50,9 +54,11 @@ export default () => {
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        const { data } = getData()
-        const fields = getFields(initialState, data)
-        setInitialValues(fields)
+        const init = async () => {
+            const fields = getFields(initialState, data)
+            setInitialValues(fields)
+        }
+        init()
     }, [])
     
     useEffect(() => {

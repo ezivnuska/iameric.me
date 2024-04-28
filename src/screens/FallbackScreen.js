@@ -3,7 +3,7 @@ import {
     Screen,
 } from '.'
 import {
-    CenteredView,
+    CenteredVertical,
     ThemedText,
 } from '@components'
 
@@ -14,10 +14,10 @@ export default props => {
             secure={false}
             {...props}
         >
-            <CenteredView>
+            <CenteredVertical>
                 <ThemedText>404 Error: {route && route.path ? route.path : ''}</ThemedText>
                 <ThemedText>Sorry. That page does not exist.</ThemedText>
-            </CenteredView>
+            </CenteredVertical>
         </Screen>
     )
 }

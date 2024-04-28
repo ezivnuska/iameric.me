@@ -10,7 +10,6 @@ const initialState = {
     addEntry: () => {},
     closeForumModal: () => {},
     deleteEntry: () => {},
-    getData: () => {},
     setEntries: () => {},
     setForumLoading: () => {},
     setForumModal: () => {},
@@ -47,15 +46,11 @@ export const ForumContextProvider = props => {
         addEntry: async payload => {
             dispatch({ type: 'ADD_ENTRY', payload })
         },
-        closeForumModal: async payload => {
-            dispatch({ type: 'CLOSE_FORUM_MODAL', payload })
+        closeForumModal: async () => {
+            dispatch({ type: 'CLOSE_FORUM_MODAL' })
         },
         deleteEntry: async payload => {
             dispatch({ type: 'DELETE_ENTRY', payload })
-        },
-        getData: async () => {
-            if (!state.forumModals.length) return null
-            return state.forumModals[state.forumModals.length - 1].data
         },
         setEntries: async payload => {
             dispatch({ type: 'SET_ENTRIES', payload })
@@ -63,8 +58,11 @@ export const ForumContextProvider = props => {
         setForumLoading: async payload => {
             dispatch({ type: 'SET_FORUM_LOADING', payload })
         },
-        setForumModal: async payload => {
-            dispatch({ type: 'SET_FORUM_MODAL', payload })
+        setForumModal: async (type, data) => {
+            dispatch({
+                type: 'SET_FORUM_MODAL',
+                payload: { data, type },
+            })
         },
         updateEntry: async payload => {
             dispatch({ type: 'UPDATE_ENTRY', payload })

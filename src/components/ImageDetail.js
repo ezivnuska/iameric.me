@@ -29,6 +29,8 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
         setImageDims(getImageDims(image.width, image.height, dims))
     }, [dims])
 
+    const deleteRestricted = () => userLoading || process.env.NODE_ENV === 'development'
+
     return (
         <View
             style={{
@@ -112,8 +114,8 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                                     type='danger'
                                     label='Delete'
                                     onPress={deleteImage}
-                                    disabled={userLoading || process.env.NODE_ENV === 'development'}
-                                    style={{ flex: 1 }}
+                                    disabled={deleteRestricted()}
+                                    style={{ flex: 1, opacity: deleteRestricted() ? 0.5 : 1 }}
                                 />
                             )}
 

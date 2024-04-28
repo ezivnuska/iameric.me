@@ -6,13 +6,16 @@ const initialState = {
     profile: null,
     userLoaded: false,
     userLoading: false,
+    userModals: [],
     error: null,
     addImage: () => {},
     clearUser: () => {},
+    closeUserModal: () => {},
     removeImage: () => {},
     setUser: () => {},
     setUserLoading: () => {},
     setUserLocation: () => {},
+    setUserModal: () => {},
     setProfileImage: () => {},
     updateImage: () => {},
     updateImages: () => {},
@@ -48,6 +51,9 @@ export const UserContextProvider = props => {
     }, [userId])
 
     const actions = useMemo(() => ({
+        closeUserModal: async () => {
+            dispatch({ type: 'CLOSE_USER_MODAL' })
+        },
         setUser: payload => {
             dispatch({ type: 'SET_USER', payload })
         },
@@ -59,6 +65,12 @@ export const UserContextProvider = props => {
         },
         setUserLocation: payload => {
             dispatch({ type: 'SET_USER_LOCATION', payload })
+        },
+        setUserModal: async (type, data) => {
+            dispatch({
+                type: 'SET_USER_MODAL',
+                payload: { data, type },
+            })
         },
         addImage: payload => {
             dispatch({ type: 'ADD_IMAGE', payload })
@@ -95,6 +107,25 @@ const reducer = (state, action) => {
             break
         case 'SET_USER_LOADING':
             return { ...state, userLoading: payload }
+            break
+        case 'SET_USER_MODAL':
+            if (!payload) return state
+            console.log('adding payload to user modal array', payload)
+            return {
+                ...state,
+                userModals: [
+                    ...state.userModals,
+                    payload,
+                ],
+            }
+            break
+        case 'CLOSE_USER_MODAL':
+            const newUserModals = state.userModals.slice(0, state.userModals.length - 1)
+            console.log('newUserModals', newUserModals)
+            return {
+                ...state,
+                userModals: newUserModals,
+            }
             break
         case 'SET_USER':
             return { ...state, profile: payload }

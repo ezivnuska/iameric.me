@@ -1,26 +1,24 @@
 import React, { useEffect } from 'react'
 import {
     ImageDetail,
-    LoadingView,
 } from '.'
 import {
     useContacts,
-    useModal,
     useProducts,
     useUser,
 } from '@context'
 import axios from 'axios'
 import { loadUserImage } from '@utils/images'
 
-export default () => {
-    const { profile, removeImage, setProfileImage } = useUser()
-    const { closeModal, data } = useModal()
+export default ({ image }) => {
+    const { closeUserModal, profile, removeImage, setProfileImage } = useUser()
     const { removeUserImage } = useContacts()
     const { items, updateProductImage } = useProducts()
     
     useEffect(() => {
+        console.log('IMAGE', image)
         const init = async () => {
-            const loadedImage = await loadUserImage(data._id)
+            const loadedImage = await loadUserImage(image._id)
             if (!loadedImage) return console.log('problem loading user image.')
         }
         init()
@@ -37,18 +35,18 @@ export default () => {
     }
 
     const deleteImage = async () => {
-        if (data.user._id === profile._id) {
-            removeImage(data._id)
+        if (image.user._id === profile._id) {
+            removeImage(image._id)
         } else {
-            removeUserImage(data)
+            removeUserImage(image)
         }
 
-        const isProfileImage = isImageProfileImage(data._id)
-        const isProductImage = profile.role === 'vendor' ? isImageProductImage(data._id) : null
+        const isProfileImage = isImageProfileImage(image._id)
+        const isProductImage = profile.role === 'vendor' ? isImageProductImage(image._id) : null
 
         const response = await axios
             .post('/api/images/delete', {
-                imageId: data._id,
+                imageId: image._id,
                 isProductImage,
                 isProfileImage,
             })
@@ -57,7 +55,7 @@ export default () => {
             console.log('Error deleting image.')
         }
         
-        closeModal()
+        closeUserModal()
     }
 
     const setAvatar = async () => {
@@ -65,7 +63,7 @@ export default () => {
         const response = await axios
             .post('/api/user/avatar', {
                 userId: profile._id,
-                imageId: data._id,
+                imageId: image._id,
             })
         
         if (!response.data) {
@@ -74,7 +72,7 @@ export default () => {
             setProfileImage(response.data)
         }
 
-        closeModal()
+        closeUserModal()
     }
 
     const setProductImage = async productId => {
@@ -82,7 +80,7 @@ export default () => {
         const response = await axios
             .post('/api/product/image', {
                 productId,
-                imageId: data._id,
+                imageId: image._id,
             })
 
         if (!response.data) {
@@ -93,12 +91,12 @@ export default () => {
             updateProductImage(productId, response.data.image)
         }
         
-        closeModal()
+        closeUserModal()
     }
     
-    return data && (
+    return image && (
         <ImageDetail
-            image={data}
+            image={image}
             deleteImage={deleteImage}
             setAvatar={setAvatar}
             setProductImage={setProductImage}

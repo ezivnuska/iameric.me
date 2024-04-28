@@ -14,7 +14,7 @@ import {
 } from '@context'
 import { loadFullContact } from '@utils/contacts'
 
-export default () => {
+export default ({ user }) => {
     
     const { dims } = useApp()
     const {
@@ -22,21 +22,20 @@ export default () => {
         contactLoading,
         setContact,
         setContactLoading,
+        setContactModal,
     } = useContacts()
 
-    const { setModal, data } = useModal()
-
     useEffect(() => {
+        console.log('user', user)
+        const init = async () => {
+            setContactLoading(true)
+            const loadedUser = await loadFullContact(user._id)
+            setContactLoading(false)
+            if (!loadedUser) console.log('Error loading user')
+            else setContact(loadedUser)
+        }
         if (!contact) init()
     }, [])
-
-    const init = async () => {
-        setContactLoading(true)
-        const user = await loadFullContact(data._id)
-        if (!user) console.log('Error loading user')
-        else setContact(user)
-        setContactLoading(false)
-    }
 
     if (contactLoading) return <LoadingView loading='Loading contact' />
 
@@ -49,7 +48,7 @@ export default () => {
         >
             <ImageList
                 images={contact.images}
-                onSelected={image => setModal('IMAGE', image)}
+                onSelected={image => setContactModal('IMAGE', image)}
             />
 
         </View>

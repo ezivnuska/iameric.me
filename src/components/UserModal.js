@@ -3,42 +3,43 @@ import {
     View,
 } from 'react-native'
 import {
-    FeedbackForm,
     PopUpModal,
     CenterVertical,
-} from '.'
+    ProductDetails,
+    ModalImage,
+    LocationForm,
+    ProductForm,
+    ImageSelector,
+} from '@components'
 import {
     useApp,
-    useForm,
-    useForum,
+    useUser,
 } from '@context'
 
 export default () => {
 
     const { dims } = useApp()
-    const { clearForm } = useForm()
-    const { closeForumModal, forumModals } = useForum()
+    const { closeUserModal, userModals } = useUser()
 
-    const modal = useMemo(() => forumModals[forumModals.length - 1], [forumModals])
+    const modal = useMemo(() => userModals[userModals.length - 1], [userModals])
 
     const resolveModalContent = () => {
         if (!modal) return null
         const { type, data } = modal
         switch(type) {
-            case 'FEEDBACK': return <FeedbackForm data={data} />; break
+            case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
+            case 'IMAGE': return <ModalImage image={data} />; break
+            case 'LOCATION': return <LocationForm />; break
+            case 'PRODUCT': return <ProductForm />; break
+            case 'SELECT_IMAGE': return <ImageSelector />; break
             default: return null
         }
     }
 
-    const handleClose = () => {
-        clearForm()
-        closeForumModal()
-    }
-
     return (
         <PopUpModal
-            isVisible={forumModals.length > 0}
-            onRequestClose={handleClose}
+            isVisible={userModals.length > 0}
+            onRequestClose={closeUserModal}
             transparent={true}
         >
             <View

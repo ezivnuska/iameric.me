@@ -3,42 +3,35 @@ import {
     View,
 } from 'react-native'
 import {
-    FeedbackForm,
+    ContactView,
     PopUpModal,
     CenterVertical,
 } from '.'
 import {
     useApp,
-    useForm,
-    useForum,
+    useContacts,
 } from '@context'
 
 export default () => {
 
     const { dims } = useApp()
-    const { clearForm } = useForm()
-    const { closeForumModal, forumModals } = useForum()
+    const { closeContactModal, contactModals } = useContacts()
 
-    const modal = useMemo(() => forumModals[forumModals.length - 1], [forumModals])
+    const modal = useMemo(() => contactModals[contactModals.length - 1], [contactModals])
 
     const resolveModalContent = () => {
         if (!modal) return null
-        const { type, data } = modal
+        const { type, payload } = modal
         switch(type) {
-            case 'FEEDBACK': return <FeedbackForm data={data} />; break
+            case 'CONTACT': return <ContactView user={payload} />; break
             default: return null
         }
     }
 
-    const handleClose = () => {
-        clearForm()
-        closeForumModal()
-    }
-
     return (
         <PopUpModal
-            isVisible={forumModals.length > 0}
-            onRequestClose={handleClose}
+            isVisible={contactModals.length > 0}
+            onRequestClose={closeContactModal}
             transparent={true}
         >
             <View

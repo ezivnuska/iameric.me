@@ -1,4 +1,4 @@
-import ContactListScreen from './ContactListScreen'
+import ContactsScreen from './ContactsScreen'
 import FallbackScreen from './FallbackScreen'
 import ForumScreen from './ForumScreen'
 import ImagesScreen from './ImagesScreen'
@@ -13,7 +13,7 @@ import VendorScreen from './VendorScreen'
 import VendorsScreen from './VendorsScreen'
 
 export {
-    ContactListScreen,
+    ContactsScreen,
     FallbackScreen,
     ForumScreen,
     ImagesScreen,

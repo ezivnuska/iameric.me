@@ -5,7 +5,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
 import {
-    ContactListScreen,
+    ContactsScreen,
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
@@ -147,7 +147,7 @@ const MainStackScreen = () => {
 
             <MainStack.Screen
                 name='Users'
-                component={ContactListScreen}
+                component={ContactsScreen}
                 options={{
                     title: 'Users',
                     tabBarLabel: 'Users',
