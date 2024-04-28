@@ -19,7 +19,7 @@ import { getFields, validateFields } from '@utils/form'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default  () => {
+export default  ({ product }) => {
 
     const initialState = {
         title: '',
@@ -55,7 +55,7 @@ export default  () => {
         updateProduct,
     } = useProducts()
 
-    const { closeModal, data } = useModal()
+    const { closeProductModal } = useProducts()
     const { profile } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
@@ -71,7 +71,7 @@ export default  () => {
     } = useMemo(() => formFields, [formFields])
     
     useEffect(() => {
-        const fields = getFields(initialState, data)
+        const fields = getFields(initialState, product)
         setInitialValues(fields)
     }, [])
     
@@ -134,8 +134,8 @@ export default  () => {
 	}
 
     const resetForm = () => {
-        if (data) {
-            setFormValues(data)
+        if (product) {
+            setFormValues(product)
         } else {
             clearForm()
         }
@@ -159,10 +159,10 @@ export default  () => {
             image,
         }
 
-        if (data) {
+        if (product) {
             newProduct = {
                 ...newProduct,
-                _id: data._id,
+                _id: product._id,
             }
         }
 
@@ -178,14 +178,14 @@ export default  () => {
         setFormLoading(false)
             
         if (!response || !response.data) {
-            console.log('Error saving product', data)
+            console.log('Error saving product', product)
         } else {
 
-            if (data) updateProduct(response.data)
+            if (product) updateProduct(response.data)
             else addProduct(response.data)
             
             clearForm()
-            closeModal()
+            closeProductModal()
         }
     }
 
@@ -308,7 +308,7 @@ export default  () => {
             />
 
             <IconButton
-                label={data ? 'Reset Form' : 'Clear Form'}
+                label={product ? 'Reset Form' : 'Clear Form'}
                 onPress={resetForm}
                 disabled={formLoading}
                 style={{ marginVertical: 5 }}

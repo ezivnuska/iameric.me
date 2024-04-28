@@ -16,7 +16,6 @@ export default ({ image }) => {
     const { items, updateProductImage } = useProducts()
     
     useEffect(() => {
-        console.log('IMAGE', image)
         const init = async () => {
             const loadedImage = await loadUserImage(image._id)
             if (!loadedImage) return console.log('problem loading user image.')

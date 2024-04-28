@@ -6,7 +6,7 @@ import { FormContext, FormContextProvider,useForm } from './FormContext'
 import { ForumContext, ForumContextProvider,useForum } from './ForumContext'
 import { ModalContext, ModalContextProvider, useModal } from './ModalContext'
 import { OrderContext, OrderContextProvider, useOrders } from './OrderContext'
-import { ProductsContext, ProductsContextProvider, useProducts } from './ProductsContext'
+import { ProductContext, ProductContextProvider, useProducts } from './ProductContext'
 import { UserContext, UserContextProvider, useUser } from './UserContext'
 
 export {
@@ -26,8 +26,8 @@ export {
     ModalContextProvider,
     OrderContext,
     OrderContextProvider,
-    ProductsContext,
-    ProductsContextProvider,
+    ProductContext,
+    ProductContextProvider,
     // useAuth,
     useApp,
     useCart,

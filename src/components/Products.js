@@ -5,12 +5,13 @@ import {
 } from 'react-native'
 import {
     EmptyStatus,
+    IconButton,
     LoadingView,
     ProductListItem,
+    TitleBar,
 } from '.'
 import {
     useApp,
-    useModal,
     useProducts,
     useUser,
 } from '@context'
@@ -18,24 +19,20 @@ import { deleteProductWithId, loadProducts } from '@utils/products'
 
 export default () => {
 
-    const { userId, userLoading } = useApp()
-    const { closeModal, setModal } = useModal()
+    const { theme, userId } = useApp()
     const {
+        closeProductModal,
         deleteProduct,
         products,
         productsLoading,
         setProducts,
+        setProductModal,
         setProductsLoading,
     } = useProducts()
     const { profile } = useUser()
 
-    // useEffect(() => {
-    //     init()
-    // }, [])
-
     useEffect(() => {
         const init = async () => {
-
             if (!profile) {
                 loadProfile(userId)
             } else {
@@ -57,15 +54,28 @@ export default () => {
             console.log(`${productDeleted.title} deleted`)
             deleteProduct(productDeleted._id)
         }
-        closeModal()
+        closeProductModal()
     }
 
     if (productsLoading) return <LoadingView loading='Loading products' />
     if (!products || !products.length) return <EmptyStatus status='No products available at this time.' />
     return (
-        <View
-            style={{ paddingVertical: 10 }}
-        >
+        <View>
+            <TitleBar title='Products'>
+                <IconButton
+                    label='New Product'
+                    iconName='add-outline'
+                    onPress={product => setProductModal('PRODUCT', product)}
+                    alignIcon='right'
+                    textStyles={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        color: theme?.colors.textDefault,
+                    }}
+                    transparent
+                    padded={false}
+                />
+            </TitleBar>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={products}
@@ -76,7 +86,7 @@ export default () => {
                         product={item}
                         key={item => `product-${item._id}`}
                         onDelete={() => onDelete(item._id)}
-                        onPress={item => setModal('PRODUCT', item)}
+                        onPress={() => setProductModal('PRODUCT', item)}
                     />
                 )}
             />

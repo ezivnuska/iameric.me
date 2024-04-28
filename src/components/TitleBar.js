@@ -19,6 +19,7 @@ export default ({ children, navigation = null, backLabel = null, title = null })
             style={{
                 width: '100%',
                 backgroundColor: theme?.colors.screenTitleBackground,
+                marginBottom: 10,
             }}
         >
             <View

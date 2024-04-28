@@ -45,6 +45,7 @@ import ProductDetails from './ProductDetails'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
+import ProductModal from './ProductModal'
 import Products from './Products'
 import ProductSelector from './ProductSelector'
 import Profile from './Profile'
@@ -108,6 +109,7 @@ export {
     ProductForm,
     ProductList,
     ProductListItem,
+    ProductModal,
     Products,
     ProductSelector,
     Profile,

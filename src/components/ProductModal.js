@@ -3,40 +3,41 @@ import {
     View,
 } from 'react-native'
 import {
-    ContactView,
-    ModalImage,
+    ProductForm,
     PopUpModal,
     CenterVertical,
 } from '.'
 import {
     useApp,
-    useContacts,
+    useForm,
+    useProducts,
 } from '@context'
 
 export default () => {
 
     const { dims } = useApp()
-    const { closeContactModal, contactModals } = useContacts()
+    const { clearForm } = useForm()
+    const { closeProductModal, productModals } = useProducts()
 
-    const modal = useMemo(() => contactModals[contactModals.length - 1], [contactModals])
+    const modal = useMemo(() => productModals[productModals.length - 1], [productModals])
 
     const resolveModalContent = () => {
         if (!modal) return null
         const { type, data } = modal
         switch(type) {
-            case 'CONTACT': return <ContactView user={data} />; break
-            case 'IMAGE': return <ModalImage image={data} />; break
+            case 'PRODUCT': return <ProductForm product={data} />; break
             default: return null
         }
     }
 
     const handleClose = () => {
-        closeContactModal()
+        clearForm()
+        closeProductModal()
     }
 
     return (
         <PopUpModal
-            isVisible={contactModals.length > 0}
+            isVisible={productModals.length > 0}
             onRequestClose={handleClose}
             transparent={true}
         >

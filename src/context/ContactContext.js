@@ -104,11 +104,10 @@ const reducer = (state, action) => {
             }
             break
         case 'CLOSE_CONTACT_MODAL':
-            const newContactModals = state.contactModals.slice(0, state.contactModals.length - 1)
-            console.log('newContactModals', newContactModals)
             return {
                 ...state,
-                contactModals: newContactModals,
+                contactModals: state.contactModals.slice(0, state.contactModals.length - 1),
+                contact: null,
             }
             break
         case 'UPDATE_CONTACT':

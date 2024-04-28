@@ -28,7 +28,6 @@ export default props => {
     useEffect(() => {
         const init = async () => {
             if (!profile) {
-                console.log('* warning * ImagesScreen needs to load user')
                 const loadedUser = await loadUser(userId)
                 if (loadedUser) setUser(loadedUser)
             } else {
@@ -40,17 +39,14 @@ export default props => {
                 }
             }
         }
-        init()
-    }, [profile])
+        if (userId) init()
+    }, [userId, profile])
 
     return profile && profile.images ? (
         <Screen {...props}>
             <ImageList
                 images={profile.images}
-                onSelected={image => {
-                    console.log('image selected', image)
-                    setUserModal('IMAGE', image)
-                }}
+                onSelected={image => setUserModal('IMAGE', image)}
             />
         </Screen>
     ) : null

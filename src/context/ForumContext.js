@@ -93,7 +93,6 @@ const reducer = (state, action) => {
             break
         case 'SET_FORUM_MODAL':
             if (!payload) return state
-            console.log('adding payload to forum modal array', payload)
             return {
                 ...state,
                 forumModals: [
@@ -103,11 +102,9 @@ const reducer = (state, action) => {
             }
             break
         case 'CLOSE_FORUM_MODAL':
-            const newForumModals = state.forumModals.slice(0, state.forumModals.length - 1)
-            console.log('newForumModals', newForumModals)
             return {
                 ...state,
-                forumModals: newForumModals,
+                forumModals: state.forumModals.slice(0, state.forumModals.length - 1),
             }
             break
         case 'SET_ENTRIES':

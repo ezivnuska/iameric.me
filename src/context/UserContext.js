@@ -110,7 +110,6 @@ const reducer = (state, action) => {
             break
         case 'SET_USER_MODAL':
             if (!payload) return state
-            console.log('adding payload to user modal array', payload)
             return {
                 ...state,
                 userModals: [
@@ -120,11 +119,9 @@ const reducer = (state, action) => {
             }
             break
         case 'CLOSE_USER_MODAL':
-            const newUserModals = state.userModals.slice(0, state.userModals.length - 1)
-            console.log('newUserModals', newUserModals)
             return {
                 ...state,
-                userModals: newUserModals,
+                userModals: state.userModals.slice(0, state.userModals.length - 1),
             }
             break
         case 'SET_USER':

@@ -1,40 +1,51 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-// import { loadProducts } from '@utils/products'
 
 const initialState = {
     products: [],
     error: null,
     loaded: false,
     productsLoading: false,
+    productModals: [],
+    closeProductModal: () => {},
     removeProductImage: () => {},
     setLoadingProducts: () => {},
     setProducts: () => {},
+    setProductModal: () => {},
     addProduct: () => {},
     updateProduct: () => {},
     updateProductImage: () => {},
     deleteProduct: () => {},
 }
 
-export const ProductsContext = createContext(initialState)
+export const ProductContext = createContext(initialState)
 
 export const useProducts = () => {
-    const context = useContext(ProductsContext)
+    const context = useContext(ProductContext)
     if (!context) {
         throw new Error()
     }
     return context
 }
 
-export const ProductsContextProvider = props => {
+export const ProductContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
+        closeProductModal: () => {
+            dispatch({ type: 'CLOSE_PRODUCT_MODAL' })
+        },
         removeProductImage: payload => {
             dispatch({ type: 'REMOVE_PRODUCT_IMAGE', payload })
         },
         setProductsLoading: payload => {
             dispatch({ type: 'SET_PRODUCTS_LOADING', payload })
+        },
+        setProductModal: (type, data) => {
+            dispatch({
+                type: 'SET_PRODUCT_MODAL',
+                payload: { data, type },
+            })
         },
         setProducts: payload => {
             dispatch({ type: 'SET_PRODUCTS', payload })
@@ -60,9 +71,9 @@ export const ProductsContextProvider = props => {
     }), [state, dispatch])
 
     return (
-        <ProductsContext.Provider value={{ ...state, ...actions }}>
+        <ProductContext.Provider value={{ ...state, ...actions }}>
             {props.children}
-        </ProductsContext.Provider>
+        </ProductContext.Provider>
     )
 }
 
@@ -89,6 +100,22 @@ const reducer = (state, action) => {
                         ? { ...prod, image: null }
                         : product
                 ),
+            }
+            break
+        case 'SET_PRODUCT_MODAL':
+            if (!payload) return state
+            return {
+                ...state,
+                productModals: [
+                    ...state.productModals,
+                    payload,
+                ],
+            }
+            break
+        case 'CLOSE_PRODUCT_MODAL':
+            return {
+                ...state,
+                productModals: state.productModals.slice(0, state.productModals.length - 1),
             }
             break
         case 'SET_PRODUCTS':
