@@ -94,7 +94,6 @@ const reducer = (state, action) => {
             break
         case 'SET_CONTACT_MODAL':
             if (!payload) return state
-            console.log('adding payload to contact modal array', payload)
             return {
                 ...state,
                 contactModals: [

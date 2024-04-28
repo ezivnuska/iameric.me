@@ -58,8 +58,8 @@ import UserDetails from './UserDetails'
 import UserDetailsShort from './UserDetailsShort'
 import UserHeading from './UserHeading'
 import UserModal from './UserModal'
-// import UserList from './UserList'
-// import UserModule from './UserModule'
+import Vendor from './Vendor'
+import Vendors from './Vendors'
 import VendorList from './VendorList'
 
 export {
@@ -120,10 +120,10 @@ export {
     TimeSelector,
     TitleBar,
     UserHeading,
-    // UserList,
-    // UserModule,
     UserDetails,
     UserDetailsShort,
     UserModal,
+    Vendor,
+    Vendors,
     VendorList,
 }

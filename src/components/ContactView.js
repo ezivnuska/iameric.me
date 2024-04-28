@@ -26,7 +26,6 @@ export default ({ user }) => {
     } = useContacts()
 
     useEffect(() => {
-        console.log('user', user)
         const init = async () => {
             setContactLoading(true)
             const loadedUser = await loadFullContact(user._id)

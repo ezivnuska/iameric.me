@@ -1,35 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
-    EmptyStatus,
-    VendorList,
+    ContactModal,
+    Vendors,
 } from '@components'
 import {
     Screen,
-    ScreenTitle,
 } from '.'
-import { loadUsersByRole } from '@utils/contacts'
+import {
+    ContactContextProvider,
+} from '@context'
 
-export default props => {
-
-    const [vendors, setVendors] = useState(null)
-
-    useEffect(() => {
-        loadVendors()
-    }, [])
-
-    const loadVendors = async () => {
-        const vendors = await loadUsersByRole('vendor')
-        setVendors(vendors)
-    }
-    
-    return (
-        <Screen {...props}>
-            <ScreenTitle title='Merchants' />
-            {vendors
-                ? <VendorList users={vendors} {...props} />
-                : <EmptyStatus status='No participating vendors.' />
-            }
-
-        </Screen>
-    )
-}
+export default props => (
+    <Screen {...props}>
+        <ContactContextProvider>
+            <Vendors {...props} />
+            <ContactModal />
+        </ContactContextProvider>
+    </Screen>
+)
