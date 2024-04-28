@@ -29,7 +29,11 @@ export default () => {
     if (userLoading) return <LoadingView loading='Loading profile.' />
 
     return profile ? (
-        <View>
+        <View
+            style={{
+                paddingHorizontal: 10,
+            }}
+        >
             <UserDetails userId={profile._id} />
 
             <LocationModule userId={profile._id} />

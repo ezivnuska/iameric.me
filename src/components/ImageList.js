@@ -51,6 +51,11 @@ export default ({ images, onSelected }) => {
                 return contact ? true : false
         }
     }
+
+    const handleUpload = () => {
+        if (restrictUpload()) alert(`can't upload in dev mode`)
+        else setUserModal('SELECT_IMAGE')
+    }
     
     return (
         <View
@@ -98,8 +103,7 @@ export default ({ images, onSelected }) => {
             {!hideUpload() && (
                 <Pressable
                     key={`image-${images.length}`}
-                    onPress={() => setUserModal('SELECT_IMAGE')}
-                    disabled={restrictUpload()}
+                    onPress={handleUpload}
                     style={[
                         {
                             flexBasis: 'auto',
@@ -109,7 +113,6 @@ export default ({ images, onSelected }) => {
                             alignItems: 'center',
                             width: IMAGE_SIZE,
                             height: IMAGE_SIZE,
-                            opacity: restrictUpload() ? 0.5 : 1,
                         },
                         buttonStyle,
                     ]}

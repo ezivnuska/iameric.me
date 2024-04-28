@@ -22,8 +22,9 @@ export default ({
     
     useEffect(() => {
         const verified = (!secure || (secure && userId !== null))
-        if (!verified) props.navigation.navigate('Start')
+        if (!verified) props.navigation.navigate('Splash')
         else setSecured(true)
+        // else if (secure && !userId) props.navigation.navigate('Start')
     }, [userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />

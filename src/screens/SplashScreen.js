@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import {
-    CenteredVertical,
+    CenterVertical,
     ThemedText,
 } from '@components'
 import {
@@ -17,8 +17,8 @@ export default props => {
     }, [profile, userLoaded])
     
     return (
-        <CenteredVertical>
+        <CenterVertical>
             <ThemedText>Splash</ThemedText>
-        </CenteredVertical>
+        </CenterVertical>
     )
 }

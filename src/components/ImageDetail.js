@@ -31,6 +31,11 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const deleteRestricted = () => userLoading || process.env.NODE_ENV === 'development'
 
+    const handleDelete = () => {
+        if (deleteRestricted()) alert(`Can't delete in development`)
+        else deleteImage()
+    }
+
     return (
         <View
             style={{
@@ -113,8 +118,8 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                                 <IconButton
                                     type='danger'
                                     label='Delete'
-                                    onPress={deleteImage}
-                                    disabled={deleteRestricted()}
+                                    onPress={handleDelete}
+                                    // disabled={deleteRestricted()}
                                     style={{ flex: 1, opacity: deleteRestricted() ? 0.5 : 1 }}
                                 />
                             )}

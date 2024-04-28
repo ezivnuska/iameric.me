@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     SafeAreaView,
 } from 'react-native'
 import AppNavigation from '../navigation/AppNavigation'
 import {
     AuthModal,
-    LoadingView,
+    CenterVertical,
     UserModal,
 } from '@components'
 import { Header } from '.'
@@ -13,10 +13,20 @@ import {
     useApp,
     UserContextProvider,
 } from '@context'
+import { ActivityIndicator } from 'react-native-paper'
 
 export default () => {
     
     const { appLoaded, dims, theme } = useApp()
+    const [ready, setReady] = useState(false)
+    let timer = undefined
+    
+    useEffect(() => {
+        timer = setTimeout(() => {
+            console.log('setting ready')
+            setReady(true)
+        }, 2000)
+    }, [])
 
     return (
         
@@ -28,7 +38,7 @@ export default () => {
                 backgroundColor: theme?.colors.background,
             }}
         >
-            {appLoaded
+            {appLoaded && ready
                 ? (
                     <UserContextProvider>
                         <Header />
@@ -36,7 +46,11 @@ export default () => {
                         <AuthModal />
                         <UserModal />
                     </UserContextProvider>
-                ) : <LoadingView loading='Initializing App...' />}
+                ) : (
+                    <CenterVertical>
+                        <ActivityIndicator size='large' />
+                    </CenterVertical>
+                )}
            
         </SafeAreaView>
     )
