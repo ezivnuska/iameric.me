@@ -15,7 +15,7 @@ export const getUserLocation = async userId => {
         return null
     }
     
-    return data
+    return data.location
 }
 
 export const getContactLocation = async userId => {

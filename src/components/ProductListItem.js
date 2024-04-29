@@ -19,7 +19,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
 
     const { profile, userLoading } = useUser()
     const { title, price, blurb, desc, image } = useMemo(() => product, [product])
-
+    
     return (
         <View
             {...props}

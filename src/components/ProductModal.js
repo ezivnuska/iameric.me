@@ -3,10 +3,11 @@ import {
     View,
 } from 'react-native'
 import {
-    ProductForm,
-    PopUpModal,
     CenterVertical,
-} from '.'
+    ProductForm,
+    ProductDetails,
+    PopUpModal,
+} from '@components'
 import {
     useApp,
     useForm,
@@ -26,6 +27,7 @@ export default () => {
         const { type, data } = modal
         switch(type) {
             case 'PRODUCT': return <ProductForm product={data} />; break
+            case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
             default: return null
         }
     }

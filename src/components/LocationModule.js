@@ -11,7 +11,6 @@ import {
 } from '.'
 import {
     useForm,
-    useModal,
     useUser,
 } from '@context'
 import {
@@ -19,24 +18,23 @@ import {
 } from '@utils/location'
 
 export default () => {
-    const { profile, setUserLoading, setUserLocation, userLoading } = useUser()
-    const { setModal } = useModal()
+    const { profile, setUserLoading, setUserLocation, setUserModal, userLoading } = useUser()
     const { formLoading } = useForm()
     const { location } = useMemo(() => profile, [profile])
 
-    // useEffect(() => {
-    //     const init = async () => {
-    //         if (!location) {
-    //             setUserLoading(true)
-    //             const data = await getUserLocation(profile._id)
-    //             setUserLoading(false)
-    //             console.log('data.location', data.location)
-    //             if (!data || !data.location) console.log('Error fetching user location')
-    //             else setUserLocation(data.location)
-    //         }
-    //     }
-    //     init()
-    // }, [])
+    useEffect(() => {
+        const init = async () => {
+            if (!location) {
+                setUserLoading(true)
+                const data = await getUserLocation(profile._id)
+                console.log('user location', data)
+                setUserLoading(false)
+                
+                if (data) setUserLocation(data.location)
+            }
+        }
+        init()
+    }, [])
     
     if (userLoading) return <LoadingView loading='Loading user location' />
     
@@ -53,7 +51,7 @@ export default () => {
                 iconName={location ? 'create-outline' : 'add-outline'}
                 label='Address'
                 disabled={formLoading}
-                onPress={() => setModal('LOCATION', location)}
+                onPress={() => setUserModal('LOCATION', location || null)}
                 alignIcon='right'
                 transparent
                 justify='flex-start'
@@ -74,7 +72,7 @@ export default () => {
                 ? <LocationDetails location={location} />
                 : (
                     <Pressable
-                        onPress={() => setModal('LOCATION')}
+                        onPress={() => setUserModal('LOCATION')}
                     >
                         <ThemedText>Add your location.</ThemedText>
                     </Pressable>

@@ -3,6 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
+    DeleteAccountButton,
     LoadingView,
     LocationModule,
     UserDetails,
@@ -16,15 +17,29 @@ import { loadUser } from '@utils/user'
 export default () => {
 
     const { userId } = useApp()
-    const { profile, userLoading } = useUser()
+    const { profile, setUser, userLoading, setUserLoading } = useUser()
 
-    const restricted = ['Customer', 'Driver', 'Vendor']
+    const restricted = ['iameric', 'Customer', 'Driver', 'Vendor']
     
     useEffect(() => {
-        if (!profile && userId) {
-            loadUser(userId)
+        const init = async () => {
+            if (!profile && userId) {
+                setUserLoading(true)
+                const data = await loadUser(userId)
+                setUserLoading(false)
+                console.log('loadedUser....', data)
+                if (data) setUser(data)
+            }
         }
+        init()
     }, [])
+
+    useEffect(() => {
+        if (profile) {
+            console.log('profile', profile)
+            console.log('restricted', restricted.indexOf(profile.username) > -1)
+        }
+    }, [profile])
     
     if (userLoading) return <LoadingView loading='Loading profile.' />
 
@@ -38,7 +53,12 @@ export default () => {
 
             <LocationModule userId={profile._id} />
 
-            {restricted.indexOf(profile.username) > -1 && <DeleteAccountButton />}
+            {
+                restricted.indexOf(profile.username) > -1
+                    ? null
+                    : <DeleteAccountButton />
+            }
+
         </View>
     ) : <LoadingView loading='No profile.' />
 }

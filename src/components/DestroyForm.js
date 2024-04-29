@@ -13,7 +13,6 @@ import { getFields } from '@utils/form'
 import classes from '@styles/classes'
 import {
     useForm,
-    useModal,
     useUser,
 } from '@context'
 
@@ -44,8 +43,7 @@ export default () => {
     } = useForm()
 
     const { signOut } = useApp()
-    const { profile, clearUser } = useUser()
-    const { closeModal, data } = useModal()
+    const { closeUserModal, profile, clearUser } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -54,7 +52,7 @@ export default () => {
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        const fields = getFields(initialState, data)
+        const fields = getFields(initialState)
         setInitialValues(fields)
     }, [])
     
@@ -130,7 +128,7 @@ export default () => {
             clearUser()
             cleanStorage()
             clearForm()
-            closeModal()
+            closeUserModal()
 		}
     }
 

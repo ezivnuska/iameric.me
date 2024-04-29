@@ -3,13 +3,14 @@ import {
     View,
 } from 'react-native'
 import {
-    PopUpModal,
     CenterVertical,
-    ProductDetails,
-    ModalImage,
-    LocationForm,
-    ProductForm,
+    DestroyForm,
     ImageSelector,
+    LocationForm,
+    ModalImage,
+    PopUpModal,
+    ProductDetails,
+    ProductForm,
 } from '@components'
 import {
     useApp,
@@ -27,11 +28,12 @@ export default () => {
         if (!modal) return null
         const { type, data } = modal
         switch(type) {
-            case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
+            case 'DESTROY': return <DestroyForm />; break
             case 'IMAGE': return <ModalImage image={data} />; break
-            case 'LOCATION': return <LocationForm />; break
+            case 'LOCATION': return <LocationForm location={data} />; break
             case 'PRODUCT': return <ProductForm />; break
             case 'SELECT_IMAGE': return <ImageSelector />; break
+            case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
             default: return null
         }
     }

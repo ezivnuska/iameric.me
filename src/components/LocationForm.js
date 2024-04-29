@@ -15,7 +15,7 @@ import {
 import { getFields } from '@utils/form'
 import axios from 'axios'
 
-export default () => {
+export default ({ location }) => {
 
     const { landscape } = useApp()
     
@@ -46,8 +46,7 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { profile, setUserLocation } = useUser()
-    const { closeModal, data } = useModal()
+    const { closeUserModal, profile, setUserLocation } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -60,7 +59,7 @@ export default () => {
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        const fields = getFields(initialState, data)
+        const fields = getFields(initialState, location)
         setInitialValues(fields)
     }, [])
     
@@ -142,8 +141,7 @@ export default () => {
     const submitFormData = async () => {
         
         if (formError) {
-			console.log(`Error in form field ${formError.name}: ${formError.message}`)
-            return
+			return console.log(`Error in form field ${formError.name}: ${formError.message}`)
 		}
 
         const { _id, username } = profile
@@ -159,10 +157,7 @@ export default () => {
         }
         
         setFormLoading(true)
-        
-        const response = await axios
-            .post('/api/location', newLocation)
-        
+        const response = await axios.post('/api/location', newLocation)
         setFormLoading(false)
 
         if (!response.data) {
@@ -170,7 +165,7 @@ export default () => {
         } else {
             setUserLocation(response.data.location)
             clearForm()
-            closeModal()
+            closeUserModal()
         }
     }
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     View,
 } from 'react-native'
@@ -8,14 +8,14 @@ import {
 } from '.'
 import {
     useForm,
-    useModal,
+    useUser,
 } from '@context'
 import classes from '../styles/classes'
 
 export default () => {
 
-    const { setModal } = useModal()
     const { formLoading } = useForm()
+    const { setUserModal } = useUser()
 
     return (
         <View
@@ -42,7 +42,7 @@ export default () => {
             <IconButton
                 type='danger'
                 label='Delete Account'
-                onPress={() => setModal('DESTROY')}
+                onPress={() => setUserModal('DESTROY')}
                 disabled={formLoading}
             />
 

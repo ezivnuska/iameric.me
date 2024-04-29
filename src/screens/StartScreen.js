@@ -13,7 +13,6 @@ import {
 } from '@components'
 import {
     useApp,
-    useModal,
     useUser,
 } from '@context'
 import {
@@ -26,8 +25,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default props => {
 
-    const { appLoaded, signIn } = useApp()
-    const { setModal } = useModal()
+    const { appLoaded, setAppModal, signIn } = useApp()
     const { profile } = useUser()
 
     useEffect(() => {
@@ -87,7 +85,7 @@ export default props => {
                             type='primary'
                             label='Find It'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setModal('SIGNUP_CUSTOMER')}
+                            onPress={() => setAppModal('SIGNUP_CUSTOMER')}
                             alignIcon='right'
                             style={{ marginHorizontal: 3 }}
                         />
@@ -144,7 +142,7 @@ export default props => {
                             type='primary'
                             label='Offer It'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setModal('SIGNUP_VENDOR')}
+                            onPress={() => setAppModal('SIGNUP_VENDOR')}
                             alignIcon='right'
                             style={{ marginHorizontal: 3 }}
                         />
@@ -202,7 +200,7 @@ export default props => {
                             type='primary'
                             label='Move It'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setModal('SIGNUP_DRIVER')}
+                            onPress={() => setAppModal('SIGNUP_DRIVER')}
                             alignIcon='right'
                             style={{ marginHorizontal: 3 }}
                         />

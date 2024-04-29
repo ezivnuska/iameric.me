@@ -16,6 +16,7 @@ import {
     useUser,
 } from '@context'
 import { deleteProductWithId, loadProducts } from '@utils/products'
+import { loadUser } from '@utils/user'
 
 export default () => {
 
@@ -29,20 +30,23 @@ export default () => {
         setProductModal,
         setProductsLoading,
     } = useProducts()
-    const { profile } = useUser()
+    const { profile, setUser, userLoading } = useUser()
 
     useEffect(() => {
         const init = async () => {
             if (!profile) {
-                loadProfile(userId)
+                const { data } = await loadUser(userId)
+                if (data) setUser(data)
             } else {
-                setProductsLoading(true)
-                const items = await loadProducts(profile._id)
-                setProductsLoading(false)
-                setProducts(items)
+                if (!products && !userLoading) {
+                    setProductsLoading(true)
+                    const items = await loadProducts(profile._id)
+                    setProductsLoading(false)
+                    setProducts(items)
+                }
             }
         }
-        if (profile) init()
+        init()
     }, [profile])
 
     const onDelete = async id => {
