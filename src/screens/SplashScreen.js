@@ -7,14 +7,13 @@ import {
     useUser,
 } from '@context'
 
-export default props => {
-    const { profile, userLoaded } = useUser()
+export default ({ navigation }) => {
+    const { userLoaded } = useUser()
+
     useEffect(() => {
-        if (userLoaded) {
-            if (profile) props.navigation.navigate('Auth')
-            else props.navigation.navigate('Start')
-        }
-    }, [profile, userLoaded])
+        if (userLoaded) navigation.navigate('Auth')
+        else navigation.navigate('Start')
+    }, [userLoaded])
     
     return (
         <CenterVertical>

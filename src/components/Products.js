@@ -12,6 +12,7 @@ import {
 } from '.'
 import {
     useApp,
+    useModal,
     useProducts,
     useUser,
 } from '@context'
@@ -21,13 +22,12 @@ import { loadUser } from '@utils/user'
 export default () => {
 
     const { theme, userId } = useApp()
+    const { closeModal, setModal } = useModal()
     const {
-        closeProductModal,
         deleteProduct,
         products,
         productsLoading,
         setProducts,
-        setProductModal,
         setProductsLoading,
     } = useProducts()
     const { profile, setUser, userLoading } = useUser()
@@ -58,7 +58,7 @@ export default () => {
             console.log(`${productDeleted.title} deleted`)
             deleteProduct(productDeleted._id)
         }
-        closeProductModal()
+        closeModal()
     }
 
     if (productsLoading) return <LoadingView loading='Loading products' />
@@ -69,7 +69,7 @@ export default () => {
                 <IconButton
                     label='New Product'
                     iconName='add-outline'
-                    onPress={product => setProductModal('PRODUCT', product)}
+                    onPress={product => setModal('PRODUCT', product)}
                     alignIcon='right'
                     textStyles={{
                         fontSize: 16,
@@ -90,7 +90,7 @@ export default () => {
                         product={item}
                         key={item => `product-${item._id}`}
                         onDelete={() => onDelete(item._id)}
-                        onPress={() => setProductModal('PRODUCT', item)}
+                        onPress={() => setModal('PRODUCT', item)}
                     />
                 )}
             />

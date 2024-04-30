@@ -6,9 +6,6 @@ import React, {
     useReducer,
 } from 'react'
 import {
-    LoadingView,
-} from '@components'
-import {
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native'
@@ -33,16 +30,12 @@ const CombinedDarkTheme = merge(darkTheme, dark)
 const initialState = {
     appLoaded: false,
     appLoading: false,
-    appModals: [],
     dark: false,
     debug: false,
     theme: CombinedDefaultTheme,
     userId: null,
-    closeAppModal: () => {},
     reset: () => {},
     setAppLoading: () => {},
-    setAppLoaded: () => {},
-    setAppModal: () => {},
     signIn: () => {},
     signOut: () => {},
     toggleTheme: () => {},
@@ -86,26 +79,18 @@ export const AppContextProvider = ({ children }) => {
             } else {
                 console.log('no token found')
             }
+            
             dispatch({ type: 'SET_APP_LOADED', payload })
         }
         init()
     }, [])
 
     const actions = useMemo(() => ({
-        closeAppModal: () => {
-            dispatch({ type: 'CLOSE_APP_MODAL' })
-        },
         reset: () => {
             dispatch({ type: 'RESET' })
         },
         setApp: async payload => {
             dispatch({ type: 'SET_APP_LOADING', payload })
-        },
-        setAppModal: async (type, data) => {
-            dispatch({
-                type: 'SET_APP_MODAL',
-                payload: { data, type },
-            })
         },
         signIn: async payload => {
             await storeToken(payload.token)
@@ -160,23 +145,7 @@ const reducer = (state, action) => {
                 appLoading: payload,
             }
             break
-        case 'SET_APP_MODAL':
-            return {
-                ...state,
-                appModals: [
-                    ...state.appModals,
-                    payload,
-                ],
-            }
-            break
-        case 'CLOSE_APP_MODAL':
-            return {
-                ...state,
-                appModals: state.appModals.slice(0, state.appModals.length - 1),
-            }
-            break
         case 'SIGN_IN':
-            console.log('SIGN_IN', payload)
             const { _id } = payload
             return {
                 ...state,

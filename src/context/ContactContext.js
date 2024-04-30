@@ -1,9 +1,12 @@
-import React, { createContext, useContext, useMemo, useReducer } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import { loadContacts } from '@utils/contacts'
+import { useApp } from '@context'
 
 const initialState = {
     lastContact: null,
     contact: null,
     contacts: [],
+    contactsLoaded: false,
     contactLoading: false,
     contactsLoading: false,
     contactModals: [],
@@ -32,6 +35,24 @@ export const useContacts = () => {
 export const ContactContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
+    const { userId } = useApp()
+
+    useEffect(() => {
+        const init = async () => {
+            if (userId) {
+                dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
+                const data = await loadContacts()
+                dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })
+                if (!data) console.log('could not load contacts')
+                else dispatch({ type: 'SET_CONTACTS', payload: data })
+            } else console.log('user not verified.')
+            
+            dispatch({ type: 'SET_CONTACTS_LOADED' })
+        }
+        
+        init()
+
+    }, [userId])
 
     const actions = useMemo(() => ({
         closeContactModal: async () => {
@@ -89,6 +110,9 @@ const reducer = (state, action) => {
         case 'SET_CONTACTS':
             return { ...state, contacts: payload }
             break
+        case 'SET_CONTACTS_LOADED':
+            return { ...state, contactsLoaded: false }
+            break
         case 'SET_CONTACTS_LOADING':
             return { ...state, contactsLoading: payload }
             break
@@ -110,20 +134,16 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_CONTACT':
-            let contact = state.contact
-            const contacts = state.contacts.length
-                ? state.contacts.map(user => {
-                    if (user._id === payload._id) {
-                        contact = { ...user, ...payload }
-                        return contact
-                    }
-                    return user
-                }) : [payload]
-
             return {
                 ...state,
-                contact,
-                contacts,
+                contacts: state.contacts.length
+                    ? state.contacts.map(user => {
+                        if (user._id === payload._id) {
+                            return { ...user, ...payload }
+                        }
+                        return user
+                    })
+                    : [payload]
             }
             break
         case 'UPDATE_USER_PRODUCTS':

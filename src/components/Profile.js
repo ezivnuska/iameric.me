@@ -19,27 +19,32 @@ export default () => {
     const { userId } = useApp()
     const { profile, setUser, userLoading, setUserLoading } = useUser()
 
-    const restricted = ['iameric', 'Customer', 'Driver', 'Vendor']
-    
-    useEffect(() => {
-        const init = async () => {
-            if (!profile && userId) {
-                setUserLoading(true)
-                const data = await loadUser(userId)
-                setUserLoading(false)
-                console.log('loadedUser....', data)
-                if (data) setUser(data)
-            }
-        }
-        init()
-    }, [])
+    const restrictedUsernames = ['Customer', 'Driver', 'Vendor']
+    const restrictedRoles = ['admin']
 
-    useEffect(() => {
-        if (profile) {
-            console.log('profile', profile)
-            console.log('restricted', restricted.indexOf(profile.username) > -1)
-        }
-    }, [profile])
+    const isRestricted = () => {
+        const { role, username } = profile
+        let restricted = false
+        if (
+            (username && restrictedUsernames.indexOf(username) > -1)
+            ||
+            (role && restrictedRoles.indexOf(role) > -1)
+        ) restricted = true
+
+        return restricted
+    }
+    
+    // useEffect(() => {
+    //     const init = async () => {
+    //         if (!profile && userId) {
+    //             setUserLoading(true)
+    //             const data = await loadUser(userId)
+    //             setUserLoading(false)
+    //             if (data) setUser(data)
+    //         }
+    //     }
+    //     init()
+    // }, [])
     
     if (userLoading) return <LoadingView loading='Loading profile.' />
 
@@ -54,7 +59,7 @@ export default () => {
             <LocationModule userId={profile._id} />
 
             {
-                restricted.indexOf(profile.username) > -1
+                isRestricted()
                     ? null
                     : <DeleteAccountButton />
             }

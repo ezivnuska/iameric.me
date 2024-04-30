@@ -1,18 +1,18 @@
 import React from 'react'
-import {
-  Layout,
-} from '@layout'
+import { Layout } from '@layout'
 import {
   AppContextProvider,
   FormContextProvider,
+  ModalContextProvider,
 } from '@context'
 import Compose from './Compose'
 
 export default () => (
 	<Compose
 		components={[
-			FormContextProvider,
 			AppContextProvider,
+			FormContextProvider,
+			ModalContextProvider,
 		]}
 	>
 		<Layout />

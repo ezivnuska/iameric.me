@@ -44,8 +44,8 @@ export default ({ role }) => {
         setFormValues,
     } = useForm()
 
-    const { closeModal, data } = useModal()
     const { signIn } = useApp()
+    const { closeModal, data } = useModal()
     const { setUser } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
@@ -133,20 +133,16 @@ export default ({ role }) => {
 
     const submitFormData = async () => {
         if (formError) {
-			console.log(`Error in form field ${formError.name}: ${formError.message}`)
-            return
+			return console.log(`Error in form field ${formError.name}: ${formError.message}`)
 		}
 
-        setFormLoading(true)
-
 		await setItem('email', email)
-        
+
+        setFormLoading(true)
 		const user = await signup(email, password, role, username)
-        
         setFormLoading(false)
         
 		if (!user) {
-            console.log('Error authenticating user: NULL')
             setFormError({ name: 'email', message: 'Signup failed.' })
         } else {
             if (formError) clearFormError()

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import {
     ImageList,
-    UserModal,
 } from '@components'
 import {
     Screen,
@@ -9,6 +8,7 @@ import {
 import {
     useApp,
     useUser,
+    useModal,
 } from '@context'
 import { loadImages } from '@utils/images'
 import { loadUser } from '@utils/user'
@@ -20,9 +20,9 @@ export default props => {
         profile,
         setUser,
         setUserLoading,
-        setUserModal,
         updateImages,
     } = useUser()
+    const { setModal } = useModal()
     // const profileImages = useMemo(() => profile ? profile.images : null, [profile])
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export default props => {
         <Screen {...props}>
             <ImageList
                 images={profile.images}
-                onSelected={image => setUserModal('IMAGE', image)}
+                onSelected={image => setModal('IMAGE', image)}
             />
         </Screen>
     ) : null

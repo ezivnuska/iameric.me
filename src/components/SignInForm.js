@@ -12,6 +12,7 @@ import { getFields } from '@utils/form'
 import {
     useApp,
     useForm,
+    useModal,
 } from '@context'
 
 export default () => {
@@ -21,6 +22,7 @@ export default () => {
         password: '',
     }
 
+    const { signIn, data } = useApp()
     const {
         clearForm,
         clearFormError,
@@ -39,8 +41,7 @@ export default () => {
         setFormLoading,
         setFormValues,
     } = useForm()
-
-    const { signIn, data } = useApp()
+    const { closeModal } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -118,22 +119,18 @@ export default () => {
 		}
 
         setFormLoading(true)
-
 		await setItem('email', email)
-        
 		const user = await signin(email, password)
-        
         setFormLoading(false)
         
 		if (!user) {
-            console.log('Error authenticating user: NULL')
             setFormError({ name: 'email', message: 'Signin failed.' })
         } else {
-            console.log('found user', user)
             if (formError) clearFormError()
             const { _id, profileImage, token, username } = user
             signIn({ _id, token, username })
             clearForm()
+            closeModal()
 		}
 
     }

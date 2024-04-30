@@ -8,7 +8,10 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import { useApp } from '@context'
+import {
+    useApp,
+    useContacts,
+} from '@context'
 import { loadUserById } from '@utils/contacts'
 import {
     getProfileImagePathFromUser,
@@ -19,32 +22,27 @@ import { navigationRef } from 'src/navigation/RootNavigation'
 
 export default ({ userId }) => {
 
-    const { landscape } = useApp()
-
-    const dims = useWindowDimensions()
-
+    const { dims, landscape } = useApp()
+    const { contactLoading, setContactLoading } = useContacts()
     const [userDetails, setUserDetails] = useState(null)
     const [imageSize, setImageSize] = useState(null)
 
     useEffect(() => {
         const loadUserDetails = async () => {
+            setContactLoading(true)
             const user = await loadUserById(userId)
+            setContactLoading(false)
             
-            if (!user) {
-                console.log('could not load user details with id:', userId)
-            } else {
-                setUserDetails(user)
-            }
+            if (!user) console.log('could not load user details with id:', userId)
+            else setUserDetails(user)
         }
         loadUserDetails(userId)
     }, [])
 
     useEffect(() => {
-        if (userDetails) {
-            if (userDetails._id !== userId) {
-                if (userDetails.profileImage) {
-                    getImageDims()
-                }
+        if (userDetails && userDetails._id !== userId) {
+            if (userDetails.profileImage) {
+                getImageDims()
             }
         }
     }, [userDetails])

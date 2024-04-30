@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     ScrollView,
 } from 'react-native'
@@ -18,14 +18,15 @@ export default ({
 }) => {
     
     const { appLoaded, dims, userId } = useApp()
-    const [secured, setSecured] = useState(false)
+
+    const secured = useMemo(() => userId !== null, [userId])
     
     useEffect(() => {
-        const verified = (!secure || (secure && userId !== null))
-        if (!verified) props.navigation.navigate('Splash')
-        else setSecured(true)
-        // else if (secure && !userId) props.navigation.navigate('Start')
-    }, [userId])
+        if (secure && !secured) props.navigation.navigate('Start')
+        // if (secure && !secured) props.navigation.navigate('Start')
+        // else if (secure && secured) props.navigation.navigate('Auth')
+        // else props.navigation.navigate('Start')
+    }, [secured])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 

@@ -4,6 +4,7 @@ import {
 } from '.'
 import {
     useContacts,
+    useModal,
     useProducts,
     useUser,
 } from '@context'
@@ -11,9 +12,10 @@ import axios from 'axios'
 import { loadUserImage } from '@utils/images'
 
 export default ({ image }) => {
-    const { closeUserModal, profile, removeImage, setProfileImage } = useUser()
     const { removeUserImage } = useContacts()
+    const { closeModal } = useModal()
     const { items, updateProductImage } = useProducts()
+    const { profile, removeImage, setProfileImage } = useUser()
     
     useEffect(() => {
         const init = async () => {
@@ -34,11 +36,8 @@ export default ({ image }) => {
     }
 
     const deleteImage = async () => {
-        if (image.user._id === profile._id) {
-            removeImage(image._id)
-        } else {
-            removeUserImage(image)
-        }
+        if (image.user._id === profile._id) removeImage(image._id)
+        else removeUserImage(image)
 
         const isProfileImage = isImageProfileImage(image._id)
         const isProductImage = profile.role === 'vendor' ? isImageProductImage(image._id) : null
@@ -50,11 +49,9 @@ export default ({ image }) => {
                 isProfileImage,
             })
             
-        if (!response.data) {
-            console.log('Error deleting image.')
-        }
+        if (!response.data) console.log('Error deleting image.')
         
-        closeUserModal()
+        closeModal()
     }
 
     const setAvatar = async () => {
@@ -65,13 +62,10 @@ export default ({ image }) => {
                 imageId: image._id,
             })
         
-        if (!response.data) {
-            console.log('Error setting profileImage.')
-        } else {
-            setProfileImage(response.data)
-        }
+        if (!response.data) console.log('Error setting profileImage.')
+        else setProfileImage(response.data)
 
-        closeUserModal()
+        closeModal()
     }
 
     const setProductImage = async productId => {
@@ -82,15 +76,11 @@ export default ({ image }) => {
                 imageId: image._id,
             })
 
-        if (!response.data) {
-            console.log('Error setting image id for product.')
-        } else if (!response.data.image) {
-            console.log('no image found')
-        } else {
-            updateProductImage(productId, response.data.image)
-        }
+        if (!response.data) console.log('Error setting image id for product.')
+        else if (!response.data.image) console.log('no image found')
+        else updateProductImage(productId, response.data.image)
         
-        closeUserModal()
+        closeModal()
     }
     
     return image && (

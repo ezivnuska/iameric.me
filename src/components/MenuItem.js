@@ -9,7 +9,7 @@ import {
 } from '@components'
 import {
     useApp,
-    useProducts,
+    useModal,
 } from '@context'
 import classes from '../styles/classes'
 
@@ -19,7 +19,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default ({ item, username }) => {
 
     const { landscape } = useApp()
-    const { setProductModal } = useProducts()
+    const { setModal } = useModal()
     
     const { price, title, desc, blurb, image } = item
     
@@ -108,7 +108,7 @@ export default ({ item, username }) => {
                             </ThemedText>
             
                             <IconButton
-                                onPress={() => setProductModal('SHOW_PRODUCT', item)}
+                                onPress={() => setModal('SHOW_PRODUCT', item)}
                                 type='primary'
                                 label={`$${price}`}
                                 align='center'

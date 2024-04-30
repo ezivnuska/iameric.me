@@ -13,6 +13,7 @@ import {
 } from '@components'
 import {
     useApp,
+    useModal,
     useUser,
 } from '@context'
 import {
@@ -25,7 +26,8 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default props => {
 
-    const { appLoaded, setAppModal, signIn } = useApp()
+    const { appLoaded, signIn } = useApp()
+    const { setModal } = useModal()
     const { profile } = useUser()
 
     useEffect(() => {
@@ -42,10 +44,10 @@ export default props => {
     if (!appLoaded) return <LoadingView loading='Doing Auth Stuff' />
 
     return (
-        <Screen
-            secure={false}
-            {...props}
-        >
+        // <Screen
+        //     secure={false}
+        //     {...props}
+        // >
             <View
                 style={{
                     flex: 1,
@@ -85,14 +87,14 @@ export default props => {
                             type='primary'
                             label='Find It'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setAppModal('SIGNUP_CUSTOMER')}
+                            onPress={() => setModal('SIGNUP_CUSTOMER')}
                             alignIcon='right'
                             style={{ marginHorizontal: 3 }}
                         />
                     </View>
                     
                     <IconButton
-                        label='Browse Vendors'
+                        label='Customer'
                         iconName='eye-outline'
                         onPress={() => onConnect('customer')}
                         alignIcon='right'
@@ -142,14 +144,14 @@ export default props => {
                             type='primary'
                             label='Offer It'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setAppModal('SIGNUP_VENDOR')}
+                            onPress={() => setModal('SIGNUP_VENDOR')}
                             alignIcon='right'
                             style={{ marginHorizontal: 3 }}
                         />
                     </View>
 
                     <IconButton
-                        label='Preview Sales'
+                        label='Seller'
                         iconName='eye-outline'
                         onPress={() => onConnect('vendor')}
                         alignIcon='right'
@@ -200,14 +202,14 @@ export default props => {
                             type='primary'
                             label='Move It'
                             iconName='arrow-forward-circle-outline'
-                            onPress={() => setAppModal('SIGNUP_DRIVER')}
+                            onPress={() => setModal('SIGNUP_DRIVER')}
                             alignIcon='right'
                             style={{ marginHorizontal: 3 }}
                         />
                     </View>
                     
                     <IconButton
-                        label='Preview Delivery'
+                        label='Driver'
                         iconName='eye-outline'
                         onPress={() => onConnect('driver')}
                         alignIcon='right'
@@ -231,7 +233,7 @@ export default props => {
                 </ImageSegment>
 
             </View>
-        </Screen>
+        // </Screen>
     )
 }
 

@@ -8,17 +8,19 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import {
     useApp,
     useContacts,
+    useModal,
     useUser,
 } from '@context'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, onSelected }) => {
+export default ({ images, onSelected, restricted }) => {
 
     const { theme } = useApp()
     const { contact } = useContacts()
-    const { profile, setUserModal, userLoading } = useUser()
+    const { setModal } = useModal()
+    const { profile, userLoading } = useUser()
 
     const buttonStyle = {
         borderWidth: 1,
@@ -41,20 +43,20 @@ export default ({ images, onSelected }) => {
         return false
     }
     const hideUpload = () => {
-        if (!profile) return true
+        if (!profile || restricted) return true
         switch(profile.username) {
             case 'Customer':
             case 'Driver':
             case 'Vendor':
                 return true
             default:
-                return contact ? true : false
+                return false
         }
     }
 
     const handleUpload = () => {
         if (restrictUpload()) alert(`can't upload in dev mode`)
-        else setUserModal('SELECT_IMAGE')
+        else setModal('SELECT_IMAGE')
     }
     
     return (
@@ -88,7 +90,6 @@ export default ({ images, onSelected }) => {
                     <Image
                         width={IMAGE_SIZE}
                         height={IMAGE_SIZE}
-                        // source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
                         source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
                         style={{
                             resizeMode: 'cover',

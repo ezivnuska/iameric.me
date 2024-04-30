@@ -13,6 +13,7 @@ import { getFields } from '@utils/form'
 import classes from '@styles/classes'
 import {
     useForm,
+    useModal,
     useUser,
 } from '@context'
 
@@ -43,7 +44,8 @@ export default () => {
     } = useForm()
 
     const { signOut } = useApp()
-    const { closeUserModal, profile, clearUser } = useUser()
+    const { closeModal } = useModal()
+    const { profile, clearUser } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -128,7 +130,7 @@ export default () => {
             clearUser()
             cleanStorage()
             clearForm()
-            closeUserModal()
+            closeModal()
 		}
     }
 

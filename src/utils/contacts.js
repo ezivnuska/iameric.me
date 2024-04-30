@@ -27,11 +27,23 @@ export const getContactImages = async id => {
     return null
 }
 
+export const getContactLocation = async userId => {
+    const { data } = await axios.get(`/api/location/${userId}`)
+    if (!data || !data.location) console.log('could not get contact location data.')
+    else return data.location
+    return null
+}
+
 export const loadFullContact = async id => {
     const { data } = await axios.get(`/api/user/full/${id}`)
-    if (!data || !data.user) console.log(`\nError loading full user`)
-    else return data.user
-    return null
+    if (!data) {
+        console.log(`\nError loading contact`)
+        return null
+    }
+
+    const { user, images } = data
+    
+    return { ...user, images }
 }
 
 export const loadVendor = async vendorId => {
@@ -62,15 +74,12 @@ export const loadVendor = async vendorId => {
 //     return data.user
 // }
 
-export const loadUsers = async () => {
+export const loadContacts = async () => {
 
     const { data } = await axios.get('/api/users')
 
-    if (!data || !data.users) {
-        console.log('Error: could not load users')
-        return null
-    }
-    return data
+    if (!data || !data.users) console.log('Error: could not load users')
+    return data?.users || null
 }
 
 export const loadUserById = async userId => {

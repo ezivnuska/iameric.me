@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    ForumModal,
     ForumView,
 } from '@components'
 import {
@@ -14,7 +13,6 @@ export default props => (
     <Screen {...props}>
         <ForumContextProvider>
             <ForumView />
-            <ForumModal />
         </ForumContextProvider>
     </Screen>
 )

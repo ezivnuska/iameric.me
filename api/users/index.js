@@ -139,19 +139,13 @@ const getVendor = async (req, res) => {
 
 const getUserById = async (req, res) => {
     
-    const user = await User
-        .findOne({ _id: req.params.id })
-        .populate({
-            path: 'profileImage',
-            select: 'filename width height',
-        })
+    const user = await User.findOne({ _id: req.params.id })
+        .populate({ path: 'profileImage', select: 'filename width height' })
+        .populate('location')
         
-    if (!user) {
-        console.log('could not get user by id.')
-        return res.status(406).json(null)
-    }
-        
-    return res.status(200).json({ user })
+    if (!user) console.log('could not get user by id.')
+    else return res.status(200).json({ user })
+    return res.status(406).json(null)
 }
 
 const getUserAndImagesById = async (req, res) => {
@@ -176,10 +170,8 @@ const getUserAndImagesById = async (req, res) => {
         })
 
     return res.status(200).json({
-        user: {
-            ...user,
-            images,
-        }
+        user,
+        images,
     })
 }
 

@@ -1,4 +1,3 @@
-import AuthModal from './AuthModal'
 import Brand from './Brand'
 import Cart from './Cart'
 import CartButton from './CartButton'
@@ -6,7 +5,6 @@ import CartProductPreview from './CartProductPreview'
 import CategoryPicker from './CategoryPicker'
 import CenteredView from './CenteredView'
 import CenterVertical from './CenterVertical'
-import ContactModal from './ContactModal'
 import ContactView from './ContactView'
 import ContactsView from './ContactsView'
 import ThemedText from './ThemedText'
@@ -17,7 +15,6 @@ import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormField from './FormField'
 import ForumList from './ForumList'
-import ForumModal from './ForumModal'
 import ForumView from './ForumView'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
@@ -36,6 +33,7 @@ import MenuItem from './MenuItem'
 import ModalImage from './ModalImage'
 import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
+import ModalView from './ModalView'
 import OrderList from './OrderList'
 import OrderDetails from './OrderDetails'
 import OrderPreview from './OrderPreview'
@@ -45,7 +43,6 @@ import ProductDetails from './ProductDetails'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
-import ProductModal from './ProductModal'
 import Products from './Products'
 import ProductSelector from './ProductSelector'
 import Profile from './Profile'
@@ -57,13 +54,11 @@ import TitleBar from './TitleBar'
 import UserDetails from './UserDetails'
 import UserDetailsShort from './UserDetailsShort'
 import UserHeading from './UserHeading'
-import UserModal from './UserModal'
 import Vendor from './Vendor'
 import Vendors from './Vendors'
 import VendorList from './VendorList'
 
 export {
-    AuthModal,
     Brand,
     Cart,
     CartButton,
@@ -71,7 +66,6 @@ export {
     CategoryPicker,
     CenteredView,
     CenterVertical,
-    ContactModal,
     ContactView,
     ContactsView,
     ThemedText,
@@ -81,7 +75,6 @@ export {
     FeedbackForm,
     FileSelector,
     ForumList,
-    ForumModal,
     ForumView,
     HoverableView,
     IconButton,
@@ -100,6 +93,7 @@ export {
     ModalImage,
     ModalProfile,
     ModalSignout,
+    ModalView,
     OrderList,
     OrderDetails,
     OrderPreview,
@@ -109,7 +103,6 @@ export {
     ProductForm,
     ProductList,
     ProductListItem,
-    ProductModal,
     Products,
     ProductSelector,
     Profile,
@@ -122,7 +115,6 @@ export {
     UserHeading,
     UserDetails,
     UserDetailsShort,
-    UserModal,
     Vendor,
     Vendors,
     VendorList,

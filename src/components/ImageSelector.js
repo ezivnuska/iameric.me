@@ -10,6 +10,7 @@ import {
 import EXIF from 'exif-js'
 import {
     useApp,
+    useModal,
     useUser,
 } from '@context'
 import { handleImageData, openFileSelector, uploadImageData } from '@utils/images'
@@ -19,6 +20,9 @@ const initialSize = 280
 export default () => {
 
     const { dims } = useApp()
+    const {
+        closeModal,
+    } = useModal()
     const {
         addImage,
         closeUserModal,
@@ -85,7 +89,7 @@ export default () => {
             setPreview({ uri, height, width })
         } else if (preview) {
             setPreview(null)
-            closeUserModal()
+            closeModal()
         }
     }, [payload])
 
@@ -98,9 +102,10 @@ export default () => {
         setUserLoading(true)
         const image = await uploadImageData(imageData)
         setUserLoading(false)
+        
         if (!image) conaole.log('error uploading image')
         else addImage(image)
-        closeUserModal()
+        closeModal()
     }
 
     const onSubmit = async () => {

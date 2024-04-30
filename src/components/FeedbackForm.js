@@ -10,6 +10,7 @@ import axios from 'axios'
 import {
     useForm,
     useForum,
+    useModal,
     useUser,
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
@@ -42,8 +43,11 @@ export default ({ data }) => {
 
     const {
         addEntry,
-        closeForumModal,
     } = useForum()
+
+    const {
+        closeModal,
+    } = useModal()
 
     const { profile } = useUser()
 
@@ -118,10 +122,7 @@ export default ({ data }) => {
         console.log('newEntry', newEntry)
         
         setFormLoading(true)
-        
-        const response = await axios
-            .post('/api/entry', newEntry)
-        
+        const response = await axios.post('/api/entry', newEntry)
         setFormLoading(false)
 
         if (!response.data) {
@@ -129,7 +130,7 @@ export default ({ data }) => {
         } else {
             addEntry(response.data.entry)
             clearForm()
-            closeForumModal()
+            closeModal()
         }
     }
 

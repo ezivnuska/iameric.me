@@ -17,26 +17,24 @@ import axios from 'axios'
 export default () => {
 
     const {
-        closeContactModal,
         contacts,
         contactsLoading,
         setContacts,
         setContactsLoading,
-        setContactModal,
     } = useContacts()
+
+    const {
+        setModal,
+    } = useModal()
     
     useEffect(() => {
         const init = async () => {
             
             setContactsLoading(true)
-            
             const { data } = await axios.get('/api/users')
-            
             setContactsLoading(false)
-            
-            if (!data || !data.users) {
-                console.log('Error loading contacts')
-            } else setContacts(data.users)
+            if (!data || !data.users) console.log('Error loading contacts')
+            else setContacts(data.users)
         }
         init()
     }, [])
@@ -45,7 +43,7 @@ export default () => {
         <ContactListItem
             item={contact}
             key={`contact-${index}`}
-            onPress={() => setContactModal('CONTACT', contact)}
+            onPress={() => setModal('CONTACT', contact)}
         />
     ))
 

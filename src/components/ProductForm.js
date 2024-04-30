@@ -50,12 +50,11 @@ export default  ({ product }) => {
         setFormValues,
     } = useForm()
     
+    const { closeModal } = useModal()
     const {
         addProduct,
         updateProduct,
     } = useProducts()
-
-    const { closeProductModal } = useProducts()
     const { profile } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
@@ -134,11 +133,8 @@ export default  ({ product }) => {
 	}
 
     const resetForm = () => {
-        if (product) {
-            setFormValues(product)
-        } else {
-            clearForm()
-        }
+        if (product) setFormValues(product)
+        else clearForm()
     }
 
     const submitFormData = async () => {
@@ -185,7 +181,7 @@ export default  ({ product }) => {
             else addProduct(response.data)
             
             clearForm()
-            closeProductModal()
+            closeModal()
         }
     }
 
@@ -209,9 +205,7 @@ export default  ({ product }) => {
 
         return (
             <ImageFormModule
-                onImageSelected={att => {
-                    setFormValues({ attachment: att })
-                }}
+                onImageSelected={att => setFormValues({ attachment: att })}
                 removeImage={removeImage}
                 source={source}
             />
@@ -288,9 +282,8 @@ export default  ({ product }) => {
     )
 
     return focused !== null ? (
-        <View
-            style={{ paddingVertical: 20 }}
-        >
+        <View style={{ paddingVertical: 20 }}>
+            
             <View style={{  marginBottom: 10 }}>
                 {renderFields()}
             </View>

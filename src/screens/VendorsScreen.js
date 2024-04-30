@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    ContactModal,
     Vendors,
 } from '@components'
 import {
@@ -14,7 +13,6 @@ export default props => (
     <Screen {...props}>
         <ContactContextProvider>
             <Vendors {...props} />
-            <ContactModal />
         </ContactContextProvider>
     </Screen>
 )

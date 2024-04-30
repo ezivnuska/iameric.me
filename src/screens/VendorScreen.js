@@ -1,19 +1,13 @@
 import React from 'react'
-import {
-    ContactModal,
-    Vendor,
-} from '@components'
-import {
-    Screen,
-} from '.'
-import {
-    ContactContextProvider,
-} from '@context'
+import { Vendor } from '@components'
+import { Screen } from '.'
+import { ContactContextProvider } from '@context'
 
 export default ({ onPress, ...props }) => {
 
     const { navigation, route } = props
     const idFromParams = route.params.id
+    
     return (
         <Screen {...props}>
             <ContactContextProvider>
@@ -24,7 +18,6 @@ export default ({ onPress, ...props }) => {
                         routes: [{ name: 'VendorList' }],
                     })}
                 />
-                <ContactModal />
             </ContactContextProvider>
         </Screen>
     )

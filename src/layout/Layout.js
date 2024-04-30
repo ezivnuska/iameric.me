@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import {
     SafeAreaView,
 } from 'react-native'
-import AppNavigation from '../navigation/AppNavigation'
+import { AppNavigation } from '@navigation'
 import {
-    AuthModal,
     CenterVertical,
-    UserModal,
+    ModalView,
 } from '@components'
-import { Header } from '.'
+import { Header } from '@layout'
 import {
     useApp,
     UserContextProvider,
@@ -22,10 +21,7 @@ export default () => {
     let timer = undefined
     
     useEffect(() => {
-        timer = setTimeout(() => {
-            console.log('setting ready')
-            setReady(true)
-        }, 2000)
+        timer = setTimeout(() => setReady(true), 2000)
     }, [])
 
     return (
@@ -43,8 +39,7 @@ export default () => {
                     <UserContextProvider>
                         <Header />
                         <AppNavigation />
-                        <AuthModal />
-                        <UserModal />
+                        <ModalView />
                     </UserContextProvider>
                 ) : (
                     <CenterVertical>

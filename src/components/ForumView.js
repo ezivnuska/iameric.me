@@ -10,18 +10,21 @@ import {
 } from '@components'
 import {
     useForum,
+    useModal,
 } from '@context'
 import { deleteEntryWithId } from '@utils/forum'
 
 export default () => {
 
     const {
-        closeForumModal,
         deleteEntry,
         entries,
         setForumLoading,
-        setForumModal,
     } = useForum()
+    const {
+        closeModal,
+        setModal,
+    } = useModal()
 
     const removeEntry = async id => {
         setForumLoading(true)
@@ -30,7 +33,7 @@ export default () => {
 
         // handle forum state
         deleteEntry(id)
-        closeForumModal()
+        closeModal()
     }
 
     if (!entries || !entries.length) return <EmptyStatus status='No entries yet.' />
@@ -41,7 +44,7 @@ export default () => {
                 <IconButton
                     label='Comment'
                     iconName='add-outline'
-                    onPress={() => setForumModal('FEEDBACK')}
+                    onPress={() => setModal('FEEDBACK')}
                     alignIcon='right'
                     justify='left'
                     outline

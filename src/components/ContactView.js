@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -11,29 +11,38 @@ import {
     useApp,
     useContacts,
     useModal,
+    useUser,
 } from '@context'
-import { loadFullContact } from '@utils/contacts'
+import { getContactImages } from '@utils/contacts'
 
 export default ({ user }) => {
     
     const { dims } = useApp()
     const {
-        contact,
         contactLoading,
-        setContact,
+        contacts,
         setContactLoading,
-        setContactModal,
+        updateContact,
     } = useContacts()
+    const { setModal } = useModal()
+    const { profile } = useUser()
+
+    const [contact, setContact] = useState(null)
 
     useEffect(() => {
-        const init = async () => {
+        const fetchContactImages = async () => {
             setContactLoading(true)
-            const loadedUser = await loadFullContact(user._id)
+            const images = await getContactImages(user._id)
             setContactLoading(false)
-            if (!loadedUser) console.log('Error loading user')
-            else setContact(loadedUser)
+            
+            if (!images) console.log('Error loading images for contact')
+            else {
+                const updatedContact = { ...user, images }
+                setContact(updatedContact)
+                updateContact(updatedContact)
+            }
         }
-        if (!contact) init()
+        if (!user.images) fetchContactImages()
     }, [])
 
     if (contactLoading) return <LoadingView loading='Loading contact' />
@@ -47,7 +56,8 @@ export default ({ user }) => {
         >
             <ImageList
                 images={contact.images}
-                onSelected={image => setContactModal('IMAGE', image)}
+                onSelected={image => setModal('IMAGE', image)}
+                restricted={profile._id !== contact._id}
             />
 
         </View>

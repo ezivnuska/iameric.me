@@ -8,14 +8,14 @@ import {
 } from '.'
 import {
     useForm,
-    useUser,
+    useModal,
 } from '@context'
 import classes from '../styles/classes'
 
 export default () => {
 
     const { formLoading } = useForm()
-    const { setUserModal } = useUser()
+    const { setModal } = useModal()
 
     return (
         <View
@@ -42,7 +42,7 @@ export default () => {
             <IconButton
                 type='danger'
                 label='Delete Account'
-                onPress={() => setUserModal('DESTROY')}
+                onPress={() => setModal('DESTROY')}
                 disabled={formLoading}
             />
 

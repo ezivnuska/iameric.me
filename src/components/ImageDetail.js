@@ -75,7 +75,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                 }}
             >
 
-                {(profile._id === image.user._id || profile.role === 'admin') ? (
+                {(profile && (profile._id === image.user._id || profile.role === 'admin')) ? (
                     <View
                         style={{
                             flexBasis: 'auto',

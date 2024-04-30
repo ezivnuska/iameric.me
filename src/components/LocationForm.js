@@ -46,7 +46,8 @@ export default ({ location }) => {
         setFormValues,
     } = useForm()
 
-    const { closeUserModal, profile, setUserLocation } = useUser()
+    const { closeModal } = useModal()
+    const { profile, setUserLocation } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -59,7 +60,7 @@ export default ({ location }) => {
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        const fields = getFields(initialState, location)
+        const fields = getFields(initialState, location || null)
         setInitialValues(fields)
     }, [])
     
@@ -165,7 +166,7 @@ export default ({ location }) => {
         } else {
             setUserLocation(response.data.location)
             clearForm()
-            closeUserModal()
+            closeModal()
         }
     }
 

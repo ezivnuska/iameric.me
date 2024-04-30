@@ -250,8 +250,6 @@ export default ({ items, onDelete }) => {
     const { landscape, dims } = useApp()
     const { setModal } = useModal()
 
-    const [contact, setContact] = useState()
-
     return !landscape ? (
         <FlatList
             data={items}
@@ -299,7 +297,7 @@ export default ({ items, onDelete }) => {
                         imagePath={getProfileImagePathFromUser(item.author)}
                         key={'entry' + index}
                         onDelete={onDelete}
-                        onPress={() => setContact(item.author)}
+                        onPress={() => setModal('CONTACT', item.author)}
                     />
                 )))}
             </View>

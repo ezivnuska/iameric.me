@@ -13,6 +13,7 @@ import {
 import {
     useApp,
     useUser,
+    useModal,
 } from '@context'
 import { navigationRef } from '../navigation/RootNavigation'
 
@@ -127,13 +128,14 @@ export default () => {
 
 const SignInButton = () => {
 
-    const { appLoading, setAppModal } = useApp()
+    const { appLoading } = useApp()
+    const { setModal } = useModal()
     
     return (
         <IconButton
             iconName='log-in-outline'
             label='Sign In'
-            onPress={() => setAppModal('SIGN_IN')}
+            onPress={() => setModal('SIGN_IN')}
             disabled={appLoading}
             alignIcon='right'
             transparent
@@ -143,11 +145,12 @@ const SignInButton = () => {
 
 const SignOutButton = () => {
 
-    const { appLoading, setAppModal, theme } = useApp()
+    const { appLoading, theme } = useApp()
+    const { setModal } = useModal()
     
     return (
         <IconButton
-            onPress={() => setAppModal('SIGN_OUT')}
+            onPress={() => setModal('SIGN_OUT')}
             disabled={appLoading}
             iconName='close-outline'
             textStyles={{
