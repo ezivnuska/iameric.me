@@ -160,10 +160,10 @@ const reducer = (state, action) => {
                 ...state,
                 profile: {
                     ...state.profile,
-                    images: [
+                    images: state.profile.images ? [
                         ...state.profile.images,
                         payload,
-                    ],
+                    ] : [payload],
                 },
             }
             break
@@ -172,15 +172,17 @@ const reducer = (state, action) => {
                 ...state,
                 profile: {
                     ...state.profile,
-                    images: state.profile.images.map(
-                        img => img._id === payload._id
-                        ? payload
-                        : img
-                    ),
+                    images: state.profile.images
+                        ? state.profile.images.map(
+                            img => img._id === payload._id
+                            ? payload
+                            : img
+                        ) : [payload],
                 },
             }
             break
         case 'REMOVE_IMAGE':
+            const profileImage = state.profile.profileImage && state.profile.profileImage._id === payload ? null : state.profileImage
             return {
                 ...state,
                 profile: {
@@ -188,6 +190,7 @@ const reducer = (state, action) => {
                     images: state.profile.images.filter(
                         image => image._id !== payload
                     ),
+                    profileImage,
                 },
             }
             break

@@ -3,6 +3,7 @@ import {
     ImageDetail,
 } from '.'
 import {
+    useApp,
     useContacts,
     useModal,
     useProducts,
@@ -10,22 +11,35 @@ import {
 } from '@context'
 import axios from 'axios'
 import { loadUserImage } from '@utils/images'
+import { loadUser } from '@utils/user'
 
 export default ({ image }) => {
+    const { userId, setUserLoading } = useApp()
     const { removeUserImage } = useContacts()
     const { closeModal } = useModal()
     const { items, updateProductImage } = useProducts()
-    const { profile, removeImage, setProfileImage } = useUser()
+    const { profile, removeImage, setProfileImage, setUser } = useUser()
     
     useEffect(() => {
         const init = async () => {
+            if (!profile) {
+                console.log('* warning * no profile found in ModalImage')
+                setUserLoading(true)
+                const loadedUser = await loadUser(userId)
+                setUserLoading(false)
+                if (loadedUser) setUser(loadedUser)
+            }
             const loadedImage = await loadUserImage(image._id)
             if (!loadedImage) return console.log('problem loading user image.')
         }
         init()
     }, [])
 
-    const isImageProfileImage = id => profile.profileImage === id
+    const isImageProfileImage = id => {
+        if (!profile || !profile.profileImage) return false
+        if (profile.profileImage._id === id) return true
+        return false
+    }
 
     const isImageProductImage = id => {
         let response = false
@@ -42,14 +56,15 @@ export default ({ image }) => {
         const isProfileImage = isImageProfileImage(image._id)
         const isProductImage = profile.role === 'vendor' ? isImageProductImage(image._id) : null
 
-        const response = await axios
+        const { data } = await axios
             .post('/api/images/delete', {
                 imageId: image._id,
                 isProductImage,
                 isProfileImage,
             })
-            
-        if (!response.data) console.log('Error deleting image.')
+        
+        if (!data) console.log('Error deleting image.')
+        else if (isProfileImage) removeImage(data.imageId)
         
         closeModal()
     }

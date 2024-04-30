@@ -170,7 +170,6 @@ const deleteImageById = async (req, res) => {
         .findOneAndRemove({ _id: imageId })
 
     if (!deletedImage) console.log('Could not find image to delete')
-    
     const user = await User
         .findOne({ _id: deletedImage.user })
     
@@ -186,12 +185,13 @@ const deleteImageById = async (req, res) => {
 
     const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
     const pathToAvatar = `${userPath}/${filenameToDelete}`
+    
+    if (user.profileImage.toString() === imageId) {
+        user.profileImage = null
+        await user.save()
+    }
 
-    if (user.profileImage === imageId) user.profileImage = null
-    await user.save()
-
-    const product = await Product
-        .findOne({ image: imageId })
+    const product = await Product.findOne({ image: imageId })
     
     if (product) {
         product.image = null
