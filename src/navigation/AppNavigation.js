@@ -180,28 +180,26 @@ const MainStackScreen = () => {
 }
 
 const AuthStack = createNativeStackNavigator()
-const AuthStackScreen = () => {
-    return (
-        <AuthStack.Navigator
-            initialRouteName='User'
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
-            <AuthStack.Screen
-                name='Main'
-                component={MainStackScreen}
-            />
+const AuthStackScreen = () => (
+    <AuthStack.Navigator
+        initialRouteName='User'
+        screenOptions={{
+            headerShown: false,
+        }}
+    >
+        <AuthStack.Screen
+            name='Main'
+            component={MainStackScreen}
+        />
 
-            <AuthStack.Screen
-                name='User'
-                component={UserStackScreen}
-                options={{ title: 'User' }}
-            />
+        <AuthStack.Screen
+            name='User'
+            component={UserStackScreen}
+            options={{ title: 'User' }}
+        />
 
-        </AuthStack.Navigator>
-    )
-}
+    </AuthStack.Navigator>
+)
 
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {

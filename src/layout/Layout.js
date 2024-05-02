@@ -9,10 +9,12 @@ import {
 } from '@components'
 import { Header } from '@layout'
 import {
+    ContactContextProvider,
     useApp,
     UserContextProvider,
 } from '@context'
 import { ActivityIndicator } from 'react-native-paper'
+import Compose from '../Compose'
 
 export default () => {
     
@@ -36,11 +38,16 @@ export default () => {
         >
             {appLoaded && ready
                 ? (
-                    <UserContextProvider>
+                    <Compose
+                        components={[
+                            ContactContextProvider,
+                            UserContextProvider,
+                        ]}
+                    >
                         <Header />
                         <AppNavigation />
                         <ModalView />
-                    </UserContextProvider>
+                    </Compose>
                 ) : (
                     <CenterVertical>
                         <ActivityIndicator size='large' />

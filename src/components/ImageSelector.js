@@ -25,10 +25,9 @@ export default () => {
     } = useModal()
     const {
         addImage,
-        closeUserModal,
         profile,
-        setUserLoading,
-        userLoading,
+        setUploading,
+        uploading,
     } = useUser()
 
     const [size, setSize] = useState(initialSize)
@@ -37,7 +36,7 @@ export default () => {
 
     useEffect(() => {
         const init = async () => {
-            setUserLoading(true)
+            setUploading(true)
             await openSelector(profile._id)
         }
         init()
@@ -76,7 +75,7 @@ export default () => {
         const image = new Image()
         image.onload = async () => {
             const data = await handleImageData(image, exif, id)
-            setUserLoading(false)
+            setUploading(false)
             if (!data) console.log('error loading image')
             else setPayload(data)
         }
@@ -94,17 +93,15 @@ export default () => {
     }, [payload])
 
     const handleUpload = async imageData => {
-        if (process.env.NODE_ENV === 'development') {
-            console.log('cant upload in dev')
-            return null
-        }
-
-        setUserLoading(true)
-        const image = await uploadImageData(imageData)
-        setUserLoading(false)
+        if (process.env.NODE_ENV === 'development') return alert('cant upload in dev')
         
-        if (!image) conaole.log('error uploading image')
+        setUploading(true)
+        const image = await uploadImageData(imageData)
+        setUploading(false)
+        
+        if (!image) console.log('error uploading image')
         else addImage(image)
+
         closeModal()
     }
 
@@ -161,13 +158,13 @@ export default () => {
                         <IconButton
                             type='primary'
                             label='Upload Image'
-                            disabled={userLoading}
+                            disabled={uploading}
                             onPress={onSubmit}
                         />
 
                         <IconButton
                             label='Change Image'
-                            disabled={userLoading}
+                            disabled={uploading}
                             onPress={openSelector}
                         />
 
@@ -177,7 +174,7 @@ export default () => {
                     <IconButton
                         type='primary'
                         label='Select Image'
-                        disabled={userLoading}
+                        disabled={uploading}
                         onPress={openSelector}
                     />
                 )}

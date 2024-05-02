@@ -273,8 +273,8 @@ const getThumbData = async (image, srcOrientation) => {
 
 export const uploadImageData = async imageData => {
     const { data } = await axios.post(`/api/image/upload`, imageData)
-    if (!data) console.log('Error uploading image/thumb')
-    else return data
+    if (!data || !data.image) console.log('Error uploading image/thumb')
+    else return data.image
     return null
 }
 

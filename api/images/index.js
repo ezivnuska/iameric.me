@@ -367,16 +367,16 @@ const uploadImage = async (req, res) => {
     const user = await User.findOne({ _id: userId })
     
     const filename = `${userId}-${Date.now()}.png`
-
+    
     const path = `${imagePath}/${user.username}`
     
     const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
-
+    
     if (!imagesUploaded) {
         console.log('Error writing image/thumb.')
         return res.status(200).json(null)
     }
-
+    
     const { image } = await saveUserImage(user._id, filename, height, width)
 
     if (!image) {
@@ -384,7 +384,7 @@ const uploadImage = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    return res.status(200).json(image)
+    return res.status(200).json({ image })
 }
 
 const saveUserImage = async (userId, filename, height, width) => {

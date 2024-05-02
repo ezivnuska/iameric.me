@@ -143,12 +143,12 @@ app.get(    '/product/:id',             getProductById)
 
 // images
 app.post(   '/user/avatar',             updateProfileImage)
+app.post(   '/image/upload',            uploadImage)
 app.get(    '/image/:id',               getImageWithUsernameByImageId)
 app.get(    '/avatar/:id',              getProfileImageByUserId)
 app.get(    '/user/images/:id',         getImagesByUserId)
 app.post(   '/upload/avatar',           uploadAvatar)
 app.post(   '/images/delete',           deleteImageById)
-app.post(   '/image/upload',            uploadImage)
 app.post(   '/product/image/upload',    uploadProductImage)
 app.post(   '/preview/delete',          deletePreview)
 app.get(    '/images/:name',            getImageIdFromFilename)

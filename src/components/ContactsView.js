@@ -24,6 +24,7 @@ export default () => {
 
     const {
         contacts,
+        contactsLoaded,
         contactsLoading,
         setContacts,
         setContactsLoading,
@@ -32,17 +33,17 @@ export default () => {
     const { setModal } = useModal()
     const { profile } = useUser()
     
-    useEffect(() => {
-        const init = async () => {
+    // useEffect(() => {
+    //     const init = async () => {
             
-            setContactsLoading(true)
-            const users = await loadContacts()
-            setContactsLoading(false)
-            if (!users) console.log('Error loading contacts')
-            else setContacts(users)
-        }
-        init()
-    }, [])
+    //         setContactsLoading(true)
+    //         const users = await loadContacts()
+    //         setContactsLoading(false)
+    //         if (!users) console.log('Error loading contacts')
+    //         else setContacts(users)
+    //     }
+    //     if (!contactsLoaded) init()
+    // }, [])
 
     const renderContacts = () => contacts.map((contact) => {
         if (profile && profile._id === contact._id) return null

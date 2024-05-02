@@ -11,15 +11,15 @@ import {
     useModal,
 } from '@context'
 
-export default ({ profile }) => {
+export default ({ images }) => {
     const { setModal } = useModal()
     return (
         <View>
             <TitleBar title='Images' />
             <ScreenContent>
-                {profile.images && (
+                {images && (
                     <ImageList
-                        images={profile.images}
+                        images={images}
                         onSelected={image => setModal('IMAGE', image)}
                     />
                 )}

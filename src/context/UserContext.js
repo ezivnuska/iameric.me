@@ -3,6 +3,7 @@ import { loadUser } from '@utils/user'
 import { useApp } from '@context'
 
 const initialState = {
+    uploading: false,
     profile: null,
     userLoaded: false,
     userLoading: false,
@@ -12,6 +13,7 @@ const initialState = {
     clearUser: () => {},
     closeUserModal: () => {},
     removeImage: () => {},
+    setUploading: () => {},
     setUser: () => {},
     setUserLoading: () => {},
     setUserLocation: () => {},
@@ -54,6 +56,9 @@ export const UserContextProvider = props => {
     const actions = useMemo(() => ({
         closeUserModal: async () => {
             dispatch({ type: 'CLOSE_USER_MODAL' })
+        },
+        setUploading: payload => {
+            dispatch({ type: 'SET_UPLOADING', payload })
         },
         setUser: payload => {
             dispatch({ type: 'SET_USER', payload })
@@ -105,6 +110,9 @@ const reducer = (state, action) => {
                 ...state,
                 userLoaded: true,
             }
+            break
+        case 'SET_UPLOADING':
+            return { ...state, uploading: payload }
             break
         case 'SET_USER_LOADING':
             return { ...state, userLoading: payload }

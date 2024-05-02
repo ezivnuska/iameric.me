@@ -14,36 +14,35 @@ import {
     useModal,
     useUser,
 } from '@context'
-import { getContactImages } from '@utils/contacts'
+import {
+    loadFullContact,
+} from '@utils/contacts'
 
-export default ({ user }) => {
+export default ({ userId }) => {
     
     const { dims } = useApp()
     const {
         contactLoading,
-        contacts,
         setContactLoading,
         updateContact,
     } = useContacts()
     const { setModal } = useModal()
-    const { profile } = useUser()
 
     const [contact, setContact] = useState(null)
 
     useEffect(() => {
-        const fetchContactImages = async () => {
+        const fetchContact = async () => {
             setContactLoading(true)
-            const images = await getContactImages(user._id)
+            const user = await loadFullContact(userId)
             setContactLoading(false)
-            
-            if (!images) console.log('Error loading images for contact')
+
+            if (!user) console.log('Error loading contact details')
             else {
-                const updatedContact = { ...user, images }
-                setContact(updatedContact)
-                updateContact(updatedContact)
+                setContact(user)
+                updateContact(user)
             }
         }
-        if (!user.images) fetchContactImages()
+        fetchContact()
     }, [])
 
     if (contactLoading) return <LoadingView loading='Loading contact' />
@@ -55,8 +54,9 @@ export default ({ user }) => {
                 maxWidth: dims.width - 20,
             }}
         >   
-            <ThemedText>{contact.username} - {contact.role}</ThemedText>
-            {contact.images && contact.images.length ? (
+            <ThemedText>{contact.username}</ThemedText>
+
+            {contact.images.length ? (
                 <ImageList
                     images={contact.images}
                     onSelected={image => setModal('IMAGE', image)}

@@ -39,11 +39,11 @@ export default props => {
             }
         }
         if (userId) init()
-    }, [userId, profile])
+    }, [profile])
 
-    return profile && profile.images ? (
+    return profile && (
         <Screen {...props}>
-            <ImagesView profile={profile} />
+            <ImagesView images={profile.images} />
         </Screen>
-    ) : null
+    )
 }

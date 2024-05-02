@@ -50,9 +50,9 @@ export const ContactContextProvider = props => {
             dispatch({ type: 'SET_CONTACTS_LOADED' })
         }
         
-        if (!state.contactsLoading && !state.contactsLoaded) init()
+        init()
 
-    }, [userId])
+    }, [])
 
     const actions = useMemo(() => ({
         closeContactModal: async () => {
@@ -111,7 +111,7 @@ const reducer = (state, action) => {
             return { ...state, contacts: payload }
             break
         case 'SET_CONTACTS_LOADED':
-            return { ...state, contactsLoaded: false }
+            return { ...state, contactsLoaded: true }
             break
         case 'SET_CONTACTS_LOADING':
             return { ...state, contactsLoading: payload }

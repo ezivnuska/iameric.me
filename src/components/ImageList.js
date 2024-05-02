@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Image,
     Pressable,
@@ -7,10 +7,10 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import {
     useApp,
-    useContacts,
     useModal,
     useUser,
 } from '@context'
+import { ActivityIndicator } from 'react-native-paper'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -19,7 +19,7 @@ export default ({ images, onSelected, restricted }) => {
 
     const { theme } = useApp()
     const { setModal } = useModal()
-    const { profile, userLoading } = useUser()
+    const { imageLoading, profile, setUploading, uploading } = useUser()
 
     const buttonStyle = {
         borderWidth: 1,
@@ -38,7 +38,7 @@ export default ({ images, onSelected, restricted }) => {
     const isDev = process.env.NODE_ENV === 'development'
     
     const restrictUpload = () => {
-        if (userLoading || isDev) return true
+        if (uploading || isDev) return true
         return false
     }
     const hideUpload = () => {
@@ -74,7 +74,7 @@ export default ({ images, onSelected, restricted }) => {
                 <Pressable
                     key={`image-${index}`}
                     onPress={() => onSelected(image)}
-                    disabled={userLoading}
+                    disabled={uploading}
                     style={[
                         {
                             flexBasis: 'auto',
@@ -98,9 +98,30 @@ export default ({ images, onSelected, restricted }) => {
 
             ))}
 
+            {uploading && (
+                <View
+                    key={`image-${images.length}`}
+                    style={[
+                        {
+                            flexBasis: 'auto',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: IMAGE_SIZE,
+                            height: IMAGE_SIZE,
+                        },
+                        buttonStyle,
+                    ]}
+                >
+                    <ActivityIndicator />
+
+                </View>
+            )}
+
             {!hideUpload() && (
                 <Pressable
-                    key={`image-${images.length}`}
+                    key={`image-${images.length + (uploading ? 1 : 0)}`}
                     onPress={handleUpload}
                     style={[
                         {

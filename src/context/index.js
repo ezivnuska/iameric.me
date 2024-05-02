@@ -1,5 +1,4 @@
 import { AppContext, AppContextProvider, useApp } from './AppContext'
-// import { AuthContext, AuthContextProvider, useAuth } from './AuthContext_BAK2'
 import { CartContext, CartContextProvider, useCart } from './CartContext'
 import { ContactContext, ContactContextProvider, useContacts } from './ContactContext'
 import { FormContext, FormContextProvider,useForm } from './FormContext'
@@ -28,7 +27,6 @@ export {
     OrderContextProvider,
     ProductContext,
     ProductContextProvider,
-    // useAuth,
     useApp,
     useCart,
     useContacts,

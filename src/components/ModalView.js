@@ -40,7 +40,7 @@ export default () => {
         const { type, data } = modal
         switch(type) {
             case 'CART': return <Cart />; break
-            case 'CONTACT': return <ContactView user={data} />; break
+            case 'CONTACT': return <ContactView userId={data._id} />; break
             case 'DESTROY': return <DestroyForm />; break
             case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
