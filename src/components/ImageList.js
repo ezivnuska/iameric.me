@@ -70,7 +70,6 @@ export default ({ images, onSelected, restricted }) => {
                 gap: 8,
                 width: '100%',
                 marginVertical: 15,
-                paddingHorizontal: 10,
             }}
         >
             {images && images.map((image, index) => (

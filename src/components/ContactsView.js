@@ -42,13 +42,17 @@ export default () => {
         init()
     }, [])
 
-    const renderContacts = () => contacts.map((contact) => contact._id !== profile._id ? (
-        <ContactListItem
-            item={contact}
-            key={`contact-${contact._id}`}
-            onPress={() => setModal('CONTACT', contact)}
-        />
-    ) : null)
+    const renderContacts = () => contacts.map((contact) => {
+        if (contact._id !== profile._id) {
+            return (
+                <ContactListItem
+                    item={contact}
+                    key={`contact-${contact._id}`}
+                    onPress={() => setModal('CONTACT', contact)}
+                />
+            )
+        } else return null
+    })
 
     if (contactsLoading) return <LoadingView loading='Loading contacts...' />
 

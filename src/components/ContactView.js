@@ -6,6 +6,7 @@ import {
     LoadingView,
     EmptyStatus,
     ImageList,
+    ThemedText,
 } from '@components'
 import {
     useApp,
@@ -47,20 +48,23 @@ export default ({ user }) => {
 
     if (contactLoading) return <LoadingView loading='Loading contact' />
 
-    return contact && contact.images && contact.images.length ? (
+    return contact && (
         <View
             style={{
                 width: '100%',
                 maxWidth: dims.width - 20,
             }}
-        >
-            <ImageList
-                images={contact.images}
-                onSelected={image => setModal('IMAGE', image)}
-                restricted={true}
-                // restricted={profile._id !== contact._id}
+        >   
+            <ThemedText>{contact.username} - {contact.role}</ThemedText>
+            {contact.images && contact.images.length ? (
+                <ImageList
+                    images={contact.images}
+                    onSelected={image => setModal('IMAGE', image)}
+                    restricted={true}
+                    // restricted={profile._id !== contact._id}
                 />
+            ) : <EmptyStatus status='No images yet.' />}
 
         </View>
-    ) : <EmptyStatus status='No images yet.' />
+    )
 }
