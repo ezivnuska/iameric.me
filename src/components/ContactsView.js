@@ -9,7 +9,11 @@ import {
     ThemedText,
     TitleBar,
 } from '@components'
-import { useContacts, useModal } from '@context'
+import {
+    useContacts,
+    useModal,
+    useUser,
+} from '@context'
 import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
 import axios from 'axios'
@@ -23,9 +27,8 @@ export default () => {
         setContactsLoading,
     } = useContacts()
 
-    const {
-        setModal,
-    } = useModal()
+    const { setModal } = useModal()
+    const { profile } = useUser()
     
     useEffect(() => {
         const init = async () => {
@@ -39,13 +42,13 @@ export default () => {
         init()
     }, [])
 
-    const renderContacts = () => contacts.map((contact, index) => (
+    const renderContacts = () => contacts.map((contact) => contact._id !== profile._id ? (
         <ContactListItem
             item={contact}
-            key={`contact-${index}`}
+            key={`contact-${contact._id}`}
             onPress={() => setModal('CONTACT', contact)}
         />
-    ))
+    ) : null)
 
     if (contactsLoading) return <LoadingView loading='Loading contacts...' />
 
