@@ -4,7 +4,6 @@ import { useApp } from '@context'
 
 const initialState = {
     profile: null,
-    userLoaded: false,
     userLoading: false,
     userModals: [],
     error: null,
@@ -43,8 +42,6 @@ export const UserContextProvider = props => {
                 if (!data) console.log('could not load user')
                 else dispatch({ type: 'SET_USER', payload: data })
             } else console.log('user not verified.')
-            
-            dispatch({ type: 'SET_USER_LOADED' })
         }
         
         init()
@@ -90,22 +87,16 @@ export const UserContextProvider = props => {
         },
     }), [state, dispatch])
 
-    return (
+    return state.profile ? (
         <UserContext.Provider value={{ ...state, ...actions }}>
             {props.children}
         </UserContext.Provider>
-    )
+    ) : null
 }
 
 const reducer = (state, action) => {
     const { type, payload } = action
     switch(type) {
-        case 'SET_USER_LOADED':
-            return {
-                ...state,
-                userLoaded: true,
-            }
-            break
         case 'SET_USER_LOADING':
             return { ...state, userLoading: payload }
             break
