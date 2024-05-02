@@ -1,7 +1,6 @@
 import React from 'react'
 import { Vendor } from '@components'
 import { Screen } from '.'
-import { ContactContextProvider } from '@context'
 
 export default ({ onPress, ...props }) => {
 
@@ -10,15 +9,13 @@ export default ({ onPress, ...props }) => {
     
     return (
         <Screen {...props}>
-            <ContactContextProvider>
-                <Vendor
-                    id={idFromParams}
-                    onPress={() => navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'VendorList' }],
-                    })}
-                />
-            </ContactContextProvider>
+            <Vendor
+                id={idFromParams}
+                onPress={() => navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'VendorList' }],
+                })}
+            />
         </Screen>
     )
 }

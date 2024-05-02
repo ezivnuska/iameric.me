@@ -46,7 +46,8 @@ export default ({ children, user, filename, onPress = null, ...props }) => {
                     // borderWidth: 1,
                     // borderColor: 'green',
                     flexWrap: 'nowrap',
-                    paddingHorizontal: landscape ? 0 : 10,
+                    // paddingHorizontal: landscape ? 0 : 10,
+                    paddingBottom: 10,
                 },
                 props.style,
             ]}
@@ -55,8 +56,8 @@ export default ({ children, user, filename, onPress = null, ...props }) => {
                 style={{
                     flexBasis: 'auto',
                     flexGrow: 0,
-                    width: 50,
-                    height: 50,
+                    width: 35,
+                    height: 35,
                     resizeMode: 'stretch',
                 }}
                 // onLoadStart={() => setLoading(true)}

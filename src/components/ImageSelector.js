@@ -127,7 +127,6 @@ export default () => {
                 alignItems: 'center',
             }}
         >
-            <ThemedText>Hello</ThemedText>
             {preview ? (
                 <View
                     style={{

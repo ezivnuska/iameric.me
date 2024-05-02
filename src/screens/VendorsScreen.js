@@ -5,14 +5,9 @@ import {
 import {
     Screen,
 } from '.'
-import {
-    ContactContextProvider,
-} from '@context'
 
 export default props => (
     <Screen {...props}>
-        <ContactContextProvider>
-            <Vendors {...props} />
-        </ContactContextProvider>
+        <Vendors {...props} />
     </Screen>
 )

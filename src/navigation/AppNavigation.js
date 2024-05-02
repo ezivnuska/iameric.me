@@ -19,7 +19,10 @@ import {
 } from '../screens'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { navigationRef } from './RootNavigation'
-import { useApp } from '@context'
+import {
+    useApp,
+    useUser,
+} from '@context'
 
 const iconSize = 24
 
@@ -110,6 +113,7 @@ const UserStackScreen = () => {
 const MainStack = createMaterialBottomTabNavigator()
 const MainStackScreen = () => {
     const { theme } = useApp()
+    const { profile } = useUser()
     return (
         <MainStack.Navigator
             initialRouteName={'Vendors'}
@@ -157,17 +161,19 @@ const MainStackScreen = () => {
                 }}
             />
 
-            <MainStack.Screen
-                name='Vendors'
-                component={VendorStackScreen}
-                options={{
-                    title: 'Vendors',
-                    tabBarLabel: 'Vendors',
-                    tabBarIcon: ({ focused, color }) => (
-                        <Icon name='alert-circle-outline' size={iconSize} color={color} />
-                    ),
-                }}
-            />
+            {(profile && profile.role !== 'vendor') && (
+                <MainStack.Screen
+                    name='Vendors'
+                    component={VendorStackScreen}
+                    options={{
+                        title: 'Vendors',
+                        tabBarLabel: 'Vendors',
+                        tabBarIcon: ({ focused, color }) => (
+                            <Icon name='alert-circle-outline' size={iconSize} color={color} />
+                        ),
+                    }}
+                />
+            )}
 
         </MainStack.Navigator>
     )

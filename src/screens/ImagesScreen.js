@@ -1,14 +1,13 @@
-import React, { useEffect, useMemo } from 'react'
-import {
-    ImageList,
-} from '@components'
+import React, { useEffect } from 'react'
 import {
     Screen,
 } from '.'
 import {
+    ImagesView,
+} from '@components'
+import {
     useApp,
     useUser,
-    useModal,
 } from '@context'
 import { loadImages } from '@utils/images'
 import { loadUser } from '@utils/user'
@@ -22,13 +21,13 @@ export default props => {
         setUserLoading,
         updateImages,
     } = useUser()
-    const { setModal } = useModal()
-    // const profileImages = useMemo(() => profile ? profile.images : null, [profile])
 
     useEffect(() => {
         const init = async () => {
             if (!profile) {
+                setUserLoading(true)
                 const loadedUser = await loadUser(userId)
+                setUserLoading(false)
                 if (loadedUser) setUser(loadedUser)
             } else {
                 if (!profile.images) {
@@ -44,10 +43,7 @@ export default props => {
 
     return profile && profile.images ? (
         <Screen {...props}>
-            <ImageList
-                images={profile.images}
-                onSelected={image => setModal('IMAGE', image)}
-            />
+            <ImagesView profile={profile} />
         </Screen>
     ) : null
 }

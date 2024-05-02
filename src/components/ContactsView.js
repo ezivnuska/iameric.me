@@ -6,6 +6,7 @@ import {
 } from 'react-native'
 import {
     LoadingView,
+    ScreenContent,
     ThemedText,
     TitleBar,
 } from '@components'
@@ -16,6 +17,7 @@ import {
 } from '@context'
 import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
+import { loadContacts } from '@utils/contacts'
 import axios from 'axios'
 
 export default () => {
@@ -34,10 +36,10 @@ export default () => {
         const init = async () => {
             
             setContactsLoading(true)
-            const { data } = await axios.get('/api/users')
+            const users = await loadContacts()
             setContactsLoading(false)
-            if (!data || !data.users) console.log('Error loading contacts')
-            else setContacts(data.users)
+            if (!users) console.log('Error loading contacts')
+            else setContacts(users)
         }
         init()
     }, [])
@@ -58,7 +60,9 @@ export default () => {
     return (
         <View>
             <TitleBar title='Contacts' />
-            {renderContacts()}
+            <ScreenContent>
+                {renderContacts()}
+            </ScreenContent>
         </View>
     )
 }
@@ -72,8 +76,7 @@ const ContactListItem = ({ item, onPress, ...props }) => {
                 justifyContent: 'flex-start',
                 alignItems: 'center',
                 gap: 15,
-                paddingTop: 10,
-                paddingHorizontal: 10,
+                marginBottom: 10,
             }}
             {...props}
         >

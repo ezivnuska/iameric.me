@@ -50,7 +50,7 @@ export const ContactContextProvider = props => {
             dispatch({ type: 'SET_CONTACTS_LOADED' })
         }
         
-        init()
+        if (!state.contactsLoading && !state.contactsLoaded) init()
 
     }, [userId])
 

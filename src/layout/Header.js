@@ -36,22 +36,22 @@ const UserButton = () => {
                 flexGrow: 0,
                 flexShrink: 0,
                 flexBasis: 'auto',
-                paddingHorizontal: 8,
                 marginLeft: 10,
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
                 borderRadius: 10,
-                backgroundColor: theme?.colors.screen,
-                shadowColor: theme?.colors.shadow,
-                shadowOffset: {
-                    width: 0,
-                    height: 0,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3,
-                elevation: 1,
-                paddingVertical: 3,
+                // backgroundColor: theme?.colors.screen,
+                // shadowColor: theme?.colors.shadow,
+                // shadowOffset: {
+                //     width: 0,
+                //     height: 0,
+                // },
+                // shadowOpacity: 0.25,
+                // shadowRadius: 3,
+                // elevation: 1,
+                paddingVertical: 2,
+                paddingHorizontal: 8,
             }}
         >
             <Image
@@ -61,10 +61,12 @@ const UserButton = () => {
                     flexGrow: 0,
                     width: 26,
                     height: 26,
-                    marginRight: 5,
+                    marginRight: 8,
                     borderRadius: 13,
                     overflow: 'hidden',
                     resizeMode: 'cover',
+                    borderWidth: 0.5,
+                    borderColor: '#ccc',
                 }}
                 // onLoadStart={() => setLoading(true)}
                 // onLoadEnd={() => setLoading(false)}
@@ -117,6 +119,7 @@ export default () => {
                 iconName={`${dark ? 'sunny' : 'moon'}-outline`}
                 onPress={toggleTheme}
                 transparent
+                padded
                 style={{ flexGrow: 0 }}
                 textStyles={{ fontSize: 18 }}
             />
@@ -139,6 +142,7 @@ const SignInButton = () => {
             disabled={appLoading}
             alignIcon='right'
             transparent
+            style={{ marginLeft: 10 }}
         />
     )
 }
@@ -160,7 +164,7 @@ const SignOutButton = () => {
             transparent
             style={{
                 flexGrow: 0,
-                marginHorizontal: 8,
+                // marginHorizontal: 8,
             }}
         />
     )

@@ -1,7 +1,4 @@
-import React, { useEffect } from 'react'
-import {
-    View,
-} from 'react-native'
+import React from 'react'
 import {
     DeleteAccountButton,
     LoadingView,
@@ -9,61 +6,32 @@ import {
     UserDetails,
 } from '@components'
 import {
-    useApp,
     useUser,
 } from '@context'
-import { loadUser } from '@utils/user'
 
 export default () => {
 
-    const { userId } = useApp()
-    const { profile, setUser, userLoading, setUserLoading } = useUser()
+    const { profile, userLoading } = useUser()
 
     const restrictedUsernames = ['Customer', 'Driver', 'Vendor']
     const restrictedRoles = ['admin']
 
     const isRestricted = () => {
         const { role, username } = profile
-        let restricted = false
-        if (
+        return (
             (username && restrictedUsernames.indexOf(username) > -1)
-            ||
-            (role && restrictedRoles.indexOf(role) > -1)
-        ) restricted = true
-
-        return restricted
+            || (role && restrictedRoles.indexOf(role) > -1)
+        )
     }
-    
-    // useEffect(() => {
-    //     const init = async () => {
-    //         if (!profile && userId) {
-    //             setUserLoading(true)
-    //             const data = await loadUser(userId)
-    //             setUserLoading(false)
-    //             if (data) setUser(data)
-    //         }
-    //     }
-    //     init()
-    // }, [])
     
     if (userLoading) return <LoadingView loading='Loading profile.' />
 
     return profile ? (
-        <View
-            style={{
-                paddingHorizontal: 10,
-            }}
-        >
+        <>
             <UserDetails userId={profile._id} />
-
             <LocationModule userId={profile._id} />
+            {!isRestricted() && <DeleteAccountButton />}
 
-            {
-                isRestricted()
-                    ? null
-                    : <DeleteAccountButton />
-            }
-
-        </View>
-    ) : <LoadingView loading='No profile.' />
+        </>
+    ) : <LoadingView loading='Loading profile...' />
 }

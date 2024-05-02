@@ -17,9 +17,9 @@ export default ({ children, navigation = null, backLabel = null, title = null })
     return (
         <View
             style={{
-                width: '100%',
-                backgroundColor: theme?.colors.screenTitleBackground,
-                marginBottom: 10,
+                // width: '100%',
+                // backgroundColor: theme?.colors.screenTitleBackground,
+                // marginBottom: 10,
             }}
         >
             <View
@@ -32,7 +32,7 @@ export default ({ children, navigation = null, backLabel = null, title = null })
                     maxWidth: landscape ? 900 : 600,
                     marginHorizontal: 'auto',
                     paddingHorizontal: 10,
-                    marginVertical: 0,
+                    paddingVertical: 3,
                 }}
             >
                 {backLabel && (

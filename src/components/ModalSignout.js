@@ -28,6 +28,7 @@ export default () => {
             label='Sign Out'
             onPress={initSignout}
             disabled={appLoading}
+            padded
         />
     )
 }

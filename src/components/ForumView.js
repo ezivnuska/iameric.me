@@ -6,6 +6,7 @@ import {
     EmptyStatus,
     ForumList,
     IconButton,
+    ScreenContent,
     TitleBar,
 } from '@components'
 import {
@@ -45,17 +46,19 @@ export default () => {
                     label='Comment'
                     iconName='add-outline'
                     onPress={() => setModal('FEEDBACK')}
-                    alignIcon='right'
-                    justify='left'
-                    outline
-                    style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
+                    // alignIcon='right'
+                    padded={true}
+                    // outline
+                    // style={{ paddingHorizontal: 10, paddingLeft: 10, paddingRight: 10 }}
                     transparent
                 />
             </TitleBar>
-            <ForumList
-                items={entries}
-                onDelete={removeEntry}
-            />
+            <ScreenContent>
+                <ForumList
+                    items={entries}
+                    onDelete={removeEntry}
+                />
+            </ScreenContent>
         </View>
     )
 }

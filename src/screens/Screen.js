@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import {
     ScrollView,
+    View,
 } from 'react-native'
 import {
     LoadingView,
@@ -9,7 +10,11 @@ import {
     useApp,
 } from '@context'
 
-const SecureLayer = ({ userId, children }) => userId ? children : null
+const SecureLayer = ({ userId, children, ...props }) => userId ? (
+    <View {...props}>
+        {children}
+    </View>
+) : null
 
 export default ({
     children,
@@ -31,17 +36,20 @@ export default ({
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 
     const renderContent = () => secure
-        ? <SecureLayer userId={userId}>{children}</SecureLayer>
+        ? <SecureLayer userId={userId} {...props}>{children}</SecureLayer>
         : children
 
     return secured ? (
         <ScrollView
-            contentContainerStyle={{ height: '100%' }}
+            contentContainerStyle={{
+                height: '100%',
+            }}
             style={{
-                height: dims.height - 50,
+                // height: '100%',//dims.height - 50,
                 width: '100%',
-                maxWidth: '100%',
-                marginHorizontal: 'auto',
+                // borderWidth: 2,
+                // borderColor: 'red',
+                // borderStyle: 'dotted',
             }}
         >
             {renderContent(children)}

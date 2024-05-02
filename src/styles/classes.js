@@ -6,7 +6,6 @@ export default {
         fontWeight: 700,
     },
     pageTitle: {
-        marginVertical: 10,
         fontSize: sizes.headerPrimary,
         fontWeight: 700,
         lineHeight: sizes.headerPrimary + 4,
@@ -44,7 +43,7 @@ export default {
     textDefault: {
         fontSize: sizes.textDefault,// 16
         fontWeight: 300,
-        lineHeight: sizes.textDefault + 8,// 24
+        lineHeight: sizes.textDefault + 4,// 24
         letterSpacing: 0.5,
     },
     bold: {

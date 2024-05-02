@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import {
+    FlatList,
     View,
 } from 'react-native'
 import {
+    ScreenContent,
     TitleBar,
-    VendorList,
+    UserHeading,
 } from '@components'
 import {
     useContacts,
 } from '@context'
 import { loadVendors } from '@utils/contacts'
 
-export default props => {
+export default ({ navigation }) => {
 
     const { setContactsLoading } = useContacts()
 
@@ -30,7 +32,25 @@ export default props => {
     return (
         <View>
             <TitleBar title='Vendors' />
-            <VendorList users={vendors} {...props} />
+            <ScreenContent>
+                <FlatList
+                    data={vendors}
+                    listKey={() => 'vendors'}
+                    keyExtractor={(item, index) => 'vendor' + index}
+                    renderItem={({ item }) => {
+                        const { _id, profileImage } = item
+                        const { filename } = profileImage
+                        return (
+                            <UserHeading
+                                user={item}
+                                filename={filename}
+                                onPress={() => navigation.navigate('Vendor', { id: _id })}
+                                style={{ alignItems: 'center' }}
+                            />
+                        )
+                    }}
+                />
+            </ScreenContent>
         </View>
     )
 } 

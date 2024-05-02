@@ -18,10 +18,9 @@ import {
     useUser,
 } from '@context'
 
-const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props }) => {
+const ListItemVertical = ({ item, imagePath, onPress, owner, onDelete = null, ...props }) => {
     
     const { theme } = useApp()
-    const { profile } = useUser()
     
     const { author, text } = item
 
@@ -42,7 +41,7 @@ const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props 
                 justifyContent: 'flex-start',
                 alignItems: 'flex-start',
                 gap: 15,
-                paddingTop: 10,
+                paddingBottom: 5,
             }}
             {...props}
         >
@@ -92,7 +91,7 @@ const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props 
 
                     </Pressable>
 
-                    {profile._id === author._id && (
+                    {owner && (
                         <View
                             style={{
                                 flexBasis: 'auto',
@@ -114,8 +113,8 @@ const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props 
                 <ThemedText
                     style={{
                         flex: 1,
-                        paddingRight: 30,
-                        paddingBottom: 20,
+                        // paddingRight: 30,
+                        paddingBottom: 10,
                     }}
                 >
                     {text}
@@ -127,7 +126,7 @@ const ListItemVertical = ({ item, imagePath, onPress, onDelete = null, ...props 
     )
 }
 
-const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null }) => {
+const ListItemHorizontal = ({ item, imagePath, onPress, owner, onDelete = null }) => {
     const { author, text } = item
     const [online, setOnline] = useState(false)
     const { dims, theme } = useApp()
@@ -192,7 +191,7 @@ const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null }) => {
                             flexBasis: 'auto',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            paddingBottom: 10,
+                            paddingBottom: 5,
                             borderBottomWidth: 1,
                             borderBottomStyle: 'dotted',
                             borderBottomColor: theme?.colors.border,
@@ -211,7 +210,7 @@ const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null }) => {
 
                         </Pressable>
 
-                        {profile._id === author._id && (
+                        {owner && (
                             <View
                                 style={{
                                     flexBasis: 'auto',
@@ -234,7 +233,7 @@ const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null }) => {
                         style={{
                             marginTop: 10,
                             textAlign: 'left',
-                            paddingBottom: 20,
+                            // paddingBottom: 20,
                         }}
                     >
                         {text}
@@ -249,6 +248,7 @@ const ListItemHorizontal = ({ item, imagePath, onPress, onDelete = null }) => {
 export default ({ items, onDelete }) => {
     const { landscape, dims } = useApp()
     const { setModal } = useModal()
+    const { profile } = useUser()
 
     return !landscape ? (
         <FlatList
@@ -261,11 +261,12 @@ export default ({ items, onDelete }) => {
                     imagePath={getProfileImagePathFromUser(item.author)}
                     onDelete={onDelete}
                     onPress={() => setModal('CONTACT', item.author)}
+                    owner={profile && profile._id === item.author._id}
                 />
             )}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
-                paddingHorizontal: 10,
+                // paddingHorizontal: 10,
                 paddingBottom: 20,
             }}
         />
@@ -298,6 +299,7 @@ export default ({ items, onDelete }) => {
                         key={'entry' + index}
                         onDelete={onDelete}
                         onPress={() => setModal('CONTACT', item.author)}
+                        owner={profile && profile._id === item.author._id}
                     />
                 )))}
             </View>

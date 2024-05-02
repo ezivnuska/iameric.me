@@ -18,7 +18,6 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default ({ images, onSelected, restricted }) => {
 
     const { theme } = useApp()
-    const { contact } = useContacts()
     const { setModal } = useModal()
     const { profile, userLoading } = useUser()
 
@@ -69,7 +68,6 @@ export default ({ images, onSelected, restricted }) => {
                 flexWrap: 'wrap',
                 gap: 8,
                 width: '100%',
-                marginVertical: 15,
             }}
         >
             {images && images.map((image, index) => (
