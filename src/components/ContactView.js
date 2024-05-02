@@ -57,8 +57,9 @@ export default ({ user }) => {
             <ImageList
                 images={contact.images}
                 onSelected={image => setModal('IMAGE', image)}
-                restricted={profile._id !== contact._id}
-            />
+                restricted={true}
+                // restricted={profile._id !== contact._id}
+                />
 
         </View>
     ) : <EmptyStatus status='No images yet.' />
