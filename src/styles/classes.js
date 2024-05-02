@@ -144,7 +144,7 @@ export default {
 		lineHeight: 40,
         width: '100%',
         minWidth: 260,
-        maxWidth: 400,
+        maxWidth: 260,
 		outlineWidth: 0,
         outlineColor: 'none',
         outlineStyle: 'none',

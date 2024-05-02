@@ -7,7 +7,7 @@ import { useApp } from '@context'
 
 export default ({ children, align = 'left', bold = false, ...props }) => {
     
-    const { theme } = useApp()
+    const { dims, theme } = useApp()
     
     return (
         <Text
@@ -17,6 +17,7 @@ export default ({ children, align = 'left', bold = false, ...props }) => {
                     color: theme?.colors.textDefault,
                     fontWeight: bold ? 700 : 400,
                     textAlign: align,
+                    maxWidth: dims.width - 20,
                 },
                 props.style,
             ]}

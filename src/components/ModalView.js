@@ -73,6 +73,7 @@ export default () => {
                 style={{
                     height: '100%',
                     minHeight: dims.height,
+                    minWidth: dims.width,
                 }}
             >
                 <CenterVertical>
