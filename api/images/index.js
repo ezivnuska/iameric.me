@@ -140,14 +140,15 @@ const uploadAvatar = async (req, res) => {
 
 const deleteImageById = async (req, res) => {
     const { imageId, isProductImage, isProfileImage } = req.body
-    console.log('deleteImageById:', imageId)
+    console.log(`deleteImageById: ${imageId}`)
     
     // check to see if it is a product image
     if (isProductImage) {
         const productImage = await findAndRemoveImageFromProduct(imageId)
+        console.log('image is product image.', productImage)
         if (!productImage) {
-            // stop here.
             console.log('error removing product image.')
+            // stop here.
             return null
         }
         console.log('image removed from user product.')
@@ -157,23 +158,19 @@ const deleteImageById = async (req, res) => {
 
     if (isProfileImage) {
         const profileImage = await clearUserProfileImage(imageId)
+        console.log('image is profile image.', profileImage)
         if (!profileImage) {
             console.log('error clearing profile image reference to image.')
             return null
         }
         console.log('profile image reference removed from user.')
     }
-
-    // then we can delete the user image model and delete the files
     
-    const deletedImage = await UserImage
-        .findOneAndRemove({ _id: imageId })
+    const deletedImage = await UserImage.findOneAndRemove({ _id: imageId })
 
     if (!deletedImage) console.log('Could not find image to delete')
-    const user = await User
-        .findOne({ _id: deletedImage.user })
-    
-    // console.log('user fetched for image and profile update', user)
+
+    const user = await User.findOne({ _id: deletedImage.user })
 
     if (!user) {
         console.log('could not find user to update after image deletion.')
@@ -186,7 +183,7 @@ const deleteImageById = async (req, res) => {
     const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
     const pathToAvatar = `${userPath}/${filenameToDelete}`
     
-    if (user.profileImage.toString() === imageId) {
+    if (isProfileImage) {
         user.profileImage = null
         await user.save()
     }
@@ -201,7 +198,7 @@ const deleteImageById = async (req, res) => {
     removeImage(pathToAvatar)
     removeImage(pathToThumb)
 
-    return res.status(200).json({ imageId })
+    return res.status(200).json({ deletedImage })
 }
 
 const clearUserProfileImage = async imageId => {

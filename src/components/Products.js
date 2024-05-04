@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
     FlatList,
     View,
@@ -14,40 +14,19 @@ import {
     useApp,
     useModal,
     useProducts,
-    useUser,
 } from '@context'
-import { deleteProductWithId, loadProducts } from '@utils/products'
-import { loadUser } from '@utils/user'
+import { deleteProductWithId } from '@utils/products'
 
 export default () => {
 
-    const { theme, userId } = useApp()
+    const { theme } = useApp()
     const { closeModal, setModal } = useModal()
     const {
         deleteProduct,
         products,
         productsLoading,
-        setProducts,
         setProductsLoading,
     } = useProducts()
-    const { profile, setUser, userLoading } = useUser()
-
-    useEffect(() => {
-        const init = async () => {
-            if (!profile) {
-                const { data } = await loadUser(userId)
-                if (data) setUser(data)
-            } else {
-                if (!products && !userLoading) {
-                    setProductsLoading(true)
-                    const items = await loadProducts(profile._id)
-                    setProductsLoading(false)
-                    setProducts(items)
-                }
-            }
-        }
-        init()
-    }, [profile])
 
     const onDelete = async id => {
         setProductsLoading(true)
@@ -58,11 +37,12 @@ export default () => {
             console.log(`${productDeleted.title} deleted`)
             deleteProduct(productDeleted._id)
         }
+
         closeModal()
     }
 
     if (productsLoading) return <LoadingView loading='Loading products' />
-    if (!products || !products.length) return <EmptyStatus status='No products available at this time.' />
+    
     return (
         <View>
             <TitleBar title='Products'>
@@ -80,20 +60,23 @@ export default () => {
                     padded={false}
                 />
             </TitleBar>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                data={products}
-                listKey={() => 'products'}
-                keyExtractor={(item, index) => 'key' + index}
-                renderItem={({ item }) => (
-                    <ProductListItem
-                        product={item}
-                        key={item => `product-${item._id}`}
-                        onDelete={() => onDelete(item._id)}
-                        onPress={() => setModal('PRODUCT', item)}
-                    />
-                )}
-            />
+            {products.length ? (
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={products}
+                    listKey={() => 'products'}
+                    keyExtractor={(item, index) => 'key' + index}
+                    renderItem={({ item }) => (
+                        <ProductListItem
+                            product={item}
+                            key={item => `product-${item._id}`}
+                            onDelete={() => onDelete(item._id)}
+                            onPress={() => setModal('PRODUCT', item)}
+                        />
+                    )}
+                    style={{ marginHorizontal: 10 }}
+                />
+            ) : <EmptyStatus status='Nothing currently listed.' />}
         </View>
     )
 }

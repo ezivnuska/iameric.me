@@ -41,6 +41,7 @@ export default ({
 
     return userId ? (
         <ScrollView
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={{
                 height: '100%',
             }}

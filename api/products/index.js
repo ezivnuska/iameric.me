@@ -22,7 +22,7 @@ const createOrUpdateProduct = async (req, res) => {
     // if request includes a reference to (already) uploaded file...
     if (attachment) {
         const response = await uploadProductImage(attachment)
-        console.log('image uploaded successfuly. adding to product.')
+        console.log('image uploaded successfuly. adding to product doc.')
         product = {
             ...product,
             image: response.image,
@@ -55,10 +55,15 @@ const createOrUpdateProduct = async (req, res) => {
         return res.status(406).json(null)
     }
 
-    await product.populate('image', 'filename')
+    await product
+        .populate({
+            path: 'image',
+            select: 'filename height width user',
+            populate: { path: 'user', select: 'username' },
+        })
 
     // return new product data (maybe better to return within an object?)
-    return res.status(200).json(product)
+    return res.status(200).json({ product })
 }
 
 const getProductIdsByVendorId = async (req, res) => {

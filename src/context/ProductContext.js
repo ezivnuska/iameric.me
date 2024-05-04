@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import { useApp } from '@context'
+import { loadProducts } from '@utils/products'
 
 const initialState = {
     products: [],
     error: null,
-    loaded: false,
+    productsLoaded: false,
     productsLoading: false,
     productModals: [],
     closeProductModal: () => {},
@@ -29,7 +31,20 @@ export const useProducts = () => {
 
 export const ProductContextProvider = props => {
     
+    const { userId } = useApp()
     const [state, dispatch] = useReducer(reducer, initialState)
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            dispatch({type: 'SET_PRODUCTS_LOADING', payload: true })
+            const items = await loadProducts(userId)
+            dispatch({type: 'SET_PRODUCTS_LOADING', payload: false })
+            dispatch({type: 'SET_PRODUCTS', payload: items })
+            dispatch({type: 'SET_PRODUCTS_LOADED' })
+        }
+        
+        fetchProducts()
+    }, [])
 
     const actions = useMemo(() => ({
         closeProductModal: () => {
@@ -86,10 +101,10 @@ const reducer = (state, action) => {
                 loading: payload,
             }
             break
-        case 'PRODUCTS_LOADED':
+        case 'SET_PRODUCTS_LOADED':
             return {
                 ...state,
-                loaded: payload,
+                productsLoaded: true,
             }
             break
         case 'REMOVE_PRODUCT_IMAGE':
@@ -132,7 +147,7 @@ const reducer = (state, action) => {
             break
         case 'UPDATE_PRODUCT':
             const i = state.products.findIndex(product => product._id === payload._id)
-            if (i <= -1) return state
+            if (i < 0) return state
             return {
                 ...state,
                 products: [
@@ -146,12 +161,15 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_PRODUCT_IMAGE':
+            const { image, productId } = payload
             return {
                 ...state,
                 products: state.products.map(
-                    product => (product._id === payload.productId)
-                    ? { ...product, image: payload.image }
-                    : product
+                    product => {
+                        return (product._id === productId)
+                            ? { ...product, image }
+                            : product
+                    }
                 ),
             }
             break

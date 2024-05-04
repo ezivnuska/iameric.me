@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import {
     Image,
     View,
@@ -10,7 +10,7 @@ import {
 import {
     useUser,
 } from '@context'
-import classes from '../styles/classes'
+import classes from '@styles/classes'
 
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -18,7 +18,6 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default ({ onDelete, product, onPress, ...props }) => {
 
     const { profile, userLoading } = useUser()
-    const { title, price, blurb, desc, image } = useMemo(() => product, [product])
     
     return (
         <View
@@ -27,7 +26,6 @@ export default ({ onDelete, product, onPress, ...props }) => {
                 display: 'flex',
                 flexDirection: 'row',
                 marginBottom: 15,
-                paddingLeft: 10,
             }}
         >
 
@@ -44,10 +42,9 @@ export default ({ onDelete, product, onPress, ...props }) => {
                         flexDirection: 'row',
                         justifyContent: 'flex-start',
                         alignItems: 'flex-start',
-                        // marginBottom: 2,
                     }}
                 >
-                    {image ? (
+                    {product.image ? (
                         <View
                             style={{
                                 flexBasis: IMAGE_SIZE + 12,
@@ -56,7 +53,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                             <Image
                                 width={IMAGE_SIZE}
                                 height={IMAGE_SIZE}
-                                source={{ uri: `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}` }}
+                                source={{ uri: `${IMAGE_PATH}/${profile.username}/thumb/${product.image.filename}` }}
                                 style={{
                                     resizeMode: 'stretch',
                                     width: IMAGE_SIZE,
@@ -104,7 +101,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                                     }
                                 ]}
                             >
-                                {title}
+                                {product.title}
                             </ThemedText>
 
                             <ThemedText
@@ -116,12 +113,12 @@ export default ({ onDelete, product, onPress, ...props }) => {
                                     },
                                 ]}
                             >
-                                ${price}
+                                ${product.price}
                             </ThemedText>
                         </View>
 
-                        <ThemedText style={classes.productBlurb}>{blurb}</ThemedText>
-                        <ThemedText style={classes.textDefault}>{desc}</ThemedText>
+                        <ThemedText style={classes.productBlurb}>{product.blurb}</ThemedText>
+                        <ThemedText style={classes.textDefault}>{product.desc}</ThemedText>
 
                     </View>
                                 

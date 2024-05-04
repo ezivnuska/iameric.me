@@ -10,6 +10,8 @@ import {
 import { Header } from '@layout'
 import {
     ContactContextProvider,
+    ImageContextProvider,
+    ProductContextProvider,
     useApp,
     UserContextProvider,
 } from '@context'
@@ -41,7 +43,9 @@ export default () => {
                     <Compose
                         components={[
                             ContactContextProvider,
+                            ImageContextProvider,
                             UserContextProvider,
+                            ProductContextProvider,
                         ]}
                     >
                         <Header />

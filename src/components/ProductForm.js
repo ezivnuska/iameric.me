@@ -11,6 +11,7 @@ import {
 import axios from 'axios'
 import {
     useForm,
+    useImages,
     useModal,
     useProducts,
     useUser,
@@ -50,6 +51,7 @@ export default  ({ product }) => {
         setFormValues,
     } = useForm()
     
+    const { addImage } = useImages()
     const { closeModal } = useModal()
     const {
         addProduct,
@@ -110,7 +112,7 @@ export default  ({ product }) => {
                 }
                 break
             default:
-                console.log('No field to validate')
+                // console.log('No field to validate')
         }
 
         if (isValid && getError(name)) {
@@ -170,22 +172,29 @@ export default  ({ product }) => {
         }
         
         setFormLoading(true)
-        const response = await axios.post('/api/product', newProduct)
+        const { data } = await axios.post('/api/product', newProduct)
         setFormLoading(false)
             
-        if (!response || !response.data) {
+        if (!data || !data.product) {
             console.log('Error saving product', product)
         } else {
+            if (product) {
+                console.log('product found; updating product...')
+                updateProduct(data.product)
+            }
+            else addProduct(data.product)
 
-            if (product) updateProduct(response.data)
-            else addProduct(response.data)
+            if (data.product.image) {
+                console.log('product mage found; updating images...')
+                addImage(data.product.image)
+            }
             
             clearForm()
             closeModal()
         }
     }
 
-    const removeImage = () => {
+    const removeAttachment = () => {
         if (attachment || image) {
             setFormValues({
                 ...formFields,
@@ -206,7 +215,7 @@ export default  ({ product }) => {
         return (
             <ImageFormModule
                 onImageSelected={att => setFormValues({ attachment: att })}
-                removeImage={removeImage}
+                removeImage={removeAttachment}
                 source={source}
             />
         )
@@ -236,6 +245,7 @@ export default  ({ product }) => {
                 autoFocus={getFocus('title')}
                 onKeyPress={onEnter}
                 dirty={getDirty('title')}
+                required
             />
 
             <FormField
@@ -249,7 +259,9 @@ export default  ({ product }) => {
                 autoFocus={getFocus('price')}
                 onKeyPress={onEnter}
                 dirty={getDirty('price')}
+                required
             />
+
             <FormField
                 label='Blurb'
                 value={blurb}
@@ -263,7 +275,9 @@ export default  ({ product }) => {
                 onKeyPress={onEnter}
                 dirty={getDirty('blurb')}
                 multiline
+                required
             />
+
             <FormField
                 label='Description'
                 value={desc}
@@ -277,6 +291,7 @@ export default  ({ product }) => {
                 onKeyPress={onEnter}
                 dirty={getDirty('desc')}
                 multiline
+                required
             />
         </>
     )

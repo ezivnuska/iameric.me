@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -7,6 +7,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import {
     useApp,
+    useImages,
     useModal,
     useUser,
 } from '@context'
@@ -15,11 +16,12 @@ import { ActivityIndicator } from 'react-native-paper'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, onSelected, restricted }) => {
+export default ({ restricted = false }) => {
 
     const { theme } = useApp()
+    const { images, uploading } = useImages()
     const { setModal } = useModal()
-    const { imageLoading, profile, setUploading, uploading } = useUser()
+    const { profile } = useUser()
 
     const buttonStyle = {
         borderWidth: 1,
@@ -70,33 +72,35 @@ export default ({ images, onSelected, restricted }) => {
                 width: '100%',
             }}
         >
-            {images && images.map((image, index) => (
-                <Pressable
-                    key={`image-${index}`}
-                    onPress={() => onSelected(image)}
-                    disabled={uploading}
-                    style={[
-                        {
-                            flexBasis: 'auto',
-                            width: IMAGE_SIZE,
-                            height: IMAGE_SIZE,
-                        },
-                        buttonStyle,
-                    ]}
-                >
-                    <Image
-                        width={IMAGE_SIZE}
-                        height={IMAGE_SIZE}
-                        source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
-                        style={{
-                            resizeMode: 'cover',
-                            width: '100%',
-                            height: '100%',
-                        }}
-                    />
-                </Pressable>
+            {images && images.map((image, index) => {
+                return image.user ? (
+                    <Pressable
+                        key={`image-${index}`}
+                        onPress={() => setModal('IMAGE', image)}
+                        disabled={uploading}
+                        style={[
+                            {
+                                flexBasis: 'auto',
+                                width: IMAGE_SIZE,
+                                height: IMAGE_SIZE,
+                            },
+                            buttonStyle,
+                        ]}
+                    >
+                        <Image
+                            width={IMAGE_SIZE}
+                            height={IMAGE_SIZE}
+                            source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
+                            style={{
+                                resizeMode: 'cover',
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        />
+                    </Pressable>
 
-            ))}
+                ) : null
+            })}
 
             {uploading && (
                 <View

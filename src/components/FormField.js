@@ -12,7 +12,7 @@ import {
     useApp,
 } from '@context'
 
-export default ({ dirty, error, value, label = null, ...props }) => {
+export default ({ dirty, error, value, label = null, required = false, ...props }) => {
 
     const { theme } = useApp()
 
@@ -70,7 +70,7 @@ export default ({ dirty, error, value, label = null, ...props }) => {
                     textAlign: 'right',
                 }}
             >
-                {error && dirty ? error : `*required`}
+                {required ? error && dirty ? error : `*required` : ' '}
             </Text>
 
         </View>

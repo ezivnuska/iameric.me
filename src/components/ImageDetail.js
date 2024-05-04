@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     Image,
     View,
@@ -25,14 +25,29 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const [imageDims, setImageDims] = useState(null)
 
+    const allowDeletion = useMemo(() => {
+        return (
+            profile.username !== 'Driver' &&
+            profile.username !== 'Customer' &&
+            profile.username !== 'Vendor' &&
+            profile.role !== 'admin'
+        )
+    }, [profile])
+    const disableDelete = useMemo(() => userLoading || process.env.NODE_ENV === 'development', [userLoading])
+    const isAvatar = useMemo(() => (profile && (!profile.profileImage || profile.profileImage._id !== image._id)), [image, profile])
+    const owner = useMemo(() => profile && profile._id === image.user._id, [image, profile])
+
+    // useEffect(() => {
+    //     console.log('IMAGE_DETAIL', image)
+    // }, [image])
+
     useEffect(() => {
         setImageDims(getImageDims(image.width, image.height, dims))
     }, [dims])
 
-    const deleteRestricted = () => userLoading || process.env.NODE_ENV === 'development'
 
     const handleDelete = () => {
-        if (deleteRestricted()) alert(`Can't delete in development`)
+        if (disableDelete) alert(`Can't delete in development`)
         else deleteImage()
     }
 
@@ -75,7 +90,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                 }}
             >
 
-                {(profile && (profile._id === image.user._id || profile.role === 'admin')) ? (
+                {owner || profile.role === 'admin' ? (
                     <View
                         style={{
                             flexBasis: 'auto',
@@ -94,10 +109,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                             }}
                         >
                             
-                            {(
-                                (!profile.profileImage || profile.profileImage._id !== image._id)
-                                && image.user._id === profile._id
-                            ) ? (
+                            {(owner && isAvatar) ? (
                                 <IconButton
                                     type='primary'
                                     label='Set as Avatar'
@@ -109,18 +121,16 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                                 />
                             ) : null}
 
-                            {(
-                                profile.username !== 'Driver' &&
-                                profile.username !== 'Customer' &&
-                                profile.username !== 'Vendor' ||
-                                profile.role === 'admin'
-                            ) && (
+                            {allowDeletion && (
                                 <IconButton
                                     type='danger'
                                     label='Delete'
                                     onPress={handleDelete}
-                                    // disabled={deleteRestricted()}
-                                    style={{ flex: 1, opacity: deleteRestricted() ? 0.5 : 1 }}
+                                    disabled={disableDelete}
+                                    style={{
+                                        flex: 1,
+                                        opacity: disableDelete ? 0.5 : 1,
+                                    }}
                                 />
                             )}
 

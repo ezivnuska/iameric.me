@@ -70,7 +70,7 @@ export default ({ location }) => {
 
     useEffect(() => {
         if (formReady) validateFields()
-    }, [address1, address2, city, state, zip])
+    }, [address1, city, state, zip])
 
     const validateFields = () => {
         const keys = Object.keys(formFields)
@@ -92,12 +92,12 @@ export default ({ location }) => {
                     isValid = false
                 }
                 break
-            case 'address2':
-                if (!address2.length) {
-                    setFormError({ name, message: 'Address2 required.'})
-                    isValid = false
-                }
-                break
+            // case 'address2':
+            //     if (!address2.length) {
+            //         setFormError({ name, message: 'Address2 required.'})
+            //         isValid = false
+            //     }
+            //     break
             case 'city':
                 if (!city.length) {
                     setFormError({ name, message: 'City invalid.'})
@@ -117,7 +117,7 @@ export default ({ location }) => {
                 }
                 break
             default:
-                console.log('No field to validate')
+                // console.log('No field to validate')
         }
 
         if (isValid && getError(name)) {
@@ -184,6 +184,7 @@ export default ({ location }) => {
                 autoFocus={getFocus('address1')}
                 onKeyPress={onEnter}
                 dirty={getDirty('address1')}
+                required
             />
             <FormField
                 value={address2}
@@ -217,6 +218,7 @@ export default ({ location }) => {
                     autoFocus={getFocus('city')}
                     onKeyPress={onEnter}
                     dirty={getDirty('city')}
+                    required
                 />
 
                 <FormField
@@ -231,6 +233,7 @@ export default ({ location }) => {
                     autoFocus={getFocus('state')}
                     onKeyPress={onEnter}
                     dirty={getDirty('state')}
+                    required
                 />
             </View>
 
@@ -246,6 +249,7 @@ export default ({ location }) => {
                 autoFocus={getFocus('zip')}
                 onKeyPress={onEnter}
                 dirty={getDirty('zip')}
+                required
             />
         </>
     )

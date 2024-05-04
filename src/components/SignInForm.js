@@ -90,7 +90,7 @@ export default () => {
                 }
                 break
             default:
-                console.log('No field to validate')
+                // console.log('No field to validate')
         }
 
         if (isValid && getError(name)) {
@@ -149,6 +149,7 @@ export default () => {
                 autoFocus={getFocus('email')}
                 onKeyPress={onEnter}
                 dirty={getDirty('email')}
+                required
             />
             <FormField
                 label='Password'
@@ -162,6 +163,7 @@ export default () => {
                 autoFocus={getFocus('password')}
                 onKeyPress={onEnter}
                 dirty={getDirty('password')}
+                required
             />
         </>
     )

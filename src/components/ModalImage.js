@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     ImageDetail,
 } from '.'
 import {
     useApp,
-    useContacts,
+    useImages,
     useModal,
     useProducts,
     useUser,
@@ -15,10 +15,16 @@ import { loadUser } from '@utils/user'
 
 export default ({ image }) => {
     const { userId, setUserLoading } = useApp()
-    const { removeUserImage } = useContacts()
+    const {
+        removeImage,
+    } = useImages()
     const { closeModal } = useModal()
-    const { items, updateProductImage } = useProducts()
-    const { profile, removeImage, setProfileImage, setUser } = useUser()
+    const { products, updateProduct, updateProductImage } = useProducts()
+    const {
+        profile,
+        setProfileImage,
+        setUser,
+    } = useUser()
     
     useEffect(() => {
         const init = async () => {
@@ -35,36 +41,37 @@ export default ({ image }) => {
         init()
     }, [])
 
-    const isImageProfileImage = id => {
+    const isImageProfileImage = imageId => {
         if (!profile || !profile.profileImage) return false
-        if (profile.profileImage._id === id) return true
+        else if (profile.profileImage._id === imageId) return true
         return false
     }
 
-    const isImageProductImage = id => {
-        let response = false
-        items.map(product => {
-            if (product.image === id || product.image._id === id) response = product
+    const isImageProductImage = imageId => {
+        let response = null
+        products.map(product => {
+            if (product.image === imageId || product.image._id === imageId) response = product._id
         })
         return response
     }
 
     const deleteImage = async () => {
-        if (image.user._id === profile._id) removeImage(image._id)
-        else removeUserImage(image)
 
         const isProfileImage = isImageProfileImage(image._id)
-        const isProductImage = profile.role === 'vendor' ? isImageProductImage(image._id) : null
+        const isProductImage = isImageProductImage(image._id)
 
-        const { data } = await axios
-            .post('/api/images/delete', {
-                imageId: image._id,
-                isProductImage,
-                isProfileImage,
-            })
+        const { data } = await axios.post('/api/images/delete', {
+            imageId: image._id,
+            isProductImage,
+            isProfileImage,
+        })
         
-        if (!data) console.log('Error deleting image.')
-        else if (isProfileImage) removeImage(data.imageId)
+        if (!data || !data.deletedImage) console.log('Error deleting image.')
+        else {
+            if (isProductImage) updateProductImage(isProductImage, null)
+            if (isProfileImage) setProfileImage(null)
+            removeImage(data.deletedImage._id)
+        }
         
         closeModal()
     }
@@ -85,15 +92,14 @@ export default ({ image }) => {
 
     const setProductImage = async productId => {
 
-        const response = await axios
-            .post('/api/product/image', {
-                productId,
-                imageId: image._id,
-            })
-
-        if (!response.data) console.log('Error setting image id for product.')
-        else if (!response.data.image) console.log('no image found')
-        else updateProductImage(productId, response.data.image)
+        const { data } = await axios.post('/api/product/image', {
+            productId,
+            imageId: image._id,
+        })
+        
+        if (!data || !data.product) console.log('Error setting image id for product.')
+        else if (!data.product.image) console.log('no image found')
+        else updateProduct(data.product)
         
         closeModal()
     }
@@ -101,7 +107,7 @@ export default ({ image }) => {
     return image && (
         <ImageDetail
             image={image}
-            deleteImage={deleteImage}
+            deleteImage={() => deleteImage(image._id)}
             setAvatar={setAvatar}
             setProductImage={setProductImage}
         />

@@ -88,7 +88,7 @@ export default () => {
                 }
                 break
             default:
-                console.log('No field to validate')
+                // console.log('No field to validate')
         }
 
         if (isValid && getError(name)) {
@@ -149,6 +149,7 @@ export default () => {
                 autoFocus={getFocus('username')}
                 onKeyPress={onEnter}
                 dirty={getDirty('username')}
+                required
             />
         </>
     )

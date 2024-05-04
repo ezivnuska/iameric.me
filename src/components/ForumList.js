@@ -91,7 +91,7 @@ const ListItemVertical = ({ item, imagePath, onPress, owner, onDelete = null, ..
 
                     </Pressable>
 
-                    {owner && (
+                    {(owner && onDelete) && (
                         <View
                             style={{
                                 flexBasis: 'auto',
@@ -101,7 +101,7 @@ const ListItemVertical = ({ item, imagePath, onPress, owner, onDelete = null, ..
                         >
                             <IconButton
                                 iconName='trash-outline'
-                                onPress={() => onDelete ? onDelete(item._id) : null}
+                                onPress={() => onDelete(item._id)}
                                 textStyles={{ fontSize: 15 }}
                                 transparent
                             />
@@ -210,7 +210,7 @@ const ListItemHorizontal = ({ item, imagePath, onPress, owner, onDelete = null }
 
                         </Pressable>
 
-                        {owner && (
+                        {(owner && onDelete) && (
                             <View
                                 style={{
                                     flexBasis: 'auto',
@@ -220,7 +220,7 @@ const ListItemHorizontal = ({ item, imagePath, onPress, owner, onDelete = null }
                             >
                                 <IconButton
                                     iconName='trash-outline'
-                                    onPress={() => onDelete ? onDelete(item._id) : null}
+                                    onPress={() => onDelete(item._id)}
                                     textStyles={{ fontSize: 15 }}
                                     transparent
                                 />

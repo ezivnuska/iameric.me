@@ -4,9 +4,11 @@ import {
 } from '.'
 import {
     ImagesView,
+    LoadingView,
 } from '@components'
 import {
     useApp,
+    useImages,
     useUser,
 } from '@context'
 import { loadImages } from '@utils/images'
@@ -19,32 +21,40 @@ export default props => {
         profile,
         setUser,
         setUserLoading,
-        updateImages,
+        userLoaded,
+        userLoading,
     } = useUser()
+    const {
+        images,
+        imagesLoaded,
+        imagesLoading,
+        setImages,
+        setImagesLoading,
+    } = useImages()
 
     useEffect(() => {
-        console.log('props', props)
-        const init = async () => {
-            if (!profile) {
-                setUserLoading(true)
-                const loadedUser = await loadUser(userId)
-                setUserLoading(false)
-                if (loadedUser) setUser(loadedUser)
-            } else {
-                if (!profile.images) {
-                    setUserLoading(true)
-                    const images = await loadImages(userId)
-                    setUserLoading(false)
-                    updateImages(images)
-                }
-            }
+        const fetchUser = async () => {
+            setUserLoading(true)
+            const loadedUser = await loadUser(userId)
+            setUserLoading(false)
+            if (loadedUser) setUser(loadedUser)
         }
-        if (userId) init()
+        const fetchImages = async () => {
+            setImagesLoading(true)
+            const images = await loadImages(userId)
+            setImagesLoading(false)
+            setImages(images)
+        }
+        if (!profile) fetchUser()
+        else if (!imagesLoaded && !imagesLoading && !images) fetchImages()
     }, [profile])
+
+    if (userLoading) return <LoadingView loading='Loading user...' />
+    if (imagesLoading) return <LoadingView loading='Loading images...' />
 
     return profile && (
         <Screen {...props}>
-            <ImagesView images={profile.images} />
+            <ImagesView images={images} />
         </Screen>
     )
 }

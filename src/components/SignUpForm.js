@@ -169,6 +169,7 @@ export default ({ role }) => {
                 autoFocus={getFocus('email')}
                 onKeyPress={onEnter}
                 dirty={getDirty('email')}
+                required
             />
             <FormField
                 label='Username'
@@ -182,6 +183,7 @@ export default ({ role }) => {
                 autoFocus={getFocus('username')}
                 onKeyPress={onEnter}
                 dirty={getDirty('username')}
+                required
             />
             <FormField
                 label='Password'
@@ -195,6 +197,7 @@ export default ({ role }) => {
                 autoFocus={getFocus('password')}
                 onKeyPress={onEnter}
                 dirty={getDirty('password')}
+                required
             />
             <FormField
                 label='Confirm Password'
@@ -208,6 +211,7 @@ export default ({ role }) => {
                 autoFocus={getFocus('confirmPassword')}
                 onKeyPress={onEnter}
                 dirty={getDirty('confirmPassword')}
+                required
             />
         </>
     )

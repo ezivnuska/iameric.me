@@ -3,24 +3,18 @@ import { loadUser } from '@utils/user'
 import { useApp } from '@context'
 
 const initialState = {
-    uploading: false,
     profile: null,
     userLoaded: false,
     userLoading: false,
     userModals: [],
     error: null,
-    addImage: () => {},
     clearUser: () => {},
-    closeUserModal: () => {},
-    removeImage: () => {},
-    setUploading: () => {},
     setUser: () => {},
     setUserLoading: () => {},
     setUserLocation: () => {},
-    setUserModal: () => {},
     setProfileImage: () => {},
+    updateUser: () => {},
     updateImage: () => {},
-    updateImages: () => {},
 }
 
 export const UserContext = createContext(initialState)
@@ -54,14 +48,11 @@ export const UserContextProvider = props => {
     }, [userId])
 
     const actions = useMemo(() => ({
-        closeUserModal: async () => {
-            dispatch({ type: 'CLOSE_USER_MODAL' })
-        },
-        setUploading: payload => {
-            dispatch({ type: 'SET_UPLOADING', payload })
-        },
         setUser: payload => {
             dispatch({ type: 'SET_USER', payload })
+        },
+        updateUser: payload => {
+            dispatch({ type: 'UPDATE_USER', payload })
         },
         setProfileImage: payload => {
             dispatch({ type: 'SET_PROFILE_IMAGE', payload })
@@ -71,24 +62,6 @@ export const UserContextProvider = props => {
         },
         setUserLocation: payload => {
             dispatch({ type: 'SET_USER_LOCATION', payload })
-        },
-        setUserModal: async (type, data) => {
-            dispatch({
-                type: 'SET_USER_MODAL',
-                payload: { data, type },
-            })
-        },
-        addImage: payload => {
-            dispatch({ type: 'ADD_IMAGE', payload })
-        },
-        updateImage: payload => {
-            dispatch({ type: 'UPDATE_IMAGE', payload })
-        },
-        updateImages: payload => {
-            dispatch({ type: 'UPDATE_IMAGES', payload })
-        },
-        removeImage: payload => {
-            dispatch({ type: 'REMOVE_IMAGE', payload })
         },
         clearUser: () => {
             dispatch({ type: 'CLEAR_USER' })
@@ -111,30 +84,20 @@ const reducer = (state, action) => {
                 userLoaded: true,
             }
             break
-        case 'SET_UPLOADING':
-            return { ...state, uploading: payload }
-            break
         case 'SET_USER_LOADING':
             return { ...state, userLoading: payload }
             break
-        case 'SET_USER_MODAL':
-            if (!payload) return state
-            return {
-                ...state,
-                userModals: [
-                    ...state.userModals,
-                    payload,
-                ],
-            }
-            break
-        case 'CLOSE_USER_MODAL':
-            return {
-                ...state,
-                userModals: state.userModals.slice(0, state.userModals.length - 1),
-            }
-            break
         case 'SET_USER':
             return { ...state, profile: payload }
+            break
+        case 'UPDATE_USER':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    ...payload,
+                },
+            }
             break
         case 'SET_PROFILE_IMAGE':
             return {
@@ -151,27 +114,6 @@ const reducer = (state, action) => {
                 profile: {
                     ...state.profile,
                     location: payload,
-                },
-            }
-            break
-        case 'UPDATE_IMAGES':
-            return {
-                ...state,
-                profile: {
-                    ...state.profile,
-                    images: payload,
-                },
-            }
-            break
-        case 'ADD_IMAGE':
-            return {
-                ...state,
-                profile: {
-                    ...state.profile,
-                    images: state.profile.images ? [
-                        ...state.profile.images,
-                        payload,
-                    ] : [payload],
                 },
             }
             break
@@ -200,42 +142,6 @@ const reducer = (state, action) => {
                     ),
                     profileImage,
                 },
-            }
-            break
-        case 'UPDATE_PRODUCTS':
-            if (!state.profile)
-                return state
-
-            return {
-                ...state,
-                profile: {
-                    ...state.profile,
-                    products: action.products,
-                },
-            }
-            break
-        case 'REMOVE_PRODUCT':
-            const productIndex = state.profile.products.findIndex(p => p._id === action.productId)
-
-            if (productIndex > -1) {
-                return {
-                    ...state,
-                    profile: {
-                        ...state.profile,
-                        products: [
-                            ...state.products.slice(0, productIndex),
-                            ...state.products.slice(productIndex + 1),
-                        ],
-                    },
-                }
-            } else {
-                return {
-                    ...state,
-                    profile: {
-                        ...state.profile,
-                        products: [],
-                    },
-                }
             }
             break
         case 'CLEAR_USER':
