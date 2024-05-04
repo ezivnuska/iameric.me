@@ -29,7 +29,6 @@ import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
 import LocationModule from './LocationModule'
 import LocationForm from './LocationForm'
-// import MenuItem from './MenuItem'
 import ModalImage from './ModalImage'
 import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
@@ -45,7 +44,6 @@ import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import Products from './Products'
 import ProductSelector from './ProductSelector'
-// import Profile from './Profile'
 import QuantityControl from './QuantityControl'
 import ScreenContent from './ScreenContent'
 import SignInForm from './SignInForm'
@@ -89,7 +87,6 @@ export {
     LocationDetails,
     LocationModule,
     LocationForm,
-    // MenuItem,
     ModalImage,
     ModalProfile,
     ModalSignout,
@@ -105,7 +102,6 @@ export {
     ProductListItem,
     Products,
     ProductSelector,
-    // Profile,
     QuantityControl,
     ScreenContent,
     SignInForm,

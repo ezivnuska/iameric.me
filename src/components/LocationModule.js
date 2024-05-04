@@ -21,18 +21,7 @@ import {
 export default () => {
     const { formLoading } = useForm()
     const { setModal } = useModal()
-    const { profile, setUserLoading, setUserLocation, userLoading } = useUser()
-
-    // useEffect(() => {
-    //     const fetchUserLocation = async () => {
-    //         setUserLoading(true)
-    //         const data = await getUserLocation(profile._id)
-    //         setUserLoading(false)
-            
-    //         if (data) setUserLocation(data)
-    //     }
-    //     fetchUserLocation()
-    // }, [])
+    const { profile, userLoading } = useUser()
     
     if (userLoading) return <LoadingView loading='Loading user location' />
     

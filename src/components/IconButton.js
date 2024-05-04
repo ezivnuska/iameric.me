@@ -48,7 +48,7 @@ export default ({
                     flexShrink: 0,
                     flexGrow: 0,
                     paddingVertical: 2,
-                    paddingHorizontal: transparent ? 0 : 10,
+                    paddingHorizontal: transparent || !padded ? 0 : 10,
                     backgroundColor: transparent ? 'transparent' : getBackgroundColor(),
                     borderRadius: 10,
                     shadowColor: outline ? theme?.colors.shadow : 'none',
@@ -98,7 +98,7 @@ export default ({
                                     : theme?.colors.buttonLabel,
                             letterSpacing: 0,
                             lineHeight: 24,
-                            paddingHorizontal: iconName && alignIcon === 'right' ? 5 : 0,
+                            // paddingHorizontal: iconName && alignIcon === 'right' ? 5 : 0,
                         },
                         textStyles,
                     ]}
@@ -113,7 +113,11 @@ export default ({
                     name={iconName}
                     size={24}
                     color={type === 'primary' ? theme?.colors.buttonPrimaryLabel : theme?.colors.buttonLabel}
-                    style={{ flexBasis: 'auto', fontWeight: 800 }}
+                    style={{
+                        flexBasis: 'auto',
+                        fontWeight: 800,
+                        marginLeft: 5,
+                    }}
                 />
             )}
         </Pressable>

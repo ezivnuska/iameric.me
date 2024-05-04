@@ -45,14 +45,14 @@ export const ContactContextProvider = props => {
                 dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })
                 if (!data) console.log('could not load contacts')
                 else dispatch({ type: 'SET_CONTACTS', payload: data })
-            } else console.log('user not verified.')
+            } else console.log('no userId.')
             
             dispatch({ type: 'SET_CONTACTS_LOADED' })
         }
         
-        init()
+        if (userId && !state.contactsLoaded) init()
 
-    }, [])
+    }, [userId])
 
     const actions = useMemo(() => ({
         closeContactModal: async () => {

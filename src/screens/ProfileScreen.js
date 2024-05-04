@@ -12,7 +12,7 @@ import {
     useUser,
 } from '@context'
 
-export default () => {
+export default props => {
 
     const { profile, userLoading } = useUser()
 
@@ -30,7 +30,7 @@ export default () => {
     if (userLoading) return <LoadingView loading='Loading profile.' />
 
     return (
-        <Screen>
+        <Screen {...props}>
             {profile ? (
                 <>
                     <TitleBar title={profile.username} />

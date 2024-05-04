@@ -23,6 +23,7 @@ export default props => {
     } = useUser()
 
     useEffect(() => {
+        console.log('props', props)
         const init = async () => {
             if (!profile) {
                 setUserLoading(true)

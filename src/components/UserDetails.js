@@ -4,9 +4,6 @@ import {
     View,
 } from 'react-native'
 import {
-    ThemedText,
-} from '@components'
-import {
     useApp,
     useUser,
 } from '@context'
@@ -68,40 +65,9 @@ export default () => {
         )
     }
 
-    // TODO: clean this.
-    const renderUserAvatar = () => {
-
-        const { profileImage, username } = profile
-
-        const filename = (profileImage && profileImage.filename)
-            ? profileImage.filename
-            : null
-        
-        const source = filename ?
-            `${IMAGE_PATH}/${username}/${filename}` :
-            `${IMAGE_PATH}/avatar-default.png`
-
-        const { width, height } = profileImage
-            ? getImageDims(profileImage.width, profileImage.height)
-            : { width: 200, height: 200 }
-        
-        return (
-            <Image
-                source={source}
-                style={{
-                    width,
-                    height,
-                    resizeMode: 'cover',
-                }}
-            />
-        )
-    }
-
     return profile && (
         <View>
             {renderImage(profile)}
-            <ThemedText>{profile.username}</ThemedText>
-            <ThemedText>{profile.role}</ThemedText>
         </View>
     )
 }

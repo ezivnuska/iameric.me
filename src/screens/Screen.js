@@ -8,6 +8,7 @@ import {
 } from '@components'
 import {
     useApp,
+    useUser,
 } from '@context'
 
 const SecureLayer = ({ userId, children, ...props }) => userId ? (
@@ -23,15 +24,14 @@ export default ({
 }) => {
     
     const { appLoaded, dims, userId } = useApp()
-
-    const secured = useMemo(() => userId !== null, [userId])
+    const { profile, userLoaded } = useUser()
     
     useEffect(() => {
-        if (secure && !secured) props.navigation.navigate('Start')
+        if (secure && !profile && userLoaded) props.navigation.navigate('Start')
         // if (secure && !secured) props.navigation.navigate('Start')
         // else if (secure && secured) props.navigation.navigate('Auth')
         // else props.navigation.navigate('Start')
-    }, [secured])
+    }, [profile])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 
@@ -39,7 +39,7 @@ export default ({
         ? <SecureLayer userId={userId} {...props}>{children}</SecureLayer>
         : children
 
-    return secured ? (
+    return userId ? (
         <ScrollView
             contentContainerStyle={{
                 height: '100%',
