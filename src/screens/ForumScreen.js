@@ -10,6 +10,7 @@ import {
     Screen,
 } from '.'
 import {
+    ForumContextProvider,
     useForum,
     useModal,
 } from '@context'
@@ -50,12 +51,11 @@ export default props => {
                 />
             </TitleBar>
             <ScreenContent>
-                {entries.length ? (
+                <ForumContextProvider>
                     <ForumList
-                        items={entries}
                         onDelete={removeEntry}
                     />
-                ) : <EmptyStatus status='No entries yet.' />}
+                </ForumContextProvider>
             </ScreenContent>
         </Screen>
     )

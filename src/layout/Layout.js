@@ -12,7 +12,6 @@ import {
 } from '@components'
 import {
     ContactContextProvider,
-    ForumContextProvider,
     ImageContextProvider,
     ProductContextProvider,
     useApp,
@@ -46,26 +45,23 @@ export default () => {
                     backgroundColor: theme?.colors.background,
                 }}
             >
+                {ready ? (
                     <Compose
                         components={[
-                            ForumContextProvider,
                             ContactContextProvider,
                             ProductContextProvider,
                             ImageContextProvider,
                         ]}
                     >
-                        {ready ? (
-                            <>
-                                <Header />
-                                <AppNavigation />
-                                <ModalView />
-                            </>
-                        ) : (
-                            <CenterVertical>
-                                <ActivityIndicator size='large' />
-                            </CenterVertical>
-                        )}
+                        <Header />
+                        <AppNavigation />
+                        <ModalView />
                     </Compose>
+                ) : (
+                    <CenterVertical>
+                        <ActivityIndicator size='large' />
+                    </CenterVertical>
+                )}
             
             </SafeAreaView>
         

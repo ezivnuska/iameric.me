@@ -14,6 +14,7 @@ import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
 import {
     useApp,
+    useForum,
     useModal,
     useUser,
 } from '@context'
@@ -21,6 +22,7 @@ import {
 const ListItemVertical = ({ item, imagePath, onPress, owner, onDelete = null, ...props }) => {
     
     const { theme } = useApp()
+    const { entries } = useForum()
     
     const { author, text } = item
 
@@ -245,14 +247,15 @@ const ListItemHorizontal = ({ item, imagePath, onPress, owner, onDelete = null }
     )
 }
 
-export default ({ items, onDelete }) => {
+export default ({ onDelete }) => {
     const { landscape, dims } = useApp()
+    const { entries } = useForum()
     const { setModal } = useModal()
     const { profile } = useUser()
 
     return !landscape ? (
         <FlatList
-            data={items}
+            data={entries}
             listKey={() => 'entries'}
             keyExtractor={(item, index) => `${index}-entry-${item._id}`}
             renderItem={({ item }) => (
@@ -291,7 +294,7 @@ export default ({ items, onDelete }) => {
 
                 }}
             >
-                {items.map(((item, index) => (
+                {entries.map(((item, index) => (
                     <ListItemHorizontal
                         item={item}
                         imagePath={getProfileImagePathFromUser(item.author)}
