@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Image,
     Pressable,
@@ -22,6 +22,8 @@ export default ({ items = null, restricted = false }) => {
     const { images, uploading } = useImages()
     const { setModal } = useModal()
     const { profile } = useUser()
+
+    const [listItems, setListItems] = useState(items || images)
 
     const buttonStyle = {
         borderWidth: 1,
@@ -70,7 +72,7 @@ export default ({ items = null, restricted = false }) => {
                 width: '100%',
             }}
         >
-            {images && images.map((image, index) => {
+            {listItems && listItems.map((image, index) => {
                 return image.user ? (
                     <Pressable
                         key={`image-${index}`}
@@ -102,7 +104,7 @@ export default ({ items = null, restricted = false }) => {
 
             {uploading && (
                 <View
-                    key={`image-${images.length}`}
+                    key={`image-${listItems.length}`}
                     style={[
                         {
                             flexBasis: 'auto',
@@ -123,7 +125,7 @@ export default ({ items = null, restricted = false }) => {
 
             {!hideUpload() && (
                 <Pressable
-                    key={`image-${images.length + (uploading ? 1 : 0)}`}
+                    key={`image-${listItems.length + (uploading ? 1 : 0)}`}
                     onPress={handleUpload}
                     style={[
                         {
