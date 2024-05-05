@@ -16,14 +16,12 @@ import { ActivityIndicator } from 'react-native-paper'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ items = null, restricted = false }) => {
+export default ({ images, restricted = false }) => {
 
     const { theme } = useApp()
-    const { images, uploading } = useImages()
+    const { uploading } = useImages()
     const { setModal } = useModal()
     const { profile } = useUser()
-
-    const [listItems, setListItems] = useState(items || images)
 
     const buttonStyle = {
         borderWidth: 1,
@@ -72,7 +70,7 @@ export default ({ items = null, restricted = false }) => {
                 width: '100%',
             }}
         >
-            {listItems && listItems.map((image, index) => {
+            {images && images.map((image, index) => {
                 return image.user ? (
                     <Pressable
                         key={`image-${index}`}
@@ -104,7 +102,7 @@ export default ({ items = null, restricted = false }) => {
 
             {uploading && (
                 <View
-                    key={`image-${listItems.length}`}
+                    key={`image-${images.length}`}
                     style={[
                         {
                             flexBasis: 'auto',
@@ -125,7 +123,7 @@ export default ({ items = null, restricted = false }) => {
 
             {!hideUpload() && (
                 <Pressable
-                    key={`image-${listItems.length + (uploading ? 1 : 0)}`}
+                    key={`image-${images.length + (uploading ? 1 : 0)}`}
                     onPress={handleUpload}
                     style={[
                         {

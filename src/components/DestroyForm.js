@@ -3,6 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
+    CenterVertical,
     FormField,
     IconButton,
     ThemedText,
@@ -155,32 +156,34 @@ export default () => {
     )
     
     return (
-        <View
-            style={{ paddingVertical: 20 }}
-        >
-            <ThemedText style={classes.headerSecondary}>
-                Delete Account and Data
-            </ThemedText>
+        <CenterVertical>
+            <View
+                style={{ paddingVertical: 20 }}
+            >
+                <ThemedText style={classes.headerSecondary}>
+                    Delete Account and Data
+                </ThemedText>
 
-            <ThemedText style={{ marginBottom: 15 }}>
-                Enter your username to close your account and 
-                permanently delete all of your data.
-            </ThemedText>
+                <ThemedText style={{ marginBottom: 15 }}>
+                    Enter your username to close your account and 
+                    permanently delete all of your data.
+                </ThemedText>
 
-            {focused !== null ? (
-                <>
-                    <View style={{ marginBottom: 10 }}>
-                        {renderFields()}
-                    </View>
+                {focused !== null ? (
+                    <>
+                        <View style={{ marginBottom: 10 }}>
+                            {renderFields()}
+                        </View>
 
-                    <IconButton
-                        type='primary'
-                        label={formLoading ? 'Burning...' : 'Burn it all.'}
-                        disabled={formLoading || formError}
-                        onPress={submitFormData}
-                    />
-                </>
-            ) : null}
-        </View>
+                        <IconButton
+                            type='primary'
+                            label={formLoading ? 'Burning...' : 'Burn it all.'}
+                            disabled={formLoading || formError}
+                            onPress={submitFormData}
+                        />
+                    </>
+                ) : null}
+            </View>
+        </CenterVertical>
     )
 }

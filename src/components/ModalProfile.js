@@ -1,32 +1,11 @@
 import React from 'react'
 import {
-    View,
-} from 'react-native'
-import {
+    CenterVertical,
     UserDetailsShort,
-} from '.'
-import {
-    useModal,
-    useUser,
-} from '@context'
+} from '@components'
 
-export default () => {
-
-    const { closeModal } = useModal()
-    const { profile } = useUser()
-    
-    return (
-        <View
-            style={{
-                alignItems: 'center',
-            }}
-        >
-            {profile && (
-                <UserDetailsShort
-                    userId={profile._id}
-                    clear={closeModal}
-                />
-            )}
-        </View>
-    )
-}
+export default () => (
+    <CenterVertical>
+        <UserDetailsShort />
+    </CenterVertical>
+)

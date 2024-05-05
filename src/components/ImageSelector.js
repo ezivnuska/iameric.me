@@ -3,10 +3,10 @@ import {
     View,
 } from 'react-native'
 import {
+    CenterVertical,
     IconButton,
     Preview,
-    ThemedText,
-} from '.'
+} from '@components'
 import EXIF from 'exif-js'
 import {
     useApp,
@@ -118,71 +118,73 @@ export default () => {
     }
 
     return (
-        <View
-            id='dropzone'
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-            }}
-        >
-            {preview ? (
-                <View
-                    style={{
-                        marginBottom: 15,
-                    }}
-                >
-                    <Preview
-                        width={preview.width}
-                        height={preview.height}
-                        uri={preview.uri}
-                    />
-                </View>
-            ) : null}
-            
+        <CenterVertical>
             <View
+                id='dropzone'
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'space-evenly',
-                    width: size,
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
                 }}
             >
                 {preview ? (
                     <View
                         style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            width: size,
+                            marginBottom: 15,
                         }}
                     >
+                        <Preview
+                            width={preview.width}
+                            height={preview.height}
+                            uri={preview.uri}
+                        />
+                    </View>
+                ) : null}
+                
+                <View
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-evenly',
+                        width: size,
+                    }}
+                >
+                    {preview ? (
+                        <View
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-evenly',
+                                width: size,
+                            }}
+                        >
+                            <IconButton
+                                type='primary'
+                                label='Upload Image'
+                                disabled={uploading}
+                                onPress={onSubmit}
+                            />
+
+                            <IconButton
+                                label='Change Image'
+                                disabled={uploading}
+                                onPress={openSelector}
+                            />
+
+                        </View>
+
+                    ) : (
                         <IconButton
                             type='primary'
-                            label='Upload Image'
-                            disabled={uploading}
-                            onPress={onSubmit}
-                        />
-
-                        <IconButton
-                            label='Change Image'
+                            label='Select Image'
                             disabled={uploading}
                             onPress={openSelector}
                         />
+                    )}
 
-                    </View>
-
-                ) : (
-                    <IconButton
-                        type='primary'
-                        label='Select Image'
-                        disabled={uploading}
-                        onPress={openSelector}
-                    />
-                )}
-
+                </View>
             </View>
-        </View>
+        </CenterVertical>
     )
 }

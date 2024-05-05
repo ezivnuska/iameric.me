@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
     Image,
-    useWindowDimensions,
     View,
 } from 'react-native'
 import {
@@ -20,10 +19,10 @@ import {
 import classes from '@styles/classes'
 import { navigationRef } from 'src/navigation/RootNavigation'
 
-export default ({ userId }) => {
+export default () => {
 
-    const { dims, landscape } = useApp()
-    const { contactLoading, setContactLoading } = useContacts()
+    const { dims, landscape, userId } = useApp()
+    const { setContactLoading } = useContacts()
     const [userDetails, setUserDetails] = useState(null)
     const [imageSize, setImageSize] = useState(null)
 

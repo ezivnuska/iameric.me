@@ -11,7 +11,6 @@ import {
 import {
     useApp,
     useModal,
-    useUser,
 } from '@context'
 import {
     connect,
@@ -23,13 +22,14 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default props => {
 
-    const { appLoaded, signIn } = useApp()
+    const { appLoaded, signIn, userId } = useApp()
     const { setModal } = useModal()
-    const { profile } = useUser()
 
     useEffect(() => {
-        if (profile) props.navigation.navigate('Auth')
-    }, [profile])
+        if (userId) {
+            props.navigation.navigate('Auth')
+        }
+    }, [userId])
 
     const onConnect = async type => {
         const user = await connect(type)

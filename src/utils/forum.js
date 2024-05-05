@@ -12,6 +12,13 @@ export const loadEntries = async () => {
     return null
 }
 
+export const createEntry = async entry => {
+    const { data } = await axios.post('/api/entry', entry)
+    if (!data || !data.entry) console.log('could not create new entry.')
+    else return data.entry
+    return null
+}
+
 export const deleteEntryWithId = async id => {
     const { data } = await axios.delete(`/api/entry/delete/${id}`)
     if (!data.entry) console.log('Error deleting product')

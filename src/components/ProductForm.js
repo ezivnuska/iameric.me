@@ -73,7 +73,6 @@ export default  ({ product }) => {
     } = useMemo(() => formFields, [formFields])
     
     useEffect(() => {
-        console.log('product on form init', product)
         const fields = getFields(initialState, product)
         setInitialValues(fields)
     }, [])
@@ -176,7 +175,7 @@ export default  ({ product }) => {
         setFormLoading(true)
         const { data } = await axios.post('/api/product', newProduct)
         setFormLoading(false)
-        console.log('new product data', data)
+        
         if (!data || !data.product) {
             console.log('Error saving product', product)
         } else {

@@ -16,22 +16,22 @@ import {
 export default props => {
 
     const {
-        profile,
         userLoading,
     } = useUser()
 
     const {
+        images,
         imagesLoading,
     } = useImages()
 
     if (userLoading) return <LoadingView loading='Loading user...' />
     if (imagesLoading) return <LoadingView loading='Loading images...' />
 
-    return profile && (
+    return (
         <Screen {...props}>
             <TitleBar title='Images' />
             <ScreenContent>
-                <ImageList />
+                <ImageList images={images} />
             </ScreenContent>
         </Screen>
     )

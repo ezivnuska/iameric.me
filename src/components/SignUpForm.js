@@ -148,7 +148,7 @@ export default ({ role }) => {
         } else {
             if (formError) clearFormError()
             const { _id, email, images, profileImage, role, token, username, exp } = user
-            signIn(token)
+            signIn({ _id, token })
             setUser({ _id, email, images, profileImage, role, token, username, exp })
             clearForm()
             closeModal()

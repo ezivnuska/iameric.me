@@ -11,9 +11,12 @@ export default ({ navigation }) => {
     const { userLoaded } = useUser()
 
     useEffect(() => {
-        if (userLoaded) navigation.navigate('Auth')
-        else navigation.navigate('Start')
-    }, [userLoaded])
+        console.log('SPLASH')
+    }, [])
+    // useEffect(() => {
+    //     if (userLoaded) navigation.navigate('Auth')
+    //     else navigation.navigate('Start')
+    // }, [userLoaded])
     
     return (
         <CenterVertical>

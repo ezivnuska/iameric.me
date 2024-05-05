@@ -27,10 +27,9 @@ export const useUser = () => {
 
 export const UserContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
-    const { appLoaded, userId } = useApp()
+    const { userId } = useApp()
 
     useEffect(() => {
-        
         const init = async () => {
             if (userId) {
                 console.log('user authorized. loading user...')
@@ -46,8 +45,7 @@ export const UserContextProvider = props => {
             
             dispatch({ type: 'SET_USER_LOADED' })
         }
-        
-        if (appLoaded) init()
+        if (!state.profile) init()
 
     }, [userId])
 

@@ -38,13 +38,14 @@ export const ForumContextProvider = props => {
                 dispatch({ type: 'SET_FORUM_LOADING', payload: true })
                 const entries = await loadEntries()
                 dispatch({ type: 'SET_FORUM_LOADING', payload: false })
+
                 if (!entries) console.log('could not load entries')
                 else dispatch({ type: 'SET_ENTRIES', payload: entries })
             }
 
             dispatch({ type: 'SET_FORUM_LOADED' })
         }
-
+        
         if (!state.forumLoaded) initForum()
     }, [userId])
 
@@ -122,10 +123,7 @@ const reducer = (state, action) => {
         case 'ADD_ENTRY':
             return {
                 ...state,
-                entries: [
-                    payload,
-                    ...state.entries,
-                ],
+                entries: [ payload, ...state.entries ],
             }
             break
         case 'UPDATE_ENTRY':

@@ -15,9 +15,13 @@ import classes from '@styles/classes'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ onDelete, product, onPress, ...props }) => {
+export default ({ onDelete, onPress, product, ...props }) => {
 
     const { profile, userLoading } = useUser()
+
+    const getSource = filename => profile
+        ? `${IMAGE_PATH}/${profile.username}/thumb/${filename}`
+        : `${IMAGE_PATH}/avatar-default-small.png`
     
     return (
         <View
@@ -53,7 +57,7 @@ export default ({ onDelete, product, onPress, ...props }) => {
                             <Image
                                 width={IMAGE_SIZE}
                                 height={IMAGE_SIZE}
-                                source={{ uri: `${IMAGE_PATH}/${profile.username}/thumb/${product.image.filename}` }}
+                                source={{ uri: getSource(product.image.filename) }}
                                 style={{
                                     resizeMode: 'stretch',
                                     width: IMAGE_SIZE,

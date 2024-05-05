@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import {
     ScrollView,
-    View,
 } from 'react-native'
 import {
     LoadingView,
@@ -11,12 +10,6 @@ import {
     useUser,
 } from '@context'
 
-const SecureLayer = ({ userId, children, ...props }) => userId ? (
-    <View {...props}>
-        {children}
-    </View>
-) : null
-
 export default ({
     children,
     secure = true,
@@ -24,21 +17,14 @@ export default ({
 }) => {
     
     const { appLoaded, userId } = useApp()
-    const { profile } = useUser()
-    
+
     useEffect(() => {
         if (secure) {
             if (!userId) props.navigation.navigate('Start')
-        } else {
-            if (userId) props.navigation.navigate('Auth')
         }
-    }, [profile])
+    }, [userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
-
-    const renderContent = () => secure
-        ? <SecureLayer userId={userId} {...props}>{children}</SecureLayer>
-        : children
 
     return userId ? (
         <ScrollView
@@ -47,7 +33,7 @@ export default ({
             //     height: '100%',
             // }}
         >
-            {renderContent(children)}
+            {children}
         </ScrollView>
     ) : <LoadingView loading='Checking Auth...' />
 }

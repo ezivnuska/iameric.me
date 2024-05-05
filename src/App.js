@@ -6,6 +6,7 @@ import {
   AppContextProvider,
   FormContextProvider,
   ModalContextProvider,
+  UserContextProvider,
 } from '@context'
 import Compose from './Compose'
 
@@ -17,6 +18,8 @@ export default () => (
 			AppContextProvider,
 		]}
 	>
-		<Layout />
+		<UserContextProvider>
+			<Layout />
+		</UserContextProvider>
 	</Compose>
 )

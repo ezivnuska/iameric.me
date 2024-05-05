@@ -3,6 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
+    CenterVertical,
     LoadingView,
     EmptyStatus,
     ImageList,
@@ -11,12 +12,11 @@ import {
 import {
     useApp,
     useContacts,
-    useModal,
-    useUser,
 } from '@context'
 import {
     loadFullContact,
 } from '@utils/contacts'
+import classes from '@styles/classes'
 
 export default ({ userId }) => {
     
@@ -26,7 +26,6 @@ export default ({ userId }) => {
         setContactLoading,
         updateContact,
     } = useContacts()
-    const { setModal } = useModal()
 
     const [contact, setContact] = useState(null)
 
@@ -42,8 +41,8 @@ export default ({ userId }) => {
                 updateContact(user)
             }
         }
-        fetchContact()
-    }, [])
+        if (userId) fetchContact()
+    }, [userId])
 
     if (contactLoading) return <LoadingView loading='Loading contact' />
 
@@ -52,13 +51,22 @@ export default ({ userId }) => {
             style={{
                 width: '100%',
                 maxWidth: dims.width - 20,
+                paddingVertical: 10,
+                marginHorizontal: 10,
             }}
         >   
-            <ThemedText>{contact.username}</ThemedText>
+            <ThemedText
+                style={[
+                    classes.pageTitle,
+                    { marginBottom: 10 },
+                ]}
+            >
+                {contact.username}
+            </ThemedText>
 
             {contact.images.length ? (
                 <ImageList
-                    items={contact.images}
+                    images={contact.images}
                     restricted={true}
                     // restricted={profile._id !== contact._id}
                 />

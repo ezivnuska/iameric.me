@@ -15,7 +15,6 @@ import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormField from './FormField'
 import ForumList from './ForumList'
-import ForumView from './ForumView'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
 import ImageDetail from './ImageDetail'
@@ -71,7 +70,6 @@ export {
     FeedbackForm,
     FileSelector,
     ForumList,
-    ForumView,
     HoverableView,
     IconButton,
     ImageDetail,

@@ -266,7 +266,6 @@ export default ({ items, onDelete }) => {
             )}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
-                // paddingHorizontal: 10,
                 paddingBottom: 20,
             }}
         />

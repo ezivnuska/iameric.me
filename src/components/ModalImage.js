@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import {
+    CenterVertical,
     ImageDetail,
-} from '.'
+} from '@components'
 import {
     useApp,
     useImages,
@@ -11,10 +12,8 @@ import {
 } from '@context'
 import axios from 'axios'
 import { loadUserImage } from '@utils/images'
-import { loadUser } from '@utils/user'
 
 export default ({ image }) => {
-    const { userId, setUserLoading } = useApp()
     const {
         removeImage,
     } = useImages()
@@ -23,18 +22,10 @@ export default ({ image }) => {
     const {
         profile,
         setProfileImage,
-        setUser,
     } = useUser()
     
     useEffect(() => {
         const init = async () => {
-            // if (!profile) {
-            //     console.log('* warning * no profile found in ModalImage')
-            //     setUserLoading(true)
-            //     const loadedUser = await loadUser(userId)
-            //     setUserLoading(false)
-            //     if (loadedUser) setUser(loadedUser)
-            // }
             const loadedImage = await loadUserImage(image._id)
             if (!loadedImage) return console.log('problem loading user image.')
         }
@@ -97,19 +88,21 @@ export default ({ image }) => {
             imageId: image._id,
         })
         
-        if (!data || !data.product) console.log('Error setting image id for product.')
-        else if (!data.product.image) console.log('no image found')
-        else updateProduct(data.product)
+        if (!data) console.log('Error setting image id for product.')
+        else if (!data.image) console.log('no image found')
+        else updateProduct(data)
         
         closeModal()
     }
     
     return image && (
-        <ImageDetail
-            image={image}
-            deleteImage={() => deleteImage(image._id)}
-            setAvatar={setAvatar}
-            setProductImage={setProductImage}
-        />
+        <CenterVertical>
+            <ImageDetail
+                image={image}
+                deleteImage={() => deleteImage(image._id)}
+                setAvatar={setAvatar}
+                setProductImage={setProductImage}
+            />
+        </CenterVertical>
     )
 }

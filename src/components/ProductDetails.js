@@ -46,7 +46,7 @@ export default ({ product }) => {
                 width: '100%',
                 minWidth: 280,
                 maxWidth: landscape ? 600 : 300,
-                marginHorizontal: 'auto',
+                marginVertical: 50,
             }}
         >
             <View
@@ -61,8 +61,42 @@ export default ({ product }) => {
                 <View
                     style={{
                         flexBasis: 'auto',
+                        marginHorizontal: 10,
                     }}
                 >
+                    <View
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            marginBottom: 10,
+                        }}
+                    >
+                        
+                        <ThemedText
+                            style={{
+                                fontSize: 18,
+                                fontWeight: 700,
+                                flexBasis: 'auto',
+                                flexGrow: 1,
+                                flexBasis: '80%',
+                            }}
+                        >
+                            {product.title}
+                        </ThemedText>
+
+                        <ThemedText
+                            style={{
+                                flexBasis: '20%',
+                                textAlign: 'right',
+                                fontSize: 18,
+                                fontWeight: 700,
+                                flexGrow: 0,
+                            }}
+                        >
+                            ${product.price}
+                        </ThemedText>
+                    </View>
                     <Image
                         source={{
                             uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}`
@@ -86,39 +120,6 @@ export default ({ product }) => {
                     }}
                 >
                     <View>
-                        <View
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            
-                            <ThemedText
-                                style={{
-                                    fontSize: 18,
-                                    fontWeight: 700,
-                                    flexBasis: 'auto',
-                                    flexGrow: 1,
-                                    flexBasis: '80%',
-                                }}
-                            >
-                                {product.title}
-                            </ThemedText>
-
-                            <ThemedText
-                                style={{
-                                    flexBasis: '20%',
-                                    textAlign: 'right',
-                                    fontSize: 18,
-                                    fontWeight: 700,
-                                    flexGrow: 0,
-                                }}
-                            >
-                                ${product.price}
-                            </ThemedText>
-                        </View>
-                            
                         <ThemedText>
                             {product.blurb}
                         </ThemedText>
@@ -127,6 +128,7 @@ export default ({ product }) => {
                             {product.desc}
                         </ThemedText>
                     </View>
+
                     <View
                         style={{
                             display: 'flex',

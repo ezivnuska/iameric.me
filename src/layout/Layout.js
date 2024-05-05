@@ -12,9 +12,9 @@ import {
 } from '@components'
 import {
     ContactContextProvider,
+    ForumContextProvider,
     ImageContextProvider,
     ProductContextProvider,
-    UserContextProvider,
     useApp,
 } from '@context'
 import {
@@ -23,23 +23,9 @@ import {
 } from 'react-native-paper'
 import Compose from '../Compose'
 
-const Content = ({ children, secure }) => {
-    return secure ? (
-        <Compose
-            components={[
-                ContactContextProvider,
-                ProductContextProvider,
-                ImageContextProvider,
-            ]}
-        >
-            {children}
-        </Compose>
-    ) : children
-}
-
 export default () => {
     
-    const { dims, theme, userId } = useApp()
+    const { dims, theme } = useApp()
     const [ready, setReady] = useState(false)
     let timer = undefined
     
@@ -60,20 +46,26 @@ export default () => {
                     backgroundColor: theme?.colors.background,
                 }}
             >
-                {ready
-                    ? (
-                        <UserContextProvider>
-                            <Content secure={userId}>
+                    <Compose
+                        components={[
+                            ForumContextProvider,
+                            ContactContextProvider,
+                            ProductContextProvider,
+                            ImageContextProvider,
+                        ]}
+                    >
+                        {ready ? (
+                            <>
                                 <Header />
                                 <AppNavigation />
                                 <ModalView />
-                            </Content>
-                        </UserContextProvider>
-                    ) : (
-                        <CenterVertical>
-                            <ActivityIndicator size='large' />
-                        </CenterVertical>
-                    )}
+                            </>
+                        ) : (
+                            <CenterVertical>
+                                <ActivityIndicator size='large' />
+                            </CenterVertical>
+                        )}
+                    </Compose>
             
             </SafeAreaView>
         

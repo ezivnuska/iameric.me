@@ -32,7 +32,6 @@ export const ImageContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
     
     useEffect(() => {
-        
         const initImages = async () => {
             if (userId) {
                 dispatch({type: 'SET_IMAGES_LOADING', payload: true })

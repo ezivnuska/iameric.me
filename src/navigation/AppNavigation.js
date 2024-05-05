@@ -116,7 +116,7 @@ const MainStackScreen = () => {
     const { profile } = useUser()
     return (
         <MainStack.Navigator
-            initialRouteName={'Vendors'}
+            initialRouteName={'Users'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -205,17 +205,17 @@ const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
     return (
         <AppStack.Navigator
-            initialRouteName='Splash'
+            initialRouteName='Start'
             screenOptions={{
                 headerShown: false,
             }}
         >
 
-            <AppStack.Screen
+            {/* <AppStack.Screen
                 name='Splash'
                 component={SplashScreen}
                 options={{ title: 'Splash' }}
-            />
+            /> */}
 
             <AppStack.Screen
                 name='Start'

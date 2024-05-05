@@ -35,7 +35,6 @@ export const ProductContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     useEffect(() => {
-        
         const initProducts = async () => {
             if (userId) {
                 dispatch({type: 'SET_PRODUCTS_LOADING', payload: true })

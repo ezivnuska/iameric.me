@@ -5,6 +5,7 @@ import React, {
     useMemo,
     useReducer,
 } from 'react'
+import { UserContextProvider } from '@context'
 import {
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,

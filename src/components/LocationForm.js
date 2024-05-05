@@ -3,9 +3,10 @@ import {
     View,
 } from 'react-native'
 import {
+    CenterVertical,
     FormField,
     IconButton,
-} from '.'
+} from '@components'
 import {
     useApp,
     useForm,
@@ -254,20 +255,22 @@ export default ({ location }) => {
         </>
     )
     return focused !== null ? (
-        <View
-            style={{ paddingVertical: 20 }}
-        >
-            <View style={{ marginBottom: 10 }}>
-                {renderFields()}
+        <CenterVertical>
+            <View
+                style={{ paddingVertical: 20 }}
+            >
+                <View style={{ marginBottom: 10 }}>
+                    {renderFields()}
+                </View>
+
+                <IconButton
+                    type='primary'
+                    label={formLoading ? 'Updating' : 'Update'}
+                    disabled={formLoading || formError}
+                    onPress={submitFormData}
+                />
+
             </View>
-
-            <IconButton
-                type='primary'
-                label={formLoading ? 'Updating' : 'Update'}
-                disabled={formLoading || formError}
-                onPress={submitFormData}
-            />
-
-        </View>
+        </CenterVertical>
     ) : null
 }
