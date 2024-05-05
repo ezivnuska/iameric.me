@@ -136,25 +136,23 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
                         </View>
 
-                        {
-                            (profile.role === 'vendor' && products.length)
-                                ? (
-                                    <View style={{
-                                        flex: 1,
-                                        width: '100%',
-                                    }}>
-                                        <ThemedText bold>
-                                            Set as Product Image
-                                        </ThemedText>
+                        {owner && products.length
+                            ? (
+                                <View style={{
+                                    flex: 1,
+                                    width: '100%',
+                                }}>
+                                    <ThemedText bold>
+                                        Set as Product Image
+                                    </ThemedText>
 
-                                        <ProductSelector
-                                            onSelect={setProductImage}
-                                            products={products}
-                                            imageId={image._id}
-                                        />
-                                    </View>
-                                ) : null
-                            }
+                                    <ProductSelector
+                                        onSelect={setProductImage}
+                                        products={products}
+                                        imageId={image._id}
+                                    />
+                                </View>
+                            ) : null}
                     </View>
                 ) : null}
             </View>
