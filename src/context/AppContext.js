@@ -68,19 +68,18 @@ export const AppContextProvider = ({ children }) => {
             }
 
             const authToken = await getStoredToken()
-            let payload = null
             if (authToken !== null) {
                 console.log('found token, verifying...')
                 const user = await validateToken(authToken)
                 if (user) {
-                    console.log('token verified.', Object.keys(user))
-                    payload = user._id
+                    console.log('token verified.')
+                    dispatch({ type: 'SET_USERID', payload: user._id })
                 }
             } else {
                 console.log('no token found')
             }
             
-            dispatch({ type: 'SET_APP_LOADED', payload })
+            dispatch({ type: 'SET_APP_LOADED' })
         }
         init()
     }, [])
@@ -117,7 +116,7 @@ export const AppContextProvider = ({ children }) => {
                     ...actions,
                 }}
             >
-                {children}
+                {state.appLoaded && children}
             </AppContext.Provider>
         </PaperProvider>
     )
@@ -136,7 +135,6 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 appLoaded: true,
-                userId: payload,
             }
             break
         case 'SET_APP_LOADING':
@@ -145,19 +143,23 @@ const reducer = (state, action) => {
                 appLoading: payload,
             }
             break
+        case 'SET_USERID':
+            return {
+                ...state,
+                userId: payload,
+            }
+            break
         case 'SIGN_IN':
             const { _id } = payload
             return {
                 ...state,
                 userId: _id,
-                appModals: [],
             }
             break
         case 'SIGN_OUT':
             return {
                 ...state,
                 userId: null,
-                appModals: [],
             }
             break
         case 'TOGGLE_THEME':

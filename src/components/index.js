@@ -23,7 +23,6 @@ import ImageFormModule from './ImageFormModule'
 import ImageList from './ImageList'
 import ImageSelector from './ImageSelector'
 import ImageView from './ImageView'
-import ImagesView from './ImagesView'
 import Label from './Label'
 import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
@@ -81,7 +80,6 @@ export {
     ImageList,
     ImageSelector,
     ImageView,
-    ImagesView,
     Label,
     LoadingView,
     LocationDetails,

@@ -23,14 +23,15 @@ export default ({
     ...props
 }) => {
     
-    const { appLoaded, dims, userId } = useApp()
-    const { profile, userLoaded } = useUser()
+    const { appLoaded, userId } = useApp()
+    const { profile } = useUser()
     
     useEffect(() => {
-        if (secure && !profile && userLoaded) props.navigation.navigate('Start')
-        // if (secure && !secured) props.navigation.navigate('Start')
-        // else if (secure && secured) props.navigation.navigate('Auth')
-        // else props.navigation.navigate('Start')
+        if (secure) {
+            if (!userId) props.navigation.navigate('Start')
+        } else {
+            if (userId) props.navigation.navigate('Auth')
+        }
     }, [profile])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
@@ -42,16 +43,9 @@ export default ({
     return userId ? (
         <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-                height: '100%',
-            }}
-            style={{
-                // height: '100%',//dims.height - 50,
-                width: '100%',
-                // borderWidth: 2,
-                // borderColor: 'red',
-                // borderStyle: 'dotted',
-            }}
+            // contentContainerStyle={{
+            //     height: '100%',
+            // }}
         >
             {renderContent(children)}
         </ScrollView>

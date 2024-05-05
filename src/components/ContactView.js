@@ -58,8 +58,7 @@ export default ({ userId }) => {
 
             {contact.images.length ? (
                 <ImageList
-                    images={contact.images}
-                    onSelected={image => setModal('IMAGE', image)}
+                    items={contact.images}
                     restricted={true}
                     // restricted={profile._id !== contact._id}
                 />

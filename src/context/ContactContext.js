@@ -39,18 +39,16 @@ export const ContactContextProvider = props => {
 
     useEffect(() => {
         const init = async () => {
-            if (userId) {
-                dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
-                const data = await loadContacts()
-                dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })
-                if (!data) console.log('could not load contacts')
-                else dispatch({ type: 'SET_CONTACTS', payload: data })
-            } else console.log('no userId.')
+            dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
+            const data = await loadContacts()
+            dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })
+            if (!data) console.log('could not load contacts')
+            else dispatch({ type: 'SET_CONTACTS', payload: data })
             
             dispatch({ type: 'SET_CONTACTS_LOADED' })
         }
         
-        if (userId && !state.contactsLoaded) init()
+        if (!state.contactsLoaded) init()
 
     }, [userId])
 

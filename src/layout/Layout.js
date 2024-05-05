@@ -5,59 +5,78 @@ import {
 import { AppNavigation } from '@navigation'
 import {
     CenterVertical,
-    ModalView,
 } from '@components'
 import { Header } from '@layout'
+import {
+    ModalView,
+} from '@components'
 import {
     ContactContextProvider,
     ImageContextProvider,
     ProductContextProvider,
-    useApp,
     UserContextProvider,
+    useApp,
 } from '@context'
-import { ActivityIndicator } from 'react-native-paper'
+import {
+    ActivityIndicator,
+    PaperProvider,
+} from 'react-native-paper'
 import Compose from '../Compose'
+
+const Content = ({ children, secure }) => {
+    return secure ? (
+        <Compose
+            components={[
+                ContactContextProvider,
+                ProductContextProvider,
+                ImageContextProvider,
+            ]}
+        >
+            {children}
+        </Compose>
+    ) : children
+}
 
 export default () => {
     
-    const { appLoaded, dims, theme } = useApp()
+    const { dims, theme, userId } = useApp()
     const [ready, setReady] = useState(false)
     let timer = undefined
     
     useEffect(() => {
-        timer = setTimeout(() => setReady(true), 2000)
+        timer = setTimeout(() => {
+            setReady(true)
+            timer = undefined
+        }, 2000)
     }, [])
 
     return (
+        <PaperProvider theme={theme}>
+            <SafeAreaView
+                id='layout-container'
+                style={{
+                    width: dims.width,
+                    height: dims.height,
+                    backgroundColor: theme?.colors.background,
+                }}
+            >
+                {ready
+                    ? (
+                        <UserContextProvider>
+                            <Content secure={userId}>
+                                <Header />
+                                <AppNavigation />
+                                <ModalView />
+                            </Content>
+                        </UserContextProvider>
+                    ) : (
+                        <CenterVertical>
+                            <ActivityIndicator size='large' />
+                        </CenterVertical>
+                    )}
+            
+            </SafeAreaView>
         
-        <SafeAreaView
-            id='layout-container'
-            style={{
-                width: dims.width,
-                height: dims.height,
-                backgroundColor: theme?.colors.background,
-            }}
-        >
-            {appLoaded && ready
-                ? (
-                    <Compose
-                        components={[
-                            ContactContextProvider,
-                            ImageContextProvider,
-                            UserContextProvider,
-                            ProductContextProvider,
-                        ]}
-                    >
-                        <Header />
-                        <AppNavigation />
-                        <ModalView />
-                    </Compose>
-                ) : (
-                    <CenterVertical>
-                        <ActivityIndicator size='large' />
-                    </CenterVertical>
-                )}
-           
-        </SafeAreaView>
+        </PaperProvider>
     )
 }

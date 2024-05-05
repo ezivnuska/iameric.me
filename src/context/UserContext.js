@@ -27,9 +27,10 @@ export const useUser = () => {
 
 export const UserContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
-    const { userId } = useApp()
+    const { appLoaded, userId } = useApp()
 
     useEffect(() => {
+        
         const init = async () => {
             if (userId) {
                 console.log('user authorized. loading user...')
@@ -37,13 +38,16 @@ export const UserContextProvider = props => {
                 const data = await loadUser(userId)
                 dispatch({ type: 'SET_USER_LOADING', payload: false })
                 if (!data) console.log('could not load user')
-                else dispatch({ type: 'SET_USER', payload: data })
+                else {
+                    console.log('user verified.')
+                    dispatch({ type: 'SET_USER', payload: data })
+                }
             } else console.log('user not verified.')
             
             dispatch({ type: 'SET_USER_LOADED' })
         }
         
-        init()
+        if (appLoaded) init()
 
     }, [userId])
 

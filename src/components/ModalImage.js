@@ -28,13 +28,13 @@ export default ({ image }) => {
     
     useEffect(() => {
         const init = async () => {
-            if (!profile) {
-                console.log('* warning * no profile found in ModalImage')
-                setUserLoading(true)
-                const loadedUser = await loadUser(userId)
-                setUserLoading(false)
-                if (loadedUser) setUser(loadedUser)
-            }
+            // if (!profile) {
+            //     console.log('* warning * no profile found in ModalImage')
+            //     setUserLoading(true)
+            //     const loadedUser = await loadUser(userId)
+            //     setUserLoading(false)
+            //     if (loadedUser) setUser(loadedUser)
+            // }
             const loadedImage = await loadUserImage(image._id)
             if (!loadedImage) return console.log('problem loading user image.')
         }
@@ -50,7 +50,7 @@ export default ({ image }) => {
     const isImageProductImage = imageId => {
         let response = null
         products.map(product => {
-            if (product.image === imageId || product.image._id === imageId) response = product._id
+            if (product.image && (product.image === imageId || product.image._id === imageId)) response = product._id
         })
         return response
     }

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React from 'react'
 import {
     Image,
     Pressable,
@@ -16,7 +16,7 @@ import { ActivityIndicator } from 'react-native-paper'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ restricted = false }) => {
+export default ({ items = null, restricted = false }) => {
 
     const { theme } = useApp()
     const { images, uploading } = useImages()
@@ -39,10 +39,8 @@ export default ({ restricted = false }) => {
 
     const isDev = process.env.NODE_ENV === 'development'
     
-    const restrictUpload = () => {
-        if (uploading || isDev) return true
-        return false
-    }
+    const restrictUpload = () => (uploading || isDev)
+
     const hideUpload = () => {
         if (!profile || restricted) return true
         switch(profile.username) {

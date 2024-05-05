@@ -35,16 +35,20 @@ export const ProductContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            dispatch({type: 'SET_PRODUCTS_LOADING', payload: true })
-            const items = await loadProducts(userId)
-            dispatch({type: 'SET_PRODUCTS_LOADING', payload: false })
-            dispatch({type: 'SET_PRODUCTS', payload: items })
+        
+        const initProducts = async () => {
+            if (userId) {
+                dispatch({type: 'SET_PRODUCTS_LOADING', payload: true })
+                const items = await loadProducts(userId)
+                dispatch({type: 'SET_PRODUCTS_LOADING', payload: false })
+                if (items) dispatch({type: 'SET_PRODUCTS', payload: items })
+            }
+
             dispatch({type: 'SET_PRODUCTS_LOADED' })
         }
         
-        fetchProducts()
-    }, [])
+        if (!state.productsLoaded) initProducts()
+    }, [userId])
 
     const actions = useMemo(() => ({
         closeProductModal: () => {

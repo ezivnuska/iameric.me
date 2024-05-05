@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import { useApp } from '@context'
 import { loadEntries } from '@utils/forum'
 
 const initialState = {
@@ -28,19 +29,24 @@ export const useForum = () => {
 
 export const ForumContextProvider = props => {
     
+    const { userId } = useApp()
     const [state, dispatch] = useReducer(reducer, initialState)
 
     useEffect(() => {
-        const init = async () => {
-            dispatch({ type: 'SET_FORUM_LOADING', payload: true })
-            const entries = await loadEntries()
-            dispatch({ type: 'SET_FORUM_LOADING', payload: false })
-            if (!entries) console.log('could not load entries')
-            else dispatch({ type: 'SET_ENTRIES', payload: entries })
+        const initForum = async () => {
+            if (userId) {
+                dispatch({ type: 'SET_FORUM_LOADING', payload: true })
+                const entries = await loadEntries()
+                dispatch({ type: 'SET_FORUM_LOADING', payload: false })
+                if (!entries) console.log('could not load entries')
+                else dispatch({ type: 'SET_ENTRIES', payload: entries })
+            }
+
             dispatch({ type: 'SET_FORUM_LOADED' })
         }
-        init()
-    }, [])
+
+        if (!state.forumLoaded) initForum()
+    }, [userId])
 
     const actions = useMemo(() => ({
         addEntry: async payload => {
