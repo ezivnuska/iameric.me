@@ -4,6 +4,7 @@ import {
 } from 'react-native'
 import {
     CategoryPicker,
+    CenterVertical,
     FormField,
     IconButton,
     ImageFormModule,
@@ -72,6 +73,7 @@ export default  ({ product }) => {
     } = useMemo(() => formFields, [formFields])
     
     useEffect(() => {
+        console.log('product on form init', product)
         const fields = getFields(initialState, product)
         setInitialValues(fields)
     }, [])
@@ -174,12 +176,12 @@ export default  ({ product }) => {
         setFormLoading(true)
         const { data } = await axios.post('/api/product', newProduct)
         setFormLoading(false)
-            
+        console.log('new product data', data)
         if (!data || !data.product) {
             console.log('Error saving product', product)
         } else {
             if (product) {
-                console.log('product found; updating product...')
+                console.log('product found; updating product...', product)
                 updateProduct(data.product)
             }
             else addProduct(data.product)
@@ -297,31 +299,33 @@ export default  ({ product }) => {
     )
 
     return focused !== null ? (
-        <View style={{ paddingVertical: 20 }}>
-            
-            <View style={{  marginBottom: 10 }}>
-                {renderFields()}
+        <CenterVertical>
+            <View style={{ paddingVertical: 20 }}>
+                
+                <View style={{  marginBottom: 10 }}>
+                    {renderFields()}
+                </View>
+
+                <IconButton
+                    type='primary'
+                    label='Save'
+                    onPress={submitFormData}
+                    disabled={
+                        formLoading
+                        || getError('title')
+                        || getError('price')
+                    }
+                    style={{ marginVertical: 5 }}
+                />
+
+                <IconButton
+                    label={product ? 'Reset Form' : 'Clear Form'}
+                    onPress={resetForm}
+                    disabled={formLoading}
+                    style={{ marginVertical: 5 }}
+                />
+
             </View>
-
-            <IconButton
-                type='primary'
-                label='Save'
-                onPress={submitFormData}
-                disabled={
-                    formLoading
-                    || getError('title')
-                    || getError('price')
-                }
-                style={{ marginVertical: 5 }}
-            />
-
-            <IconButton
-                label={product ? 'Reset Form' : 'Clear Form'}
-                onPress={resetForm}
-                disabled={formLoading}
-                style={{ marginVertical: 5 }}
-            />
-
-        </View>
+        </CenterVertical>
     ) : null
 }

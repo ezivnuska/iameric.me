@@ -41,7 +41,6 @@ import ProductDetails from './ProductDetails'
 import ProductForm from './ProductForm'
 import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
-import Products from './Products'
 import ProductSelector from './ProductSelector'
 import QuantityControl from './QuantityControl'
 import ScreenContent from './ScreenContent'
@@ -98,7 +97,6 @@ export {
     ProductForm,
     ProductList,
     ProductListItem,
-    Products,
     ProductSelector,
     QuantityControl,
     ScreenContent,

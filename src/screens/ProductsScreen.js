@@ -1,9 +1,83 @@
 import React from 'react'
-import { Products } from '@components'
+import {
+    FlatList,
+    View,
+} from 'react-native'
+import {
+    EmptyStatus,
+    IconButton,
+    LoadingView,
+    ProductListItem,
+    TitleBar,
+} from '@components'
 import { Screen } from '.'
+import {
+    useApp,
+    useModal,
+    useProducts,
+} from '@context'
+import { deleteProductWithId } from '@utils/products'
 
-export default props => (
-    <Screen {...props}>
-        <Products />
-    </Screen>
-)
+export default props => {
+
+    const { theme } = useApp()
+    const { closeModal, setModal } = useModal()
+    const {
+        deleteProduct,
+        products,
+        productsLoading,
+        setProductsLoading,
+    } = useProducts()
+
+    const onDelete = async id => {
+        setProductsLoading(true)
+        const productDeleted = await deleteProductWithId(id)
+        setProductsLoading(false)
+
+        if (productDeleted) {
+            console.log(`${productDeleted.title} deleted`)
+            deleteProduct(productDeleted._id)
+        }
+
+        closeModal()
+    }
+
+    if (productsLoading) return <LoadingView loading='Loading products' />
+    
+    return (
+        <Screen {...props}>
+            <TitleBar title='Products'>
+                <IconButton
+                    label='New Product'
+                    iconName='add-outline'
+                    onPress={() => setModal('PRODUCT')}
+                    alignIcon='right'
+                    textStyles={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        color: theme?.colors.textDefault,
+                    }}
+                    transparent
+                    padded={false}
+                />
+            </TitleBar>
+            {products.length ? (
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={products}
+                    listKey={() => 'products'}
+                    keyExtractor={(item, index) => 'key' + index}
+                    renderItem={({ item }) => (
+                        <ProductListItem
+                            product={item}
+                            key={item => `product-${item._id}`}
+                            onDelete={() => onDelete(item._id)}
+                            onPress={() => setModal('PRODUCT', item)}
+                        />
+                    )}
+                    style={{ marginHorizontal: 10 }}
+                />
+            ) : <EmptyStatus status='Nothing currently listed.' />}
+        </Screen>
+    )
+}

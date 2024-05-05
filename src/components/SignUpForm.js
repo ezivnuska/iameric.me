@@ -3,6 +3,7 @@ import {
     View,
 } from 'react-native'
 import {
+    CenterVertical,
     IconButton,
     FormField,
 } from '@components'
@@ -217,16 +218,18 @@ export default ({ role }) => {
     )
     
     return focused !== null ? (
-        <View
-            style={{ paddingVertical: 20 }}
-        >
-            {renderFields()}
-            <IconButton
-                type='primary'
-                label={formLoading ? 'Signing Up' : 'Sign Up'}
-                disabled={formLoading || formError}
-                onPress={submitFormData}
-            />            
-        </View>
+        <CenterVertical>
+            <View
+                style={{ paddingVertical: 20 }}
+            >
+                {renderFields()}
+                <IconButton
+                    type='primary'
+                    label={formLoading ? 'Signing Up' : 'Sign Up'}
+                    disabled={formLoading || formError}
+                    onPress={submitFormData}
+                />            
+            </View>
+        </CenterVertical>
     ) : null
 }

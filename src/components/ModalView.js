@@ -17,11 +17,9 @@ import {
     ProductForm,
     SignInForm,
     SignUpForm,
-    CenterVertical,
 } from '.'
 import {
     useApp,
-    useContacts,
     useForm,
     useModal,
 } from '@context'
@@ -31,7 +29,6 @@ export default () => {
     const { dims } = useApp()
     const { closeModal, modals } = useModal()
     const { clearForm } = useForm()
-    // const { contact, setContact } = useContacts()
 
     const modal = useMemo(() => modals[modals.length - 1], [modals])
 
@@ -57,8 +54,8 @@ export default () => {
             default: return null
         }
     }
+    
     const handleClose = () => {
-        // if (contact && modals.length === 1) setContact(null)
         clearForm()
         closeModal(null)
     }
@@ -76,9 +73,7 @@ export default () => {
                     minWidth: dims.width,
                 }}
             >
-                <CenterVertical>
-                    {renderModalContent()}
-                </CenterVertical>
+                {renderModalContent()}
             </View>
         </PopUpModal>
     )

@@ -48,14 +48,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
 
                 <ScrollView
                     showsVerticalScrollIndicator={false}
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        bottom: 0,
-                        right: 0,
-                        background: theme?.colors.modalBackground,
-                    }}
+                    style={{ background: theme?.colors.modalBackground }}
                     contentContainerStyle={{
                         width: '100%',
                         minWidth: 280,

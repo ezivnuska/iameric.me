@@ -1,5 +1,8 @@
 import React from 'react'
-import { IconButton } from '@components'
+import {
+    CenterVertical,
+    IconButton,
+} from '@components'
 import {
     useApp,
     useModal,
@@ -23,12 +26,14 @@ export default () => {
         }
     }
     return (
-        <IconButton
-            type='primary'
-            label='Sign Out'
-            onPress={initSignout}
-            disabled={appLoading}
-            padded
-        />
+        <CenterVertical>
+            <IconButton
+                type='primary'
+                label='Sign Out'
+                onPress={initSignout}
+                disabled={appLoading}
+                padded
+            />
+        </CenterVertical>
     )
 }
