@@ -47,6 +47,7 @@ export const ProductContextProvider = props => {
         }
         
         if (!state.productsLoaded) initProducts()
+        else if (!userId) dispatch({ type: 'RESET' })
     }, [userId])
 
     const actions = useMemo(() => ({
@@ -184,6 +185,12 @@ const reducer = (state, action) => {
                 ),
             }
             break
+        case 'RESET':
+            return {
+                ...state,
+                products: [],
+                productsLoaded: false,
+            }
         default:
             throw new Error()
     }

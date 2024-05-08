@@ -44,6 +44,7 @@ export const ImageContextProvider = props => {
         }
         
         if (!state.imagesLoaded) initImages()
+        else if (!userId) dispatch({ type: 'RESET' })
     }, [userId])
 
     const actions = useMemo(() => ({
@@ -110,6 +111,12 @@ const reducer = (state, action) => {
         case 'SET_UPLOADING':
             return { ...state, uploading: payload }
             break
+        case 'RESET':
+            return {
+                ...state,
+                images: [],
+                imagesLoaded: false,
+            }
         default:
             throw new Error()
     }

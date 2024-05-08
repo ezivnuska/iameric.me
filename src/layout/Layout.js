@@ -12,6 +12,7 @@ import {
 } from '@components'
 import {
     ContactContextProvider,
+    ForumContextProvider,
     ImageContextProvider,
     ProductContextProvider,
     useApp,
@@ -51,6 +52,7 @@ export default () => {
                             ContactContextProvider,
                             ProductContextProvider,
                             ImageContextProvider,
+                            ForumContextProvider,
                         ]}
                     >
                         <Header />

@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-    EmptyStatus,
     ForumList,
     IconButton,
     ScreenContent,
@@ -10,7 +9,6 @@ import {
     Screen,
 } from '.'
 import {
-    ForumContextProvider,
     useForum,
     useModal,
 } from '@context'
@@ -20,7 +18,6 @@ export default props => {
 
     const {
         deleteEntry,
-        entries,
         setForumLoading,
     } = useForum()
 
@@ -51,11 +48,9 @@ export default props => {
                 />
             </TitleBar>
             <ScreenContent>
-                <ForumContextProvider>
-                    <ForumList
-                        onDelete={removeEntry}
-                    />
-                </ForumContextProvider>
+                <ForumList
+                    onDelete={removeEntry}
+                />
             </ScreenContent>
         </Screen>
     )
