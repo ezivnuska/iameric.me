@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import {
     FlatList,
     Image,
+    Pressable,
     View,
 } from 'react-native'
 import {
+    CartView,
     EmptyStatus,
     IconButton,
     LoadingView,
@@ -14,11 +16,15 @@ import {
 } from '@components'
 import {
     useApp,
+    useCart,
     useContacts,
     useModal,
 } from '@context'
 import { loadVendor } from '@utils/contacts'
 import classes from '@styles/classes'
+import Icon from 'react-native-vector-icons/Ionicons'
+import CenterVertical from './CenterVertical'
+import SimpleButton from './SimpleButton'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -26,23 +32,32 @@ const MenuItem = ({ item, username }) => {
     
     const { price, title, blurb, image } = item
 
+    const { theme } = useApp()
+    const { addToCart } = useCart()
     const { setModal } = useModal()
+
+    const [quantity, setQuantity] = useState(1)
 
     return (
         <View
             style={{
-                marginBottom: 15,
+                flexDirection: 'row',
+                gap: 10,
+                borderBottomWidth: 1,
+                borderBottomColor: theme?.colors.border,
             }}
         >
+            
             {image && (
                 <Image
                     // width='100%'
                     // height='100'
                     source={{ uri: `${IMAGE_PATH}/${username}/${image.filename}` }}
                     style={{
+                        flex: 6,
                         resizeMode: 'cover',
                         width: '100%',
-                        height: 120,
+                        height: 140,
                         borderWidth: 1,
                         borderColor: '#999',
                         shadowColor: '#000',
@@ -56,45 +71,35 @@ const MenuItem = ({ item, username }) => {
                     }}
                 />
             )}
-            
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    marginVertical: 10,
-                }}
-            >
-                <ThemedText size={18} bold>{title}</ThemedText>
-                <ThemedText size={18} bold>${price}</ThemedText>
+
+            <View style={{ flex: 6, paddingVertical: 3 }}>
+                <ThemedText size={18} bold style={{ lineHeight: 22 }}>{title} ${price}</ThemedText>
+                {(blurb && blurb.length) && <ThemedText style={classes.productBlurb}>{blurb}</ThemedText>}
+                <SimpleButton
+                    label='Add to Order'
+                    onPress={() => addToCart(item, quantity)}
+                />
             </View>
             
-            {(blurb && blurb.length) ? (
-                <ThemedText
-                    style={classes.productBlurb}
-                >
-                    {blurb}
-                </ThemedText>
-            ) : null}
+            <View style={{ flex: 1, alignItems: 'center', marginRight: 10 }}>
+                <CenterVertical>
+                    <Pressable onPress={() => setModal('SHOW_PRODUCT', item)}>
+                        <Icon name='ellipsis-horizontal-outline' size={24} color={theme?.colors.textDefault} />
+                    </Pressable>
+                </CenterVertical>
+            </View>
 
-            <IconButton
-                onPress={() => setModal('SHOW_PRODUCT', item)}
-                type='primary'
-                label='Add to Cart'
-                align='center'
-                // padded={landscape ? true : false}
-                // textStyles={{ lineHeight: 35 }}
-            />
         </View>
     )
 }
 
 export default ({ id, onPress }) => {
     const { theme } = useApp()
-
+    const { items } = useCart()
     const {
         // contact,
-        contactLoading,
-        setContactLoading,
+        contactsLoading,
+        setContactsLoading,
         updateContact,
         // setContact,
     } = useContacts()
@@ -103,20 +108,19 @@ export default ({ id, onPress }) => {
     
     useEffect(() => {
         const init = async () => {
-            setContactLoading(true)
+            setContactsLoading(true)
             const vendor = await loadVendor(id)
-            setContactLoading(false)
+            setContactsLoading(false)
             if (!vendor) console.log('error loading vendor')
             else {
                 setContact(vendor)
                 updateContact(vendor)
             }
         }
-        // if (!contactLoading)
         init()
     }, [])
 
-    if (contactLoading) return <LoadingView loading='Loading Vendor...' />
+    if (contactsLoading) return <LoadingView loading='Loading vendor...' />
 
     return contact ? (
         <View>
@@ -124,7 +128,7 @@ export default ({ id, onPress }) => {
                 <IconButton
                     label='Browse Vendors'
                     onPress={onPress}
-                    disabled={contactLoading}
+                    disabled={contactsLoading}
                     textStyles={{
                         fontSize: 16,
                         fontWeight: 400,
@@ -133,7 +137,10 @@ export default ({ id, onPress }) => {
                     transparent
                 />
             </TitleBar>
-            <ScreenContent>
+
+            <CartView />
+            
+            <ScreenContent padded={false}>
                 {contact.products
                     ? (
                         <FlatList
@@ -143,7 +150,7 @@ export default ({ id, onPress }) => {
                             renderItem={({ item }) => (
                                 <MenuItem
                                     item={item}
-                                    username={contact.username}
+                                    username={item.vendor.username}
                                 />
                             )}
                         />
@@ -151,5 +158,5 @@ export default ({ id, onPress }) => {
                     : <EmptyStatus status='No products listed.' />}
             </ScreenContent>
         </View>
-    ) : <EmptyStatus status='No vendor set' />
+    ) : <EmptyStatus status='Loading vendor...' />
 } 

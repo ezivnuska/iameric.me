@@ -4,69 +4,57 @@ import {
 } from 'react-native'
 import { AppNavigation } from '@navigation'
 import {
-    CenterVertical,
+    ModalView,
+    OrderDisplayView,
 } from '@components'
 import { Header } from '@layout'
 import {
-    ModalView,
-} from '@components'
-import {
-    ContactContextProvider,
-    ForumContextProvider,
-    ImageContextProvider,
-    ProductContextProvider,
+    CartContextProvider,
+    OrderContextProvider,
+    UserContextProvider,
     useApp,
+    useUser,
 } from '@context'
-import {
-    ActivityIndicator,
-    PaperProvider,
-} from 'react-native-paper'
+import { PaperProvider } from 'react-native-paper'
 import Compose from '../Compose'
 
 export default () => {
-    
+
     const { dims, theme } = useApp()
-    const [ready, setReady] = useState(false)
-    let timer = undefined
     
-    useEffect(() => {
-        timer = setTimeout(() => {
-            setReady(true)
-            timer = undefined
-        }, 2000)
-    }, [])
+    // const [ready, setReady] = useState(false)
+    // let timer = undefined
+    
+    // useEffect(() => {
+    //     timer = setTimeout(() => {
+    //         setReady(true)
+    //         timer = undefined
+    //     }, 2000)
+    // }, [])
 
     return (
         <PaperProvider theme={theme}>
-            <SafeAreaView
-                id='layout-container'
-                style={{
-                    width: dims.width,
-                    height: dims.height,
-                    backgroundColor: theme?.colors.background,
-                }}
+            <Compose
+                components={[
+                    CartContextProvider,
+                    OrderContextProvider,
+                    UserContextProvider,
+                ]}
             >
-                {ready ? (
-                    <Compose
-                        components={[
-                            ContactContextProvider,
-                            ProductContextProvider,
-                            ImageContextProvider,
-                            ForumContextProvider,
-                        ]}
-                    >
-                        <Header />
-                        <AppNavigation />
-                        <ModalView />
-                    </Compose>
-                ) : (
-                    <CenterVertical>
-                        <ActivityIndicator size='large' />
-                    </CenterVertical>
-                )}
-            
-            </SafeAreaView>
-        
+                <SafeAreaView
+                    id='layout-container'
+                    style={{
+                        width: dims.width,
+                        height: dims.height,
+                        backgroundColor: theme?.colors.background,
+                    }}
+                >
+                    <Header />
+                    <OrderDisplayView />
+                    <AppNavigation />
+                    <ModalView />
+                </SafeAreaView>
+            </Compose>
         </PaperProvider>
     )
 }

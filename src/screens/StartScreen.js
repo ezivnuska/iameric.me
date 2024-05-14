@@ -26,9 +26,7 @@ export default props => {
     const { setModal } = useModal()
 
     useEffect(() => {
-        if (userId) {
-            props.navigation.navigate('Auth')
-        }
+        if (userId) props.navigation.navigate('Auth')
     }, [userId])
 
     const onConnect = async type => {

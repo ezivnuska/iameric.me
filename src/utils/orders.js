@@ -6,37 +6,29 @@ import axios from 'axios'
  */
 
 export const getOrdersById = async id => {
-    
     const { data } = await axios.get(`/api/orders/${id}`)
-    
-    if (!data) {
-        console.log('could not load orders.')
-        return null
-    }
-    
-    return data
+    if (!data) console.log('could not load orders.')
+    else return data
+    return null
 }
 
 export const loadUserOrders = async userId => {
-
     const { data } = await axios.get(`/api/orders/user/${userId}`)
-
-    if (!data) {
-        console.log('could not load orders.')
-        return null
-    }
-
-    return data.orders
+    if (!data || !data.orders) console.log('could not load orders.')
+    else return data.orders
+    return null
 }
 
 export const deleteOrderWithId = async id => {
-    
     const { data } = await axios.delete(`/api/order/delete/${id}`)
+    if (!data || !data.order) console.log('could not delete order.')
+    else return data.order
+    return null
+}
 
-    if (!data.order) {
-        console.log('could not delete order.')
-        return null
-    }
-
-    return data.order
+export const submitOrder = async order => {
+    const { data } = await axios.post('/api/order', order)
+    if (!data) console.log('error submitting order')
+    else return data
+    return null
 }

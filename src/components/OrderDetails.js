@@ -49,18 +49,17 @@ export default ({ order }) => {
         </View>
     ) : <ThemedText>Looking for driver...</ThemedText>
 
-    const renderDetails = () => profile.role !== 'vendor'
-        ? (
-            <View>
-                {renderVendorInfo()}
-                {renderCustomerInfo()}
-                {renderDriverInfo()}
-            </View>
-        ) : null
+    const renderDetails = () => (
+        <View>
+            {renderVendorInfo()}
+            {renderCustomerInfo()}
+            {renderDriverInfo()}
+        </View>
+    )
 
     return (
         <View style={{ marginBottom: 10 }}>
-            {renderDetails()}
+            {profile && renderDetails()}
         </View>
     )
 }

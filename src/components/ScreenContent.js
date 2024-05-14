@@ -3,11 +3,11 @@ import {
     View,
 } from 'react-native'
 
-export default ({ children }) => (
+export default ({ children, padded = true }) => (
     <View
         style={{
-            paddingHorizontal: 10,
-            paddingVertical: 10,
+            paddingHorizontal: padded ? 10 : 0,
+            // paddingVertical: 10,
         }}
     >
         {children}

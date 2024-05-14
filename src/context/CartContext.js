@@ -7,7 +7,8 @@ const initialState = {
     vendor: null,
     addToCart: () => {},
     clearCart: () => {},
-    removeCart: () => {},
+    removeFromCart: () => {},
+    removeOne: () => {},
     setCartLoading: () => {},
 }
 
@@ -26,26 +27,20 @@ export const CartContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
-        addToCart: (product, quantity) => {
-            dispatch({
-                type: 'ADD_TO_CART',
-                payload: { product, quantity },
-            })
+        addToCart: (product, quantity = 1) => {
+            dispatch({ type: 'ADD_TO_CART', payload: { product, quantity } })
         },
         clearCart: () => {
             dispatch({ type: 'CLEAR_CART' })
         },
-        removeFromCart: productId => {
-            dispatch({
-                type: 'REMOVE_FROM_CART',
-                payload: productId,
-            })
+        removeFromCart: payload => {
+            dispatch({ type: 'REMOVE_FROM_CART', payload })
+        },
+        removeOne: payload => {
+            dispatch({ type: 'REMOVE_ONE', payload})
         },
         setCartLoading: payload => {
-            dispatch({
-                type: 'SET_CART_LOADING',
-                payload: payload,
-            })
+            dispatch({ type: 'SET_CART_LOADING', payload })
         },
     }), [state, dispatch])
 
@@ -61,42 +56,81 @@ const reducer = (state, action) => {
     switch(type) {
         case 'ADD_TO_CART':
             const { product, quantity } = payload
-            return {
-                ...state,
-                items: [
+            
+            let updatedItems = state.items
+            const itemIndex = state.items.findIndex(item => item.product._id === product._id)
+            
+            if (itemIndex > -1) {
+                const start = state.items.slice(0, itemIndex)
+                const end = state.items.slice(itemIndex + 1)
+                const item = state.items[itemIndex]
+                
+                const updatedItem = {
+                    ...item,
+                    quantity: item.quantity + quantity,
+                }
+                updatedItems = [
+                    ...start,
+                    updatedItem,
+                    ...end,
+                ]
+            } else {
+                updatedItems = [
                     ...state.items,
                     { product, quantity },
-                ],
+                ]
+            }
+            return {
+                ...state,
+                items: updatedItems,
                 vendor: product.vendor,
             }
+            
             break
-            case 'CLEAR_CART':
-                return {
-                    ...state,
-                    items: [],
-                    vendor: null,
-                }
-                break
-            case 'SET_CART_LOADING':
-                return {
-                    ...state,
-                    cartLoading: payload,
-                }
-                break
+        case 'CLEAR_CART':
+            return {
+                ...state,
+                items: [],
+                vendor: null,
+            }
+            break
+        case 'SET_CART_LOADING':
+            return {
+                ...state,
+                cartLoading: payload,
+            }
+            break
         case 'REMOVE_FROM_CART':
-            const indexToRemove = state.items.findIndex(item => item._id === payload)
+            const indexToRemove = state.items.findIndex(item => item.product._id === payload)
             if (indexToRemove < 0) {
                 return {
                     ...state,
                     error: 'Could not find item to remove.',
                 }
             } else {
-                const start = state.items.slice(0, itemIndex)
-                const end = state.items.slice(itemIndex + 1)
+                const start = state.items.slice(0, indexToRemove)
+                const end = state.items.slice(indexToRemove + 1)
                 return {
                     ...state,
                     items: [...start, ...end],
                 }
+            }
+            break
+        case 'REMOVE_ONE':
+            return {
+                ...state,
+                items: state.items.map(item => {
+                    const { product, quantity } = item
+                    if (product._id === payload) {
+                        if (quantity > 1) {
+                            return {
+                                ...item,
+                                quantity: quantity - 1,
+                            }
+                        }
+                    }
+                    return item
+                }),
             }
             break
         default:

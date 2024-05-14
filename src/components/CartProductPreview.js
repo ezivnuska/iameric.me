@@ -153,7 +153,7 @@ export default ({ order }) => {
         <FlatList
             data={[...listItems, <CartTotal items={order.items} key={`item-${order.items.length}`} />]}
             listKey={() => 'order-items'}
-            keyExtractor={(item, index) => 'order-item-key' + index}
+            keyExtractor={(item, index) => 'order-item-key-' + index}
             renderItem={({ item, index }) => item}
         />
     )

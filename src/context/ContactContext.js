@@ -49,7 +49,7 @@ export const ContactContextProvider = props => {
         }
         
         if (!state.contactsLoaded) init()
-            else if (!userId) dispatch({ type: 'RESET' })
+        // else if (!userId) dispatch({ type: 'RESET' })
 
     }, [userId])
 
@@ -234,12 +234,12 @@ const reducer = (state, action) => {
                 }),
             }
             break
-        case 'RESET':
-            return {
-                ...state,
-                contacts: [],
-                contactsLoaded: false,
-            }
+        // case 'RESET':
+        //     return {
+        //         ...state,
+        //         contacts: [],
+        //         contactsLoaded: false,
+        //     }
         default:
             throw new Error()
     }

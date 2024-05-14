@@ -36,7 +36,7 @@ export default () => {
             
             <IconButton
                 iconName={profile.location ? 'create-outline' : 'add-outline'}
-                label='Address'
+                label='Location'
                 disabled={formLoading}
                 onPress={() => setModal('LOCATION', profile.location)}
                 alignIcon='right'

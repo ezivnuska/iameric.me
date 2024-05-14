@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
     CartProductPreview,
-    IconButton,
+    SimpleButton,
 } from '.'
 import {
     useCart,
@@ -12,7 +12,7 @@ import {
     useOrders,
     useUser,
 } from '@context'
-import axios from 'axios'
+import { submitOrder } from '@utils/orders'
 
 export default () => {
     const {
@@ -25,22 +25,19 @@ export default () => {
     const { closeModal } = useModal()
     const { profile } = useUser()
 
-    const submitOrder = async () => {
+    const submit = async () => {
         const newOrder = {
             customer: profile._id,
             items,
         }
         setCartLoading(true)
-        
-        const { data } = await axios.
-            post('/api/order', newOrder)
-        
+        const order = await submitOrder(newOrder)
         setCartLoading(false)
 
-        if (!data) {
+        if (!order) {
             console.log('Order submission failed')
         } else {
-            addOrder(data)
+            addOrder(order)
             clearCart()
             closeModal()
         }
@@ -64,21 +61,13 @@ export default () => {
                     gap: 10,
                 }}
             >
-                <IconButton
-                    label='Order It!'
-                    onPress={submitOrder}
-                    type='primary'
+                <SimpleButton
+                    label='Submit Payment'
+                    onPress={submit}
                     disabled={cartLoading}
                     style={{ flex: 7 }}
                 />
-                
-                <IconButton
-                    iconName='close-outline'
-                    onPress={clearCart}
-                    type='danger'
-                    disabled={cartLoading}
-                    style={{ flex: 1 }}
-                />
+
             </View>
 
         </View>

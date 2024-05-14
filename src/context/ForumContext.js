@@ -47,7 +47,7 @@ export const ForumContextProvider = props => {
         }
         
         if (!state.forumLoaded) initForum()
-        else if (!userId) dispatch({ type: 'RESET' })
+        // else if (!userId) dispatch({ type: 'RESET' })
     }, [userId])
 
     const actions = useMemo(() => ({
@@ -142,13 +142,13 @@ const reducer = (state, action) => {
                 ...state,
                 entries: state.entries.filter(entry => entry._id !== payload)}
             break
-        case 'RESET':
-            return {
-                ...state,
-                entries: [],
-                forumLoaded: false,
-            }
-            break
+        // case 'RESET':
+        //     return {
+        //         ...state,
+        //         entries: [],
+        //         forumLoaded: false,
+        //     }
+        //     break
             default:
             throw new Error()
     }

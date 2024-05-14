@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
     Image,
     Pressable,
@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import {
     Brand,
-    CartButton,
+    // CartButton,
     IconButton,
     ThemedText,
 } from '@components'
@@ -19,11 +19,11 @@ import { navigationRef } from '../navigation/RootNavigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const UserButton = () => {
+const UserButton = ({ profile }) => {
 
     const { theme } = useApp()
-    const { profile } = useUser()
-    const { profileImage, username } = profile
+    // const { profile } = useUser()
+    const { profileImage, username } = useMemo(() => profile, [profile])
     
     const getSource = () => profileImage
         ? `${IMAGE_PATH}/${username}/${profileImage.filename}`
@@ -89,17 +89,7 @@ const UserButton = () => {
 export default () => {
 
     const { dark, toggleTheme } = useApp()
-    const { profile } = useUser()
-
-    const renderAuthButtons = () => profile
-        ? (
-            <>
-                <CartButton style={{ marginLeft: 10 }} />
-                <UserButton />
-                <SignOutButton />
-            </>
-        )
-        : <SignInButton />
+    const { profile, userLoaded } = useUser()
     
     return (
         <View
@@ -124,7 +114,18 @@ export default () => {
                 textStyles={{ fontSize: 18 }}
             />
 
-            {renderAuthButtons()}
+            {
+                profile
+                ? (
+                    <>
+                        {/* <CartButton style={{ marginLeft: 10 }} /> */}
+                        <UserButton profile={profile} />
+                        <SignOutButton />
+                    </>
+                )
+                : <SignInButton />
+            }
+
         </View>
     )
 }

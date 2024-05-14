@@ -40,12 +40,50 @@ export default ({ product }) => {
         closeModal()
     }
 
+    const renderHeader = () => (
+        <View
+            style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 10,
+            }}
+        >
+            
+            <ThemedText
+                bold
+                style={{
+                    // fontSize: 18,
+                    // fontWeight: 700,
+                    flexBasis: 'auto',
+                    flexGrow: 1,
+                    // flexBasis: 'auto',
+                }}
+            >
+                {product.title}
+            </ThemedText>
+
+            <ThemedText
+                bold
+                style={{
+                    flexBasis: 'auto',
+                    // textAlign: 'right',
+                    // fontSize: 18,
+                    // fontWeight: 700,
+                    flexShrink: 1,
+                }}
+            >
+                ${product.price}
+            </ThemedText>
+        </View>
+    )
+
     return (
         <View
             style={{
                 width: '100%',
                 minWidth: 280,
-                maxWidth: landscape ? 600 : 300,
+                // maxWidth: landscape ? 600 : 300,
                 marginVertical: 50,
             }}
         >
@@ -64,53 +102,26 @@ export default ({ product }) => {
                         marginHorizontal: 10,
                     }}
                 >
+                    {renderHeader()}
+                    
                     <View
                         style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 10,
+                            justifyContent: 'center',
                         }}
                     >
-                        
-                        <ThemedText
-                            style={{
-                                fontSize: 18,
-                                fontWeight: 700,
-                                flexBasis: 'auto',
-                                flexGrow: 1,
-                                flexBasis: '80%',
+                        <Image
+                            source={{
+                                uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}`
                             }}
-                        >
-                            {product.title}
-                        </ThemedText>
-
-                        <ThemedText
                             style={{
-                                flexBasis: '20%',
-                                textAlign: 'right',
-                                fontSize: 18,
-                                fontWeight: 700,
-                                flexGrow: 0,
+                                width: '100%',//product.image.width,//imageDims ? imageDims.width : 0,
+                                height: product.image.height,//imageDims ? imageDims.height : 0,
+                                resizeMode: 'cover',
+                                borderWidth: 1,
+                                // borderColor: theme?.colors.border,
                             }}
-                        >
-                            ${product.price}
-                        </ThemedText>
+                        />
                     </View>
-                    <Image
-                        source={{
-                            uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}`
-                        }}
-                        style={{
-                            marginHorizontal: 'auto',
-                            flexBasis: 'auto',
-                            width: imageDims ? imageDims.width : 0,
-                            height: imageDims ? imageDims.height : 0,
-                            resizeMode: 'center',
-                            borderWidth: 1,
-                            borderColor: theme?.colors.border,
-                        }}
-                    />
                 </View>
 
                 <View

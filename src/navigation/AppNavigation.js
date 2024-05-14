@@ -161,19 +161,21 @@ const MainStackScreen = () => {
                 }}
             />
 
-            {(profile && profile.role !== 'vendor') && (
-                <MainStack.Screen
-                    name='Vendors'
-                    component={VendorStackScreen}
-                    options={{
-                        title: 'Vendors',
-                        tabBarLabel: 'Vendors',
-                        tabBarIcon: ({ focused, color }) => (
-                            <Icon name='alert-circle-outline' size={iconSize} color={color} />
-                        ),
-                    }}
-                />
-            )}
+            <MainStack.Screen
+                name='Vendors'
+                component={VendorStackScreen}
+                options={{
+                    title: 'Vendors',
+                    tabBarLabel: 'Vendors',
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='alert-circle-outline' size={iconSize} color={color} />
+                    ),
+                }}
+            />
+
+            {/* {(profile && profile.role !== 'vendor') && (
+                
+            )} */}
 
         </MainStack.Navigator>
     )
@@ -198,6 +200,12 @@ const AuthStackScreen = () => (
             options={{ title: 'User' }}
         />
 
+        {/* <AuthStack.Screen
+            name='Fallback'
+            component={FallbackScreen}
+            options={{ title: 'Oops' }}
+        /> */}
+
     </AuthStack.Navigator>
 )
 
@@ -205,17 +213,17 @@ const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
     return (
         <AppStack.Navigator
-            initialRouteName='Start'
+            initialRouteName='Splash'
             screenOptions={{
                 headerShown: false,
             }}
         >
 
-            {/* <AppStack.Screen
+            <AppStack.Screen
                 name='Splash'
                 component={SplashScreen}
                 options={{ title: 'Splash' }}
-            /> */}
+            />
 
             <AppStack.Screen
                 name='Start'

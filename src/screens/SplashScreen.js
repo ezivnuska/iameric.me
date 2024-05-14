@@ -4,23 +4,25 @@ import {
     ThemedText,
 } from '@components'
 import {
+    useApp,
     useUser,
 } from '@context'
 
 export default ({ navigation }) => {
+    const { userId } = useApp()
     const { userLoaded } = useUser()
 
     useEffect(() => {
         console.log('SPLASH')
     }, [])
-    // useEffect(() => {
-    //     if (userLoaded) navigation.navigate('Auth')
-    //     else navigation.navigate('Start')
-    // }, [userLoaded])
+
+    useEffect(() => {
+        if (userLoaded) navigation.navigate(userId ? 'Auth' : 'Start')
+    }, [userLoaded])
     
     return (
         <CenterVertical>
-            <ThemedText>Splash</ThemedText>
+            <ThemedText>iameric</ThemedText>
         </CenterVertical>
     )
 }

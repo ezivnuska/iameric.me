@@ -31,7 +31,7 @@ export const UserContextProvider = props => {
 
     useEffect(() => {
         const init = async () => {
-            if (userId) {
+            if (userId && !state.profile) {
                 console.log('user authorized. loading user...')
                 dispatch({ type: 'SET_USER_LOADING', payload: true })
                 const data = await loadUser(userId)
@@ -45,7 +45,7 @@ export const UserContextProvider = props => {
             
             dispatch({ type: 'SET_USER_LOADED' })
         }
-        if (!state.profile) init()
+        init()
 
     }, [userId])
 
