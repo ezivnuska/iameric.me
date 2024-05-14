@@ -147,7 +147,7 @@ export default ({ order, children, ...props }) => {
             <View>
                 {renderOrderStatus(order)}
                 
-                {/* <CartProductPreview order={order} /> */}
+                <CartProductPreview order={order} />
 
                 {/* {renderHeaderButton()} */}
             </View>

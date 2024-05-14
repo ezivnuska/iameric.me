@@ -8,7 +8,7 @@ export default ({ onPress, ...props }) => {
     const idFromParams = route.params.id
     
     return (
-        <Screen {...props}>
+        <Screen secure={false} {...props}>
             <Vendor
                 id={idFromParams}
                 onPress={() => navigation.reset({

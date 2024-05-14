@@ -57,7 +57,7 @@ const UserStackScreen = () => {
     const { theme } = useApp()
     return (
         <UserStack.Navigator
-            initialRouteName={'Profile'}
+            initialRouteName={'Products'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -72,6 +72,17 @@ const UserStackScreen = () => {
                 headerShown: false,
             }}
         >
+
+            <UserStack.Screen
+                name='Products'
+                component={ProductsScreen}
+                options={{
+                    tabBarLabel: 'Products',
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='alert-circle-outline' size={iconSize} color={color} />
+                    ),
+                }}
+            />
 
             <UserStack.Screen
                 name='Profile'
@@ -89,17 +100,6 @@ const UserStackScreen = () => {
                 component={ImagesScreen}
                 options={{
                     tabBarLabel: 'Images',
-                    tabBarIcon: ({ focused, color }) => (
-                        <Icon name='alert-circle-outline' size={iconSize} color={color} />
-                    ),
-                }}
-            />
-
-            <UserStack.Screen
-                name='Products'
-                component={ProductsScreen}
-                options={{
-                    tabBarLabel: 'Products',
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name='alert-circle-outline' size={iconSize} color={color} />
                     ),
@@ -149,7 +149,7 @@ const MainStackScreen = () => {
                 options={{ title: 'Orders' }}
             /> */}
 
-            <MainStack.Screen
+            {/* <MainStack.Screen
                 name='Users'
                 component={ContactsScreen}
                 options={{
@@ -159,19 +159,7 @@ const MainStackScreen = () => {
                         <Icon name='alert-circle-outline' size={iconSize} color={color} />
                     ),
                 }}
-            />
-
-            <MainStack.Screen
-                name='Vendors'
-                component={VendorStackScreen}
-                options={{
-                    title: 'Vendors',
-                    tabBarLabel: 'Vendors',
-                    tabBarIcon: ({ focused, color }) => (
-                        <Icon name='alert-circle-outline' size={iconSize} color={color} />
-                    ),
-                }}
-            />
+            /> */}
 
             {/* {(profile && profile.role !== 'vendor') && (
                 
@@ -190,8 +178,9 @@ const AuthStackScreen = () => (
         }}
     >
         <AuthStack.Screen
-            name='Main'
-            component={MainStackScreen}
+            name='Forum'
+            component={ForumScreen}
+            options={{ title: 'Forum' }}
         />
 
         <AuthStack.Screen
@@ -242,6 +231,12 @@ const AppStackScreen = () => {
                 options={{ title: 'Oops' }}
             />
 
+            <AppStack.Screen
+                name='Vendors'
+                component={VendorStackScreen}
+                // options={{ title: 'Vendors' }}
+            />
+
         </AppStack.Navigator>
     )
 }
@@ -251,6 +246,13 @@ const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
+            Vendors: {
+                path: 'vendors',
+                screens: {
+                    VendorList: '',
+                    Vendor: '/:id',
+                },
+            },
             Auth: {
                 path: '',
                 screens: {
@@ -262,21 +264,15 @@ const linking = {
                             Profile: 'profile',
                         },
                     },
-                    Main: {
-                        path: '',
-                        screens: {
+                    // Main: {
+                    //     path: '',
+                    //     screens: {
                             Forum: 'forum',
                             // Orders: 'orders',
-                            Users: 'users',
-                            Vendors: {
-                                path: 'vendors',
-                                screens: {
-                                    VendorList: '',
-                                    Vendor: '/:id',
-                                },
-                            },
-                        },
-                    },
+                            // Users: 'users',
+                            
+                    //     },
+                    // },
                 },
             },
             Fallback: 'oops',

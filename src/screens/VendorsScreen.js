@@ -7,7 +7,7 @@ import {
 } from '.'
 
 export default props => (
-    <Screen {...props}>
+    <Screen secure={false} {...props}>
         <Vendors {...props} />
     </Screen>
 )

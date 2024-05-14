@@ -4,16 +4,19 @@ import {
     Text,
 } from 'react-native'
 
-export default ({ disabled, label, onPress }) => (
+export default ({ disabled, label, onPress, ...props }) => (
     <Pressable
         onPress={onPress}
         disabled={disabled}
-        style={{
-            paddingVertical: 5,
-            paddingHorizontal: 8,
-            borderRadius: 8,
-            background: 'orange',
-        }}
+        style={[
+            props.style,
+            {
+                paddingVertical: 5,
+                paddingHorizontal: 8,
+                borderRadius: 8,
+                background: 'orange',
+            }
+        ]}
     >
         <Text
             style={{

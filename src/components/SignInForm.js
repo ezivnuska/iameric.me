@@ -1,20 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
+    Pressable,
     View,
 } from 'react-native'
 import {
     CenterVertical,
-    IconButton,
     FormField,
+    IconButton,
+    ThemedText,
 } from '@components'
-import { setItem } from '@utils/storage'
-import { isValidEmail, signin } from '@utils/auth'
-import { getFields } from '@utils/form'
 import {
     useApp,
     useForm,
     useModal,
 } from '@context'
+import { setItem } from '@utils/storage'
+import { isValidEmail, signin } from '@utils/auth'
+import { getFields } from '@utils/form'
 
 export default () => {
 
@@ -42,7 +44,7 @@ export default () => {
         setFormLoading,
         setFormValues,
     } = useForm()
-    const { closeModal } = useModal()
+    const { clearModal, setNewModal } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -131,7 +133,7 @@ export default () => {
             const { _id, profileImage, token, username } = user
             signIn({ _id, token, username })
             clearForm()
-            closeModal()
+            clearModal()
 		}
 
     }
@@ -184,6 +186,12 @@ export default () => {
                     disabled={formLoading || formError}
                     onPress={submitFormData}
                 />
+                <Pressable
+                    onPress={() => setNewModal('SIGNUP_CUSTOMER')}
+                    style={{ padding: 10 }}
+                >
+                    <ThemedText bold>Sign Up</ThemedText>
+                </Pressable>
             </View>
         </CenterVertical>
     ) : null

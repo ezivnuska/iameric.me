@@ -3,6 +3,7 @@ import React, { createContext, useContext, useMemo, useReducer } from 'react'
 const initialState = {
     error: null,
     items: [],
+    itemPending: null,
     cartLoading: false,
     vendor: null,
     addToCart: () => {},
@@ -10,6 +11,7 @@ const initialState = {
     removeFromCart: () => {},
     removeOne: () => {},
     setCartLoading: () => {},
+    setItemPending: () => {},
 }
 
 export const CartContext = createContext(initialState)
@@ -41,6 +43,9 @@ export const CartContextProvider = props => {
         },
         setCartLoading: payload => {
             dispatch({ type: 'SET_CART_LOADING', payload })
+        },
+        setItemPending: payload => {
+            dispatch({ type: 'SET_ITEM_PENDING', payload })
         },
     }), [state, dispatch])
 
@@ -98,6 +103,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 cartLoading: payload,
+            }
+            break
+        case 'SET_ITEM_PENDING':
+            return {
+                ...state,
+                itemPending: payload,
             }
             break
         case 'REMOVE_FROM_CART':

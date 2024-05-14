@@ -19,9 +19,14 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ product }) => {
 
-    const { dims, landscape, theme } = useApp()
-    const { addToCart } = useCart()
-    const { closeModal } = useModal()
+    const {
+        dims,
+        landscape,
+        theme,
+        userId,
+    } = useApp()
+    const { addToCart, itemPending, setItemPending } = useCart()
+    const { closeModal, setModal } = useModal()
 
     const [imageDims, setImageDims] = useState(null)
     
@@ -36,8 +41,13 @@ export default ({ product }) => {
     }, [dims])
 
     const onProductAdded = (item, quantity) => {
-        addToCart(item, quantity)
-        closeModal()
+        if (!userId) {
+            setItemPending({ item, quantity })
+            setModal('SIGN_IN')
+        } else {
+            addToCart(item, quantity)
+            closeModal()
+        }
     }
 
     const renderHeader = () => (
@@ -114,11 +124,9 @@ export default ({ product }) => {
                                 uri: `${IMAGE_PATH}/${product.vendor.username}/${product.image.filename}`
                             }}
                             style={{
-                                width: '100%',//product.image.width,//imageDims ? imageDims.width : 0,
-                                height: product.image.height,//imageDims ? imageDims.height : 0,
+                                width: '100%',
+                                height: product.image.height,
                                 resizeMode: 'cover',
-                                borderWidth: 1,
-                                // borderColor: theme?.colors.border,
                             }}
                         />
                     </View>

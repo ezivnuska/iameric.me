@@ -54,9 +54,6 @@ const CartListItem = ({ product, quantity, ...props }) => {
                 paddingVertical: 3,
                 marginBottom: 3,
                 paddingHorizontal: 10,
-                borderWidth: 1,
-                borderStyle: 'dotted',
-                borderColor: 'pink'
             }}
         >
             <Quantity quantity={quantity} />

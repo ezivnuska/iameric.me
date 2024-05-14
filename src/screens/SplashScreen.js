@@ -17,7 +17,7 @@ export default ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-        if (userLoaded) navigation.navigate(userId ? 'Auth' : 'Start')
+        // if (userLoaded) navigation.navigate(userId ? 'Auth' : 'Start')
     }, [userLoaded])
     
     return (

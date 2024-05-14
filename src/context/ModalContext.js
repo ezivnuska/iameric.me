@@ -8,6 +8,8 @@ const initialState = {
     loading: false,
     type: null,
     setModal: () => {},
+    setNewModal: () => {},
+    clearModal: () => {},
     closeModal: () => {},
 }
 
@@ -31,6 +33,15 @@ export const ModalContextProvider = props => {
                 type: 'SET_MODAL',
                 payload: { data, type },
             })
+        },
+        setNewModal: (type, data) => {
+            dispatch({
+                type: 'SET_NEW_MODAL',
+                payload: { data, type },
+            })
+        },
+        clearModal: () => {
+            dispatch({ type: 'CLEAR_MODAL' })
         },
         closeModal: () => {
             dispatch({ type: 'CLOSE_MODAL' })
@@ -58,12 +69,28 @@ const reducer = (state, action) => {
                 ],
             }
             break
+        case 'SET_NEW_MODAL':
+            return {
+                ...state,
+                type: payload?.type,
+                data: payload?.data,
+                modals: [payload],
+            }
+            break
         case 'CLOSE_MODAL':
             return {
                 ...state,
                 type: null,
                 data: null,
                 modals: state.modals.slice(0, state.modals.length - 1),
+            }
+            break
+        case 'CLEAR_MODAL':
+            return {
+                ...state,
+                type: null,
+                data: null,
+                modals: [],
             }
             break
         default:

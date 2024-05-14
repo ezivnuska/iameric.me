@@ -32,11 +32,19 @@ const MenuItem = ({ item, username }) => {
     
     const { price, title, blurb, image } = item
 
-    const { theme } = useApp()
-    const { addToCart } = useCart()
+    const { theme, userId } = useApp()
+    const { addToCart, setItemPending } = useCart()
     const { setModal } = useModal()
 
     const [quantity, setQuantity] = useState(1)
+
+    const handleItemAdded = () => {
+        if (userId) addToCart(item, quantity)
+        else {
+            setItemPending({ item, quantity })
+            setModal('SIGN_IN')
+        }
+    }
 
     return (
         <View
@@ -58,8 +66,8 @@ const MenuItem = ({ item, username }) => {
                         resizeMode: 'cover',
                         width: '100%',
                         height: 140,
-                        borderWidth: 1,
-                        borderColor: '#999',
+                        // borderWidth: 1,
+                        // borderColor: '#999',
                         shadowColor: '#000',
                         shadowOffset: {
                             width: 0,
@@ -86,7 +94,7 @@ const MenuItem = ({ item, username }) => {
                 
                 <SimpleButton
                     label='Add to Order'
-                    onPress={() => addToCart(item, quantity)}
+                    onPress={() => handleItemAdded(item, quantity)}
                 />
             </View>
             
@@ -103,14 +111,12 @@ const MenuItem = ({ item, username }) => {
 }
 
 export default ({ id, onPress }) => {
-    const { theme } = useApp()
-    const { items } = useCart()
+    const { theme, userId } = useApp()
+    const { addToCart, itemPending, setItemPending } = useCart()
     const {
-        // contact,
         contactsLoading,
         setContactsLoading,
         updateContact,
-        // setContact,
     } = useContacts()
 
     const [contact, setContact] = useState(null)
@@ -128,6 +134,13 @@ export default ({ id, onPress }) => {
         }
         init()
     }, [])
+
+    useEffect(() => {
+        if (userId && itemPending) {
+            addToCart(itemPending.item, itemPending.quantity)
+            setItemPending(null)
+        }
+    }, [userId])
 
     if (contactsLoading) return <LoadingView loading='Loading vendor...' />
 
@@ -147,7 +160,7 @@ export default ({ id, onPress }) => {
                 />
             </TitleBar>
 
-            <CartView />
+            {userId && <CartView />}
             
             <ScreenContent padded={false}>
                 {contact.products

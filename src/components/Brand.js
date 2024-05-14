@@ -5,11 +5,11 @@ import {
     View,
 } from 'react-native'
 import { useApp } from '@context'
-import { navigationRef } from 'src/navigation/RootNavigation'
+import { navigationRef } from '../navigation/RootNavigation'
 
 export default () => {
 
-    const { theme } = useApp()
+    const { theme, userId } = useApp()
     
     return (
         <Pressable
@@ -19,7 +19,7 @@ export default () => {
                 paddingHorizontal: 5,
                 paddingVertical: 3,
             }}
-            onPress={() => navigationRef.navigate('Auth', { screen: 'Main' })}
+            onPress={() => navigationRef.navigate(userId ? 'Vendors' : 'Start')}
         >
             <View
                 style={{

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import {
     ImageBackground,
+    Pressable,
     Text,
     View,
 } from 'react-native'
 import {
-    IconButton,
     LoadingView,
 } from '@components'
 import {
@@ -15,10 +15,10 @@ import {
 import {
     connect,
 } from '@utils/auth'
-import classes from '@styles/classes'
+// import classes from '@styles/classes'
 import LinearGradient from 'react-native-linear-gradient'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+// const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default props => {
 
@@ -42,14 +42,51 @@ export default props => {
         <View
             style={{
                 flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
                 justifyContent: 'space-evenly',
                 height: '100%',
             }}
         >
+            <Pressable
+                style={{
+                    flex: 1,
+                    justifyContent: 'flex-end',
+                    padding: 10,
+                    background: '#fff',
+                }}
+                onPress={() => props.navigation.navigate('Vendors')}
+            >
+                <Text
+                    style={{
+                        color: 'orange',
+                        fontSize: 32,
+                        fontWeight: 700,
+                        textAlign: 'right',
+                    }}
+                >
+                    Searching?
+                </Text>
+            </Pressable>
 
-            <ImageSegment
+            <Pressable
+                onPress={() => setModal('SIGN_IN')}
+                style={{
+                    flex: 1,
+                    background: 'orange',
+                    padding: 10,
+                    justifyContent: 'flex-start',
+                }}
+            >
+                <Text
+                    style={{
+                        fontSize: 32,
+                        fontWeight: 700,
+                        color: '#fff',
+                    }}
+                >
+                    Selling?
+                </Text>
+            </Pressable>
+            {/* <ImageSegment
                 source={`${IMAGE_PATH}/customer-avatar.png`}
             >
 
@@ -221,7 +258,7 @@ export default props => {
                     }}
                 />
 
-            </ImageSegment>
+            </ImageSegment> */}
 
         </View>
     )

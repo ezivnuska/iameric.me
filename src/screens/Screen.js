@@ -16,24 +16,23 @@ export default ({
     ...props
 }) => {
     
-    const { appLoaded, userId } = useApp()
+    const { appLoaded, dims, userId } = useApp()
 
     useEffect(() => {
-        if (secure) {
-            if (!userId) props.navigation.navigate('Start')
-        }
+        if (secure && !userId) props.navigation.navigate('Start')
     }, [userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 
-    return userId ? (
+    return (
         <ScrollView
             showsVerticalScrollIndicator={false}
+            style={{ height: dims.height - 50 }}
             // contentContainerStyle={{
             //     height: '100%',
             // }}
         >
             {children}
         </ScrollView>
-    ) : <LoadingView loading='Checking Auth...' />
+    )
 }
