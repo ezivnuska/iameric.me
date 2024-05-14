@@ -169,36 +169,39 @@ const deleteImageById = async (req, res) => {
     const deletedImage = await UserImage.findOneAndRemove({ _id: imageId })
 
     if (!deletedImage) console.log('Could not find image to delete')
+    else {
+        const user = await User.findOne({ _id: deletedImage.user })
 
-    const user = await User.findOne({ _id: deletedImage.user })
-
-    if (!user) {
-        console.log('could not find user to update after image deletion.')
-        return res.status(200).json(null)
-    }
-
-    const userPath = `${imagePath}/${user.username}`
-    const filenameToDelete = deletedImage.filename
-
-    const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
-    const pathToAvatar = `${userPath}/${filenameToDelete}`
+        if (!user) {
+            console.log('could not find user to update after image deletion.')
+        } else {
+            const userPath = `${imagePath}/${user.username}`
+            const filenameToDelete = deletedImage.filename
     
-    if (isProfileImage) {
-        user.profileImage = null
-        await user.save()
-    }
-
-    const product = await Product.findOne({ image: imageId })
+            const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
+            const pathToAvatar = `${userPath}/${filenameToDelete}`
+            
+            if (isProfileImage) {
+                user.profileImage = null
+                await user.save()
+            }
     
-    if (product) {
-        product.image = null
-        await product.save()
+            // const product = 
+            await Product.findOneAndUpdate({ image: imageId }, { $set: { image: null }})
+            
+            // if (product) {
+            //     product.image = null
+            //     await product.save()
+            // }
+    
+            removeImage(pathToAvatar)
+            removeImage(pathToThumb)
+    
+            return res.status(200).json({ deletedImage })
+        }
+
     }
-
-    removeImage(pathToAvatar)
-    removeImage(pathToThumb)
-
-    return res.status(200).json({ deletedImage })
+    return res.status(200).json(null)
 }
 
 const clearUserProfileImage = async imageId => {

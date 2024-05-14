@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     FlatList,
     View,
@@ -41,52 +41,50 @@ const Quantity = ({ quantity }) => {
     )
 }
 
-const CartListItem = ({ product, quantity, ...props }) => {
-    return (
-        <View
-            {...props}
+const CartListItem = ({ product, quantity, ...props }) => (
+    <View
+        {...props}
+        style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            gap: 10,
+            paddingVertical: 3,
+            marginBottom: 3,
+            paddingHorizontal: 10,
+        }}
+    >
+        <Quantity quantity={quantity} />
+        
+        <ThemedText
             style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'baseline',
-                gap: 10,
-                paddingVertical: 3,
-                marginBottom: 3,
-                paddingHorizontal: 10,
+                flexBasis: 'auto',
+                flexGrow: 1,
+                fontSize: 20,
+                lineHeight: 30,
+                fontWeight: 500,
+                textAlign: 'left',
             }}
         >
-            <Quantity quantity={quantity} />
-            
-            <ThemedText
-                style={{
-                    flexBasis: 'auto',
-                    flexGrow: 1,
-                    fontSize: 20,
+            {product.title}
+        </ThemedText>
+        
+        <ThemedText
+            style={[
+                classes.itemPrice,
+                {
+                    fontSize: 18,
                     lineHeight: 30,
-                    fontWeight: 500,
-                    textAlign: 'left',
-                }}
-            >
-                {product.title}
-            </ThemedText>
-            
-            <ThemedText
-                style={[
-                    classes.itemPrice,
-                    {
-                        fontSize: 18,
-                        lineHeight: 30,
-                        fontWeight: 400,
-                    },
-                ]}
-            >
-                {Number(product.price) * Number(quantity)}
-            </ThemedText>
-            
-        </View>
-    )
-}
+                    fontWeight: 400,
+                },
+            ]}
+        >
+            {Number(product.price) * quantity}
+        </ThemedText>
+        
+    </View>
+)
 
 const CartTotal = ({ items }) => {
 

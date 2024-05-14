@@ -283,7 +283,7 @@ const createOrder = async (req, res) => {
     
     order = await Order
         .findOne({ _id: order._id })
-        .populate('items', 'price title')
+        // .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
@@ -297,7 +297,7 @@ const createOrder = async (req, res) => {
         .populate('driver', 'username')
         .populate({
             path: 'items',
-            select: 'product',
+            select: 'product price title',
             populate: { path: 'product' },
         })
 

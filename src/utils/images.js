@@ -289,3 +289,15 @@ export const handleImageData = async (image, srcOrientation, userId) => {
         userId,
     }
 }
+
+export const deleteImage = async (imageId, isProductImage, isProfileImage) => {
+    const { data } = await axios.post('/api/images/delete', {
+        imageId,
+        isProductImage,
+        isProfileImage,
+    })
+    
+    if (!data || !data.deletedImage) console.log('error deleting image.')
+    else return data.deletedImage
+    return null
+}

@@ -15,14 +15,8 @@ import {
 
 export default () => {
 
-    const {
-        userLoading,
-    } = useUser()
-
-    const {
-        images,
-        imagesLoading,
-    } = useImages()
+    const { userLoading } = useUser()
+    const { imagesLoading } = useImages()
 
     if (userLoading) return <LoadingView loading='Loading user...' />
     if (imagesLoading) return <LoadingView loading='Loading images...' />
@@ -31,7 +25,7 @@ export default () => {
         <View>
             <TitleBar title='Images' />
             <ScreenContent>
-                <ImageList images={images} />
+                <ImageList />
             </ScreenContent>
         </View>
     )

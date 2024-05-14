@@ -9,7 +9,9 @@ import {
 import { Header } from '@layout'
 import {
     CartContextProvider,
+    ImageContextProvider,
     OrderContextProvider,
+    ProductContextProvider,
     UserContextProvider,
     useApp,
 } from '@context'
@@ -36,6 +38,8 @@ export default () => {
                 components={[
                     OrderContextProvider,
                     CartContextProvider,
+                    ProductContextProvider,
+                    ImageContextProvider,
                     UserContextProvider,
                 ]}
             >

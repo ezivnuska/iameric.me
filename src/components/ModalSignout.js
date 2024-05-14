@@ -6,6 +6,7 @@ import {
 import {
     useApp,
     useCart,
+    useImages,
     useModal,
     useUser,
 } from '@context'
@@ -15,6 +16,7 @@ export default () => {
 
     const { appLoading, signOut, userId } = useApp()
     const { clearCart } = useCart()
+    const { clearImages } = useImages()
     const { clearUser } = useUser()
     const { closeModal } = useModal()
 
@@ -22,6 +24,7 @@ export default () => {
         const signedOut = await signout(userId)
         if (!signedOut) throw new Error()
         else {
+            clearImages()
             clearUser()
             clearCart()
             signOut()

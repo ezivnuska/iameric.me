@@ -16,10 +16,10 @@ import { ActivityIndicator } from 'react-native-paper'
 const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ images, restricted = false }) => {
+export default ({ restricted = false }) => {
 
     const { theme } = useApp()
-    const { uploading } = useImages()
+    const { images, uploading } = useImages()
     const { setModal } = useModal()
     const { profile } = useUser()
 

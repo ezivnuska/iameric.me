@@ -11,7 +11,7 @@ import {
     useUser,
 } from '@context'
 import axios from 'axios'
-import { loadUserImage } from '@utils/images'
+import { loadUserImage, deleteImage } from '@utils/images'
 
 export default ({ image }) => {
     const {
@@ -46,22 +46,18 @@ export default ({ image }) => {
         return response
     }
 
-    const deleteImage = async () => {
+    const onImageDeleted = async () => {
 
         const isProfileImage = isImageProfileImage(image._id)
         const isProductImage = isImageProductImage(image._id)
 
-        const { data } = await axios.post('/api/images/delete', {
-            imageId: image._id,
-            isProductImage,
-            isProfileImage,
-        })
+        const deletedImage = await deleteImage(image._id, isProductImage, isProfileImage)
         
-        if (!data || !data.deletedImage) console.log('Error deleting image.')
+        if (!deletedImage) console.log('Error deleting image.')
         else {
             if (isProductImage) updateProductImage(isProductImage, null)
             if (isProfileImage) setProfileImage(null)
-            removeImage(data.deletedImage._id)
+            removeImage(deletedImage._id)
         }
         
         closeModal()
@@ -99,7 +95,7 @@ export default ({ image }) => {
         <CenterVertical>
             <ImageDetail
                 image={image}
-                deleteImage={() => deleteImage(image._id)}
+                deleteImage={onImageDeleted}
                 setAvatar={setAvatar}
                 setProductImage={setProductImage}
             />

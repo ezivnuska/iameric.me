@@ -18,6 +18,7 @@ import {
     useUser,
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
+import { createProduct } from '@utils/products'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -173,21 +174,20 @@ export default  ({ product }) => {
         }
         
         setFormLoading(true)
-        const { data } = await axios.post('/api/product', newProduct)
+        const createdProduct = await createProduct(newProduct)
         setFormLoading(false)
         
-        if (!data || !data.product) {
-            console.log('Error saving product', product)
+        if (!createdProduct) {
+            console.log('Error creating product', newProduct)
         } else {
             if (product) {
                 console.log('product found; updating product...', product)
-                updateProduct(data.product)
-            }
-            else addProduct(data.product)
+                updateProduct(createdProduct)
+            } else addProduct(createdProduct)
 
-            if (data.product.image) {
-                console.log('product mage found; updating images...')
-                addImage(data.product.image)
+            if (createdProduct.image) {
+                console.log('product image found; updating images...')
+                addImage(createdProduct.image)
             }
             
             clearForm()
@@ -207,10 +207,10 @@ export default  ({ product }) => {
 
     const renderImageFormModule = () => {
         
-        const source = image
-            ? `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}`
-            : attachment
-                ? { uri: attachment.thumbData.uri }
+        const source = attachment
+            ? { uri: attachment.thumbData.uri }
+            : image
+                ? `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}`
                 : null
 
         return (

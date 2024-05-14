@@ -13,6 +13,13 @@ export const loadProduct = async productId => {
     return null
 }
 
+export const createProduct = async product => {
+    const { data } = await axios.post('/api/product', product)
+    if (!data || !data.product) console.log('could not create product')
+    else return data.product
+    return null
+}
+
 export const loadProducts = async vendorId => {
     const { data } = await axios.get(`/api/products/${vendorId}`)
     if (!data) console.log('could not load products')
