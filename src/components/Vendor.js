@@ -72,9 +72,18 @@ const MenuItem = ({ item, username }) => {
                 />
             )}
 
-            <View style={{ flex: 6, paddingVertical: 3 }}>
-                <ThemedText size={18} bold style={{ lineHeight: 22 }}>{title} ${price}</ThemedText>
-                {(blurb && blurb.length) && <ThemedText style={classes.productBlurb}>{blurb}</ThemedText>}
+            <View
+                style={{
+                    flex: 6,
+                    paddingVertical: 8,
+                    justifyContent: 'space-between',
+                }}
+            >
+                <View>
+                    <ThemedText size={18} bold style={{ lineHeight: 22 }}>{title} ${price}</ThemedText>
+                    {(blurb && blurb.length) && <ThemedText style={classes.productBlurb}>{blurb}</ThemedText>}
+                </View>
+                
                 <SimpleButton
                     label='Add to Order'
                     onPress={() => addToCart(item, quantity)}

@@ -1,37 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
     Pressable,
-    View,
 } from 'react-native'
 import {
-    OrderDetails,
     ThemedText,
 } from '@components'
 import {
+    useModal,
     useOrders,
 } from '@context'
 
 export default () => {
-    const { orders } = useOrders()
-    const [detailsVisible, setDetailsVisible] = useState(false)
-    return (
-        <View
-            style={{
-                paddingHorizontal: 10,
-            }}
-        >
-            {orders.map((order, index) => (
-                <View key={`order-${index}`}>
-                    <Pressable
-                        onPress={() => setDetailsVisible(!detailsVisible)}
-                    >
-                        <ThemedText>{order._id}</ThemedText>
-                    </Pressable>
-                    {detailsVisible && (
-                        <OrderDetails order={order} />
-                    )}
-                </View>
-            ))}
-        </View>
-    )
+    const { setModal } = useModal()
+    const { orders, ordersLoaded } = useOrders()
+    return ordersLoaded && orders.length ? (
+        <Pressable onPress={() => setModal('ORDERS')}>
+            <ThemedText style={{ padding: 10 }}>
+                {`${orders.length} pending order${orders.length === 1 ? '' : 's'}`}
+            </ThemedText>
+        </Pressable>
+    ) : null
 }

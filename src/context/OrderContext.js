@@ -1,8 +1,11 @@
-import React, { createContext, useContext, useMemo, useReducer } from 'react'
+import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import { useApp } from './AppContext'
+import { loadUserOrders } from '@utils/orders'
 
 const initialState = {
     error: null,
     orders: [],
+    ordersLoaded: false,
     ordersLoading: false,
     setOrders: () => {},
     setOrdersLoading: () => {},
@@ -29,7 +32,25 @@ export const useOrders = () => {
 
 export const OrderContextProvider = props => {
     
+    const { userId } = useApp()
+
     const [state, dispatch] = useReducer(reducer, initialState)
+
+    useEffect(() => {
+        const initOrders = async () => {
+            if (userId) {
+                dispatch({type: 'SET_ORDERS_LOADING', payload: true })
+                const payload = await loadUserOrders(userId)
+                dispatch({type: 'SET_ORDERS_LOADING', payload: false })
+                dispatch({type: 'SET_ORDERS', payload })
+            }
+
+            dispatch({type: 'SET_ORDERS_LOADED' })
+        }
+        
+        if (!state.ordersLoading && !state.ordersLoaded) initOrders()
+        // else if (!userId) dispatch({ type: 'RESET' })
+    }, [userId])
 
     const actions = useMemo(() => ({
         addOrder: payload => {
@@ -81,6 +102,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 orders: payload,
+            }
+            break
+        case 'SET_ORDERS_LOADED':
+            return {
+                ...state,
+                ordersLoaded: true,
             }
             break
         case 'SET_ORDERS_LOADING':

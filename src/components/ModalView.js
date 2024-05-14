@@ -7,11 +7,12 @@ import {
     ContactView,
     FeedbackForm,
     DestroyForm,
+    ImageSelector,
     LocationForm,
     ModalImage,
     ModalProfile,
     ModalSignout,
-    ImageSelector,
+    OrderList,
     PopUpModal,
     ProductDetails,
     ProductForm,
@@ -43,6 +44,7 @@ export default () => {
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ModalImage image={data} />; break
             case 'LOCATION': return <LocationForm location={data} />; break
+            case 'ORDERS': return <OrderList />; break
             case 'PRODUCT': return <ProductForm product={data} />; break
             case 'PROFILE': return <ModalProfile image={data} />; break
             case 'SELECT_IMAGE': return <ImageSelector />; break

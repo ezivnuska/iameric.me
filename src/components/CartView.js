@@ -20,7 +20,7 @@ export default () => {
     const { userId } = useApp()
     const {
         addToCart,
-        cartCount,
+        clearCart,
         items,
         removeFromCart,
         removeOne,
@@ -31,6 +31,7 @@ export default () => {
     } = useModal()
     const {
         addOrder,
+        orders,
     } = useOrders()
     
     const [detailsVisible, setDetailsVisible] = useState(false)
@@ -62,6 +63,7 @@ export default () => {
         const newOrder = { customer: userId, items }
         const order = await submitOrder(newOrder)
         addOrder(order)
+        clearCart()
     }
     
     return (
@@ -73,26 +75,11 @@ export default () => {
             }}
         >
             {itemCount ? (
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Text
-                        style={{
-                            fontWeight: 600,
-                            fontSize: 18,
-                        }}
-                    >
-                        {vendor.username}: ${cartTotal}
-                    </Text>
-
+                <>
                     <View
                         style={{
                             flexDirection: 'row',
-                            justifyContent: 'flex-end',
+                            justifyContent: 'space-between',
                             alignItems: 'center',
                         }}
                     >
@@ -100,19 +87,103 @@ export default () => {
                             style={{
                                 fontWeight: 600,
                                 fontSize: 18,
-                                lineHeight: detailsVisible ? 20 : 24,
                             }}
                         >
-                            {`${itemCount} item${itemCount === 1 ? '' : 's'} `}
+                            {vendor.username}: ${cartTotal}
                         </Text>
-                            
-                        <Icon
-                            name={detailsVisible ? 'chevron-up-sharp' : 'reader-outline'}
-                            size={detailsVisible ? 20 : 24}
-                            onPress={() => setDetailsVisible(!detailsVisible)}
-                        />
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontWeight: 600,
+                                    fontSize: 18,
+                                    lineHeight: detailsVisible ? 20 : 24,
+                                }}
+                            >
+                                {`${itemCount} item${itemCount === 1 ? '' : 's'} `}
+                            </Text>
+                                
+                            <Icon
+                                name={detailsVisible ? 'chevron-up-sharp' : 'reader-outline'}
+                                size={detailsVisible ? 20 : 24}
+                                onPress={() => setDetailsVisible(!detailsVisible)}
+                            />
+                        </View>
                     </View>
-                </View>
+
+                    {detailsVisible && (
+                        <View style={{ paddingTop: 10 }}>
+                            {items.map((item, index) => {
+                                const { product, quantity } = item
+                                return (
+                                    <View
+                                        key={`item-${index}`}
+                                        style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            paddingVertical: 5,
+                                        }}
+                                    >
+                                        <Text
+                                            style={{ fontSize: 16 }}
+                                        >
+                                            {quantity} {product.title}
+                                        </Text>
+
+                                        <View
+                                            style={{
+                                                flexDirection: 'row',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                gap: 5,
+                                            }}
+                                        >
+                                            
+                                            <Pressable onPress={() => removeItem(product._id, quantity)}>
+                                                <Icon name={`${quantity > 1 ? 'remove' : 'trash'}-outline`} size={quantity > 1 ? 24 : 20} />
+                                            </Pressable>
+                                            
+                                            <Pressable onPress={() => addToCart(product)}>
+                                                <Icon name='add-outline' size={24} />
+                                            </Pressable>
+
+                                        </View>
+                                    </View>
+                                )
+                            })}
+
+                            <View
+                                style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-evenly',
+                                    gap: 10,
+                                }}
+                            >
+                                <Icon
+                                    name='card-outline'
+                                    size={32}
+                                    onPress={() => setModal('CART')}
+                                />
+
+                                <Icon
+                                    name='cash-outline'
+                                    size={32}
+                                    onPress={submitCOD}
+                                />
+
+                            </View>
+
+                        </View>
+                    )}
+                            
+                </>
             ) : (
                 <Text
                     style={{
@@ -121,76 +192,23 @@ export default () => {
                         lineHeight: 24,
                     }}
                 >
-                    You haven't ordered anything, yet.
+                    Cart is Empty
                 </Text>
             )}
 
-            {detailsVisible && (
-                <View style={{ paddingTop: 10 }}>
-                    {items && items.map((item, index) => {
-                        const { product, quantity } = item
-                        return (
-                            <View
-                                key={`item-${index}`}
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                    paddingVertical: 5,
-                                }}
-                            >
-                                <Text
-                                    style={{ fontSize: 16 }}
-                                >
-                                    {quantity} {product.title}
-                                </Text>
-
-                                <View
-                                    style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        gap: 5,
-                                    }}
-                                >
-                                    
-                                    <Pressable onPress={() => removeItem(product._id, quantity)}>
-                                        <Icon name={`${quantity > 1 ? 'remove' : 'trash'}-outline`} size={quantity > 1 ? 24 : 20} />
-                                    </Pressable>
-                                    
-                                    <Pressable onPress={() => addToCart(product)}>
-                                        <Icon name='add-outline' size={24} />
-                                    </Pressable>
-
-                                </View>
-                            </View>
-                        )
-                    })}
-                    
-                    <View
+            {orders && orders.length ? (
+                <Pressable onPress={() => setModal('ORDERS')}>
+                    <Text
                         style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            gap: 10,
+                            fontWeight: 400,
+                            fontSize: 18,
+                            lineHeight: 24,
                         }}
                     >
-
-                        <Icon
-                            name='card-outline'
-                            size={32}
-                            onPress={() => setModal('CART')}
-                        />
-
-                        <Icon
-                            name='cash-outline'
-                            size={32}
-                            onPress={submitCOD}
-                        />
-
-                    </View>
-
-                </View>
-            )}
+                        {`${orders.length} order${orders.length === 1 ? '' : 's'} pending.`}
+                    </Text>
+                </Pressable>
+            ) : null}
         </View>
     )
 }

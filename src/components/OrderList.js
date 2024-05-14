@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
     FlatList,
     View,
@@ -12,13 +12,15 @@ import {
 } from '.'
 import axios from 'axios'
 import {
+    useModal,
     useOrders,
     useUser,
 } from '@context'
-import { getOrdersById } from '@utils/orders'
 import moment from 'moment'
 
 export default () => {
+
+    const { closeModal } = useModal()
     const {
         closeOrder,
         orders,
@@ -35,16 +37,16 @@ export default () => {
     } = useOrders()
     const { profile } = useUser()
 
-    useEffect(() => {
-        if (profile && !orders) loadOrders()
-    }, [profile])
+    // useEffect(() => {
+    //     if (profile && !orders) loadOrders()
+    // }, [profile])
 
-    const loadOrders = async () => {
-        setOrdersLoading(true)
-        const { data } = await getOrdersById(profile._id)
-        setOrdersLoading(false)
-        if (data.orders) setOrders(data.orders)
-    }
+    // const loadOrders = async () => {
+    //     setOrdersLoading(true)
+    //     const { data } = await getOrdersById(profile._id)
+    //     setOrdersLoading(false)
+    //     if (data.orders) setOrders(data.orders)
+    // }
 
     const deleteOrder = async id => {
         console.log('deleting order')
@@ -53,8 +55,8 @@ export default () => {
     }
 
     const cancelOrder = async id => {
-
         deleteOrder(id)
+        closeModal()
     }
 
     const confirmOrder = async (id, time) => {
@@ -81,7 +83,7 @@ export default () => {
     }
 
     const onOrderReady = async id => {
-
+        console.log('order ready')
         const { data } = await axios.
             post('/api/order/ready', { id })
 

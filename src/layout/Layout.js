@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     SafeAreaView,
 } from 'react-native'
 import { AppNavigation } from '@navigation'
 import {
     ModalView,
-    OrderDisplayView,
 } from '@components'
 import { Header } from '@layout'
 import {
@@ -13,7 +12,6 @@ import {
     OrderContextProvider,
     UserContextProvider,
     useApp,
-    useUser,
 } from '@context'
 import { PaperProvider } from 'react-native-paper'
 import Compose from '../Compose'
@@ -36,8 +34,8 @@ export default () => {
         <PaperProvider theme={theme}>
             <Compose
                 components={[
-                    CartContextProvider,
                     OrderContextProvider,
+                    CartContextProvider,
                     UserContextProvider,
                 ]}
             >
@@ -50,7 +48,6 @@ export default () => {
                     }}
                 >
                     <Header />
-                    <OrderDisplayView />
                     <AppNavigation />
                     <ModalView />
                 </SafeAreaView>
