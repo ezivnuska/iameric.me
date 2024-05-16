@@ -44,7 +44,6 @@ import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
 import ProductForm from './ProductForm'
-import ProductList from './ProductList'
 import ProductListItem from './ProductListItem'
 import ProductSelector from './ProductSelector'
 import ProductsView from './ProductsView'
@@ -107,7 +106,6 @@ export {
     Preview,
     ProductDetails,
     ProductForm,
-    ProductList,
     ProductListItem,
     ProductSelector,
     ProductsView,
