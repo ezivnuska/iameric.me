@@ -15,31 +15,15 @@ import {
     useModal,
     useProducts,
 } from '@context'
-import { deleteProductWithId } from '@utils/products'
 
 export default () => {
 
     const { theme } = useApp()
-    const { closeModal, setModal } = useModal()
+    const { setModal } = useModal()
     const {
-        deleteProduct,
         products,
         productsLoading,
-        setProductsLoading,
     } = useProducts()
-
-    const onDelete = async id => {
-        setProductsLoading(true)
-        const productDeleted = await deleteProductWithId(id)
-        setProductsLoading(false)
-
-        if (productDeleted) {
-            console.log(`${productDeleted.title} deleted`)
-            deleteProduct(productDeleted._id)
-        }
-
-        closeModal()
-    }
 
     if (productsLoading) return <LoadingView loading='Loading products' />
     
@@ -70,8 +54,6 @@ export default () => {
                         <ProductListItem
                             product={item}
                             key={item => `product-${item._id}`}
-                            onDelete={() => onDelete(item._id)}
-                            onPress={() => setModal('PRODUCT', item)}
                         />
                     )}
                     style={{ marginHorizontal: 10 }}

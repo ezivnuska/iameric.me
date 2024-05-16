@@ -25,8 +25,8 @@ export default () => {
         if (!signedOut) throw new Error()
         else {
             clearImages()
-            clearUser()
             clearCart()
+            clearUser()
             signOut()
             closeModal()
         }

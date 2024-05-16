@@ -14,7 +14,9 @@ import { getFields } from '@utils/form'
 import classes from '@styles/classes'
 import {
     useApp,
+    useCart,
     useForm,
+    useImages,
     useModal,
     useUser,
 } from '@context'
@@ -46,6 +48,8 @@ export default () => {
     } = useForm()
 
     const { signOut } = useApp()
+    const { clearCart } = useCart()
+    const { clearImages } = useImages()
     const { closeModal } = useModal()
     const { profile, clearUser } = useUser()
 
@@ -128,11 +132,13 @@ export default () => {
             setFormError({ name: 'confirmUsername', message: 'Unsubscribe failed.' })
         } else {
             if (formError) clearFormError()
-            signOut()
-            clearUser()
-            cleanStorage()
             clearForm()
+            clearImages()
+            clearCart()
+            clearUser()
+            signOut()
             closeModal()
+            cleanStorage()
 		}
     }
 

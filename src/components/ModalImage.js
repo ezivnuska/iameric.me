@@ -4,21 +4,33 @@ import {
     ImageDetail,
 } from '@components'
 import {
-    useApp,
     useImages,
     useModal,
     useProducts,
     useUser,
 } from '@context'
-import axios from 'axios'
-import { loadUserImage, deleteImage } from '@utils/images'
+import {
+    deleteImage,
+    loadUserImage,
+    setImageAsAvatar,
+} from '@utils/images'
+import {
+    addImageToProduct,
+} from '@utils/products'
 
 export default ({ image }) => {
     const {
+        imagesLoading,
         removeImage,
+        setImagesLoading,
     } = useImages()
     const { closeModal } = useModal()
-    const { products, updateProduct, updateProductImage } = useProducts()
+    const {
+        products,
+        setProductsLoading,
+        updateProduct,
+        updateProductImage,
+    } = useProducts()
     const {
         profile,
         setProfileImage,
@@ -65,28 +77,22 @@ export default ({ image }) => {
 
     const setAvatar = async () => {
 
-        const response = await axios
-            .post('/api/user/avatar', {
-                userId: profile._id,
-                imageId: image._id,
-            })
+        setImagesLoading(true)
+        const avatar = await setImageAsAvatar(image._id, profile._id)
+        setImagesLoading(false)
         
-        if (!response.data) console.log('Error setting profileImage.')
-        else setProfileImage(response.data)
+        if (avatar) setProfileImage(avatar)
 
         closeModal()
     }
 
-    const setProductImage = async productId => {
+    const setProductImage = async (imageId, productId) => {
 
-        const { data } = await axios.post('/api/product/image', {
-            productId,
-            imageId: image._id,
-        })
+        setProductsLoading(true)
+        const product = await addImageToProduct(imageId, productId)
+        setProductsLoading(false)
         
-        if (!data) console.log('Error setting image id for product.')
-        else if (!data.image) console.log('no image found')
-        else updateProduct(data)
+        if (product) updateProduct(product)
         
         closeModal()
     }

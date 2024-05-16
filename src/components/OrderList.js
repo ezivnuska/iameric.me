@@ -10,53 +10,45 @@ import {
     TimeSelector,
     OrderPreview,
 } from '.'
-import axios from 'axios'
 import {
     useModal,
     useOrders,
     useUser,
 } from '@context'
+import {
+    setDriverArrived,
+    setOrderAccepted,
+    setOrderClosed,
+    setOrderCompleted,
+    setOrderConfirmed,
+    setOrderReady,
+    setOrderReceived,
+} from '@utils/orders'
 import moment from 'moment'
 
 export default () => {
 
-    const { closeModal } = useModal()
     const {
         closeOrder,
-        orders,
-        ordersLoading,
+        deleteOrderWithId,
         markDriverArrived,
         markOrderAccepted,
         markOrderCompleted,
         markOrderConfirmed,
         markOrderReady,
         markOrderReceived,
-        setOrders,
-        setOrdersLoading,
+        orders,
+        ordersLoading,
         removeOrder,
+        setOrdersLoading,
     } = useOrders()
     const { profile } = useUser()
 
-    // useEffect(() => {
-    //     if (profile && !orders) loadOrders()
-    // }, [profile])
-
-    // const loadOrders = async () => {
-    //     setOrdersLoading(true)
-    //     const { data } = await getOrdersById(profile._id)
-    //     setOrdersLoading(false)
-    //     if (data.orders) setOrders(data.orders)
-    // }
-
     const deleteOrder = async id => {
-        console.log('deleting order')
-        await axios.delete(`/api/order/${id}`)
+        setOrdersLoading(true)
+        await deleteOrderWithId()
+        setOrdersLoading(false)
         removeOrder(id)
-    }
-
-    const cancelOrder = async id => {
-        deleteOrder(id)
-        closeModal()
     }
 
     const confirmOrder = async (id, time) => {
@@ -64,61 +56,56 @@ export default () => {
         const m = moment()
         const pickup = m.add(time, 'm')
         
-        const { data } = await axios.
-            post('/api/order/confirm', { id, pickup })
+        setOrdersLoading(true)
+        const data = await setOrderConfirmed(id, pickup)
+        setOrdersLoading(false)
 
-        if (!data) return console.log('Error confirming order')
-
-        markOrderConfirmed(data)
+        if (data) markOrderConfirmed(data)
     }
 
     const acceptDelivery = async id => {
 
-        const { data } = await axios.
-            post('/api/order/accept', { id, driver: profile._id })
+        setOrdersLoading(true)
+        const data = await setOrderAccepted(id, profile._id)
+        setOrdersLoading(false)
 
-        if (!data) console.log('Error accepting delivery')
-
-        markOrderAccepted(data)
+        if (data) markOrderAccepted(data)
     }
 
     const onOrderReady = async id => {
-        console.log('order ready')
-        const { data } = await axios.
-            post('/api/order/ready', { id })
+        
+        setOrdersLoading(true)
+        const { data } = await setOrderReady(id)
+        setOrdersLoading(false)
 
-        if (!data) console.log('Error marking order ready')
-
-        markOrderReady(data)
+        if (data) markOrderReady(data)
     }
 
     const driverArrived = async id => {
 
-        const { data } = await axios.
-            post('/api/order/arrived', { id })
+        setOrdersLoading(true)
+        const { data } = await setDriverArrived(id)
+        setOrdersLoading(false)
 
-        if (!data) console.log('Error updating driver status')
-        
-        markDriverArrived(data)
+        if (data) markDriverArrived(data)
     }
 
     const receivedOrder = async id => {
 
-        const { data } = await axios.
-            post('/api/order/received', { id })
+        setOrdersLoading(true)
+        const { data } = await setOrderReceived(id)
+        setOrdersLoading(false)
         
-        if (!data) console.log('Error marking order picked up')
-        
-        markOrderReceived(data)
+        if (data) markOrderReceived(data)
     }
 
     const completeDelivery = async id => {
         
-        const { data } = await axios.
-            post('/api/order/complete', { id })
+        setOrdersLoading(true)
+        const { data } = await setOrderCompleted(id)
+        setOrdersLoading(false)
 
-        if (!data) console.log('Error completing order')
-        else {
+        if (data) {
             markOrderCompleted(data)
             removeOrder(data._id)
         }
@@ -126,16 +113,15 @@ export default () => {
 
     const onOrderClosed = async id => {
         
-        const { data } = await axios.
-            post('/api/order/close', { id })
+        setOrdersLoading(true)
+        const { data } = await setOrderClosed(id)
+        setOrdersLoading(false)
 
-        if (!data) {
-            console.log('Error closing order')
-            return
+        if (data) {
+            closeOrder(data)
+            removeOrder(data.id)
         }
 
-        closeOrder(data)
-        removeOrder(data.id)
     }
 
     const renderButton = (label, action) => (
@@ -151,7 +137,7 @@ export default () => {
         switch(profile.role) {
             case 'admin':if (order.status === 6) return renderButton('Delete Order', () => deleteOrder(order._id))
             case 'customer':
-                if (order.status === 0) return renderButton('Cancel Order', () => cancelOrder(order._id))
+                if (order.status === 0) return renderButton('Cancel Order', () => deleteOrder(order._id))
                 else if (order.status === 5) return renderButton('Order Received', () => onOrderClosed(order._id))
                 else return <ThemedText bold>Order in progress.</ThemedText>
             break

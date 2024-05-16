@@ -49,7 +49,6 @@ const {
     createOrUpdateProduct,
     deleteProductById,
     getProductById,
-    getProductIdsByVendorId,
     getProductsByVendorId,
     addImageIdToProduct,
 } = require('./api/products')

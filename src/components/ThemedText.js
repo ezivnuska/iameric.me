@@ -2,7 +2,7 @@ import React from 'react'
 import {
     Text,
 } from 'react-native'
-import classes from '../styles/classes'
+import classes from '@styles/classes'
 import { useApp } from '@context'
 
 export default ({ children, align = 'left', bold = false, size = null, ...props }) => {
@@ -18,7 +18,7 @@ export default ({ children, align = 'left', bold = false, size = null, ...props 
                     fontWeight: bold ? 700 : 400,
                     textAlign: align,
                     maxWidth: dims.width - 20,
-                    fontSize: size || classes.textDefault,
+                    fontSize: size || classes.textDefault.fontSize,
                 },
                 props.style,
             ]}

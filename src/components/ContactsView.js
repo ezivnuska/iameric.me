@@ -17,33 +17,16 @@ import {
 } from '@context'
 import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
-import { loadContacts } from '@utils/contacts'
-import axios from 'axios'
 
 export default () => {
 
     const {
         contacts,
-        contactsLoaded,
         contactsLoading,
-        setContacts,
-        setContactsLoading,
     } = useContacts()
 
     const { setModal } = useModal()
     const { profile } = useUser()
-    
-    // useEffect(() => {
-    //     const init = async () => {
-            
-    //         setContactsLoading(true)
-    //         const users = await loadContacts()
-    //         setContactsLoading(false)
-    //         if (!users) console.log('Error loading contacts')
-    //         else setContacts(users)
-    //     }
-    //     if (!contactsLoaded) init()
-    // }, [])
 
     const renderContacts = () => contacts.map((contact) => {
         if (profile && profile._id === contact._id) return null

@@ -147,7 +147,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                                     </ThemedText>
 
                                     <ProductSelector
-                                        onSelect={setProductImage}
+                                        onSelect={productId => setProductImage(image._id, productId)}
                                         products={products}
                                         imageId={image._id}
                                     />

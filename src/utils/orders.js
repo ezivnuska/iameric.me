@@ -32,3 +32,52 @@ export const submitOrder = async order => {
     else return data
     return null
 }
+
+export const setOrderConfirmed = async (id, pickup) => {
+    const { data } = await axios.post('/api/order/confirm', { id, pickup })
+    if (!data) console.log('error marking order confirmed')
+    else return data
+    return null
+}
+
+export const setOrderAccepted = async (id, driver) => {
+    const { data } = await axios.post('/api/order/accept', { id, driver })
+    if (!data) console.log('error marking order accepted')
+    else return data
+    return null
+}
+
+export const setOrderReady = async id => {
+    const { data } = await axios.post('/api/order/ready', { id })
+    if (!data) console.log('error marking order ready')
+    else return data
+    return null
+}
+
+export const setDriverArrived = async id => {
+    const { data } = await axios.post('/api/order/arrived', { id })
+    if (!data) console.log('error marking driver arrival')
+    else return data
+    return null
+}
+
+export const setOrderReceived = async id => {
+    const { data } = await axios.post('/api/order/received', { id })
+    if (!data) console.log('error marking order received')
+    else return data
+    return null
+}
+
+export const setOrderCompleted = async id => {
+    const { data } = await axios.post('/api/order/complete', { id })
+    if (!data) console.log('error marking order completed')
+    else return data
+    return null
+}
+
+export const setOrderClosed = async id => {
+    const { data } = await axios.post('/api/order/close', { id })
+    if (!data) console.log('error marking order closed')
+    else return data
+    return null
+}

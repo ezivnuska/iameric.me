@@ -14,7 +14,7 @@ import {
     useUser,
 } from '@context'
 import { getFields } from '@utils/form'
-import axios from 'axios'
+import { addUserLocation } from '@utils/user'
 
 export default ({ location }) => {
 
@@ -159,13 +159,13 @@ export default ({ location }) => {
         }
         
         setFormLoading(true)
-        const response = await axios.post('/api/location', newLocation)
+        const addedLocation = await addUserLocation(newLocation)
         setFormLoading(false)
 
-        if (!response.data) {
-            console.log('Error saving location', err)
+        if (!addedLocation) {
+            console.log('Error saving location')
         } else {
-            setUserLocation(response.data.location)
+            setUserLocation(addedLocation)
             clearForm()
             closeModal()
         }

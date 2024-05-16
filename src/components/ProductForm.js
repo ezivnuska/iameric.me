@@ -9,7 +9,6 @@ import {
     IconButton,
     ImageFormModule,
 } from '.'
-import axios from 'axios'
 import {
     useForm,
     useImages,

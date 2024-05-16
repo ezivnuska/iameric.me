@@ -31,6 +31,7 @@ import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
 import LocationModule from './LocationModule'
 import LocationForm from './LocationForm'
+import ModalDeleteProduct from './ModalDeleteProduct'
 import ModalImage from './ModalImage'
 import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
@@ -93,6 +94,7 @@ export {
     LocationDetails,
     LocationModule,
     LocationForm,
+    ModalDeleteProduct,
     ModalImage,
     ModalProfile,
     ModalSignout,

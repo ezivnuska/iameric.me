@@ -14,3 +14,11 @@ export const getUserLocation = async userId => {
     else return data.location
     return null
 }
+
+export const addUserLocation = async location => {
+    const { data } = await axios.post(`/api/location`, location)
+    console.log('setUserLocation data:', data)
+    if (!data) console.log('could not add user location data.')
+    else return data.location
+    return null
+}

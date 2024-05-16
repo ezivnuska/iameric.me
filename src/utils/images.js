@@ -301,3 +301,10 @@ export const deleteImage = async (imageId, isProductImage, isProfileImage) => {
     else return data.deletedImage
     return null
 }
+
+export const setImageAsAvatar = async (imageId, userId) => {
+    const { data } = await axios.post('/api/user/avatar', { imageId, userId })
+    if (!data || !data) console.log('error setting image as avatar')
+    else return data
+    return null
+}

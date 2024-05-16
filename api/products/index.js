@@ -66,37 +66,20 @@ const createOrUpdateProduct = async (req, res) => {
     return res.status(200).json({ product })
 }
 
-const getProductIdsByVendorId = async (req, res) => {
-    const products = await Product
-        .find({ vendor: req.params.vendor })
-        
-    if (!products) {
-        console.log('Error getting products')
-        return res.status(400).json(null)
-    }
-
-    const productIds = products.map(product => product._id)
-    
-    // TODO: fix this...
-    return res.status(200).json({ productIds })
-}
-
 const addImageIdToProduct = async (req, res) => {
     const { productId, imageId } = req.body
-    const data = await Product
+    const product = await Product
         .findOneAndUpdate(
             { _id: productId },
             { $set: { image: imageId } },
             { new: true },
         )
-        .populate('image', 'filename')
-
-    if (!data) {
-        console.log('no updated product')
-        return res.status(200).json(null)
-    }
+        .populate('image')
     
-    return res.status(200).json(data)
+    if (!product) console.log('no updated product')
+    else return res.status(200).json({ product })
+    
+    return res.status(200).json(null)
 }
 
 const getProductsByVendorId = async (req, res) => {
@@ -150,6 +133,5 @@ module.exports = {
     createOrUpdateProduct,
     deleteProductById,
     getProductById,
-    getProductIdsByVendorId,
     getProductsByVendorId,
 }

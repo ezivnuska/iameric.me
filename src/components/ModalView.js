@@ -9,6 +9,7 @@ import {
     DestroyForm,
     ImageSelector,
     LocationForm,
+    ModalDeleteProduct,
     ModalImage,
     ModalProfile,
     ModalSignout,
@@ -40,6 +41,7 @@ export default () => {
             case 'CART': return <Cart />; break
             case 'CONTACT': return <ContactView userId={data._id} />; break
             case 'DESTROY': return <DestroyForm />; break
+            case 'DELETE_PRODUCT': return <ModalDeleteProduct productId={data} />; break
             case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ModalImage image={data} />; break
