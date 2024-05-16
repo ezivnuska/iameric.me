@@ -142,6 +142,7 @@ const validateToken = async (req, res) => {
 
     return res.status(200).json({
         _id,
+        role: user.role,
         profileImage: user.profileImage,
         token: user.token,
         username: user.username,

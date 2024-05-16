@@ -154,7 +154,7 @@ app.get(    '/images/:name',            getImageIdFromFilename)
 
 // orders
 app.get(    '/orders/:id',              getRelevantOrdersByUserId)
-app.get(    '/orders',                  getAllOrders)
+app.get(    '/orders/admin/:id',        getAllOrders)
 app.get(    '/orders/user/:id',         getOrdersByUserId)
 app.get(    '/orders/customer/:id',     getOrdersByCustomerId)
 app.get(    '/orders/driver/:id',       getOrdersByDriverId)

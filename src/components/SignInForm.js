@@ -130,8 +130,8 @@ export default () => {
             setFormError({ name: 'email', message: 'Signin failed.' })
         } else {
             if (formError) clearFormError()
-            const { _id, profileImage, token, username } = user
-            signIn({ _id, token, username })
+            const { _id, role, token, username } = user
+            signIn({ _id, role, token, username })
             clearForm()
             clearModal()
 		}

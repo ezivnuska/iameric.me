@@ -19,45 +19,35 @@ import {
     UpOutlined,
 } from '@ant-design/icons'
 
-export default ({ order, children, ...props }) => {
+export default ({ order, children }) => {
 
     const { profile } = useUser()
 
     const [expanded, setExpanded] = useState(false)
 
-    const renderLocation = () => {
-        if (profile.role === 'vendor') return null
-        if (profile.role === 'driver' && order.status < 2) return null
-        return <LocationDetails location={order.customer.location} />
-    }
-
-    const renderCustomer = () => order.customer
-        ? (
-            <View
-                style={{
-                    flex: 1,
-                    paddingBottom: 10,
-                }}
-            >
-                <ThemedText style={classes.headerSecondary}>Drop Off</ThemedText>
-                {renderLocation()}
-            </View>
-        )
-        : null
+    const renderCustomer = customer => (
+        <View
+            style={{
+                flex: 1,
+                paddingBottom: 10,
+            }}
+        >
+            <ThemedText style={classes.headerSecondary}>Drop Off</ThemedText>
+            <LocationDetails location={customer.location} />
+        </View>
+    )
     
-    const renderVendor = () => order.vendor
-        ? (
-            <View
-                style={{
-                    flex: 1,
-                    paddingBottom: 10,
-                }}
-            >
-                <ThemedText style={classes.headerSecondary}>Pick Up</ThemedText>
-                <LocationDetails location={order.vendor.location} />
-            </View>
-        )
-        : <ThemedText>No vendor</ThemedText>
+    const renderVendor = vendor => (
+        <View
+            style={{
+                flex: 1,
+                paddingBottom: 10,
+            }}
+        >
+            <ThemedText style={classes.headerSecondary}>Pick Up</ThemedText>
+            <LocationDetails location={vendor.location} />
+        </View>
+    )
 
     const renderHeaderButton = () => (
         <Pressable
@@ -78,19 +68,6 @@ export default ({ order, children, ...props }) => {
         </Pressable>
     )
 
-    const showCustomerLocation = () => {
-        if (profile.role === 'vendor') return null
-        else {
-            return (
-                profile.role === 'customer'
-                ||
-                profile.role === 'admin'
-                ||
-                (order.driver && order.driver._id === profile._id && order.accepted)
-            ) ? renderCustomer() : null
-        }
-    }
-
     const renderStatus = text => (
         <ThemedText
             style={{
@@ -98,6 +75,7 @@ export default ({ order, children, ...props }) => {
                 lineHeight: 22,
                 fontWeight: 600,
                 marginBottom: 5,
+                marginHorizontal: 10,
             }}
         >
             {text}
@@ -174,6 +152,7 @@ export default ({ order, children, ...props }) => {
                 // borderColor: 'red',
                 marginBottom: 10,
                 paddingBottom: 5,
+                paddingTop: 10,
             }}
         >
             <View>
@@ -210,8 +189,8 @@ export default ({ order, children, ...props }) => {
                         // borderColor: '#fff',
                     }}
                 >
-                    {renderVendor()}
-                    {showCustomerLocation()}
+                    {renderVendor(order.vendor)}
+                    {renderCustomer(order.customer)}
                 </View>
             ) : null}
 

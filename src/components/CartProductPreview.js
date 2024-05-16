@@ -88,17 +88,15 @@ const CartTotal = ({ items }) => {
 
     const getOrderTotal = items => {
         let total = 0
-        items.map(({ product, quantity }) => {
-            total += Number(product.price) * quantity
-        })
+        items.map(({ product, quantity }) => total += Number(product.price) * quantity)
         return total.toFixed(2)
     }
     
     return (
         <View
             style={{
-                marginTop: 3,
-                paddingTop: 5,
+                marginTop: 7,
+                paddingTop: 10,
                 borderTopWidth: 1,
                 borderTopColor: '#ccc',
                 display: 'flex',
@@ -137,23 +135,21 @@ const CartTotal = ({ items }) => {
 export default ({ order }) => {
     const { items } = order
 
-    const renderOrders = () => {
-        const orders = items.map((item, index) => {
-            const { product, quantity } = item
-            return (
-                <CartListItem product={product} quantity={quantity} key={`item-${index}`} />
-            )
-        })
-        const listItems = [
-            ...orders,
-            <CartTotal items={items} key={`item-${items.length}`} />
-        ]
-        return listItems.map(item => item)
-    }
+    const orders = items.map((item, index) => {
+        const { product, quantity } = item
+        return (
+            <CartListItem product={product} quantity={quantity} key={`item-${index}`} />
+        )
+    })
+
+    const listItems = [
+        ...orders,
+        <CartTotal items={items} key={`item-${items.length}`} />
+    ]
     
     return (
         <View>
-            {renderOrders()}
+            {listItems}
         </View>
     )
 }

@@ -33,6 +33,7 @@ const initialState = {
     appLoading: false,
     dark: false,
     debug: false,
+    role: null,
     theme: CombinedDefaultTheme,
     userId: null,
     reset: () => {},
@@ -74,7 +75,7 @@ export const AppContextProvider = ({ children }) => {
                 const user = await validateToken(authToken)
                 if (user) {
                     console.log('token verified.')
-                    dispatch({ type: 'SET_USERID', payload: user._id })
+                    dispatch({ type: 'SET_USER_INFO', payload: user })
                 }
             } else {
                 console.log('no token found')
@@ -144,23 +145,26 @@ const reducer = (state, action) => {
                 appLoading: payload,
             }
             break
-        case 'SET_USERID':
-            return {
-                ...state,
-                userId: payload,
-            }
-            break
-        case 'SIGN_IN':
-            const { _id } = payload
+        case 'SET_USER_INFO':
+            const { _id, role } = payload
             return {
                 ...state,
                 userId: _id,
+                role,
+            }
+            break
+        case 'SIGN_IN':
+            return {
+                ...state,
+                userId: payload._id,
+                role: payload.role,
             }
             break
         case 'SIGN_OUT':
             return {
                 ...state,
                 userId: null,
+                role: null,
             }
             break
         case 'TOGGLE_THEME':

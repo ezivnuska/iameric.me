@@ -37,7 +37,6 @@ import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
 import ModalView from './ModalView'
 import OrderList from './OrderList'
-import OrderDetails from './OrderDetails'
 import OrderDisplayView from './OrderDisplayView'
 import OrderPreview from './OrderPreview'
 import PopUpModal from './PopUpModal'
@@ -99,7 +98,6 @@ export {
     ModalSignout,
     ModalView,
     OrderList,
-    OrderDetails,
     OrderDisplayView,
     OrderPreview,
     PopUpModal,

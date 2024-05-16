@@ -44,8 +44,8 @@ export const ImageContextProvider = props => {
             dispatch({type: 'SET_IMAGES_LOADED' })
         }
         
-        if (!state.imagesLoaded) initImages()
-        // else if (!userId) dispatch({ type: 'RESET' })
+        initImages()
+        
     }, [userId])
 
     const actions = useMemo(() => ({

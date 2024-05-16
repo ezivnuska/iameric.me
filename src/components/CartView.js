@@ -1,11 +1,9 @@
 import React, { useMemo, useState } from 'react'
 import {
-    // Button,
     Pressable,
     Text,
     View,
 } from 'react-native'
-// import { SimpleButton } from '@components'
 import {
     useApp,
     useCart,
@@ -70,7 +68,7 @@ export default () => {
         <View
             style={{
                 paddingHorizontal: 10,
-                paddingVertical: 10,
+                paddingVertical: 5,
                 background: 'orange',
             }}
         >

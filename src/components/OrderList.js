@@ -11,6 +11,7 @@ import {
     OrderPreview,
 } from '.'
 import {
+    useModal,
     useOrders,
     useUser,
 } from '@context'
@@ -28,6 +29,7 @@ import moment from 'moment'
 
 export default () => {
 
+    const { closeModal } = useModal()
     const {
         closeOrder,
         markDriverArrived,
@@ -60,67 +62,78 @@ export default () => {
         setOrdersLoading(false)
 
         if (data) markOrderConfirmed(data)
+
+        closeModal()
     }
 
     const acceptDelivery = async id => {
 
         setOrdersLoading(true)
-        const data = await setOrderAccepted(id, profile._id)
+        const order = await setOrderAccepted(id, profile._id)
         setOrdersLoading(false)
 
-        if (data) markOrderAccepted(data)
+        if (order) markOrderAccepted(order)
+
+        closeModal()
     }
 
     const onOrderReady = async id => {
         
         setOrdersLoading(true)
-        const { data } = await setOrderReady(id)
+        const order = await setOrderReady(id)
         setOrdersLoading(false)
 
-        if (data) markOrderReady(data)
+        if (order) markOrderReady(order)
+
+        closeModal()
     }
 
     const driverArrived = async id => {
 
         setOrdersLoading(true)
-        const { data } = await setDriverArrived(id)
+        const order = await setDriverArrived(id)
         setOrdersLoading(false)
 
-        if (data) markDriverArrived(data)
+        if (order) markDriverArrived(order)
+
+        closeModal()
     }
 
     const receivedOrder = async id => {
 
         setOrdersLoading(true)
-        const { data } = await setOrderReceived(id)
+        const order = await setOrderReceived(id)
         setOrdersLoading(false)
         
-        if (data) markOrderReceived(data)
+        if (order) markOrderReceived(order)
+        
+        closeModal()
     }
 
     const completeDelivery = async id => {
         
         setOrdersLoading(true)
-        const { data } = await setOrderCompleted(id)
+        const order = await setOrderCompleted(id)
         setOrdersLoading(false)
 
-        if (data) {
-            markOrderCompleted(data)
-            removeOrder(data._id)
+        if (order) {
+            markOrderCompleted(order)
+            removeOrder(order._id)
         }
+
+        closeModal()
     }
 
     const onOrderClosed = async id => {
         
         setOrdersLoading(true)
-        const { data } = await setOrderClosed(id)
+        const order = await setOrderClosed(id)
         setOrdersLoading(false)
 
-        if (data) {
-            closeOrder(data)
-            removeOrder(data.id)
+        if (order) {
+            closeOrder(order)
+            removeOrder(order.id)
         }
-
     }
 
     const renderButton = (label, action) => (
@@ -174,14 +187,16 @@ export default () => {
                         onPress={() => onPress(item)}
                         order={item}
                     >
-                        <View
-                            style={{
-                                marginVertical: 3,
-                                paddingHorizontal: 10,
-                            }}
-                        >
-                            {renderOrderProcessButton(item)}
-                        </View>
+                        {profile && (
+                            <View
+                                style={{
+                                    marginVertical: 3,
+                                    paddingHorizontal: 10,
+                                }}
+                            >
+                                {renderOrderProcessButton(item)}
+                            </View>
+                        )}
 
                     </OrderPreview>
                 )}

@@ -33,7 +33,7 @@ export const useOrders = () => {
 
 export const OrderContextProvider = props => {
     
-    const { userId } = useApp()
+    const { role, userId } = useApp()
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -41,7 +41,7 @@ export const OrderContextProvider = props => {
         const initOrders = async () => {
             if (userId) {
                 dispatch({type: 'SET_ORDERS_LOADING', payload: true })
-                const payload = await loadUserOrders(userId)
+                const payload = await loadUserOrders(role, userId)
                 dispatch({type: 'SET_ORDERS_LOADING', payload: false })
                 dispatch({type: 'SET_ORDERS', payload })
             }
@@ -49,8 +49,7 @@ export const OrderContextProvider = props => {
             dispatch({type: 'SET_ORDERS_LOADED' })
         }
         
-        if (!state.ordersLoaded) initOrders()
-        // else if (!userId) dispatch({ type: 'RESET' })
+        initOrders()
     }, [userId])
 
     const actions = useMemo(() => ({
@@ -59,6 +58,9 @@ export const OrderContextProvider = props => {
         },
         clearOrders: () => {
             dispatch({ type: 'RESET' })
+        },
+        closeOrder: payload => {
+            dispatch({ type: 'CLOSE_ORDER', payload })
         },
         setOrders: payload => {
             dispatch({ type: 'SET_ORDERS', payload })
@@ -83,9 +85,6 @@ export const OrderContextProvider = props => {
         },
         markOrderCompleted: payload => {
             dispatch({ type: 'COMPLETE_ORDER', payload })
-        },
-        closeOrder: payload => {
-            dispatch({ type: 'CLOSE_ORDER', payload })
         },
         removeOrder: payload => {
             dispatch({ type: 'REMOVE_ORDER', payload })
