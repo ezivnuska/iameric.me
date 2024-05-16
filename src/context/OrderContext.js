@@ -7,9 +7,10 @@ const initialState = {
     orders: [],
     ordersLoaded: false,
     ordersLoading: false,
+    addOrder: () => {},
+    clearOrders: () => {},
     setOrders: () => {},
     setOrdersLoading: () => {},
-    addOrder: () => {},
     markOrderConfirmed: () => {},
     markOrderReady: () => {},
     markOrderAccepted: () => {},
@@ -48,13 +49,16 @@ export const OrderContextProvider = props => {
             dispatch({type: 'SET_ORDERS_LOADED' })
         }
         
-        if (!state.ordersLoading && !state.ordersLoaded) initOrders()
+        if (!state.ordersLoaded) initOrders()
         // else if (!userId) dispatch({ type: 'RESET' })
     }, [userId])
 
     const actions = useMemo(() => ({
         addOrder: payload => {
             dispatch({ type: 'ADD_ORDER', payload })
+        },
+        clearOrders: () => {
+            dispatch({ type: 'RESET' })
         },
         setOrders: payload => {
             dispatch({ type: 'SET_ORDERS', payload })
@@ -220,44 +224,13 @@ const reducer = (state, action) => {
                 orders: state.orders.filter(order => order._id != payload)
             }
         break
-        // case 'ADD_TO_CART':
-
-        //     const { product, quantity } = action
-
-        //     return {
-        //         ...state,
-        //         items: [
-        //             ...state.items,
-        //             { product, quantity },
-        //         ],
-        //         vendor: product.vendor,
-        //     }
-        //     break
-        // case 'REMOVE_FROM_CART':
-
-        //     const { productId } = action
-        //     const indexToRemove = state.items.findIndex(item => item._id === productId)
-        //     if (indexToRemove < 0) {
-        //         return {
-        //             ...state,
-        //             error: 'Could not find item to remove.',
-        //         }
-        //     } else {
-        //         const start = state.items.slice(0, itemIndex)
-        //         const end = state.items.slice(itemIndex + 1)
-        //         return {
-        //             ...state,
-        //             items: [...start, ...end],
-        //         }
-        //     }
-        //     break
-        // case 'CLEAR_CART':
-        //     return {
-        //         ...state,
-        //         items: [],
-        //         vendor: null,
-        //     }
-        //     break
+        case 'RESET':
+            return {
+                ...state,
+                orders: [],
+                ordersLoaded: false,
+            }
+        break
         default:
             throw new Error()
     }

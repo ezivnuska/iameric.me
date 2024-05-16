@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {
     Pressable,
-    StyleSheet,
     Text,
     View,
 } from 'react-native'
@@ -32,18 +31,28 @@ export default ({ order, children, ...props }) => {
         return <LocationDetails location={order.customer.location} />
     }
 
-    const renderCustomer = () => order && order.customer
+    const renderCustomer = () => order.customer
         ? (
-            <View style={styles.column}>
+            <View
+                style={{
+                    flex: 1,
+                    paddingBottom: 10,
+                }}
+            >
                 <ThemedText style={classes.headerSecondary}>Drop Off</ThemedText>
                 {renderLocation()}
             </View>
         )
         : null
     
-    const renderVendor = () => order && order.vendor
+    const renderVendor = () => order.vendor
         ? (
-            <View style={styles.column}>
+            <View
+                style={{
+                    flex: 1,
+                    paddingBottom: 10,
+                }}
+            >
                 <ThemedText style={classes.headerSecondary}>Pick Up</ThemedText>
                 <LocationDetails location={order.vendor.location} />
             </View>
@@ -83,11 +92,28 @@ export default ({ order, children, ...props }) => {
     }
 
     const renderStatus = text => (
-        <ThemedText style={styles.status}>{text}</ThemedText>
+        <ThemedText
+            style={{
+                fontSize: 18,
+                lineHeight: 22,
+                fontWeight: 600,
+                marginBottom: 5,
+            }}
+        >
+            {text}
+        </ThemedText>
     )
 
     const renderMilestone = text => (
-        <ThemedText style={styles.milestone}>{text}</ThemedText>
+        <ThemedText
+            style={{
+                fontSize: 16,
+                lineHeight: 24,
+                display: 'block',
+            }}
+        >
+            {text}
+        </ThemedText>
     )
 
     const renderOrderMilestones = order => (
@@ -105,7 +131,13 @@ export default ({ order, children, ...props }) => {
 
     const renderOrderStatus = order => (
         
-        <View style={styles.statusDisplay}>
+        <View
+            style={{
+                flex: 1,
+                flexBasis: 'auto',
+                flexGrow: 1,
+            }}
+        >
             {/* {user.role === 'admin' && renderStatus(`status: ${order.status}`)} */}
             {!order.confirmed && order.vendor && <Text style={classes.emergency}>Waiting on vendor confirmation</Text>}
             {(order.confirmed && !order.accepted)
@@ -187,42 +219,3 @@ export default ({ order, children, ...props }) => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    columns: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'stretch',
-        marginTop: 5,
-        marginBottom: 10,
-    },
-    column: {
-        flex: 1,
-        paddingBottom: 10,
-    },
-    heading: {
-        marginBottom: 3,
-        fontWeight: 600,
-    },
-    statusDisplay: {
-        flex: 1,
-        flexBasis: 'auto',
-        flexGrow: 1,
-    },
-    status: {
-        fontSize: 18,
-        lineHeight: 22,
-        fontWeight: 600,
-        marginBottom: 5,
-    },
-    timeline: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-    },
-    milestone: {
-        fontSize: 16,
-        lineHeight: 24,
-        display: 'block',
-    },
-})

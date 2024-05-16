@@ -20,7 +20,7 @@ export const loadUserOrders = async userId => {
 }
 
 export const deleteOrderWithId = async id => {
-    const { data } = await axios.delete(`/api/order/delete/${id}`)
+    const { data } = await axios.delete(`/api/order/${id}`)
     if (!data || !data.order) console.log('could not delete order.')
     else return data.order
     return null

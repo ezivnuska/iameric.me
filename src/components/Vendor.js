@@ -6,7 +6,6 @@ import {
     View,
 } from 'react-native'
 import {
-    CartView,
     EmptyStatus,
     IconButton,
     LoadingView,
@@ -65,7 +64,7 @@ const MenuItem = ({ item, username }) => {
                         flex: 6,
                         resizeMode: 'cover',
                         width: '100%',
-                        height: 140,
+                        height: 100,
                         // borderWidth: 1,
                         // borderColor: '#999',
                         shadowColor: '#000',
@@ -83,14 +82,12 @@ const MenuItem = ({ item, username }) => {
             <View
                 style={{
                     flex: 6,
-                    paddingVertical: 8,
+                    paddingTop: 2,
+                    paddingBottom: 10,
                     justifyContent: 'space-between',
                 }}
             >
-                <View>
-                    <ThemedText size={18} bold style={{ lineHeight: 22 }}>{title} ${price}</ThemedText>
-                    {(blurb && blurb.length) && <ThemedText style={classes.productBlurb}>{blurb}</ThemedText>}
-                </View>
+                <ThemedText size={16} style={{ lineHeight: 20 }}>{title} ${price}</ThemedText>
                 
                 <SimpleButton
                     label='Add to Order'
@@ -159,8 +156,6 @@ export default ({ id, onPress }) => {
                     transparent
                 />
             </TitleBar>
-
-            {userId && <CartView />}
             
             <ScreenContent padded={false}>
                 {contact.products

@@ -66,7 +66,7 @@ export default () => {
         clearCart()
     }
     
-    return (
+    return (orders.length > 0 || items.length > 0) && (
         <View
             style={{
                 paddingHorizontal: 10,
@@ -74,8 +74,8 @@ export default () => {
                 background: 'orange',
             }}
         >
-            {itemCount ? (
-                <>
+            {itemCount > 0 && (
+                <View>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -86,13 +86,14 @@ export default () => {
                         <Text
                             style={{
                                 fontWeight: 600,
-                                fontSize: 18,
+                                fontSize: 16,
                             }}
                         >
                             {vendor.username}: ${cartTotal}
                         </Text>
 
-                        <View
+                        <Pressable
+                            onPress={() => setDetailsVisible(!detailsVisible)}
                             style={{
                                 flexDirection: 'row',
                                 justifyContent: 'flex-end',
@@ -102,7 +103,7 @@ export default () => {
                             <Text
                                 style={{
                                     fontWeight: 600,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     lineHeight: detailsVisible ? 20 : 24,
                                 }}
                             >
@@ -112,9 +113,8 @@ export default () => {
                             <Icon
                                 name={detailsVisible ? 'chevron-up-sharp' : 'reader-outline'}
                                 size={detailsVisible ? 20 : 24}
-                                onPress={() => setDetailsVisible(!detailsVisible)}
                             />
-                        </View>
+                        </Pressable>
                     </View>
 
                     {detailsVisible && (
@@ -183,17 +183,7 @@ export default () => {
                         </View>
                     )}
                             
-                </>
-            ) : (
-                <Text
-                    style={{
-                        fontWeight: 400,
-                        fontSize: 18,
-                        lineHeight: 24,
-                    }}
-                >
-                    Cart is Empty
-                </Text>
+                </View>
             )}
 
             {orders && orders.length ? (

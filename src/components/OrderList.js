@@ -11,11 +11,11 @@ import {
     OrderPreview,
 } from '.'
 import {
-    useModal,
     useOrders,
     useUser,
 } from '@context'
 import {
+    deleteOrderWithId,
     setDriverArrived,
     setOrderAccepted,
     setOrderClosed,
@@ -30,7 +30,6 @@ export default () => {
 
     const {
         closeOrder,
-        deleteOrderWithId,
         markDriverArrived,
         markOrderAccepted,
         markOrderCompleted,
@@ -46,7 +45,7 @@ export default () => {
 
     const deleteOrder = async id => {
         setOrdersLoading(true)
-        await deleteOrderWithId()
+        await deleteOrderWithId(id)
         setOrdersLoading(false)
         removeOrder(id)
     }

@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
-    FlatList,
     View,
 } from 'react-native'
 import {
     ThemedText
-} from '.'
-import classes from '../styles/classes'
+} from '@components'
+import classes from '@styles/classes'
 import { useApp } from '@context'
 
 const Quantity = ({ quantity }) => {
@@ -139,17 +138,25 @@ const CartTotal = ({ items }) => {
 }
 
 export default ({ order }) => {
+    const { items } = order
 
-    const listItems = order.items.map(({ product, quantity }, index) => (
-        <CartListItem product={product} quantity={quantity} key={`item-${index}`} />
-    ))
-
+    const renderOrders = () => {
+        const orders = items.map((item, index) => {
+            const { product, quantity } = item
+            return (
+                <CartListItem product={product} quantity={quantity} key={`item-${index}`} />
+            )
+        })
+        const listItems = [
+            ...orders,
+            <CartTotal items={items} key={`item-${items.length}`} />
+        ]
+        return listItems.map(item => item)
+    }
+    
     return (
-        <FlatList
-            data={[...listItems, <CartTotal items={order.items} key={`item-${order.items.length}`} />]}
-            listKey={() => 'order-items'}
-            keyExtractor={(item, index) => 'order-item-key-' + index}
-            renderItem={({ item, index }) => item}
-        />
+        <View>
+            {renderOrders()}
+        </View>
     )
 }

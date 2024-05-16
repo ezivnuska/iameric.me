@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import {
     ScrollView,
+    View,
 } from 'react-native'
 import {
+    CartView,
     LoadingView,
 } from '@components'
 import {
     useApp,
-    useUser,
 } from '@context'
 
 export default ({
@@ -25,14 +26,11 @@ export default ({
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 
     return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ height: dims.height - 50 }}
-            // contentContainerStyle={{
-            //     height: '100%',
-            // }}
-        >
-            {children}
-        </ScrollView>
+        <View style={{ height: dims.height - 50 }}>
+            <CartView />
+            <ScrollView showsVerticalScrollIndicator={false}>
+                {children}
+            </ScrollView>
+        </View>
     )
 }

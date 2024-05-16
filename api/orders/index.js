@@ -125,16 +125,20 @@ const getOrdersByUserId = async (req, res) => {
                 { vendor: id }
             ],
         })
-        .populate('items', 'price title')
+        .populate({
+            path: 'items',
+            select: 'product',
+            populate: { path: 'product' },
+        })
         .populate({
             path: 'customer',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate({
             path: 'vendor',
             select: 'username location',
-            populate: { path: 'location' }
+            populate: { path: 'location' },
         })
         .populate('driver', 'username')
     
