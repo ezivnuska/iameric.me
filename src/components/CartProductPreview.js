@@ -17,19 +17,19 @@ const Quantity = ({ quantity }) => {
             style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                width: 30,
-                height: 30,
+                width: 20,
+                height: 20,
                 borderWidth: 2,
                 backgroundColor: theme?.colors.quantityBackground,
-                borderRadius: 15,
+                borderRadius: 10,
             }}
         >
             <ThemedText
                 style={{
                     flex: 1,
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: 500,
-                    lineHeight: 30,
+                    lineHeight: 20,
                     textAlign: 'center',
                     color: theme?.colors.quantityLabel,
                 }}
@@ -50,7 +50,6 @@ const CartListItem = ({ product, quantity, ...props }) => (
             alignItems: 'baseline',
             gap: 10,
             paddingVertical: 3,
-            marginBottom: 3,
             paddingHorizontal: 10,
         }}
     >
@@ -60,9 +59,9 @@ const CartListItem = ({ product, quantity, ...props }) => (
             style={{
                 flexBasis: 'auto',
                 flexGrow: 1,
-                fontSize: 20,
-                lineHeight: 30,
-                fontWeight: 500,
+                fontSize: 14,
+                lineHeight: 20,
+                // fontWeight: 500,
                 textAlign: 'left',
             }}
         >
@@ -73,8 +72,8 @@ const CartListItem = ({ product, quantity, ...props }) => (
             style={[
                 classes.itemPrice,
                 {
-                    fontSize: 18,
-                    lineHeight: 30,
+                    fontSize: 14,
+                    lineHeight: 20,
                     fontWeight: 400,
                 },
             ]}
@@ -98,8 +97,8 @@ const CartTotal = ({ items }) => {
     return (
         <View
             style={{
-                marginTop: 5,
-                paddingTop: 15,
+                marginTop: 3,
+                paddingTop: 5,
                 borderTopWidth: 1,
                 borderTopColor: '#ccc',
                 display: 'flex',
@@ -111,8 +110,7 @@ const CartTotal = ({ items }) => {
             <ThemedText
                 style={{
                     flex: 1,
-                    fontSize: 22,
-                    fontWeight: 400,
+                    fontSize: 16,
                     textAlign: 'left',
                 }}
             >
@@ -125,9 +123,8 @@ const CartTotal = ({ items }) => {
                     {
                         flex: 1,
                         flexShrink: 0,
-                        fontSize: 22,
+                        fontSize: 16,
                         fontWeight: 500,
-                        paddingLeft: 5,
                     }
                 ]}
             >
