@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     FlatList,
     View,
@@ -44,6 +44,10 @@ export default () => {
         setOrdersLoading,
     } = useOrders()
     const { profile } = useUser()
+
+    useEffect(() => {
+        if (!orders.length) closeModal()
+    }, [orders])
 
     const deleteOrder = async id => {
         setOrdersLoading(true)

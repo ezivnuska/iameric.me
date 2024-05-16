@@ -78,7 +78,7 @@ const CartListItem = ({ product, quantity, ...props }) => (
                 },
             ]}
         >
-            {Number(product.price) * quantity}
+            ${Number(Number(product.price) * quantity).toFixed(2)}
         </ThemedText>
         
     </View>
@@ -88,7 +88,10 @@ const CartTotal = ({ items }) => {
 
     const getOrderTotal = items => {
         let total = 0
-        items.map(({ product, quantity }) => total += Number(product.price) * quantity)
+        items.map(item => {
+            const { product, quantity } = item
+            total += Number(product.price) * quantity
+        })
         return total.toFixed(2)
     }
     
