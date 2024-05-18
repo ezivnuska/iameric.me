@@ -8,6 +8,7 @@ import {
     ThemedText,
 } from '@components'
 import {
+    useApp,
     useModal,
     useProducts,
     useUser,
@@ -20,6 +21,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ onPress, product, ...props }) => {
 
+    const { theme } = useApp()
     const { setModal } = useModal()
     const { productsLoading } = useProducts()
     const { profile } = useUser()
@@ -112,14 +114,22 @@ export default ({ onPress, product, ...props }) => {
                             onPress={() => setModal('PRODUCT', product)}
                             disabled={productsLoading}
                         >
-                            <Icon name='create-outline' size={22} />
+                            <Icon
+                                name='create-outline'
+                                color={theme?.colors.textDefault}
+                                size={22}
+                            />
                         </Pressable>
                         
                         <Pressable
                             onPress={() => setModal('DELETE_PRODUCT', product._id)}
                             disabled={productsLoading}
                         >
-                            <Icon name='trash-outline' size={20} />
+                            <Icon
+                                name='trash-outline'
+                                color={theme?.colors.textDefault}
+                                size={20}
+                            />
                         </Pressable>
                     </View>
                 </View>

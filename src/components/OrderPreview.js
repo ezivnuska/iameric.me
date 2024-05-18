@@ -113,7 +113,7 @@ const DriverStatus = ({ order }) => {
             </>
         )
         break
-        case 3: return <OrderStatus status={`Pick-up by ${moment(order.pickup).format('LT')}`} />
+        case 3: return <OrderStatus status={order.ready ? 'Order is ready now.' : `Order ready at ${moment(order.pickup).format('LT')}.`} />
         break
         case 4: return (
             <>
@@ -158,7 +158,11 @@ export default ({ order }) => {
                 {renderStatus(order)}
             </View>
 
-            {showItemized() && <CartProductPreview order={order} />}
+            {showItemized() && (
+                <View style={{ paddingVertical: 10 }}>
+                    <CartProductPreview order={order} />
+                </View>
+            )}
 
             <View style={{ padding: 10 }}>
                 <OrderProcessButton order={order} />

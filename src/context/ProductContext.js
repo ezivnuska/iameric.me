@@ -47,7 +47,7 @@ export const ProductContextProvider = props => {
             dispatch({type: 'SET_PRODUCTS_LOADED' })
         }
         
-        if (!state.productsLoaded && !state.productsLoading) initProducts()
+        initProducts()
     }, [userId])
 
     const actions = useMemo(() => ({

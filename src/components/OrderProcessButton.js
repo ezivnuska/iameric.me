@@ -37,9 +37,11 @@ const NextButton = ({ label, action }) => {
     )
 }
 
-const AdminButton = ({ order, deleteOrder }) => {
+const AdminButton = ({ order, deleteOrder, onClosed }) => {
     switch (order.status) {
-        case 6: return <NextButton label='Delete Order' action={deleteOrder} />
+        case 5: return <NextButton label='Order Received' action={onClosed} />
+            break
+        case 6: return <NextButton label='Delete Completed Order' action={deleteOrder} />
             break;
         default:
             return null
@@ -57,9 +59,11 @@ const CustomerButton = ({ order, deleteOrder, onClosed }) => {
     }
 }
 
-const VendorButton = ({ order, ready, confirm }) => {
+const VendorButton = ({ order, ready, confirm, onClosed }) => {
     switch (order.status) {
         case 0: return <TimeSelectionModule onSelected={time => confirm(time)} />
+            break
+        case 5: return <NextButton label='Order Received' action={onClosed} />
             break
         default:
             return !order.ready ? <NextButton label='Order is Ready' action={ready} /> : null
@@ -200,6 +204,7 @@ export default ({ order }) => {
             <AdminButton
                 order={order}
                 deleteOrder={() => deleteOrder(order._id)}
+                onClosed={() => onOrderClosed(order._id)}
             />
         )
         break
@@ -215,7 +220,9 @@ export default ({ order }) => {
             <VendorButton
                 order={order}
                 ready={() => onOrderReady(order._id)}
+                deleteOrder={() => deleteOrder(order._id)}
                 confirm={time => confirmOrder(order._id, time)}
+                onClosed={() => onOrderClosed(order._id)}
             />
         )
         break

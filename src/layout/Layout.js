@@ -1,6 +1,7 @@
 import React from 'react'
 import {
     SafeAreaView,
+    View,
 } from 'react-native'
 import { AppNavigation } from '@navigation'
 import {
@@ -49,10 +50,16 @@ export default () => {
                         width: dims.width,
                         height: dims.height,
                         backgroundColor: theme?.colors.background,
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
                     }}
                 >
-                    <Header />
-                    <AppNavigation />
+                    <View style={{ flexBasis: 50 }}>
+                        <Header />
+                    </View>
+                    <View style={{ flexBasis: 'auto', flexGrow: 1 }}>
+                        <AppNavigation />
+                    </View>
                     <ModalView />
                 </SafeAreaView>
             </Compose>

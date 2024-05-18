@@ -17,7 +17,7 @@ export default ({
     ...props
 }) => {
     
-    const { appLoaded, dims, userId } = useApp()
+    const { appLoaded, userId } = useApp()
 
     useEffect(() => {
         if (secure && !userId) props.navigation.navigate('Start')
@@ -26,7 +26,7 @@ export default ({
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 
     return (
-        <View style={{ height: dims.height - 50 }}>
+        <View style={{ height: '100%' }}>
             <CartView />
             <ScrollView showsVerticalScrollIndicator={false}>
                 {children}
