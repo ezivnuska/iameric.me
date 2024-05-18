@@ -39,6 +39,7 @@ import ModalView from './ModalView'
 import OrderList from './OrderList'
 import OrderDisplayView from './OrderDisplayView'
 import OrderPreview from './OrderPreview'
+import OrderProcessButton from './OrderProcessButton'
 import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
@@ -100,6 +101,7 @@ export {
     OrderList,
     OrderDisplayView,
     OrderPreview,
+    OrderProcessButton,
     PopUpModal,
     Preview,
     ProductDetails,

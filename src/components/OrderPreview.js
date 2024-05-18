@@ -1,200 +1,163 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
-    Pressable,
-    Text,
     View,
 } from 'react-native'
 import {
     CartProductPreview,
     ThemedText,
     LocationDetails,
+    OrderProcessButton,
 } from '.'
 import {
+    useApp,
     useUser,
 } from '@context'
-import classes from '../styles/classes'
+import classes from '@styles/classes'
 import moment from 'moment'
-import {
-    DownOutlined,
-    UpOutlined,
-} from '@ant-design/icons'
 
-export default ({ order, children }) => {
-
-    const { profile } = useUser()
-
-    const [expanded, setExpanded] = useState(false)
-
-    const renderCustomer = customer => (
-        <View
-            style={{
-                flex: 1,
-                paddingBottom: 10,
-            }}
-        >
-            <ThemedText style={classes.headerSecondary}>Drop Off</ThemedText>
-            <LocationDetails location={customer.location} />
-        </View>
-    )
-    
-    const renderVendor = vendor => (
-        <View
-            style={{
-                flex: 1,
-                paddingBottom: 10,
-            }}
-        >
-            <ThemedText style={classes.headerSecondary}>Pick Up</ThemedText>
-            <LocationDetails location={vendor.location} />
-        </View>
-    )
-
-    const renderHeaderButton = () => (
-        <Pressable
-            style={{
-                flexBasis: 'auto',
-                flexShrink: 0,
-                paddingTop: 5,
-                paddingHorizontal: 5,
-            }}
-            onPress={() => setExpanded(!expanded)}
-        >
+const OrderStatus = ({ status, ...props }) => (
+    <ThemedText
+        style={[
             {
-                expanded
-                    ? <UpOutlined />
-                    : <DownOutlined />
-            }
-
-        </Pressable>
-    )
-
-    const renderStatus = text => (
-        <ThemedText
-            style={{
                 fontSize: 18,
-                lineHeight: 22,
-                fontWeight: 600,
-                marginBottom: 5,
-                marginHorizontal: 10,
-            }}
-        >
-            {text}
-        </ThemedText>
-    )
-
-    const renderMilestone = text => (
-        <ThemedText
-            style={{
-                fontSize: 16,
                 lineHeight: 24,
-                display: 'block',
-            }}
-        >
-            {text}
-        </ThemedText>
-    )
+                fontWeight: 600,
+                paddingVertical: 10,
+            },
+            props.style,
+        ]}
+    >
+        {status}
+    </ThemedText>
+)
 
-    const renderOrderMilestones = order => (
-        <View>
-            {/* style={[styles.timeline, { display: expanded ? 'block' : 'none' }]} */}
-            {renderMilestone(`Ordered ${moment(order.date).format('dddd, MMM Do')} at ${moment(order.date).format('LT')}`)}
-            {order.confirmed && renderMilestone(`Confirmed by ${order.vendor.username} at ${moment(order.confirmed).format('LT')}`)}
-            {order.accepted && renderMilestone(`Accepted by ${order.driver.username} at ${moment(order.accepted).format('LT')}`)}
-            {order.arrived && renderMilestone(`Driver arrived at ${order.vendor.username} at ${moment(order.arrived).format('LT')}`)}
-            {order.ready && renderMilestone(`Order marked ready at ${moment(order.ready).format('LT')}`)}
-            {order.received && renderMilestone(`Order picked up at ${moment(order.received).format('LT')}`)}
-            {order.delivered && renderMilestone(`${order.driver.username} delivered order at ${moment(order.delivered).format('LT')}`)}
-        </View>
-    )
+const CustomerStatus = ({ order }) => {
+    switch (order.status) {
+        case 0: return <OrderStatus status='Waiting on vendor confirmation...' />
+        break
+        case 1: return <OrderStatus status='Vendor confirmed. Looking for driver...' />
+        break
+        case 2: return <OrderStatus status='Driver headed to pick-up location...' />
+        break
+        case 3: return <OrderStatus status='Driver is at pick-up location.' />
+        break
+        case 4: return <OrderStatus status='Driver is on the way.' />
+        break
+        case 5: return <OrderStatus status='Order delivered!' />
+        break
+        case 6: return <OrderStatus status='Order recieved.' />
+        break
+        default: return null
+    }
+}
 
-    const renderOrderStatus = order => (
-        
-        <View
-            style={{
-                flex: 1,
-                flexBasis: 'auto',
-                flexGrow: 1,
-            }}
-        >
-            {/* {user.role === 'admin' && renderStatus(`status: ${order.status}`)} */}
-            {!order.confirmed && order.vendor && <Text style={classes.emergency}>Waiting on vendor confirmation</Text>}
-            {(order.confirmed && !order.accepted)
-                ? profile.role === 'driver'
-                    ? <Text style={classes.emergency}>DRIVER NEEDED</Text>
-                    : <Text style={classes.emergency}>Looking for driver...</Text>
-                : null
-            }
-            {(profile.role === 'driver' && order.pickup && !order.received) && renderStatus(`Pick-up by ${moment(order.pickup).format('LT')}`)}
-            {(profile.role !== 'driver' && order.accepted && !order.arrived) && <Text style={classes.calm}>{order.driver.username} is headed to pickup location.</Text>}
-            {order.ready && !order.received && <Text style={classes.calm}>Order is ready.</Text>}
-            {(profile.role !== 'driver' && order.arrived && !order.received) && <Text style={classes.calm}>{order.driver.username} is at merchant.</Text>}
-            {(order.received && !order.delivered)
-                ? profile.role === 'customer'
-                    ? <Text style={classes.calm}>Driver is on the way.</Text>
-                    : profile.role === 'driver'
-                        ? <Text style={classes.emergency}>Proceed to delivery address.</Text>
-                        : null
-                : null}
-            {order.delivered
-                ? profile.role === 'driver'
-                    ? <Text style={classes.calm}>Waiting for customer confirmation.</Text>
-                    : <Text style={classes.emergency}>Confirmation Requested</Text>
-                : null
-            }
-        </View>
-    )
+const VendorStatus = ({ order }) => {
+    switch (order.status) {
+        case 0: return <OrderStatus status='Awaiting confirmation.' />
+        break
+        case 1:
+        case 2:
+        case 3:
+            return order.confirmed
+                ? <OrderStatus status={`Order Deadline: ${moment(order.pickup).format('LT')}`} />
+                : order.arrived
+                    ? <OrderStatus status='Driver is on location.' />
+                    : <OrderStatus status='Waiting for driver...' />
+        break
+        case 4: return <OrderStatus status='Driver has order.' />
+        break
+        default: return null
+    }
+}
 
+const Details = ({ user }) => {
+    const { theme } = useApp()
     return (
         <View
             style={{
-                opacity: order.status > 5 ? 0.5 : 1,
-                // borderWidth: 1,
-                // borderColor: 'red',
-                marginBottom: 10,
-                paddingBottom: 5,
-                paddingTop: 10,
+                flex: 1,
+                padding: 10,
+                borderWidth: 1,
+                borderColor: theme?.colors.border,
+                borderRadius: 10,
             }}
         >
-            <View>
-                {renderOrderStatus(order)}
-                
-                <CartProductPreview order={order} />
+            <ThemedText style={classes.headerSecondary}>
+                {user.username}
+            </ThemedText>
+            <LocationDetails location={user.location} />
+        </View>
+    )
+}
 
-                {/* {renderHeaderButton()} */}
+const OrderDetails = ({ order }) => (
+    <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', gap: 10 }}>
+        <Details user={order.vendor} />
+        <Details user={order.customer} />
+    </View>
+)
+
+const DriverStatus = ({ order }) => {
+    switch (order.status) {
+        case 1: return (
+            <>
+                <OrderStatus status={`DRIVER NEEDED : ${moment(order.pickup).format('LT')}`} />
+                <OrderDetails order={order} />
+            </>
+        )
+        break
+        case 2: return (
+            <>
+                <OrderStatus status={`Drive to vendor by ${moment(order.pickup).format('LT')}`} />
+                <Details user={order.vendor} />
+            </>
+        )
+        break
+        case 3: return <OrderStatus status={`Pick-up by ${moment(order.pickup).format('LT')}`} />
+        break
+        case 4: return (
+            <>
+                <OrderStatus status='Drive to customer.' />
+                <Details user={order.customer} />
+            </>
+        )
+        break
+        case 5: return <OrderStatus status='Order delivered.' />
+        break
+        default: return null
+    }
+}
+
+export default ({ order }) => {
+
+    const { profile } = useUser()
+
+    const renderStatus = order => {
+        switch (profile.role) {
+            case 'admin':
+            case 'customer':
+                return <CustomerStatus order={order} />
+                break
+            case 'vendor': return <VendorStatus order={order} />
+                break
+            case 'driver': return <DriverStatus order={order} />
+                break
+            default: return null
+        }
+    }
+
+    return (
+        <View>
+
+            <View style={{ paddingHorizontal: 10 }}>
+                {renderStatus(order)}
             </View>
+            
+            {(order.arrived && !order.received) && <CartProductPreview order={order} />}
 
-            {/* {(user.role === 'admin') && (
-                <View style={{ borderWidth: 1, borderColor: 'yellow' }}>
-                    <IconButton
-                        align='right'
-                        iconName={showOrderDetails ? 'chevron-up-outline' : 'chevron-down-outline'}
-                        onPress={() => setShowOrderDetails(!showOrderDetails)}
-                    />
-                    {showOrderDetails && renderOrderMilestones(order)}
-                </View>
-            )} */}
-
-            {order.status < 6 ? (
-                <View
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'stretch',
-                        marginTop: 10,
-                        marginBottom: 5,
-                        paddingVertical: 5,
-                        paddingHorizontal: 10,
-                        // borderWidth: 1,
-                        // borderStyle: 'dotted',
-                        // borderColor: '#fff',
-                    }}
-                >
-                    {renderVendor(order.vendor)}
-                    {renderCustomer(order.customer)}
-                </View>
-            ) : null}
-
-            {children}
+            <View style={{ padding: 10 }}>
+                <OrderProcessButton order={order} />
+            </View>
         </View>
     )
 }

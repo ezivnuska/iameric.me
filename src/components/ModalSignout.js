@@ -9,6 +9,7 @@ import {
     useImages,
     useModal,
     useOrders,
+    useProducts,
     useUser,
 } from '@context'
 import { signout } from '@utils/auth'
@@ -21,6 +22,7 @@ export default () => {
     const { clearUser } = useUser()
     const { closeModal } = useModal()
     const { clearOrders } = useOrders()
+    const { clearProducts } = useProducts()
 
     const initSignout = async () => {
         const signedOut = await signout(userId)
@@ -29,6 +31,7 @@ export default () => {
             clearImages()
             clearCart()
             clearOrders()
+            clearProducts()
             clearUser()
             signOut()
             closeModal()

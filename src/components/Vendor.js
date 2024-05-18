@@ -29,7 +29,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const MenuItem = ({ item, username }) => {
     
-    const { price, title, blurb, image } = item
+    const { price, title, blurb, image, vendor } = item
 
     const { theme, userId } = useApp()
     const { addToCart, setItemPending } = useCart()
@@ -59,7 +59,7 @@ const MenuItem = ({ item, username }) => {
                 <Image
                     // width='100%'
                     // height='100'
-                    source={{ uri: `${IMAGE_PATH}/${username}/${image.filename}` }}
+                    source={{ uri: `${IMAGE_PATH}/${vendor.username}/${image.filename}` }}
                     style={{
                         flex: 6,
                         resizeMode: 'cover',

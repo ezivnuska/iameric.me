@@ -89,8 +89,6 @@ export default {
         lineHeight: sizes.headerSecondary + 4,// 22
         backgroundColor: '#f00',
         textAlign: 'center',
-        paddingVertical: 7,
-        marginBottom: 10,
     },
     calm: {
         fontSize: sizes.headerSecondary,// 18
@@ -98,8 +96,6 @@ export default {
         lineHeight: sizes.headerSecondary + 4,// 22
         backgroundColor: '#00f',
         textAlign: 'center',
-        paddingVertical: 7,
-        marginBottom: 10,
     },
     formContainer: {
         flexBasis: 'auto',

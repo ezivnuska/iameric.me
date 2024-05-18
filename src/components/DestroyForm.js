@@ -18,6 +18,7 @@ import {
     useForm,
     useImages,
     useModal,
+    useProducts,
     useUser,
 } from '@context'
 
@@ -51,6 +52,7 @@ export default () => {
     const { clearCart } = useCart()
     const { clearImages } = useImages()
     const { closeModal } = useModal()
+    const { clearProducts } = useProducts()
     const { profile, clearUser } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
@@ -135,6 +137,7 @@ export default () => {
             clearForm()
             clearImages()
             clearCart()
+            clearProducts()
             clearUser()
             signOut()
             closeModal()

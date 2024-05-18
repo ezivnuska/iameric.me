@@ -8,12 +8,13 @@ const initialState = {
     productsLoaded: false,
     productsLoading: false,
     productModals: [],
+    addProduct: () => {},
+    clearProducts: () => {},
     closeProductModal: () => {},
     removeProductImage: () => {},
     setLoadingProducts: () => {},
     setProducts: () => {},
     setProductModal: () => {},
-    addProduct: () => {},
     updateProduct: () => {},
     updateProductImage: () => {},
     deleteProduct: () => {},
@@ -50,6 +51,12 @@ export const ProductContextProvider = props => {
     }, [userId])
 
     const actions = useMemo(() => ({
+        addProduct: payload => {
+            dispatch({ type: 'ADD_PRODUCT', payload })
+        },
+        clearProducts: () => {
+            dispatch({ type: 'RESET' })
+        },
         closeProductModal: () => {
             dispatch({ type: 'CLOSE_PRODUCT_MODAL' })
         },
@@ -67,9 +74,6 @@ export const ProductContextProvider = props => {
         },
         setProducts: payload => {
             dispatch({ type: 'SET_PRODUCTS', payload })
-        },
-        addProduct: payload => {
-            dispatch({ type: 'ADD_PRODUCT', payload })
         },
         updateProduct: payload => {
             dispatch({ type: 'UPDATE_PRODUCT', payload })
@@ -184,12 +188,12 @@ const reducer = (state, action) => {
                 ),
             }
             break
-        // case 'RESET':
-        //     return {
-        //         ...state,
-        //         products: [],
-        //         productsLoaded: false,
-        //     }
+        case 'RESET':
+            return {
+                ...state,
+                products: [],
+                productsLoaded: false,
+            }
         default:
             throw new Error()
     }

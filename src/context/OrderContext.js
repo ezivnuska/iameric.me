@@ -134,6 +134,7 @@ const reducer = (state, action) => {
                         ...order,
                         status: payload.status,
                         confirmed: payload.confirmed,
+                        pickup: payload.pickup,
                     } : order
                 ),
             }

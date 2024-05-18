@@ -337,7 +337,6 @@ const confirmOrder = async (req, res) => {
             } },
             { new: true },
         )
-        .populate('items', 'price title')
         .populate({
             path: 'customer',
             select: 'username location',
@@ -350,6 +349,7 @@ const confirmOrder = async (req, res) => {
         })
         .populate({
             path: 'items',
+            select: 'image price title vendor',
             populate: [
                 {
                     path: 'image',
