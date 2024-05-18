@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -18,10 +18,19 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ restricted = false }) => {
 
-    const { theme } = useApp()
+    const { dims, theme } = useApp()
     const { images, uploading } = useImages()
     const { setModal } = useModal()
     const { profile } = useUser()
+
+    const imageGap = 5
+
+    const numImagesPerRow = 4
+    const [imageSize, setImageSize] = useState((dims.width - (20 + numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
+
+    useEffect(() => {
+        if (dims) setImageSize((dims.width - (20 + numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
+    }, [dims])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -66,7 +75,7 @@ export default ({ restricted = false }) => {
                 justifyContent: 'flex-start',
                 alignItems: 'space-between',
                 flexWrap: 'wrap',
-                gap: 8,
+                gap: imageGap,
                 width: '100%',
             }}
         >
@@ -79,15 +88,15 @@ export default ({ restricted = false }) => {
                         style={[
                             {
                                 flexBasis: 'auto',
-                                width: IMAGE_SIZE,
-                                height: IMAGE_SIZE,
+                                width: imageSize,
+                                height: imageSize,
                             },
                             buttonStyle,
                         ]}
                     >
                         <Image
-                            width={IMAGE_SIZE}
-                            height={IMAGE_SIZE}
+                            width={imageSize}
+                            height={imageSize}
                             source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
                             style={{
                                 resizeMode: 'cover',
@@ -110,14 +119,13 @@ export default ({ restricted = false }) => {
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            width: IMAGE_SIZE,
-                            height: IMAGE_SIZE,
+                            width: imageSize,
+                            height: imageSize,
                         },
                         buttonStyle,
                     ]}
                 >
                     <ActivityIndicator />
-
                 </View>
             )}
 
@@ -132,8 +140,8 @@ export default ({ restricted = false }) => {
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            width: IMAGE_SIZE,
-                            height: IMAGE_SIZE,
+                            width: imageSize,
+                            height: imageSize,
                         },
                         buttonStyle,
                     ]}
