@@ -25,18 +25,19 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
     const [imageDims, setImageDims] = useState(null)
 
-    const allowDeletion = useMemo(() => {
-        return (
-            profile.username !== 'Driver' &&
-            profile.username !== 'Customer' &&
-            profile.username !== 'Vendor' &&
-            profile.role !== 'admin'
-        )
-    }, [profile])
-    const disableDelete = useMemo(() => userLoading || process.env.NODE_ENV === 'development', [userLoading])
-    const isAvatar = useMemo(() => (profile && (!profile.profileImage || profile.profileImage._id !== image._id)), [image, profile])
-    const owner = useMemo(() => profile && profile._id === image.user._id, [image, profile])
+    const allowDeletion = () => (
+        profile.username !== 'Driver' &&
+        profile.username !== 'Customer' &&
+        profile.username !== 'Vendor' &&
+        profile.role === 'admin'
+    )
+    // const disableDelete = useMemo(() => userLoading || process.env.NODE_ENV === 'development', [userLoading])
+    // const isAvatar = useMemo(() => (profile && (!profile.profileImage || profile.profileImage._id !== image._id)), [image, profile])
+    // const owner = useMemo(() => profile && profile._id === image.user._id, [image, profile])
 
+    const disableDelete = () => userLoading || process.env.NODE_ENV === 'development'
+    const isAvatar = () => (profile.profileImage && profile.profileImage._id === image._id)
+    const isOwner = () => profile._id === image.user._id
     // useEffect(() => {
     //     console.log('IMAGE_DETAIL', image)
     // }, [image])
@@ -47,7 +48,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
 
 
     const handleDelete = () => {
-        if (disableDelete) alert(`Can't delete in development`)
+        if (disableDelete()) alert(`Can't delete in development`)
         else deleteImage()
     }
 
@@ -90,7 +91,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                 }}
             >
 
-                {owner || profile.role === 'admin' ? (
+                {isOwner() && (
                     <View
                         style={{
                             flexBasis: 'auto',
@@ -99,17 +100,16 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                     >
                         <View
                             style={{
-                                flexBasis: 'auto',
-                                display: 'flex',
                                 flexDirection: landscape ? 'column' : 'row',
-                                justifyContent: landscape ? 'flex-start' : 'stretch',
+                                justifyContent: landscape ? 'stretch' : 'space-evenly',
                                 width: '100%',
-                                paddingHorizontal: 'auto',
-                                marginBottom: 10,
+                                gap: 10,
+                                // paddingHorizontal: 'auto',
+                                // marginBottom: 10,
                             }}
                         >
                             
-                            {(owner && isAvatar) ? (
+                            {(isOwner() && !isAvatar()) && (
                                 <IconButton
                                     type='primary'
                                     label='Set as Avatar'
@@ -119,42 +119,43 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                                         color: theme?.colors.textDefault,
                                     }}
                                 />
-                            ) : null}
+                            )}
 
-                            {allowDeletion && (
+                            {allowDeletion() && (
                                 <IconButton
                                     type='danger'
                                     label='Delete'
                                     onPress={handleDelete}
-                                    disabled={disableDelete}
+                                    // disabled={disableDelete()}
                                     style={{
                                         flex: 1,
-                                        opacity: disableDelete ? 0.5 : 1,
+                                        opacity: disableDelete() ? 0.5 : 1,
                                     }}
                                 />
                             )}
 
                         </View>
 
-                        {owner && products.length
-                            ? (
-                                <View style={{
+                        {(isOwner() && products.length) && (
+                            <View
+                                style={{
                                     flex: 1,
                                     width: '100%',
-                                }}>
-                                    <ThemedText bold>
-                                        Set as Product Image
-                                    </ThemedText>
+                                }}
+                            >
+                                <ThemedText bold>
+                                    Set as Product Image
+                                </ThemedText>
 
-                                    <ProductSelector
-                                        onSelect={productId => setProductImage(image._id, productId)}
-                                        products={products}
-                                        imageId={image._id}
-                                    />
-                                </View>
-                            ) : null}
+                                <ProductSelector
+                                    onSelect={productId => setProductImage(image._id, productId)}
+                                    products={products}
+                                    imageId={image._id}
+                                />
+                            </View>
+                        )}
                     </View>
-                ) : null}
+                )}
             </View>
         </View>
     )

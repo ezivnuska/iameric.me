@@ -48,8 +48,8 @@ export const deleteProductWithId = async id => {
 }
 
 export const addImageToProduct = async (imageId, productId) => {
-    const { product } = await axios.post('/api/product/image', { imageId, productId })
-    if (!product) console.log('error adding image to product')
-    else return product
+    const { data } = await axios.post('/api/product/image', { imageId, productId })
+    if (!data || !data.product) console.log('error adding image to product')
+    else return data.product
     return null
 }

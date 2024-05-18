@@ -6,7 +6,7 @@ import { Button } from 'antd'
 
 export default ({ onSelect }) => {
 
-    const numDurations = 6
+    const numDurations = 5
 
     const renderButtons = () => {
         const array = []
@@ -22,27 +22,26 @@ export default ({ onSelect }) => {
                     size='small'
                     onClick={() => onSelect(time)}
                     style={{
-                        flex: 1,
-                        flexShrink: 0,
                         height: 40,
+                        flexBasis: `${numDurations / 100}%`,
                     }}
                 >
-                    {`${time} m`}
+                    {`${time}m`}
                 </Button>
             )
         }
         
-        return array.reverse()
+        return array
     }
 
     return (
         <View
             style={{
+                // width: '100%',
                 marginVertical: 15,
-                display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'stretch',
-                columnGap: 2,
+                justifyContent: 'space-between',
+                gap: 2,
             }}
         >
             {renderButtons()}

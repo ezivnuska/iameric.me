@@ -132,6 +132,11 @@ export default ({ order }) => {
 
     const { profile } = useUser()
 
+    const showItemized = () => profile.role === 'vendor' ||
+        profile.role === 'customer' ||
+        profile.role === 'admin' ||
+        (profile.role === 'driver' && order.status > 2 && order.status < 5)
+
     const renderStatus = order => {
         switch (profile.role) {
             case 'admin':
@@ -152,8 +157,8 @@ export default ({ order }) => {
             <View style={{ paddingHorizontal: 10 }}>
                 {renderStatus(order)}
             </View>
-            
-            {(order.arrived && !order.received) && <CartProductPreview order={order} />}
+
+            {showItemized() && <CartProductPreview order={order} />}
 
             <View style={{ padding: 10 }}>
                 <OrderProcessButton order={order} />

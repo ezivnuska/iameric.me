@@ -44,6 +44,7 @@ export default () => {
                     padded={false}
                 />
             </TitleBar>
+
             {products.length ? (
                 <FlatList
                     showsVerticalScrollIndicator={false}
@@ -56,7 +57,6 @@ export default () => {
                             key={item => `product-${item._id}`}
                         />
                     )}
-                    style={{ marginHorizontal: 10 }}
                 />
             ) : <EmptyStatus status='Nothing currently listed.' />}
         </View>

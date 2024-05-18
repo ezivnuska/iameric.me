@@ -38,7 +38,6 @@ export default {
         fontSize: sizes.productBlurb,
         fontWeight: 500,
         lineHeight: 20,
-        paddingBottom: 10,
     },
     textDefault: {
         fontSize: sizes.textDefault,// 16

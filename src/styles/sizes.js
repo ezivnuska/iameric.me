@@ -5,7 +5,7 @@ export default {
     textSmaller: 14,
     textSmallest: 12,
     userTitle: 18,
-    productBlurb: 16,
+    productBlurb: 14,
     productTitle: 20,
     productPrice: 20,
     formInputLabel: 18,
