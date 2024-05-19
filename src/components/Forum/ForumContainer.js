@@ -8,7 +8,7 @@ import {
 } from '@context'
 import { deleteEntryWithId } from '@utils/forum'
 
-export default props => {
+export default () => {
 
     const {
         entries,
@@ -18,7 +18,6 @@ export default props => {
 
     const {
         closeModal,
-        setModal,
     } = useModal()
 
     const removeEntry = async id => {
@@ -26,7 +25,6 @@ export default props => {
         await deleteEntryWithId(id)
         setForumLoading(false)
 
-        // handle forum state
         deleteEntry(id)
         closeModal()
     }

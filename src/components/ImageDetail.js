@@ -5,9 +5,10 @@ import {
 } from 'react-native'
 import {
     IconButton,
+    ImageSized,
     ProductSelector,
     ThemedText,
-} from '.'
+} from '@components'
 import {
     useApp,
     useProducts,
@@ -69,19 +70,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
                     flexGrow: 0,
                 }}
             >
-                {imageDims && (
-                    <Image
-                        source={{
-                            uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
-                        }}
-                        style={{
-                            resizeMode: 'contain',
-                            height: imageDims ? imageDims.height : image.height,
-                            width: imageDims ? imageDims.width : image.width,
-                            marginHorizontal: 'auto',
-                        }}
-                    />
-                )}
+                {imageDims && <ImageSized image={image} dims={imageDims} />}
             </View>
             <View
                 style={{

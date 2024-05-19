@@ -1,6 +1,5 @@
 import Brand from './Brand'
 import Cart from './Cart'
-import CartButton from './CartButton'
 import CategoryPicker from './CategoryPicker'
 import CenteredView from './CenteredView'
 import CenterVertical from './CenterVertical'
@@ -19,6 +18,7 @@ import ImageDetail from './ImageDetail'
 import ImageFormModule from './ImageFormModule'
 import Images from './Images'
 import ImageSelector from './ImageSelector'
+import ImageSized from './ImageSized'
 import ImageClone from './ImageClone'
 import LoadingView from './LoadingView'
 import LocationForm from './LocationForm'
@@ -50,7 +50,6 @@ import Vendors from './Vendors'
 export {
     Brand,
     Cart,
-    CartButton,
     CategoryPicker,
     CenteredView,
     CenterVertical,
@@ -68,6 +67,7 @@ export {
     ImageFormModule,
     Images,
     ImageSelector,
+    ImageSized,
     ImageClone,
     LoadingView,
     LocationForm,

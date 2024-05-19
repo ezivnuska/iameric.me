@@ -6,7 +6,6 @@ import {
 } from 'react-native'
 import {
     Brand,
-    // CartButton,
     IconButton,
     ThemedText,
 } from '@components'
@@ -22,7 +21,6 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const UserButton = ({ profile }) => {
 
     const { theme } = useApp()
-    // const { profile } = useUser()
     const { profileImage, username } = useMemo(() => profile, [profile])
     
     const getSource = () => profileImage
@@ -118,7 +116,6 @@ export default () => {
                 profile
                 ? (
                     <>
-                        {/* <CartButton style={{ marginLeft: 10 }} /> */}
                         <UserButton profile={profile} />
                         <SignOutButton />
                     </>

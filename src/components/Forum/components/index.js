@@ -1,4 +1,4 @@
-import ForumList from './ForumList'
+import ForumList from './ForumList/ForumListContainer'
 
 export {
     ForumList,
