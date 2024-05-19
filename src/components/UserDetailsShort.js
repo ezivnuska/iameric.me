@@ -14,7 +14,7 @@ import {
 import { loadUserById } from '@utils/contacts'
 import {
     getProfileImagePathFromUser,
-    getMaxAvailableImageSize,
+    getMaxImageDims,
 } from '@utils/images'
 import classes from '@styles/classes'
 import { navigationRef } from 'src/navigation/RootNavigation'
@@ -52,7 +52,7 @@ export default () => {
 
     const getImageDims = () => {
         const { width, height } = userDetails.profileImage
-        const imageDims = getMaxAvailableImageSize(dims, width, height)
+        const imageDims = getMaxImageDims(width, height, dims)
         setImageSize(imageDims)
     }
 

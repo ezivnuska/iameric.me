@@ -1,12 +1,13 @@
 import React from 'react'
 import { Screen } from '.'
 import {
-    DeleteAccountButton,
+    // DeleteAccountButton,
     LoadingView,
-    LocationModule,
+    // LocationModule,
+    Profile,
     ScreenContent,
     TitleBar,
-    UserDetails,
+    // UserDetails,
 } from '@components'
 import {
     useUser,
@@ -16,16 +17,16 @@ export default props => {
 
     const { profile, userLoading } = useUser()
 
-    const restrictedUsernames = ['Customer', 'Driver', 'Vendor']
-    const restrictedRoles = ['admin']
+    // const restrictedUsernames = ['Customer', 'Driver', 'Vendor']
+    // const restrictedRoles = ['admin']
 
-    const isRestricted = () => {
-        const { role, username } = profile
-        return (
-            (username && restrictedUsernames.indexOf(username) > -1)
-            || (role && restrictedRoles.indexOf(role) > -1)
-        )
-    }
+    // const isRestricted = () => {
+    //     const { role, username } = profile
+    //     return (
+    //         (username && restrictedUsernames.indexOf(username) > -1)
+    //         || (role && restrictedRoles.indexOf(role) > -1)
+    //     )
+    // }
     
     if (userLoading) return <LoadingView loading='Loading profile.' />
 
@@ -35,9 +36,7 @@ export default props => {
                 <>
                     <TitleBar title={profile.username} />
                     <ScreenContent>
-                        <UserDetails userId={profile._id} />
-                        <LocationModule userId={profile._id} />
-                        {!isRestricted() && <DeleteAccountButton />}
+                        <Profile />
                     </ScreenContent>
                 </>
             ) : <LoadingView loading='Loading profile...' />}

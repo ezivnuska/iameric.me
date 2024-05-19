@@ -13,7 +13,7 @@ import {
     useCart,
     useModal,
 } from '@context'
-import { getImageDims } from '@utils/images'
+import { getMaxImageDims } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -33,11 +33,11 @@ export default ({ product }) => {
     const [quantity, setQuantity] = useState(1)
 
     useEffect(() => {
-        setImageDims(getImageDims(product.image.width, product.image.height, dims))
+        setImageDims(getMaxImageDims(product.image.width, product.image.height, dims))
     }, [])
 
     useEffect(() => {
-        if (dims) setImageDims(getImageDims(product.image.width, product.image.height, dims))
+        if (dims) setImageDims(getMaxImageDims(product.image.width, product.image.height, dims))
     }, [dims])
 
     const onProductAdded = (item, quantity) => {

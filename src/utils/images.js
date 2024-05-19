@@ -13,7 +13,7 @@ import EXIF from 'exif-js'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export const getImageDims = (w, h, dims) => {
+export const getMaxImageDims = (w, h, dims) => {
     const landscape = dims.width > dims.height
     const maxHeight = landscape ? dims.height - 30 : dims.height / 2
     let maxWidth = landscape ? (dims.width * 0.5) : dims.width - 20

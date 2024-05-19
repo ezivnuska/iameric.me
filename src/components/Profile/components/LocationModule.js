@@ -8,7 +8,7 @@ import {
     IconButton,
     LocationDetails,
     LoadingView,
-} from '.'
+} from '../..'
 import {
     useForm,
     useModal,

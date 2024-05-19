@@ -10,7 +10,7 @@ import CenterVertical from './CenterVertical'
 import ContactView from './ContactView'
 import ContactsView from './ContactsView'
 import ThemedText from './ThemedText'
-import DeleteAccountButton from './DeleteAccountButton'
+// import DeleteAccountButton from './Profile/components/DeleteAccountButton'
 import DestroyForm from './DestroyForm'
 import EmptyStatus from './EmptyStatus'
 import FeedbackForm from './FeedbackForm'
@@ -29,7 +29,7 @@ import ImagesView from './ImagesView'
 import Label from './Label'
 import LoadingView from './LoadingView'
 import LocationDetails from './LocationDetails'
-import LocationModule from './LocationModule'
+// import LocationModule from './Profile/components/LocationModule'
 import LocationForm from './LocationForm'
 import ModalDeleteProduct from './ModalDeleteProduct'
 import ModalImage from './ModalImage'
@@ -47,6 +47,7 @@ import ProductForm from './ProductForm'
 import ProductListItem from './ProductListItem'
 import ProductSelector from './ProductSelector'
 import ProductsView from './ProductsView'
+import Profile from './Profile'
 import QuantityControl from './QuantityControl'
 import ScreenContent from './ScreenContent'
 import SignInForm from './SignInForm'
@@ -54,7 +55,7 @@ import SignUpForm from './SignUpForm'
 import SimpleButton from './SimpleButton'
 import TimeSelector from './TimeSelector'
 import TitleBar from './TitleBar'
-import UserDetails from './UserDetails'
+// import UserDetails from './Profile/components/UserDetails'
 import UserDetailsShort from './UserDetailsShort'
 import UserHeading from './UserHeading'
 import Vendor from './Vendor'
@@ -73,7 +74,7 @@ export {
     ContactView,
     ContactsView,
     ThemedText,
-    DeleteAccountButton,
+    // DeleteAccountButton,
     DestroyForm,
     EmptyStatus,
     FeedbackForm,
@@ -91,7 +92,7 @@ export {
     Label,
     LoadingView,
     LocationDetails,
-    LocationModule,
+    // LocationModule,
     LocationForm,
     ModalDeleteProduct,
     ModalImage,
@@ -109,6 +110,7 @@ export {
     ProductListItem,
     ProductSelector,
     ProductsView,
+    Profile,
     QuantityControl,
     ScreenContent,
     SignInForm,
@@ -118,7 +120,7 @@ export {
     TimeSelector,
     TitleBar,
     UserHeading,
-    UserDetails,
+    // UserDetails,
     UserDetailsShort,
     Vendor,
     Vendors,

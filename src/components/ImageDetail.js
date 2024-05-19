@@ -13,7 +13,7 @@ import {
     useProducts,
     useUser,
 } from '@context'
-import { getImageDims } from '@utils/images'
+import { getMaxImageDims } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -43,7 +43,7 @@ export default ({ image, deleteImage, setAvatar, setProductImage }) => {
     // }, [image])
 
     useEffect(() => {
-        setImageDims(getImageDims(image.width, image.height, dims))
+        setImageDims(getMaxImageDims(image.width, image.height, dims))
     }, [dims])
 
 

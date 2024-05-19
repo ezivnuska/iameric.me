@@ -5,12 +5,12 @@ import {
 import {
     ThemedText,
     IconButton,
-} from '.'
+} from '@components'
 import {
     useForm,
     useModal,
 } from '@context'
-import classes from '../styles/classes'
+import classes from '@styles/classes'
 
 export default () => {
 
