@@ -24,11 +24,9 @@ import ImageFormModule from './ImageFormModule'
 import ImageList from './ImageList'
 import Images from './Images'
 import ImageSelector from './ImageSelector'
-import ImageView from './ImageView'
-import ImagesView from './ImagesView'
+import ImageClone from './ImageClone'
 import Label from './Label'
 import LoadingView from './LoadingView'
-// import LocationDetails from './LocationDetails'
 import LocationForm from './LocationForm'
 import ModalDeleteProduct from './ModalDeleteProduct'
 import ModalImage from './ModalImage'
@@ -37,7 +35,6 @@ import ModalSignout from './ModalSignout'
 import ModalView from './ModalView'
 import Orders from './Orders'
 import OrderDisplayView from './OrderDisplayView'
-// import OrderProcessButton from './Orders/components/OrderPreview/components/OrderProcessButton'
 import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
@@ -84,11 +81,9 @@ export {
     ImageList,
     Images,
     ImageSelector,
-    ImageView,
-    ImagesView,
+    ImageClone,
     Label,
     LoadingView,
-    // LocationDetails,
     LocationForm,
     ModalDeleteProduct,
     ModalImage,
@@ -97,7 +92,6 @@ export {
     ModalView,
     Orders,
     OrderDisplayView,
-    // OrderProcessButton,
     PopUpModal,
     Preview,
     ProductDetails,

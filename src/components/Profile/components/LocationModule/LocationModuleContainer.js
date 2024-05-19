@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React from 'react'
 import {
     Pressable,
     View,
@@ -6,17 +6,16 @@ import {
 import {
     ThemedText,
     IconButton,
-    LocationDetails,
     LoadingView,
-} from '../..'
+} from '@components'
+import {
+    LocationDetails,
+} from './components'
 import {
     useForm,
     useModal,
     useUser,
 } from '@context'
-import {
-    getUserLocation,
-} from '@utils/user'
 
 export default () => {
     const { formLoading } = useForm()

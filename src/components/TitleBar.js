@@ -32,7 +32,7 @@ export default ({ children, navigation = null, backLabel = null, title = null })
                     maxWidth: landscape ? 900 : 600,
                     marginHorizontal: 'auto',
                     paddingHorizontal: 10,
-                    paddingVertical: 3,
+                    paddingTop: 10,
                 }}
             >
                 {backLabel && (

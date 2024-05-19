@@ -37,16 +37,8 @@ const NextButton = ({ label, action }) => {
     )
 }
 
-const AdminButton = ({ order, deleteOrder, onClosed }) => {
-    switch (order.status) {
-        case 5: return <NextButton label='Order Received' action={onClosed} />
-            break
-        case 6: return <NextButton label='Delete Completed Order' action={deleteOrder} />
-            break;
-        default:
-            return null
-    }
-}
+const AdminButton = ({ order, deleteOrder, onClosed }) => 
+    <NextButton label='Delete Completed Order' action={deleteOrder} />
 
 const CustomerButton = ({ order, deleteOrder, onClosed }) => {
     switch (order.status) {

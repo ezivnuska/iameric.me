@@ -5,7 +5,7 @@ import {
 import {
     FileSelector,
     IconButton,
-    ImageView,
+    ImageClone,
 } from '.'
 import EXIF from 'exif-js'
 import {
@@ -87,7 +87,7 @@ export default ({ onImageSelected, removeImage, source = null }) => {
         >
             {source && (
                 <View style={{ paddingRight: 10 }}>
-                    <ImageView
+                    <ImageClone
                         source={source}
                         width={50}
                         height={50}
