@@ -1,5 +1,5 @@
 import DeleteAccountButton from './DeleteAccountButton'
-import LocationModule from './LocationModule'
+import LocationModule from './LocationModule/LocationModuleContainer'
 import UserDetails from './UserDetails'
 
 export {

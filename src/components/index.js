@@ -8,6 +8,7 @@ import CategoryPicker from './CategoryPicker'
 import CenteredView from './CenteredView'
 import CenterVertical from './CenterVertical'
 import ContactView from './ContactView'
+import Contacts from './Contacts'
 import ContactsView from './ContactsView'
 import ThemedText from './ThemedText'
 import DestroyForm from './DestroyForm'
@@ -25,7 +26,6 @@ import ImageList from './ImageList'
 import Images from './Images'
 import ImageSelector from './ImageSelector'
 import ImageClone from './ImageClone'
-import Label from './Label'
 import LoadingView from './LoadingView'
 import LocationForm from './LocationForm'
 import ModalDeleteProduct from './ModalDeleteProduct'
@@ -66,6 +66,7 @@ export {
     CenteredView,
     CenterVertical,
     ContactView,
+    Contacts,
     ContactsView,
     ThemedText,
     DestroyForm,
@@ -82,7 +83,6 @@ export {
     Images,
     ImageSelector,
     ImageClone,
-    Label,
     LoadingView,
     LocationForm,
     ModalDeleteProduct,

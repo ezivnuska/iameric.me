@@ -1,0 +1,43 @@
+import React from 'react'
+import {
+    View,
+} from 'react-native'
+import {
+    LoadingView,
+} from '@components'
+import {
+    ContactListItem,
+} from './components'
+import {
+    useContacts,
+    useModal,
+    useUser,
+} from '@context'
+
+export default () => {
+
+    const {
+        contacts,
+        contactsLoading,
+    } = useContacts()
+
+    const { setModal } = useModal()
+    const { profile } = useUser()
+
+    if (contactsLoading) return <LoadingView loading='Loading contacts...' />
+
+    return (
+        <View>
+            {contacts.map((contact) => {
+                if (profile && profile._id === contact._id) return null
+                return (
+                    <ContactListItem
+                        item={contact}
+                        onPress={() => setModal('CONTACT', contact)}
+                        key={`contact-${contact._id}`}
+                    />
+                )
+            })}
+        </View>
+    )
+}
