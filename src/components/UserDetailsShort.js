@@ -63,9 +63,11 @@ export default () => {
             }}
         >
             {userDetails
-                ? landscape
-                    ? <LayoutHorizontal imageSize={imageSize} userDetails={userDetails} />
-                    : <LayoutVertical imageSize={imageSize} userDetails={userDetails} />
+                ?
+                // landscape
+                //     ? <LayoutHorizontal imageSize={imageSize} userDetails={userDetails} />
+                //     :
+                    <LayoutVertical imageSize={imageSize} userDetails={userDetails} />
                 : null}
         </View>
     )
