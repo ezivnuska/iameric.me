@@ -20,7 +20,6 @@ import HoverableView from './HoverableView'
 import IconButton from './IconButton'
 import ImageDetail from './ImageDetail'
 import ImageFormModule from './ImageFormModule'
-import ImageList from './ImageList'
 import Images from './Images'
 import ImageSelector from './ImageSelector'
 import ImageClone from './ImageClone'
@@ -32,7 +31,6 @@ import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
 import ModalView from './ModalView'
 import Orders from './Orders'
-import OrderDisplayView from './OrderDisplayView'
 import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
@@ -75,7 +73,6 @@ export {
     IconButton,
     ImageDetail,
     ImageFormModule,
-    ImageList,
     Images,
     ImageSelector,
     ImageClone,
@@ -87,7 +84,6 @@ export {
     ModalSignout,
     ModalView,
     Orders,
-    OrderDisplayView,
     PopUpModal,
     Preview,
     ProductDetails,
