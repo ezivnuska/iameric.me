@@ -7,17 +7,15 @@ import CartView from './CartView'
 import CategoryPicker from './CategoryPicker'
 import CenteredView from './CenteredView'
 import CenterVertical from './CenterVertical'
-import ContactView from './ContactView'
+import Contact from './Contact'
 import Contacts from './Contacts'
-import ContactsView from './ContactsView'
 import ThemedText from './ThemedText'
 import DestroyForm from './DestroyForm'
 import EmptyStatus from './EmptyStatus'
 import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
 import FormField from './FormField'
-import ForumList from './ForumList'
-import ForumView from './ForumView'
+import Forum from './Forum'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
 import ImageDetail from './ImageDetail'
@@ -65,16 +63,14 @@ export {
     CategoryPicker,
     CenteredView,
     CenterVertical,
-    ContactView,
+    Contact,
     Contacts,
-    ContactsView,
     ThemedText,
     DestroyForm,
     EmptyStatus,
     FeedbackForm,
     FileSelector,
-    ForumList,
-    ForumView,
+    Forum,
     HoverableView,
     IconButton,
     ImageDetail,

@@ -9,7 +9,7 @@ import {
 import {
     IconButton,
     ThemedText,
-} from '.'
+} from '@components'
 import classes from '@styles/classes'
 import { getProfileImagePathFromUser } from '@utils/images'
 import {
@@ -22,7 +22,6 @@ import {
 const ListItemVertical = ({ item, imagePath, onPress, owner, onDelete = null, ...props }) => {
     
     const { theme } = useApp()
-    const { entries } = useForum()
     
     const { author, text } = item
 
@@ -247,9 +246,8 @@ const ListItemHorizontal = ({ item, imagePath, onPress, owner, onDelete = null }
     )
 }
 
-export default ({ onDelete }) => {
+export default ({ entries, onDelete }) => {
     const { landscape, dims } = useApp()
-    const { entries } = useForum()
     const { setModal } = useModal()
     const { profile } = useUser()
 

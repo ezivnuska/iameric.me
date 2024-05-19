@@ -100,10 +100,12 @@ export const unsubscribe = async id => {
 
 export const validateToken = async token => {
     const { data } = await axios.get(`/api/token/${token}`)
-    const expired = (new Date(data.exp) - Date.now() > 0)
     if (!data) console.log('error validating token')
-    else if (expired) console.log('token expired')
-    else return data
+    else {
+        const expired = (new Date(data.exp) - Date.now() > 0)
+        if (expired) console.log('token expired')
+        else return data
+    }
     return null
 }
 

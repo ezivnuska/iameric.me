@@ -15,6 +15,7 @@ const initialState = {
     setContact: () => {},
     setContacts: () => {},
     setContactLoading: () => {},
+    setContactsLoaded: () => {},
     setContactsLoading: () => {},
     setContactModal: () => {},
     updateContact: () => {},
@@ -65,6 +66,9 @@ export const ContactContextProvider = props => {
         },
         setContacts: async payload => {
             dispatch({ type: 'SET_CONTACTS', payload })
+        },
+        setContactsLoaded: async () => {
+            dispatch({ type: 'SET_CONTACTS_LOADED' })
         },
         setContactsLoading: async payload => {
             dispatch({ type: 'SET_CONTACTS_LOADING', payload })

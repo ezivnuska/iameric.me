@@ -15,8 +15,12 @@ import {
     useModal,
 } from '@context'
 import { setItem } from '@utils/storage'
-import { isValidEmail, signin } from '@utils/auth'
+import {
+    isValidEmail,
+    signin,
+} from '@utils/auth'
 import { getFields } from '@utils/form'
+import { navigationRef } from '@navigation/RootNavigation'
 
 export default () => {
 
@@ -25,7 +29,7 @@ export default () => {
         password: '',
     }
 
-    const { signIn, data } = useApp()
+    const { signIn, userId } = useApp()
     const {
         clearForm,
         clearFormError,
@@ -54,7 +58,7 @@ export default () => {
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        const fields = getFields(initialState, data)
+        const fields = getFields(initialState, formFields)
         setInitialValues(fields)
     }, [])
     
@@ -65,6 +69,13 @@ export default () => {
     useEffect(() => {
         if (formReady) validateFields()
     }, [email, password])
+
+    useEffect(() => {
+        if (userId) {
+            navigationRef.navigate('Main')
+            clearModal()
+        }
+    }, [userId])
 
     const validateFields = () => {
         const keys = Object.keys(formFields)
@@ -133,7 +144,7 @@ export default () => {
             const { _id, role, token, username } = user
             signIn({ _id, role, token, username })
             clearForm()
-            clearModal()
+            // clearModal()
 		}
 
     }

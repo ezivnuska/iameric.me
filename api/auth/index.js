@@ -125,6 +125,8 @@ const validateToken = async (req, res) => {
     const { token } = req.params
     
     const decodedUser = getDecodedUser(token)
+
+    if (!decodedUser) return res.status(200).json(null)
     
     const { _id, exp } = decodedUser
 

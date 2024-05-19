@@ -21,14 +21,32 @@ export default ({
 
     useEffect(() => {
         if (secure && !userId) props.navigation.navigate('Start')
+        //     else if (userId) props.navigation.navigate('Auth')
     }, [userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 
     return (
-        <View style={{ height: '100%' }}>
-            <CartView />
-            <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{
+            height: '100%',
+            justifyContent: 'flex-start',
+        }}>
+            {userId && (
+                <View
+                    style={{
+                        flexBasis: 'auto',
+                        flexGrow: 0,
+                    }}
+                >
+                    <CartView />
+                </View>
+            )}
+
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{ flex: 1 }}
+                contentContainerStyle={{ flexGrow: 1 }}
+            >
                 {children}
             </ScrollView>
         </View>

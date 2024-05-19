@@ -57,7 +57,7 @@ const UserStackScreen = () => {
     const { theme } = useApp()
     return (
         <UserStack.Navigator
-            initialRouteName={'Products'}
+            initialRouteName={'Profile'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -112,11 +112,11 @@ const UserStackScreen = () => {
 
 const MainStack = createMaterialBottomTabNavigator()
 const MainStackScreen = () => {
-    const { theme } = useApp()
+    const { theme, userId } = useApp()
     const { profile } = useUser()
     return (
         <MainStack.Navigator
-            initialRouteName={'Users'}
+            initialRouteName={'Vendors'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -131,14 +131,28 @@ const MainStackScreen = () => {
                 headerShown: false,
             }}
         >
+            {userId && (
+                <MainStack.Screen
+                    name='Forum'
+                    component={ForumScreen}
+                    options={{
+                        title: 'Forum',
+                        tabBarLabel: 'Forum',
+                        tabBarIcon: ({ focused, color }) => (
+                            <Icon name='chatbubbles-outline' size={iconSize} color={color} />
+                        ),
+                    }}
+                />
+            )}
+
             <MainStack.Screen
-                name='Forum'
-                component={ForumScreen}
+                name='Vendors'
+                component={VendorStackScreen}
                 options={{
-                    title: 'Forum',
-                    tabBarLabel: 'Forum',
+                    title: 'Vendors',
+                    tabBarLabel: 'Vendors',
                     tabBarIcon: ({ focused, color }) => (
-                        <Icon name='alert-circle-outline' size={iconSize} color={color} />
+                        <Icon name='restaurant-outline' size={iconSize} color={color} />
                     ),
                 }}
             />
@@ -169,34 +183,29 @@ const MainStackScreen = () => {
     )
 }
 
-const AuthStack = createNativeStackNavigator()
-const AuthStackScreen = () => (
-    <AuthStack.Navigator
-        initialRouteName='User'
-        screenOptions={{
-            headerShown: false,
-        }}
-    >
-        <AuthStack.Screen
-            name='Forum'
-            component={ForumScreen}
-            options={{ title: 'Forum' }}
-        />
+// const AuthStack = createNativeStackNavigator()
+// const AuthStackScreen = () => (
+//     <AuthStack.Navigator
+//         initialRouteName='Main'
+//         screenOptions={{
+//             headerShown: false,
+//         }}
+//     >
 
-        <AuthStack.Screen
-            name='User'
-            component={UserStackScreen}
-            options={{ title: 'User' }}
-        />
+//         <AuthStack.Screen
+//             name='User'
+//             component={UserStackScreen}
+//             options={{ title: 'User' }}
+//         />
 
-        {/* <AuthStack.Screen
-            name='Fallback'
-            component={FallbackScreen}
-            options={{ title: 'Oops' }}
-        /> */}
+//         {/* <AuthStack.Screen
+//             name='Fallback'
+//             component={FallbackScreen}
+//             options={{ title: 'Oops' }}
+//         /> */}
 
-    </AuthStack.Navigator>
-)
+//     </AuthStack.Navigator>
+// )
 
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
@@ -221,20 +230,20 @@ const AppStackScreen = () => {
             />
 
             <AppStack.Screen
-                name='Auth'
-                component={AuthStackScreen}
+                name='User'
+                component={UserStackScreen}
+            />
+
+            <AppStack.Screen
+                name='Main'
+                component={MainStackScreen}
+                options={{ title: 'Main' }}
             />
 
             <AppStack.Screen
                 name='Fallback'
                 component={FallbackScreen}
                 options={{ title: 'Oops' }}
-            />
-
-            <AppStack.Screen
-                name='Vendors'
-                component={VendorStackScreen}
-                // options={{ title: 'Vendors' }}
             />
 
         </AppStack.Navigator>
@@ -246,33 +255,27 @@ const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
-            Vendors: {
-                path: 'vendors',
+            User: {
+                path: 'user',
                 screens: {
-                    VendorList: '',
-                    Vendor: '/:id',
+                    Images: 'images',
+                    Products: 'products',
+                    Profile: 'profile',
                 },
             },
-            Auth: {
+            Main: {
                 path: '',
                 screens: {
-                    User: {
-                        path: 'user',
+                    Forum: 'forum',
+                    Vendors: {
+                        path: 'vendors',
                         screens: {
-                            Images: 'images',
-                            Products: 'products',
-                            Profile: 'profile',
+                            VendorList: '',
+                            Vendor: '/:id',
                         },
                     },
-                    // Main: {
-                    //     path: '',
-                    //     screens: {
-                            Forum: 'forum',
-                            // Orders: 'orders',
-                            // Users: 'users',
-                            
-                    //     },
-                    // },
+                    // Orders: 'orders',
+                    // Users: 'users',
                 },
             },
             Fallback: 'oops',

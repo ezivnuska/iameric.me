@@ -13,6 +13,7 @@ import {
     useUser,
 } from '@context'
 import { signout } from '@utils/auth'
+import { navigationRef } from '@navigation/RootNavigation'
 
 export default () => {
 
@@ -34,6 +35,7 @@ export default () => {
             clearProducts()
             clearUser()
             signOut()
+            navigationRef.navigate('Start')
             closeModal()
         }
     }

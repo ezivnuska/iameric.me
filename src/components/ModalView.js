@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
     Cart,
-    ContactView,
+    Contact,
     FeedbackForm,
     DestroyForm,
     ImageSelector,
@@ -39,7 +39,7 @@ export default () => {
         const { type, data } = modal
         switch(type) {
             case 'CART': return <Cart />; break
-            case 'CONTACT': return <ContactView userId={data._id} />; break
+            case 'CONTACT': return <Contact userId={data._id} />; break
             case 'DESTROY': return <DestroyForm />; break
             case 'DELETE_PRODUCT': return <ModalDeleteProduct productId={data} />; break
             case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break

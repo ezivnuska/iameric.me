@@ -30,21 +30,16 @@ export const loadProducts = async vendorId => {
 
 export const loadVendorProducts = async vendorId => {
     const { data } = await axios.get(`/api/products/${vendorId}`)
-    if (!data) console.log('could not load products')
-    else if (!data.products) console.log('no products to load')
-    return data.products
+    if (!data || !data.products) console.log('could not load products')
+    else return data.products
+    return null
 }
 
 export const deleteProductWithId = async id => {
-    
     const { data } = await axios.delete(`/api/products/delete/${id}`)
-
-    if (!data.product) {
-        console.log('Error deleting product')
-        return null
-    }
-
-    return data.product
+    if (!data || data.product) console.log('Error deleting product')
+    else return data.product
+    return null
 }
 
 export const addImageToProduct = async (imageId, productId) => {

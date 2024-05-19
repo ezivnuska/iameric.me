@@ -26,8 +26,8 @@ export default props => {
     const { setModal } = useModal()
 
     useEffect(() => {
-        if (userId) props.navigation.navigate('Auth')
-    }, [userId])
+        console.log('START')
+    }, [])
 
     const onConnect = async type => {
         const user = await connect(type)
@@ -53,7 +53,7 @@ export default props => {
                     padding: 10,
                     background: '#fff',
                 }}
-                onPress={() => props.navigation.navigate('Vendors')}
+                onPress={() => props.navigation.navigate('Main')}
             >
                 <Text
                     style={{

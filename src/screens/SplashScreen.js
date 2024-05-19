@@ -7,6 +7,7 @@ import {
     useApp,
     useUser,
 } from '@context'
+import { Pressable } from 'react-native'
 
 export default ({ navigation }) => {
     const { userId } = useApp()
@@ -22,7 +23,12 @@ export default ({ navigation }) => {
     
     return (
         <CenterVertical>
-            <ThemedText>iameric</ThemedText>
+            <Pressable
+                onPress={() => navigation.navigate(userId ? 'Main' : 'Start')}
+                disabled={!userLoaded}
+            >
+                <ThemedText>iameric</ThemedText>
+            </Pressable>
         </CenterVertical>
     )
 }

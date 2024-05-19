@@ -1,18 +1,27 @@
 import React from 'react'
 import {
-    ForumView,
+    Forum,
+    IconButton,
+    ScreenContent,
+    TitleBar,
 } from '@components'
 import {
     Screen,
 } from '.'
-import {
-    ForumContextProvider,
-} from '@context'
 
 export default props => (
     <Screen {...props}>
-        <ForumContextProvider>
-            <ForumView />
-        </ForumContextProvider>
+        <TitleBar title='Forum'>
+            <IconButton
+                label='Comment'
+                iconName='add-outline'
+                onPress={() => setModal('FEEDBACK')}
+                padded={true}
+                transparent
+            />
+        </TitleBar>
+        <ScreenContent>
+            <Forum />
+        </ScreenContent>
     </Screen>
 )

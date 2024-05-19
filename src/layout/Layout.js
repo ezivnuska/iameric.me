@@ -10,6 +10,8 @@ import {
 import { Header } from '@layout'
 import {
     CartContextProvider,
+    ContactContextProvider,
+    ForumContextProvider,
     ImageContextProvider,
     OrderContextProvider,
     ProductContextProvider,
@@ -37,6 +39,8 @@ export default () => {
         <PaperProvider theme={theme}>
             <Compose
                 components={[
+                    ForumContextProvider,
+                    ContactContextProvider,
                     OrderContextProvider,
                     CartContextProvider,
                     ProductContextProvider,

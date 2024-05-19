@@ -31,7 +31,7 @@ const UserButton = ({ profile }) => {
     
     return (
         <Pressable
-            onPress={() => navigationRef.navigate('Auth', { screen: 'User' })}
+            onPress={() => navigationRef.navigate('User')}
             style={{
                 flexGrow: 0,
                 flexShrink: 0,
