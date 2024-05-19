@@ -41,48 +41,43 @@ export default ({ images }) => {
         backgroundColor: theme?.colors.background,
     }
     
-    return (
-        <View
-            style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'space-between',
-                flexWrap: 'wrap',
-                gap: imageGap,
-                width: '100%',
-            }}
-        >
-            {images.length ? (
-                <View>
-                    {images.map((image, index) => image.user ? (
-                        <Pressable
-                            key={`image-${index}`}
-                            onPress={() => setModal('IMAGE', image)}
-                            style={[
-                                {
-                                    flexBasis: 'auto',
-                                    width: imageSize,
-                                    height: imageSize,
-                                },
-                                buttonStyle,
-                            ]}
-                        >
-                            <Image
-                                width={imageSize}
-                                height={imageSize}
-                                source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
-                                style={{
-                                    resizeMode: 'cover',
-                                    width: '100%',
-                                    height: '100%',
-                                }}
-                            />
-                        </Pressable>
-                    ) : null)}
-                </View>
-            ) : <EmptyStatus status='No images yet.' />}
-            
-        </View>
-    )
+    return images.length ? (
+            <View
+                style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'space-between',
+                    flexWrap: 'wrap',
+                    gap: imageGap,
+                    width: '100%',
+                }}
+            >
+                {images.map((image, index) => image.user ? (
+                    <Pressable
+                        key={`image-${index}`}
+                        onPress={() => setModal('IMAGE', image)}
+                        style={[
+                            {
+                                flexBasis: 'auto',
+                                width: imageSize,
+                                height: imageSize,
+                            },
+                            buttonStyle,
+                        ]}
+                    >
+                        <Image
+                            width={imageSize}
+                            height={imageSize}
+                            source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
+                            style={{
+                                resizeMode: 'cover',
+                                width: '100%',
+                                height: '100%',
+                            }}
+                        />
+                    </Pressable>
+                ) : null)}
+            </View>
+        ) : <EmptyStatus status='No images yet.' />
 }

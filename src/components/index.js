@@ -35,9 +35,8 @@ import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
 import ProductForm from './ProductForm'
-import ProductListItem from './ProductListItem'
+import Products from './Products'
 import ProductSelector from './ProductSelector'
-import ProductsView from './ProductsView'
 import Profile from './Profile'
 import QuantityControl from './QuantityControl'
 import ScreenContent from './ScreenContent'
@@ -88,9 +87,8 @@ export {
     Preview,
     ProductDetails,
     ProductForm,
-    ProductListItem,
+    Products,
     ProductSelector,
-    ProductsView,
     Profile,
     QuantityControl,
     ScreenContent,
