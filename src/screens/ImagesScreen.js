@@ -1,9 +1,16 @@
 import React from 'react'
 import { Screen } from '.'
-import { ImagesView } from '@components'
+import {
+    Images,
+    ScreenContent,
+    TitleBar,
+} from '@components'
 
 export default props => (
     <Screen {...props}>
-        <ImagesView />
+        <TitleBar title='Images' />
+        <ScreenContent>
+            <Images />
+        </ScreenContent>
     </Screen>
 )

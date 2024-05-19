@@ -23,6 +23,7 @@ import IconButton from './IconButton'
 import ImageDetail from './ImageDetail'
 import ImageFormModule from './ImageFormModule'
 import ImageList from './ImageList'
+import Images from './Images'
 import ImageSelector from './ImageSelector'
 import ImageView from './ImageView'
 import ImagesView from './ImagesView'
@@ -86,6 +87,7 @@ export {
     ImageDetail,
     ImageFormModule,
     ImageList,
+    Images,
     ImageSelector,
     ImageView,
     ImagesView,
