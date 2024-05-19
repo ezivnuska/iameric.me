@@ -14,7 +14,6 @@ import FormField from './FormField'
 import Forum from './Forum'
 import HoverableView from './HoverableView'
 import IconButton from './IconButton'
-import ImageDetail from './ImageDetail'
 import ImageFormModule from './ImageFormModule'
 import Images from './Images'
 import ImageSelector from './ImageSelector'
@@ -63,7 +62,6 @@ export {
     Forum,
     HoverableView,
     IconButton,
-    ImageDetail,
     ImageFormModule,
     Images,
     ImageSelector,
