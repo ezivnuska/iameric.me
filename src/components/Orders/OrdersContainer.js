@@ -4,8 +4,10 @@ import {
 } from 'react-native'
 import {
     EmptyStatus,
+} from '@components'
+import {
     OrderPreview,
-} from '.'
+} from './components'
 import {
     useModal,
     useOrders,

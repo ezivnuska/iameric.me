@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    OrderList,
+    Orders,
 } from '@components'
 import {
     Screen,
@@ -10,6 +10,6 @@ import {
 export default props => (
     <Screen {...props}>
         <ScreenTitle title='Orders' />
-        <OrderList />
+        <Orders />
     </Screen>
 )

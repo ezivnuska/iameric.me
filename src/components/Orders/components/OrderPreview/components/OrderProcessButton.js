@@ -6,7 +6,7 @@ import {
     IconButton,
     ThemedText,
     TimeSelector,
-} from '.'
+} from '@components'
 import {
     useModal,
     useOrders,

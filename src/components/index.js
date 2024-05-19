@@ -10,7 +10,6 @@ import CenterVertical from './CenterVertical'
 import ContactView from './ContactView'
 import ContactsView from './ContactsView'
 import ThemedText from './ThemedText'
-// import DeleteAccountButton from './Profile/components/DeleteAccountButton'
 import DestroyForm from './DestroyForm'
 import EmptyStatus from './EmptyStatus'
 import FeedbackForm from './FeedbackForm'
@@ -29,18 +28,16 @@ import ImageView from './ImageView'
 import ImagesView from './ImagesView'
 import Label from './Label'
 import LoadingView from './LoadingView'
-import LocationDetails from './LocationDetails'
-// import LocationModule from './Profile/components/LocationModule'
+// import LocationDetails from './LocationDetails'
 import LocationForm from './LocationForm'
 import ModalDeleteProduct from './ModalDeleteProduct'
 import ModalImage from './ModalImage'
 import ModalProfile from './ModalProfile'
 import ModalSignout from './ModalSignout'
 import ModalView from './ModalView'
-import OrderList from './OrderList'
+import Orders from './Orders'
 import OrderDisplayView from './OrderDisplayView'
-import OrderPreview from './OrderPreview'
-import OrderProcessButton from './OrderProcessButton'
+// import OrderProcessButton from './Orders/components/OrderPreview/components/OrderProcessButton'
 import PopUpModal from './PopUpModal'
 import Preview from './Preview'
 import ProductDetails from './ProductDetails'
@@ -56,7 +53,6 @@ import SignUpForm from './SignUpForm'
 import SimpleButton from './SimpleButton'
 import TimeSelector from './TimeSelector'
 import TitleBar from './TitleBar'
-// import UserDetails from './Profile/components/UserDetails'
 import UserDetailsShort from './UserDetailsShort'
 import UserHeading from './UserHeading'
 import Vendor from './Vendor'
@@ -75,7 +71,6 @@ export {
     ContactView,
     ContactsView,
     ThemedText,
-    // DeleteAccountButton,
     DestroyForm,
     EmptyStatus,
     FeedbackForm,
@@ -93,18 +88,16 @@ export {
     ImagesView,
     Label,
     LoadingView,
-    LocationDetails,
-    // LocationModule,
+    // LocationDetails,
     LocationForm,
     ModalDeleteProduct,
     ModalImage,
     ModalProfile,
     ModalSignout,
     ModalView,
-    OrderList,
+    Orders,
     OrderDisplayView,
-    OrderPreview,
-    OrderProcessButton,
+    // OrderProcessButton,
     PopUpModal,
     Preview,
     ProductDetails,
@@ -122,7 +115,6 @@ export {
     TimeSelector,
     TitleBar,
     UserHeading,
-    // UserDetails,
     UserDetailsShort,
     Vendor,
     Vendors,

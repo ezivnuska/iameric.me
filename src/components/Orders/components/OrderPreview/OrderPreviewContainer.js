@@ -5,9 +5,11 @@ import {
 import {
     CartProductPreview,
     ThemedText,
+} from '@components'
+import {
     LocationDetails,
     OrderProcessButton,
-} from '.'
+} from './components'
 import {
     useApp,
     useUser,
