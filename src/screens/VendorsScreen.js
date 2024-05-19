@@ -1,5 +1,7 @@
 import React from 'react'
 import {
+    ScreenContent,
+    TitleBar,
     Vendors,
 } from '@components'
 import {
@@ -8,6 +10,9 @@ import {
 
 export default props => (
     <Screen secure={false} {...props}>
-        <Vendors {...props} />
+        <TitleBar title='Vendors' />
+        <ScreenContent>
+            <Vendors navigation={props.navigation} />
+        </ScreenContent>
     </Screen>
 )
