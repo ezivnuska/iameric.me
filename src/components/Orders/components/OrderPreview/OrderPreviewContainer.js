@@ -3,10 +3,10 @@ import {
     View,
 } from 'react-native'
 import {
-    CartProductPreview,
     ThemedText,
 } from '@components'
 import {
+    CartProductPreview,
     LocationDetails,
     OrderProcessButton,
 } from './components'

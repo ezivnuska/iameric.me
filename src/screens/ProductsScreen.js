@@ -6,9 +6,13 @@ import {
     TitleBar,
 } from '@components'
 import { Screen } from '.'
-import { useModal } from '@context'
+import {
+    useApp,
+    useModal,
+} from '@context'
 
 export default props => {
+    const { theme } = useApp()
     const { setModal } = useModal()
     return (
         <Screen {...props}>

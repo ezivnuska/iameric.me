@@ -1,3 +1,5 @@
 import OrderPreview from './OrderPreview'
 
-export { OrderPreview }
+export {
+    OrderPreview,
+}
