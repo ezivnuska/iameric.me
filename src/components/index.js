@@ -1,9 +1,6 @@
 import Brand from './Brand'
 import Cart from './Cart'
 import CartButton from './CartButton'
-import CartItemControl from './CartItemControl'
-import CartProductPreview from './CartProductPreview'
-import CartView from './CartView'
 import CategoryPicker from './CategoryPicker'
 import CenteredView from './CenteredView'
 import CenterVertical from './CenterVertical'
@@ -54,9 +51,6 @@ export {
     Brand,
     Cart,
     CartButton,
-    CartItemControl,
-    CartProductPreview,
-    CartView,
     CategoryPicker,
     CenteredView,
     CenterVertical,

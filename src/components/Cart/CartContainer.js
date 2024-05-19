@@ -164,11 +164,11 @@ export default () => {
                                     gap: 10,
                                 }}
                             >
-                                <Icon
+                                {/* <Icon
                                     name='card-outline'
                                     size={32}
                                     onPress={() => setModal('CART')}
-                                />
+                                /> */}
 
                                 <Icon
                                     name='cash-outline'

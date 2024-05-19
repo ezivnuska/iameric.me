@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import {
-    CartView,
+    Cart,
     LoadingView,
 } from '@components'
 import {
@@ -38,7 +38,7 @@ export default ({
                         flexGrow: 0,
                     }}
                 >
-                    <CartView />
+                    <Cart />
                 </View>
             )}
 
