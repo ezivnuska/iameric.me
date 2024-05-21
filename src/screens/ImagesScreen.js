@@ -1,16 +1,17 @@
 import React from 'react'
-import { Screen } from '.'
+import { View } from 'react-native'
 import {
     Images,
-    ScreenContent,
     TitleBar,
+    Screen,
 } from '@components'
+import { classes } from '@styles'
 
 export default props => (
     <Screen {...props}>
         <TitleBar title='Images' />
-        <ScreenContent>
+        <View style={classes.paddingH}>
             <Images />
-        </ScreenContent>
+        </View>
     </Screen>
 )

@@ -1,18 +1,17 @@
 import React from 'react'
+import { View } from 'react-native'
 import {
-    ScreenContent,
     TitleBar,
+    Screen,
     Vendors,
 } from '@components'
-import {
-    Screen,
-} from '.'
+import { classes } from '@styles'
 
 export default props => (
     <Screen secure={false} {...props}>
         <TitleBar title='Vendors' />
-        <ScreenContent>
+        <View style={classes.paddingH}>
             <Vendors navigation={props.navigation} />
-        </ScreenContent>
+        </View>
     </Screen>
 )

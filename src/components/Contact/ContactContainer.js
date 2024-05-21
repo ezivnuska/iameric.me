@@ -17,7 +17,7 @@ import {
     loadContacts,
     loadFullContact,
 } from '@utils/contacts'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 
 export default ({ userId }) => {
     

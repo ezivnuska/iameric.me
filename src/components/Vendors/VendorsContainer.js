@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import {
-    FlatList,
-} from 'react-native'
-import {
-    VendorListItem,
-} from './components'
-import {
-    useContacts,
-} from '@context'
+import { FlatList } from 'react-native'
+import { VendorListItem } from './components'
+import { useContacts } from '@context'
 import { loadVendors } from '@utils/contacts'
 
 export default ({ navigation }) => {

@@ -4,7 +4,6 @@ import {
     View,
 } from 'react-native'
 import {
-    CenterVertical,
     FormField,
     IconButton,
     ThemedText,
@@ -21,6 +20,7 @@ import {
 } from '@utils/auth'
 import { getFields } from '@utils/form'
 import { navigationRef } from '@navigation/RootNavigation'
+import { classes } from '@styles'
 
 export default () => {
 
@@ -183,7 +183,7 @@ export default () => {
     )
     
     return focused !== null ? (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <View
                 style={{ paddingVertical: 20 }}
             >
@@ -204,6 +204,6 @@ export default () => {
                     <ThemedText bold>Sign Up</ThemedText>
                 </Pressable>
             </View>
-        </CenterVertical>
+        </View>
     ) : null
 }

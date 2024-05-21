@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
 import {
-    View,
-} from 'react-native'
-import {
-    CenterVertical,
     IconButton,
     ImageSized,
     ProductSelector,
@@ -25,6 +22,7 @@ import {
 import {
     addImageToProduct,
 } from '@utils/products'
+import { classes } from '@styles'
 
 export default ({ image }) => {
     const { dims, landscape, theme } = useApp()
@@ -129,7 +127,7 @@ export default ({ image }) => {
     }
     
     return image && (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <View
                 style={{
                     flexDirection: landscape ? 'row' : 'column',
@@ -223,6 +221,6 @@ export default ({ image }) => {
                     )}
                 </View>
             </View>
-        </CenterVertical>
+        </View>
     )
 }

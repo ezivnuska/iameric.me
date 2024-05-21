@@ -6,7 +6,7 @@ import {
 import {
     ThemedText,
 } from '@components'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import { useApp } from '@context'
 import { StackActions } from '@react-navigation/native'
 

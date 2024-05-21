@@ -13,7 +13,7 @@ import {
     useProducts,
     useUser,
 } from '@context'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_SIZE = 50

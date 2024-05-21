@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
-import {
-    CenterVertical,
-    ThemedText,
-} from '@components'
+import { View } from 'react-native'
+import { ThemedText } from '@components'
 import {
     useApp,
     useUser,
 } from '@context'
 import { Pressable } from 'react-native'
+import { classes } from '@styles'
 
 export default ({ navigation }) => {
     const { userId } = useApp()
@@ -22,13 +21,13 @@ export default ({ navigation }) => {
     }, [userLoaded])
     
     return (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <Pressable
                 onPress={() => navigation.navigate(userId ? 'Main' : 'Start')}
                 disabled={!userLoaded}
             >
                 <ThemedText>iameric</ThemedText>
             </Pressable>
-        </CenterVertical>
+        </View>
     )
 }

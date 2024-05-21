@@ -1,24 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { View } from 'react-native'
 import {
-    View,
-} from 'react-native'
-import {
-    CenterVertical,
     FormField,
     IconButton,
 } from '@components'
 import {
-    useApp,
     useForm,
     useModal,
     useUser,
 } from '@context'
 import { getFields } from '@utils/form'
 import { addUserLocation } from '@utils/user'
+import { classes } from '@styles'
 
 export default ({ location }) => {
-
-    const { landscape } = useApp()
     
     const initialState = {
         address1: '',
@@ -202,9 +197,8 @@ export default ({ location }) => {
             <View
                 style={{
                     display: 'flex',
-                    flexDirection: landscape ? 'row' : 'column',
-                    justifyContent: landscape ? 'space-between' : 'flex-start',
-                    gap: landscape ? 10 : 0,
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
                 }}
             >
                 <FormField
@@ -255,7 +249,7 @@ export default ({ location }) => {
         </>
     )
     return focused !== null ? (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <View
                 style={{ paddingVertical: 20 }}
             >
@@ -271,6 +265,6 @@ export default ({ location }) => {
                 />
 
             </View>
-        </CenterVertical>
+        </View>
     ) : null
 }

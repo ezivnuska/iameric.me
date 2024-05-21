@@ -3,7 +3,7 @@ import {
     Text,
     View,
 } from 'react-native'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import { useApp } from '@context'
 
 export default ({ location }) => {

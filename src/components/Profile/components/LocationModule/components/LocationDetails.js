@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import { useApp } from '@context'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 
 export default ({ location }) => {
 

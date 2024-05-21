@@ -5,7 +5,7 @@ import {
 import {
     ThemedText,
 } from '.'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 
 export default ({ loading = null }) => {
     

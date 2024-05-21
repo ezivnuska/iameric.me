@@ -5,7 +5,6 @@ import {
     View,
 } from 'react-native'
 import {
-    CenterVertical,
     SimpleButton,
     ThemedText,
 } from '@components'
@@ -14,6 +13,7 @@ import {
     useCart,
     useModal,
 } from '@context'
+import { classes } from '@styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -87,11 +87,11 @@ export default ({ item }) => {
             </View>
             
             <View style={{ flex: 1, alignItems: 'center', marginRight: 10 }}>
-                <CenterVertical>
+                <View style={classes.centerV}>
                     <Pressable onPress={() => setModal('SHOW_PRODUCT', item)}>
                         <Icon name='ellipsis-horizontal-outline' size={24} color={theme?.colors.textDefault} />
                     </Pressable>
-                </CenterVertical>
+                </View>
             </View>
 
         </View>

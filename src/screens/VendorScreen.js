@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
 import {
     EmptyStatus,
     IconButton,
     LoadingView,
-    ScreenContent,
     TitleBar,
     Vendor,
+    Screen,
 } from '@components'
-import { Screen } from '.'
 import {
     useApp,
     useContacts,
 } from '@context'
 import { loadVendor } from '@utils/contacts'
+import { classes } from '@styles'
 
 export default ({ onPress, ...props }) => {
 
@@ -60,7 +61,7 @@ export default ({ onPress, ...props }) => {
                 />
             </TitleBar>
             
-            <ScreenContent padded={false}>
+            <View style={classes.paddingH}>
                 {
                     contact
                         ? <Vendor vendor={contact} />
@@ -68,7 +69,7 @@ export default ({ onPress, ...props }) => {
                             ? <LoadingView loading='Loading vendor...' />
                             : <EmptyStatus status='No vendor found.' />
                 }
-            </ScreenContent>
+            </View>
         </Screen>
     )
 }

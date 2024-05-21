@@ -7,9 +7,7 @@ import {
     Cart,
     LoadingView,
 } from '@components'
-import {
-    useApp,
-} from '@context'
+import { useApp } from '@context'
 
 export default ({
     children,
@@ -20,9 +18,13 @@ export default ({
     const { appLoaded, userId } = useApp()
 
     useEffect(() => {
-        if (secure && !userId) props.navigation.navigate('Start')
+        if (secure && !userId) props.navigation.navigate('Start', { params: { signin: true }})
         //     else if (userId) props.navigation.navigate('Auth')
-    }, [userId])
+    }, [])
+    // useEffect(() => {
+    //     if (secure && !userId) props.navigation.navigate('Start', { params: { signin: true }})
+    //     //     else if (userId) props.navigation.navigate('Auth')
+    // }, [userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 

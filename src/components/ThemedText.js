@@ -2,7 +2,7 @@ import React from 'react'
 import {
     Text,
 } from 'react-native'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import { useApp } from '@context'
 
 export default ({ children, align = 'left', bold = false, size = null, ...props }) => {

@@ -9,7 +9,7 @@ import {
 } from '@components'
 import { useApp, useModal } from '@context'
 import { connect } from '@utils/auth'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import LinearGradient from 'react-native-linear-gradient'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'

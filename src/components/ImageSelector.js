@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
 import {
-    View,
-} from 'react-native'
-import {
-    CenterVertical,
     IconButton,
     Preview,
 } from '@components'
@@ -15,6 +12,7 @@ import {
     useUser,
 } from '@context'
 import { handleImageData, openFileSelector, uploadImageData } from '@utils/images'
+import { classes } from '@styles'
 
 const initialSize = 280
 
@@ -118,7 +116,7 @@ export default () => {
     }
 
     return (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <View
                 id='dropzone'
                 style={{
@@ -185,6 +183,6 @@ export default () => {
 
                 </View>
             </View>
-        </CenterVertical>
+        </View>
     )
 }

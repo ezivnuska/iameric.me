@@ -1,15 +1,13 @@
 import React from 'react'
 import {
     Orders,
-} from '@components'
-import {
     Screen,
-    ScreenTitle,
-} from '.'
+    TitleBar,
+} from '@components'
 
 export default props => (
     <Screen {...props}>
-        <ScreenTitle title='Orders' />
+        <TitleBar title='Orders' />
         <Orders />
     </Screen>
 )

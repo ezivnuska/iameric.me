@@ -1,17 +1,11 @@
 import React from 'react'
-import {
-    FlatList,
-} from 'react-native'
+import { FlatList } from 'react-native'
 import {
     EmptyStatus,
     LoadingView,
 } from '@components'
-import {
-    ProductListItem,
-} from './components'
-import {
-    useProducts,
-} from '@context'
+import { ProductListItem } from './components'
+import { useProducts } from '@context'
 
 export default () => {
 

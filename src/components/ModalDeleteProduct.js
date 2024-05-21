@@ -1,6 +1,6 @@
 import React from 'react'
+import { View } from 'react-native'
 import {
-    CenterVertical,
     IconButton,
 } from '@components'
 import {
@@ -8,6 +8,7 @@ import {
     useProducts,
 } from '@context'
 import { deleteProductWithId } from '@utils/products'
+import { classes } from '@styles'
 
 export default ({ productId }) => {
     const { closeModal } = useModal()
@@ -32,7 +33,7 @@ export default ({ productId }) => {
     }
     
     return (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <IconButton
                 type='primary'
                 label='Delete Product'
@@ -40,6 +41,6 @@ export default ({ productId }) => {
                 disabled={productsLoading}
                 padded
             />
-        </CenterVertical>
+        </View>
     )
 }

@@ -1,10 +1,6 @@
 import React from 'react'
-import {
-    View,
-} from 'react-native'
-import {
-    ThemedText,
-} from '@components'
+import { View } from 'react-native'
+import { ThemedText } from '@components'
 import {
     CartProductPreview,
     LocationDetails,
@@ -14,7 +10,7 @@ import {
     useApp,
     useUser,
 } from '@context'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import moment from 'moment'
 
 const OrderStatus = ({ status, ...props }) => (

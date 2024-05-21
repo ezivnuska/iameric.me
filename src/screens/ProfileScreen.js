@@ -1,32 +1,17 @@
 import React from 'react'
-import { Screen } from '.'
+import { View } from 'react-native'
 import {
-    // DeleteAccountButton,
     LoadingView,
-    // LocationModule,
     Profile,
-    ScreenContent,
     TitleBar,
-    // UserDetails,
+    Screen,
 } from '@components'
-import {
-    useUser,
-} from '@context'
+import { useUser } from '@context'
+import { classes } from '@styles'
 
 export default props => {
 
     const { profile, userLoading } = useUser()
-
-    // const restrictedUsernames = ['Customer', 'Driver', 'Vendor']
-    // const restrictedRoles = ['admin']
-
-    // const isRestricted = () => {
-    //     const { role, username } = profile
-    //     return (
-    //         (username && restrictedUsernames.indexOf(username) > -1)
-    //         || (role && restrictedRoles.indexOf(role) > -1)
-    //     )
-    // }
     
     if (userLoading) return <LoadingView loading='Loading profile.' />
 
@@ -35,9 +20,9 @@ export default props => {
             {profile ? (
                 <>
                     <TitleBar title={profile.username} />
-                    <ScreenContent>
+                    <View style={classes.paddingH}>
                         <Profile />
-                    </ScreenContent>
+                    </View>
                 </>
             ) : <LoadingView loading='Loading profile...' />}
         </Screen>

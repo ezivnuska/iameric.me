@@ -1,13 +1,7 @@
 import React, { useEffect } from 'react'
-import {
-    FlatList,
-} from 'react-native'
-import {
-    EmptyStatus,
-} from '@components'
-import {
-    VendorMenuItem,
-} from './components'
+import { FlatList } from 'react-native'
+import { EmptyStatus } from '@components'
+import { VendorMenuItem } from './components'
 import {
     useApp,
     useCart,

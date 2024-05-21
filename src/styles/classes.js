@@ -104,8 +104,6 @@ export default {
         flexShrink: 1,
         flexGrow: 1,
         textAlign: 'left',
-        // borderWidth: 1,
-        // borderColor: 'yellow',
         marginHorizontal: 'auto',
         paddingBottom: 50,
 	},
@@ -119,7 +117,6 @@ export default {
 		fontSize: 18,
 		lineHeight: 24,
         fontWeight: 500,
-        // lineHeight: sizes.formInputLabel + 4,// 22
     },
 	formInputContainer: {
 		borderBottomWidth: 2,
@@ -153,4 +150,14 @@ export default {
         outlineColor: 'none',
         outlineStyle: 'none',
 	},
+    paddingH: {
+        paddingHorizontal: 10,
+    },
+    centerV: {
+        height: '100%',
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 }

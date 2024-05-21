@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { View } from 'react-native'
 import {
-    View,
-} from 'react-native'
-import {
-    CenterVertical,
     FormField,
     IconButton,
     ThemedText,
@@ -11,7 +8,7 @@ import {
 import { unsubscribe } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { getFields } from '@utils/form'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import {
     useApp,
     useCart,
@@ -165,10 +162,10 @@ export default () => {
     )
     
     return (
-        <CenterVertical>
-            <View
-                style={{ paddingVertical: 20 }}
-            >
+        <View style={classes.centerV}>
+
+            <View style={{ paddingVertical: 20, flexDirection: 'column' }}>
+
                 <ThemedText style={classes.headerSecondary}>
                     Delete Account and Data
                 </ThemedText>
@@ -193,6 +190,6 @@ export default () => {
                     </>
                 ) : null}
             </View>
-        </CenterVertical>
+        </View>
     )
 }

@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
+import { View } from 'react-native'
 import {
-    View
-} from 'react-native'
-import {
-    CenterVertical,
     FormField,
     IconButton,
 } from '@components'
@@ -15,6 +12,7 @@ import {
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
 import { createEntry } from '@utils/forum'
+import { classes } from '@styles'
 
 export default ({ data }) => {
 
@@ -152,7 +150,7 @@ export default ({ data }) => {
     )
 
     return focused !== null ? (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <View
                 style={{ paddingVertical: 20 }}
             >
@@ -168,6 +166,6 @@ export default ({ data }) => {
                 />
 
             </View>
-        </CenterVertical>
+        </View>
     ) : null
 }

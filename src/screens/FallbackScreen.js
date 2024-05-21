@@ -1,10 +1,8 @@
 import React from 'react'
 import {
-    Screen,
-} from '.'
-import {
     CenteredVertical,
     ThemedText,
+    Screen,
 } from '@components'
 
 export default props => {

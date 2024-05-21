@@ -1,15 +1,16 @@
 import React from 'react'
+import { View } from 'react-native'
 import {
     IconButton,
     Products,
-    ScreenContent,
     TitleBar,
+    Screen,
 } from '@components'
-import { Screen } from '.'
 import {
     useApp,
     useModal,
 } from '@context'
+import { classes } from '@styles'
 
 export default props => {
     const { theme } = useApp()
@@ -31,9 +32,10 @@ export default props => {
                     padded={false}
                 />
             </TitleBar>
-            <ScreenContent>
+
+            <View style={classes.paddingH}>
                 <Products />
-            </ScreenContent>
+            </View>
         </Screen>
     )
 }

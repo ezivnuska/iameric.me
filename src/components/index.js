@@ -1,8 +1,6 @@
 import Brand from './Brand'
 import Cart from './Cart'
 import CategoryPicker from './CategoryPicker'
-import CenteredView from './CenteredView'
-import CenterVertical from './CenterVertical'
 import Contact from './Contact'
 import Contacts from './Contacts'
 import ThemedText from './ThemedText'
@@ -35,14 +33,12 @@ import Products from './Products'
 import ProductSelector from './ProductSelector'
 import Profile from './Profile'
 import QuantityControl from './QuantityControl'
-import ScreenContent from './ScreenContent'
+import Screen from './Screen'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import SimpleButton from './SimpleButton'
 import TimeSelector from './TimeSelector'
 import TitleBar from './TitleBar'
-import UserDetailsShort from './UserDetailsShort'
-import UserHeading from './UserHeading'
 import Vendor from './Vendor'
 import Vendors from './Vendors'
 
@@ -50,8 +46,6 @@ export {
     Brand,
     Cart,
     CategoryPicker,
-    CenteredView,
-    CenterVertical,
     Contact,
     Contacts,
     ThemedText,
@@ -83,15 +77,13 @@ export {
     ProductSelector,
     Profile,
     QuantityControl,
-    ScreenContent,
+    Screen,
     SignInForm,
     SignUpForm,
     SimpleButton,
     FormField,
     TimeSelector,
     TitleBar,
-    UserHeading,
-    UserDetailsShort,
     Vendor,
     Vendors,
 }

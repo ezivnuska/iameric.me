@@ -1,12 +1,8 @@
 import React from 'react'
-import {
-    View,
-} from 'react-native'
-import {
-    ThemedText
-} from '@components'
-import classes from '@styles/classes'
+import { View } from 'react-native'
+import { ThemedText } from '@components'
 import { useApp } from '@context'
+import { classes } from '@styles'
 
 const Quantity = ({ quantity }) => {
     

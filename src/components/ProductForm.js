@@ -1,10 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import {
-    View,
-} from 'react-native'
+import { View } from 'react-native'
 import {
     CategoryPicker,
-    CenterVertical,
     FormField,
     IconButton,
     ImageFormModule,
@@ -18,6 +15,7 @@ import {
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
 import { createProduct } from '@utils/products'
+import { classes } from '@styles'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -297,7 +295,7 @@ export default  ({ product }) => {
     )
 
     return focused !== null ? (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <View style={{ paddingVertical: 20 }}>
                 
                 <View style={{  marginBottom: 10 }}>
@@ -324,6 +322,6 @@ export default  ({ product }) => {
                 />
 
             </View>
-        </CenterVertical>
+        </View>
     ) : null
 }

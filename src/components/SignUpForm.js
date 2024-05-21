@@ -4,7 +4,6 @@ import {
     View,
 } from 'react-native'
 import {
-    CenterVertical,
     FormField,
     IconButton,
     ThemedText,
@@ -18,6 +17,7 @@ import {
     useModal,
     useUser,
 } from '@context'
+import { classes } from '@styles'
 
 export default ({ role }) => {
 
@@ -220,24 +220,28 @@ export default ({ role }) => {
     )
     
     return focused !== null ? (
-        <CenterVertical>
-            <View
-                style={{ paddingVertical: 20 }}
-            >
+        <View style={classes.centerV}>
+
+            <View style={{ paddingVertical: 20 }}>
+
                 {renderFields()}
+                
                 <IconButton
                     type='primary'
                     label={formLoading ? 'Signing Up' : 'Sign Up'}
                     disabled={formLoading || formError}
                     onPress={submitFormData}
                 />
+                
                 <Pressable
                     onPress={() => setNewModal('SIGN_IN')}
                     style={{ padding: 10 }}
                 >
                     <ThemedText bold>Sign In</ThemedText>
                 </Pressable>
+
             </View>
-        </CenterVertical>
+            
+        </View>
     ) : null
 }

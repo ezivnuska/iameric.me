@@ -1,16 +1,13 @@
 import React from 'react'
+import { View } from 'react-native'
 import {
     Forum,
     IconButton,
-    ScreenContent,
     TitleBar,
-} from '@components'
-import {
     Screen,
-} from '.'
-import {
-    useModal,
-} from '@context'
+} from '@components'
+import { useModal } from '@context'
+import { classes } from '@styles'
 
 export default props => {
     const { setModal } = useModal()
@@ -25,9 +22,9 @@ export default props => {
                     transparent
                 />
             </TitleBar>
-            <ScreenContent>
+            <View style={classes.paddingH}>
                 <Forum />
-            </ScreenContent>
+            </View>
         </Screen>
     )
 }

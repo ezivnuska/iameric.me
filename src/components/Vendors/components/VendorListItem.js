@@ -8,7 +8,7 @@ import {
     ThemedText,
 } from '@components'
 import { useApp } from '@context'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import { ThunderboltOutlined } from '@ant-design/icons'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'

@@ -22,7 +22,7 @@ import {
     setOrderReady,
     setOrderReceived,
 } from '@utils/orders'
-import classes from '@styles/classes'
+import { classes } from '@styles'
 import moment from 'moment'
 
 const NextButton = ({ label, action }) => {

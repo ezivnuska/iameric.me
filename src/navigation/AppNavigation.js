@@ -16,7 +16,7 @@ import {
     StartScreen,
     VendorScreen,
     VendorsScreen,
-} from '../screens'
+} from '@screens'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { navigationRef } from './RootNavigation'
 import {

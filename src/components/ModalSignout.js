@@ -1,6 +1,6 @@
 import React from 'react'
+import { View } from 'react-native'
 import {
-    CenterVertical,
     IconButton,
 } from '@components'
 import {
@@ -14,6 +14,7 @@ import {
 } from '@context'
 import { signout } from '@utils/auth'
 import { navigationRef } from '@navigation/RootNavigation'
+import { classes } from '@styles'
 
 export default () => {
 
@@ -40,7 +41,7 @@ export default () => {
         }
     }
     return (
-        <CenterVertical>
+        <View style={classes.centerV}>
             <IconButton
                 type='primary'
                 label='Sign Out'
@@ -48,6 +49,6 @@ export default () => {
                 disabled={appLoading}
                 padded
             />
-        </CenterVertical>
+        </View>
     )
 }
