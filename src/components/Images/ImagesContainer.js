@@ -13,7 +13,6 @@ import {
 } from '@context'
 import { ActivityIndicator } from 'react-native-paper'
 
-const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ restricted = false }) => {
@@ -29,7 +28,11 @@ export default ({ restricted = false }) => {
     const [imageSize, setImageSize] = useState((dims.width - (20 + numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
 
     useEffect(() => {
-        if (dims) setImageSize((dims.width - (20 + numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
+        if (dims) {
+            let dimWidth = dims.width
+            if (dimWidth > 400) dimWidth = 400
+            setImageSize((dimWidth - (numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
+        }
     }, [dims])
 
     const buttonStyle = {

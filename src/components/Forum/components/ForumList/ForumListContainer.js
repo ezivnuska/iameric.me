@@ -12,6 +12,7 @@ import {
 import { getProfileImagePathFromUser } from '@utils/images'
 
 export default ({ entries, onDelete }) => {
+
     const { setModal } = useModal()
     const { profile } = useUser()
 

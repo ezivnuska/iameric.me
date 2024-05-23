@@ -4,14 +4,11 @@ import {
     View,
 } from 'react-native'
 import { AppNavigation } from '@navigation'
-import {
-    ModalView,
-} from '@components'
+import { ModalView } from '@components'
 import { Header } from '@layout'
 import {
     CartContextProvider,
     ContactContextProvider,
-    ForumContextProvider,
     ImageContextProvider,
     OrderContextProvider,
     ProductContextProvider,
@@ -20,6 +17,7 @@ import {
 } from '@context'
 import { PaperProvider } from 'react-native-paper'
 import Compose from '../Compose'
+import { classes } from '@styles'
 
 export default () => {
 
@@ -39,7 +37,6 @@ export default () => {
         <PaperProvider theme={theme}>
             <Compose
                 components={[
-                    ForumContextProvider,
                     ContactContextProvider,
                     OrderContextProvider,
                     CartContextProvider,
@@ -58,13 +55,16 @@ export default () => {
                         justifyContent: 'flex-start',
                     }}
                 >
-                    <View style={{ flexBasis: 50 }}>
+                    <View style={[classes.screen, { flexGrow: 0 }]}>
                         <Header />
                     </View>
-                    <View style={{ flexBasis: 'auto', flexGrow: 1 }}>
+
+                    <View style={[classes.screen, { flexGrow: 1 }]}>
                         <AppNavigation />
                     </View>
+
                     <ModalView />
+
                 </SafeAreaView>
             </Compose>
         </PaperProvider>

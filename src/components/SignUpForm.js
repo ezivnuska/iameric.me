@@ -19,6 +19,22 @@ import {
 } from '@context'
 import { classes } from '@styles'
 
+const FormTitle = ({ role }) => {
+    const renderTitle = () => {
+        switch (role) {
+            case 'customer': return 'Customer Sign Up'
+            break
+            case 'vendor': return 'Vendor Sign Up'
+            break
+            case 'driver': return 'Driver Sign Up'
+            break
+        }
+    }
+    return (
+        <ThemedText style={[classes.headerSecondary, { marginBottom: 10 }]}>{renderTitle()}</ThemedText>
+    )
+}
+
 export default ({ role }) => {
 
     const initialState = {
@@ -173,6 +189,11 @@ export default ({ role }) => {
                 onKeyPress={onEnter}
                 dirty={getDirty('email')}
                 required
+                onFocus={() => {
+                    console.log('focus', 'email')
+                    setFocus('email')
+                }}
+                focused={focused === 'email'}
             />
             <FormField
                 label='Username'
@@ -187,6 +208,11 @@ export default ({ role }) => {
                 onKeyPress={onEnter}
                 dirty={getDirty('username')}
                 required
+                onFocus={() => {
+                    console.log('focus', 'username')
+                    setFocus('username')
+                }}
+                focused={focused === 'username'}
             />
             <FormField
                 label='Password'
@@ -201,6 +227,11 @@ export default ({ role }) => {
                 onKeyPress={onEnter}
                 dirty={getDirty('password')}
                 required
+                onFocus={() => {
+                    console.log('focus', 'password')
+                    setFocus('password')
+                }}
+                focused={focused === 'password'}
             />
             <FormField
                 label='Confirm Password'
@@ -215,6 +246,11 @@ export default ({ role }) => {
                 onKeyPress={onEnter}
                 dirty={getDirty('confirmPassword')}
                 required
+                onFocus={() => {
+                    console.log('focus', 'confirmPassword')
+                    setFocus('confirmPassword')
+                }}
+                focused={focused === 'confirmPassword'}
             />
         </>
     )
@@ -224,21 +260,31 @@ export default ({ role }) => {
 
             <View style={{ paddingVertical: 20 }}>
 
+                <FormTitle role={role} />
+
                 {renderFields()}
                 
-                <IconButton
-                    type='primary'
-                    label={formLoading ? 'Signing Up' : 'Sign Up'}
-                    disabled={formLoading || formError}
-                    onPress={submitFormData}
-                />
-                
-                <Pressable
-                    onPress={() => setNewModal('SIGN_IN')}
-                    style={{ padding: 10 }}
+                <View
+                    style={{
+                        flexBasis: 'auto',
+                        marginVertical: 10,
+                        marginHorizontal: 'auto',
+                    }}
                 >
-                    <ThemedText bold>Sign In</ThemedText>
-                </Pressable>
+                    <IconButton
+                        type='primary'
+                        label={formLoading ? 'Signing Up' : 'Sign Up'}
+                        disabled={formLoading || formError}
+                        onPress={submitFormData}
+                    />
+                    
+                    <IconButton
+                        label='Sign In'
+                        onPress={() => setNewModal('SIGN_IN')}
+                        style={{ paddingVertical: 10 }}
+                        transparent
+                    />
+                </View>
 
             </View>
             

@@ -12,9 +12,9 @@ import {
     useApp,
 } from '@context'
 
-export default ({ dirty, error, value, label = null, required = false, ...props }) => {
+export default ({ dirty, error, value, focused, label = null, required = false, ...props }) => {
 
-    const { theme } = useApp()
+    const { dark, theme } = useApp()
 
     return (
         <View>
@@ -36,7 +36,7 @@ export default ({ dirty, error, value, label = null, required = false, ...props 
                 ]}
             >
                 <View
-                    style={{ background: props.autoFocus ? '#ddd' : theme?.colors.inputBackground }}
+                    style={{ background: focused ? dark ? '#111' : '#eee' : theme?.colors.inputBackground }}
                 >
                     <TextInput
                         value={value}

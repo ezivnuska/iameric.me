@@ -6,14 +6,21 @@ import {
     TitleBar,
     Screen,
 } from '@components'
-import { useModal } from '@context'
+import {
+    ForumContextProvider,
+    useModal,
+} from '@context'
 import { classes } from '@styles'
 
 export default props => {
+
     const { setModal } = useModal()
+    
     return (
         <Screen {...props}>
+
             <TitleBar title='Forum'>
+
                 <IconButton
                     label='Comment'
                     iconName='add-outline'
@@ -21,10 +28,17 @@ export default props => {
                     padded={true}
                     transparent
                 />
+
             </TitleBar>
+
             <View style={classes.paddingH}>
-                <Forum />
+
+                <ForumContextProvider>
+                    <Forum />
+                </ForumContextProvider>
+
             </View>
+
         </Screen>
     )
 }

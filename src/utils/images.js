@@ -16,8 +16,8 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export const getMaxImageDims = (w, h, dims) => {
     const landscape = dims.width > dims.height
     const maxHeight = landscape ? dims.height - 30 : dims.height / 2
-    let maxWidth = landscape ? (dims.width * 0.5) : dims.width - 20
-    if (maxWidth > 300) maxWidth = 300
+    // const maxWidth = dims.width > 400 ? 400 : dims.width
+    const maxWidth = dims.width > 400 ? 400 : dims.width - 20
     // console.log('w/h', w, h)
     // console.log('maxWidth', maxWidth)
     // console.log('maxHeight', maxHeight)
@@ -213,7 +213,7 @@ const getImageData = async (image, srcOrientation) => {
         imageHeight = width
     }
 
-    const MAX_WIDTH = 340
+    const MAX_WIDTH = 400
 
     if (imageWidth >= MAX_WIDTH) {
         imageWidth = MAX_WIDTH
@@ -249,7 +249,7 @@ const getThumbData = async (image, srcOrientation) => {
         imageHeight = width
     }
 
-    const THUMB_WIDTH = 50
+    const THUMB_WIDTH = 100
 
     if (imageWidth >= THUMB_WIDTH) {
         imageWidth = THUMB_WIDTH

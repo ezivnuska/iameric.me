@@ -160,4 +160,14 @@ export default {
         justifyContent: 'center',
         alignItems: 'center',
     },
+    border: {
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: 'red',
+    },
+    screen: {
+        width: '100%',
+        maxWidth: 420,
+        marginHorizontal: 'auto',
+    }
 }

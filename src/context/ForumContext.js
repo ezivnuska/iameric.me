@@ -34,20 +34,20 @@ export const ForumContextProvider = props => {
 
     useEffect(() => {
         const initForum = async () => {
+            
             if (userId) {
                 dispatch({ type: 'SET_FORUM_LOADING', payload: true })
                 const entries = await loadEntries()
                 dispatch({ type: 'SET_FORUM_LOADING', payload: false })
-
+                
                 if (!entries) console.log('could not load entries')
                 else dispatch({ type: 'SET_ENTRIES', payload: entries })
             }
-
+            
             dispatch({ type: 'SET_FORUM_LOADED' })
         }
         
         if (!state.forumLoaded) initForum()
-        // else if (!userId) dispatch({ type: 'RESET' })
     }, [userId])
 
     const actions = useMemo(() => ({

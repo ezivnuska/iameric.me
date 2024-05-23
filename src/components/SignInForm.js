@@ -164,6 +164,11 @@ export default () => {
                 onKeyPress={onEnter}
                 dirty={getDirty('email')}
                 required
+                onFocus={() => {
+                    console.log('focus', 'email')
+                    setFocus('email')
+                }}
+                focused={focused === 'email'}
             />
             <FormField
                 label='Password'
@@ -178,6 +183,11 @@ export default () => {
                 onKeyPress={onEnter}
                 dirty={getDirty('password')}
                 required
+                onFocus={() => {
+                    console.log('focus', 'password')
+                    setFocus('password')
+                }}
+                focused={focused === 'password'}
             />
         </>
     )
@@ -197,12 +207,14 @@ export default () => {
                     disabled={formLoading || formError}
                     onPress={submitFormData}
                 />
-                <Pressable
+
+                <IconButton
+                    label='Sign Up'
                     onPress={() => setNewModal('SIGNUP_CUSTOMER')}
                     style={{ padding: 10 }}
-                >
-                    <ThemedText bold>Sign Up</ThemedText>
-                </Pressable>
+                    transparent
+                />
+
             </View>
         </View>
     ) : null

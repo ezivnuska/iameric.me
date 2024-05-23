@@ -61,9 +61,11 @@ export default ({
                     elevation: 1,
                     borderColor: theme?.colors.border,
                     textAlign: 'center',
-                    // paddingVertical: 5,
+                    paddingVertical: 5,
                     outlineColor: 'none',
                     outlineStyle: 'none',
+                    // flexBasis: 'min-content',
+                    maxWidth: 200,
                 },
                 {...props.style},
             ]}
@@ -88,7 +90,7 @@ export default ({
                 <ThemedText
                     style={[
                         {
-                            fontSize: 18,
+                            fontSize: 16,
                             flexBasis: 'auto',
                             flexShrink: 1,
                             color: transparent
@@ -97,7 +99,7 @@ export default ({
                                     ? theme?.colors.buttonPrimaryLabel
                                     : theme?.colors.buttonLabel,
                             letterSpacing: 0,
-                            lineHeight: 24,
+                            lineHeight: 22,
                             // paddingHorizontal: iconName && alignIcon === 'right' ? 5 : 0,
                         },
                         textStyles,

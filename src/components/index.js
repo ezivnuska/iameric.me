@@ -19,6 +19,7 @@ import ImageSized from './ImageSized'
 import ImageClone from './ImageClone'
 import LoadingView from './LoadingView'
 import LocationForm from './LocationForm'
+import ModalDeleteImage from './ModalDeleteImage'
 import ModalDeleteProduct from './ModalDeleteProduct'
 import ModalImage from './ModalImage'
 import ModalProfile from './ModalProfile'
@@ -30,7 +31,6 @@ import Preview from './Preview'
 import ProductDetails from './ProductDetails'
 import ProductForm from './ProductForm'
 import Products from './Products'
-import ProductSelector from './ProductSelector'
 import Profile from './Profile'
 import QuantityControl from './QuantityControl'
 import Screen from './Screen'
@@ -63,6 +63,7 @@ export {
     ImageClone,
     LoadingView,
     LocationForm,
+    ModalDeleteImage,
     ModalDeleteProduct,
     ModalImage,
     ModalProfile,
@@ -74,7 +75,6 @@ export {
     ProductDetails,
     ProductForm,
     Products,
-    ProductSelector,
     Profile,
     QuantityControl,
     Screen,

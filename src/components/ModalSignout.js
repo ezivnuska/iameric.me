@@ -36,19 +36,21 @@ export default () => {
             clearProducts()
             clearUser()
             signOut()
-            navigationRef.navigate('Start')
             closeModal()
+            navigationRef.navigate('Start')
         }
     }
     return (
-        <View style={classes.centerV}>
-            <IconButton
-                type='primary'
-                label='Sign Out'
-                onPress={initSignout}
-                disabled={appLoading}
-                padded
-            />
+        <View style={[classes.centerV, classes.paddingH]}>
+            <View style={{ width: '100%', maxWidth: 200 }}>
+                <IconButton
+                    type='primary'
+                    label='Sign Out'
+                    onPress={initSignout}
+                    disabled={appLoading}
+                    padded
+                />
+            </View>
         </View>
     )
 }

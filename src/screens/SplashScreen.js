@@ -5,7 +5,6 @@ import {
     useApp,
     useUser,
 } from '@context'
-import { Pressable } from 'react-native'
 import { classes } from '@styles'
 
 export default ({ navigation }) => {
@@ -13,21 +12,12 @@ export default ({ navigation }) => {
     const { userLoaded } = useUser()
 
     useEffect(() => {
-        console.log('SPLASH')
-    }, [])
-
-    useEffect(() => {
-        // if (userLoaded) navigation.navigate(userId ? 'Auth' : 'Start')
+        if (userLoaded) navigation.navigate(userId ? 'Main' : 'Start')
     }, [userLoaded])
     
     return (
         <View style={classes.centerV}>
-            <Pressable
-                onPress={() => navigation.navigate(userId ? 'Main' : 'Start')}
-                disabled={!userLoaded}
-            >
-                <ThemedText>iameric</ThemedText>
-            </Pressable>
+            <ThemedText>iameric</ThemedText>
         </View>
     )
 }

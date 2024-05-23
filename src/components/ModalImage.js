@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import React, { useEffect, useMemo, useState } from 'react'
+import {
+    Pressable,
+    View,
+} from 'react-native'
 import {
     IconButton,
     ImageSized,
-    ProductSelector,
     ThemedText,
 } from '@components'
 import {
@@ -24,13 +26,47 @@ import {
 } from '@utils/products'
 import { classes } from '@styles'
 
+const ProductOptions = ({ list, onSelect }) => (
+    <View
+        style={{
+            flex: 1,
+            flexGrow: 1,
+            // width: '100%',
+            // borderWidth: 1,
+            // borderColor: 'orange',
+        }}
+    >
+        <View
+            style={{
+                marginVertical: 10,
+                flexBasis: 'auto',
+                // borderWidth: 1,
+                // borderColor: 'green',
+            }}
+        >
+            {list.map((product, index) => (
+                <Pressable
+                    key={`product-option-${index}`}
+                    onPress={() => onSelect(product._id)}
+                >
+                    <ThemedText>{product.title}</ThemedText>
+                </Pressable>
+            ))}
+        </View>
+    </View>
+)
+
 export default ({ image }) => {
     const { dims, landscape, theme } = useApp()
     const {
         removeImage,
         setImagesLoading,
     } = useImages()
-    const { closeModal } = useModal()
+    const {
+        clearModal,
+        closeModal,
+        setModal,
+    } = useModal()
     const {
         products,
         setProductsLoading,
@@ -44,6 +80,9 @@ export default ({ image }) => {
     } = useUser()
 
     const [imageDims, setImageDims] = useState(null)
+    const [productsVisible, setProductsVisible] = useState(false)
+
+    const availableProducts = useMemo(() => products.filter(item => (!item.image || item.image._id !== image._id)), [products, image])
 
     useEffect(() => {
         setImageDims(getMaxImageDims(image.width, image.height, dims))
@@ -52,7 +91,7 @@ export default ({ image }) => {
     const allowDeletion = () => (
         profile.username !== 'Driver' &&
         profile.username !== 'Customer' &&
-        profile.username !== 'Vendor' &&
+        profile.username !== 'Vendor' ||
         profile.role === 'admin'
     )
 
@@ -87,7 +126,9 @@ export default ({ image }) => {
         const isProfileImage = isImageProfileImage(image._id)
         const isProductImage = isImageProductImage(image._id)
 
+        setImagesLoading(true)
         const deletedImage = await deleteImage(image._id, isProductImage, isProfileImage)
+        setImagesLoading(false)
         
         if (!deletedImage) console.log('Error deleting image.')
         else {
@@ -96,7 +137,7 @@ export default ({ image }) => {
             removeImage(deletedImage._id)
         }
         
-        closeModal()
+        clearModal()
     }
 
     const setAvatar = async () => {
@@ -112,6 +153,8 @@ export default ({ image }) => {
 
     const setProductImage = async (imageId, productId) => {
 
+        setProductsVisible(false)
+
         setProductsLoading(true)
         const product = await addImageToProduct(imageId, productId)
         setProductsLoading(false)
@@ -123,99 +166,85 @@ export default ({ image }) => {
 
     const handleDelete = () => {
         if (disableDelete()) alert(`Can't delete in development`)
-        else onImageDeleted()
+        else setModal('IMAGE_DELETE', onImageDeleted)
+        // else onImageDeleted()
     }
     
     return image && (
-        <View style={classes.centerV}>
+        <View style={[classes.centerV, classes.paddingH]}>
             <View
                 style={{
-                    flexDirection: landscape ? 'row' : 'column',
-                    justifyContent: landscape ? 'center' : 'flex-start',
-                    alignItems: 'flex-start',
-                    gap: 10,
                     width: '100%',
-                    alignItems: 'center',
                 }}
             >
+                {imageDims && <ImageSized image={image} dims={imageDims} />}
                 <View
                     style={{
-                        flexBasis: 'auto',
-                        flexGrow: 0,
-                    }}
-                >
-                    {imageDims && <ImageSized image={image} dims={imageDims} />}
-                </View>
-                <View
-                    style={{
-                        flexBasis: 'auto',
-                        flexGrow: 0,
                         marginVertical: 20,
+                        width: '100%',
                     }}
                 >
 
                     {isOwner() && (
-                        <View
-                            style={{
-                                flexBasis: 'auto',
-                                flexGrow: landscape ? 0 : 0,
-                            }}
-                        >
+                        <View>
                             <View
                                 style={{
-                                    flexDirection: landscape ? 'column' : 'row',
-                                    justifyContent: landscape ? 'stretch' : 'space-evenly',
+                                    flex: 1,
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
                                     width: '100%',
                                     gap: 10,
-                                    // paddingHorizontal: 'auto',
-                                    // marginBottom: 10,
+                                    flexGrow: 0,
                                 }}
                             >
                                 
-                                {(isOwner() && !isAvatar()) && (
+                                {!isAvatar() ? (
                                     <IconButton
                                         type='primary'
                                         label='Set as Avatar'
                                         onPress={setAvatar}
                                         disabled={userLoading}
                                         style={{
+                                            flex: 1,
                                             color: theme?.colors.textDefault,
                                         }}
                                     />
-                                )}
+                                ) : null}
 
-                                {allowDeletion() && (
+                                {availableProducts.length ? (
                                     <IconButton
-                                        type='danger'
-                                        label='Delete'
-                                        onPress={handleDelete}
+                                        label='Add to Product'
+                                        onPress={() => setProductsVisible(!productsVisible)}
                                         // disabled={disableDelete()}
                                         style={{
                                             flex: 1,
+                                            flexGrow: 1,
+                                            color: theme?.colors.textDefault,
+                                        }}
+                                    />
+                                ) : null}
+
+                                {allowDeletion() ? (
+                                    <IconButton
+                                        type='danger'
+                                        // label='Delete'
+                                        onPress={handleDelete}
+                                        // disabled={disableDelete()}
+                                        style={{
+                                            flexBasis: 'auto',
+                                            flexShrink: 1,
                                             opacity: disableDelete() ? 0.5 : 1,
                                         }}
                                     />
-                                )}
+                                ) : null}
 
                             </View>
 
-                            {(isOwner() && products.length) && (
-                                <View
-                                    style={{
-                                        flex: 1,
-                                        width: '100%',
-                                    }}
-                                >
-                                    <ThemedText bold>
-                                        Set as Product Image
-                                    </ThemedText>
-
-                                    <ProductSelector
-                                        onSelect={productId => setProductImage(image._id, productId)}
-                                        products={products}
-                                        imageId={image._id}
-                                    />
-                                </View>
+                            {productsVisible && (
+                                <ProductOptions
+                                    list={availableProducts}
+                                    onSelect={productId => setProductImage(image._id, productId)}
+                                />
                             )}
                         </View>
                     )}

@@ -18,8 +18,13 @@ export default ({
     const { appLoaded, userId } = useApp()
 
     useEffect(() => {
-        if (secure && !userId) props.navigation.navigate('Start', { params: { signin: true }})
-        //     else if (userId) props.navigation.navigate('Auth')
+        if (secure) {
+            if (!userId) props.navigation.navigate('Start', { params: { signin: true }})
+        }
+        // else {
+        //     if (userId) props.navigation.navigate('Main')
+        //     else props.navigation.navigate('')
+        // }
     }, [])
     // useEffect(() => {
     //     if (secure && !userId) props.navigation.navigate('Start', { params: { signin: true }})
@@ -29,10 +34,12 @@ export default ({
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 
     return (
-        <View style={{
-            height: '100%',
-            justifyContent: 'flex-start',
-        }}>
+        <View
+            style={[{
+                height: '100%',
+                justifyContent: 'flex-start',
+            }, props.style]}
+        >
             {userId && (
                 <View
                     style={{

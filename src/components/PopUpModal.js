@@ -3,15 +3,14 @@ import {
     ScrollView,
     View,
 } from 'react-native'
-import {
-    IconButton,
-} from '.'
+import { IconButton } from '.'
 import { useApp } from '@context'
 import Modal from 'react-native-modal'
+import { classes } from '@styles'
 
 export default ({ children, onRequestClose, transparent = false, ...props }) => {
     
-    const { dims, landscape, theme } = useApp()
+    const { dims, theme } = useApp()
     
     return (
         <Modal
@@ -21,12 +20,13 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
             onRequestClose={onRequestClose}
             style={{ margin: 0 }}
         >
+            
             <View
-                style={{
+                style={[classes.screen, {
                     position: 'relative',
                     width: dims.width,
                     height: dims.height,
-                }}
+                }]}
             >
 
                 <IconButton
@@ -34,7 +34,6 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                     onPress={onRequestClose}
                     transparent
                     style={{
-                        flexBasis: 'auto',
                         position: 'absolute',
                         top: 9,
                         right: 5,
@@ -48,18 +47,17 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
 
                 <ScrollView
                     showsVerticalScrollIndicator={false}
-                    style={{ background: theme?.colors.modalBackground }}
-                    contentContainerStyle={{
-                        width: '100%',
-                        minWidth: 280,
-                        maxWidth: landscape ? '100%' : 600,
+                    style={{
+                        flex: 1,
+                        height: dims.height,
+                        background: theme?.colors.modalBackground,
                     }}
+                    contentContainerStyle={{ flexGrow: 1 }}
                 >
                     {children}
                 </ScrollView>
-            
             </View>
-
+            
         </Modal>
     )
 }

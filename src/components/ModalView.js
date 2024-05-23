@@ -9,6 +9,7 @@ import {
     DestroyForm,
     ImageSelector,
     LocationForm,
+    ModalDeleteImage,
     ModalDeleteProduct,
     ModalImage,
     ModalProfile,
@@ -45,6 +46,7 @@ export default () => {
             case 'SHOW_PRODUCT': return <ProductDetails product={data} />; break
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ModalImage image={data} />; break
+            case 'IMAGE_DELETE': return <ModalDeleteImage callback={data} />; break
             case 'LOCATION': return <LocationForm location={data} />; break
             case 'ORDERS': return <Orders />; break
             case 'PRODUCT': return <ProductForm product={data} />; break
@@ -70,15 +72,7 @@ export default () => {
             onRequestClose={handleClose}
             transparent={true}
         >
-            <View
-                style={{
-                    height: '100%',
-                    minHeight: dims.height,
-                    minWidth: dims.width,
-                }}
-            >
-                {renderModalContent()}
-            </View>
+            {renderModalContent()}
         </PopUpModal>
     )
 }

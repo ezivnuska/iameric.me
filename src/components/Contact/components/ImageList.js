@@ -10,7 +10,6 @@ import {
     useModal,
 } from '@context'
 
-const IMAGE_SIZE = 50
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ images }) => {
@@ -21,10 +20,14 @@ export default ({ images }) => {
     const imageGap = 5
 
     const numImagesPerRow = 4
-    const [imageSize, setImageSize] = useState((dims.width - (20 + numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
+    const [imageSize, setImageSize] = useState((dims.width - 20 - ((imageGap - 1) * numImagesPerRow)) / numImagesPerRow)
 
     useEffect(() => {
-        if (dims) setImageSize((dims.width - (20 + numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
+        if (dims) {
+            let dimWidth = dims.width
+            if (dimWidth > 420) dimWidth = 420
+            setImageSize((dimWidth - 20 - ((imageGap - 1) * numImagesPerRow)) / numImagesPerRow)
+        }
     }, [dims])
 
     const buttonStyle = {
