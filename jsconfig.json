@@ -9,7 +9,7 @@
             "context/*": ["./src/context/*"],
             "navigation/*": ["./src/navigation/*"],
             "screens/*": ["./src/screens/*"],
-            "layers/*": ["src/layout/*"]
+            "layout/*": ["src/layout/*"]
         }
     }
 }
