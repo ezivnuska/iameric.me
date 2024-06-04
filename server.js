@@ -5,16 +5,16 @@ const { Server } = require('socket.io')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const cors = require('cors')
-const config = require('./config')
 require('dotenv').config()
 
-console.log(`<< ${process.env} >>`)
+console.log(`<< ${process.env.NODE_ENV} >>`)
 
-const SESSION_SECRET = process.env.JWT_SECRET || config.JWT_SECRET
-const db = process.env.DB_CONNECTION_STRING || config.DB_CONNECTION_STRING
+const SESSION_SECRET = process.env.JWT_SECRET || require('./config').JWT_SECRET
+const db = process.env.DB_CONNECTION_STRING || require('./config').DB_CONNECTION_STRING
 // const PORT = 4321
-const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT || config.production.port : config.development.port
-
+const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT || require('./config').production.port : require('./config').development.port
+console.log('PORT', PORT)
+console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 // Create Express app
 const app = express();
 const server = createServer(app);
@@ -28,6 +28,7 @@ const sessionMiddleware = session({
 // CORS options
 const corsOptions = {
   origin: [
+    'wss://iameric.me',
     'http://localhost:3000',
     'http://localhost:4321',
     'https://iameric.me',

@@ -1,12 +1,14 @@
 // Import socket.io-client
 import { io } from 'socket.io-client'
 import clientConfig from './clientConfig'
-// const path = process.env.NODE_ENV === 'production' ? 'https://iameric.me' : 'http://localhost:3000'
 // console.log('socket path:', path)
-const port = process.env.NODE_ENV === 'production' ? clientConfig.production.port : clientConfig.development.port
+const path = process.env.NODE_ENV === 'production' ? undefined : `http://localhost:${clientConfig.development.port}`
+// const path = process.env.NODE_ENV === 'production' ? undefined : `http://localhost:${port}`
+// const path = `http://localhost:${port}`
+// const path = `http://localhost:${port}`
 // Connect to the server
 // const socket = io('/'); // Change the URL to match your server
-const socket = io(`http://localhost:${port}`); // Change the URL to match your server
+const socket = io(path); // Change the URL to match your server
 // const socket = io()
 
 // Event listeners
