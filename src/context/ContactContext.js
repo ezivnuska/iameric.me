@@ -12,6 +12,7 @@ const initialState = {
     contactModals: [],
     error: null,
     closeContactModal: () => {},
+    getUserCountByRole: () => {},
     setContact: () => {},
     setContacts: () => {},
     setContactLoading: () => {},
@@ -87,6 +88,10 @@ export const ContactContextProvider = props => {
         },
         updateContactProducts: async payload => {
             dispatch({ type: 'UPDATE_USER_PRODUCTS', payload })
+        },
+        getUserCountByRole: role => {
+            const users = state.contacts.filter(user => user.role === role)
+            return users.length
         },
     }), [state, dispatch])
 

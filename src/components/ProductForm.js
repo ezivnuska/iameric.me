@@ -11,7 +11,7 @@ import {
     useImages,
     useModal,
     useProducts,
-    useUser,
+    useApp,
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
 import { createProduct } from '@utils/products'
@@ -56,7 +56,7 @@ export default  ({ product }) => {
         addProduct,
         updateProduct,
     } = useProducts()
-    const { profile } = useUser()
+    const { profile } = useApp()
 
     const [initialValues, setInitialValues] = useState(null)
 

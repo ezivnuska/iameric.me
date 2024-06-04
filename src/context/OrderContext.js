@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { useApp } from './AppContext'
-import { loadUserOrders } from '@utils/orders'
+import { getAllOrders } from '@utils/orders'
 
 const initialState = {
     error: null,
@@ -9,6 +9,7 @@ const initialState = {
     ordersLoading: false,
     addOrder: () => {},
     clearOrders: () => {},
+    getOrder: () => {},
     setOrders: () => {},
     setOrdersLoading: () => {},
     markOrderConfirmed: () => {},
@@ -17,6 +18,7 @@ const initialState = {
     markDriverArrived: () => {},
     markOrderReceived: () => {},
     markOrderCompleted: () => {},
+    updateOrder: () => {},
     closeOrder: () => {},
     removeOrder: () => {},
 }
@@ -41,7 +43,7 @@ export const OrderContextProvider = props => {
         const initOrders = async () => {
             if (userId) {
                 dispatch({type: 'SET_ORDERS_LOADING', payload: true })
-                const payload = await loadUserOrders(role, userId)
+                const payload = await getAllOrders()
                 dispatch({type: 'SET_ORDERS_LOADING', payload: false })
                 dispatch({type: 'SET_ORDERS', payload })
             }
@@ -56,6 +58,7 @@ export const OrderContextProvider = props => {
         addOrder: payload => {
             dispatch({ type: 'ADD_ORDER', payload })
         },
+        getOrder: payload => state.orders.filter(order => order._id === payload)[0],
         clearOrders: () => {
             dispatch({ type: 'RESET' })
         },
@@ -88,6 +91,9 @@ export const OrderContextProvider = props => {
         },
         removeOrder: payload => {
             dispatch({ type: 'REMOVE_ORDER', payload })
+        },
+        updateOrder: payload => {
+            dispatch({ type: 'UPDATE_ORDER', payload })
         },
     }), [state, dispatch])
 
@@ -202,6 +208,16 @@ const reducer = (state, action) => {
                             status: payload.status,
                             delivered: payload.delivered,
                         } : order
+                ),
+            }
+        break
+        case 'UPDATE_ORDER':
+            return {
+                ...state,
+                orders: state.orders.map(
+                    order => order._id == payload._id
+                        ? payload
+                        : order
                 ),
             }
         break

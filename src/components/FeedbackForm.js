@@ -5,10 +5,10 @@ import {
     IconButton,
 } from '@components'
 import {
+    useApp,
     useForm,
     useForum,
     useModal,
-    useUser,
 } from '@context'
 import { getFields, validateFields } from '@utils/form'
 import { createEntry } from '@utils/forum'
@@ -48,7 +48,7 @@ export default ({ data }) => {
         closeModal,
     } = useModal()
 
-    const { profile } = useUser()
+    const { profile } = useApp()
 
     const [initialValues, setInitialValues] = useState(null)
 

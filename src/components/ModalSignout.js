@@ -10,7 +10,6 @@ import {
     useModal,
     useOrders,
     useProducts,
-    useUser,
 } from '@context'
 import { signout } from '@utils/auth'
 import { navigationRef } from '@navigation/RootNavigation'
@@ -18,10 +17,14 @@ import { classes } from '@styles'
 
 export default () => {
 
-    const { appLoading, signOut, userId } = useApp()
+    const {
+        appLoading,
+        clearUser,
+        signOut,
+        userId,
+    } = useApp()
     const { clearCart } = useCart()
     const { clearImages } = useImages()
-    const { clearUser } = useUser()
     const { closeModal } = useModal()
     const { clearOrders } = useOrders()
     const { clearProducts } = useProducts()
@@ -34,10 +37,10 @@ export default () => {
             clearCart()
             clearOrders()
             clearProducts()
-            clearUser()
             signOut()
             closeModal()
             navigationRef.navigate('Start')
+            clearUser()
         }
     }
     return (

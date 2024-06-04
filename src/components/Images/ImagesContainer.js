@@ -9,7 +9,6 @@ import {
     useApp,
     useImages,
     useModal,
-    useUser,
 } from '@context'
 import { ActivityIndicator } from 'react-native-paper'
 
@@ -17,10 +16,13 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ restricted = false }) => {
 
-    const { dims, theme } = useApp()
+    const {
+        dims,
+        profile,
+        theme,
+    } = useApp()
     const { images, uploading } = useImages()
     const { setModal } = useModal()
-    const { profile } = useUser()
 
     const imageGap = 5
 

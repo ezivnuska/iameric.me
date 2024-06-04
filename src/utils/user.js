@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+export const loadProfileImage = async id => {
+    const { data } = await axios.get(`/api/profile/image/${id}`)
+    if (!data) console.log(`could not load profile image.`)
+    else return data
+    return null
+}
+
 export const loadUser = async id => {
     const { data } = await axios.get(`/api/profile/${id}`)
     if (!data) console.log(`could not load user.`)

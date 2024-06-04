@@ -7,7 +7,7 @@ import {
 import {
     useForm,
     useModal,
-    useUser,
+    useApp,
 } from '@context'
 import { getFields } from '@utils/form'
 import { addUserLocation } from '@utils/user'
@@ -43,7 +43,7 @@ export default ({ location }) => {
     } = useForm()
 
     const { closeModal } = useModal()
-    const { profile, setUserLocation } = useUser()
+    const { profile, setUserLocation } = useApp()
 
     const [initialValues, setInitialValues] = useState(null)
 

@@ -13,7 +13,6 @@ import {
     useImages,
     useModal,
     useProducts,
-    useUser,
 } from '@context'
 import {
     deleteImage,
@@ -57,7 +56,14 @@ const ProductOptions = ({ list, onSelect }) => (
 )
 
 export default ({ image }) => {
-    const { dims, landscape, theme } = useApp()
+    const {
+        dims,
+        landscape,
+        theme,
+        profile,
+        setProfileImage,
+        appLoading,
+    } = useApp()
     const {
         removeImage,
         setImagesLoading,
@@ -73,11 +79,6 @@ export default ({ image }) => {
         updateProduct,
         updateProductImage,
     } = useProducts()
-    const {
-        profile,
-        setProfileImage,
-        userLoading,
-    } = useUser()
 
     const [imageDims, setImageDims] = useState(null)
     const [productsVisible, setProductsVisible] = useState(false)
@@ -95,7 +96,7 @@ export default ({ image }) => {
         profile.role === 'admin'
     )
 
-    const disableDelete = () => userLoading || process.env.NODE_ENV === 'development'
+    const disableDelete = () => appLoading || process.env.NODE_ENV === 'development'
     const isAvatar = () => (profile.profileImage && profile.profileImage._id === image._id)
     const isOwner = () => profile._id === image.user._id
     
@@ -203,7 +204,7 @@ export default ({ image }) => {
                                         type='primary'
                                         label='Set as Avatar'
                                         onPress={setAvatar}
-                                        disabled={userLoading}
+                                        disabled={appLoading}
                                         style={{
                                             flex: 1,
                                             color: theme?.colors.textDefault,

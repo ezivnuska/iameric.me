@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     Pressable,
     View,
@@ -14,13 +14,30 @@ import {
 import {
     useForm,
     useModal,
-    useUser,
+    useApp,
 } from '@context'
+import { getUserLocation } from '@utils/location'
 
 export default () => {
+
+    const { userLoading, profile, setUserLoading, updateUser } = useApp()
     const { formLoading } = useForm()
     const { setModal } = useModal()
-    const { profile, userLoading } = useUser()
+
+    useEffect(() => {
+        const init = async () => {
+            if (profile && profile.location && typeof profile.location === 'string') {
+                setUserLoading(true)
+                const details = await getUserLocation(profile.location)
+                setUserLoading(false)
+                console.log('details', details)
+                if (!details) console.log('could not load user location')
+                else updateUser({ location: details })
+            }
+        }
+        console.log('profile', profile)
+        init()
+    }, [])
     
     if (userLoading) return <LoadingView loading='Loading user location' />
     

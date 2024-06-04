@@ -11,7 +11,6 @@ import {
     useApp,
     useModal,
     useProducts,
-    useUser,
 } from '@context'
 import { classes } from '@styles'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -21,10 +20,12 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ onPress, product, ...props }) => {
 
-    const { theme } = useApp()
+    const {
+        profile,
+        theme,
+    } = useApp()
     const { setModal } = useModal()
     const { productsLoading } = useProducts()
-    const { profile } = useUser()
 
     const getSource = filename => profile
         ? `${IMAGE_PATH}/${profile.username}/thumb/${filename}`

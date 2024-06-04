@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
 import {
@@ -8,10 +8,11 @@ import {
 } from './components'
 import {
     useApp,
-    useUser,
+    useOrders,
 } from '@context'
 import { classes } from '@styles'
 import moment from 'moment'
+import socket from '../../../../socket'
 
 const OrderStatus = ({ status, ...props }) => (
     <ThemedText
@@ -128,43 +129,111 @@ const DriverStatus = ({ order }) => {
 
 export default ({ order }) => {
 
-    const { profile } = useUser()
+    const { profile } = useApp()
+    const { getOrder, removeOrder, updateOrder } = useOrders()
+
+    const memo = useMemo(() => getOrder(order._id), [order])
+
+    useEffect(() => {
+        socket.on('update_order', order => {
+            updateOrder(order)
+        })
+    }, [])
 
     const showItemized = () => profile.role === 'vendor' ||
         profile.role === 'customer' ||
         profile.role === 'admin' ||
-        (profile.role === 'driver' && order.status > 2 && order.status < 5)
+        (profile.role === 'driver' && memo.status > 2 && memo.status < 5)
 
-    const renderStatus = order => {
+    const renderStatus = item => {
+        if (!profile) return 
         switch (profile.role) {
             case 'admin':
             case 'customer':
-                return <CustomerStatus order={order} />
+                return <CustomerStatus order={item} />
                 break
-            case 'vendor': return <VendorStatus order={order} />
+            case 'vendor': return <VendorStatus order={item} />
                 break
-            case 'driver': return <DriverStatus order={order} />
+            case 'driver': return <DriverStatus order={item} />
                 break
             default: return null
         }
     }
 
+    const renderPartyUsernames = item => {
+        const size = 20
+        return (
+            <View
+                style={{
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <ThemedText size={size} bold>{item.vendor?.username}</ThemedText>
+                <ThemedText size={size} bold>{'-->'}</ThemedText>
+                {item.driver && (
+                    <>
+                        <ThemedText size={size} bold>{item.driver?.username}</ThemedText>
+                        <ThemedText size={size} bold>{'-->'}</ThemedText>
+                    </>
+                )}
+                <ThemedText size={size} bold>{item.customer?.username}</ThemedText>
+            </View>
+        )
+    }
+
+    const authorized = () => {
+        let auth = false
+        if (profile) {
+            if (profile.role === 'admin') auth = true
+            if (
+                profile._id === memo.customer._id
+                ||
+                profile._id === memo.vendor._id
+                ||
+                memo.driver && profile._id === memo.driver._id
+                ||
+                !memo.driver && memo.status < 2
+            ) auth = true
+        }
+        return auth
+    }
+
     return (
         <View>
+            {renderPartyUsernames(memo)}
 
-            <View style={{ paddingHorizontal: 10 }}>
-                {renderStatus(order)}
-            </View>
+            {authorized() ? (
+                <>
 
-            {showItemized() && (
-                <View style={{ paddingVertical: 10 }}>
-                    <CartProductPreview order={order} />
+                    <View style={{ paddingHorizontal: 10 }}>
+                        {renderStatus(memo)}
+                    </View>
+
+                    {memo.ready && (
+                        <View style={{ margin: 10}}>
+                            <ThemedText bold>Order is Ready</ThemedText>
+                        </View>
+                    )}
+
+                    {showItemized() && (
+                        <View style={{ paddingVertical: 10 }}>
+                            <CartProductPreview order={memo} />
+                        </View>
+                    )}
+
+                    <View style={{ padding: 10 }}>
+                        <OrderProcessButton order={memo} />
+                    </View>
+                </>
+            ) : (
+                <View style={{ paddingHorizontal: 10 }}>
+                    <CustomerStatus order={order} />
                 </View>
             )}
-
-            <View style={{ padding: 10 }}>
-                <OrderProcessButton order={order} />
-            </View>
+            
         </View>
     )
 }

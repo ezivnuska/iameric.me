@@ -1,12 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
-    Pressable,
     View,
 } from 'react-native'
 import {
     FormField,
     IconButton,
-    ThemedText,
 } from '@components'
 import {
     useApp,
@@ -141,8 +139,7 @@ export default () => {
             setFormError({ name: 'email', message: 'Signin failed.' })
         } else {
             if (formError) clearFormError()
-            const { _id, role, token, username } = user
-            signIn({ _id, role, token, username })
+            signIn(user)
             clearForm()
             // clearModal()
 		}

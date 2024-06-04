@@ -5,6 +5,13 @@ import axios from 'axios'
  * @returns array of order objects
  */
 
+export const getAllOrders = async () => {
+    const { data } = await axios.get(`/api/orders/all`)
+    if (!data || !data.orders) console.log('could not load all orders.')
+    else return data.orders
+    return null
+}
+
 export const getOrdersById = async id => {
     const { data } = await axios.get(`/api/orders/${id}`)
     if (!data) console.log('could not load orders.')

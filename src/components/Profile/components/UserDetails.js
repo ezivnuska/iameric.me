@@ -5,7 +5,6 @@ import {
 } from 'react-native'
 import {
     useApp,
-    useUser,
 } from '@context'
 import {
     getMaxImageDims,
@@ -47,7 +46,7 @@ const UserDetailsImage = ({ image, username }) => {
 
 export default () => {
 
-    const { profile } = useUser()
+    const { profile } = useApp()
 
     return profile && (
         <View>

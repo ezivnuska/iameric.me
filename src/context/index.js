@@ -7,13 +7,11 @@ import { ImageContext, ImageContextProvider, useImages } from './ImageContext'
 import { ModalContext, ModalContextProvider, useModal } from './ModalContext'
 import { OrderContext, OrderContextProvider, useOrders } from './OrderContext'
 import { ProductContext, ProductContextProvider, useProducts } from './ProductContext'
-import { UserContext, UserContextProvider, useUser } from './UserContext'
+import { SocketContext, SocketContextProvider, useSocket } from './SocketContext'
 
 export {
     AppContext,
     AppContextProvider,
-    // AuthContext,
-    // AuthContextProvider,
     CartContext,
     CartContextProvider,
     ContactContext,
@@ -30,6 +28,8 @@ export {
     OrderContextProvider,
     ProductContext,
     ProductContextProvider,
+    SocketContext,
+    SocketContextProvider,
     useApp,
     useCart,
     useContacts,
@@ -39,7 +39,5 @@ export {
     useModal,
     useOrders,
     useProducts,
-    useUser,
-    UserContext,
-    UserContextProvider,
+    useSocket,
 }

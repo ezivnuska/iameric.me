@@ -1,107 +1,225 @@
+// Import dependencies
 const express = require('express')
+const { createServer } = require('http')
+const { Server } = require('socket.io')
 const mongoose = require('mongoose')
-const cors = require('cors')
 const session = require('express-session')
-
+const cors = require('cors')
+const config = require('./config')
 require('dotenv').config()
 
-const SESSION_SECRET = process.env.JWT_SECRET || require('./config').JWT_SECRET
-const db = process.env.DB_CONNECTION_STRING || require('./config').DB_CONNECTION_STRING
-const PORT = process.env.PORT || require('./config').PORT
+console.log(`<< ${process.env} >>`)
 
-const {
-    authenticate,
-    deleteAccount,
-    handleSignin,
-    handleSignout,
-    handleSignup,
-    validateToken,
-} = require('./api/auth')
+const SESSION_SECRET = process.env.JWT_SECRET || config.JWT_SECRET
+const db = process.env.DB_CONNECTION_STRING || config.DB_CONNECTION_STRING
+// const PORT = 4321
+const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT || config.production.port : config.development.port
 
-const {
-    getUser,
-} = require('./api/user')
+// Create Express app
+const app = express();
+const server = createServer(app);
 
-const {
-    getUsers,
-    getUserDetailsById,
-    getNumberOfOnlineUsers,
-    getAllVendors,
-    getUserById,
-    getUserAndImagesById,
-    getVendor,
-} = require('./api/users')
+const sessionMiddleware = session({
+  secret: SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true
+})
 
-const {
-    deleteImageById,
-    deletePreview,
-    getImagesByUserId,
-    getImageWithUsernameByImageId,
-    getImageIdFromFilename,
-    getProfileImageByUserId,
-    updateProfileImage,
-    uploadAvatar,
-    uploadImage,
-    uploadProductImage,
-} = require('./api/images')
+// CORS options
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:4321',
+    'https://iameric.me',
+  ],
+  credentials: true, // enable set cookie
+  methods: ['GET', 'POST'], // Allow only GET and POST requests
+  // allowedHeaders: ['Content-Type'], // Allow only specific headers
+}
 
-const {
-    createOrUpdateProduct,
-    deleteProductById,
-    getProductById,
-    getProductsByVendorId,
-    addImageIdToProduct,
-} = require('./api/products')
+// Enable CORS
+app.use(cors(corsOptions))
 
-const {
-    createOrUpdateLocation,
-    getLocationByUserId,
-    getUserLocationWithLocationId,
-} = require('./api/location')
+// Set up express-session
+app.use(sessionMiddleware)
 
-const {
-    acceptOrder,
-    closeOrder,
-    confirmOrder,
-    createOrder,
-    deleteOrderByOrderId,
-    getAllOrders,
-    // getOrderIdsByUserId,
-    getOrdersByCustomerId,
-    getOrdersByDriverId,
-    getOrdersByUserId,
-    getOrdersByVendorId,
-    getRelevantOrdersByUserId,
-    markDriverAtVendorLocation,
-    markOrderAsReady,
-    markOrderCompleted,
-    markOrderReceivedByDriver,
-} = require('./api/orders')
-    
-// not currently using entries
-const {
-    createEntry,
-    deleteEntryById,
-    getEntries,
-} = require('./api/entries')
+const io = new Server(server, {
+  cors: corsOptions,
+})
 
-const { createServer } = require('http')
-const app = express()
-const server = createServer(app)
+io.engine.use(sessionMiddleware)
+
+// Set up Mongoose connection
+mongoose.connect(db, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log(`MongoDB connected`))
+  .catch(err => console.log(err));
 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ limit: '5mb' }))
-app.use(cors({
-    origin: ['https://localhost:8080', 'https://iameric.me'],
-}))
 app.use(express.static('dist'))
 app.use('/assets', express.static('./assets'))
 
-app.use(session({
-    secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-}))
+// Set up Socket.IO
+io.on('connection', (socket) => {
+
+  console.log('>>> connection', socket.id)
+  // console.log('socket.request', socket.request)
+  // const sessionId = socket.request.session.id
+    // console.log(`\n<< connection >>`, sessionId)
+
+    // socket.join(sessionId)
+
+    // console.log(`emitting << connection >> (why?)\n`)
+    io.emit('connection', socket.id)
+
+    const SESSION_RELOAD_INTERVAL = 30 * 1000
+
+    // const timer = setInterval(() => {
+    //     socket.request.session.reload((err) => {
+    //     if (err) {
+    //         // forces the client to reconnect
+    //         socket.conn.close()
+    //         // you can also use socket.disconnect(), but in that case the client
+    //         // will not try to reconnect
+    //     }
+    //     })
+    // }, SESSION_RELOAD_INTERVAL)
+
+    socket.on('user_signed_in', (profile) => {
+        console.log('<< user_signed_in >>')
+        // console.log(`\n--> (${profile.username}). emitting << add_socket >>\n`)
+        // socket.emit('add_socket', profile)
+        // socket.broadcast.emit('add_socket', username)
+    })
+
+    // socket.on('i_hear_ya', profile => {
+    //     console.log('<< i_hear_ya >>')
+    //     socket.emit('add_socket', profile)
+    //     // socket.broadcast.emit('add_socket', username)
+    // })
+
+    socket.on('new_order', order => {
+        console.log(`\n<< new_order >>\n`)
+        // socket.emit('add_order', order)
+        socket.broadcast.emit('add_order', order)
+    })
+
+    socket.on('order_updated', order => {
+        console.log(`\n<< order_updated >>\n`)
+        // socket.emit('add_order', order)
+        socket.broadcast.emit('update_order', order)
+    })
+
+    socket.on('order_removed', id => {
+        console.log(`\n<< order_removed >>\n`)
+        // socket.emit('add_order', order)
+        socket.broadcast.emit('remove_order', id)
+    })
+
+    socket.on('connected', (username, callback) => {
+        console.log(`\n<< connected >>`)
+        console.log(`${username} signed in. broadcasting << connected >> to all users\n`)
+        // io.emit('connection', username)
+        if (username) {
+            console.log(`--> (${username}). emitting << add_socket >> to all users`)
+            io.emit('add_socket', username)
+            // socket.broadcast.emit('add_socket', username)
+        }
+    })
+
+    socket.on('disconnect', async reason => {
+        console.log('disconnect', reason)
+        // const sockets = await io.in(userId).fetchSockets();
+        // if (sockets.length === 0) {
+        // // no more active connections for the given user
+        // }
+        // clearInterval(timer)
+    })
+});
+
+// const SOCKET_PORT = process.env.NODE_ENV === 'production' ? process.env.SOCKET_PORT || config.production.SOCKET_PORT : config.development.SOCKET_PORT
+// console.log('SOCKET_PORT', SOCKET_PORT)
+// io.listen(4321)
+
+const {
+  authenticate,
+  deleteAccount,
+  handleSignin,
+  handleSignout,
+  handleSignup,
+  validateToken,
+} = require('./api/auth')
+
+const {
+  getUser,
+  getProfileImage,
+} = require('./api/user')
+
+const {
+  getUsers,
+  getUserDetailsById,
+  getNumberOfOnlineUsers,
+  getAllVendors,
+  getUserById,
+  getUserAndImagesById,
+  getVendor,
+} = require('./api/users')
+
+const {
+  deleteImageById,
+  deletePreview,
+  getImagesByUserId,
+  getImageWithUsernameByImageId,
+  getImageIdFromFilename,
+  getProfileImageByUserId,
+  updateProfileImage,
+  uploadAvatar,
+  uploadImage,
+  uploadProductImage,
+} = require('./api/images')
+
+const {
+  createOrUpdateProduct,
+  deleteProductById,
+  getProductById,
+  getProductsByVendorId,
+  addImageIdToProduct,
+} = require('./api/products')
+
+const {
+  createOrUpdateLocation,
+  getLocationByUserId,
+  getUserLocationWithLocationId,
+} = require('./api/location')
+
+const {
+  acceptOrder,
+  closeOrder,
+  confirmOrder,
+  createOrder,
+  deleteOrderByOrderId,
+  getAllOrders,
+  // getOrderIdsByUserId,
+  getOrdersByCustomerId,
+  getOrdersByDriverId,
+  getOrdersByUserId,
+  getOrdersByVendorId,
+  getRelevantOrdersByUserId,
+  markDriverAtVendorLocation,
+  markOrderAsReady,
+  markOrderCompleted,
+  markOrderReceivedByDriver,
+} = require('./api/orders')
+  
+// not currently using entries
+const {
+  createEntry,
+  deleteEntryById,
+  getEntries,
+} = require('./api/entries')
 
 // auth
 app.post(   '/signin',                 handleSignin)
@@ -113,6 +231,7 @@ app.get(    '/token/:token',           validateToken)
 
 // user
 app.get(    '/profile/:id',             getUser)
+app.get(    '/profile/image/:id',       getProfileImage)
 
 // users
 app.get(    '/user/:id',                getUserById)
@@ -153,6 +272,7 @@ app.post(   '/preview/delete',          deletePreview)
 app.get(    '/images/:name',            getImageIdFromFilename)
 
 // orders
+app.get(    '/orders/all',              getAllOrders)
 app.get(    '/orders/:id',              getRelevantOrdersByUserId)
 app.get(    '/orders/admin/:id',        getAllOrders)
 app.get(    '/orders/user/:id',         getOrdersByUserId)
@@ -169,14 +289,47 @@ app.post(   '/order/complete',          markOrderCompleted)
 app.post(   '/order/close',             closeOrder)
 app.delete( '/order/:id',               deleteOrderByOrderId)
 
-mongoose.Promise = global.Promise
-mongoose.set('strictQuery', false)
-mongoose
-    .connect(db, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(() => console.log(`> MongoDB connected.\n\n* * * * * * * * * * * * * *\n\n*\tiameric.me\t  *\n\n* * * * * * * * * * * * * *\n\n`))
-    .catch(err => console.log('Error connecting to database', err))
+// 404 Handler
+app.use(function (req, res, next) {
+  const status = 404
+  const message = 'Resource not found'
+  const errorResponse = {
+    data: [],
+    isError: true,
+    errMsg: message,
+  }
+  res.status(status).send(errorResponse)
+})
 
-server.listen(PORT, () => console.log(`\n\n\n> server listening on ${PORT}`))
+// Server Error 500 Handler
+// Calling next(error) in any of the routes will call this function
+app.use(
+(
+  error,
+  req,
+  res,
+  next,
+) => {
+  // Incase of 500 Server Error
+  // The Error is only logged in server and not sent in response to restrict error details being known in the frontend
+  console.error(error)
+  const status = 500
+  const message =
+  process.env.NODE_ENV === 'development'
+      ? error.message
+      : 'API Server Error'
+
+  const errorResponse = {
+      data: [],
+      isError: true,
+      errMsg: message,
+  }
+
+  res.status(status).send(errorResponse)
+})
+
+// Start server
+// const PORT = 3000;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

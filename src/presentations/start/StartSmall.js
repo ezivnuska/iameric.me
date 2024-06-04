@@ -10,7 +10,7 @@ import {
 import {
     useApp,
     useModal,
-    useUser,
+    useApp,
 } from '@context'
 import { connect } from '@utils/auth'
 import { classes } from '@styles'
@@ -21,7 +21,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default () => {
 
     const { setModal } = useModal()
-    const { setUser } = useUser()
+    const { setUser } = useApp()
 
     const onConnect = async type => {
         

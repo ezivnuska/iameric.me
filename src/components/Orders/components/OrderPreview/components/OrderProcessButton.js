@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     View,
 } from 'react-native'
@@ -10,7 +10,7 @@ import {
 import {
     useModal,
     useOrders,
-    useUser,
+    useApp,
 } from '@context'
 import {
     deleteOrderWithId,
@@ -24,6 +24,7 @@ import {
 } from '@utils/orders'
 import { classes } from '@styles'
 import moment from 'moment'
+import socket from '../../../../../socket'
 
 const NextButton = ({ label, action }) => {
     const { ordersLoading } = useOrders()
@@ -37,10 +38,16 @@ const NextButton = ({ label, action }) => {
     )
 }
 
-const AdminButton = ({ order, deleteOrder, onClosed }) => 
-    <NextButton label='Delete Completed Order' action={deleteOrder} />
+const AdminButton = ({ order, deleteOrder, onClosed }) => {
+    const { profile } = useApp()
+    return order.customer._id === profile._id && order.status === 5
+        ? <NextButton label='Order Received' action={onClosed} />
+        : <NextButton label='Delete as Admin' action={deleteOrder} />
+}
 
 const CustomerButton = ({ order, deleteOrder, onClosed }) => {
+    const { profile } = useApp()
+    if (profile._id !== order.customer._id) return null
     switch (order.status) {
         case 0:
             return <NextButton label='Cancel Order' action={deleteOrder} />
@@ -98,13 +105,21 @@ export default ({ order }) => {
         removeOrder,
         setOrdersLoading,
     } = useOrders()
-    const { profile } = useUser()
+    const { profile } = useApp()
+
+    useEffect(() => {
+        socket.on('remove_order', data => {
+            console.log('revove order event; removing order...')
+            removeOrder(data)
+        })
+    }, [])
 
     const deleteOrder = async id => {
         setOrdersLoading(true)
         await deleteOrderWithId(id)
         setOrdersLoading(false)
         removeOrder(id)
+        socket.emit('order_removed', id)
     }
 
     const confirmOrder = async (id, time) => {
@@ -116,7 +131,10 @@ export default ({ order }) => {
         const data = await setOrderConfirmed(id, pickup)
         setOrdersLoading(false)
 
-        if (data) markOrderConfirmed(data)
+        if (data) {
+            markOrderConfirmed(data)
+            socket.emit('order_updated', data)
+        }
 
         // closeModal()
     }
@@ -126,8 +144,11 @@ export default ({ order }) => {
         setOrdersLoading(true)
         const order = await setOrderAccepted(orderId, driverId)
         setOrdersLoading(false)
-
-        if (order) markOrderAccepted(order)
+        
+        if (order) {
+            markOrderAccepted(order)
+            socket.emit('order_updated', order)
+        }
 
         // closeModal()
     }
@@ -138,7 +159,10 @@ export default ({ order }) => {
         const order = await setOrderReady(id)
         setOrdersLoading(false)
 
-        if (order) markOrderReady(order)
+        if (order) {
+            markOrderReady(order)
+            socket.emit('order_updated', order)
+        }
 
         // closeModal()
     }
@@ -149,7 +173,10 @@ export default ({ order }) => {
         const order = await setDriverArrived(id)
         setOrdersLoading(false)
 
-        if (order) markDriverArrived(order)
+        if (order) {
+            markDriverArrived(order)
+            socket.emit('order_updated', order)
+        }
 
         // closeModal()
     }
@@ -160,7 +187,10 @@ export default ({ order }) => {
         const order = await setOrderReceived(id)
         setOrdersLoading(false)
         
-        if (order) markOrderReceived(order)
+        if (order) {
+            markOrderReceived(order)
+            socket.emit('order_updated', order)
+        }
         
         // closeModal()
     }
@@ -173,7 +203,9 @@ export default ({ order }) => {
 
         if (order) {
             markOrderCompleted(order)
-            removeOrder(order._id)
+            // removeOrder(order._id)
+            // socket.emit('order_removed', order._id)
+            socket.emit('order_updated', order)
         }
 
         // closeModal()
@@ -188,6 +220,7 @@ export default ({ order }) => {
         if (order) {
             closeOrder(order)
             removeOrder(order._id)
+            socket.emit('order_removed', order._id)
         }
     }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Text,
     View,
@@ -23,7 +23,7 @@ export default ({ location }) => {
                     { color: theme?.colors.textDefault },
                 ]}
             >
-                {address1}{address2.length ? `, ${address2}` : null}
+                {address1}{(address2 && address2.length) ? `, ${address2}` : null}
             </Text>
 
             <Text

@@ -8,12 +8,12 @@ import {
     UserDetails,
 } from './components'
 import {
-    useUser,
+    useApp,
 } from '@context'
 
-export default () => {
+export default ({ profile }) => {
 
-    const { profile, userLoading } = useUser()
+    const { appLoading } = useApp()
 
     const restrictedUsernames = ['Customer', 'Driver', 'Vendor']
     const restrictedRoles = ['admin']
@@ -26,7 +26,7 @@ export default () => {
         )
     }
     
-    if (userLoading) return <LoadingView loading='Loading profile.' />
+    if (appLoading) return <LoadingView loading='Loading profile.' />
 
     return profile ? (
         <>

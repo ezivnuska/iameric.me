@@ -5,7 +5,6 @@ import React, {
     useMemo,
     useReducer,
 } from 'react'
-import { UserContextProvider } from '@context'
 import {
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,
@@ -31,16 +30,27 @@ const CombinedDarkTheme = merge(darkTheme, dark)
 const initialState = {
     appLoaded: false,
     appLoading: false,
+    userLoaded: false,
+    userLoading: false,
     dark: false,
     debug: false,
+    modals: [],
+    profile: null,
     role: null,
     theme: CombinedDefaultTheme,
     userId: null,
     reset: () => {},
-    setAppLoading: () => {},
     signIn: () => {},
     signOut: () => {},
     toggleTheme: () => {},
+    clearUser: () => {},
+    setUser: () => {},
+    setAppLoading: () => {},
+    setUserLoading: () => {},
+    setUserLocation: () => {},
+    setProfileImage: () => {},
+    updateUser: () => {},
+    updateImage: () => {},
 }
 
 export const AppContext = createContext(initialState)
@@ -70,12 +80,12 @@ export const AppContextProvider = ({ children }) => {
             }
 
             const authToken = await getStoredToken()
-            if (authToken !== null) {
+            if (authToken) {
                 console.log('found token, verifying...')
                 const user = await validateToken(authToken)
                 if (user) {
                     console.log('token verified.')
-                    dispatch({ type: 'SET_USER_INFO', payload: user })
+                    dispatch({ type: 'SET_USER', payload: user })
                 }
             } else {
                 console.log('no token found')
@@ -90,8 +100,14 @@ export const AppContextProvider = ({ children }) => {
         reset: () => {
             dispatch({ type: 'RESET' })
         },
-        setApp: async payload => {
+        setAppLoading: async payload => {
             dispatch({ type: 'SET_APP_LOADING', payload })
+        },
+        setUserLoading: async payload => {
+            dispatch({ type: 'SET_USER_LOADING', payload })
+        },
+        setUser: payload => {
+            dispatch({ type: 'SET_USER', payload })
         },
         signIn: async payload => {
             await storeToken(payload.token)
@@ -105,6 +121,21 @@ export const AppContextProvider = ({ children }) => {
         toggleTheme: () => {
             setItem('dark', !state.dark)
             dispatch({ type: 'TOGGLE_THEME' })
+        },
+        updateUser: payload => {
+            dispatch({ type: 'UPDATE_USER', payload })
+        },
+        setProfileImage: payload => {
+            dispatch({ type: 'SET_PROFILE_IMAGE', payload })
+        },
+        setAppLoading: payload => {
+            dispatch({ type: 'SET_APP_LOADING', payload })
+        },
+        setUserLocation: payload => {
+            dispatch({ type: 'SET_USER_LOCATION', payload })
+        },
+        clearUser: () => {
+            dispatch({ type: 'CLEAR_USER' })
         },
     }), [state, dispatch])
 
@@ -131,6 +162,8 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 userId: null,
+                role: null,
+                profile: null,
             }
             break
         case 'SET_APP_LOADED':
@@ -145,12 +178,24 @@ const reducer = (state, action) => {
                 appLoading: payload,
             }
             break
-        case 'SET_USER_INFO':
-            const { _id, role } = payload
+        case 'SET_USER_LOADED':
             return {
                 ...state,
-                userId: _id,
-                role,
+                userLoaded: true,
+            }
+            break
+        case 'SET_USER_LOADING':
+            return {
+                ...state,
+                userLoading: payload,
+            }
+            break
+        case 'SET_USER':
+            return {
+                ...state,
+                userId: payload._id,
+                role: payload.role,
+                profile: payload,
             }
             break
         case 'SIGN_IN':
@@ -158,6 +203,7 @@ const reducer = (state, action) => {
                 ...state,
                 userId: payload._id,
                 role: payload.role,
+                profile: payload,
             }
             break
         case 'SIGN_OUT':
@@ -165,6 +211,7 @@ const reducer = (state, action) => {
                 ...state,
                 userId: null,
                 role: null,
+                profile: null,
             }
             break
         case 'TOGGLE_THEME':
@@ -174,6 +221,66 @@ const reducer = (state, action) => {
                 theme: !state.dark
                     ? CombinedDarkTheme
                     : CombinedDefaultTheme,
+            }
+            break
+        case 'UPDATE_USER':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    ...payload,
+                },
+            }
+            break
+        case 'SET_PROFILE_IMAGE':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    profileImage: payload,
+                },
+            }
+            break
+        case 'SET_USER_LOCATION':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    location: payload,
+                },
+            }
+            break
+        case 'UPDATE_IMAGE':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    images: state.profile.images
+                        ? state.profile.images.map(
+                            img => img._id === payload._id
+                            ? payload
+                            : img
+                        ) : [payload],
+                },
+            }
+            break
+        case 'REMOVE_IMAGE':
+            const profileImage = state.profile.profileImage && state.profile.profileImage._id === payload ? null : state.profileImage
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    images: state.profile.images.filter(
+                        image => image._id !== payload
+                    ),
+                    profileImage,
+                },
+            }
+            break
+        case 'CLEAR_USER':
+            return {
+                ...state,
+                profile: null,
             }
             break
         default:

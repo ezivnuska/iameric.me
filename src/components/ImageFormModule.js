@@ -9,13 +9,13 @@ import {
 } from '.'
 import EXIF from 'exif-js'
 import {
-    useUser,
+    useApp,
 } from '@context'
 import { handleImageUpload } from '@utils/images'
 
 export default ({ onImageSelected, removeImage, source = null }) => {
 
-    const { profile, setUserLoading, userLoading } = useUser()
+    const { profile, setAppLoading, appLoading } = useApp()
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
     
@@ -37,11 +37,11 @@ export default ({ onImageSelected, removeImage, source = null }) => {
 
         imageLoader.onload = async () => {
 
-            setUserLoading(true)
+            setAppLoading(true)
 
             const data = await handleImageUpload(profile._id, imageLoader, exif)
 
-            setUserLoading(false)
+            setAppLoading(false)
             
             onImageSelected(data)
         }
@@ -62,7 +62,7 @@ export default ({ onImageSelected, removeImage, source = null }) => {
                     type='danger'
                     label='Delete'
                     onPress={removeImage}
-                    disabled={userLoading}
+                    disabled={appLoading}
                 />
             )}
 

@@ -11,7 +11,7 @@ import {
 import {
     useContacts,
     useModal,
-    useUser,
+    useApp,
 } from '@context'
 
 export default () => {
@@ -22,7 +22,7 @@ export default () => {
     } = useContacts()
 
     const { setModal } = useModal()
-    const { profile } = useUser()
+    const { profile } = useApp()
 
     if (contactsLoading) return <LoadingView loading='Loading contacts...' />
 

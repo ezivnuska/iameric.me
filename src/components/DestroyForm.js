@@ -16,7 +16,6 @@ import {
     useImages,
     useModal,
     useProducts,
-    useUser,
 } from '@context'
 
 export default () => {
@@ -45,12 +44,11 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { signOut } = useApp()
+    const { profile, signOut, clearUser } = useApp()
     const { clearCart } = useCart()
     const { clearImages } = useImages()
     const { closeModal } = useModal()
     const { clearProducts } = useProducts()
-    const { profile, clearUser } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 

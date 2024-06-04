@@ -47,6 +47,14 @@ const UserSchema = new Schema({
         type: Date,
         // required: true,
     },
+    deposit: {
+        type: Schema.Types.Number,
+        default: 0,
+    },
+    wages: {
+        type: Schema.Types.Number,
+        default: 0,
+    },
 },
 {
     timestamps: true,

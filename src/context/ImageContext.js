@@ -84,7 +84,7 @@ const reducer = (state, action) => {
         case 'SET_IMAGES_LOADING':
             return {
                 ...state,
-                loading: payload,
+                imagesLoading: payload,
             }
             break
         case 'SET_IMAGES_LOADED':

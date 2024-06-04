@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -11,21 +11,39 @@ import {
 } from '@components'
 import {
     useApp,
-    useUser,
     useModal,
 } from '@context'
-import { navigationRef } from '../navigation/RootNavigation'
+import { navigationRef } from '@navigation/RootNavigation'
+import { loadProfileImage } from '@utils/user'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const UserButton = ({ profile }) => {
 
-    const { theme } = useApp()
-    const { profileImage, username } = useMemo(() => profile, [profile])
+    const { theme, updateUser } = useApp()
+
+    const username = useMemo(() => profile.username, [profile])
+    const profileImage = useMemo(() => profile.profileImage, [profile])
+
+    const [ source, setSource ] = useState(`${IMAGE_PATH}/avatar-default-small.png`)
     
-    const getSource = () => profileImage
-        ? `${IMAGE_PATH}/${username}/${profileImage.filename}`
-        : `${IMAGE_PATH}/avatar-default-small.png`
+    useEffect(() => {
+        const getSource = async () => {
+            let src = source
+            // console.log('getting image source (profileImage)', profileImage)
+            if (profileImage && typeof profileImage === 'string') {
+                const image = await loadProfileImage(profileImage)
+                console.log('image', image)
+                if (!image) console.log('could not load profile image')
+                else updateUser({ profileImage: image })
+            }
+            if (profileImage) {
+                src = `${IMAGE_PATH}/${username}/${profileImage.filename}`
+            }
+            setSource(src)
+        }
+        getSource()
+    }, [profile])
     
     return (
         <Pressable
@@ -53,7 +71,7 @@ const UserButton = ({ profile }) => {
             }}
         >
             <Image
-                source={getSource()}
+                source={source}
                 style={{
                     flexBasis: 26,
                     flexGrow: 0,
@@ -86,8 +104,12 @@ const UserButton = ({ profile }) => {
 
 export default () => {
 
-    const { dark, toggleTheme } = useApp()
-    const { profile, userLoaded } = useUser()
+    const {
+        dark,
+        profile,
+        toggleTheme,
+        userLoaded,
+    } = useApp()
     
     return (
         <View
@@ -114,13 +136,13 @@ export default () => {
 
             {
                 profile
-                ? (
-                    <>
-                        <UserButton profile={profile} />
-                        <SignOutButton />
-                    </>
-                )
-                : <SignInButton />
+                    ? (
+                        <>
+                            <UserButton profile={profile} />
+                            <SignOutButton />
+                        </>
+                    )
+                    : <SignInButton />
             }
 
         </View>

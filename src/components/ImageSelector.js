@@ -9,7 +9,6 @@ import {
     useApp,
     useImages,
     useModal,
-    useUser,
 } from '@context'
 import { handleImageData, openFileSelector, uploadImageData } from '@utils/images'
 import { classes } from '@styles'
@@ -18,7 +17,10 @@ const initialSize = 280
 
 export default () => {
 
-    const { dims } = useApp()
+    const {
+        dims,
+        profile,
+    } = useApp()
     const {
         addImage,
         setUploading,
@@ -27,9 +29,6 @@ export default () => {
     const {
         closeModal,
     } = useModal()
-    const {
-        profile,
-    } = useUser()
 
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)

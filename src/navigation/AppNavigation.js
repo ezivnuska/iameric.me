@@ -21,7 +21,6 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { navigationRef } from './RootNavigation'
 import {
     useApp,
-    useUser,
 } from '@context'
 
 const iconSize = 24
@@ -112,8 +111,12 @@ const UserStackScreen = () => {
 
 const MainStack = createMaterialBottomTabNavigator()
 const MainStackScreen = () => {
-    const { theme, userId } = useApp()
-    const { profile } = useUser()
+    const {
+        profile,
+        theme,
+        userId,
+    } = useApp()
+    
     return (
         <MainStack.Navigator
             initialRouteName={'Vendors'}

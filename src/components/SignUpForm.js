@@ -15,7 +15,6 @@ import {
     useApp,
     useForm,
     useModal,
-    useUser,
 } from '@context'
 import { classes } from '@styles'
 
@@ -63,9 +62,11 @@ export default ({ role }) => {
         setFormValues,
     } = useForm()
 
-    const { signIn } = useApp()
+    const {
+        setUser,
+        signIn,
+    } = useApp()
     const { closeModal, data, setNewModal } = useModal()
-    const { setUser } = useUser()
 
     const [initialValues, setInitialValues] = useState(null)
 

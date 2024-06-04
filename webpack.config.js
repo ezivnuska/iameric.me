@@ -169,16 +169,25 @@ module.exports = {
   plugins,
   devtool: isDebug ? 'eval' : 'source-map',
   devServer: {
+    // contentBase: path.resolve(__dirname, 'dist'),
+    compress: true,
+    port: 3000,
     static: {
       directory: path.resolve(__dirname, 'assets'),
       publicPath: '/assets',
     },
-    port: 8080,
     historyApiFallback: true,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:4321',
-        pathRewrite: { '^/api': '' },
+        // target: 'http://127.0.0.1:4321',
+        // pathRewrite: { '^/api': '' },
+        // target: 'http://localhost:4321', // Replace with your Express server port
+        target: 'http://localhost:4321', // Replace with your Express server port
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: {
+            '^/api': '', // Remove '/api' from the request path
+        },
       },
     },
   },

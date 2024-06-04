@@ -142,13 +142,7 @@ const validateToken = async (req, res) => {
 
     if (expired) return res.status(200).json(null)
 
-    return res.status(200).json({
-        _id,
-        role: user.role,
-        profileImage: user.profileImage,
-        token: user.token,
-        username: user.username,
-    })
+    return res.status(200).json(user)
 }
 
 const createUser = async (email, username, password, role) => {
@@ -262,6 +256,13 @@ const authenticate = async (req, res) => {
 const handleSignout = async (req, res) => {
     
     const user = await clearUserTokenWithToken(req.params.token)
+
+    // const sessionId = req.session.id
+  
+    // req.session.destroy(() => {
+    //     // disconnect all Socket.IO connections linked to this session ID
+    //     io.in(sessionId).disconnectSockets()
+    // })
 
     if (!user) console.log('could not update user.')
     else {

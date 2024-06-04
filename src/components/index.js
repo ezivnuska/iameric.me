@@ -5,6 +5,7 @@ import Contact from './Contact'
 import Contacts from './Contacts'
 import ThemedText from './ThemedText'
 import DestroyForm from './DestroyForm'
+import Display from './Display'
 import EmptyStatus from './EmptyStatus'
 import FeedbackForm from './FeedbackForm'
 import FileSelector from './FileSelector'
@@ -37,6 +38,7 @@ import Screen from './Screen'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 import SimpleButton from './SimpleButton'
+import Sockets from './Sockets'
 import TimeSelector from './TimeSelector'
 import TitleBar from './TitleBar'
 import Vendor from './Vendor'
@@ -50,9 +52,11 @@ export {
     Contacts,
     ThemedText,
     DestroyForm,
+    Display,
     EmptyStatus,
     FeedbackForm,
     FileSelector,
+    FormField,
     Forum,
     HoverableView,
     IconButton,
@@ -81,7 +85,7 @@ export {
     SignInForm,
     SignUpForm,
     SimpleButton,
-    FormField,
+    Sockets,
     TimeSelector,
     TitleBar,
     Vendor,

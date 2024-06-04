@@ -32,14 +32,14 @@ export const useProducts = () => {
 
 export const ProductContextProvider = props => {
     
-    const { userId } = useApp()
+    const { profile } = useApp()
     const [state, dispatch] = useReducer(reducer, initialState)
 
     useEffect(() => {
         const initProducts = async () => {
-            if (userId) {
+            if (profile) {
                 dispatch({type: 'SET_PRODUCTS_LOADING', payload: true })
-                const items = await loadProducts(userId)
+                const items = await loadProducts(profile._id)
                 dispatch({type: 'SET_PRODUCTS_LOADING', payload: false })
                 if (items) dispatch({type: 'SET_PRODUCTS', payload: items })
             }
@@ -48,7 +48,7 @@ export const ProductContextProvider = props => {
         }
         
         initProducts()
-    }, [userId])
+    }, [profile])
 
     const actions = useMemo(() => ({
         addProduct: payload => {

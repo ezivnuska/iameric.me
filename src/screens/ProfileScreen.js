@@ -6,14 +6,14 @@ import {
     TitleBar,
     Screen,
 } from '@components'
-import { useUser } from '@context'
+import { useApp } from '@context'
 import { classes } from '@styles'
 
 export default props => {
 
-    const { profile, userLoading } = useUser()
+    const { profile, appLoading } = useApp()
     
-    if (userLoading) return <LoadingView loading='Loading profile.' />
+    if (appLoading) return <LoadingView loading='Loading profile.' />
 
     return (
         <Screen {...props}>
@@ -21,7 +21,7 @@ export default props => {
                 <>
                     <TitleBar title={profile.username} />
                     <View style={classes.paddingH}>
-                        <Profile />
+                        <Profile profile={profile} />
                     </View>
                 </>
             ) : <LoadingView loading='Loading profile...' />}

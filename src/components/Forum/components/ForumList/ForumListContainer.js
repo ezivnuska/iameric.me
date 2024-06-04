@@ -7,14 +7,14 @@ import {
 } from './components'
 import {
     useModal,
-    useUser,
+    useApp,
 } from '@context'
 import { getProfileImagePathFromUser } from '@utils/images'
 
 export default ({ entries, onDelete }) => {
 
     const { setModal } = useModal()
-    const { profile } = useUser()
+    const { profile } = useApp()
 
     return (
         <FlatList
