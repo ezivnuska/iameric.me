@@ -182,12 +182,12 @@ module.exports = {
         // target: 'http://127.0.0.1:4321',
         // pathRewrite: { '^/api': '' },
         // target: 'http://localhost:4321', // Replace with your Express server port
-        target: 'http://localhost:4321', // Replace with your Express server port
+        target: 'http://localhost:4000', // Replace with your Express server port
         secure: false,
         changeOrigin: true,
-        pathRewrite: {
-            '^/api': '', // Remove '/api' from the request path
-        },
+        // pathRewrite: {
+        //     '^/api': '', // Remove '/api' from the request path
+        // },
       },
     },
   },

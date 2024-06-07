@@ -1,23 +1,18 @@
-// Import dependencies
 const express = require('express')
 const { createServer } = require('http')
 const { Server } = require('socket.io')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const cors = require('cors')
+const routes = require('./routes')
 require('dotenv').config()
-
-console.log(`<< ${process.env.NODE_ENV} >>`)
 
 const SESSION_SECRET = process.env.JWT_SECRET || require('./config').JWT_SECRET
 const db = process.env.DB_CONNECTION_STRING || require('./config').DB_CONNECTION_STRING
-// const PORT = 4321
-const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT || require('./config').production.port : require('./config').development.port
-console.log('PORT', PORT)
-console.log('process.env.NODE_ENV', process.env.NODE_ENV)
-// Create Express app
-const app = express();
-const server = createServer(app);
+const PORT = process.env.PORT || require('./config').development.port
+
+const app = express()
+const server = createServer(app)
 
 const sessionMiddleware = session({
   secret: SESSION_SECRET,
@@ -25,17 +20,15 @@ const sessionMiddleware = session({
   saveUninitialized: true
 })
 
-// CORS options
 const corsOptions = {
   origin: [
     'wss://iameric.me',
     'http://localhost:3000',
-    'http://localhost:4321',
+    'http://localhost:4000',
     'https://iameric.me',
   ],
-  credentials: true, // enable set cookie
-  methods: ['GET', 'POST'], // Allow only GET and POST requests
-  // allowedHeaders: ['Content-Type'], // Allow only specific headers
+  credentials: true,
+  // methods: ['GET', 'POST'],
 }
 
 // Enable CORS
@@ -44,11 +37,12 @@ app.use(cors(corsOptions))
 // Set up express-session
 app.use(sessionMiddleware)
 
-const io = new Server(server, {
-  cors: corsOptions,
-})
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '5mb' }))
+app.use(express.static('dist'))
+app.use('/assets', express.static('./assets'))
 
-io.engine.use(sessionMiddleware)
+app.use('/api', routes)
 
 // Set up Mongoose connection
 mongoose.connect(db, {
@@ -58,10 +52,11 @@ mongoose.connect(db, {
   .then(() => console.log(`MongoDB connected`))
   .catch(err => console.log(err));
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json({ limit: '5mb' }))
-app.use(express.static('dist'))
-app.use('/assets', express.static('./assets'))
+const io = new Server(server, {
+  cors: corsOptions,
+})
+
+io.engine.use(sessionMiddleware)
 
 // Set up Socket.IO
 io.on('connection', (socket) => {
@@ -139,156 +134,15 @@ io.on('connection', (socket) => {
         // }
         // clearInterval(timer)
     })
-});
+})
 
-// const SOCKET_PORT = process.env.NODE_ENV === 'production' ? process.env.SOCKET_PORT || config.production.SOCKET_PORT : config.development.SOCKET_PORT
-// console.log('SOCKET_PORT', SOCKET_PORT)
-// io.listen(4321)
-
-const {
-  authenticate,
-  deleteAccount,
-  handleSignin,
-  handleSignout,
-  handleSignup,
-  validateToken,
-} = require('./api/auth')
-
-const {
-  getUser,
-  getProfileImage,
-} = require('./api/user')
-
-const {
-  getUsers,
-  getUserDetailsById,
-  getNumberOfOnlineUsers,
-  getAllVendors,
-  getUserById,
-  getUserAndImagesById,
-  getVendor,
-} = require('./api/users')
-
-const {
-  deleteImageById,
-  deletePreview,
-  getImagesByUserId,
-  getImageWithUsernameByImageId,
-  getImageIdFromFilename,
-  getProfileImageByUserId,
-  updateProfileImage,
-  uploadAvatar,
-  uploadImage,
-  uploadProductImage,
-} = require('./api/images')
-
-const {
-  createOrUpdateProduct,
-  deleteProductById,
-  getProductById,
-  getProductsByVendorId,
-  addImageIdToProduct,
-} = require('./api/products')
-
-const {
-  createOrUpdateLocation,
-  getLocationByUserId,
-  getUserLocationWithLocationId,
-} = require('./api/location')
-
-const {
-  acceptOrder,
-  closeOrder,
-  confirmOrder,
-  createOrder,
-  deleteOrderByOrderId,
-  getAllOrders,
-  // getOrderIdsByUserId,
-  getOrdersByCustomerId,
-  getOrdersByDriverId,
-  getOrdersByUserId,
-  getOrdersByVendorId,
-  getRelevantOrdersByUserId,
-  markDriverAtVendorLocation,
-  markOrderAsReady,
-  markOrderCompleted,
-  markOrderReceivedByDriver,
-} = require('./api/orders')
-  
-// not currently using entries
-const {
-  createEntry,
-  deleteEntryById,
-  getEntries,
-} = require('./api/entries')
-
-// auth
-app.post(   '/signin',                 handleSignin)
-app.post(   '/signup',                 handleSignup)
-app.post(   '/authenticate',           authenticate)
-app.get(    '/signout/:id',            handleSignout)
-app.post(   '/unsubscribe',            deleteAccount)
-app.get(    '/token/:token',           validateToken)
-
-// user
-app.get(    '/profile/:id',             getUser)
-app.get(    '/profile/image/:id',       getProfileImage)
-
-// users
-app.get(    '/user/:id',                getUserById)
-app.get(    '/user/full/:id',           getUserAndImagesById)
-app.get(    '/user/details/:id',        getUserDetailsById)
-app.get(    '/users',                   getUsers)
-app.get(    '/users/online',            getNumberOfOnlineUsers)
-app.get(    '/vendor/:id',              getVendor)
-app.get(    '/vendors',                 getAllVendors)
-
-// entries
-app.post(   '/entry',                   createEntry)
-app.get(    '/entries',                 getEntries)
-app.delete( '/entry/delete/:id',        deleteEntryById)
-
-// location
-app.post(   '/location',                createOrUpdateLocation)
-app.get(    '/location/:userId',        getLocationByUserId)
-app.get(    '/user/location/:locationId', getUserLocationWithLocationId)
-
-// products
-app.post(   '/product',                 createOrUpdateProduct)
-app.delete( '/products/delete/:id',     deleteProductById)
-app.get(    '/products/:vendor',        getProductsByVendorId)
-app.post(   '/product/image',           addImageIdToProduct)
-app.get(    '/product/:id',             getProductById)
-
-// images
-app.post(   '/user/avatar',             updateProfileImage)
-app.post(   '/image/upload',            uploadImage)
-app.get(    '/image/:id',               getImageWithUsernameByImageId)
-app.get(    '/avatar/:id',              getProfileImageByUserId)
-app.get(    '/user/images/:id',         getImagesByUserId)
-app.post(   '/upload/avatar',           uploadAvatar)
-app.post(   '/images/delete',           deleteImageById)
-app.post(   '/product/image/upload',    uploadProductImage)
-app.post(   '/preview/delete',          deletePreview)
-app.get(    '/images/:name',            getImageIdFromFilename)
-
-// orders
-app.get(    '/orders/all',              getAllOrders)
-app.get(    '/orders/:id',              getRelevantOrdersByUserId)
-app.get(    '/orders/admin/:id',        getAllOrders)
-app.get(    '/orders/user/:id',         getOrdersByUserId)
-app.get(    '/orders/customer/:id',     getOrdersByCustomerId)
-app.get(    '/orders/driver/:id',       getOrdersByDriverId)
-app.get(    '/orders/vendor/:id',       getOrdersByVendorId)
-app.post(   '/order',                   createOrder)
-app.post(   '/order/confirm',           confirmOrder)
-app.post(   '/order/accept',            acceptOrder)
-app.post(   '/order/ready',             markOrderAsReady)
-app.post(   '/order/arrived',           markDriverAtVendorLocation)
-app.post(   '/order/received',          markOrderReceivedByDriver)
-app.post(   '/order/complete',          markOrderCompleted)
-app.post(   '/order/close',             closeOrder)
-app.delete( '/order/:id',               deleteOrderByOrderId)
+// app.get('/*', function (req, res) {
+//   res.sendFile(path.join(__dirname, 'dist/index.html'), function (err) {
+//     if (err) {
+//       res.status(500).send(err)
+//     }
+//   })
+// })
 
 // 404 Handler
 app.use(function (req, res, next) {
@@ -311,8 +165,7 @@ app.use(
   res,
   next,
 ) => {
-  // Incase of 500 Server Error
-  // The Error is only logged in server and not sent in response to restrict error details being known in the frontend
+  // 500 Server Error
   console.error(error)
   const status = 500
   const message =
@@ -329,8 +182,6 @@ app.use(
   res.status(status).send(errorResponse)
 })
 
-// Start server
-// const PORT = 3000;
 server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  console.log(`Server running on port ${PORT}`)
+})

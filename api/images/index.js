@@ -5,8 +5,8 @@ const { promises, rm, rmSync } = require('fs')
 const { mkdirp } = require('mkdirp')
 // const gm = require('gm')
 // const im = gm.subClass({ imageMagick: true })
-
-const imagePath = process.env.IMAGE_PATH || require('../../config').IMAGE_PATH
+console.log('*** ', process.env.IMAGE_PATH)
+const imagePath = process.env.IMAGE_PATH || 'https://www.iameric.me/assets'//require('../../config').IMAGE_PATH
 // console.log('API:images >> imagePath', imagePath)
 
 const getImageIdFromFilename = async (req, res) => {
