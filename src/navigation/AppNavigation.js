@@ -119,7 +119,7 @@ const MainStackScreen = () => {
     
     return (
         <MainStack.Navigator
-            initialRouteName={'Forum'}
+            initialRouteName={'Home'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -134,6 +134,19 @@ const MainStackScreen = () => {
                 headerShown: false,
             }}
         >
+
+            <MainStack.Screen
+                name='Home'
+                component={StartScreen}
+                options={{
+                    title: 'Home',
+                    tabBarLabel: 'Home',
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='chatbubbles-outline' size={iconSize} color={color} />
+                    ),
+                }}
+            />
+
             {userId && (
                 <MainStack.Screen
                     name='Forum'
@@ -269,6 +282,7 @@ const linking = {
             Main: {
                 path: '',
                 screens: {
+                    Home: '',
                     Forum: 'forum',
                     Vendors: {
                         path: 'vendors',

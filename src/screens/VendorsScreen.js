@@ -11,7 +11,7 @@ export default props => (
     <Screen secure={false} {...props}>
         <TitleBar title='Vendors' />
         <View style={classes.paddingH}>
-            <Vendors navigation={props.navigation} />
+            <Vendors />
         </View>
     </Screen>
 )

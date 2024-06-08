@@ -1,9 +1,9 @@
 import Contacts from './Contacts'
 import Display from './Display'
-import Vendors from './Vendors'
+import VendorPanel from './VendorPanel'
 
 export {
     Contacts,
     Display,
-    Vendors,
+    VendorPanel,
 }

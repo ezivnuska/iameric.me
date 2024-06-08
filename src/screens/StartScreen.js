@@ -17,7 +17,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import { classes } from '@styles'
 import {
     Display,
-    Vendors,
+    VendorPanel,
 } from '@presentations'
 import {
     useContacts,
@@ -186,9 +186,10 @@ export default ({ navigation }) => {
                 <View
                     style={{
                         flex: 1,
+                        flexGrow: 0,
                         flexShrink: 1,
                         minWidth: 100,
-                        maxWidth: 100,
+                        maxWidth: 300,
                     }}
                 >
                     <Display />
@@ -197,11 +198,11 @@ export default ({ navigation }) => {
                     style={{
                         flex: 1,
                         flexGrow: 1,
-                        // minWidth: 300,
+                        minWidth: 200,
                         maxWidth: 300,
                     }}
                 >
-                    <Vendors />
+                    <VendorPanel />
                 </View>
                 {/* <View
                     style={{
