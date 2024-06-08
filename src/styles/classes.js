@@ -167,7 +167,7 @@ export default {
     },
     screen: {
         width: '100%',
-        maxWidth: 420,
+        maxWidth: 900,
         marginHorizontal: 'auto',
     }
 }

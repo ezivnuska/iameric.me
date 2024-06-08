@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { VendorListItem } from './components'
-import { useContacts } from '@context'
+import {
+    useContacts,
+} from '@context'
 import { loadVendors } from '@utils/contacts'
 
 export default ({ navigation }) => {
-
-    const { setContactsLoading } = useContacts()
+    const {
+        setContactsLoading,
+        updateStatus,
+    } = useContacts()
 
     const [vendors, setVendors] = useState(null)
     
     useEffect(() => {
+
         const init = async () => {
             setContactsLoading(true)
             const loadedVendors = await loadVendors()

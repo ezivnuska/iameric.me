@@ -34,6 +34,8 @@ export const dark = {
         inputPlaceholder: '#333',
         quantityBackground: '#fff',
         quantityLabel: '#000',
+        statusOn: '#afa',
+        statusOff: '#fff',
     },
 }
 
@@ -72,5 +74,7 @@ export const light = {
         inputPlaceholder: '#ccc',
         quantityBackground: '#000',
         quantityLabel: '#fff',
+        statusOn: '#0f0',
+        statusOff: '#000',
     },
 }

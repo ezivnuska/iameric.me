@@ -87,9 +87,17 @@ export const AppContextProvider = ({ children }) => {
                 const user = await validateToken(authToken)
                 if (user) {
                     console.log('token verified.')
-                    dispatch({ type: 'SET_USER', payload: user })
-                    console.log(`\nemitting user_signed_in with userId: ${user._id} from AppContext\n`)
-                    socket.emit('user_signed_in', user._id)
+                    
+                    // console.log(`\nemitting user_signed_in with userId: ${user._id} from AppContext\n`)
+                    socket.emit('user_signed_in', user._id, response => {
+                        dispatch({
+                            type: 'SET_USER',
+                            payload: {
+                                ...user,
+                                status: 'signed_in',
+                            },
+                        })
+                    })
                 }
             } else {
                 console.log('no token found')
@@ -150,6 +158,7 @@ export const AppContextProvider = ({ children }) => {
                     ...state,
                     dims,
                     landscape: dims.width > dims.height,
+                    thin: dims.width < 400,
                     ...actions,
                 }}
             >
@@ -207,7 +216,10 @@ const reducer = (state, action) => {
                 ...state,
                 userId: payload._id,
                 role: payload.role,
-                profile: payload,
+                profile: {
+                    ...payload,
+                    status: 'signed_in',
+                },
             }
             break
         case 'SIGN_OUT':

@@ -6,6 +6,7 @@ import {
 import {
     useApp,
     useCart,
+    useContacts,
     useImages,
     useModal,
     useOrders,
@@ -25,6 +26,7 @@ export default () => {
         userId,
     } = useApp()
     const { clearCart } = useCart()
+    const { updateStatus } = useContacts()
     const { clearImages } = useImages()
     const { closeModal } = useModal()
     const { clearOrders } = useOrders()
@@ -35,8 +37,13 @@ export default () => {
         const signedOut = await signout(idToSignOut)
         if (!signedOut) throw new Error()
         else {
-            console.log(`\nemitting user_signed_out with userId: ${idToSignOut} from ModalSignout\n`)
-            socket.emit('user_signed_out', idToSignOut)
+            // console.log(`\nemitting user_signed_out with userId: ${idToSignOut} from ModalSignout\n`)
+            socket.emit('user_signed_out', idToSignOut, response => {
+                updateStatus({
+                    userId: response,
+                    status: 'signed_out',
+                })
+            })
 
             clearImages()
             clearCart()

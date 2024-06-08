@@ -12,6 +12,7 @@ import { classes } from '@styles'
 import {
     useApp,
 } from '@context'
+import { ThunderboltOutlined } from '@ant-design/icons'
 
 export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) => {
     

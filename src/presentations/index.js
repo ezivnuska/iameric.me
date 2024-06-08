@@ -1,23 +1,9 @@
-import  StartSmall from './start/StartSmall'
-import  StartMedium from './start/StartMedium'
-import  StartLarge from './start/StartLarge'
-
-const getPresentation = (name, size) => {
-    switch(name) {
-        case 'start': {
-            // console.log('size', size)
-            switch (size) {
-                case 'small': return <StartSmall />
-                case 'medium': return <StartMedium />
-                case 'large': return <StartLarge />
-            }
-        }
-    }
-}
+import Contacts from './Contacts'
+import Display from './Display'
+import Vendors from './Vendors'
 
 export {
-    getPresentation,
-    StartSmall,
-    StartMedium,
-    StartLarge,
+    Contacts,
+    Display,
+    Vendors,
 }

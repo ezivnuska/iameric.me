@@ -7,6 +7,7 @@ import {
     OrderCounter,
 } from './components'
 import {
+    useApp,
     useContacts,
     useModal,
     useOrders,
@@ -14,6 +15,7 @@ import {
 import socket from '../../socket'
 
 export default () => {
+    const { thin } = useApp()
     const { setModal } = useModal()
     const { addOrder, removeOrder, orders } = useOrders()
     const { getUserCountByRole } = useContacts()
@@ -34,13 +36,14 @@ export default () => {
     return (
         <View
             style={{
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                marginVertical: 5,
-                paddingHorizontal: 10,
+                width: thin ? '100%' : 100,
+                flexDirection: thin ? 'row' : 'column',
+                justifyContent: thin ? 'space-evenly' : 'flex-start',
+                // paddingHorizontal: 10,
                 // backgroundColor: 'tomato',
                 borderRadius: 12,
                 gap: 5,
+                flexWrap: 'wrap',
             }}
         >
             <OrderCounter

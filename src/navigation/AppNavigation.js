@@ -119,7 +119,7 @@ const MainStackScreen = () => {
     
     return (
         <MainStack.Navigator
-            initialRouteName={'Vendors'}
+            initialRouteName={'Forum'}
             activeColor={theme?.colors.tabActive}
             inactiveColor={theme?.colors.tabInactive}
             barStyle={{
@@ -166,17 +166,17 @@ const MainStackScreen = () => {
                 options={{ title: 'Orders' }}
             /> */}
 
-            {/* <MainStack.Screen
+            <MainStack.Screen
                 name='Users'
                 component={ContactsScreen}
                 options={{
-                    title: 'Users',
-                    tabBarLabel: 'Users',
+                    title: 'Contacts',
+                    tabBarLabel: 'Contacts',
                     tabBarIcon: ({ focused, color }) => (
                         <Icon name='alert-circle-outline' size={iconSize} color={color} />
                     ),
                 }}
-            /> */}
+            />
 
             {/* {(profile && profile.role !== 'vendor') && (
                 
@@ -278,7 +278,7 @@ const linking = {
                         },
                     },
                     // Orders: 'orders',
-                    // Users: 'users',
+                    Users: 'users',
                 },
             },
             Fallback: 'oops',

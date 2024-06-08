@@ -51,7 +51,6 @@ export default ({
                     }}
                 >
                     <Cart />
-                    <Display />
                 </View>
             )}
 

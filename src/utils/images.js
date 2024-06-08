@@ -132,7 +132,6 @@ export const getImageDataById = async id => {
 }
 
 export const getProfileImagePathFromUser = user => {
-    console.log('user >>', user)
     const { profileImage, username } = user
     const filename = profileImage?.filename
     return filename

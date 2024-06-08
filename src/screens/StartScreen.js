@@ -1,15 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     ImageBackground,
-    Pressable,
-    Text,
     View,
 } from 'react-native'
 import {
     IconButton,
     LoadingView,
     Screen,
-    ThemedText,
 } from '@components'
 import {
     useApp,
@@ -18,148 +15,206 @@ import {
 import { connect } from '@utils/auth'
 import LinearGradient from 'react-native-linear-gradient'
 import { classes } from '@styles'
+import {
+    Display,
+    Vendors,
+} from '@presentations'
+import {
+    useContacts,
+} from '@context'
+import socket from '../socket'
 
 export default ({ navigation }) => {
 
     const { appLoaded, signIn, theme, userId } = useApp()
+    const { updateStatus } = useContacts()
     const { setModal } = useModal()
+
+    useEffect(() => {
+        socket.on('signed_in_user', userId => {
+            updateStatus({
+                userId,
+                status: 'signed_in',
+            })
+        })
+        socket.on('signed_out_user', userId => {
+            updateStatus({
+                userId,
+                status: 'signed_out',
+            })
+        })
+    }, [])
 
     const onConnect = async type => {
         const user = await connect(type)
         if (!user) console.log('Error: Could not connect user.')
-        else await signIn(user)
-        navigation.navigate('Main')
+        else {
+            await signIn(user)
+            if (!user) return console.log('error connecting')
+            socket.emit('user_signed_in', user._id, response => {
+                updateStatus({
+                    userId: response,
+                    status: 'signed_in',
+                })
+            })
+        }
+        // navigation.navigate('Main')
     }
+
+    const renderButtons = () => (
+        <View style={{
+            paddingVertical: 20,
+            justifyContent: 'flex-start',
+            // gap: 10,
+        }}>
+
+            <View
+                style={{
+                    flex: 1,
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingBottom: 5,
+                    marginBottom: 5,
+                    gap: 10,
+                    borderBottomWidth: 1,
+                    borderBottomStyle: 'dotted',
+                }}
+            >
+                
+                <IconButton
+                    label='Sign Up to Buy'
+                    iconName='arrow-forward-circle-outline'
+                    onPress={() => setModal('SIGNUP_CUSTOMER')}
+                    alignIcon='right'
+                    transparent
+                />
+
+                <IconButton
+                    type='primary'
+                    label='Preview as Customer'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('customer')}
+                    alignIcon='right'
+                    padded
+                />
+
+            </View>
+
+            <View
+                style={{
+                    flex: 1,
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingBottom: 5,
+                    marginBottom: 5,
+                    gap: 10,
+                    borderBottomWidth: 1,
+                    borderBottomStyle: 'dotted',
+                }}
+            >
+                
+                <IconButton
+                    label='Sign Up to Sell'
+                    iconName='arrow-forward-circle-outline'
+                    onPress={() => setModal('SIGNUP_VENDOR')}
+                    alignIcon='right'
+                    transparent
+                />
+
+                <IconButton
+                    type='primary'
+                    label='Preview as Vendor'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('vendor')}
+                    alignIcon='right'
+                    padded
+                />
+
+            </View>
+
+            <View
+                style={{
+                    flex: 1,
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingBottom: 5,
+                    marginBottom: 5,
+                    gap: 10,
+                    borderBottomWidth: 1,
+                    borderBottomStyle: 'dotted',
+                }}
+            >
+                
+                <IconButton
+                    label='Sign Up to Deliver'
+                    iconName='arrow-forward-circle-outline'
+                    onPress={() => setModal('SIGNUP_DRIVER')}
+                    alignIcon='right'
+                    transparent
+                />
+
+                <IconButton
+                    type='primary'
+                    label='Preview as Driver'
+                    iconName='eye-outline'
+                    onPress={() => onConnect('driver')}
+                    alignIcon='right'
+                    padded
+                />
+
+            </View>
+
+        </View>
+    )
 
     if (!appLoaded) return <LoadingView loading='Doing Auth Stuff' />
 
     return (
-        <Screen secure={false} style={classes.paddingH}>
+        <Screen secure={false} style={[classes.screen, classes.paddingH]}>
 
-            <View style={{ height: '100%', justifyContent: 'space-between', paddingVertical: 20 }}>
-                <View style={{ flex: 1 }}>
-                    
-                    <View style={{ marginBottom: 10 }}>
-                        <ThemedText style={classes.headerSecondary}>Browsing?</ThemedText>
-                        <ThemedText style={classes.textDefault}>Search local items for sale, or free, listed by the community.</ThemedText>
-                    </View>
-
-                    <IconButton
-                        type='primary'
-                        label='Browse Vendors'
-                        iconName='arrow-forward-circle-outline'
-                        onPress={() => navigation.navigate('Main')}
-                        alignIcon='right'
-                    />
-
+            <View
+                style={{
+                    flexDirection: 'row',
+                    // paddingVertical: 20,
+                    flexWrap: 'wrap',
+                    gap: 10,
+                }}
+            >
+                <View
+                    style={{
+                        flex: 1,
+                        flexShrink: 1,
+                        minWidth: 100,
+                        maxWidth: 100,
+                    }}
+                >
+                    <Display />
                 </View>
-
-                <View style={{ flex: 1 }}>
-                    
-                    <View style={{ marginBottom: 10 }}>
-                        <ThemedText style={classes.headerSecondary}>Buying?</ThemedText>
-                        <ThemedText style={classes.textDefault}>Sign up now, or preview the customer experience.</ThemedText>
-                    </View>
-
-                    <View
-                        style={{
-                            width: '100%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            gap: 10,
-                        }}
-                    >
-                        
-                        <IconButton
-                            type='primary'
-                            label='Sign Up'
-                            iconName='arrow-forward-circle-outline'
-                            onPress={() => setModal('SIGNUP_CUSTOMER')}
-                            alignIcon='right'
-                        />
-
-                        <IconButton
-                            label='Preview'
-                            iconName='eye-outline'
-                            onPress={() => onConnect('customer')}
-                            alignIcon='right'
-                            transparent
-                        />
-
-                    </View>
+                <View
+                    style={{
+                        flex: 1,
+                        flexGrow: 1,
+                        // minWidth: 300,
+                        maxWidth: 300,
+                    }}
+                >
+                    <Vendors />
                 </View>
-
-                <View style={{ flex: 1 }}>
-
-                    <View style={{ marginBottom: 10 }}>
-                        <ThemedText style={classes.headerSecondary}>Selling?</ThemedText>
-                        <ThemedText style={classes.textDefault}>Sign up now, or preview the vendor experience.</ThemedText>
-                    </View>
-                    
-                    <View
-                        style={{
-                            width: '100%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            gap: 10,
-                        }}
-                    >
-                        
-                        <IconButton
-                            type='primary'
-                            label='Sign Up'
-                            iconName='arrow-forward-circle-outline'
-                            onPress={() => setModal('SIGNUP_VENDOR')}
-                            alignIcon='right'
-                        />
-
-                        <IconButton
-                            label='Preview'
-                            iconName='eye-outline'
-                            onPress={() => onConnect('vendor')}
-                            alignIcon='right'
-                            transparent
-                        />
-
-                    </View>
-                </View>
-
-                <View style={{ flex: 1 }}>
-
-                    <View style={{ marginBottom: 10 }}>
-                        <ThemedText style={classes.headerSecondary}>Driving?</ThemedText>
-                        <ThemedText style={classes.textDefault}>Sign up now, or preview the driver experience.</ThemedText>
-                    </View>
-                    
-                    <View
-                        style={{
-                            width: '100%',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            gap: 10,
-                        }}
-                    >
-                        
-                        <IconButton
-                            type='primary'
-                            label='Sign Up'
-                            iconName='arrow-forward-circle-outline'
-                            onPress={() => setModal('SIGNUP_DRIVER')}
-                            alignIcon='right'
-                        />
-
-                        <IconButton
-                            label='Preview'
-                            iconName='eye-outline'
-                            onPress={() => onConnect('driver')}
-                            alignIcon='right'
-                            transparent
-                        />
-
-                    </View>
-                </View>
+                {/* <View
+                    style={{
+                        flex: 1,
+                        flexGrow: 1,
+                        // minWidth: 300,
+                        maxWidth: 300,
+                    }}
+                >
+                    <Contacts />
+                </View> */}
             </View>
-
+            {!userId && renderButtons()}
         </Screen>
         // <View
         //     style={{

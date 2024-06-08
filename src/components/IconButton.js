@@ -45,7 +45,7 @@ export default ({
                     flexDirection: 'row',
                     justifyContent: justify,
                     alignItems: 'center',
-                    flexShrink: 0,
+                    flexShrink: 1,
                     flexGrow: 0,
                     paddingVertical: 2,
                     paddingHorizontal: transparent || !padded ? 0 : 10,
@@ -65,7 +65,7 @@ export default ({
                     outlineColor: 'none',
                     outlineStyle: 'none',
                     // flexBasis: 'min-content',
-                    maxWidth: 200,
+                    // maxWidth: 200,
                 },
                 {...props.style},
             ]}
@@ -92,7 +92,8 @@ export default ({
                         {
                             fontSize: 16,
                             flexBasis: 'auto',
-                            flexShrink: 1,
+                            flexShrink: 0,
+                            flexGrow: 1,
                             color: transparent
                                 ? theme?.colors.textDefault
                                 : type === 'primary' || type === 'danger'

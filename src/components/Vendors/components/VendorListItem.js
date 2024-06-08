@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
     Image,
     Pressable,
@@ -7,46 +7,46 @@ import {
 import {
     ThemedText,
 } from '@components'
-import { useApp } from '@context'
+import {
+    useApp,
+    useContacts,
+} from '@context'
 import { classes } from '@styles'
-import { ThunderboltOutlined } from '@ant-design/icons'
+import Icon from 'react-native-vector-icons/Ionicons'
+import { ActivityIndicator } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ children, user, filename, onPress = null, ...props }) => {
 
-    const { landscape, theme } = useApp()
+    const { landscape, profile, theme } = useApp()
 
-    const [online, setOnline] = useState(false)
+    const { contacts } = useContacts()
 
-    useEffect(() => {
-        if (user && user.exp) {
-            const newDate = new Date(user.exp) - Date.now()
-            const expired = (newDate > 0)
-            setOnline(!expired)
-        }
-    }, [user])
+    const vendor = useMemo(() => contacts.filter(contact => contact._id === user._id)[0], [contacts])
     
     const getSource = () => filename
         ? `${IMAGE_PATH}/${user.username}/${filename}`
         : `${IMAGE_PATH}/avatar-default-small.png`
 
-    return (
-        <View
+    if (!vendor) return <ActivityIndicator size='small' />
+
+    const isConnected = () => (vendor && vendor.status === 'signed_in') || (profile && vendor._id === profile._id)
+
+    return (    
+        <Pressable
+            disabled={!onPress}
+            onPress={onPress}
             style={[
                 {
                     flexBasis: 'auto',
                     flexGrow: 1,
                     flexShrink: 0,
-                    display: 'flex',
-                    flexDirection: landscape ? 'column' : 'row',
-                    justifyContent: landscape ? 'center' : 'flex-start',
-                    alignItems: landscape ? 'center' : 'baseline',
-                    // gap: 12,
-                    // borderWidth: 1,
-                    // borderColor: 'green',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center',
+                    gap: 12,
                     flexWrap: 'nowrap',
-                    // paddingHorizontal: landscape ? 0 : 10,
                     paddingBottom: 10,
                 },
                 props.style,
@@ -56,51 +56,23 @@ export default ({ children, user, filename, onPress = null, ...props }) => {
                 style={{
                     flexBasis: 'auto',
                     flexGrow: 0,
-                    width: 35,
-                    height: 35,
-                    resizeMode: 'stretch',
+                    width: 50,
+                    height: 50,
+                    resizeMode: 'center',
                 }}
                 // onLoadStart={() => setLoading(true)}
                 // onLoadEnd={() => setLoading(false)}
                 source={getSource()}
             />
+            
+            <Icon
+                name={isConnected() ? 'ellipse' : 'ellipse-outline'}
+                size={18}
+                color={isConnected() ? theme?.colors.statusOn : theme?.colors.statusOff}
+            />
 
-            <View
-                style={{
-                    flexBasis: 'auto',
-                    flexGrow: 1,
-                    justifyContent: 'flex-start',
-                    // borderWidth: 1,
-                    // borderColor: 'yellow',
-                    marginTop: landscape ? 8 : 0,
-                    marginLeft: landscape ? 0 : 10,
-                }}
-            >
-                <Pressable
-                    disabled={!onPress}
-                    onPress={onPress}
-                    // style={{ marginBottom: 8 }}
-                >
-                    <ThemedText
-                        style={classes.userHeading}
-                    >
-                        {user.username}
-                        {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
-                    </ThemedText>
+            <ThemedText>{vendor.username}</ThemedText>
 
-                </Pressable>
-                
-                <View
-                    style={{
-                        flexBasis: '100%',
-                        flexGrow: 0,
-                    }}
-                >
-                    {children}
-                </View>
-
-            </View>
-
-        </View>
+        </Pressable>
     )
 }

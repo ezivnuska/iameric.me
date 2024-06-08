@@ -13,7 +13,8 @@ export default ({ navigation }) => {
     } = useApp()
 
     useEffect(() => {
-        if (userLoaded) navigation.navigate(userId ? 'Main' : 'Start')
+        // if (userLoaded) navigation.navigate(userId ? 'Main' : 'Start')
+        if (userLoaded) navigation.navigate('Start')
     }, [userLoaded])
     
     return (

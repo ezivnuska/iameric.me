@@ -33,7 +33,6 @@ const UserButton = ({ profile }) => {
             // console.log('getting image source (profileImage)', profileImage)
             if (profileImage && typeof profileImage === 'string') {
                 const image = await loadProfileImage(profileImage)
-                console.log('image', image)
                 if (!image) console.log('could not load profile image')
                 else updateUser({ profileImage: image })
             }

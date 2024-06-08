@@ -96,11 +96,13 @@ io.on('connection', (socket) => {
     })
     
     socket.on('user_signed_in', (userId, callback) => {
-        console.log(`\n<< user_signed_in >>\nuser with id ${userId} signed in.\nbroadcasting << update_user >> to all users\n`)
-        io.emit('update_user_status', {
-          userId,
-          status: 'signed_in',
-        })
+        console.log(`\n<< user_signed_in >>\nuser with id ${userId} signed in.\nbroadcasting << signed_in_user >>\n`)
+        socket.broadcast.emit('signed_in_user', userId)
+        if (callback) callback(userId)
+        // callback({
+        //   userId,
+        //   status: 'signed_in',
+        // })
         // if (username) {
         //     console.log(`--> (${username}). emitting << add_socket >> to all users`)
             // socket.broadcast.emit('add_socket', username)
@@ -108,11 +110,9 @@ io.on('connection', (socket) => {
     })
 
     socket.on('user_signed_out', (userId, callback) => {
-        console.log(`\n<< user_signed_out >>\nuser with id ${userId} signed out.\nbroadcasting << update_user >> to all users\n`)
-        io.emit('update_user_status', {
-          userId,
-          status: 'signed_out',
-        })
+        console.log(`\n<< user_signed_out >>\nuser with id ${userId} signed out.\nbroadcasting << signed_out_user >>\n`)
+        socket.broadcast.emit('signed_out_user', userId)
+        if (callback) callback(userId)
     })
 
     socket.on('new_order', order => {

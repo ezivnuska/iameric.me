@@ -11,6 +11,7 @@ const initialState = {
     contactsLoading: false,
     contactModals: [],
     error: null,
+    status: null,
     closeContactModal: () => {},
     getUserCountByRole: () => {},
     setContact: () => {},
@@ -19,6 +20,7 @@ const initialState = {
     setContactsLoaded: () => {},
     setContactsLoading: () => {},
     setContactModal: () => {},
+    updateStatus: () => {},
     updateContact: () => {},
     updateContactProducts: () => {},
     updateContactImages: () => {},
@@ -79,6 +81,9 @@ export const ContactContextProvider = props => {
                 type: 'SET_CONTACT_MODAL',
                 payload: { data, type },
             })
+        },
+        updateStatus: async payload => {
+            dispatch({ type: 'UPDATE_CONTACT_STATUS', payload })
         },
         updateContact: async payload => {
             dispatch({ type: 'UPDATE_CONTACT', payload })
@@ -152,6 +157,20 @@ const reducer = (state, action) => {
                         return user
                     })
                     : [payload]
+            }
+            break
+        case 'UPDATE_CONTACT_STATUS':
+            return {
+                ...state,
+                contacts: state.contacts.map(user => {
+                    if (user._id === payload.userId) {
+                        return {
+                            ...user,
+                            status: payload.status,
+                        }
+                    }
+                    return user
+                })
             }
             break
         case 'UPDATE_USER_PRODUCTS':
