@@ -16,12 +16,12 @@ export default () => {
     
     const { connected, sockets } = useSocket()
 
-    useEffect(() => {
-        console.log('sockets', sockets)
-    }, [sockets])
-    useEffect(() => {
-        console.log('connected', connected)
-    }, [connected])
+    // useEffect(() => {
+    //     console.log('sockets', sockets)
+    // }, [sockets])
+    // useEffect(() => {
+    //     console.log('connected', connected)
+    // }, [connected])
 
     return (
         <View

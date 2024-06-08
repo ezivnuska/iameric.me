@@ -14,6 +14,7 @@ import {
 import { signout } from '@utils/auth'
 import { navigationRef } from '@navigation/RootNavigation'
 import { classes } from '@styles'
+import socket from '../socket'
 
 export default () => {
 
@@ -30,9 +31,13 @@ export default () => {
     const { clearProducts } = useProducts()
 
     const initSignout = async () => {
-        const signedOut = await signout(userId)
+        const idToSignOut = userId
+        const signedOut = await signout(idToSignOut)
         if (!signedOut) throw new Error()
         else {
+            console.log(`\nemitting user_signed_out with userId: ${idToSignOut} from ModalSignout\n`)
+            socket.emit('user_signed_out', idToSignOut)
+
             clearImages()
             clearCart()
             clearOrders()

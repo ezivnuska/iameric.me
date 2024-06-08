@@ -19,6 +19,7 @@ import {
 import { getFields } from '@utils/form'
 import { navigationRef } from '@navigation/RootNavigation'
 import { classes } from '@styles'
+import socket from '../socket'
 
 export default () => {
 
@@ -142,6 +143,9 @@ export default () => {
             signIn(user)
             clearForm()
             // clearModal()
+
+            console.log(`\nemitting user_signed_in with userId: ${user._id} from SignInForm\n`)
+            socket.emit('user_signed_in', user._id)
 		}
 
     }

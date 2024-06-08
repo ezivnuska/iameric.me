@@ -16,13 +16,13 @@ const server = createServer(app)
 
 const sessionMiddleware = session({
   secret: SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true
+  resave: false,// set to true to reset session on every request
+  saveUninitialized: true,
 })
 
 const corsOptions = {
   origin: [
-    'wss://iameric.me',
+    // 'wss://iameric.me',
     'http://localhost:3000',
     'http://localhost:4000',
     'https://iameric.me',
@@ -61,15 +61,10 @@ io.engine.use(sessionMiddleware)
 // Set up Socket.IO
 io.on('connection', (socket) => {
 
-  console.log('>>> connection', socket.id)
-  // console.log('socket.request', socket.request)
-  // const sessionId = socket.request.session.id
-    // console.log(`\n<< connection >>`, sessionId)
+  console.log(`\n<< connection >> ${socket.id}`)
 
     // socket.join(sessionId)
-
-    // console.log(`emitting << connection >> (why?)\n`)
-    io.emit('connection', socket.id)
+    io.emit('new_connection', socket.id)
 
     const SESSION_RELOAD_INTERVAL = 30 * 1000
 
@@ -83,19 +78,42 @@ io.on('connection', (socket) => {
     //     }
     //     })
     // }, SESSION_RELOAD_INTERVAL)
-
-    socket.on('user_signed_in', (profile) => {
-        console.log('<< user_signed_in >>')
-        // console.log(`\n--> (${profile.username}). emitting << add_socket >>\n`)
-        // socket.emit('add_socket', profile)
-        // socket.broadcast.emit('add_socket', username)
+    
+    socket.on('new_socket_connected', (socketId, callback) => {
+      console.log(`<< new_socket_connected >>\n${socketId} connected.\nemitting << add_socket >>\n`)
+      io.emit('add_socket', socketId)
+      // io.emit('connection', username)
+      // if (username) {
+        //     console.log(`--> (${username}). emitting << add_socket >> to all users`)
+        //     // socket.broadcast.emit('add_socket', username)
+        // }
     })
 
-    // socket.on('i_hear_ya', profile => {
-    //     console.log('<< i_hear_ya >>')
-    //     socket.emit('add_socket', profile)
-    //     // socket.broadcast.emit('add_socket', username)
-    // })
+    socket.on('list_connected_sockets', () => {
+      const connectedSockets = Object.keys(io.sockets.sockets)
+      console.log(`\n${connectedSockets.toString()}\n`)
+      socket.emit('connected_sockets_list', connectedSockets)
+    })
+    
+    socket.on('user_signed_in', (userId, callback) => {
+        console.log(`\n<< user_signed_in >>\nuser with id ${userId} signed in.\nbroadcasting << update_user >> to all users\n`)
+        io.emit('update_user_status', {
+          userId,
+          status: 'signed_in',
+        })
+        // if (username) {
+        //     console.log(`--> (${username}). emitting << add_socket >> to all users`)
+            // socket.broadcast.emit('add_socket', username)
+        // }
+    })
+
+    socket.on('user_signed_out', (userId, callback) => {
+        console.log(`\n<< user_signed_out >>\nuser with id ${userId} signed out.\nbroadcasting << update_user >> to all users\n`)
+        io.emit('update_user_status', {
+          userId,
+          status: 'signed_out',
+        })
+    })
 
     socket.on('new_order', order => {
         console.log(`\n<< new_order >>\n`)
@@ -115,34 +133,15 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('remove_order', id)
     })
 
-    socket.on('connected', (username, callback) => {
-        console.log(`\n<< connected >>`)
-        console.log(`${username} signed in. broadcasting << connected >> to all users\n`)
-        // io.emit('connection', username)
-        if (username) {
-            console.log(`--> (${username}). emitting << add_socket >> to all users`)
-            io.emit('add_socket', username)
-            // socket.broadcast.emit('add_socket', username)
-        }
-    })
-
     socket.on('disconnect', async reason => {
         console.log('disconnect', reason)
-        // const sockets = await io.in(userId).fetchSockets();
+        // const sockets = await io.in(userId).fetchSockets()
         // if (sockets.length === 0) {
         // // no more active connections for the given user
         // }
         // clearInterval(timer)
     })
 })
-
-// app.get('/*', function (req, res) {
-//   res.sendFile(path.join(__dirname, 'dist/index.html'), function (err) {
-//     if (err) {
-//       res.status(500).send(err)
-//     }
-//   })
-// })
 
 // 404 Handler
 app.use(function (req, res, next) {

@@ -21,6 +21,8 @@ import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
 
+import socket from '../socket'
+
 const defaultTheme = merge(MD2LightTheme, NavigationDefaultTheme)
 const darkTheme = merge(MD2DarkTheme, NavigationDarkTheme)
 
@@ -86,6 +88,8 @@ export const AppContextProvider = ({ children }) => {
                 if (user) {
                     console.log('token verified.')
                     dispatch({ type: 'SET_USER', payload: user })
+                    console.log(`\nemitting user_signed_in with userId: ${user._id} from AppContext\n`)
+                    socket.emit('user_signed_in', user._id)
                 }
             } else {
                 console.log('no token found')
