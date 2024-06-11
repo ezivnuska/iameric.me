@@ -9,7 +9,7 @@ import {
     FallbackScreen,
     ForumScreen,
     ImagesScreen,
-    OrderScreen,
+    // OrderScreen,
     ProductsScreen,
     ProfileScreen,
     SplashScreen,
@@ -112,7 +112,6 @@ const UserStackScreen = () => {
 const MainStack = createMaterialBottomTabNavigator()
 const MainStackScreen = () => {
     const {
-        profile,
         theme,
         userId,
     } = useApp()
@@ -142,7 +141,7 @@ const MainStackScreen = () => {
                     title: 'Home',
                     tabBarLabel: 'Home',
                     tabBarIcon: ({ focused, color }) => (
-                        <Icon name='chatbubbles-outline' size={iconSize} color={color} />
+                        <Icon name='home-outline' size={iconSize} color={color} />
                     ),
                 }}
             />
@@ -173,12 +172,6 @@ const MainStackScreen = () => {
                 }}
             />
 
-            {/* <MainStack.Screen
-                name='Orders'
-                component={OrderScreen}
-                options={{ title: 'Orders' }}
-            /> */}
-
             <MainStack.Screen
                 name='Users'
                 component={ContactsScreen}
@@ -186,42 +179,14 @@ const MainStackScreen = () => {
                     title: 'Contacts',
                     tabBarLabel: 'Contacts',
                     tabBarIcon: ({ focused, color }) => (
-                        <Icon name='alert-circle-outline' size={iconSize} color={color} />
+                        <Icon name='people-outline' size={iconSize} color={color} />
                     ),
                 }}
             />
 
-            {/* {(profile && profile.role !== 'vendor') && (
-                
-            )} */}
-
         </MainStack.Navigator>
     )
 }
-
-// const AuthStack = createNativeStackNavigator()
-// const AuthStackScreen = () => (
-//     <AuthStack.Navigator
-//         initialRouteName='Main'
-//         screenOptions={{
-//             headerShown: false,
-//         }}
-//     >
-
-//         <AuthStack.Screen
-//             name='User'
-//             component={UserStackScreen}
-//             options={{ title: 'User' }}
-//         />
-
-//         {/* <AuthStack.Screen
-//             name='Fallback'
-//             component={FallbackScreen}
-//             options={{ title: 'Oops' }}
-//         /> */}
-
-//     </AuthStack.Navigator>
-// )
 
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {

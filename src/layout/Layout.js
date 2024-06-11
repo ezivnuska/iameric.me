@@ -83,6 +83,8 @@ export default () => {
             })
         }
 
+        // maybe something to look into...
+
         // const handleFocus = () => {
         //     if (userId) {
         //         socket.emit('user_signed_in', {

@@ -114,66 +114,44 @@ io.on('connection', (socket) => {
     
     socket.on('user_signed_in', data => {
         socket.data = data
-        console.log(`\n<< user_signed_in >>\n${data.username} signed in.\n`)
+        console.log(`\n<< user_signed_in >>\n`)
         
-        // getAllSockets()
-        console.log('online users before signin added', onlineUsers)
         if (!onlineUsers.some(user => user.userId === data.userId)) {
           onlineUsers.push({ userId: data.userId, socketId: socket.id })
-          console.log('new user joined', data.userId)
+          console.log(`${data.userId} connected`)
         } else {
-          console.log(`\nuser already marked connected\n`)
+          console.log(`${data.userId} already connected`)
         }
 
-        // socket.broadcast.emit('signed_in_user', data.userId)
+        console.log(`\n>> connected_users <<\n${onlineUsers.map(u => u.userId).toString().split(',').join(`\n`)}`)
         io.emit('connected_users', onlineUsers)
-        // if (callback) callback({ userId, username })
-        // callback({
-        //   userId,
-        //   status: 'signed_in',
-        // })
-        // if (username) {
-        //     console.log(`--> (${username}). emitting << add_socket >> to all users`)
-            // socket.broadcast.emit('add_socket', username)
-        // }
     })
 
     socket.on('user_signed_out', (userId, callback) => {
-        console.log(`\n<< user_signed_out >>\nuser with id ${userId} signed out.\nbroadcasting << signed_out_user >>\n`)
+        console.log(`\n<< user_signed_out >>\n${userId} signed out.\n>> connected_users <<\n`)
         onlineUsers = onlineUsers.filter(user => user.userId !== userId)
         io.emit('connected_users', onlineUsers)
-        // socket.broadcast.emit('signed_out_user', userId)
-        // if (callback) callback(userId)
     })
 
     socket.on('new_order', order => {
-        console.log(`\n<< new_order >>\n`)
-        // socket.emit('add_order', order)
+        console.log(`\n<< new_order >>\n>> add_order <<`)
         socket.broadcast.emit('add_order', order)
     })
 
     socket.on('order_updated', order => {
-        console.log(`\n<< order_updated >>\n`)
-        // socket.emit('add_order', order)
+        console.log(`\n<< order_updated >>\n>> update_order <<\n`)
         socket.broadcast.emit('update_order', order)
     })
 
     socket.on('order_removed', id => {
-        console.log(`\n<< order_removed >>\n`)
-        // socket.emit('add_order', order)
+        console.log(`\n<< order_removed >>\n>> remove_order <<\n`)
         socket.broadcast.emit('remove_order', id)
     })
 
     socket.on('disconnect', reason => {
-        console.log('disconnect', reason)
+        console.log(`<< disconnect >>${socket.id}\n>> connected_users <<\n`, reason)
         onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
-        // console.log('connected_users', onlineUsers)
         io.emit('connected_users', onlineUsers)
-        // const sockets = await io.in(userId).fetchSockets()
-        // if (sockets.length === 0) {
-        // // no more active connections for the given user
-        // }
-        // clearInterval(timer)
     })
 
     socket.on('offline', () => {
