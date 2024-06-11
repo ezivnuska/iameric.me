@@ -20,12 +20,14 @@ const getSanitizedUser = ({ _id, email, location, profileImage, role, username, 
     exp,
 })
 
-const getBaseUser = ({ _id, profileImage, role, username, token }) => ({
+const getBaseUser = ({ _id, profileImage, role, username, token, wages, deposit }) => ({
     _id,
     profileImage,
     role,
     username,
     token,
+    wages,
+    deposit,
 })
 
 const updateUserById = async (_id, data) => {
