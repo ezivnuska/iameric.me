@@ -19,7 +19,6 @@ import {
 } from '@utils/auth'
 import { getFields } from '@utils/form'
 import { classes } from '@styles'
-import socket from '../socket'
 
 export default () => {
 
@@ -28,7 +27,11 @@ export default () => {
         password: '',
     }
 
-    const { signIn, userId } = useApp()
+    const {
+        signIn,
+        socket,
+        userId,
+    } = useApp()
     const { updateStatus } = useContacts()
     const {
         clearForm,
@@ -145,13 +148,15 @@ export default () => {
             clearForm()
             // clearModal()
 
-            console.log(`\nemitting user_signed_in with userId: ${user._id} from SignInForm\n`)
-            socket.emit('user_signed_in', user._id, response => {
-                updateStatus({
-                    userId: response,
-                    status: 'signed_in',
-                })
-            })
+            // updateStatus({
+            //     userId: user._id,
+            //     status: 'signed_in',
+            // })
+
+            // console.log(`\nemitting user_signed_in with userId: ${user._id} from SignInForm\n`)
+            // socket.emit('user_signed_in', user._id, user.username, response => {
+            //     console.log('SIGNINFORM: user signed_in callback response:', response)
+            // })
 		}
 
     }

@@ -5,12 +5,11 @@ import {
     useContacts,
 } from '@context'
 import { loadVendors } from '@utils/contacts'
-import { navigate } from '@navigation/RootNavigation'
+import { navigationRef } from '@navigation/RootNavigation'
 
 export default ({ disabled = false }) => {
     const {
         setContactsLoading,
-        updateStatus,
     } = useContacts()
 
     const [vendors, setVendors] = useState(null)
@@ -38,7 +37,7 @@ export default ({ disabled = false }) => {
                     <VendorListItem
                         user={item}
                         filename={filename}
-                        onPress={() => navigate('Vendor', { id: item._id })}
+                        onPress={() => navigationRef.navigate('Vendors', { screen: 'Vendor', params: { id: item._id } })}
                         style={{ alignItems: 'center' }}
                         disabled={disabled}
                     />

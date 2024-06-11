@@ -5,11 +5,10 @@ const path = process.env.NODE_ENV === 'production' ? undefined : `http://localho
 const socket = io(path)
 
 // Event listeners
-socket.on('new_connection', () => {
-  // console.log(`\n<< new_connection >>\n${socket.id}\n`)
-  socket.emit('new_socket_connected', socket.id)
-  socket.emit('list_connected_sockets')
-})
+// socket.on('new_connection', () => {
+//   console.log(`\n<< new_connection >>\n${socket.id}\n`)
+//   socket.emit('new_socket_connected', socket.id)
+// })
 
 // socket.on('add_socket', socketId => {
 //   console.log(`\n<< add_socket >>\nsocketId ${socketId} connected\n`)

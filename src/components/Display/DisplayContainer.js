@@ -12,26 +12,19 @@ import {
     useModal,
     useOrders,
 } from '@context'
-import socket from '../../socket'
 
 export default () => {
     const { thin } = useApp()
     const { setModal } = useModal()
-    const { addOrder, removeOrder, orders } = useOrders()
+    const { orders } = useOrders()
     const { getUserCountByRole } = useContacts()
     const driverCount = useMemo(() => getUserCountByRole('driver'), [getUserCountByRole])
+    const orderCount = useMemo(() => orders.length, [orders])
 
-    useEffect(() =>  {
-        socket.on('add_order', data => {
-            console.log('adding order', data)
-            addOrder(data)
-        })
-
-        socket.on('remove_order', id => {
-            console.log('<< remove_order >> removing order...')
-            removeOrder(id)
-        })
-    }, [])
+    // useEffect(() => {
+    //     console.log('orderCount', orderCount)
+    //     console.log('orders changed', orders.length)
+    // }, [orderCount])
 
     return (
         <View
@@ -47,7 +40,7 @@ export default () => {
             }}
         >
             <OrderCounter
-                count={orders.length}
+                count={orderCount}
                 onPress={() => setModal('ORDERS')}
             />
             <DriverCounter count={driverCount} />

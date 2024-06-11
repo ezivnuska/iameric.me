@@ -19,46 +19,19 @@ import {
     Display,
     VendorPanel,
 } from '@presentations'
-import {
-    useContacts,
-} from '@context'
-import socket from '../socket'
 
 export default ({ navigation }) => {
 
-    const { appLoaded, signIn, theme, userId } = useApp()
-    const { updateStatus } = useContacts()
+    const { appLoaded, signIn, thin, userId } = useApp()
     const { setModal } = useModal()
-
-    useEffect(() => {
-        socket.on('signed_in_user', userId => {
-            updateStatus({
-                userId,
-                status: 'signed_in',
-            })
-        })
-        socket.on('signed_out_user', userId => {
-            updateStatus({
-                userId,
-                status: 'signed_out',
-            })
-        })
-    }, [])
 
     const onConnect = async type => {
         const user = await connect(type)
         if (!user) console.log('Error: Could not connect user.')
         else {
             await signIn(user)
-            if (!user) return console.log('error connecting')
-            socket.emit('user_signed_in', user._id, response => {
-                updateStatus({
-                    userId: response,
-                    status: 'signed_in',
-                })
-            })
+            navigation.navigate('Main', { screen: 'Home' })
         }
-        // navigation.navigate('Main')
     }
 
     const renderButtons = () => (
@@ -178,7 +151,7 @@ export default ({ navigation }) => {
             <View
                 style={{
                     flexDirection: 'row',
-                    // paddingVertical: 20,
+                    // justifyContent: 'space-between',
                     flexWrap: 'wrap',
                     gap: 10,
                 }}
@@ -188,7 +161,7 @@ export default ({ navigation }) => {
                         flex: 1,
                         flexGrow: 0,
                         flexShrink: 1,
-                        minWidth: 100,
+                        minWidth: !thin ? 100 : '100%',
                         maxWidth: 300,
                     }}
                 >

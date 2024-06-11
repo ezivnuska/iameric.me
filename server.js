@@ -58,13 +58,15 @@ const io = new Server(server, {
 
 io.engine.use(sessionMiddleware)
 
+let onlineUsers = []
+
 // Set up Socket.IO
 io.on('connection', (socket) => {
 
-  console.log(`\n<< connection >> ${socket.id}`)
+    socket.data.username = `guest-${socket.id}`
+    console.log(`\n<< connection >> ${socket.data.username}`)
 
-    // socket.join(sessionId)
-    io.emit('new_connection', socket.id)
+    socket.emit('new_connection')
 
     const SESSION_RELOAD_INTERVAL = 30 * 1000
 
@@ -79,9 +81,16 @@ io.on('connection', (socket) => {
     //     })
     // }, SESSION_RELOAD_INTERVAL)
     
-    socket.on('new_socket_connected', (socketId, callback) => {
-      console.log(`<< new_socket_connected >>\n${socketId} connected.\nemitting << add_socket >>\n`)
-      io.emit('add_socket', socketId)
+    socket.on('new_socket_connected', data => {
+      console.log(`<< new_socket_connected >>\n${JSON.stringify(data)}\n`)
+      socket.data = data
+      // if (!socket.data.userId)...
+      // io.to(socketId).emit('check_status', data => {
+        //   if (data.userId) {
+        //     socket.data = data
+      //     socket.broadcast.emit('update_user_status', data.userId, 'signed_in')
+      //   }
+      // })
       // io.emit('connection', username)
       // if (username) {
         //     console.log(`--> (${username}). emitting << add_socket >> to all users`)
@@ -89,16 +98,36 @@ io.on('connection', (socket) => {
         // }
     })
 
+    // socket.on('get_connected', async callback => {
+    //   const sockets = await io.fetchSockets()
+    //   callback(sockets)
+    // })
+
     socket.on('list_connected_sockets', () => {
-      const connectedSockets = Object.keys(io.sockets.sockets)
-      console.log(`\n${connectedSockets.toString()}\n`)
-      socket.emit('connected_sockets_list', connectedSockets)
+      console.log(`\n<< list_connected_sockets >>\n`)
+      const connectedSockets = getAllSockets()
+      // console.log('io.sockets', io.sockets)
+      console.log('socket.handshake', socket.handshake.query.userId)
+      // const connectedSockets = io.sockets.sockets.map(sock => sock.userId)
+      console.log(`\nsockets: ${connectedSockets}\n`)
     })
     
-    socket.on('user_signed_in', (userId, callback) => {
-        console.log(`\n<< user_signed_in >>\nuser with id ${userId} signed in.\nbroadcasting << signed_in_user >>\n`)
-        socket.broadcast.emit('signed_in_user', userId)
-        if (callback) callback(userId)
+    socket.on('user_signed_in', data => {
+        socket.data = data
+        console.log(`\n<< user_signed_in >>\n${data.username} signed in.\n`)
+        
+        // getAllSockets()
+        console.log('online users before signin added', onlineUsers)
+        if (!onlineUsers.some(user => user.userId === data.userId)) {
+          onlineUsers.push({ userId: data.userId, socketId: socket.id })
+          console.log('new user joined', data.userId)
+        } else {
+          console.log(`\nuser already marked connected\n`)
+        }
+
+        // socket.broadcast.emit('signed_in_user', data.userId)
+        io.emit('connected_users', onlineUsers)
+        // if (callback) callback({ userId, username })
         // callback({
         //   userId,
         //   status: 'signed_in',
@@ -111,8 +140,10 @@ io.on('connection', (socket) => {
 
     socket.on('user_signed_out', (userId, callback) => {
         console.log(`\n<< user_signed_out >>\nuser with id ${userId} signed out.\nbroadcasting << signed_out_user >>\n`)
-        socket.broadcast.emit('signed_out_user', userId)
-        if (callback) callback(userId)
+        onlineUsers = onlineUsers.filter(user => user.userId !== userId)
+        io.emit('connected_users', onlineUsers)
+        // socket.broadcast.emit('signed_out_user', userId)
+        // if (callback) callback(userId)
     })
 
     socket.on('new_order', order => {
@@ -133,13 +164,21 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('remove_order', id)
     })
 
-    socket.on('disconnect', async reason => {
+    socket.on('disconnect', reason => {
         console.log('disconnect', reason)
+        onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
+        // console.log('connected_users', onlineUsers)
+        io.emit('connected_users', onlineUsers)
         // const sockets = await io.in(userId).fetchSockets()
         // if (sockets.length === 0) {
         // // no more active connections for the given user
         // }
         // clearInterval(timer)
+    })
+
+    socket.on('offline', () => {
+      onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
+      io.emit('connected_users', onlineUsers)
     })
 })
 

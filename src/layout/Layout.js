@@ -5,41 +5,41 @@ import {
 } from 'react-native'
 import { AppNavigation } from '@navigation'
 import {
+    LoadingView,
     ModalView,
     // Sockets,
 } from '@components'
 import { Header } from '@layout'
 import {
     CartContextProvider,
-    ContactContextProvider,
     ImageContextProvider,
     ProductContextProvider,
     OrderContextProvider,
     useApp,
+    useOrders,
+    // useContacts,
 } from '@context'
 import { PaperProvider } from 'react-native-paper'
 import Compose from '../Compose'
 import { classes } from '@styles'
+// import socket from '../socket'
 
 export default () => {
 	const {
+        appLoaded,
+        connections,
 		dims,
 		profile,
+        setConnections,
+        socket,
 		theme,
+        userId,
 	} = useApp()
+    const {
+        addOrder,
+        removeOrder,
+    } = useOrders()
 
-	// const {
-    //     addSocket,
-    //     // connected,
-    //     // removeSocket,
-    //     // setConnected,
-    // } = useSocket()
-    
-    
-
-    // const socket = io()
-    
-    // const [ready, setReady] = useState(false)
     // let timer = undefined
     
     // useEffect(() => {
@@ -49,32 +49,73 @@ export default () => {
     //     }, 2000)
     // }, [])
     
-    // useEffect(() => {
-    //     if (profile) {
-    //         console.log('emitting << user_signed_in >> from layout', profile)
-    //         socket.emit('user_signed_in', profile, () => {
-    //             console.log(`${profile.username} signed in`)
-    //         })
-    //     }
-    // }, [profile])
+    useEffect(() => {
+        socket.on('new_connection', () => {
+            console.log(`\n<< new_connection >> ${socket.id}`)
+            if (userId) {
+                socket.emit('user_signed_in', {
+                    userId,
+                    username: profile.username,
+                })
+            }
+        })
 
-	// useEffect(() => {
-	// 	console.log('profile', profile)
-	// 	if (profile) {
-    //         console.log('emitting << user_signed_in >>', profile)
-	// 		socket.emit('user_signed_in', profile)
-	// 	}
-	// }, [profile])
+        socket.on('connected_users', users => {
+            setConnections(users)
+        })
+    
+        socket.on('add_order', data => {
+            console.log('adding order', data)
+            addOrder(data)
+        })
+    
+        socket.on('remove_order', id => {
+            console.log('<< remove_order >> removing order...')
+            removeOrder(id)
+        })
+    }, [])
+
+	useEffect(() => {
+        if (userId) {
+            socket.emit('user_signed_in', {
+                userId,
+                username: profile.username,
+            })
+        }
+
+        // const handleFocus = () => {
+        //     if (userId) {
+        //         socket.emit('user_signed_in', {
+        //             userId,
+        //             username: profile.username,
+        //         })  
+        //     }
+        // }
+
+        // const handleBlur = () => {
+        //     if (userId) {
+        //         socket.emit('offline')
+        //     }
+        // }
+
+        // window.addEventListener('blur', handleBlur)
+        // window.addEventListener('focus', handleFocus)
+
+        // return () => {
+        //     window.removeEventListener('blur', handleBlur)
+        //     window.removeEventListener('focus', handleFocus)
+        // }
+	}, [userId])
+
+    if (!appLoaded) return <LoadingView loading='App Loading...' />
 
     return (
         <PaperProvider theme={theme}>
             <Compose
                 components={[
-                    ContactContextProvider,
                     CartContextProvider,
                     ProductContextProvider,
                     ImageContextProvider,
-                    OrderContextProvider,
                 ]}
             >
                 {dims && (

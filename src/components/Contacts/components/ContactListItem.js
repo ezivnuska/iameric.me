@@ -1,28 +1,31 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     Image,
     Pressable,
-    View,
 } from 'react-native'
 import {
     ThemedText,
 } from '@components'
 import {
     useApp,
-    useContacts,
 } from '@context'
-import { classes } from '@styles'
 import { getProfileImagePathFromUser } from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { ActivityIndicator } from 'react-native-paper'
 
 export default ({ item, onPress, ...props }) => {
-    const imagePath = getProfileImagePathFromUser(item)
-    const { theme } = useApp()
-    const { contacts } = useContacts()
-    const contact = useMemo(() => contacts.filter(contact => contact._id === item._id)[0], [contacts])
-    if (!contact) return <ActivityIndicator size='small' />
-    const isConnected = () => contact && contact.status === 'signed_in'
+    let imagePath = getProfileImagePathFromUser(item)
+    
+    const { connections, theme } = useApp()
+
+    const [ connected, setConnected ] = useState(false)
+    const ids = useMemo(() => connections.map(c => c.userId), [connections])
+
+    useEffect(() => {
+        const isConnected = ids.indexOf(item._id) > -1
+        // if (isConnected) console.log(`user ${item._id} connected`)
+        setConnected(isConnected)
+    }, [ids])
+
     return (
         <Pressable
             onPress={() => onPress(item)}
@@ -53,9 +56,9 @@ export default ({ item, onPress, ...props }) => {
             />
 
             <Icon
-                name={isConnected() ? 'ellipse' : 'ellipse-outline'}
+                name={connected ? 'ellipse' : 'ellipse-outline'}
                 size={18}
-                color={isConnected() ? theme?.colors.statusOn : theme?.colors.statusOff}
+                color={connected ? theme?.colors.statusOn : theme?.colors.statusOff}
             />
             
             <ThemedText>{item.username}</ThemedText>

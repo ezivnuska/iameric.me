@@ -13,11 +13,11 @@ import {
 } from '@context'
 import { submitOrder } from '@utils/orders'
 import Icon from 'react-native-vector-icons/Ionicons'
-import socket from '../../socket'
+import { navigationRef } from '@navigation/RootNavigation'
 
 export default () => {
 
-    const { userId } = useApp()
+    const { socket, userId } = useApp()
     const {
         addToCart,
         clearCart,
@@ -65,6 +65,7 @@ export default () => {
         socket.emit('new_order', order)
         addOrder(order)
         clearCart()
+        navigationRef.navigate('Home')
     }
     
     return itemCount > 0 && (

@@ -12,7 +12,6 @@ import {
 } from '@context'
 import { classes } from '@styles'
 import moment from 'moment'
-import socket from '../../../../socket'
 
 const OrderStatus = ({ status, ...props }) => (
     <ThemedText
@@ -129,7 +128,7 @@ const DriverStatus = ({ order }) => {
 
 export default ({ order }) => {
 
-    const { profile } = useApp()
+    const { socket, profile } = useApp()
     const { getOrder, removeOrder, updateOrder } = useOrders()
 
     const memo = useMemo(() => getOrder(order._id), [order])

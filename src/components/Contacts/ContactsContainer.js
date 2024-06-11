@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     View,
 } from 'react-native'
@@ -26,7 +26,7 @@ export default () => {
 
     if (contactsLoading) return <LoadingView loading='Loading contacts...' />
 
-    return (
+    return contacts && (
         <View>
             {contacts.map((contact) => {
                 if (profile && profile._id === contact._id) return null

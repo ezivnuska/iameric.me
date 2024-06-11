@@ -35,7 +35,7 @@ export const useOrders = () => {
 
 export const OrderContextProvider = props => {
     
-    const { role, userId } = useApp()
+    const { userId } = useApp()
 
     const [state, dispatch] = useReducer(reducer, initialState)
 

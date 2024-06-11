@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import { useApp, useOrders } from '@context'
 
 const initialState = {
     connected: null,
@@ -26,7 +27,42 @@ export const useSocket = () => {
 }
 
 export const SocketContextProvider = props => {
+
+    const { profile, socket, userId } = useApp()
+    const { addOrder, removeOrder } = useOrders()
+
     const [state, dispatch] = useReducer(reducer, initialState)
+    
+    socket.on('new_connection', () => {
+        console.log(`\n<< new_connection >>\n${socket.id}`)
+        if (profile) {
+            console.log('profile--->', profile)
+            socket.emit('user_signed_in', {
+                userId: profile._id,
+                username: profile.username,
+            })
+        }
+    })
+
+    socket.on('add_order', data => {
+        console.log('adding order', data)
+        addOrder(data)
+    })
+
+    socket.on('remove_order', id => {
+        console.log('<< remove_order >> removing order...')
+        removeOrder(id)
+    })
+
+	useEffect(() => {
+		if (socket && userId) {
+            console.log('emitting user signed in from', profile.username)
+            socket.broadcast.emit('user_signed_in', {
+                userId,
+                username: profile.username,
+            })
+        }
+	}, [socket, userId])
 
     const actions = useMemo(() => ({
         addSocket: payload => {
@@ -37,7 +73,6 @@ export const SocketContextProvider = props => {
         clearSockets: () => {
             dispatch({ type: 'RESET' })
         },
-        getSocket: socketId => state.sockets.map(socket => socket._id === socketId)[0] || null,
         removeSocket: payload => {
             dispatch({ type: 'REMOVE_SOCKET', payload })
         },

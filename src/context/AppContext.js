@@ -32,6 +32,7 @@ const CombinedDarkTheme = merge(darkTheme, dark)
 const initialState = {
     appLoaded: false,
     appLoading: false,
+    connections: [],
     userLoaded: false,
     userLoading: false,
     dark: false,
@@ -42,6 +43,7 @@ const initialState = {
     theme: CombinedDefaultTheme,
     userId: null,
     reset: () => {},
+    setConnections: () => {},
     signIn: () => {},
     signOut: () => {},
     toggleTheme: () => {},
@@ -88,15 +90,12 @@ export const AppContextProvider = ({ children }) => {
                 if (user) {
                     console.log('token verified.')
                     
-                    // console.log(`\nemitting user_signed_in with userId: ${user._id} from AppContext\n`)
-                    socket.emit('user_signed_in', user._id, response => {
-                        dispatch({
-                            type: 'SET_USER',
-                            payload: {
-                                ...user,
-                                status: 'signed_in',
-                            },
-                        })
+                    dispatch({
+                        type: 'SET_USER',
+                        payload: {
+                            ...user,
+                            status: 'signed_in',
+                        },
                     })
                 }
             } else {
@@ -105,6 +104,7 @@ export const AppContextProvider = ({ children }) => {
             
             dispatch({ type: 'SET_APP_LOADED' })
         }
+        
         init()
     }, [])
 
@@ -118,6 +118,9 @@ export const AppContextProvider = ({ children }) => {
         setUserLoading: async payload => {
             dispatch({ type: 'SET_USER_LOADING', payload })
         },
+        setConnections: payload => {
+            dispatch({ type: 'SET_CONNECTIONS', payload })
+        },
         setUser: payload => {
             dispatch({ type: 'SET_USER', payload })
         },
@@ -130,6 +133,7 @@ export const AppContextProvider = ({ children }) => {
             // await cleanStorage()
             dispatch({ type: 'SIGN_OUT' })
         },
+        socket,
         toggleTheme: () => {
             setItem('dark', !state.dark)
             dispatch({ type: 'TOGGLE_THEME' })
@@ -189,6 +193,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 appLoading: payload,
+            }
+            break
+        case 'SET_CONNECTIONS':
+            return {
+                ...state,
+                connections: payload,
             }
             break
         case 'SET_USER_LOADED':

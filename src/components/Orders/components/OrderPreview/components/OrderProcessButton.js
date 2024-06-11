@@ -24,7 +24,6 @@ import {
 } from '@utils/orders'
 import { classes } from '@styles'
 import moment from 'moment'
-import socket from '../../../../../socket'
 
 const NextButton = ({ label, action }) => {
     const { ordersLoading } = useOrders()
@@ -93,7 +92,7 @@ const TimeSelectionModule = ({ onSelected }) => (
 
 export default ({ order }) => {
 
-    const { closeModal } = useModal()
+    const { profile, socket } = useApp()
     const {
         closeOrder,
         markDriverArrived,
@@ -105,11 +104,10 @@ export default ({ order }) => {
         removeOrder,
         setOrdersLoading,
     } = useOrders()
-    const { profile } = useApp()
 
     useEffect(() => {
         socket.on('remove_order', data => {
-            console.log('revove order event; removing order...')
+            console.log('removing order...')
             removeOrder(data)
         })
     }, [])
@@ -135,8 +133,6 @@ export default ({ order }) => {
             markOrderConfirmed(data)
             socket.emit('order_updated', data)
         }
-
-        // closeModal()
     }
 
     const acceptDelivery = async (orderId, driverId) => {

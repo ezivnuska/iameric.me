@@ -1,7 +1,7 @@
 import React from 'react'
 import {
     ThemedText,
-} from '.'
+} from '@components'
 import { View } from 'react-native'
 
 export default ({ status }) => (

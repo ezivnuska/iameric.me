@@ -8,14 +8,17 @@ import { classes } from '@styles'
 
 export default ({ navigation }) => {
     const {
-        userId,
-        userLoaded,
+        profile,
+        appLoaded,
     } = useApp()
 
     useEffect(() => {
         // if (userLoaded) navigation.navigate(userId ? 'Main' : 'Start')
-        if (userLoaded) navigation.navigate('Start')
-    }, [userLoaded])
+        if (appLoaded) {
+            if (!profile) navigation.navigate('Start')
+            else navigation.navigate('Main')
+        }
+    }, [appLoaded])
     
     return (
         <View style={classes.centerV}>

@@ -2,8 +2,10 @@ import React, { useEffect, useMemo } from 'react'
 import { Layout } from '@layout'
 import {
   AppContextProvider,
+  ContactContextProvider,
   FormContextProvider,
   ModalContextProvider,
+  OrderContextProvider,
 //   SocketContextProvider,
 } from '@context'
 import Compose from './Compose'
@@ -28,6 +30,8 @@ export default () => {
 	return (
 		<Compose
 			components={[
+				OrderContextProvider,
+				ContactContextProvider,
 				FormContextProvider,
 				ModalContextProvider,
 				AppContextProvider,
