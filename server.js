@@ -28,7 +28,7 @@ const corsOptions = {
     'https://iameric.me',
   ],
   credentials: true,
-  // methods: ['GET', 'POST'],
+  methods: ['GET', 'POST'],
 }
 
 // Enable CORS

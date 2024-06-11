@@ -40,10 +40,10 @@ export const loadFullContact = async id => {
         console.log(`\nError loading contact`)
         return null
     }
-
     const { user, images } = data
-    
-    return { ...user, images }
+    const response = { ...user, images }
+    console.log('response', response)
+    return response
 }
 
 export const loadVendor = async vendorId => {

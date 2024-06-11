@@ -1,11 +1,14 @@
 const Product = require('../../models/Product')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
-const { promises, rm, rmSync } = require('fs')
-const { mkdirp } = require('mkdirp')
+const { mkdir, promises, rm, rmSync } = require('fs')
+// const { mkdirp } = require('mkdirp')
+const path = require('path')
 // const gm = require('gm')
 // const im = gm.subClass({ imageMagick: true })
-const imagePath = process.env.IMAGE_PATH || 'https://www.iameric.me/assets'
+// const imagePath = '/assets'
+// const imagePath = 'https://www.iameric.me/assets'
+const uploadDir = '/var/www/iameric.me/html/assets'
 
 const getImageIdFromFilename = async (req, res) => {
     const { name } = req.params
@@ -13,6 +16,19 @@ const getImageIdFromFilename = async (req, res) => {
         .find({ filename: name })
 
     return res.status(200).json({ image })
+}
+
+const ensureUploadDirExists = dir => {
+    try {
+        mkdir(dir, { recursive: true }, err => {
+            if (err) throw new Error()
+            else console.log('Assets directory created successfully')
+        })
+    } catch (err) {
+        console.error('Error creating assets directory:', err)
+        return false
+    }
+    return true
 }
 
 const getImagesByUserId = async (req, res) => {
@@ -70,9 +86,10 @@ const removeImage = path => rm(path, () => console.log('removed file at path', p
 
 const removeAllImageFilesByUsername = username => {
     let imagesRemoved = false
+    const filepath = path.join(uploadDir, username)
     try {
         rmSync(
-            `${imagePath}/${username}`,
+            filepath,
             {
                 recursive: true,
                 force: true ,
@@ -106,11 +123,11 @@ const uploadAvatar = async (req, res) => {
     const { _id, avatar, timestamp } = req.body
     const user = await User.findOne({ _id })
 
-    const path = `${imagePath}/${user.username}`
+    const userDir = path.join(uploadDir, user.username)
 
-    console.log('\nwriting avatar to path', path)
-    const avatarname = await handleFileUpload(avatar, path, timestamp)
-    console.log(`avatar written: ${path}/${avatarname}`)
+    console.log('\nwriting avatar to path', userDir)
+    const avatarname = await handleFileUpload(avatar, userDir, timestamp)
+    console.log(`avatar written: ${userDir}/${avatarname}`)
     console.log('avatarname', avatarname)
 
     if (!avatarname) {
@@ -173,11 +190,11 @@ const deleteImageById = async (req, res) => {
         if (!user) {
             console.log('could not find user to update after image deletion.')
         } else {
-            const userPath = `${imagePath}/${user.username}`
+            const userDir = path.join(uploadDir, user.username)
             const filenameToDelete = deletedImage.filename
     
-            const pathToThumb = `${userPath}/thumb/${filenameToDelete}`
-            const pathToAvatar = `${userPath}/${filenameToDelete}`
+            const pathToThumb = `${userDir}/thumb/${filenameToDelete}`
+            const pathToAvatar = `${userDir}/${filenameToDelete}`
             
             if (isProfileImage) {
                 user.profileImage = null
@@ -255,7 +272,7 @@ const getUserFromImageId = async imageId => {
     return user
 }
 
-const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
+const handleFileUpload = async ({ imageData, thumbData }, uploadPath, filename) => {
     
     const regex = /^data:.+\/(.+);base64,(.*)$/
 
@@ -265,26 +282,28 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
     const thumb = thumbData.uri.match(regex)[2]
     const thumbBuffer = Buffer.from(thumb, 'base64')
     
-    let dirExists
-    try {
-        dirExists = await promises.access(path)
-    } catch (err) {
-        console.log('could not find existing directory:', err)
-    }
-
-    if (!dirExists) {
-        console.log('path not found. creating path:', path)
-        mkdirp.sync(path)
+    let dirExists = ensureUploadDirExists(uploadPath)
     
-        try {
-            dirExists = await promises.access(path)
-        } catch (err) {
-            console.log('could not write path:', err)
-            return null
-        }
-    }
+    // try {
+    //     dirExists = await promises.access(uploadPath)
+    //     console.log(`${uploadPath} exists: ${dirExists}`)
+    // } catch (err) {
+    //     console.log('could not find existing directory:', err)
+    // }
 
-    const imageFile = `${path}/${filename}`
+    // if (!dirExists) {
+    //     console.log('path not found. creating path:', uploadPath)
+    //     mkdir(uploadPath)
+    
+    //     try {
+    //         dirExists = await promises.access(uploadPath)
+    //     } catch (err) {
+    //         console.log('could not write path:', err)
+    //         return null
+    //     }
+    // }
+
+    const imageFile = path.join(uploadPath, filename)
 
     try {
         await promises.writeFile(imageFile, imageBuffer)
@@ -295,27 +314,29 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
 
     // repeated code
 
-    const thumbPath = `${path}/thumb`
-    
-    try {
-        dirExists = await promises.access(thumbPath)
-    } catch (err) {
-        console.log('could not find existing directory:', err)
-    }
+    const thumbPath = path.join(uploadPath, 'thumb')
 
-    if (!dirExists) {
-        console.log('path not found. creating thumb path:', thumbPath)
-        mkdirp.sync(thumbPath)
+    dirExists = ensureUploadDirExists(thumbPath)
     
-        try {
-            dirExists = await promises.access(thumbPath)
-        } catch (err) {
-            console.log('could not write thumb path:', err)
-            return null
-        }
-    }
+    // try {
+    //     dirExists = await promises.access(thumbPath)
+    // } catch (err) {
+    //     console.log('could not find existing directory:', err)
+    // }
 
-    const thumbFile = `${thumbPath}/${filename}`
+    // if (!dirExists) {
+    //     console.log('path not found. creating thumb path:', thumbPath)
+    //     mkdir(thumbPath)
+    
+    //     try {
+    //         dirExists = await promises.access(thumbPath)
+    //     } catch (err) {
+    //         console.log('could not write thumb path:', err)
+    //         return null
+    //     }
+    // }
+
+    const thumbFile = path.join(thumbPath, filename)
 
     try {
         await promises.writeFile(thumbFile, thumbBuffer)
@@ -323,7 +344,7 @@ const handleFileUpload = async ({ imageData, thumbData }, path, filename) => {
         console.log('Error writing thumb file:', err)
         return null
     }
-    
+    console.log(`returning filename ${filename} at path ${thumbPath}`)
     return filename
 }
 
@@ -336,9 +357,9 @@ const uploadProductImage = async payload => {
     
     const filename = `${userId}-${Date.now()}.png`
 
-    const path = `${imagePath}/${user.username}`
+    const userDir = path.join(userDir, user.username)
     
-    const uploadFilename = await handleFileUpload({ imageData, thumbData }, path, filename)
+    const uploadFilename = await handleFileUpload({ imageData, thumbData }, userDir, filename)
     
     if (!uploadFilename) {
         console.log('Error writing image/thumb.')
@@ -366,9 +387,9 @@ const uploadImage = async (req, res) => {
     
     const filename = `${userId}-${Date.now()}.png`
     
-    const path = `${imagePath}/${user.username}`
+    const userDir = path.join(uploadDir, user.username)
     
-    const imagesUploaded = await handleFileUpload({ imageData, thumbData }, path, filename)
+    const imagesUploaded = await handleFileUpload({ imageData, thumbData }, userDir, filename)
     
     if (!imagesUploaded) {
         console.log('Error writing image/thumb.')
@@ -376,7 +397,7 @@ const uploadImage = async (req, res) => {
     }
     
     const { image } = await saveUserImage(user._id, filename, height, width)
-
+    console.log('image saved', image)
     if (!image) {
         console.log('Error saving UserImage to User Images')
         return res.status(200).json(null)
@@ -402,8 +423,8 @@ const saveUserImage = async (userId, filename, height, width) => {
 
 const deletePreview = async (req, res) => {
     const { username, filename } = req.body
-    const path = `${imagePath}/${username}`
-    const imagesDeleted = await removeImageAndThumb(path, filename)
+    const userDir = path.join(uploadDir, username)
+    const imagesDeleted = await removeImageAndThumb(userDir, filename)
     if (!imagesDeleted) return res.status(200).json(null)
     return res.status(200).json({ filename })
 }

@@ -11,6 +11,8 @@ const {
   } = require('./api/auth')
   
   const {
+    addToDeposit,
+    withdrawDeposit,
     getUser,
     getProfileImage,
   } = require('./api/user')
@@ -87,6 +89,8 @@ router.post(   '/unsubscribe',            deleteAccount)
 router.get(    '/token/:token',           validateToken)
 
 // user
+router.post(   '/deposit',                addToDeposit)
+router.post(   '/deposit/withdraw',       withdrawDeposit)
 router.get(    '/profile/:id',             getUser)
 router.get(    '/profile/image/:id',       getProfileImage)
 

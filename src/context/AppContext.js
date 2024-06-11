@@ -42,6 +42,8 @@ const initialState = {
     role: null,
     theme: CombinedDefaultTheme,
     userId: null,
+    addToDeposit: () => {},
+    clearDeposit: () => {},
     reset: () => {},
     setConnections: () => {},
     signIn: () => {},
@@ -109,6 +111,12 @@ export const AppContextProvider = ({ children }) => {
     }, [])
 
     const actions = useMemo(() => ({
+        addToDeposit: async payload => {
+            dispatch({ type: 'ADD_TO_DEPOSIT', payload })
+        },
+        clearDeposit: async () => {
+            dispatch({ type: 'CLEAR_DEPOSIT' })
+        },
         reset: () => {
             dispatch({ type: 'RESET' })
         },
@@ -175,6 +183,24 @@ export const AppContextProvider = ({ children }) => {
 const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
+        case 'ADD_TO_DEPOSIT':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    deposit: state.profile.deposit + payload,
+                },
+            }
+            break
+        case 'CLEAR_DEPOSIT':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    deposit: 0,
+                },
+            }
+            break
         case 'RESET':
             return {
                 ...state,

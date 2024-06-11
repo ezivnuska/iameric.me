@@ -20,7 +20,7 @@ export default ({
 
     useEffect(() => {
         if (secure && !userId) props.navigation.navigate('Start', { signin: true })
-        else if (userId) props.navigation.navigate('Main', { screen: 'Home' })
+        // else if (userId) props.navigation.navigate('Main', { screen: 'Home' })
     }, [appLoaded, userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />

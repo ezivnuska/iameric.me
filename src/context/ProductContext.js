@@ -32,7 +32,7 @@ export const useProducts = () => {
 
 export const ProductContextProvider = props => {
     
-    const { profile } = useApp()
+    const { profile, userId } = useApp()
     const [state, dispatch] = useReducer(reducer, initialState)
 
     useEffect(() => {
@@ -48,7 +48,7 @@ export const ProductContextProvider = props => {
         }
         
         initProducts()
-    }, [profile])
+    }, [userId])
 
     const actions = useMemo(() => ({
         addProduct: payload => {

@@ -21,7 +21,31 @@ const getUser = async (req, res) => {
     return res.status(200).json(null)
 }
 
+const addToDeposit = async (req, res) => {
+    const { id, value } = req.body
+    const user = await User.findOne({ _id: id })
+    if (user) {
+        user.deposit = user.deposit + value
+        await user.save()
+        return res.status(200).json(user)
+    }
+    return res.status(200).json(null)
+}
+
+const withdrawDeposit = async (req, res) => {
+    const { id } = req.body
+    const user = await User.findOne({ _id: id })
+    if (user) {
+        user.deposit = 0
+        await user.save()
+        return res.status(200).json(user)
+    }
+    return res.status(200).json(null)
+}
+
 module.exports = {
+    addToDeposit,
+    withdrawDeposit,
     getProfileImage,
     getUser,
 }

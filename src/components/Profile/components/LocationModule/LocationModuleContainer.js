@@ -30,12 +30,10 @@ export default () => {
                 setUserLoading(true)
                 const details = await getUserLocation(profile.location)
                 setUserLoading(false)
-                console.log('details', details)
                 if (!details) console.log('could not load user location')
                 else updateUser({ location: details })
             }
         }
-        console.log('profile', profile)
         init()
     }, [])
     

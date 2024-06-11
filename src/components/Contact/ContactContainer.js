@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     View,
 } from 'react-native'
 import {
+    EmptyStatus,
     LoadingView,
     ThemedText,
 } from '@components'
@@ -30,16 +31,12 @@ export default ({ userId }) => {
         updateContact,
     } = useContacts()
 
-    const contact = useMemo(() => contacts.filter(user => user._id === userId)[0], [contacts, userId])
-    const images = useMemo(() => contact.images, [contact])
+
+    const [contact, setContact] = useState(null)
 
     useEffect(() => {
-
-        const initContacts = async () => {
-            await loadContacts()
-        }
-        
-        if (!contactsLoaded) initContacts()
+        const initContacts = async () => await loadContacts()
+        if (!contactsLoaded && !contactsLoading) initContacts()
     }, [contactsLoaded])
 
     useEffect(() => {
@@ -47,14 +44,14 @@ export default ({ userId }) => {
             setContactsLoading(true)
             const user = await loadFullContact(userId)
             setContactsLoading(false)
-
-            if (!user) console.log('Error loading contact details')
-            else updateContact(user)
+            console.log('full user', user)
+            if (user) {
+                setContact(user)
+                updateContact(user)
+            } else console.log('Error loading contact details')
         }
-        if (!contact.images) fetchContact()
-    }, [contact])
-
-    if (contactsLoading) return <LoadingView loading='Loading contact' />
+        fetchContact()
+    }, [])
 
     return contact && (
         <View
@@ -74,7 +71,14 @@ export default ({ userId }) => {
                 {contact.username}
             </ThemedText>
 
-            {images && <ImageList images={images} />}
+            <ThemedText>{`Deposit: ${Number(contact.deposit || 0).toFixed(2)}`}</ThemedText>
+
+            {(contact.images && contact.images.length)
+                ? <ImageList images={contact.images} />
+                : contactsLoading
+                    ? <EmptyStatus status='No images yet.' />
+                    : <LoadingView loading='Loading contact' />
+            }
 
         </View>
     )
