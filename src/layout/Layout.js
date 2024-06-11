@@ -65,12 +65,12 @@ export default () => {
         })
     
         socket.on('add_order', data => {
-            console.log('adding order', data)
+            console.log('<< add_order >>', data)
             addOrder(data)
         })
     
         socket.on('remove_order', id => {
-            console.log('<< remove_order >> removing order...')
+            console.log('<< remove_order >>', id)
             removeOrder(id)
         })
     }, [])
