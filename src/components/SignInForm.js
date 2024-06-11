@@ -146,17 +146,6 @@ export default () => {
             if (formError) clearFormError()
             signIn(user)
             clearForm()
-            // clearModal()
-
-            // updateStatus({
-            //     userId: user._id,
-            //     status: 'signed_in',
-            // })
-
-            // console.log(`\nemitting user_signed_in with userId: ${user._id} from SignInForm\n`)
-            // socket.emit('user_signed_in', user._id, user.username, response => {
-            //     console.log('SIGNINFORM: user signed_in callback response:', response)
-            // })
 		}
 
     }

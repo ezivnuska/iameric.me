@@ -5,10 +5,12 @@ import {
     View,
 } from 'react-native'
 import {
-    Brand,
     IconButton,
     ThemedText,
 } from '@components'
+import {
+    Brand,
+} from './components'
 import {
     useApp,
     useModal,

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
     ImageBackground,
     View,
@@ -20,7 +20,7 @@ import {
     VendorPanel,
 } from '@presentations'
 
-export default ({ navigation }) => {
+export default props => {
 
     const { appLoaded, signIn, thin, userId } = useApp()
     const { setModal } = useModal()
@@ -30,7 +30,9 @@ export default ({ navigation }) => {
         if (!user) console.log('Error: Could not connect user.')
         else {
             await signIn(user)
-            navigation.navigate('Main', { screen: 'Home' })
+            props.navigation.navigate('Root', {
+                screen: 'Main',
+            })
         }
     }
 
@@ -146,7 +148,11 @@ export default ({ navigation }) => {
     if (!appLoaded) return <LoadingView loading='Doing Auth Stuff' />
 
     return (
-        <Screen secure={false} style={[classes.screen, classes.paddingH]}>
+        <Screen
+            {...props}
+            secure={false}
+            style={[classes.screen, classes.paddingH]}
+        >
 
             <View
                 style={{

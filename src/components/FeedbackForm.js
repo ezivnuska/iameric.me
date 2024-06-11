@@ -21,6 +21,11 @@ export default ({ data }) => {
     }
 
     const {
+        profile,
+        socket,
+    } = useApp()
+
+    const {
         clearForm,
         clearFormError,
         focused,
@@ -47,8 +52,6 @@ export default ({ data }) => {
     const {
         closeModal,
     } = useModal()
-
-    const { profile } = useApp()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -124,6 +127,8 @@ export default ({ data }) => {
 
         if (!entry) console.log('Error saving entry', err)
         else {
+            console.log('>> new_entry <<', entry)
+            socket.emit('new_entry', entry)
             addEntry(entry)
             clearForm()
             closeModal()

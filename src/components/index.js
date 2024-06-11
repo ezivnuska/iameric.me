@@ -1,4 +1,3 @@
-import Brand from './Brand'
 import Cart from './Cart'
 import CategoryPicker from './CategoryPicker'
 import Contact from './Contact'
@@ -45,7 +44,6 @@ import Vendor from './Vendor'
 import Vendors from './Vendors'
 
 export {
-    Brand,
     Cart,
     CategoryPicker,
     Contact,

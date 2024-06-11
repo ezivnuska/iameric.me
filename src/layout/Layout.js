@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import {
     SafeAreaView,
     View,
@@ -7,22 +7,19 @@ import { AppNavigation } from '@navigation'
 import {
     LoadingView,
     ModalView,
-    // Sockets,
 } from '@components'
-import { Header } from '@layout'
+import { Header } from './components'
 import {
     CartContextProvider,
+    ForumContextProvider,
     ImageContextProvider,
     ProductContextProvider,
-    OrderContextProvider,
     useApp,
     useOrders,
-    // useContacts,
 } from '@context'
 import { PaperProvider } from 'react-native-paper'
 import Compose from '../Compose'
 import { classes } from '@styles'
-// import socket from '../socket'
 
 export default () => {
 	const {
@@ -115,6 +112,7 @@ export default () => {
         <PaperProvider theme={theme}>
             <Compose
                 components={[
+                    ForumContextProvider,
                     CartContextProvider,
                     ProductContextProvider,
                     ImageContextProvider,

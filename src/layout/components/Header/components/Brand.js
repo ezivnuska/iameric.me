@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native'
 import { useApp } from '@context'
-import { navigationRef } from '../navigation/RootNavigation'
+import { navigationRef } from '@navigation/RootNavigation'
 
 export default () => {
 

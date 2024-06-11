@@ -18,21 +18,10 @@ export default ({
     
     const { appLoaded, userId } = useApp()
 
-    // useEffect(() => {
-    //     if (secure) {
-    //         if (!userId) props.navigation.navigate('Start', { params: { signin: true }})
-    //     }
-    //     // else {
-    //     //     if (userId) props.navigation.navigate('Main')
-    //     //     else props.navigation.navigate('')
-    //     // }
-    // }, [])
-
     useEffect(() => {
-        // console.log('appLoaded', appLoaded)
-        if (secure && !userId) props.navigation.navigate('Start', { params: { signin: true }})
-        //     else if (userId) props.navigation.navigate('Auth')
-    }, [appLoaded])
+        if (secure && !userId) props.navigation.navigate('Start', { signin: true })
+        else if (userId) props.navigation.navigate('Main', { screen: 'Home' })
+    }, [appLoaded, userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 

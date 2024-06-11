@@ -7,13 +7,11 @@ import {
     Screen,
 } from '@components'
 import {
-    ForumContextProvider,
     useModal,
 } from '@context'
 import { classes } from '@styles'
 
 export default props => {
-
     const { setModal } = useModal()
     
     return (
@@ -32,11 +30,7 @@ export default props => {
             </TitleBar>
 
             <View style={classes.paddingH}>
-
-                <ForumContextProvider>
-                    <Forum />
-                </ForumContextProvider>
-
+                <Forum />
             </View>
 
         </Screen>

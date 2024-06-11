@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     NavigationContainer,
 } from '@react-navigation/native'
@@ -35,13 +35,15 @@ const VendorStackScreen = () => (
     >
         <VendorStack.Screen
             name='VendorList'
-            component={VendorsScreen}
+            children={props => <VendorsScreen {...props} />}
+            // component={VendorsScreen}
             options={{ title: 'Vendors' }}
         />
 
         <VendorStack.Screen
             name='Vendor'
-            component={VendorScreen}
+            children={props => <VendorScreen {...props} />}
+            // component={VendorScreen}
             options={{
                 title: 'Vendor',
                 unmountOnBlur: true,
@@ -74,7 +76,8 @@ const UserStackScreen = () => {
 
             <UserStack.Screen
                 name='Products'
-                component={ProductsScreen}
+                children={props => <ProductsScreen {...props} />}
+                // component={ProductsScreen}
                 options={{
                     tabBarLabel: 'Products',
                     tabBarIcon: ({ focused, color }) => (
@@ -85,7 +88,8 @@ const UserStackScreen = () => {
 
             <UserStack.Screen
                 name='Profile'
-                component={ProfileScreen}
+                children={props => <ProfileScreen {...props} />}
+                // component={ProfileScreen}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: ({ focused, color }) => (
@@ -96,7 +100,8 @@ const UserStackScreen = () => {
 
             <UserStack.Screen
                 name='Images'
-                component={ImagesScreen}
+                children={props => <ImagesScreen {...props} />}
+                // component={ImagesScreen}
                 options={{
                     tabBarLabel: 'Images',
                     tabBarIcon: ({ focused, color }) => (
@@ -136,7 +141,8 @@ const MainStackScreen = () => {
 
             <MainStack.Screen
                 name='Home'
-                component={StartScreen}
+                children={props => <StartScreen {...props} />}
+                // component={StartScreen}
                 options={{
                     title: 'Home',
                     tabBarLabel: 'Home',
@@ -146,23 +152,23 @@ const MainStackScreen = () => {
                 }}
             />
 
-            {userId && (
-                <MainStack.Screen
-                    name='Forum'
-                    component={ForumScreen}
-                    options={{
-                        title: 'Forum',
-                        tabBarLabel: 'Forum',
-                        tabBarIcon: ({ focused, color }) => (
-                            <Icon name='chatbubbles-outline' size={iconSize} color={color} />
-                        ),
-                    }}
-                />
-            )}
+            <MainStack.Screen
+                name='Forum'
+                children={props => <ForumScreen {...props} />}
+                // component={ForumScreen}
+                options={{
+                    title: 'Forum',
+                    tabBarLabel: 'Forum',
+                    tabBarIcon: ({ focused, color }) => (
+                        <Icon name='chatbubbles-outline' size={iconSize} color={color} />
+                    ),
+                }}
+            />
 
             <MainStack.Screen
                 name='Vendors'
-                component={VendorStackScreen}
+                children={props => <VendorStackScreen {...props} />}
+                // component={VendorStackScreen}
                 options={{
                     title: 'Vendors',
                     tabBarLabel: 'Vendors',
@@ -174,7 +180,8 @@ const MainStackScreen = () => {
 
             <MainStack.Screen
                 name='Users'
-                component={ContactsScreen}
+                children={props => <ContactsScreen {...props} />}
+                // component={ContactsScreen}
                 options={{
                     title: 'Contacts',
                     tabBarLabel: 'Contacts',
@@ -190,6 +197,7 @@ const MainStackScreen = () => {
 
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
+
     return (
         <AppStack.Navigator
             initialRouteName='Splash'
@@ -200,30 +208,35 @@ const AppStackScreen = () => {
 
             <AppStack.Screen
                 name='Splash'
-                component={SplashScreen}
+                children={props => <SplashScreen {...props} />}
+                // component={SplashScreen}
                 options={{ title: 'Splash' }}
             />
 
             <AppStack.Screen
                 name='Start'
-                component={StartScreen}
+                children={props => <StartScreen {...props} />}
+                // component={StartScreen}
                 options={{ title: 'Start' }}
             />
 
             <AppStack.Screen
                 name='User'
-                component={UserStackScreen}
+                children={props => <UserStackScreen {...props} />}
+                // component={UserStackScreen}
             />
 
             <AppStack.Screen
                 name='Main'
-                component={MainStackScreen}
+                children={props => <MainStackScreen {...props} />}
+                // component={MainStackScreen}
                 options={{ title: 'Main' }}
             />
 
             <AppStack.Screen
                 name='Fallback'
-                component={FallbackScreen}
+                children={props => <FallbackScreen {...props} />}
+                // component={FallbackScreen}
                 options={{ title: 'Oops' }}
             />
 

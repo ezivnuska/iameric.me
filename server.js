@@ -148,6 +148,16 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('remove_order', id)
     })
 
+    socket.on('new_entry', entry => {
+        console.log(`\n<< new_entry >>\n${entry.author.username}: ${entry.text}\n>> add_entry <<\n`)
+        socket.broadcast.emit('add_entry', entry)
+    })
+
+    socket.on('delete_entry', id => {
+      console.log(`\n<< delete_entry >>\n${id}\n>> deleted_entry <<\n`)
+      socket.broadcast.emit('deleted_entry', id)
+  })
+
     socket.on('disconnect', reason => {
         console.log(`<< disconnect >>${socket.id}\n>> connected_users <<\n`, reason)
         onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
