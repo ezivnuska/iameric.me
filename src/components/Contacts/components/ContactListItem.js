@@ -60,6 +60,14 @@ export default ({ item, onPress, ...props }) => {
                 size={18}
                 color={connected ? theme?.colors.statusOn : theme?.colors.statusOff}
             />
+
+            {item.available && (
+                <Icon
+                    name={'move-outline'}
+                    size={18}
+                    color={theme?.colors.textDefault}
+                />
+            )}
             
             <ThemedText>{item.username}</ThemedText>
 

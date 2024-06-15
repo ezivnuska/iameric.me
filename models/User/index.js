@@ -30,7 +30,7 @@ const UserSchema = new Schema({
     },
     role: {
       type: Schema.Types.String,
-      default: 'driver',
+      default: 'user',
     },
     joinDate: {
         type: Date,
@@ -54,6 +54,14 @@ const UserSchema = new Schema({
     wages: {
         type: Schema.Types.Number,
         default: 0,
+    },
+    available: {
+        type: Schema.Types.Boolean,
+        default: false,
+    },
+    fiction: {
+        type: Schema.Types.Boolean,
+        default: false,
     },
 },
 {

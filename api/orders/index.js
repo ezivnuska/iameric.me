@@ -59,59 +59,59 @@ const getFilteredOrders = async filter => {
     return orders
 }
 
-const getRelevantOrdersByUserId = async (req, res) => {
+// const getRelevantOrdersByUserId = async (req, res) => {
 
-    const { id } = req.params
+//     const { id } = req.params
 
-    const user = await User.findOne({ _id: id })
+//     const user = await User.findOne({ _id: id })
 
-    const { role } = user
+//     const { role } = user
 
-    let orders = null
+//     let orders = null
 
-    if (role === 'customer') {
-        orders = await getFilteredOrders({
-            $and: [
-                { customer: id },
-                // { status: { $lt: 7 } },
-            ],
-        })
+//     if (role === 'customer') {
+//         orders = await getFilteredOrders({
+//             $and: [
+//                 { customer: id },
+//                 // { status: { $lt: 7 } },
+//             ],
+//         })
 
-    } else if (role === 'vendor') {
-        orders = await getFilteredOrders({
-            $or: [
-                { $and: [
-                    { vendor: id },
-                    { status: { $lt: 6 } },    
-                ]},
-                { status: { $lt: 6 } },
-            ],
-        })
+//     } else if (role === 'vendor') {
+//         orders = await getFilteredOrders({
+//             $or: [
+//                 { $and: [
+//                     { vendor: id },
+//                     { status: { $lt: 6 } },    
+//                 ]},
+//                 { status: { $lt: 6 } },
+//             ],
+//         })
 
-    } else if (role === 'driver') {
-        orders = await getFilteredOrders({
-            $or: [
-                { $and: [
-                    { driver: id },
-                    { status: { $lt: 6 } },
-                ]},
-                { status: { $lt: 2 } },
-            ],
-        })
+//     } else if (role === 'driver') {
+//         orders = await getFilteredOrders({
+//             $or: [
+//                 { $and: [
+//                     { driver: id },
+//                     { status: { $lt: 6 } },
+//                 ]},
+//                 { status: { $lt: 2 } },
+//             ],
+//         })
 
-    } else if (role === 'admin') {
-        orders = await getFilteredOrders({ status: { $lt: 7 } },)
-    }
+//     } else if (role === 'admin') {
+//         orders = await getFilteredOrders({ status: { $lt: 7 } },)
+//     }
     
-    if (!orders) {
-        console.log('Error getting relevant orders by id')
-        return res.json(200).json(null)
-    }
+//     if (!orders) {
+//         console.log('Error getting relevant orders by id')
+//         return res.json(200).json(null)
+//     }
 
-    const sanitizedOrders = getSanitizedOrders(orders)
+//     const sanitizedOrders = getSanitizedOrders(orders)
     
-    return res.status(200).json({ orders: sanitizedOrders })
-}
+//     return res.status(200).json({ orders: sanitizedOrders })
+// }
 
 const getOrdersByUserId = async (req, res) => {
     
@@ -643,7 +643,7 @@ module.exports = {
     getOrdersByDriverId,
     getOrdersByUserId,
     getOrdersByVendorId,
-    getRelevantOrdersByUserId,
+    // getRelevantOrdersByUserId,
     markDriverAtVendorLocation,
     markOrderAsReady,
     markOrderCompleted,

@@ -13,6 +13,7 @@ const initialState = {
     error: null,
     status: null,
     closeContactModal: () => {},
+    getNumberOfAvailableUsers: () => {},
     getUserCountByRole: () => {},
     setContact: () => {},
     setContacts: () => {},
@@ -20,6 +21,7 @@ const initialState = {
     setContactsLoaded: () => {},
     setContactsLoading: () => {},
     setContactModal: () => {},
+    toggleStatus: () => {},
     updateStatus: () => {},
     updateContact: () => {},
     updateContactProducts: () => {},
@@ -42,6 +44,7 @@ export const ContactContextProvider = props => {
     const { userId } = useApp()
 
     useEffect(() => {
+
         const init = async () => {
             dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
             const data = await loadContacts()
@@ -82,6 +85,9 @@ export const ContactContextProvider = props => {
                 payload: { data, type },
             })
         },
+        toggleStatus: async payload => {
+            dispatch({ type: 'TOGGLE_STATUS', payload })
+        },
         updateStatus: async payload => {
             dispatch({ type: 'UPDATE_CONTACT_STATUS', payload })
         },
@@ -98,6 +104,10 @@ export const ContactContextProvider = props => {
             const users = state.contacts.filter(user => user.role === role)
             return users.length
         },
+        getNumberOfAvailableUsers: () => {
+            const users = state.contacts.filter(user => user.available === true)
+            return users.length
+        },
     }), [state, dispatch])
 
     return (
@@ -110,6 +120,19 @@ export const ContactContextProvider = props => {
 const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
+        case 'TOGGLE_STATUS':
+            return {
+                ...state,
+                contacts: state.contacts.map(contact => {
+                    if (contact._id === payload) {
+                        return {
+                            ...contact,
+                            available: !contact.available,
+                        }
+                    } else return contact
+                })
+            }
+            break
         case 'SET_CONTACT':
             return {
                 ...state,

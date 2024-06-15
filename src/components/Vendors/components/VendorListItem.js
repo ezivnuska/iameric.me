@@ -17,7 +17,7 @@ import { ActivityIndicator } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ children, user, filename, onPress = null, ...props }) => {
+export default ({ children, user, filename = null, onPress = null, ...props }) => {
 
     const { connections, landscape, profile, theme } = useApp()
     const [ connected, setConnected ] = useState(false)

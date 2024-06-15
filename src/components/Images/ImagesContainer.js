@@ -56,6 +56,7 @@ export default ({ restricted = false }) => {
     const restrictUpload = () => (uploading || isDev)
 
     const hideUpload = () => {
+        return false// temp
         if (!profile || restricted) return true
         switch(profile.username) {
             case 'Customer':

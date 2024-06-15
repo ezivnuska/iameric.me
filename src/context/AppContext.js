@@ -48,6 +48,7 @@ const initialState = {
     setConnections: () => {},
     signIn: () => {},
     signOut: () => {},
+    toggleStatus: () => {},
     toggleTheme: () => {},
     clearUser: () => {},
     setUser: () => {},
@@ -141,11 +142,15 @@ export const AppContextProvider = ({ children }) => {
             // await cleanStorage()
             dispatch({ type: 'SIGN_OUT' })
         },
+        // toggleStatus not used, updateUser used instead
+        toggleStatus: () => {
+            dispatch({ type: 'TOGGLE_STATUS' })
+        },
         toggleTheme: () => {
             setItem('dark', !state.dark)
             dispatch({ type: 'TOGGLE_THEME' })
         },
-        updateUser: payload => {
+        updateUser: async payload => {
             dispatch({ type: 'UPDATE_USER', payload })
         },
         setProfileImage: payload => {
@@ -264,6 +269,15 @@ const reducer = (state, action) => {
                 userId: null,
                 role: null,
                 profile: null,
+            }
+            break
+        case 'TOGGLE_STATUS':
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    available: !state.profile?.available,
+                },
             }
             break
         case 'TOGGLE_THEME':

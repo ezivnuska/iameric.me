@@ -15,13 +15,16 @@ const {
     withdrawDeposit,
     getUser,
     getProfileImage,
+    toggleStatus,
   } = require('./api/user')
   
   const {
+    getAvailableUsers,
     getUsers,
     getUserDetailsById,
     getNumberOfOnlineUsers,
     getAllVendors,
+    getVendors,
     getUserById,
     getUserAndImagesById,
     getVendor,
@@ -66,7 +69,7 @@ const {
     getOrdersByDriverId,
     getOrdersByUserId,
     getOrdersByVendorId,
-    getRelevantOrdersByUserId,
+    // getRelevantOrdersByUserId,
     markDriverAtVendorLocation,
     markOrderAsReady,
     markOrderCompleted,
@@ -93,15 +96,18 @@ router.post(   '/deposit',                addToDeposit)
 router.post(   '/deposit/withdraw',       withdrawDeposit)
 router.get(    '/profile/:id',             getUser)
 router.get(    '/profile/image/:id',       getProfileImage)
+router.post(   '/profile/status',         toggleStatus)
 
 // users
 router.get(    '/user/:id',                getUserById)
 router.get(    '/user/full/:id',           getUserAndImagesById)
 router.get(    '/user/details/:id',        getUserDetailsById)
 router.get(    '/users',                   getUsers)
+router.get(    '/users/available',         getAvailableUsers)
 router.get(    '/users/online',            getNumberOfOnlineUsers)
 router.get(    '/vendor/:id',              getVendor)
-router.get(    '/vendors',                 getAllVendors)
+router.get(    '/vendors',                 getVendors)
+// router.get(    '/vendors',                 getAllVendors)
 
 // entries
 router.post(   '/entry',                   createEntry)
@@ -134,7 +140,7 @@ router.get(    '/images/:name',            getImageIdFromFilename)
 
 // orders
 router.get(    '/orders/all',              getAllOrders)
-router.get(    '/orders/:id',              getRelevantOrdersByUserId)
+// router.get(    '/orders/:id',              getRelevantOrdersByUserId)
 router.get(    '/orders/admin/:id',        getAllOrders)
 router.get(    '/orders/user/:id',         getOrdersByUserId)
 router.get(    '/orders/customer/:id',     getOrdersByCustomerId)

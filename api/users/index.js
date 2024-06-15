@@ -28,13 +28,39 @@ const getUsersByRole = async (req, res) => {
             path: 'profileImage',
             select: 'filename width height',
         })
-    console.log('USERS', users)
+    
     if (!users) {
         console.log('Could not fetch users')
         return res.status(200).json(null)
     }
 
     return res.status(200).json({ users })
+}
+
+const getVendors = async (req, res) => {
+    const vendors = await User
+        .find({ fiction: true })
+        .populate({
+            path: 'profileImage',
+            select: 'filename width height',
+        })
+    
+    if (vendors) return res.status(200).json({ vendors })
+    else console.log('Could not fetch vendors')
+    return res.status(200).json(null)
+}
+
+const getAvailableUsers = async (req, res) => {
+    const users = await User
+        .find({ available: true })
+        .populate({
+            path: 'profileImage',
+            select: 'filename width height',
+        })
+    
+    if (users) return res.status(200).json({ users })
+    else console.log('Could not fetch available users')
+    return res.status(200).json(null)
 }
 
 const getNumberOfOnlineUsers = async (req, res) => {
@@ -192,11 +218,13 @@ const getUserDetailsById = async (req, res) => {
 }
 
 module.exports = {
+    getAvailableUsers,
     getUsers,
     getUsersByRole,
     getNumberOfOnlineUsers,
     getAllVendorIds,
     getAllVendors,
+    getVendors,
     getUserById,
     getUserAndImagesById,
     getUserDetailsById,

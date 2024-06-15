@@ -11,10 +11,19 @@ import {
 import {
     useApp,
 } from '@context'
+import {
+    switchAvailability,
+} from '@utils/user'
 
-export default ({ profile }) => {
+export default () => {
 
-    const { appLoading } = useApp()
+    const {
+        appLoading,
+        profile,
+        socket,
+        toggleStatus,
+        updateUser,
+    } = useApp()
 
     const restrictedUsernames = ['Customer', 'Driver', 'Vendor']
     const restrictedRoles = ['admin']
@@ -26,12 +35,23 @@ export default ({ profile }) => {
             || (role && restrictedRoles.indexOf(role) > -1)
         )
     }
+
+    const handleStatusChange = async () => {
+        const user = await switchAvailability(profile._id)
+        if (user) {
+            await updateUser({
+                available: user.available,
+            })
+            socket.emit('status_change', user._id)
+        }
+        // toggleStatus()
+    }
     
-    if (appLoading) return <LoadingView loading='Loading profile.' />
+    // if (appLoading) return <LoadingView loading='Loading profile.' />
 
     return profile ? (
         <>
-            <UserDetails userId={profile._id} />
+            <UserDetails profile={profile} toggleStatus={handleStatusChange} />
             <LocationModule userId={profile._id} />
             <DepositForm user={profile} />
             {!isRestricted() && <DeleteAccountButton />}

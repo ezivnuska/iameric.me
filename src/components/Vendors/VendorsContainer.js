@@ -32,11 +32,10 @@ export default ({ disabled = false }) => {
             keyExtractor={(item, index) => 'vendor' + index}
             renderItem={({ item }) => {
                 const { _id, profileImage } = item
-                const { filename } = profileImage
                 return (
                     <VendorListItem
                         user={item}
-                        filename={filename}
+                        filename={profileImage?.filename}
                         onPress={() => navigationRef.navigate('Vendors', { screen: 'Vendor', params: { id: item._id } })}
                         style={{ alignItems: 'center' }}
                         disabled={disabled}

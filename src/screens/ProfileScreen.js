@@ -11,20 +11,15 @@ import { classes } from '@styles'
 
 export default props => {
 
-    const { profile, appLoading } = useApp()
+    const { appLoading } = useApp()
     
     if (appLoading) return <LoadingView loading='Loading profile.' />
 
     return (
         <Screen {...props}>
-            {profile ? (
-                <>
-                    <TitleBar title={profile.username} />
-                    <View style={classes.paddingH}>
-                        <Profile profile={profile} />
-                    </View>
-                </>
-            ) : <LoadingView loading='Loading profile...' />}
+            <View style={classes.paddingH}>
+                <Profile />
+            </View>
         </Screen>
     )
 }

@@ -32,7 +32,6 @@ export const addUserLocation = async location => {
 
 export const addDeposit = async (id, value) => {
     const { data } = await axios.post(`/api/deposit`, { id, value })
-    console.log('addDeposit data:', data)
     if (!data) console.log('could not add to deposit.')
     else return data.user
     return null
@@ -40,8 +39,14 @@ export const addDeposit = async (id, value) => {
 
 export const withdrawDeposit = async id => {
     const { data } = await axios.post(`/api/deposit/withdraw`, { id })
-    console.log('withdrawDeposit data:', data)
     if (!data) console.log('could not withdraw deposit.')
+    else return data.user
+    return null
+}
+
+export const switchAvailability = async id => {
+    const { data } = await axios.post(`/api/profile/status`, { id })
+    if (!data) console.log('could not toggle status.')
     else return data.user
     return null
 }

@@ -17,30 +17,37 @@ import {
     useModal,
 } from '@context'
 import { classes } from '@styles'
+import Icon from 'react-native-vector-icons/Ionicons'
 
-const FormTitle = ({ role }) => {
-    const renderTitle = () => {
-        switch (role) {
-            case 'customer': return 'Customer Sign Up'
-            break
-            case 'vendor': return 'Vendor Sign Up'
-            break
-            case 'driver': return 'Driver Sign Up'
-            break
-        }
-    }
+const PublicCheckbox = ({ checked, setChecked }) => {
+    const { theme } = useApp()
     return (
-        <ThemedText style={[classes.headerSecondary, { marginBottom: 10 }]}>{renderTitle()}</ThemedText>
+        <View
+            style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 10,
+            }}
+        >
+            <Icon
+                name={checked ? 'ellipse' : 'ellipse-outline'}
+                size={24}
+                onPress={() => setChecked(!checked)}
+                color={theme?.colors.textDefault}
+            />
+            <ThemedText>Public Accomodation</ThemedText>
+        </View>
     )
 }
 
-export default ({ role }) => {
+export default () => {
 
     const initialState = {
         email: '',
         username: '',
         password: '',
         confirmPassword: '',
+        fiction: false,
     }
 
     const {
@@ -75,6 +82,7 @@ export default ({ role }) => {
         username,
         password,
         confirmPassword,
+        fiction,
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
@@ -159,7 +167,7 @@ export default ({ role }) => {
 		await setItem('email', email)
 
         setFormLoading(true)
-		const user = await signup(email, password, role, username)
+		const user = await signup(email, password, username, fiction)
         setFormLoading(false)
         
 		if (!user) {
@@ -253,6 +261,7 @@ export default ({ role }) => {
                 }}
                 focused={focused === 'confirmPassword'}
             />
+            <PublicCheckbox checked={fiction} setChecked={value => onChange('fiction', value)} />
         </>
     )
     
@@ -261,7 +270,7 @@ export default ({ role }) => {
 
             <View style={{ paddingVertical: 20 }}>
 
-                <FormTitle role={role} />
+                <ThemedText style={[classes.headerSecondary, { marginBottom: 10 }]}>Sign Up</ThemedText>
 
                 {renderFields()}
                 

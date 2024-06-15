@@ -97,7 +97,8 @@ const handleSignin = async (req, res) => {
     
     const user = await User
         .findOne({ email })
-        .populate({ path: 'profileImage', select: 'filename width height' })
+        .populate('profileImage', 'filename width height')
+        .populate('location')
         
     if (!user) {
         return res.status(200).json({ error: true, invalidField: 'email', msg: 'No user found with that email.' })
@@ -116,11 +117,11 @@ const handleSignin = async (req, res) => {
     
     await user.save()
 
-    const baseUser = getBaseUser(user)
+    // const baseUser = getBaseUser(user)
 
     console.log(`\nUser signed in: ${user.username}`)
     
-    return res.status(200).json({ user: baseUser })
+    return res.status(200).json({ user })
 }
 
 const validateToken = async (req, res) => {
@@ -136,6 +137,8 @@ const validateToken = async (req, res) => {
     
     const user = await User
         .findOne({ _id })
+        .populate('profileImage', 'filename width height')
+        .populate('location')
     
     if (!user) return res.status(200).json(null)
 
@@ -147,7 +150,7 @@ const validateToken = async (req, res) => {
     return res.status(200).json(user)
 }
 
-const createUser = async (email, username, password, role) => {
+const createUser = async (email, hashedPassword, username, fiction) => {
     
     let user = await User.findOne({ email })
     
@@ -155,7 +158,7 @@ const createUser = async (email, username, password, role) => {
         console.log('user with that email already exists.')
         return null
     } else {
-        user = await User.create({ username, email, password, role })
+        user = await User.create({ email, password: hashedPassword, username, fiction })
     }
 
     if (!user) {
@@ -172,7 +175,8 @@ const createUser = async (email, username, password, role) => {
             { $set: { token, exp } },
             { new: true },
         )
-        .populate({ path: 'profileImage', select: 'filename width height' })
+        .populate('profileImage', 'filename width height')
+        .populate('location')
 
     if (!user) {
         console.log('Error updating user with token')
@@ -183,7 +187,7 @@ const createUser = async (email, username, password, role) => {
 }
 
 const handleSignup = async (req, res) => {
-    const { email, password, username, role } = req.body
+    const { email, password, username, fiction } = req.body
     console.log('password', password)
     
     return bcrypt.genSalt(10, async (err, salt) => {
@@ -198,7 +202,7 @@ const handleSignup = async (req, res) => {
                 console.log('problem with hash')
                 return res.status(200).json({ error: true, msg: 'Problem with hash.' })
             }
-            const user = await createUser(email, username, hash, role)
+            const user = await createUser(email, hash, username, fiction)
 
             if (!user) {
                 console.log('problem with user')

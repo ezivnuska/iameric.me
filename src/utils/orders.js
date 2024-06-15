@@ -12,12 +12,12 @@ export const getAllOrders = async () => {
     return null
 }
 
-export const getOrdersById = async id => {
-    const { data } = await axios.get(`/api/orders/${id}`)
-    if (!data) console.log('could not load orders.')
-    else return data
-    return null
-}
+// export const getOrdersById = async id => {
+//     const { data } = await axios.get(`/api/orders/${id}`)
+//     if (!data) console.log('could not load orders.')
+//     else return data
+//     return null
+// }
 
 export const loadUserOrders = async (role, userId) => {
     const { data } = await axios.get(`/api/orders/${role}/${userId}`)

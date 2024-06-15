@@ -20,7 +20,7 @@ export const connect = async type => {
     // console.log('connect', type)
     const creds = {
         customer: { email: 'customer@iameric.me', password: 'customer' },
-        driver: { email: 'driver@iameric.me', password: 'driver' },
+        // driver: { email: 'driver@iameric.me', password: 'driver' },
         vendor: { email: 'vendor@iameric.me', password: 'vendor' },
     }
     
@@ -55,10 +55,10 @@ export const signin = async (email, password) => {
     return null
 }
 
-export const signup = async (email, password, role, username) => {
+export const signup = async (email, password, username, fiction) => {
     
     const { data } = await axios.
-        post('/api/signup', { email, password, role, username })
+        post('/api/signup', { email, password, username, fiction })
     
     if (!data) {
         console.log('Error authenticating user')

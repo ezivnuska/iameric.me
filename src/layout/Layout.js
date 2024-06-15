@@ -15,6 +15,7 @@ import {
     ImageContextProvider,
     ProductContextProvider,
     useApp,
+    useContacts,
     useOrders,
 } from '@context'
 import { PaperProvider } from 'react-native-paper'
@@ -32,6 +33,9 @@ export default () => {
 		theme,
         userId,
 	} = useApp()
+	const {
+        toggleStatus,
+    } = useContacts()
     const {
         addOrder,
         removeOrder,
@@ -69,6 +73,10 @@ export default () => {
         socket.on('remove_order', id => {
             console.log('<< remove_order >>', id)
             removeOrder(id)
+        })
+
+        socket.on('changed_status', payload => {
+            toggleStatus(payload)
         })
     }, [])
 

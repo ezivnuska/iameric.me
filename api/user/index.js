@@ -43,9 +43,21 @@ const withdrawDeposit = async (req, res) => {
     return res.status(200).json(null)
 }
 
+const toggleStatus = async (req, res) => {
+    const { id } = req.body
+    const user = await User.findOne({ _id: id })
+    if (user) {
+        user.available = !user.available
+        await user.save()
+        return res.status(200).json({ user })
+    }
+    return res.status(200).json(null)
+}
+
 module.exports = {
     addToDeposit,
     withdrawDeposit,
     getProfileImage,
     getUser,
+    toggleStatus,
 }

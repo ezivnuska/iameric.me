@@ -89,12 +89,13 @@ export default ({ image }) => {
         setImageDims(getMaxImageDims(image.width, image.height, dims))
     }, [dims])
 
-    const allowDeletion = () => (
-        profile.username !== 'Driver' &&
-        profile.username !== 'Customer' &&
-        profile.username !== 'Vendor' ||
-        profile.role === 'admin'
-    )
+    const allowDeletion = () => true
+    // (
+    //     profile.username !== 'Driver' &&
+    //     profile.username !== 'Customer' &&
+    //     profile.username !== 'Vendor' ||
+    //     profile.role === 'admin'
+    // )
 
     const disableDelete = () => appLoading || process.env.NODE_ENV === 'development'
     const isAvatar = () => (profile.profileImage && profile.profileImage._id === image._id)

@@ -103,3 +103,10 @@ export const loadVendors = async () => {
     else return data.vendors
     return null
 }
+
+export const loadAvailableUsers = async () => {
+    const { data } = await axios.get('/api/users/available')
+    if (!data.users) console.log('could not load available users.')
+    else return data.users
+    return null
+}

@@ -127,6 +127,10 @@ io.on('connection', (socket) => {
         io.emit('connected_users', onlineUsers)
     })
 
+    socket.on('status_change', id => {
+      socket.broadcast.emit('changed_status', id)
+    })
+
     socket.on('user_signed_out', (userId, callback) => {
         console.log(`\n<< user_signed_out >>\n${userId} signed out.\n>> connected_users <<\n`)
         onlineUsers = onlineUsers.filter(user => user.userId !== userId)

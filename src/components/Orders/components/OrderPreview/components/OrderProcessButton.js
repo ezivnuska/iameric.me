@@ -112,6 +112,17 @@ export default ({ order }) => {
         })
     }, [])
 
+    const getUserRole = () => {
+        let role = null
+        if (profile) {
+            if (profile.role === 'admin') role = 'admin'
+            else if (profile._id === order.vendor || profile._id === order.vendor._id) role = 'vendor'
+            else if (profile._id === order.customer || profile._id === order.customer._id) role = 'customer'
+            else if (profile._id === order.driver || profile._id === order.driver._id) role = 'driver'
+        }
+        return role
+    }
+
     const deleteOrder = async id => {
         setOrdersLoading(true)
         await deleteOrderWithId(id)
@@ -220,7 +231,9 @@ export default ({ order }) => {
         }
     }
 
-    switch (profile.role) {
+    const role = getUserRole()
+
+    switch (role) {
         case 'admin': return (
             <AdminButton
                 order={order}

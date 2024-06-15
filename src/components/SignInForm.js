@@ -211,7 +211,7 @@ export default () => {
 
                 <IconButton
                     label='Sign Up'
-                    onPress={() => setNewModal('SIGNUP_CUSTOMER')}
+                    onPress={() => setNewModal('SIGNUP')}
                     style={{ padding: 10 }}
                     transparent
                 />

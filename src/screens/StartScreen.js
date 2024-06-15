@@ -58,16 +58,16 @@ export default props => {
             >
                 
                 <IconButton
-                    label='Sign Up to Buy'
+                    label='Sign Up'
                     iconName='arrow-forward-circle-outline'
-                    onPress={() => setModal('SIGNUP_CUSTOMER')}
+                    onPress={() => setModal('SIGNUP')}
                     alignIcon='right'
                     transparent
                 />
 
                 <IconButton
                     type='primary'
-                    label='Preview as Customer'
+                    label='Private User Preview'
                     iconName='eye-outline'
                     onPress={() => onConnect('customer')}
                     alignIcon='right'
@@ -91,51 +91,18 @@ export default props => {
             >
                 
                 <IconButton
-                    label='Sign Up to Sell'
+                    label='Sign Up'
                     iconName='arrow-forward-circle-outline'
-                    onPress={() => setModal('SIGNUP_VENDOR')}
+                    onPress={() => setModal('SIGNUP')}
                     alignIcon='right'
                     transparent
                 />
 
                 <IconButton
                     type='primary'
-                    label='Preview as Vendor'
+                    label='Business Preview'
                     iconName='eye-outline'
                     onPress={() => onConnect('vendor')}
-                    alignIcon='right'
-                    padded
-                />
-
-            </View>
-
-            <View
-                style={{
-                    flex: 1,
-                    width: '100%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingBottom: 5,
-                    marginBottom: 5,
-                    gap: 10,
-                    borderBottomWidth: 1,
-                    borderBottomStyle: 'dotted',
-                }}
-            >
-                
-                <IconButton
-                    label='Sign Up to Deliver'
-                    iconName='arrow-forward-circle-outline'
-                    onPress={() => setModal('SIGNUP_DRIVER')}
-                    alignIcon='right'
-                    transparent
-                />
-
-                <IconButton
-                    type='primary'
-                    label='Preview as Driver'
-                    iconName='eye-outline'
-                    onPress={() => onConnect('driver')}
                     alignIcon='right'
                     padded
                 />
@@ -196,261 +163,39 @@ export default props => {
             </View>
             {!userId && renderButtons()}
         </Screen>
-        // <View
-        //     style={{
-        //         flex: 1,
-        //         justifyContent: 'space-evenly',
-        //         height: '100%',
-        //     }}
-        // >
-        //     <Pressable
-        //         style={{
-        //             flex: 1,
-        //             justifyContent: 'flex-end',
-        //             padding: 10,
-        //             background: '#fff',
-        //         }}
-        //         onPress={() => props.navigation.navigate('Main')}
-        //     >
-        //         <Text
-        //             style={{
-        //                 color: 'orange',
-        //                 fontSize: 32,
-        //                 fontWeight: 700,
-        //                 textAlign: 'right',
-        //             }}
-        //         >
-        //             Searching?
-        //         </Text>
-        //     </Pressable>
-
-        //     <Pressable
-        //         onPress={() => setModal('SIGN_IN')}
-        //         style={{
-        //             flex: 1,
-        //             background: 'orange',
-        //             padding: 10,
-        //             justifyContent: 'flex-start',
-        //         }}
-        //     >
-        //         <Text
-        //             style={{
-        //                 fontSize: 32,
-        //                 fontWeight: 700,
-        //                 color: '#fff',
-        //             }}
-        //         >
-        //             Selling?
-        //         </Text>
-        //     </Pressable>
-            // <ImageSegment
-            //     source={`${IMAGE_PATH}/customer-avatar.png`}
-            // >
-
-            //     <View
-            //         style={{
-            //             flexDirection: 'column',
-            //             justifyContent: 'flex-start',
-            //             flexWrap: 'wrap',
-            //             alignItems: 'flex-start',
-            //         }}
-            //     >
-            //         <Text
-            //             style={[
-            //                 classes.headerSecondary,
-            //                 {
-            //                     paddingHorizontal: 8,
-            //                     paddingVertical: 5,
-            //                     color: '#fff',//theme?.colors.textDefault,
-            //                 },
-            //             ]}
-            //         >
-            //             Looking?
-            //         </Text>
-                    
-            //         <IconButton
-            //             type='primary'
-            //             label='Find It'
-            //             iconName='arrow-forward-circle-outline'
-            //             onPress={() => setModal('SIGNUP_CUSTOMER')}
-            //             alignIcon='right'
-            //             style={{ marginHorizontal: 3 }}
-            //         />
-            //     </View>
-                
-            //     <IconButton
-            //         label='Customer'
-            //         iconName='eye-outline'
-            //         onPress={() => onConnect('customer')}
-            //         alignIcon='right'
-            //         transparent
-            //         type='primary'
-            //         align='flex-end'
-            //         textStyles={{
-            //             color: '#fff',
-            //             flexBasis: 'auto',
-            //             flexShrink: 1,
-            //             flexWrap: 'wrap',
-            //             textAlign: 'right',
-            //         }}
-            //         style={{
-            //             color: '#fff',
-            //             flexShrink: 1,
-            //             flexGrow: 0,
-            //         }}
-            //     />
-            // </ImageSegment>
-
-            // <ImageSegment
-            //     source={`${IMAGE_PATH}/vendor-avatar.png`}
-            // >
-            //     <View
-            //         style={{
-            //             flexDirection: 'column',
-            //             justifyContent: 'flex-start',
-            //             flexWrap: 'wrap',
-            //             alignItems: 'flex-start',
-            //         }}
-            //     >
-            //         <Text
-            //             style={[
-            //                 classes.headerSecondary,
-            //                 {
-            //                     paddingHorizontal: 8,
-            //                     paddingVertical: 5,
-            //                     color: '#fff',//theme?.colors.textDefault,
-            //                 },
-            //             ]}
-            //         >
-            //             Offering?
-            //         </Text>
-                    
-            //         <IconButton
-            //             type='primary'
-            //             label='Offer It'
-            //             iconName='arrow-forward-circle-outline'
-            //             onPress={() => setModal('SIGNUP_VENDOR')}
-            //             alignIcon='right'
-            //             style={{ marginHorizontal: 3 }}
-            //         />
-            //     </View>
-
-            //     <IconButton
-            //         label='Seller'
-            //         iconName='eye-outline'
-            //         onPress={() => onConnect('vendor')}
-            //         alignIcon='right'
-            //         transparent
-            //         type='primary'
-            //         align='flex-end'
-            //         textStyles={{
-            //             color: '#fff',
-            //             flexBasis: 'auto',
-            //             flexShrink: 1,
-            //             flexWrap: 'wrap',
-            //             textAlign: 'right',
-            //         }}
-            //         style={{
-            //             color: '#fff',
-            //             flexShrink: 1,
-            //             flexGrow: 0,
-            //         }}
-            //     />
-
-            // </ImageSegment>
-
-            // <ImageSegment
-            //     source={`${IMAGE_PATH}/driver-avatar.png`}
-            // >
-            //     <View
-            //         style={{
-            //             flexDirection: 'column',
-            //             justifyContent: 'flex-start',
-            //             flexWrap: 'wrap',
-            //             alignItems: 'flex-start',
-            //         }}
-            //     >
-            //         <Text
-            //             style={[
-            //                 classes.headerSecondary,
-            //                 {
-            //                     paddingHorizontal: 8,
-            //                     paddingVertical: 5,
-            //                     color: '#fff',//theme?.colors.textDefault,
-            //                 },
-            //             ]}
-            //         >
-            //             Mobile?
-            //         </Text>
-
-            //         <IconButton
-            //             type='primary'
-            //             label='Move It'
-            //             iconName='arrow-forward-circle-outline'
-            //             onPress={() => setModal('SIGNUP_DRIVER')}
-            //             alignIcon='right'
-            //             style={{ marginHorizontal: 3 }}
-            //         />
-            //     </View>
-                
-            //     <IconButton
-            //         label='Driver'
-            //         iconName='eye-outline'
-            //         onPress={() => onConnect('driver')}
-            //         alignIcon='right'
-            //         transparent
-            //         type='primary'
-            //         align='flex-end'
-            //         textStyles={{
-            //             color: '#fff',
-            //             flexBasis: 'auto',
-            //             flexShrink: 1,
-            //             flexWrap: 'wrap',
-            //             textAlign: 'right',
-            //         }}
-            //         style={{
-            //             color: '#fff',
-            //             flexShrink: 1,
-            //             flexGrow: 0,
-            //         }}
-            //     />
-
-            // </ImageSegment> */}
-
-        // </View>
     )
 }
 
-const ImageSegment = ({ children, source }) => {
+// const ImageSegment = ({ children, source }) => {
     
-    const { theme } = useApp()
+//     const { theme } = useApp()
 
-    return (
-        <ImageBackground
-            style={{ flex: 1 }}
-            resizeMode='cover'
-            source={source}
-        >
-            <LinearGradient
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'flex-end',
-                    justifyContent: 'space-between',
-                    paddingVertical: 10,
-                    paddingHorizontal: 5,
-                    opacity: 1,
-                }}
-                colors={theme?.dark
-                    ? [ '#00000000', '#000000' ]
-                    : [ '#00000000', '#000000' ]
-                }
-            >
+//     return (
+//         <ImageBackground
+//             style={{ flex: 1 }}
+//             resizeMode='cover'
+//             source={source}
+//         >
+//             <LinearGradient
+//                 style={{
+//                     flex: 1,
+//                     flexDirection: 'row',
+//                     alignItems: 'flex-end',
+//                     justifyContent: 'space-between',
+//                     paddingVertical: 10,
+//                     paddingHorizontal: 5,
+//                     opacity: 1,
+//                 }}
+//                 colors={theme?.dark
+//                     ? [ '#00000000', '#000000' ]
+//                     : [ '#00000000', '#000000' ]
+//                 }
+//             >
 
-                {children}
+//                 {children}
 
-            </LinearGradient>
+//             </LinearGradient>
 
-        </ImageBackground>
-    )
-}
+//         </ImageBackground>
+//     )
+// }

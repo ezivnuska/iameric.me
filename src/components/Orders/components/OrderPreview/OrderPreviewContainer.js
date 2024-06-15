@@ -99,7 +99,7 @@ const DriverStatus = ({ order }) => {
     switch (order.status) {
         case 1: return (
             <>
-                <OrderStatus status={`DRIVER NEEDED : ${moment(order.pickup).format('LT')}`} />
+                <OrderStatus status={`ORDER WAITING : ${moment(order.pickup).format('LT')}`} />
                 <OrderDetails order={order} />
             </>
         )
@@ -139,14 +139,21 @@ export default ({ order }) => {
         })
     }, [])
 
-    const showItemized = () => profile.role === 'vendor' ||
-        profile.role === 'customer' ||
-        profile.role === 'admin' ||
-        (profile.role === 'driver' && memo.status > 2 && memo.status < 5)
+    const getUserRole = () => {
+        let role = null
+        if (profile) {
+            if (profile.role === 'admin') role = 'admin'
+            else if (profile._id === order.vendor || profile._id === order.vendor._id) role = 'vendor'
+            else if (profile._id === order.customer || profile._id === order.customer._id) role = 'customer'
+            else if (profile._id === order.driver || profile._id === order.driver._id) role = 'driver'
+        }
+        return role
+    }
 
     const renderStatus = item => {
-        if (!profile) return 
-        switch (profile.role) {
+        const role = getUserRole()
+        if (!role) return 
+        switch (role) {
             case 'admin':
             case 'customer':
                 return <CustomerStatus order={item} />
@@ -217,11 +224,9 @@ export default ({ order }) => {
                         </View>
                     )}
 
-                    {showItemized() && (
-                        <View style={{ paddingVertical: 10 }}>
-                            <CartProductPreview order={memo} />
-                        </View>
-                    )}
+                    <View style={{ paddingVertical: 10 }}>
+                        <CartProductPreview order={memo} />
+                    </View>
 
                     <View style={{ padding: 10 }}>
                         <OrderProcessButton order={memo} />

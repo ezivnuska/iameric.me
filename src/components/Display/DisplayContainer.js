@@ -17,14 +17,21 @@ export default () => {
     const { thin } = useApp()
     const { setModal } = useModal()
     const { orders } = useOrders()
-    const { getUserCountByRole } = useContacts()
-    const driverCount = useMemo(() => getUserCountByRole('driver'), [getUserCountByRole])
+    const { getNumberOfAvailableUsers } = useContacts()
+    // const { getUserCountByRole } = useContacts()
+    const driverCount = useMemo(() => getNumberOfAvailableUsers(), [getNumberOfAvailableUsers])
+    // const driverCount = useMemo(() => getUserCountByRole('driver'), [getUserCountByRole])
     const orderCount = useMemo(() => orders.length, [orders])
 
     // useEffect(() => {
     //     console.log('orderCount', orderCount)
     //     console.log('orders changed', orders.length)
     // }, [orderCount])
+
+    // useEffect(() => {
+    //     const users = getNumberOfAvailableUsers()
+    //     console.log('users', users)
+    // }, [])
 
     return (
         <View
