@@ -4,6 +4,11 @@ import clientConfig from './clientConfig'
 const path = process.env.NODE_ENV === 'production' ? undefined : `http://localhost:${clientConfig.development.port}`
 const socket = io(path)
 
+// These listeners have been moved into the 
+// container components in order to use the 
+// methods available in contexts.
+// look into better way...
+
 // Event listeners
 // socket.on('new_connection', () => {
 //   console.log(`\n<< new_connection >>\n${socket.id}\n`)

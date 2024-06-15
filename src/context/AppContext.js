@@ -141,7 +141,6 @@ export const AppContextProvider = ({ children }) => {
             // await cleanStorage()
             dispatch({ type: 'SIGN_OUT' })
         },
-        socket,
         toggleTheme: () => {
             setItem('dark', !state.dark)
             dispatch({ type: 'TOGGLE_THEME' })
@@ -170,6 +169,7 @@ export const AppContextProvider = ({ children }) => {
                     ...state,
                     dims,
                     landscape: dims.width > dims.height,
+                    socket,
                     thin: dims.width < 400,
                     ...actions,
                 }}
