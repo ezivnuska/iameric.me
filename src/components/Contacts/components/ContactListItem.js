@@ -61,7 +61,7 @@ export default ({ item, onPress, ...props }) => {
                 color={connected ? theme?.colors.statusOn : theme?.colors.statusOff}
             />
 
-            {item.available && (
+            {connected && item.available && (
                 <Icon
                     name={'move-outline'}
                     size={18}

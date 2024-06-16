@@ -145,7 +145,7 @@ export default ({ order }) => {
             if (profile.role === 'admin') role = 'admin'
             else if (profile._id === order.vendor || profile._id === order.vendor._id) role = 'vendor'
             else if (profile._id === order.customer || profile._id === order.customer._id) role = 'customer'
-            else if (profile._id === order.driver || profile._id === order.driver._id) role = 'driver'
+            else if (order.driver && (profile._id === order.driver || profile._id === order.driver._id)) role = 'driver'
         }
         return role
     }

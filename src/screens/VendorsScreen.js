@@ -8,7 +8,7 @@ import {
 import { classes } from '@styles'
 
 export default props => (
-    <Screen secure={false} {...props}>
+    <Screen {...props}>
         <TitleBar title='Vendors' />
         <View style={classes.paddingH}>
             <Vendors />

@@ -22,7 +22,7 @@ export default ({
             if (!userId) {
                 if (secure) props.navigation.navigate('Start')
             } else {
-                if (!secure && props.route.name === 'Home') {
+                if (!secure) {
                     props.navigation.navigate('Main')}
                 }
             }

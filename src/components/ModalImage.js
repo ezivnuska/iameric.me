@@ -89,15 +89,13 @@ export default ({ image }) => {
         setImageDims(getMaxImageDims(image.width, image.height, dims))
     }, [dims])
 
-    const allowDeletion = () => true
-    // (
-    //     profile.username !== 'Driver' &&
-    //     profile.username !== 'Customer' &&
-    //     profile.username !== 'Vendor' ||
-    //     profile.role === 'admin'
-    // )
+    const allowDelete = () => (
+        profile._id === image.user ||
+        profile.role === 'admin' ||
+        appLoading ||
+        process.env.NODE_ENV === 'development'
+    )
 
-    const disableDelete = () => appLoading || process.env.NODE_ENV === 'development'
     const isAvatar = () => (profile.profileImage && profile.profileImage._id === image._id)
     const isOwner = () => profile._id === image.user._id
     
@@ -167,7 +165,7 @@ export default ({ image }) => {
     }
 
     const handleDelete = () => {
-        if (disableDelete()) alert(`Can't delete in development`)
+        if (!allowDelete()) alert(`Can't delete in development`)
         else setModal('IMAGE_DELETE', onImageDeleted)
         // else onImageDeleted()
     }
@@ -217,7 +215,6 @@ export default ({ image }) => {
                                     <IconButton
                                         label='Add to Product'
                                         onPress={() => setProductsVisible(!productsVisible)}
-                                        // disabled={disableDelete()}
                                         style={{
                                             flex: 1,
                                             flexGrow: 1,
@@ -226,16 +223,14 @@ export default ({ image }) => {
                                     />
                                 ) : null}
 
-                                {allowDeletion() ? (
+                                {allowDelete() ? (
                                     <IconButton
                                         type='danger'
-                                        // label='Delete'
                                         onPress={handleDelete}
-                                        // disabled={disableDelete()}
                                         style={{
                                             flexBasis: 'auto',
                                             flexShrink: 1,
-                                            opacity: disableDelete() ? 0.5 : 1,
+                                            opacity: allowDelete() ? 1 : 0.5,
                                         }}
                                     />
                                 ) : null}

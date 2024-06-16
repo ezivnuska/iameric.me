@@ -32,12 +32,8 @@ export default () => {
 
     const initSignout = async () => {
         const user = await signout(userId)
-        console.log(`\nsignedOut: ${user}\n`)
         if (!user) throw new Error()
         else {
-            console.log(`\nemitting user_signed_out with userId: ${user._id} from ModalSignout\n`)
-            socket.emit('user_signed_out', user._id)
-
             clearImages()
             clearCart()
             clearOrders()
@@ -45,8 +41,10 @@ export default () => {
             signOut()
             closeModal()
             clearUser()
+            socket.emit('user_signed_out', user._id)
         }
     }
+    
     return (
         <View style={[classes.centerV, classes.paddingH]}>
             <View style={{ width: '100%', maxWidth: 200 }}>
