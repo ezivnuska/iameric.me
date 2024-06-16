@@ -5,16 +5,10 @@ import {
     LoadingView,
 } from '@components'
 import { ProductListItem } from './components'
-import { useProducts } from '@context'
 
-export default () => {
+export default ({ loading, products }) => {
 
-    const {
-        products,
-        productsLoading,
-    } = useProducts()
-
-    if (productsLoading) return <LoadingView loading='Loading products' />
+    if (loading) return <LoadingView loading='Loading products...' />
     
     return products.length ? (
         <FlatList

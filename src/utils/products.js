@@ -47,3 +47,10 @@ export const addImageToProduct = async (imageId, productId) => {
     else return data.product
     return null
 }
+
+export const loadAllProducts = async () => {
+    const { data } = await axios.get(`/api/products`)
+    if (!data || !data.products) console.log('could not load all products')
+    else return data.products
+    return null
+}

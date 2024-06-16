@@ -37,6 +37,7 @@ export default () => {
         addContact,
         removeContact,
         toggleStatus,
+        updateContact,
     } = useContacts()
     const {
         addOrder,
@@ -89,6 +90,15 @@ export default () => {
         socket.on('deleted_account', id => {
             removeContact(id)
         })
+
+        // socket.on('signed_out_user', id => {
+        //     updateContact({
+        //         _id: id,
+        //         available: false,
+        //     })
+        // })
+
+        
     }, [])
 
 	useEffect(() => {

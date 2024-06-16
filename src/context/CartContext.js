@@ -29,7 +29,7 @@ export const CartContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
-        addToCart: (product, quantity = 1) => {
+        addToCart: (product, quantity = 0) => {
             dispatch({ type: 'ADD_TO_CART', payload: { product, quantity } })
         },
         clearCart: () => {

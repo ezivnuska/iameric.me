@@ -42,12 +42,7 @@ const UserDetailsImage = ({ image, username }) => {
         let width = imageWidth
         let height = imageHeight
         let scale = 1
-        if (orientationIsLandscape) {
-            if (imageWidth > maxWidth) scale = maxWidth / imageWidth
-            // else scale = maxHeight / imageHeight
-        } else {
-            if (imageHeight > maxHeight) scale = maxHeight / imageHeight
-        }
+        if (imageWidth > maxWidth) scale = maxWidth / imageWidth
         width = imageWidth * scale
         height = imageHeight * scale
 
@@ -95,20 +90,23 @@ const AvailableCheckbox = ({ checked, onChange }) => {
     )
 }
 
-export default ({ profile, toggleStatus }) => (
-    <View>
-        <View
-            style={{
-                flexDirection: 'row',
-                gap: 15,
-            }}
-        >
-            <UserDetailsImage image={profile.profileImage} username={profile.username} />
-            <View>
-                {/* <ThemedText style={classes.headerSecondary}>{profile.username}</ThemedText> */}
-                <AvailableCheckbox checked={profile.available} onChange={toggleStatus} />
-                <DepositForm user={profile} />
+export default ({ profile, toggleStatus }) => {
+    console.log('profile', profile)
+    return (
+        <View>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    gap: 15,
+                }}
+            >
+                <UserDetailsImage image={profile.profileImage} username={profile.username} />
+                <View>
+                    {/* <ThemedText style={classes.headerSecondary}>{profile.username}</ThemedText> */}
+                    <AvailableCheckbox checked={profile.available} onChange={toggleStatus} />
+                    <DepositForm user={profile} />
+                </View>
             </View>
         </View>
-    </View>
-)
+    )
+}

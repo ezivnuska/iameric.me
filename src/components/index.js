@@ -19,6 +19,7 @@ import ImageSized from './ImageSized'
 import ImageClone from './ImageClone'
 import LoadingView from './LoadingView'
 import LocationForm from './LocationForm'
+import Menu from './Menu'
 import ModalDeleteImage from './ModalDeleteImage'
 import ModalDeleteProduct from './ModalDeleteProduct'
 import ModalImage from './ModalImage'
@@ -65,6 +66,7 @@ export {
     ImageClone,
     LoadingView,
     LocationForm,
+    Menu,
     ModalDeleteImage,
     ModalDeleteProduct,
     ModalImage,

@@ -143,7 +143,10 @@ export default () => {
             if (formError) clearFormError()
             signIn(user)
             clearForm()
-            socket.emit('user_signedin', user)
+            socket.emit('user_signed_in', {
+                userId: user._id,
+                username: user.username,
+            })
 		}
 
     }

@@ -11,26 +11,28 @@ import {
 import {
     useApp,
     useModal,
+    useProducts,
 } from '@context'
 import { connect } from '@utils/auth'
 import LinearGradient from 'react-native-linear-gradient'
 import { classes } from '@styles'
 import {
     Display,
-    VendorPanel,
+    Menu,
 } from '@presentations'
 
 export default props => {
 
     const { appLoaded, signIn, thin, userId } = useApp()
     const { setModal } = useModal()
+    const { products, productsLoading } = useProducts()
 
     const onConnect = async type => {
         const user = await connect(type)
         if (!user) console.log('Error: Could not connect user.')
         else {
             await signIn(user)
-            props.navigation.navigate('Main')
+            props.navigation.navigate('Main', { screen: 'Home' })
         }
     }
 
@@ -70,7 +72,7 @@ export default props => {
         </View>
     )
 
-    if (!appLoaded) return <LoadingView loading='Doing Auth Stuff' />
+    if (!appLoaded) return <LoadingView loading='App Loading...' />
 
     return (
         <Screen
@@ -102,10 +104,10 @@ export default props => {
                         flex: 1,
                         flexGrow: 1,
                         minWidth: 200,
-                        maxWidth: 300,
+                        maxWidth: 400,
                     }}
                 >
-                    <VendorPanel />
+                    <Menu products={products} loading={productsLoading} />
                 </View>
                 {/* <View
                     style={{

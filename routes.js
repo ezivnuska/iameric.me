@@ -46,6 +46,7 @@ const {
   const {
     createOrUpdateProduct,
     deleteProductById,
+    getAllProducts,
     getProductById,
     getProductsByVendorId,
     addImageIdToProduct,
@@ -121,6 +122,7 @@ router.get(    '/user/location/:locationId', getUserLocationWithLocationId)
 
 // products
 router.post(   '/product',                 createOrUpdateProduct)
+router.get(    '/products',                getAllProducts)
 router.delete( '/products/delete/:id',     deleteProductById)
 router.get(    '/products/:vendor',        getProductsByVendorId)
 router.post(   '/product/image',           addImageIdToProduct)

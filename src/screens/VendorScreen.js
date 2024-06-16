@@ -42,18 +42,18 @@ export default ({ onPress, ...props }) => {
         init()
     }, [])
 
-    useEffect(() => {
-        const init = async () => {
-            setContactsLoading(true)
-            const vendor = await loadVendor(id)
-            setContactsLoading(false)
-            if (vendor) {
-                setContact(vendor)
-                updateContact(vendor)
-            }
-        }
-        if (contact && contact._id !== id) init()
-    }, [id])
+    // useEffect(() => {
+    //     const init = async () => {
+    //         setContactsLoading(true)
+    //         const vendor = await loadVendor(id)
+    //         setContactsLoading(false)
+    //         if (vendor) {
+    //             setContact(vendor)
+    //             updateContact(vendor)
+    //         }
+    //     }
+    //     if (contact && contact._id !== id) init()
+    // }, [id])
     
     return (
         <Screen secure={false} {...props}>

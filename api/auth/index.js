@@ -285,10 +285,13 @@ const handleSignout = async (req, res) => {
 const deleteAccount = async (req, res) => {
     const { id } = req.body
 
+    const entries = await Entry.find({ author: id })
+    console.log('entries', entries)
+    console.log('id to delete', id)
     console.log(`\ndeleting account: ${id}`)
 
-    const deletedEntries = await Entry.deleteMany({ user: id })
-    
+    const deletedEntries = await Entry.deleteMany({ author: id })
+    console.log('deletedEntries', deletedEntries)    
     if (!deletedEntries) {
         console.log('could not delete entries.')
     } else {

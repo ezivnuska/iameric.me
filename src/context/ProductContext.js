@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { useApp } from '@context'
-import { loadProducts } from '@utils/products'
+import { loadAllProducts } from '@utils/products'
 
 const initialState = {
     products: [],
@@ -37,18 +37,18 @@ export const ProductContextProvider = props => {
 
     useEffect(() => {
         const initProducts = async () => {
-            if (profile) {
+            // if (profile) {
                 dispatch({type: 'SET_PRODUCTS_LOADING', payload: true })
-                const items = await loadProducts(profile._id)
+                const items = await loadAllProducts()
                 dispatch({type: 'SET_PRODUCTS_LOADING', payload: false })
                 if (items) dispatch({type: 'SET_PRODUCTS', payload: items })
-            }
+            // }
 
             dispatch({type: 'SET_PRODUCTS_LOADED' })
         }
         
         initProducts()
-    }, [userId])
+    }, [])
 
     const actions = useMemo(() => ({
         addProduct: payload => {

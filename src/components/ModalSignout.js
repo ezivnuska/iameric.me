@@ -13,6 +13,7 @@ import {
 } from '@context'
 import { signout } from '@utils/auth'
 import { classes } from '@styles'
+import { navigationRef } from '@navigation/RootNavigation'
 
 export default () => {
 
@@ -37,11 +38,12 @@ export default () => {
             clearImages()
             clearCart()
             clearOrders()
-            clearProducts()
+            // clearProducts()
             signOut()
             closeModal()
             clearUser()
             socket.emit('user_signed_out', user._id)
+            navigationRef.navigate('Start')
         }
     }
     

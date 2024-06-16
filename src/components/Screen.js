@@ -11,22 +11,21 @@ import { useApp } from '@context'
 
 export default ({
     children,
+    navigation,
     secure = true,
+    route,
     ...props
 }) => {
     
     const { appLoaded, userId } = useApp()
-    
+
     useEffect(() => {
         if (appLoaded) {
-            if (!userId) {
-                if (secure) props.navigation.navigate('Start')
-            } else {
-                if (!secure) {
-                    props.navigation.navigate('Main')}
-                }
+            if (secure && !userId) {
+                if (secure) navigation.navigate('Start')
             }
-        }, [appLoaded, userId])
+        }
+    }, [appLoaded, userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 
