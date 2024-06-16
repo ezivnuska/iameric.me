@@ -6,7 +6,7 @@ import {
   FormContextProvider,
   ModalContextProvider,
   OrderContextProvider,
-//   SocketContextProvider,
+  ProductContextProvider,
 } from '@context'
 import Compose from './Compose'
 // import socket from './socket'
@@ -31,11 +31,11 @@ export default () => {
 		<Compose
 			components={[
 				OrderContextProvider,
+				ProductContextProvider,
 				ContactContextProvider,
 				FormContextProvider,
 				ModalContextProvider,
 				AppContextProvider,
-				// SocketContextProvider,
 			]}
 		>
 			<Layout />

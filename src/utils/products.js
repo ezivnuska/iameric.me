@@ -36,7 +36,7 @@ export const loadVendorProducts = async vendorId => {
 
 export const deleteProductWithId = async id => {
     const { data } = await axios.delete(`/api/products/delete/${id}`)
-    if (!data || data.product) console.log('Error deleting product')
+    if (!data || !data.product) console.log('Error deleting product')
     else return data.product
     return null
 }

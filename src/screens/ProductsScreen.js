@@ -17,7 +17,7 @@ export default props => {
     const { theme, userId } = useApp()
     const { setModal } = useModal()
     const { products, productsLoading } = useProducts()
-    const userProducts = useMemo(() => products.filter(product => product.user === userId), [products, userId])
+    const userProducts = useMemo(() => products.filter(product => product.vendor._id === userId), [products, userId])
     return (
         <Screen {...props}>
             <TitleBar title='Products'>
