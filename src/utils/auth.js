@@ -1,4 +1,4 @@
-import { cleanStorage, clearStorage, storeToken } from './storage'
+import { cleanStorage, clearStorage, getItem, storeToken } from './storage'
 import axios from 'axios'
 
 export const authenticate = async token => {
@@ -60,14 +60,8 @@ export const signup = async (email, password, username, fiction) => {
     const { data } = await axios.
         post('/api/signup', { email, password, username, fiction })
     
-    if (!data) {
-        console.log('Error authenticating user')
-    } else if (data.error) {
-        console.log('Error:', data.error)
-    } else {
-        console.log(`${data.user.username} signed up.`)
-        return data.user
-    }
+    if (data && data.user) return data.user
+    else console.log('Error authenticating user')
     
     return null
 }
@@ -87,15 +81,9 @@ export const unsubscribe = async id => {
     const { data } = await axios.
         post('/api/unsubscribe', { id })
     
-    if (!data) {
-        console.log('Error closing user account.')
-    } else if (data.error) {
-        console.log(`Error unsubscribing:`, data.error)
-    } else {
-        console.log('Account closed.')
-        return true
-    }
-    return false
+    if (data) return data
+    else console.log('Error closing user account.')
+    return null
 }
 
 export const validateToken = async token => {

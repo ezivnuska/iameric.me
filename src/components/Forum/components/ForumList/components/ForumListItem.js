@@ -21,7 +21,7 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
     const { author, text } = item
 
     const [online, setOnline] = useState(false)
-    
+
     useEffect(() => {
         if (author && author.exp) {
             const newDate = new Date(author.exp) - Date.now()

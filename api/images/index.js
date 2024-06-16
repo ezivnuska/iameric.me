@@ -357,7 +357,7 @@ const uploadProductImage = async payload => {
     
     const filename = `${userId}-${Date.now()}.png`
 
-    const userDir = path.join(userDir, user.username)
+    const userDir = path.join(uploadDir, user.username)
     
     const uploadFilename = await handleFileUpload({ imageData, thumbData }, userDir, filename)
     

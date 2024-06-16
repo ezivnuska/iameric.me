@@ -45,6 +45,7 @@ const updateUserById = async (_id, data) => {
 }
 
 const clearUserTokenWithToken = async token => {
+    console.log('tokenFromToken', token)
     const updatedUser = await User
         .findOneAndUpdate(
             { token },
@@ -56,22 +57,25 @@ const clearUserTokenWithToken = async token => {
             },
             { new: true },
         )
+
+    // const user = async 
+    // console.log('updatedUser', updatedUser)
+    console.log('updatedUser', updatedUser)
     
     if (!updatedUser) console.log('could not update user with token.')
-    else return updatedUser
+    else return { user: updatedUser }
 
-    return null
-}
-
-const clearUserToken = async _id => {
-    const user = await updateUserById(_id, { token: null })
-    if (!user) console.log('could not clear user token on sign out.')
-    else return user
     return null
 }
 
 // returns new token from user data
-const createToken = ({ _id, username, email, role, profileImage }) => {
+const createToken = ({
+    _id,
+    username,
+    email,
+    role,
+    // profileImage,
+}) => {
     // set expiration timestamp
     // const expiration = Math.floor(Date.now() / 1000) + ((60 * 60) * 24)
     const expiration = Math.floor(Date.now() / 1000) + ((60 * 1) * 1)
@@ -82,7 +86,7 @@ const createToken = ({ _id, username, email, role, profileImage }) => {
             email,
             role,
             // this needs work...
-            profileImage: profileImage ? profileImage.filename : null,
+            // profileImage: profileImage ? profileImage.filename : null,
             exp: expiration,
         }, SESSION_SECRET, {}),
         exp: expiration,
@@ -178,12 +182,11 @@ const createUser = async (email, hashedPassword, username, fiction) => {
         .populate('profileImage', 'filename width height')
         .populate('location')
 
-    if (!user) {
-        console.log('Error updating user with token')
-        return null
-    }
+    if (user) return user
+    else console.log('Error updating user with token')
+    
+    return null
 
-    return user
 }
 
 const handleSignup = async (req, res) => {
@@ -260,21 +263,21 @@ const authenticate = async (req, res) => {
 }
 
 const handleSignout = async (req, res) => {
-    
-    const user = await clearUserTokenWithToken(req.params.token)
+    const user = await User
+        .findOneAndUpdate(
+            { _id: req.params.id },
+            {
+                $set: {
+                    available: false,
+                    token: null,
+                    exp: null,
+                }
+            },
+            { new: true },
+        )
 
-    // const sessionId = req.session.id
-  
-    // req.session.destroy(() => {
-    //     // disconnect all Socket.IO connections linked to this session ID
-    //     io.in(sessionId).disconnectSockets()
-    // })
-
-    if (!user) console.log('could not update user.')
-    else {
-        console.log(`\nUser signed out: ${user.username}`)
-        return res.status(200).json(user)
-    }
+    if (user) return res.status(200).json(user)
+    else console.log('could not update user.')
     
     return res.status(200).json(null)
 }
@@ -321,7 +324,7 @@ const deleteAccount = async (req, res) => {
     if (imagesRemoved) console.log('Image files removed.')
 
     return res.status(200).json({
-        success: true,
+        id,
         msg: 'Account closed.'
     })
 }

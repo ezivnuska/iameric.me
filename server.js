@@ -127,6 +127,10 @@ io.on('connection', (socket) => {
         io.emit('connected_users', onlineUsers)
     })
 
+    socket.on('user_added', user => {
+      socket.broadcast.emit('added_user', user)
+    })
+
     socket.on('status_change', id => {
       socket.broadcast.emit('changed_status', id)
     })
@@ -150,6 +154,11 @@ io.on('connection', (socket) => {
     socket.on('order_removed', id => {
         console.log(`\n<< order_removed >>\n>> remove_order <<\n`)
         socket.broadcast.emit('remove_order', id)
+    })
+
+    socket.on('account_deleted', id => {
+        console.log(`\n<< account_deleted >>\n>> deleted_account <<\n`)
+        socket.broadcast.emit('deleted_account', id)
     })
 
     socket.on('new_entry', entry => {

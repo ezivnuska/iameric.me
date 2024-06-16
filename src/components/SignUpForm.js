@@ -13,6 +13,7 @@ import { isValidEmail, signup } from '@utils/auth'
 import { getFields } from '@utils/form'
 import {
     useApp,
+    useContacts,
     useForm,
     useModal,
 } from '@context'
@@ -51,6 +52,10 @@ export default () => {
     }
 
     const {
+        addContact,
+    } = useContacts()
+
+    const {
         clearForm,
         clearFormError,
         focused,
@@ -71,9 +76,11 @@ export default () => {
 
     const {
         setUser,
+        socket,
         signIn,
+        userId,
     } = useApp()
-    const { closeModal, data, setNewModal } = useModal()
+    const { clearModal, data, setNewModal } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -97,6 +104,10 @@ export default () => {
     useEffect(() => {
         if (formReady) validateFields()
     }, [email, username, password, confirmPassword])
+
+    useEffect(() => {
+        if (userId) clearModal()
+    }, [userId])
 
     const validateFields = () => {
         const keys = Object.keys(formFields)
@@ -174,11 +185,10 @@ export default () => {
             setFormError({ name: 'email', message: 'Signup failed.' })
         } else {
             if (formError) clearFormError()
-            const { _id, email, images, profileImage, role, token, username, exp } = user
-            signIn({ _id, token, username })
-            // setUser({ _id, email, images, profileImage, role, token, username, exp })
+            signIn(user)
+            addContact(user)
             clearForm()
-            closeModal()
+            socket.emit('user_added', user)
 		}
 
     }

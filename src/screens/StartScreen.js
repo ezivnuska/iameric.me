@@ -30,9 +30,7 @@ export default props => {
         if (!user) console.log('Error: Could not connect user.')
         else {
             await signIn(user)
-            props.navigation.navigate('Root', {
-                screen: 'Main',
-            })
+            props.navigation.navigate('Main')
         }
     }
 
@@ -40,74 +38,34 @@ export default props => {
         <View style={{
             paddingVertical: 20,
             justifyContent: 'flex-start',
-            // gap: 10,
+            gap: 10,
         }}>
+            
+            <IconButton
+                label='Sign Up'
+                iconName='arrow-forward-circle-outline'
+                onPress={() => setModal('SIGNUP')}
+                alignIcon='right'
+                transparent
+            />
 
-            <View
-                style={{
-                    flex: 1,
-                    width: '100%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingBottom: 5,
-                    marginBottom: 5,
-                    gap: 10,
-                    borderBottomWidth: 1,
-                    borderBottomStyle: 'dotted',
-                }}
-            >
-                
-                <IconButton
-                    label='Sign Up'
-                    iconName='arrow-forward-circle-outline'
-                    onPress={() => setModal('SIGNUP')}
-                    alignIcon='right'
-                    transparent
-                />
+            <IconButton
+                type='primary'
+                label='Private User Preview'
+                iconName='eye-outline'
+                onPress={() => onConnect('customer')}
+                alignIcon='right'
+                padded
+            />
 
-                <IconButton
-                    type='primary'
-                    label='Private User Preview'
-                    iconName='eye-outline'
-                    onPress={() => onConnect('customer')}
-                    alignIcon='right'
-                    padded
-                />
-
-            </View>
-
-            <View
-                style={{
-                    flex: 1,
-                    width: '100%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    paddingBottom: 5,
-                    marginBottom: 5,
-                    gap: 10,
-                    borderBottomWidth: 1,
-                    borderBottomStyle: 'dotted',
-                }}
-            >
-                
-                <IconButton
-                    label='Sign Up'
-                    iconName='arrow-forward-circle-outline'
-                    onPress={() => setModal('SIGNUP')}
-                    alignIcon='right'
-                    transparent
-                />
-
-                <IconButton
-                    type='primary'
-                    label='Business Preview'
-                    iconName='eye-outline'
-                    onPress={() => onConnect('vendor')}
-                    alignIcon='right'
-                    padded
-                />
-
-            </View>
+            <IconButton
+                type='primary'
+                label='Business Preview'
+                iconName='eye-outline'
+                onPress={() => onConnect('vendor')}
+                alignIcon='right'
+                padded
+            />
 
         </View>
     )
@@ -116,9 +74,8 @@ export default props => {
 
     return (
         <Screen
-            {...props}
-            secure={false}
             style={[classes.screen, classes.paddingH]}
+            {...props}
         >
 
             <View

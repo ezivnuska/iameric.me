@@ -24,7 +24,7 @@ export default ({ entries, onDelete }) => {
             renderItem={({ item }) => (
                 <ForumListItem
                     item={item}
-                    imagePath={getProfileImagePathFromUser(item.author)}
+                    imagePath={getProfileImagePathFromUser(item)}
                     onDelete={onDelete}
                     onPress={() => setModal('CONTACT', item.author)}
                     owner={profile && profile._id === item.author._id}

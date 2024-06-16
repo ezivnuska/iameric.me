@@ -215,7 +215,7 @@ const AppStackScreen = () => {
 
             <AppStack.Screen
                 name='Start'
-                children={props => <StartScreen {...props} />}
+                children={props => <StartScreen {...props} secure={false} />}
                 // component={StartScreen}
                 options={{ title: 'Start' }}
             />

@@ -1,29 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import { FlatList } from 'react-native'
 import { VendorListItem } from './components'
 import {
     useContacts,
 } from '@context'
-import { loadVendors } from '@utils/contacts'
 import { navigationRef } from '@navigation/RootNavigation'
 
 export default ({ disabled = false }) => {
     const {
-        setContactsLoading,
+        contacts,
     } = useContacts()
 
-    const [vendors, setVendors] = useState(null)
-    
-    useEffect(() => {
-
-        const init = async () => {
-            setContactsLoading(true)
-            const loadedVendors = await loadVendors()
-            setContactsLoading(false)
-            setVendors(loadedVendors)
-        }
-        init()
-    }, [])
+    const vendors = useMemo(() => contacts.filter(user => user.fiction === true), [contacts])
 
     return (
         <FlatList
@@ -31,11 +19,10 @@ export default ({ disabled = false }) => {
             listKey={() => 'vendors'}
             keyExtractor={(item, index) => 'vendor' + index}
             renderItem={({ item }) => {
-                const { _id, profileImage } = item
                 return (
                     <VendorListItem
                         user={item}
-                        filename={profileImage?.filename}
+                        filename={item.profileImage?.filename}
                         onPress={() => navigationRef.navigate('Vendors', { screen: 'Vendor', params: { id: item._id } })}
                         style={{ alignItems: 'center' }}
                         disabled={disabled}

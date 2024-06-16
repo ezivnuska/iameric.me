@@ -13,10 +13,12 @@ export default ({ navigation }) => {
     } = useApp()
 
     useEffect(() => {
-        // if (userLoaded) navigation.navigate(userId ? 'Main' : 'Start')
+        console.log('SPLASH')
+    }, [])
+
+    useEffect(() => {
         if (appLoaded) {
-            if (!profile) navigation.navigate('Start')
-            else navigation.navigate('Main')
+            navigation.navigate(profile ? 'Main' : 'Start')
         }
     }, [appLoaded])
     

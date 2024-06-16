@@ -15,6 +15,8 @@ const initialState = {
     closeContactModal: () => {},
     getNumberOfAvailableUsers: () => {},
     getUserCountByRole: () => {},
+    addContact: () => {},
+    removeContact: () => {},
     setContact: () => {},
     setContacts: () => {},
     setContactLoading: () => {},
@@ -24,6 +26,7 @@ const initialState = {
     toggleStatus: () => {},
     updateStatus: () => {},
     updateContact: () => {},
+    updateContacts: () => {},
     updateContactProducts: () => {},
     updateContactImages: () => {},
 }
@@ -55,7 +58,8 @@ export const ContactContextProvider = props => {
             dispatch({ type: 'SET_CONTACTS_LOADED' })
         }
         
-        if (!state.contactsLoaded) init()
+        // if (!state.contactsLoaded) 
+        init()
         // else if (!userId) dispatch({ type: 'RESET' })
 
     }, [userId])
@@ -63,6 +67,12 @@ export const ContactContextProvider = props => {
     const actions = useMemo(() => ({
         closeContactModal: async () => {
             dispatch({ type: 'CLOSE_CONTACT_MODAL' })
+        },
+        addContact: async payload => {
+            dispatch({ type: 'ADD_CONTACT', payload })
+        },
+        removeContact: async payload => {
+            dispatch({ type: 'REMOVE_CONTACT', payload })
         },
         setContact: async payload => {
             dispatch({ type: 'SET_CONTACT', payload })
@@ -94,6 +104,9 @@ export const ContactContextProvider = props => {
         updateContact: async payload => {
             dispatch({ type: 'UPDATE_CONTACT', payload })
         },
+        updateContacts: async payload => {
+            dispatch({ type: 'UPDATE_CONTACTS', payload })
+        },
         updateContactImages: async payload => {
             dispatch({ type: 'UPDATE_CONTACT_IMAGES', payload })
         },
@@ -105,6 +118,7 @@ export const ContactContextProvider = props => {
             return users.length
         },
         getNumberOfAvailableUsers: () => {
+            // if (!state.contacts || !state.contacts.length) return 0
             const users = state.contacts.filter(user => user.available === true)
             return users.length
         },
@@ -131,6 +145,18 @@ const reducer = (state, action) => {
                         }
                     } else return contact
                 })
+            }
+            break
+        case 'ADD_CONTACT':
+            return {
+                ...state,
+                contacts: [...state.contacts, payload],
+            }
+            break
+        case 'REMOVE_CONTACT':
+            return {
+                ...state,
+                contacts: state.contacts.filter(user => user._id !== payload),
             }
             break
         case 'SET_CONTACT':
@@ -180,6 +206,15 @@ const reducer = (state, action) => {
                         return user
                     })
                     : [payload]
+            }
+            break
+        case 'UPDATE_CONTACTS':
+            return {
+                ...state,
+                contacts: {
+                    ...state.contacts,
+                    ...payload,
+                },
             }
             break
         case 'UPDATE_CONTACT_STATUS':

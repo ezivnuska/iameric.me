@@ -19,7 +19,7 @@ export default () => {
                 paddingHorizontal: 5,
                 paddingVertical: 3,
             }}
-            onPress={() => navigationRef.navigate(userId ? 'Main' : 'Start')}
+            onPress={() => navigationRef.navigate(userId ? 'Home' : 'Start')}
         >
             <View
                 style={{

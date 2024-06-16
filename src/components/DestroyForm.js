@@ -12,6 +12,7 @@ import { classes } from '@styles'
 import {
     useApp,
     useCart,
+    useContacts,
     useForm,
     useImages,
     useModal,
@@ -44,8 +45,14 @@ export default () => {
         setFormValues,
     } = useForm()
 
-    const { profile, signOut, clearUser } = useApp()
+    const {
+        clearUser,
+        profile,
+        signOut,
+        socket,
+    } = useApp()
     const { clearCart } = useCart()
+    const { removeContact } = useContacts()
     const { clearImages } = useImages()
     const { closeModal } = useModal()
     const { clearProducts } = useProducts()
@@ -120,11 +127,11 @@ export default () => {
 
         setFormLoading(true)
         
-		const unsubscribed = await unsubscribe(profile._id)
-        
+		const { id } = await unsubscribe(profile._id)
+
         setFormLoading(false)
 
-		if (!unsubscribed) {
+		if (!id) {
             console.log('Error unsubscribing user: NULL')
             setFormError({ name: 'confirmUsername', message: 'Unsubscribe failed.' })
         } else {
@@ -137,6 +144,8 @@ export default () => {
             signOut()
             closeModal()
             cleanStorage()
+            removeContact(id)
+            socket.emit('account_deleted', id)
 		}
     }
 

@@ -12,7 +12,6 @@ import {
     useProducts,
 } from '@context'
 import { signout } from '@utils/auth'
-import { navigationRef } from '@navigation/RootNavigation'
 import { classes } from '@styles'
 
 export default () => {
@@ -32,11 +31,12 @@ export default () => {
     const { clearProducts } = useProducts()
 
     const initSignout = async () => {
-        const signedOut = await signout(userId)
-        if (!signedOut) throw new Error()
+        const user = await signout(userId)
+        console.log(`\nsignedOut: ${user}\n`)
+        if (!user) throw new Error()
         else {
-            console.log(`\nemitting user_signed_out with userId: ${userId} from ModalSignout\n`)
-            socket.emit('user_signed_out', userId)
+            console.log(`\nemitting user_signed_out with userId: ${user._id} from ModalSignout\n`)
+            socket.emit('user_signed_out', user._id)
 
             clearImages()
             clearCart()
@@ -44,7 +44,6 @@ export default () => {
             clearProducts()
             signOut()
             closeModal()
-            navigationRef.navigate('Start')
             clearUser()
         }
     }

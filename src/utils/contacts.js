@@ -6,12 +6,12 @@ import axios from 'axios'
  *  
  */
 
-export const loadUsersByRole = async role => {
-    const { data } = await axios.get(`/api/${role}s`)
-    if (!data || !data.vendors) console.log(`could not load ${role}s.`)
-    else return data.vendors
-    return null
-}
+// export const loadUsersByRole = async role => {
+//     const { data } = await axios.get(`/api/${role}s`)
+//     if (!data || !data.vendors) console.log(`could not load ${role}s.`)
+//     else return data.vendors
+//     return null
+// }
 
 export const loadContact = async id => {
     const { data } = await axios.get(`/api/user/${id}`)

@@ -34,6 +34,8 @@ export default () => {
         userId,
 	} = useApp()
 	const {
+        addContact,
+        removeContact,
         toggleStatus,
     } = useContacts()
     const {
@@ -77,6 +79,15 @@ export default () => {
 
         socket.on('changed_status', payload => {
             toggleStatus(payload)
+        })
+
+        socket.on('added_user', payload => {
+            console.log('>>added_user<<', payload)
+            addContact(payload)
+        })
+
+        socket.on('deleted_account', id => {
+            removeContact(id)
         })
     }, [])
 

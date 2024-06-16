@@ -5,7 +5,6 @@ import {
 } from 'react-native'
 import {
     Cart,
-    Display,
     LoadingView,
 } from '@components'
 import { useApp } from '@context'
@@ -17,11 +16,17 @@ export default ({
 }) => {
     
     const { appLoaded, userId } = useApp()
-
+    
     useEffect(() => {
-        if (secure && !userId) props.navigation.navigate('Start', { signin: true })
-        // else if (userId) props.navigation.navigate('Main', { screen: 'Home' })
-    }, [appLoaded, userId])
+        if (appLoaded) {
+            if (!userId) {
+                if (secure) props.navigation.navigate('Start')
+            } else {
+                if (!secure && props.route.name === 'Home') {
+                    props.navigation.navigate('Main')}
+                }
+            }
+        }, [appLoaded, userId])
 
     if (!appLoaded) return <LoadingView loading='Authorizing...' />
 

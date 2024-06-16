@@ -74,10 +74,7 @@ export default () => {
     }, [email, password])
 
     useEffect(() => {
-        if (userId) {
-            // navigationRef.navigate('Main')
-            clearModal()
-        }
+        if (userId) clearModal()
     }, [userId])
 
     const validateFields = () => {
@@ -145,6 +142,7 @@ export default () => {
         } else {
             if (formError) clearFormError()
             signIn(user)
+            socket.emit('user_signedin', user)
             clearForm()
 		}
 

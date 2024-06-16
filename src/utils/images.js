@@ -132,12 +132,9 @@ export const getImageDataById = async id => {
 }
 
 export const getProfileImagePathFromUser = user => {
-    const { profileImage, username } = user
-    const filename = profileImage?.filename
-    return filename
-        ? `${IMAGE_PATH}/${username}/${filename}`
-        : `${IMAGE_PATH}/avatar-default-small.png`
-}
+    return user.profileImage
+        ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+        : `${IMAGE_PATH}/avatar-default-small.png`}
 
 export const getMaxAvailableImageSize = (dims, width, height) => {
     let maxHeight = dims.height - 100
