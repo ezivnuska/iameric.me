@@ -15,6 +15,7 @@
 // }
 
 export const getFields = (initialState, data) => {
+    console.log('data', data)
     if (!data) return initialState
     const initialKeys = Object.keys(initialState)
     const keysAvailable = Object.keys(data)

@@ -155,16 +155,18 @@ const reducer = (state, action) => {
         case 'UPDATE_PRODUCT':
             const i = state.products.findIndex(product => product._id === payload._id)
             if (i < 0) return state
+            const newProducts = [
+                ...state.products.slice(0, i),
+                {
+                    ...state.products[i],
+                    ...payload,
+                },
+                ...state.products.slice(i + 1),
+            ]
+            console.log('new', newProducts)
             return {
                 ...state,
-                products: [
-                    ...state.products.slice(0, i),
-                    {
-                        ...state.products[i],
-                        ...payload,
-                    },
-                    ...state.products.slice(i + 1),
-                ],
+                products: newProducts,
             }
             break
         case 'UPDATE_PRODUCT_IMAGE':

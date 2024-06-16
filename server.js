@@ -121,6 +121,7 @@ io.on('connection', (socket) => {
           console.log(`${data.userId} connected`)
         } else {
           console.log(`${data.userId} already connected`)
+          socket.broadcast.emit('signed_in_user', data.userId)
         }
 
         console.log(`\n>> connected_users <<\n${onlineUsers.map(u => u.userId).toString().split(',').join(`\n`)}`)

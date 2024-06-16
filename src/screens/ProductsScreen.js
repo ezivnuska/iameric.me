@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import {
     IconButton,
@@ -17,7 +17,6 @@ export default props => {
     const { theme, userId } = useApp()
     const { setModal } = useModal()
     const { products, productsLoading } = useProducts()
-    const userProducts = useMemo(() => products.filter(product => product.vendor._id === userId), [products, userId])
     return (
         <Screen {...props}>
             <TitleBar title='Products'>
@@ -37,7 +36,7 @@ export default props => {
             </TitleBar>
 
             <View style={classes.paddingH}>
-                <Products products={userProducts} loading={productsLoading} />
+                <Products products={products.filter(product => product.vendor._id === userId)} loading={productsLoading} />
             </View>
         </Screen>
     )

@@ -95,10 +95,7 @@ export const AppContextProvider = ({ children }) => {
                     
                     dispatch({
                         type: 'SET_USER',
-                        payload: {
-                            ...user,
-                            status: 'signed_in',
-                        },
+                        payload: user,
                     })
                 }
             } else {
@@ -259,7 +256,6 @@ const reducer = (state, action) => {
                 role: payload.role,
                 profile: {
                     ...payload,
-                    status: 'signed_in',
                 },
             }
             break

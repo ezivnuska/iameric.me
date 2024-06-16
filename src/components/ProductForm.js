@@ -76,6 +76,7 @@ export default  ({ product }) => {
     }, [])
     
     useEffect(() => {
+        console.log('initial', initialValues)
         if (initialValues) initForm(initialValues)
     }, [initialValues])
 

@@ -90,23 +90,20 @@ const AvailableCheckbox = ({ checked, onChange }) => {
     )
 }
 
-export default ({ profile, toggleStatus }) => {
-    console.log('profile', profile)
-    return (
-        <View>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    gap: 15,
-                }}
-            >
-                <UserDetailsImage image={profile.profileImage} username={profile.username} />
-                <View>
-                    {/* <ThemedText style={classes.headerSecondary}>{profile.username}</ThemedText> */}
-                    <AvailableCheckbox checked={profile.available} onChange={toggleStatus} />
-                    <DepositForm user={profile} />
-                </View>
+export default ({ profile, toggleStatus }) => (
+    <View>
+        <View
+            style={{
+                flexDirection: 'row',
+                gap: 15,
+            }}
+        >
+            <UserDetailsImage image={profile.profileImage} username={profile.username} />
+            <View>
+                {/* <ThemedText style={classes.headerSecondary}>{profile.username}</ThemedText> */}
+                <AvailableCheckbox checked={profile.available} onChange={toggleStatus} />
+                <DepositForm user={profile} />
             </View>
         </View>
-    )
-}
+    </View>
+)

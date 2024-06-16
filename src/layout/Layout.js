@@ -91,12 +91,19 @@ export default () => {
             removeContact(id)
         })
 
-        // socket.on('signed_out_user', id => {
-        //     updateContact({
-        //         _id: id,
-        //         available: false,
-        //     })
-        // })
+        socket.on('signed_out_user', id => {
+            updateContact({
+                _id: id,
+                available: false,
+            })
+        })
+
+        socket.on('signed_in_user', id => {
+            updateContact({
+                _id: id,
+                available: false,
+            })
+        })
 
         
     }, [])

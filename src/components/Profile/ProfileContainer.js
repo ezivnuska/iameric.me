@@ -17,10 +17,8 @@ import {
 export default () => {
 
     const {
-        appLoading,
         profile,
         socket,
-        toggleStatus,
         updateUser,
     } = useApp()
 
@@ -39,14 +37,13 @@ export default () => {
         const user = await switchAvailability(profile._id)
         if (user) {
             await updateUser({
+                _id: profile._id,
                 available: user.available,
             })
             socket.emit('status_change', user._id)
         }
-        // toggleStatus()
     }
     
-    // if (appLoading) return <LoadingView loading='Loading profile.' />
 
     return profile ? (
         <>
