@@ -42,7 +42,7 @@ export default () => {
     return (
         <View
             style={{
-                marginVertical: 20,
+                // marginVertical: 20,
                 outlineColor: 'none',
                 outlineStyle: 'none',
             }}

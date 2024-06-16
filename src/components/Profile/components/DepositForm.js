@@ -53,17 +53,12 @@ export default ({ user }) => {
     }
     
     return (
-        <View>
-            <ThemedText style={classes.headerSecondary}>Deposit</ThemedText>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <ThemedText>{`Current Deposit: $${Number(user.deposit).toFixed(2)}`}</ThemedText>
-                <ThemedText>{`New Deposit: $${Number(user.deposit + value).toFixed(2)}`}</ThemedText>
-            </View>
+        <View
+            style={{
+                paddingVertical: 5,
+            }}
+        >
+            <ThemedText>{`Deposit: $${Number(user.deposit).toFixed(2)}`}</ThemedText>
 
             <View
                 style={{
@@ -78,38 +73,45 @@ export default ({ user }) => {
                     onPress={decrease}
                     disabled={value === increment}
                     style={{
+                        flexBasis: 'auto',
                         opacity: value === increment ? 0.5 : 1,
                     }}
                 >
                     <Icon
                         name='remove-circle-outline'
-                        size={32}
+                        size={24}
                         color={theme?.colors.textDefault}
                     />
                 </Pressable>
 
-                <ThemedText size={24} bold>{`$${Number(value).toFixed(2)}`}</ThemedText>
+                <ThemedText
+                    size={18}
+                    bold
+                    style={{
+                        flexBasis: 'auto',
+                    }}
+                >
+                    {`$${Number(value).toFixed(2)}`}
+                </ThemedText>
 
                 <Pressable
                     onPress={increase}
+                    style={{
+                        flexBasis: 'auto',
+                    }}
                 >
                     <Icon
                         name='add-circle-outline'
-                        size={32}
+                        size={24}
                         color={theme?.colors.textDefault}
                     />
                 </Pressable>
             </View>
 
             {/* {error && <ThemedText style={{ textColor: 'red' }}>{error}</ThemedText>} */}
+            {/* <ThemedText>{`New Deposit: $${Number(user.deposit + value).toFixed(2)}`}</ThemedText> */}
             
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    gap: 10,
-                }}
-            >
+            <View style={{ gap: 10 }}>
                 <IconButton
                     label={`Add $${Number(value).toFixed(2)}`}
                     onPress={submitForm}

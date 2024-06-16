@@ -93,7 +93,7 @@ export default ({
                             fontSize: 16,
                             flexBasis: 'auto',
                             flexShrink: 0,
-                            flexGrow: 1,
+                            flexGrow: 0,
                             color: transparent
                                 ? theme?.colors.textDefault
                                 : type === 'primary' || type === 'danger'
@@ -114,7 +114,7 @@ export default ({
             {(iconName && alignIcon === 'right') && (
                 <Icon
                     name={iconName}
-                    size={24}
+                    size={20}
                     color={type === 'primary' ? theme?.colors.buttonPrimaryLabel : theme?.colors.buttonLabel}
                     style={{
                         flexBasis: 'auto',

@@ -4,7 +4,6 @@ import {
 } from '@components'
 import {
     DeleteAccountButton,
-    DepositForm,
     LocationModule,
     UserDetails,
 } from './components'
@@ -53,7 +52,6 @@ export default () => {
         <>
             <UserDetails profile={profile} toggleStatus={handleStatusChange} />
             <LocationModule userId={profile._id} />
-            <DepositForm user={profile} />
             {!isRestricted() && <DeleteAccountButton />}
         </>
     ) : <LoadingView loading='Loading profile...' />

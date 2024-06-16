@@ -1,8 +1,12 @@
 import React from 'react'
 import {
     Image,
+    Pressable,
     View,
 } from 'react-native'
+import {
+    DepositForm,
+} from './'
 import { ThemedText } from '@components'
 import {
     useApp,
@@ -11,13 +15,14 @@ import {
     getMaxImageDims,
 } from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { classes } from '@styles'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const MAX_IMAGE_HEIGHT = 120
 
 const UserDetailsImage = ({ image, username }) => {
 
-    const { dims } = useApp()
+    const { dims, theme } = useApp()
     // const { profileImage, username } = profile
 
     const filename = (image && image.filename)
@@ -30,8 +35,28 @@ const UserDetailsImage = ({ image, username }) => {
         ? `${IMAGE_PATH}/${username}/${filename}`
         : `${IMAGE_PATH}/avatar-default.png`
 
+    const getMaxDimsForWidth = (imageWidth, imageHeight, maxWidth) => {
+        const orientationIsLandscape = imageWidth > imageHeight
+        const imageNeedsConstraint = imageWidth > maxWidth
+        if (!imageNeedsConstraint) return { width: imageWidth, height: imageHeight }
+        let width = imageWidth
+        let height = imageHeight
+        let scale = 1
+        if (orientationIsLandscape) {
+            if (imageWidth > maxWidth) scale = maxWidth / imageWidth
+            // else scale = maxHeight / imageHeight
+        } else {
+            if (imageHeight > maxHeight) scale = maxHeight / imageHeight
+        }
+        width = imageWidth * scale
+        height = imageHeight * scale
+
+        return { width, height }
+    }
+    
     const { width, height } = image
-        ? getMaxImageDims(image.width, image.height, dims)
+        ? getMaxDimsForWidth(image.width, image.height, dims.width / 2)
+        // ? getMaxImageDims(image.width, image.height, dims)
         : { width: 200, height: 200 }
 
     return (
@@ -41,6 +66,8 @@ const UserDetailsImage = ({ image, username }) => {
                 width,
                 height,
                 resizeMode: 'cover',
+                borderWidth: 1,
+                borderColor: theme?.colors.textDefault,
             }}
         />
     )
@@ -49,27 +76,39 @@ const UserDetailsImage = ({ image, username }) => {
 const AvailableCheckbox = ({ checked, onChange }) => {
     const { theme } = useApp()
     return (
-        <View
+        <Pressable
+            onPress={() => onChange(!checked)}
             style={{
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
+                paddingVertical: 5,
             }}
         >
+            <ThemedText>Available</ThemedText>
             <Icon
                 name={checked ? 'ellipse' : 'ellipse-outline'}
-                size={24}
-                onPress={() => onChange(!checked)}
-                color={theme?.colors.textDefault}
+                size={18}
+                color={checked ? theme?.colors.statusOn : theme?.colors.textDefault}
             />
-            <ThemedText>Available</ThemedText>
-        </View>
+        </Pressable>
     )
 }
 
 export default ({ profile, toggleStatus }) => (
     <View>
-        <UserDetailsImage image={profile.profileImage} username={profile.username} />
-        <AvailableCheckbox checked={profile.available} onChange={toggleStatus} />
+        <View
+            style={{
+                flexDirection: 'row',
+                gap: 15,
+            }}
+        >
+            <UserDetailsImage image={profile.profileImage} username={profile.username} />
+            <View>
+                {/* <ThemedText style={classes.headerSecondary}>{profile.username}</ThemedText> */}
+                <AvailableCheckbox checked={profile.available} onChange={toggleStatus} />
+                <DepositForm user={profile} />
+            </View>
+        </View>
     </View>
 )
