@@ -28,6 +28,7 @@ const PublicCheckbox = ({ checked, setChecked }) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
+                marginBottom: 15,
             }}
         >
             <Icon
@@ -195,6 +196,7 @@ export default () => {
 
     const renderFields = () => (
         <>
+            <PublicCheckbox checked={fiction} setChecked={value => onChange('fiction', value)} />
             <FormField
                 label='Email'
                 value={email}
@@ -271,7 +273,6 @@ export default () => {
                 }}
                 focused={focused === 'confirmPassword'}
             />
-            <PublicCheckbox checked={fiction} setChecked={value => onChange('fiction', value)} />
         </>
     )
     
