@@ -149,8 +149,8 @@ io.on('connection', (socket) => {
     })
 
     socket.on('order_updated', order => {
-        console.log(`\n<< order_updated >>\n>> update_order <<\n`)
-        socket.broadcast.emit('update_order', order)
+        console.log(`\n<< order_updated >>\n>> updated_order <<\n`)
+        socket.broadcast.emit('updated_order', order)
     })
 
     socket.on('order_removed', id => {

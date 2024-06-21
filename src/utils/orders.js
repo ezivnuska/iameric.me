@@ -88,3 +88,27 @@ export const setOrderClosed = async id => {
     else return data.order
     return null
 }
+
+export const getOrderTotal = (items) => {
+    console.log('items...', items)
+    let total = 0
+    items.map(item => {
+        const { product, quantity } = item
+        total += (Number(product.price) * Number(quantity))
+    })
+    return total
+}
+
+
+
+export const getOrderStatusMessage = order => {
+    switch (order.status) {
+        case 0: return 'Waiting on vendor confirmation...'; break
+        case 1: return 'Vendor confirmed. Looking for driver...'; break
+        case 2: return `${order.driver.username} headed to pick-up location...`; break
+        case 3: return `${order.driver.username} is at pick-up location.`; break
+        case 4: return `${order.driver.username} is on the way.`; break
+        case 5: return 'Order delivered!'; break
+        case 6: return 'Order recieved.'; break
+    }
+}

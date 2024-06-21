@@ -22,7 +22,7 @@ export default () => {
     } = useOrders()
 
     useEffect(() => {
-        // console.log('orders changed', orders)
+        console.log('orders changed', orders)
         if (!orders.length) closeModal()
     }, [orders])
 

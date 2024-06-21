@@ -41,18 +41,16 @@ export const OrderContextProvider = props => {
 
     useEffect(() => {
         const initOrders = async () => {
-            if (userId) {
-                dispatch({type: 'SET_ORDERS_LOADING', payload: true })
-                const payload = await getAllOrders()
-                dispatch({type: 'SET_ORDERS_LOADING', payload: false })
-                dispatch({type: 'SET_ORDERS', payload })
-            }
-
-            dispatch({type: 'SET_ORDERS_LOADED' })
+            dispatch({type: 'SET_ORDERS_LOADING', payload: true })
+            const payload = await getAllOrders()
+            dispatch({type: 'SET_ORDERS_LOADING', payload: false })
+            dispatch({type: 'SET_ORDERS', payload })
         }
+
+        dispatch({type: 'SET_ORDERS_LOADED' })
         
         initOrders()
-    }, [userId])
+    }, [])
 
     const actions = useMemo(() => ({
         addOrder: payload => {
@@ -216,7 +214,7 @@ const reducer = (state, action) => {
                 ...state,
                 orders: state.orders.map(
                     order => order._id == payload._id
-                        ? payload
+                        ? { ...order, ...payload }
                         : order
                 ),
             }

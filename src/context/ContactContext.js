@@ -13,6 +13,7 @@ const initialState = {
     error: null,
     status: null,
     closeContactModal: () => {},
+    getAvailableUsers: () => {},
     getNumberOfAvailableUsers: () => {},
     getUserCountByRole: () => {},
     addContact: () => {},
@@ -121,6 +122,11 @@ export const ContactContextProvider = props => {
             // if (!state.contacts || !state.contacts.length) return 0
             const users = state.contacts.filter(user => user.available === true)
             return users.length
+        },
+        getAvailableUsers: () => {
+            // if (!state.contacts || !state.contacts.length) return 0
+            const users = state.contacts.filter(user => user.available === true)
+            return users
         },
     }), [state, dispatch])
 

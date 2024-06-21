@@ -131,22 +131,30 @@ export default ({ order }) => {
     const { socket, profile } = useApp()
     const { getOrder, removeOrder, updateOrder } = useOrders()
 
-    const memo = useMemo(() => getOrder(order._id), [order])
+    const currentOrder = useMemo(() => getOrder(order._id), [getOrder, order])
+
+    // useEffect(() => {
+    //     socket.on('updated_order', order => {
+    //         console.log('updated_order', order)
+    //         updateOrder(order)
+    //     })
+    // }, [])
 
     useEffect(() => {
-        socket.on('update_order', order => {
-            updateOrder(order)
-        })
-    }, [])
+        console.log('currentOrder', currentOrder)
+    }, [currentOrder])
 
     const getUserRole = () => {
         let role = null
         if (profile) {
             if (profile.role === 'admin') role = 'admin'
-            else if (profile._id === order.vendor || profile._id === order.vendor._id) role = 'vendor'
-            else if (profile._id === order.customer || profile._id === order.customer._id) role = 'customer'
-            else if (order.driver && (profile._id === order.driver || profile._id === order.driver._id)) role = 'driver'
+            if (profile._id === currentOrder.vendor || profile._id === currentOrder.vendor._id) role = 'vendor'
+            if (profile._id === currentOrder.customer || profile._id === currentOrder.customer._id) role = 'customer'
+            else if (currentOrder.driver) {
+                if (profile._id === currentOrder.driver || profile._id === currentOrder.driver._id) role = 'driver'
+            } else if (profile.available) role = 'driver'
         }
+        console.log('role', role)
         return role
     }
 
@@ -190,53 +198,56 @@ export default ({ order }) => {
         )
     }
 
-    const authorized = () => {
+    const isVendor = () => {
+        return currentOrder.vendor && currentOrder.vendor._id === profile._id
+    }
+
+    const isDriver = () => {
+        return (currentOrder.driver && currentOrder.driver._id === profile._id) || (!currentOrder.driver && profile.available)
+    }
+
+    const isCustomer = () => {
+        return currentOrder.customer._id === profile._id
+    }
+
+    const renderProcessButton = () => {
+    
+        const role = getUserRole()
         let auth = false
         if (profile) {
             if (profile.role === 'admin') auth = true
-            if (
-                profile._id === memo.customer._id
-                ||
-                profile._id === memo.vendor._id
-                ||
-                memo.driver && profile._id === memo.driver._id
-                ||
-                !memo.driver && memo.status < 2
-            ) auth = true
+            if (isCustomer()) auth = true
+            if (isVendor()) auth = true
+            if (isDriver() || (!currentOrder.driver && profile.isAvailable)) auth = true
         }
-        return auth
+        console.log('authorized', auth)
+        return auth ? (
+            <View style={{ padding: 10 }}>
+                <OrderProcessButton order={currentOrder} role={role} />
+            </View>
+        ) : null
     }
 
     return (
         <View>
-            {renderPartyUsernames(memo)}
+            {renderPartyUsernames(currentOrder)}
 
-            {authorized() ? (
-                <>
 
-                    <View style={{ paddingHorizontal: 10 }}>
-                        {renderStatus(memo)}
-                    </View>
+            {/* <View style={{ paddingHorizontal: 10 }}>
+                {renderStatus(memo)}
+            </View> */}
 
-                    {memo.ready && (
-                        <View style={{ margin: 10}}>
-                            <ThemedText bold>Order is Ready</ThemedText>
-                        </View>
-                    )}
-
-                    <View style={{ paddingVertical: 10 }}>
-                        <CartProductPreview order={memo} />
-                    </View>
-
-                    <View style={{ padding: 10 }}>
-                        <OrderProcessButton order={memo} />
-                    </View>
-                </>
-            ) : (
-                <View style={{ paddingHorizontal: 10 }}>
-                    <CustomerStatus order={order} />
+            {currentOrder.ready && (
+                <View style={{ margin: 10}}>
+                    <ThemedText bold>Order is Ready</ThemedText>
                 </View>
             )}
+
+            <View style={{ paddingVertical: 10 }}>
+                <CartProductPreview order={currentOrder} />
+            </View>
+
+            {renderProcessButton()}
             
         </View>
     )

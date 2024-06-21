@@ -45,8 +45,8 @@ const AdminButton = ({ order, deleteOrder, onClosed }) => {
 }
 
 const CustomerButton = ({ order, deleteOrder, onClosed }) => {
-    const { profile } = useApp()
-    if (profile._id !== order.customer._id) return null
+    // const { profile } = useApp()
+    // if (profile._id !== order.customer._id) return null
     switch (order.status) {
         case 0:
             return <NextButton label='Cancel Order' action={deleteOrder} />
@@ -90,7 +90,9 @@ const TimeSelectionModule = ({ onSelected }) => (
     </View>
 )
 
-export default ({ order }) => {
+export default ({ order, role }) => {
+
+    console.log('role-------->', role)
 
     const { profile, socket } = useApp()
     const {
@@ -112,16 +114,16 @@ export default ({ order }) => {
         })
     }, [])
 
-    const getUserRole = () => {
-        let role = null
-        if (profile) {
-            if (profile.role === 'admin') role = 'admin'
-            else if (profile._id === order.vendor || profile._id === order.vendor._id) role = 'vendor'
-            else if (profile._id === order.customer || profile._id === order.customer._id) role = 'customer'
-            else if (order.driver && (profile._id === order.driver || profile._id === order.driver._id)) role = 'driver'
-        }
-        return role
-    }
+    // const getUserRole = () => {
+    //     let role = null
+    //     if (profile) {
+    //         if (profile.role === 'admin') role = 'admin'
+    //         else if (profile._id === order.vendor || profile._id === order.vendor._id) role = 'vendor'
+    //         else if (profile._id === order.customer || profile._id === order.customer._id) role = 'customer'
+    //         else if (order.driver && (profile._id === order.driver || profile._id === order.driver._id)) role = 'driver'
+    //     }
+    //     return role
+    // }
 
     const deleteOrder = async id => {
         setOrdersLoading(true)
@@ -231,7 +233,7 @@ export default ({ order }) => {
         }
     }
 
-    const role = getUserRole()
+    // const role = getUserRole()
 
     switch (role) {
         case 'admin': return (

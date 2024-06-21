@@ -169,13 +169,17 @@ const getAllOrders = async (req, res) => {
         .populate('driver', 'username')
         .populate({
             path: 'items',
-            select: 'product price title',
-            populate: { path: 'product' },
+            select: 'product quantity',
+            // select: 'product price title quantity',
+            populate: {
+                path: 'product',
+                popylate: 'vendor',
+            },
         })
     
     if (!orders) console.log('Error getting orders')
     else {
-        orders = getSanitizedOrders(orders)
+        // orders = getSanitizedOrders(orders)
         return res.status(200).json({ orders })
     }
     return res.json(400).json(null)

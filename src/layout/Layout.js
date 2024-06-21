@@ -42,6 +42,7 @@ export default () => {
     const {
         addOrder,
         removeOrder,
+        updateOrder,
     } = useOrders()
 
     // let timer = undefined
@@ -103,6 +104,11 @@ export default () => {
                 _id: id,
                 available: false,
             })
+        })
+
+        socket.on('updated_order', data => {
+            console.log('updating order...')
+            updateOrder(data)
         })
 
         

@@ -11,6 +11,7 @@ import {
 import {
     useApp,
     useModal,
+    useOrders,
     useProducts,
 } from '@context'
 import { connect } from '@utils/auth'
@@ -25,6 +26,7 @@ export default props => {
 
     const { appLoaded, signIn, thin, userId } = useApp()
     const { setModal } = useModal()
+    const { ordersLoaded } = useOrders()
     const { products, productsLoading } = useProducts()
 
     const onConnect = async type => {
@@ -79,48 +81,20 @@ export default props => {
             style={[classes.screen, classes.paddingH]}
             {...props}
         >
-
             <View
                 style={{
-                    flexDirection: 'row',
-                    // justifyContent: 'space-between',
+                    flexDirection: !thin ? 'row' : 'column',
                     flexWrap: 'wrap',
-                    gap: 10,
+                    width: 300,
+                    maxWidth: '100%',
+                    marginHorizontal: 'auto',
                 }}
             >
-                <View
-                    style={{
-                        flex: 1,
-                        flexGrow: 0,
-                        flexShrink: 1,
-                        minWidth: !thin ? 100 : '100%',
-                        maxWidth: 300,
-                    }}
-                >
-                    <Display />
-                </View>
-                <View
-                    style={{
-                        flex: 1,
-                        flexGrow: 1,
-                        minWidth: 200,
-                        maxWidth: 400,
-                    }}
-                >
-                    <Menu products={products} loading={productsLoading} />
-                </View>
-                {/* <View
-                    style={{
-                        flex: 1,
-                        flexGrow: 1,
-                        // minWidth: 300,
-                        maxWidth: 300,
-                    }}
-                >
-                    <Contacts />
-                </View> */}
+                <Display />
+                <Menu products={products} loading={productsLoading} />
+
+                {!userId && renderButtons()}
             </View>
-            {!userId && renderButtons()}
         </Screen>
     )
 }
