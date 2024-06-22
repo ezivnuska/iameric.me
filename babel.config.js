@@ -1,5 +1,8 @@
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
+  presets: [
+    '@babel/preset-env',
+    ['@babel/preset-react', {'runtime': 'automatic'}],
+  ],
   env: {
     production: {
       plugins: ['react-native-paper/babel'],
@@ -20,7 +23,13 @@ module.exports = {
         },
       },
     ],
+    '@babel/plugin-transform-async-generator-functions',
+    '@babel/plugin-transform-class-properties',
+    '@babel/plugin-transform-nullish-coalescing-operator',
+    '@babel/plugin-transform-object-rest-spread',
+    '@babel/plugin-transform-optional-catch-binding',
+    '@babel/plugin-transform-optional-chaining',
     '@babel/plugin-transform-export-namespace-from',
-    'react-native-reanimated/plugin',
+    // 'react-native-reanimated/plugin',
   ],
 }
