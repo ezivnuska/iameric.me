@@ -43,7 +43,7 @@ export const light = {
     dark: false,
     colors: {
         backButtonLabel: '#000',
-        background: '#eee',
+        background: '#fff',
         backgroundTransparent: '#fffff00',
         border: '#aaa',
         buttonText: '#fff',

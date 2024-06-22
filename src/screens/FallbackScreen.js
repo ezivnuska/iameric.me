@@ -1,21 +1,14 @@
 import React from 'react'
 import {
-    CenteredVertical,
-    ThemedText,
-    Screen,
-} from '@components'
+    Text,
+    View,
+} from 'react-native'
 
-export default props => {
-    const { route } = props
+export default ({ navigation }) => {
+    
     return (
-        <Screen
-            secure={false}
-            {...props}
-        >
-            <CenteredVertical>
-                <ThemedText>404 Error: {route && route.path ? route.path : ''}</ThemedText>
-                <ThemedText>Sorry. That page does not exist.</ThemedText>
-            </CenteredVertical>
-        </Screen>
+        <View>
+            <Text>Oops! Page not found.</Text>
+        </View>
     )
 }
