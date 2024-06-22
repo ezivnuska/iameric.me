@@ -8,11 +8,11 @@ import {
 export default ({ navigation }) => {
     
     return (
-        <Screen title='Home'>
-            <ThemedText>Welcome</ThemedText>
+        <Screen title='Another Screen'>
+            <ThemedText>You are here.</ThemedText>
             <SimpleButton
-                label='Another Screen'
-                onPress={() => navigation.navigate('Another')}
+                label='Go Back'
+                onPress={() => navigation.navigate('Home')}
             />
         </Screen>
     )

@@ -4,6 +4,7 @@ import {
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
+    AnotherScreen,
     // FallbackScreen,
     HomeScreen,
 } from '@screens'
@@ -15,6 +16,9 @@ const linking = {
         screens: {
             Home: {
                 path: '',
+            },
+            Another: {
+                path: 'another',
             },
         },
     },
@@ -33,9 +37,16 @@ const AppStackScreen = () => {
 
             <AppStack.Screen
                 name='Home'
-                // children={props => <HomeScreen {...props} />}
-                component={HomeScreen}
+                children={props => <HomeScreen {...props} />}
+                // component={HomeScreen}
                 options={{ title: 'Home' }}
+            />
+
+            <AppStack.Screen
+                name='Another'
+                children={props => <AnotherScreen {...props} />}
+                // component={AnotherScreen}
+                options={{ title: 'Another Screen' }}
             />
 
         </AppStack.Navigator>
