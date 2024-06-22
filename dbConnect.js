@@ -1,5 +1,5 @@
 const { MongoClient } = require('mongodb')
-const config = require('./config')
+const config = require('./config-old')
 
 const uri = process.env.DB_CONNECTION_STRING || config.DB_CONNECTION_STRING
 let db = MongoClient

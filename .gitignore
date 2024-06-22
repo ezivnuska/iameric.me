@@ -3,7 +3,7 @@
 .DS_Store
 .env
 dist/
-config/
+server/config.js
 .htaccess
 
 # Xcode
@@ -44,6 +44,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 yarn.lock
+.gitignore
 
 # fastlane
 #
@@ -67,9 +68,8 @@ yarn.lock
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
-assets/
 
 #
 
-**/trash/*
+assets/
 /src-backup

@@ -21,7 +21,6 @@
     "analyze": "webpack --profile --json > stats.json"
   },
   "dependencies": {
-    "@ant-design/icons": "^5.0.1",
     "@react-native-async-storage/async-storage": "1.19.5",
     "@react-native-picker/picker": "^2.4.10",
     "@react-navigation/bottom-tabs": "^6.5.11",
@@ -49,7 +48,6 @@
     "http-proxy-middleware": "^3.0.0",
     "jsonwebtoken": "^9.0.0",
     "mkdirp": "^3.0.1",
-    "moment": "^2.29.4",
     "mongodb": "^6.6.2",
     "mongoose": "^7.0.1",
     "multer": "^1.4.5-lts.1",

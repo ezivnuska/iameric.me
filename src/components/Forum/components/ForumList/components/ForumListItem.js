@@ -12,7 +12,7 @@ import { classes } from '@styles'
 import {
     useApp,
 } from '@context'
-import { ThunderboltOutlined } from '@ant-design/icons'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) => {
     
@@ -82,7 +82,7 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
                             style={classes.userHeading}
                         >
                             {author.username}
-                            {online && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
+                            {online && <Icon name='flash-outline' color='green' style={{ marginLeft: 10 }} />}
                         </ThemedText>
 
                     </Pressable>

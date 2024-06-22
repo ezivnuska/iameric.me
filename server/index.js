@@ -4,6 +4,7 @@ const { Server } = require('socket.io')
 const mongoose = require('mongoose')
 const session = require('express-session')
 const cors = require('cors')
+const path = require('path')
 const routes = require('./routes')
 require('dotenv').config()
 
@@ -40,7 +41,7 @@ app.use(sessionMiddleware)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ limit: '5mb' }))
 app.use(express.static('dist'))
-app.use('/assets', express.static('./assets'))
+app.use('/assets', express.static(path.resolve(__dirname, '../assets')))
 
 app.use('/api', routes)
 

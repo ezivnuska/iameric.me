@@ -1,7 +1,7 @@
 const express = require('express')
 const session = require('express-session')
 const cors = require('cors')
-const config = require('./config')
+const config = require('./config-old')
 
 const SESSION_SECRET = process.env.JWT_SECRET || config.JWT_SECRET
 const PORT = process.env.NODE_ENV === 'production' ? config.production.port : config.development.port
