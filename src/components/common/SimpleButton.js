@@ -2,8 +2,8 @@
 import React from 'react'
 import {
     Pressable,
+    Text,
 } from 'react-native'
-import { ThemedText } from '@components'
 
 export default ({ label, onPress }) => {
     return (
@@ -14,9 +14,23 @@ export default ({ label, onPress }) => {
                 paddingHorizontal: 10,
                 paddingVertical: 5,
                 background: 'tomato',
+                borderRadius: 12,
+                flexDirection: 'row',
+                alignItems: 'center',
+                height: 32,
             }}
         >
-            <ThemedText bold>{label}</ThemedText>
+            <Text
+                style={{
+                    flex: 1,
+                    color: '#fff',
+                    fontSize: 16,
+                    fontWeight: 700,
+                    textAlign: 'center',
+                }}
+            >
+                {label}
+            </Text>
         </Pressable>
     )
 }
