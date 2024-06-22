@@ -2,7 +2,7 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "components/*": ["src/components backup/*"],
+            "components/*": ["src/components-backup/*"],
             "images/*": ["./src/images/*"],
             "layout/*": ["src/layout/*"],
             "styles/*": ["./src/styles/*"],
