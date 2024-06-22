@@ -26,7 +26,6 @@ export default () => {
                 minWidth: 300,
                 maxWidth: 400,
                 marginHorizontal: 'auto',
-                paddingHorizontal: 10,
             }}
         >
             <PaperProvider theme={theme}>

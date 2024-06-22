@@ -15,7 +15,7 @@ module.exports = {
       'module-resolver',
       {
         alias: {
-          src: './src',
+          '@app': './src/AppContext',
           '@components': './src/components',
           '@images': './src/images',
           '@layout': './src/layout',

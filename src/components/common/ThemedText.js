@@ -3,7 +3,7 @@ import {
     Text,
 } from 'react-native'
 import { classes } from '@styles'
-import { useApp } from '@context'
+import { useApp } from '@app'
 
 export default ({ children, align = 'left', bold = false, size = null, ...props }) => {
     

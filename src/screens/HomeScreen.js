@@ -3,17 +3,15 @@ import {
     Text,
     View,
 } from 'react-native'
+import {
+    Screen,
+} from '@components'
 
 export default ({ navigation }) => {
     
     return (
-        <View
-            style={{
-                flex: 1,
-                paddingVertical: 10,
-            }}
-        >
+        <Screen>
             <Text>Welcome Home</Text>
-        </View>
+        </Screen>
     )
 }
