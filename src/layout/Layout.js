@@ -14,7 +14,7 @@ import {
     PaperProvider,
 } from 'react-native-paper'
 
-const HEADER_HEIGHT = 50
+const HEADER_HEIGHT = 40
 
 // Header component at bottom
 
@@ -59,16 +59,11 @@ export default () => {
                             theme={theme}
                         />
                     </View>
-                    
-                    {/* 
-                    * needs to be scrollview. maybe here...?
-                    */}
 
                     <View
                         style={{
                             flexBasis: 'auto',
                             flexGrow: 1,
-                            backgroundColor: 'pink',
                         }}
                     >
                         <AppNavigation theme={theme} />

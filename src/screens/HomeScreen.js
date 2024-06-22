@@ -7,8 +7,8 @@ import {
 export default ({ navigation }) => {
     
     return (
-        <Screen>
-            <ThemedText>Welcome Home</ThemedText>
+        <Screen title='Home'>
+            <ThemedText>Welcome</ThemedText>
         </Screen>
     )
 }
