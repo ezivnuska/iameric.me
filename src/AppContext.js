@@ -14,7 +14,7 @@ import {
     MD2DarkTheme,
     MD2LightTheme,
 } from 'react-native-paper'
-import { getItem, setItem } from '@utils/storage'
+import { getItem, getStoredToken, setItem } from '@utils/storage'
 
 import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
@@ -32,6 +32,8 @@ const initialState = {
     dark: false,
     appLoaded: false,
     theme: CombinedDefaultTheme,
+    token: null,
+    setToken: () => {},
     toggleTheme: () => {},
 }
 
@@ -58,6 +60,30 @@ export const AppContextProvider = ({ children }) => {
             if (storedValue && storedValue === 'true') dispatch({ type: 'TOGGLE_THEME' })
             else await setItem('dark', false)
 
+            const payload = await getStoredToken()
+            
+            if (payload) {
+                console.log('found token.')
+
+                // WE DON'T NEED TO VALIDATE TOKEN, YET
+
+                // dispatch({ type: 'SET_TOKEN', payload})
+                // const user = await validateToken(authToken)
+                // if (user) {
+                //     console.log('token verified.')
+                    
+                //     dispatch({
+                //         type: 'SET_USER',
+                //         payload: user,
+                //     })
+                // }
+
+                // SO FOR NOW...
+                dispatch({ type: 'SET_TOKEN', payload})
+            } else {
+                console.log('no token found')
+            }
+
             dispatch({ type: 'APP_LOADED' })
         }
         
@@ -65,6 +91,9 @@ export const AppContextProvider = ({ children }) => {
     }, [])
 
     const actions = useMemo(() => ({
+        setToken: async payload => {
+            dispatch({ type: 'SET_TOKEN', payload })
+        },
         toggleTheme: async () => {
             setItem('dark', !state.dark)
             dispatch({ type: 'TOGGLE_THEME' })
@@ -97,6 +126,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 appLoaded: true,
+            }
+            break
+        case 'SET_TOKEN':
+            return {
+                ...state,
+                token: payload,
             }
             break
         case 'TOGGLE_THEME':
