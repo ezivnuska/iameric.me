@@ -2,22 +2,18 @@ import React from 'react'
 import {
     Text,
 } from 'react-native'
-import { classes } from '@styles'
 import { useApp } from '@app'
 
-export default ({ children, align = 'left', bold = false, size = null, ...props }) => {
+export default ({ children, bold = false, ...props }) => {
     
-    const { dims, theme } = useApp()
+    const { theme } = useApp()
     
     return (
         <Text
             style={[
-                classes.textDefault,
                 {
                     color: theme?.colors.textDefault,
                     fontWeight: bold ? 700 : 400,
-                    textAlign: align,
-                    fontSize: size || classes.textDefault.fontSize,
                 },
                 props.style,
             ]}
