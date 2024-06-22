@@ -50,18 +50,13 @@ export const AppContextProvider = ({ children }) => {
     const dims = useWindowDimensions()
 
     useEffect(() => {
+
         const init = async () => {
             
             let storedValue = await getItem('dark')
-            console.log('storedValue', storedValue)
 
-            if (storedValue === null) await setItem('dark', false)
-            else {
-                const isDark = storedValue === 'true'
-                if (state.dark !== isDark) {
-                    dispatch({ type: 'TOGGLE_THEME' })
-                }
-            }
+            if (storedValue && storedValue === 'true') dispatch({ type: 'TOGGLE_THEME' })
+            else await setItem('dark', false)
 
             dispatch({ type: 'APP_LOADED' })
         }
@@ -70,7 +65,7 @@ export const AppContextProvider = ({ children }) => {
     }, [])
 
     const actions = useMemo(() => ({
-        toggleTheme: () => {
+        toggleTheme: async () => {
             setItem('dark', !state.dark)
             dispatch({ type: 'TOGGLE_THEME' })
         },
@@ -79,15 +74,15 @@ export const AppContextProvider = ({ children }) => {
     return (
         <AppContext.Provider
             value={{
-                ...state,
-                dims,
+                ...state, // stuff from initial state
+                dims, // anything extra...
                 ...actions,
             }}
         >
             {
                 // wait until app is loaded (dims, theme, etc.) 
                 // before showing content
-                state.appLoaded
+                !state.appLoaded
                     ? <ActivityIndicator style={{ marginHorizontal: 'auto' }} />
                     : children
             }

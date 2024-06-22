@@ -28,6 +28,9 @@ const babelLoaderConfiguration = {
     path.resolve(__dirname, 'node_modules/react-native-'),
     ...compileNodeModules,
   ],
+  exclude: [
+    path.resolve(__dirname, 'src-backup'),
+  ],
   use: [{
     loader: 'babel-loader',
     options: {

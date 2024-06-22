@@ -68,3 +68,8 @@ yarn.lock
 .metro-health-check*
 
 assets/
+
+#
+
+**/trash/*
+/src-backup
