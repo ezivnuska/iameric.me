@@ -15,7 +15,7 @@ import {
     PaperProvider,
 } from 'react-native-paper'
 
-const HEADER_HEIGHT = 40
+const HEADER_HEIGHT = 50
 
 // Header code at bottom
 

@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import {
     Screen,
     SimpleButton,
+    Socket,
     ThemedText,
 } from '@components'
 import { useApp } from '@app'
@@ -26,8 +27,9 @@ export default props => {
                     gap: 20,
                 }}
             >
+
                 <View style={{ flexGrow: 1 }}>
-                    <ThemedText>Welcome</ThemedText>
+                    <Socket />
                 </View>
 
                 <View style={{ flexGrow: 0 }}>

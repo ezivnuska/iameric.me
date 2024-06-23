@@ -4,9 +4,6 @@ import {
     View,
 } from 'react-native'
 import { ScreenTitle } from './components'
-import {
-    ThemedText,
-} from '@components'
 import { useApp } from '@app'
 
 export default ({ children, secure = true, title = null, ...props }) => {

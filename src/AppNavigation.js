@@ -8,18 +8,14 @@ import {
     // FallbackScreen,
     HomeScreen,
 } from '@screens'
-import { navigationRef } from '@utils/navigate'
+import navigationRef from '@utils/navigationRef'
 
 const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
-            Home: {
-                path: '',
-            },
-            Another: {
-                path: 'another',
-            },
+            Home: '',
+            Another: 'another',
         },
     },
 }

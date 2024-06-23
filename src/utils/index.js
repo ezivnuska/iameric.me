@@ -1,11 +1,9 @@
-import compose from './Compose'
-import navigate from './navigate'
-import socket from './socket'
+import compose from './compose'
+import navigationRef from './navigationRef'
 import storage from './storage'
 
 export {
     compose,
-    navigate,
-    socket,
+    navigationRef,
     storage,
 }
