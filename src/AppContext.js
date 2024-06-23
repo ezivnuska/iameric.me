@@ -15,10 +15,12 @@ import {
     MD2LightTheme,
 } from 'react-native-paper'
 import { getItem, getStoredToken, setItem } from '@utils/storage'
+import { validateToken } from '@utils/auth'
 
 import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
+import { SocketContextProvider } from './SocketContext'
 
 // import socket from '../socket'
 
@@ -32,8 +34,10 @@ const initialState = {
     dark: false,
     appLoaded: false,
     theme: CombinedDefaultTheme,
-    token: null,
-    setToken: () => {},
+    // token: null,
+    user: null,
+    // setToken: () => {},
+    setUser: () => {},
     toggleTheme: () => {},
 }
 
@@ -70,21 +74,21 @@ export const AppContextProvider = ({ children }) => {
                 // FOR NOW WE'RE JUST FAKING IT
 
                 // dispatch({ type: 'SET_TOKEN', payload})
-                // const user = await validateToken(authToken)
-                // if (user) {
-                //     console.log('token verified.')
+                const user = await validateToken(payload)
+                if (user) {
+                    console.log('token verified.')
                     
-                //     dispatch({
-                //         type: 'SET_USER',
-                //         payload: user,
-                //     })
-                // }
+                    dispatch({
+                        type: 'SET_USER',
+                        payload: user,
+                    })
+                }
 
                 // SO FOR NOW...
-                dispatch({ type: 'SET_TOKEN', payload: true })
+                // dispatch({ type: 'SET_TOKEN', payload: true })
             } else {
                 console.log('no token found')
-                dispatch({ type: 'SET_TOKEN', payload: false })
+                // dispatch({ type: 'SET_TOKEN', payload: false })
             }
 
             dispatch({ type: 'APP_LOADED' })
@@ -94,8 +98,11 @@ export const AppContextProvider = ({ children }) => {
     }, [])
 
     const actions = useMemo(() => ({
-        setToken: async payload => {
-            dispatch({ type: 'SET_TOKEN', payload })
+        // setToken: async payload => {
+        //     dispatch({ type: 'SET_TOKEN', payload })
+        // },
+        setUser: async payload => {
+            dispatch({ type: 'SET_USER', payload })
         },
         toggleTheme: async () => {
             setItem('dark', !state.dark)
@@ -133,6 +140,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 token: payload,
+            }
+            break
+        case 'SET_USER':
+            return {
+                ...state,
+                user: payload,
             }
             break
         case 'TOGGLE_THEME':

@@ -5,7 +5,7 @@ import {
 import {
     ThemedText,
 } from '@components'
-import { useSocket } from './SocketContext'
+import { useSocket } from '../SocketContext'
 import { useApp } from '@app'
 
 export default () => {

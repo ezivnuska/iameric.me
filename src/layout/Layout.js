@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
     Pressable,
     SafeAreaView,
-    Text,
     View,
 } from 'react-native'
 import {
@@ -11,9 +10,12 @@ import {
 } from '@components'
 import AppNavigation from '../AppNavigation'
 import { useApp } from '@app'
+import { useSocket } from '../SocketContext'
 import {
     PaperProvider,
 } from 'react-native-paper'
+import { signout } from '@utils/auth'
+import { cleanStorage } from '@utils/storage'
 
 const HEADER_HEIGHT = 50
 
@@ -23,17 +25,9 @@ export default () => {
 
     const {
         dims,
-        setToken,
         theme,
-        token,
         toggleTheme,
     } = useApp()
-
-    const [auth, setAuth] = useState(false)
-
-    useEffect(() => {
-        setAuth(token)
-    }, [token])
 
     return (
         <SafeAreaView
@@ -65,8 +59,6 @@ export default () => {
                         <Header
                             height={HEADER_HEIGHT}
                             onPress={toggleTheme}
-                            token={token}
-                            setToken={setToken}
                         />
                     </View>
 
@@ -78,14 +70,30 @@ export default () => {
                     >
                         <AppNavigation theme={theme} />
                     </View>
+
                 </View>
             </PaperProvider>
         </SafeAreaView>
     )
 }
 
-const Header = ({ height, onPress, setToken, token }) => {
-    
+const Header = ({ height, onPress }) => {
+    const {
+        user,
+        setUser,
+    } = useApp()
+
+    const {
+        signOut,
+    } = useSocket()
+
+    const handleSignout = async id => {
+        await signout(id)
+        cleanStorage()
+        signOut(id)
+        setUser(null)
+    }
+
     return (
         <View
             style={{
@@ -102,11 +110,14 @@ const Header = ({ height, onPress, setToken, token }) => {
                 <ThemedText bold style={{ fontSize: 24 }}>iameric</ThemedText>
             </Pressable>
 
-            <SimpleButton
-                label={token ? 'Sign Out' : 'Sign In'}
-                onPress={() => setToken(!token)}
-                style={{ flexBasis: 'auto', flexGrow: 0 }}
-            />
+            {user ? (
+                <SimpleButton
+                    label={'Sign Out'}
+                    onPress={() => handleSignout(user._id)}
+                    style={{ flexBasis: 'auto', flexGrow: 0 }}
+                />
+            ) : null}
+            
 
         </View>
     )

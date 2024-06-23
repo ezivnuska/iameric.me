@@ -31,6 +31,7 @@ export const removeItems = async keys => {
 }
 
 export const cleanStorage = async () => {
+    console.log('cleaning storage')
     return removeItems(['userToken'])
 }
 
