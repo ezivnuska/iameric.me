@@ -5,26 +5,27 @@ import {
     Text,
 } from 'react-native'
 
-export default ({ label, onPress }) => {
+export default ({ disabled, label, onPress }) => {
     return (
         <Pressable
+            disabled={disabled}
             onPress={onPress}
             style={{
-                marginVertical: 10,
                 paddingHorizontal: 10,
                 paddingVertical: 5,
-                background: 'tomato',
-                borderRadius: 12,
+                backgroundColor: disabled ? '#ccc' : 'tomato',
+                borderRadius: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
-                height: 32,
             }}
         >
             <Text
                 style={{
                     flex: 1,
-                    color: '#fff',
+                    color: disabled ? '#eee' : '#fff',
                     fontSize: 16,
+                    lineHeight: 20,
+                    letterSpacing: 0.5,
                     fontWeight: 700,
                     textAlign: 'center',
                 }}

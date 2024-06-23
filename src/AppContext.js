@@ -66,6 +66,8 @@ export const AppContextProvider = ({ children }) => {
                 console.log('found token.')
 
                 // WE DON'T NEED TO VALIDATE TOKEN, YET
+                
+                // FOR NOW WE'RE JUST FAKING IT
 
                 // dispatch({ type: 'SET_TOKEN', payload})
                 // const user = await validateToken(authToken)
@@ -79,9 +81,10 @@ export const AppContextProvider = ({ children }) => {
                 // }
 
                 // SO FOR NOW...
-                dispatch({ type: 'SET_TOKEN', payload})
+                dispatch({ type: 'SET_TOKEN', payload: true })
             } else {
                 console.log('no token found')
+                dispatch({ type: 'SET_TOKEN', payload: false })
             }
 
             dispatch({ type: 'APP_LOADED' })
@@ -108,13 +111,11 @@ export const AppContextProvider = ({ children }) => {
                 ...actions,
             }}
         >
-            {
-                // wait until app is loaded (dims, theme, etc.) 
-                // before showing content
-                !state.appLoaded
-                    ? <ActivityIndicator style={{ marginHorizontal: 'auto' }} />
-                    : children
+            {state.appLoaded
+                ? children
+                : <ActivityIndicator style={{ marginHorizontal: 'auto' }} />
             }
+
         </AppContext.Provider>
     )
 }

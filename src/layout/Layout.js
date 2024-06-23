@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Pressable,
     SafeAreaView,
@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    SimpleButton,
     ThemedText,
 } from '@components'
 import AppNavigation from '../AppNavigation'
@@ -16,15 +17,23 @@ import {
 
 const HEADER_HEIGHT = 40
 
-// Header component at bottom
+// Header code at bottom
 
 export default () => {
 
     const {
         dims,
+        setToken,
         theme,
+        token,
         toggleTheme,
     } = useApp()
+
+    const [auth, setAuth] = useState(false)
+
+    useEffect(() => {
+        setAuth(token)
+    }, [token])
 
     return (
         <SafeAreaView
@@ -56,7 +65,8 @@ export default () => {
                         <Header
                             height={HEADER_HEIGHT}
                             onPress={toggleTheme}
-                            theme={theme}
+                            token={token}
+                            setToken={setToken}
                         />
                     </View>
 
@@ -74,21 +84,30 @@ export default () => {
     )
 }
 
-const Header = ({ height, onPress, theme }) => {
+const Header = ({ height, onPress, setToken, token }) => {
     
     return (
         <View
             style={{
                 flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 height,
             }}
         >
             <Pressable
                 onPress={onPress}
+                style={{ flex: 1, flexGrow: 1 }}
             >
                 <ThemedText bold style={{ fontSize: 24 }}>iameric</ThemedText>
             </Pressable>
+
+            <SimpleButton
+                label={token ? 'Sign Out' : 'Sign In'}
+                onPress={() => setToken(!token)}
+                style={{ flexBasis: 'auto', flexGrow: 0 }}
+            />
+
         </View>
     )
 }

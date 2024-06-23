@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import { useApp } from '@app'
 
-export default ({ children, bold = false, ...props }) => {
+export default ({ children, bold = false, color = null, size = 16, ...props }) => {
     
     const { theme } = useApp()
     
@@ -12,8 +12,9 @@ export default ({ children, bold = false, ...props }) => {
         <Text
             style={[
                 {
-                    color: theme?.colors.textDefault,
+                    fontSize: size,
                     fontWeight: bold ? 700 : 400,
+                    color: color || theme?.colors.textDefault,
                 },
                 props.style,
             ]}

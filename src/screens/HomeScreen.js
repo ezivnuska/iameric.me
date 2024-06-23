@@ -7,41 +7,39 @@ import {
 } from '@components'
 import { useApp } from '@app'
 
-export default ({ navigation }) => {
+export default props => {
+    // console.log('check out available props from navigation container...', props)
+    // we are using the navigate method below.
 
-    const {
-        token,
-        setToken,
-    } = useApp()
+    const { token } = useApp()
     
     return (
-        <Screen title='Home'>
-            
-            <ThemedText>Welcome</ThemedText>
+        <Screen
+            {...props}
+            secure={false}
+            title='Home'
+        >
+            <View
+                style={{
+                    flexGrow: 1,
+                    justifyContent: 'space-between',
+                    gap: 20,
+                }}
+            >
+                <View style={{ flexGrow: 1 }}>
+                    <ThemedText>Welcome</ThemedText>
+                </View>
 
-            <View style={{ paddingVertical: 20 }}>
-                <FakeButton
-                    label={token ? 'Sign Out' : 'Sign In'}
-                    onPress={() => setToken(!token)}
-                />
+                <View style={{ flexGrow: 0 }}>
+                    <SimpleButton
+                        label='Another Screen'
+                        onPress={() => props.navigation.navigate('Another')}
+                        disabled={!token}
+                    />
+                </View>
             </View>
-
-            {token && (
-                <SimpleButton
-                    label='Another Screen'
-                    onPress={() => navigation.navigate('Another')}
-                />
-            )}
+            
 
         </Screen>
-    )
-}
-
-const FakeButton = ({ label, onPress }) => {
-    return (
-        <SimpleButton
-            label={label}
-            onPress={onPress}
-        />
     )
 }
