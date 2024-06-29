@@ -7,6 +7,7 @@ import {
 } from '@components'
 import { useSocket } from '../SocketContext'
 import { useApp } from '@app'
+import { ThunderboltOutlined } from '@ant-design/icons'
 
 export default () => {
     const { user, theme } = useApp()
@@ -23,13 +24,23 @@ export default () => {
         return `${prefix}${last}`
     }
 
-    const isConnection = connection => socketId === connection.socketId
+    const isConnection = id => id === socketId
+
+    const getSocketUsername = id => {
+        if (!connections.length) return id
+        const data = connections.filter(connection => connection.socketId === id)[0]
+        if (!data) return id
+        const { username, socketId } = data
+        return username || (getShortId(socketId))
+    }
     
-    const renderSocketId = (id, label) => {
+    const renderSocketId = id => {
+        if (!connections.length) return null
+        const label = getSocketUsername(id)
         return (
             <ThemedText
-                color={isConnection({ socketId: id }) ? '#0f0' : theme?.colors.textDefault}
-                bold={isConnection({ socketId: id }) ? true : false}
+                color={isConnection(id) ? '#0f0' : theme?.colors.textDefault}
+                bold={isConnection(id) ? true : false}
                 size={16}
             >
                 {label}
@@ -63,15 +74,8 @@ export default () => {
                     Sockets: {connections.length}
                 </ThemedText>
 
-                {renderSocketId(socketId, user ? user.username : getShortId(socketId))}
+                {renderSocketId(socketId)}
 
-                {/* <ThemedText
-                    color={isConnection({ socketId }) ? '#0f0' : theme?.colors.textDefault}
-                    bold={isConnection({ socketId }) ? true : false}
-                    size={16}
-                >
-                    {user ? user.username : getShortId(socketId)}
-                </ThemedText> */}
             </View>
 
             <View
@@ -82,15 +86,16 @@ export default () => {
                 }}
             >
                 {connections && connections.map((connection, key) => (
-                    <ThemedText
+                    <View
                         key={key}
-                        color={isConnection(connection) ? '#0f0' : theme?.colors.textDefault}
-                        bold={isConnection(connection) ? true : false}
-                        size={16}
+                        style={{
+                            flexDirection: 'row',
+                            gap: 10,
+                        }}
                     >
-                        {/* {getShorty(name)} */}
-                        {connection.username || getShortId(connection.socketId)}
-                    </ThemedText>
+                        {renderSocketId(connection.socketId)}
+                        {connection.userId && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
+                    </View>
                 ))}
             </View>
         </View>

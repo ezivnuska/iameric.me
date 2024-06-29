@@ -117,6 +117,9 @@ export const SocketContextProvider = ({ children }) => {
 
     const onSignedInUserConfirmed = data => {
         // console.log('signed in user confirmed', data)
+        // if (user && user._id === data.userId) {
+        //     console.log('IAM', user.username)
+        // }
     }
 
     const onSignedOutUserConfirmed = data => {
@@ -128,13 +131,25 @@ export const SocketContextProvider = ({ children }) => {
     }
 
     const onUserConnected = data => {
-        // console.log('user connected', data)
+        console.log('user connected', data)
         refreshConnections()
     }
 
     const onUserDisconnected = socketId => {
         // console.log('user disconnected', socketId)
         refreshConnections()
+    }
+
+    // const updateConnection = payload => {
+    //     dispatch({ type: 'UPDATE_CONNECTION', payload })
+    // }
+
+    const onUserSignedIn = user => {
+        console.log('user signed in', user.username)
+    }
+
+    const onUserSignedOut = userId => {
+        console.log('user signed out', userId)
     }
 
     useEffect(() => {
@@ -144,9 +159,6 @@ export const SocketContextProvider = ({ children }) => {
         //     socket.connected: ${socket.connected}
         //     user: ${user}
         // `)
-        
-        if (!socket.connected) connect()
-        else if(!connected) setConnected(true)
         
         socket.on('connect',                    onConnect)
         socket.on('connect_error',              onConnectError)
@@ -159,9 +171,21 @@ export const SocketContextProvider = ({ children }) => {
         socket.on('fresh_connections',          onFreshConnections)
         socket.on('user_connected',             onUserConnected)
         socket.on('user_disconnected',          onUserDisconnected)
+        socket.on('user_signed_in',             onUserSignedIn)
+        socket.on('user_signed_out',            onUserSignedOut)
+
+        if (socket.connected) setConnected(true)
+        else connect() 
 
         dispatch({ type: 'SOCKET_LOADED' })
     }, [])
+
+    useEffect(() => {
+        // console.log('user changed', user)
+        if (user) {
+            socket.emit('user_signed_in', user)
+        }
+    }, [user])
 
     const actions = useMemo(() => ({
         signIn: async user => {
@@ -248,6 +272,9 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_CONNECTION':
+            console.log('UPDATE_CONNECTION', payload)
+            const connection = state.connections.filter(connection => connection.userId === payload)[0]
+            return state
             const { currentName, newName } = payload
             console.log(`updating connection: ${currentName}->${newName}`)
             console.log(`currently connected: ${state.connected}`)

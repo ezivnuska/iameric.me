@@ -67,11 +67,13 @@ const socketHandler = io => socket => {
 			...data,
 		}
 		addOnlineUser(socket.data)
+		refreshConnections()
 	}
 
 	const onSignedInUser = data => {
 		handleSignedInUser(data)
-		notifyClient('signed_in_user_confirmed', socket.data)
+		// notifyEveryoneElse('signed_in_user_confirmed', data)
+		// notifyClient('signed_in_user_confirmed', socket.data)
 	}
 
 	const handleUserSignedOut = userId => {
@@ -80,19 +82,20 @@ const socketHandler = io => socket => {
 		removeOnlineUser(userId)
 	}
 
-	const connect = () => {
+	const onConnected = () => {
 		socket.data.socketId = socket.id
 		console.log(`
 			< new client connected >
 			${socket.id}
 		`)
-		notifyEveryoneElse('user_connected', socket.data)
+		// notifyEveryoneElse('user_connected', socket.data)
 		refreshConnections()
 	}
 
 	const onSignedOutUser = userId => {
 		handleUserSignedOut(userId)
 		notifyClient('signed_out_user_confirmed', userId)
+		refreshConnections()
 	}
 	
 	const onRefreshConnections = async () => {
@@ -102,14 +105,29 @@ const socketHandler = io => socket => {
 	const onDisconnect = (reason, details) => {
 		console.log(`socket disconnect: ${reason}`)
 		notifyEveryoneElse('user_disconnected', socket.data.socketId)
+		refreshConnections()
 	}
 
+	const onUserSignedIn = user => {
+		console.log(`user signed in: ${user.username}`)
+		notifyEveryoneElse('user_signed_in', user)
+		refreshConnections()
+	}
+
+	const onUserSignedOut = userId => {
+		console.log(`user signed out: ${userId}`)
+		notifyEveryoneElse('user_signed_out', userId)
+		refreshConnections()
+	}
+
+	socket.on('disconnect', 			onDisconnect)
+	socket.on('refresh_connections', 	onRefreshConnections)
 	socket.on('signed_in_user', 		onSignedInUser)
 	socket.on('signed_out_user', 		onSignedOutUser)
-	socket.on('refresh_connections', 	onRefreshConnections)
-	socket.on('disconnect', 			onDisconnect)
+	socket.on('user_signed_in', 		onUserSignedIn)
+	socket.on('user_signed_out', 		onUserSignedOut)
 
-	connect()
+	onConnected()
 }
 
 module.exports = socketHandler
