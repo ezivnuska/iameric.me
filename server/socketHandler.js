@@ -110,7 +110,12 @@ const socketHandler = io => socket => {
 
 	const onUserSignedIn = user => {
 		console.log(`user signed in: ${user.username}`)
-		notifyEveryoneElse('user_signed_in', user)
+		socket.data = {
+			...socket.data,
+			username: user.username,
+			userId: user._id,
+		}
+		// notifyEveryoneElse('user_signed_in', socket.data)
 		refreshConnections()
 	}
 

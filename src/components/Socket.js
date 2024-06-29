@@ -7,7 +7,7 @@ import {
 } from '@components'
 import { useSocket } from '../SocketContext'
 import { useApp } from '@app'
-import { ThunderboltOutlined } from '@ant-design/icons'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default () => {
     const { user, theme } = useApp()
@@ -94,7 +94,7 @@ export default () => {
                         }}
                     >
                         {renderSocketId(connection.socketId)}
-                        {connection.userId && <ThunderboltOutlined style={{ marginLeft: 10, color: 'green' }} />}
+                        {connection.userId && <Icon name='flash' color='#0f0' size={16} style={{ marginLeft: 10 }} />}
                     </View>
                 ))}
             </View>

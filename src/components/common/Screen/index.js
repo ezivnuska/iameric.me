@@ -9,15 +9,15 @@ import { useApp } from '@app'
 export default ({ children, secure = true, title = null, ...props }) => {
 
     const {
-        token,
+        user,
     } = useApp()
 
     useEffect(() => {
-        if (secure && !token) {
+        if (secure && !user) {
             console.log(`not authorized for path ${props.route.path}`)
             props.navigation.navigate('Home')
         }
-    }, [token])
+    }, [user])
 
     return (
         <ScrollView
