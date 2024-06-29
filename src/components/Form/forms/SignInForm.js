@@ -18,6 +18,7 @@ export default SignInForm = () => {
     }
 
     const {
+        dims,
         setUser,
         // socket,
         // userId,
@@ -183,28 +184,24 @@ export default SignInForm = () => {
     )
     
     return focused !== null ? (
-        <View>
-            <View
-                style={{ paddingVertical: 20 }}
-            >
-                <View style={{ marginBottom: 10 }}>
-                    {renderFields()}
-                </View>
-
-                <SimpleButton
-                    label={formLoading ? 'Signing In' : 'Sign In'}
-                    // disabled={formLoading || formError}
-                    onPress={submitFormData}
-                />
-
-                {/* <SimpleButton
-                    label='Sign Up'
-                    onPress={() => setNewModal('SIGNUP')}
-                    style={{ padding: 10 }}
-                    transparent
-                /> */}
-
+        <View
+            style={{
+                paddingHorizontal: 10,
+                paddingVertical: 20,
+                width: '100%',
+                maxWidth: dims.width,
+            }}
+        >
+            <View style={{ marginBottom: 10 }}>
+                {renderFields()}
             </View>
+
+            <SimpleButton
+                label={formLoading ? 'Signing In' : 'Sign In'}
+                // disabled={formLoading || formError}
+                onPress={submitFormData}
+            />
+
         </View>
     ) : null
 }

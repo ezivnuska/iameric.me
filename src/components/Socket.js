@@ -24,11 +24,24 @@ export default () => {
         return `${prefix}${last}`
     }
 
+    const getSocketData = id => {
+        if (!connections.length) return id
+        const data = connections.filter(connection => connection.socketId === id)[0]
+        if (!data) return null
+        const { userId, username, socketId } = data
+        return data
+    }
+
     const isConnection = id => id === socketId
+
+    const isOnline = id => {
+        const data = getSocketData(id)
+        return (data && data.userId !== null)
+    }
 
     const getSocketUsername = id => {
         if (!connections.length) return id
-        const data = connections.filter(connection => connection.socketId === id)[0]
+        const data = getSocketData(id)
         if (!data) return id
         const { username, socketId } = data
         return username || (getShortId(socketId))
@@ -39,11 +52,12 @@ export default () => {
         const label = getSocketUsername(id)
         return (
             <ThemedText
-                color={isConnection(id) ? '#0f0' : theme?.colors.textDefault}
+                color={isConnection(id) ? 'tomato' : theme?.colors.textDefault}
                 bold={isConnection(id) ? true : false}
                 size={16}
             >
                 {label}
+                {isOnline(id) && <Icon name='flash' color='tomato' size={16} style={{ marginLeft: 10 }} />}
             </ThemedText>
         )
     }
@@ -90,11 +104,11 @@ export default () => {
                         key={key}
                         style={{
                             flexDirection: 'row',
+                            justifyContent: 'space-between',
                             gap: 10,
                         }}
                     >
                         {renderSocketId(connection.socketId)}
-                        {connection.userId && <Icon name='flash' color='#0f0' size={16} style={{ marginLeft: 10 }} />}
                     </View>
                 ))}
             </View>

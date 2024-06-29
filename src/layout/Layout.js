@@ -101,6 +101,7 @@ const Header = ({ height, onPress }) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 height,
+                paddingHorizontal: 10,
             }}
         >
             <Pressable
@@ -110,13 +111,29 @@ const Header = ({ height, onPress }) => {
                 <ThemedText bold style={{ fontSize: 24 }}>iameric</ThemedText>
             </Pressable>
 
-            {user ? (
-                <SimpleButton
-                    label={'Sign Out'}
-                    onPress={() => handleSignout(user._id)}
-                    style={{ flexBasis: 'auto', flexGrow: 0 }}
-                />
-            ) : null}
+            <View
+                style={{
+                    flexBasis: 'auto',
+                    flexGrow: 0,
+                }}
+            >
+                {user ? (
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 10,
+                        }}
+                    >
+                        <ThemedText>{user.username}</ThemedText>
+                        <SimpleButton
+                            label={'Sign Out'}
+                            onPress={() => handleSignout(user._id)}
+                        />
+                    </View>
+                ) : null}
+            </View>
+
             
 
         </View>

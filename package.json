@@ -13,8 +13,8 @@
     "web": "webpack serve --mode=development --config webpack.config.js",
     "deploy": "yarn run deploy:prod && yarn run deploy:server",
     "deploy:prod": "scp -r /Users/home/Projects/web/dist eric@143.244.182.101:/var/www/iameric.me/html",
-    "deploy:server": "scp /Users/home/Projects/web/server eric@143.244.182.101:/var/www/iameric.me/html",
-    "deploy:package": "scp -r /Users/home/Projects/web/package.json eric@143.244.182.101:/var/www/iameric.me/html",
+    "deploy:server": "scp -r /Users/home/Projects/web/server eric@143.244.182.101:/var/www/iameric.me/html",
+    "deploy:package": "scp /Users/home/Projects/web/package.json eric@143.244.182.101:/var/www/iameric.me/html",
     "analyze": "webpack --profile --json > stats.json"
   },
   "dependencies": {

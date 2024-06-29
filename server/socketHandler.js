@@ -72,8 +72,6 @@ const socketHandler = io => socket => {
 
 	const onSignedInUser = data => {
 		handleSignedInUser(data)
-		// notifyEveryoneElse('signed_in_user_confirmed', data)
-		// notifyClient('signed_in_user_confirmed', socket.data)
 	}
 
 	const handleUserSignedOut = userId => {
@@ -88,13 +86,11 @@ const socketHandler = io => socket => {
 			< new client connected >
 			${socket.id}
 		`)
-		// notifyEveryoneElse('user_connected', socket.data)
 		refreshConnections()
 	}
 
 	const onSignedOutUser = userId => {
 		handleUserSignedOut(userId)
-		notifyClient('signed_out_user_confirmed', userId)
 		refreshConnections()
 	}
 	
@@ -104,24 +100,19 @@ const socketHandler = io => socket => {
 
 	const onDisconnect = (reason, details) => {
 		console.log(`socket disconnect: ${reason}`)
-		// notifyEveryoneElse('user_disconnected', socket.data.socketId)
 		refreshConnections()
 	}
 
 	const onUserSignedIn = user => {
-		console.log(`user signed in: ${user.username}`)
 		socket.data = {
 			...socket.data,
 			username: user.username,
 			userId: user._id,
 		}
-		// notifyEveryoneElse('user_signed_in', socket.data)
 		refreshConnections()
 	}
 
 	const onUserSignedOut = userId => {
-		console.log(`user signed out: ${userId}`)
-		notifyEveryoneElse('user_signed_out', userId)
 		refreshConnections()
 	}
 

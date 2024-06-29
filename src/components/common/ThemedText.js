@@ -6,7 +6,7 @@ import { useApp } from '@app'
 
 export default ({ children, bold = false, color = null, size = 16, ...props }) => {
     
-    const { theme } = useApp()
+    const { dims, theme } = useApp()
     
     return (
         <Text
@@ -16,6 +16,8 @@ export default ({ children, bold = false, color = null, size = 16, ...props }) =
                     fontWeight: bold ? 700 : 400,
                     color: color || theme?.colors.textDefault,
                     lineHeight: size + 5,
+                    // width: '100%',
+                    // maxWidth: dims.width,
                 },
                 props.style,
             ]}

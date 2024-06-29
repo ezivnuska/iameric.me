@@ -9,8 +9,6 @@ import { ActivityIndicator } from 'react-native-paper'
 import { useApp } from '@app'
 import socket from './socket'
 
-// import { getItem, getStoredToken, setItem } from '@utils/storage'
-
 const initialState = {
     connected: false,
     connections: [],
@@ -49,17 +47,12 @@ export const SocketContextProvider = ({ children }) => {
         dispatch({ type: 'SET_SOCKET_ID', payload })
     }
 
-    // const removeOnlineUser = payload => {
-    //     dispatch({ type: 'REMOVE_ONLINE_USER', payload })
-    // }
-
     const setConnections = payload => {
         dispatch({ type: 'SET_CONNECTIONS', payload })
     }
 
     const connect = () => {
         if (!socket.connected) {
-            // console.log(`connecting socket - ${user ? 'user' : 'no user'}`)
             socket.connect()
         }
     }
@@ -69,7 +62,6 @@ export const SocketContextProvider = ({ children }) => {
         setSocketId(socket.id)
         if (!connected) setConnected(true)
         if (user) {
-            // console.log('user logged in; sending username to server...')
             socket.emit('signed_in_user', {
                 userId: user._id,
                 username: user.username,
@@ -115,50 +107,19 @@ export const SocketContextProvider = ({ children }) => {
         handleConnectionError(`< disconnect >\nreason: ${reason}\ndetails: ${details}`)
     }
 
-    const onSignedInUserConfirmed = data => {
-        // console.log('signed in user confirmed', data)
-        // if (user && user._id === data.userId) {
-        //     console.log('IAM', user.username)
-        // }
-    }
-
-    const onSignedOutUserConfirmed = data => {
-        // console.log('signed out user confirmed', data)
-    }
-
     const onFreshConnections = connections => {
         setConnections(connections)
     }
 
-    // const onUserConnected = data => {
-    //     console.log('user connected', data)
-    //     refreshConnections()
+    // const onUserSignedIn = user => {
+    //     console.log('user signed in', user.username)
     // }
 
-    // const onUserDisconnected = socketId => {
-    //     // console.log('user disconnected', socketId)
-    //     refreshConnections()
+    // const onUserSignedOut = userId => {
+    //     console.log('user signed out', userId)
     // }
-
-    // const updateConnection = payload => {
-    //     dispatch({ type: 'UPDATE_CONNECTION', payload })
-    // }
-
-    const onUserSignedIn = user => {
-        console.log('user signed in', user.username)
-    }
-
-    const onUserSignedOut = userId => {
-        console.log('user signed out', userId)
-    }
 
     useEffect(() => {
-        // console.log(`
-        //     ** SOCKET CONTEXT **
-        //     state.connected: ${connected}
-        //     socket.connected: ${socket.connected}
-        //     user: ${user}
-        // `)
         
         socket.on('connect',                    onConnect)
         socket.on('connect_error',              onConnectError)
@@ -166,13 +127,9 @@ export const SocketContextProvider = ({ children }) => {
         socket.on('reconnect_attempt',          onReconnectAttempt)
         socket.on('disconnect',                 onDisconnect)
 
-        socket.on('signed_in_user_confirmed',   onSignedInUserConfirmed)
-        socket.on('signed_out_user_confirmed',  onSignedOutUserConfirmed)
         socket.on('fresh_connections',          onFreshConnections)
-        // socket.on('user_connected',             onUserConnected)
-        // socket.on('user_disconnected',          onUserDisconnected)
-        socket.on('user_signed_in',             onUserSignedIn)
-        socket.on('user_signed_out',            onUserSignedOut)
+        // socket.on('user_signed_in',             onUserSignedIn)
+        // socket.on('user_signed_out',            onUserSignedOut)
 
         if (socket.connected) setConnected(true)
         else connect() 
@@ -181,7 +138,6 @@ export const SocketContextProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        // console.log('user changed', user)
         if (user) {
             socket.emit('user_signed_in', user)
         }

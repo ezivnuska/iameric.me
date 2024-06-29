@@ -23,7 +23,7 @@ export default ({ children, secure = true, title = null, ...props }) => {
         <ScrollView
             showsVerticalScrollIndicator={false}
             style={{ flex: 1 }}
-            contentContainerStyle={{ flexGrow: 1 }}
+            contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 10 }}
         >
             <View style={{ flexGrow: 1, paddingBottom: 15 }}>
                 

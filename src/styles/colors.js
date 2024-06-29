@@ -74,7 +74,7 @@ export const light = {
         inputPlaceholder: '#ccc',
         quantityBackground: '#000',
         quantityLabel: '#fff',
-        statusOn: '#0f0',
+        statusOn: 'tomato',
         statusOff: '#000',
     },
 }

@@ -5,8 +5,13 @@ import {
 import {
     SignInForm,
 } from './forms'
+import {
+    useApp,
+} from '@app'
 
 export default ({ type }) => {
+
+    const { dims } = useApp()
 
     const renderForm = type => {
         switch(type) {

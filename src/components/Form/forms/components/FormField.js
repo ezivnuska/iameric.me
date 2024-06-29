@@ -42,7 +42,7 @@ export default FormField = ({ dirty, error, value, focused, label = null, requir
                     style={{ borderBottomColor: dirty ? error ? '#f00' : '#1f1' : '#00f' }}
                 >
                     <View
-                        style={{ background: focused ? dark ? '#111' : '#eee' : theme?.colors.inputBackground }}
+                        style={{ background: focused ? dark ? '#333' : '#111' : theme?.colors.inputBackground }}
                     >
                         <TextInput
                             value={value}
@@ -50,9 +50,11 @@ export default FormField = ({ dirty, error, value, focused, label = null, requir
                             autoCorrect={false}
                             spellCheck={false}
                             style={{
-                                color: theme?.colors.inputText,
+                                paddingHorizontal: 10,
+                                color: focused ? '#fff' : theme?.colors.inputText,
                                 placeholderTextColor: theme?.colors.inputPlaceholder,
                                 background: 'transparent',
+                                fontSize: 18,
                                 lineHeight: 40,
                                 height: 40,
                                 flexWrap: 'nowrap',
