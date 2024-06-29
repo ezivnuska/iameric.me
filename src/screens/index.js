@@ -1,9 +1,9 @@
-import AnotherScreen from './AnotherScreen'
+import ContactsScreen from './ContactsScreen'
 // import FallbackScreen from './FallbackScreen'
 import HomeScreen from './HomeScreen'
 
 export {
-    AnotherScreen,
+    ContactsScreen,
     // FallbackScreen,
     HomeScreen,
 }

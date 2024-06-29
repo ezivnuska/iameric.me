@@ -1,15 +1,21 @@
 import React from 'react'
 import { View } from 'react-native'
 import {
+    Contacts,
     Screen,
     SimpleButton,
     ThemedText,
 } from '@components'
+import { useSocket } from '@socket'
 
 export default props => {
+
+    const {
+        connections,
+    } = useSocket()
     
     return (
-        <Screen title='Another Screen' {...props}>
+        <Screen title='Contacts' {...props}>
             
             <View
                 style={{
@@ -19,7 +25,7 @@ export default props => {
                 }}
             >
                 <View style={{ flexGrow: 1 }}>
-                    <ThemedText>You are here.</ThemedText>
+                    {connections && connections.length && <Contacts contacts={connections} />}
                 </View>
 
                 <View style={{ flexGrow: 0 }}>

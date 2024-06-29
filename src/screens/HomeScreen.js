@@ -35,8 +35,8 @@ export default props => {
 
                 <View style={{ flexGrow: 0 }}>
                     <SimpleButton
-                        label='Another Screen'
-                        onPress={() => props.navigation.navigate('Another')}
+                        label='Contacts'
+                        onPress={() => props.navigation.navigate('Contacts')}
                         disabled={!user}
                     />
                 </View>

@@ -14,7 +14,7 @@ export default ({ children, secure = true, title = null, ...props }) => {
 
     useEffect(() => {
         if (secure && !user) {
-            console.log(`not authorized for path ${props.route.path}`)
+            console.log(`not authorized for path ${props.route.path || props.route.name}`)
             props.navigation.navigate('Home')
         }
     }, [user])
@@ -27,17 +27,7 @@ export default ({ children, secure = true, title = null, ...props }) => {
         >
             <View style={{ flexGrow: 1, paddingBottom: 15 }}>
                 
-                {title && (
-                    <ScreenTitle title={title} />
-                    // moved into local ScreenTitle component...
-                    // <ThemedText
-                    //     bold
-                    //     size={18}
-                    //     style={{ paddingVertical: 5, marginBottom: 5 }}
-                    // >
-                    //     {title}
-                    // </ThemedText>
-                )}
+                {title && <ScreenTitle title={title} />}
                 
                 {children}
 

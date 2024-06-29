@@ -111,14 +111,6 @@ export const SocketContextProvider = ({ children }) => {
         setConnections(connections)
     }
 
-    // const onUserSignedIn = user => {
-    //     console.log('user signed in', user.username)
-    // }
-
-    // const onUserSignedOut = userId => {
-    //     console.log('user signed out', userId)
-    // }
-
     useEffect(() => {
         
         socket.on('connect',                    onConnect)
@@ -128,8 +120,6 @@ export const SocketContextProvider = ({ children }) => {
         socket.on('disconnect',                 onDisconnect)
 
         socket.on('fresh_connections',          onFreshConnections)
-        // socket.on('user_signed_in',             onUserSignedIn)
-        // socket.on('user_signed_out',            onUserSignedOut)
 
         if (socket.connected) setConnected(true)
         else connect() 
@@ -208,9 +198,7 @@ const reducer = (state, action) => {
             // console.log('CONNECTIONS', payload)
             return { ...state, connections: payload }; break
         case 'ADD_CONNECTION':
-            console.log(`adding connection: ${payload}`)
             const connectionExists = state.connections.indexOf(payload) > -1
-            console.log(`connectionExists(${payload})`, connectionExists)
             if (connectionExists) return state
             return {
                 ...state,
@@ -226,27 +214,6 @@ const reducer = (state, action) => {
                 connections: state.connections
                     .filter(user => user !== payload),
             }
-            break
-        case 'UPDATE_CONNECTION':
-            console.log('UPDATE_CONNECTION', payload)
-            const connection = state.connections.filter(connection => connection.userId === payload)[0]
-            return state
-            const { currentName, newName } = payload
-            console.log(`updating connection: ${currentName}->${newName}`)
-            console.log(`currently connected: ${state.connected}`)
-            let connections = state.connections
-            console.log(`connections before:`, state.connections)
-            const connectionIndex = state.connections.indexOf(currentName)
-            console.log(`connectionIndex: ${connectionIndex}`)
-            if (connectionIndex > -1) {
-                connections = [
-                    ...state.connections.slice(0, connectionIndex),
-                    newName,
-                    ...state.connections.slice(connectionIndex + 1),
-                ]   
-            }
-            console.log(`connections after: ${connections}`)
-            return { ...state, connections }
             break
         default:
             throw new Error()
