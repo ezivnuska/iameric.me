@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
     SignInForm,
-} from './components'
+} from './forms'
 
 export default ({ type }) => {
 

@@ -7,6 +7,7 @@ const cors = require('cors')
 const path = require('path')
 const routes = require('./routes')
 const { getNumberOfOnlineUsers } = require('./api/users')
+const socketHandler = require('./socketHandler')
 require('dotenv').config()
 
 const SESSION_SECRET = process.env.JWT_SECRET || require('./config').JWT_SECRET
@@ -60,94 +61,12 @@ const io = new Server(server, {
 
 io.engine.use(sessionMiddleware)
 
-let onlineUsers = []
+// let onlineUsers = []
 
-// Set up Socket.IO
-io.on('connection', (socket) => {
+const socketEventHandler = socketHandler(io)
 
-	const anon =  `guest-${socket.id}`
-
-	// save temporary identifier for user
-	socket.data.username = anon
-	console.log(`\n<< connection >> ${socket.data.username}\n`)
-
-	// confirm connection, relay identifier
-	socket.emit('connected', socket.data.username)
-
-	// not using this, yet
-	// socket.emit('online_users', onlineUsers)
-
-	// or this
-	// const SESSION_RELOAD_INTERVAL = 30 * 1000
-
-	socket.on('update_username', async username => {
-		socket.data.username = username
-		const sockets = await io.fetchSockets()
-		const users = sockets.map(sock => sock.data.username)
-		io.emit('connected_users', users)
-	})
-
-	socket.on('get_connected_users', async () => {
-		
-		const sockets = await io.fetchSockets()
-		const users = sockets.map(sock => sock.data.username)
-		console.log('connected_users', users)
-		io.emit('connected_users', users)
-	})
-
-	socket.on('get_online_users', () => {
-		
-		io.emit('online_users', onlineUsers)
-	})
-
-	socket.on('user_signed_in', async (userId, username) => {
-		onlineUsers.push(userId)
-		socket.data.username = username
-		socket.broadcast.emit('signed_in_user', userId, username)
-		// socket.broadcast.emit('update_connection', username)
-
-		const sockets = await io.fetchSockets()
-		const users = sockets.map(sock => sock.data.username)
-
-		io.emit('connected_users', users)
-	})
-
-	socket.on('user_signed_out', async userId => {
-		console.log('user_signed_out', userId)
-		onlineUsers = onlineUsers.filter(user => user !== userId)
-		socket.data.username = anon
-		socket.broadcast.emit('signed_out_user', socket.data.username)
-		socket.emit('set_connected', socket.data.username)
-		io.emit('online_users', onlineUsers)
-
-		const sockets = await io.fetchSockets()
-		const users = sockets.map(sock => sock.data.username)
-
-		io.emit('connected_users', users)
-	})
-
-	socket.on('disconnect', async reason => {
-		console.log(`<< disconnect >>${socket.id}\n${reason}\n>> connected_users <<\n`)
-
-		// not using, yet...
-		// onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
-		// io.emit('online_users', onlineUsers)
-
-		// const sockets = await io.fetchSockets()
-		// const users = sockets.map(sock => sock.data.username)
-		
-		// io.emit('connected_users', users)
-		// console.log('sending connected users after disconnect', socket.id)
-		
-		// socket.broadcast.emit('connected_users', users)
-		socket.broadcast.emit('disconnected_user', socket.data.username)
-
-		const sockets = await io.fetchSockets()
-		const users = sockets.map(sock => sock.data.username)
-		
-		socket.emit('connected_users', users)
-	})
-})
+// see socketHandler.js
+io.on('connection', socketEventHandler)
 
 // 404 Handler
 app.use(function (req, res, next) {

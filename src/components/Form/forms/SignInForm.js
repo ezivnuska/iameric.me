@@ -1,25 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import {
-    View,
-} from 'react-native'
-import {
-    FormField,
-} from '../'
-import {
-    SimpleButton,
-} from '@components'
+import { View } from 'react-native'
+import { FormField } from './components'
+import { SimpleButton } from '@components'
 import { setItem } from '@utils/storage'
-import {
-    isValidEmail,
-    signin,
-} from '@utils/auth'
-import { getFields } from '../../utils'
-import { validateFields } from '../../utils'
+import { isValidEmail, signin, } from '@utils/auth'
+import { getFields, validateFields } from '../utils'
 import { storeToken } from '@utils/storage'
-import { useForm } from '../../FormContext'
+import { useForm } from '../FormContext'
 import { useApp } from '@app'
+import { useSocket } from '@socket'
 
-export default () => {
+export default SignInForm = () => {
 
     const initialState = {
         email: '',
@@ -31,6 +22,10 @@ export default () => {
         // socket,
         // userId,
     } = useApp()
+
+    const {
+        signIn,
+    } = useSocket()
     const {
         clearForm,
         clearFormError,
@@ -141,6 +136,7 @@ export default () => {
             storeToken(user.token)
             setUser(user)
             clearForm()
+            signIn(user)
             // socket.emit('user_signed_in', {
             //     userId: user._id,
             //     username: user.username,

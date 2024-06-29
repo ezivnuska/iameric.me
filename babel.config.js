@@ -16,6 +16,7 @@ module.exports = {
       {
         alias: {
           '@app': './src/AppContext',
+          '@socket': './src/SocketContext',
           '@components': './src/components',
           '@images': './src/images',
           '@layout': './src/layout',

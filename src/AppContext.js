@@ -20,7 +20,7 @@ import { validateToken } from '@utils/auth'
 import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
-import { SocketContextProvider } from './SocketContext'
+// import { SocketContextProvider } from './SocketContext'
 
 // import socket from '../socket'
 
@@ -129,6 +129,7 @@ export const AppContextProvider = ({ children }) => {
 
 const reducer = (state, action) => {
     const { payload, type } = action
+    console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
         case 'APP_LOADED':
             return {

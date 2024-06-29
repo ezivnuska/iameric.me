@@ -9,10 +9,11 @@ import { useSocket } from '../SocketContext'
 import { useApp } from '@app'
 
 export default () => {
-    const { theme } = useApp()
+    const { user, theme } = useApp()
     const {
         connected,
         connections,
+        socketId,
     } = useSocket()
 
     const getShorty = name => {
@@ -20,6 +21,17 @@ export default () => {
         if (shortName.length > 14) shortName = String(shortName).substring(0, 14)
         return `${shortName}...`
     }
+
+    const isConnection = connection => {
+        if (
+            !user
+            ||
+            user.username !== connection.username
+            ||
+            socketId !== connection.socketId
+        ) return false
+    }
+
     return (
         <View
             style={{
@@ -45,6 +57,13 @@ export default () => {
                 >
                     Sockets: {connections.length}
                 </ThemedText>
+
+                <ThemedText
+                    bold
+                    size={12}
+                >
+                    {user ? user.username : socketId}
+                </ThemedText>
             </View>
 
             <View
@@ -54,15 +73,15 @@ export default () => {
                     paddingBottom: 20,
                 }}
             >
-                {connections && connections.map((name, key) => (
+                {connections && connections.map((connection, key) => (
                     <ThemedText
                         key={key}
-                        color={name === connected ? '#0f0' : theme?.colors.textDefault}
-                        bold={name === connected ? true : false}
+                        color={isConnection(connection) ? '#0f0' : theme?.colors.textDefault}
+                        bold={isConnection(connection) ? true : false}
                         size={16}
                     >
                         {/* {getShorty(name)} */}
-                        {name}
+                        {connection.username || connection.socketId}
                     </ThemedText>
                 ))}
             </View>

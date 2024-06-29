@@ -11,7 +11,7 @@ import {
     useApp,
 } from '@app'
 
-export default ({ dirty, error, value, focused, label = null, required = false, ...props }) => {
+export default FormField = ({ dirty, error, value, focused, label = null, required = false, ...props }) => {
 
     const { dark, theme } = useApp()
 

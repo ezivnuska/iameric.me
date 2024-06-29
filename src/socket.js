@@ -5,7 +5,9 @@ const path = process.env.NODE_ENV === 'production' ? undefined : `http://localho
 const socket = io(path, {
     transports: ['websocket'],
     upgrade: false,
-    multiplex: false,
+    // multiplex: false,
+    autoConnect: false,
+    reconnection: false,
 })
 
 export default socket
