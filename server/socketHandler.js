@@ -9,26 +9,21 @@ const socketHandler = io => socket => {
 
 	// save temporary identifier for user
 	// socket.data.username = socket.id
-	socket.data.socketId = socket.id
-	console.log(`
-		< new client connected >
-		${socket.id}
-	`)
 	
 	// helper methods
 
 	const notifyClient = (name, ...args) => {
-		console.log(`\n> Client Only > ${name}`, ...args)
+		// console.log(`\n> Client Only > ${name}`, ...args)
 		socket.emit(name, ...args)
 	}
 
 	const notifyEveryone = (name, ...args) => {
-		console.log(`\n> Everyone > ${name}`, ...args)
+		// console.log(`\n> Everyone > ${name}`, ...args)
 		io.emit(name, ...args)
 	}
 
 	const notifyEveryoneElse = (name, ...args) => {
-		console.log(`\n> Everyone Else > ${name}`, ...args)
+		// console.log(`\n> Everyone Else > ${name}`, ...args)
 		socket.broadcast.emit(name, ...args)
 	}
 
@@ -85,6 +80,16 @@ const socketHandler = io => socket => {
 		removeOnlineUser(userId)
 	}
 
+	const connect = () => {
+		socket.data.socketId = socket.id
+		console.log(`
+			< new client connected >
+			${socket.id}
+		`)
+		notifyEveryoneElse('user_connected', socket.data)
+		refreshConnections()
+	}
+
 	const onSignedOutUser = userId => {
 		handleUserSignedOut(userId)
 		notifyClient('signed_out_user_confirmed', userId)
@@ -94,18 +99,17 @@ const socketHandler = io => socket => {
 		refreshConnections()
 	}
 
-	// const onDisconnect = (reason, details) => {
-	// 	console.log(`
-	// 		< disconnect >\n
-	// 		reason: ${reason}\n
-	// 		details: ${details}
-	// 	`)
-	// }
+	const onDisconnect = (reason, details) => {
+		console.log(`socket disconnect: ${reason}`)
+		notifyEveryoneElse('user_disconnected', socket.data.socketId)
+	}
 
 	socket.on('signed_in_user', 		onSignedInUser)
 	socket.on('signed_out_user', 		onSignedOutUser)
 	socket.on('refresh_connections', 	onRefreshConnections)
-	// socket.on('disconnect', 			onDisconnect)
+	socket.on('disconnect', 			onDisconnect)
+
+	connect()
 }
 
 module.exports = socketHandler

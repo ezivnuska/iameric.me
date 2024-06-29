@@ -129,7 +129,7 @@ export const AppContextProvider = ({ children }) => {
 
 const reducer = (state, action) => {
     const { payload, type } = action
-    console.log(`${type}${payload ? `: ${payload}` : ``}`)
+    // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
         case 'APP_LOADED':
             return {

@@ -16,20 +16,25 @@ export default () => {
         socketId,
     } = useSocket()
 
-    const getShorty = name => {
-        let shortName = name
-        if (shortName.length > 14) shortName = String(shortName).substring(0, 14)
-        return `${shortName}...`
+    const getShortId = id => {
+        if (!id) return ''
+        const prefix = '...'
+        const last = id.substring(id.length - 3)
+        return `${prefix}${last}`
     }
 
-    const isConnection = connection => {
-        if (
-            !user
-            ||
-            user.username !== connection.username
-            ||
-            socketId !== connection.socketId
-        ) return false
+    const isConnection = connection => socketId === connection.socketId
+    
+    const renderSocketId = (id, label) => {
+        return (
+            <ThemedText
+                color={isConnection({ socketId: id }) ? '#0f0' : theme?.colors.textDefault}
+                bold={isConnection({ socketId: id }) ? true : false}
+                size={16}
+            >
+                {label}
+            </ThemedText>
+        )
     }
 
     return (
@@ -58,12 +63,15 @@ export default () => {
                     Sockets: {connections.length}
                 </ThemedText>
 
-                <ThemedText
-                    bold
-                    size={12}
+                {renderSocketId(socketId, user ? user.username : getShortId(socketId))}
+
+                {/* <ThemedText
+                    color={isConnection({ socketId }) ? '#0f0' : theme?.colors.textDefault}
+                    bold={isConnection({ socketId }) ? true : false}
+                    size={16}
                 >
-                    {user ? user.username : socketId}
-                </ThemedText>
+                    {user ? user.username : getShortId(socketId)}
+                </ThemedText> */}
             </View>
 
             <View
@@ -81,7 +89,7 @@ export default () => {
                         size={16}
                     >
                         {/* {getShorty(name)} */}
-                        {connection.username || connection.socketId}
+                        {connection.username || getShortId(connection.socketId)}
                     </ThemedText>
                 ))}
             </View>

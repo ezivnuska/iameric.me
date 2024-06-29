@@ -49,9 +49,9 @@ export const SocketContextProvider = ({ children }) => {
         dispatch({ type: 'SET_SOCKET_ID', payload })
     }
 
-    const removeOnlineUser = payload => {
-        dispatch({ type: 'REMOVE_ONLINE_USER', payload })
-    }
+    // const removeOnlineUser = payload => {
+    //     dispatch({ type: 'REMOVE_ONLINE_USER', payload })
+    // }
 
     const setConnections = payload => {
         dispatch({ type: 'SET_CONNECTIONS', payload })
@@ -59,7 +59,7 @@ export const SocketContextProvider = ({ children }) => {
 
     const connect = () => {
         if (!socket.connected) {
-            console.log(`connecting socket - ${user ? 'user' : 'no user'}`)
+            // console.log(`connecting socket - ${user ? 'user' : 'no user'}`)
             socket.connect()
         }
     }
@@ -69,7 +69,7 @@ export const SocketContextProvider = ({ children }) => {
         setSocketId(socket.id)
         if (!connected) setConnected(true)
         if (user) {
-            console.log('user logged in; sending username to server...')
+            // console.log('user logged in; sending username to server...')
             socket.emit('signed_in_user', {
                 userId: user._id,
                 username: user.username,
@@ -86,6 +86,7 @@ export const SocketContextProvider = ({ children }) => {
             // the connection was denied by the server
             // in that case, `socket.connect()` must be manually called in order to reconnect
             console.log('connection denied by server.')
+            socket.connect()
         }
     }
 
@@ -102,6 +103,10 @@ export const SocketContextProvider = ({ children }) => {
         handleConnection(`\n< reconnect >\n`)
     }
 
+    const onReconnectAttempt = () => {
+        handleConnection(`\n< reconnect_attempt >\n`)
+    }
+
     const onConnectError = err => {
         handleConnectionError(`< connect_error >\n${err}`)
     }
@@ -111,37 +116,49 @@ export const SocketContextProvider = ({ children }) => {
     }
 
     const onSignedInUserConfirmed = data => {
-        console.log('signed in user confirmed', data)
+        // console.log('signed in user confirmed', data)
     }
 
     const onSignedOutUserConfirmed = data => {
-        console.log('signed out user confirmed', data)
+        // console.log('signed out user confirmed', data)
     }
 
     const onFreshConnections = connections => {
-        console.log('fresh connections', connections)
         setConnections(connections)
     }
 
+    const onUserConnected = data => {
+        // console.log('user connected', data)
+        refreshConnections()
+    }
+
+    const onUserDisconnected = socketId => {
+        // console.log('user disconnected', socketId)
+        refreshConnections()
+    }
+
     useEffect(() => {
-        console.log(`
-            ** SOCKET CONTEXT **
-            state.connected: ${connected}
-            socket.connected: ${socket.connected}
-            user: ${user}
-        `)
+        // console.log(`
+        //     ** SOCKET CONTEXT **
+        //     state.connected: ${connected}
+        //     socket.connected: ${socket.connected}
+        //     user: ${user}
+        // `)
         
         if (!socket.connected) connect()
         else if(!connected) setConnected(true)
         
-        socket.on('connect', onConnect)
-        socket.on('connect_error', onConnectError)
-        socket.on('reconnect', onReconnect)
-        socket.on('disconnect', onDisconnect)
+        socket.on('connect',                    onConnect)
+        socket.on('connect_error',              onConnectError)
+        socket.on('reconnect',                  onReconnect)
+        socket.on('reconnect_attempt',          onReconnectAttempt)
+        socket.on('disconnect',                 onDisconnect)
 
-        socket.on('signed_in_user_confirmed', onSignedInUserConfirmed)
-        socket.on('signed_out_user_confirmed', onSignedOutUserConfirmed)
-        socket.on('fresh_connections', onFreshConnections)
+        socket.on('signed_in_user_confirmed',   onSignedInUserConfirmed)
+        socket.on('signed_out_user_confirmed',  onSignedOutUserConfirmed)
+        socket.on('fresh_connections',          onFreshConnections)
+        socket.on('user_connected',             onUserConnected)
+        socket.on('user_disconnected',          onUserDisconnected)
 
         dispatch({ type: 'SOCKET_LOADED' })
     }, [])
@@ -182,7 +199,7 @@ export const SocketContextProvider = ({ children }) => {
 
 const reducer = (state, action) => {
     const { payload, type } = action
-    console.log(`${type}${payload ? `: ${payload}` : ``}`)
+    // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
         case 'SET_SOCKET_ID':
             return { ...state, socketId: payload }; break
@@ -208,7 +225,7 @@ const reducer = (state, action) => {
         case 'SET_ONLINE_USERS':
             return { ...state, onlineUsers: payload }; break
         case 'SET_CONNECTIONS':
-            console.log('CONNECTIONS', payload)
+            // console.log('CONNECTIONS', payload)
             return { ...state, connections: payload }; break
         case 'ADD_CONNECTION':
             console.log(`adding connection: ${payload}`)
