@@ -56,26 +56,6 @@ export const SocketContextProvider = ({ children }) => {
     const setConnections = payload => {
         dispatch({ type: 'SET_CONNECTIONS', payload })
     }
-    
-    // const addConnection = payload => {
-    //     dispatch({ type: 'ADD_CONNECTION', payload })
-    // }
-
-    // const addOnlineUser = payload => {
-    //     dispatch({ type: 'ADD_ONLINE_USER', payload })
-    // }
-
-    // const updateConnection = (currentName, newName) => {
-    //     dispatch({ type: 'UPDATE_CONNECTION', payload: { currentName, new: newName } })
-    // }
-
-    // const removeConnection = payload => {
-    //     dispatch({ type: 'REMOVE_CONNECTION', payload })
-    // }
-
-    // const handleNewConnection = payload => {
-    //     addConnection(payload)
-    // }
 
     const connect = () => {
         if (!socket.connected) {
@@ -136,7 +116,6 @@ export const SocketContextProvider = ({ children }) => {
 
     const onSignedOutUserConfirmed = data => {
         console.log('signed out user confirmed', data)
-        removeOnlineUser(data)
     }
 
     const onFreshConnections = connections => {
@@ -164,123 +143,6 @@ export const SocketContextProvider = ({ children }) => {
         socket.on('signed_out_user_confirmed', onSignedOutUserConfirmed)
         socket.on('fresh_connections', onFreshConnections)
 
-        // socket.on('connect', () => {
-        
-        //     console.log(`is socket connected: ${socket.connected}`)
-        //     console.log(`state.connected: ${connected}`)
-        //     if (!connected) setConnected(true)
-        // })
-
-        // socket.on('connect_error', err => {
-        //     console.log(`socket connection error\n${err}`)
-        // })
-
-        // socket.on('reconnect', () => {
-        //     console.log('socket reconnected')
-        //     setConnected(true)
-        // })
-        // socket.on('disconnect', () => {
-        //     console.log('socket disconnected')
-        //     setConnected(false)
-        // })
-
-        // console.log(`connecting socket - ${user ? 'user' : 'no user'}`)
-        // if (!socket.connected) {
-        //     socket.connect()
-        // }
-
-        // const handleClientConfirmed = data => {
-        //     // updateConnection()
-        //     updateConnection(state.socketId, data.username)
-        //     // setConnected(true)
-        //     setSocketId(true)
-        // }
-
-        // const handleClientConnected = async (data, connections) => {
-        //     console.log('socket connected', data.username, user)
-        //     console.log('user signed in', user)
-        //     console.log('socket data.username', data.username)
-        //     console.log('socket data.socketId', data.socketId)
-            
-        //     setConnections(connections)
-            
-        //     setSocketId(data.socketId)
-        //     // setConnected(true)
-        //     socket.emit('connection_reply', user ? user.username : null)
-        // }
-
-        // // when a connected guest signs in as user
-        // const handleSignedInUser = payload => {
-
-        //     const { _id, username } = payload
-
-        //     const { oldName, newName } = username
-            
-        //     console.log(`user_signed_in: ${newName} ${state.connected}`)
-
-        //     // setConnected(newName)
-            
-        //     updateConnection(oldName, newName)
-            
-        //     addOnlineUser(_id)
-        // }
-
-        // // when a connected guest signs in as user
-        // const handleUserSignedIn = payload => {
-
-        //     const { _id, username } = payload
-
-        //     const { oldName, newName } = username
-            
-        //     console.log(`user_signed_in: ${newName} ${state.connected}`)
-
-        //     // setConnected(newName)
-            
-        //     updateConnection(oldName, newName)
-            
-        //     addOnlineUser(_id)
-        // }
-
-        // // when a user signs out
-        // const handleUserSignedOut = payload => {
-            
-        //     const { userId, username } = payload
-
-        //     const { oldName, newName } = username
-
-        //     console.log(`user_signed_out: ${oldName}`)
-
-        //     updateConnection(oldName, newName)
-
-        //     removeOnlineUser(userId)
-        // }
-
-        // const handleSignedOutUser = payload => {
-
-        //     console.log(`signed_out_user: ${payload}`)
-
-        //     updateConnection(state.connected, payload)
-            
-        //     // setConnected(payload)
-        // }
-
-
-        // const handleDisconnectedUser = payload => {
-
-        //     console.log(`disconnected_user: ${payload}`)
-
-        //     removeConnection(payload)
-        // }
-
-        // socket.on('client_confirmed',       handleClientConfirmed)
-        // socket.on('client_connected',       handleClientConnected)
-        // socket.on('new_connection',         handleNewConnection)
-        // socket.on('user_signed_in',         handleUserSignedIn)
-        // socket.on('signed_in_user',         handleSignedInUser)
-        // socket.on('user_signed_out',        handleUserSignedOut)
-        // socket.on('signed_out_user',        handleSignedOutUser)
-        // socket.on('disconnected_user',      handleDisconnectedUser)
-
         dispatch({ type: 'SOCKET_LOADED' })
     }, [])
 
@@ -290,7 +152,6 @@ export const SocketContextProvider = ({ children }) => {
                 userId: user._id,
                 username: user.username,
             })
-            // updateConnection(state.connected, user.username)
         },
         emit: async (name, ...args) => {
             socket.emit(name, ...args)
@@ -300,14 +161,7 @@ export const SocketContextProvider = ({ children }) => {
         },
         signOut: async userId => {
             socket.emit('signed_out_user', userId)
-
-            // removeOnlineUser(userId)
         },
-        // addConnection,
-        // addOnlineUser,
-        // removeConnection,
-        // removeOnlineUser,
-        // setConnected,
     }), [state, dispatch])
 
     return (
