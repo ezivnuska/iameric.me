@@ -104,7 +104,7 @@ const socketHandler = io => socket => {
 
 	const onDisconnect = (reason, details) => {
 		console.log(`socket disconnect: ${reason}`)
-		notifyEveryoneElse('user_disconnected', socket.data.socketId)
+		// notifyEveryoneElse('user_disconnected', socket.data.socketId)
 		refreshConnections()
 	}
 

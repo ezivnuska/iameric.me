@@ -130,15 +130,15 @@ export const SocketContextProvider = ({ children }) => {
         setConnections(connections)
     }
 
-    const onUserConnected = data => {
-        console.log('user connected', data)
-        refreshConnections()
-    }
+    // const onUserConnected = data => {
+    //     console.log('user connected', data)
+    //     refreshConnections()
+    // }
 
-    const onUserDisconnected = socketId => {
-        // console.log('user disconnected', socketId)
-        refreshConnections()
-    }
+    // const onUserDisconnected = socketId => {
+    //     // console.log('user disconnected', socketId)
+    //     refreshConnections()
+    // }
 
     // const updateConnection = payload => {
     //     dispatch({ type: 'UPDATE_CONNECTION', payload })
@@ -169,8 +169,8 @@ export const SocketContextProvider = ({ children }) => {
         socket.on('signed_in_user_confirmed',   onSignedInUserConfirmed)
         socket.on('signed_out_user_confirmed',  onSignedOutUserConfirmed)
         socket.on('fresh_connections',          onFreshConnections)
-        socket.on('user_connected',             onUserConnected)
-        socket.on('user_disconnected',          onUserDisconnected)
+        // socket.on('user_connected',             onUserConnected)
+        // socket.on('user_disconnected',          onUserDisconnected)
         socket.on('user_signed_in',             onUserSignedIn)
         socket.on('user_signed_out',            onUserSignedOut)
 
