@@ -7,14 +7,12 @@ import {
 } from '@components'
 import { useSocket } from '../SocketContext'
 import { useApp } from '@app'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 export default () => {
     const { user, theme } = useApp()
     const {
-        connected,
         connections,
-        socketId,
+        socket,
     } = useSocket()
 
     const getShortId = id => {
@@ -24,43 +22,7 @@ export default () => {
         return `${prefix}${last}`
     }
 
-    const getSocketData = id => {
-        if (!connections.length) return id
-        const data = connections.filter(connection => connection.socketId === id)[0]
-        if (!data) return null
-        const { userId, username, socketId } = data
-        return data
-    }
-
-    const isConnection = id => id === socketId
-
-    const isOnline = id => {
-        const data = getSocketData(id)
-        return (data && data.userId !== null)
-    }
-
-    const getSocketUsername = id => {
-        if (!connections.length) return id
-        const data = getSocketData(id)
-        if (!data) return id
-        const { username, socketId } = data
-        return username || (getShortId(socketId))
-    }
-    
-    const renderSocketId = id => {
-        if (!connections.length) return null
-        const label = getSocketUsername(id)
-        return (
-            <ThemedText
-                color={isConnection(id) ? 'tomato' : theme?.colors.textDefault}
-                bold={isConnection(id) ? true : false}
-                size={16}
-            >
-                {label}
-                {isOnline(id) && <Icon name='flash' color='tomato' size={16} style={{ marginLeft: 10 }} />}
-            </ThemedText>
-        )
-    }
+    const isConnection = id => id === socket.id
 
     return (
         <View
@@ -88,7 +50,14 @@ export default () => {
                     Sockets: {connections.length}
                 </ThemedText>
 
-                {renderSocketId(socketId)}
+                
+                <ThemedText
+                    color={isConnection(socket.id) ? 'tomato' : theme?.colors.textDefault}
+                    bold={isConnection(socket.id) ? true : false}
+                    size={16}
+                >
+                    {user ? user.username : getShortId(socket.id)}
+                </ThemedText>
 
             </View>
 
@@ -99,7 +68,7 @@ export default () => {
                     paddingBottom: 20,
                 }}
             >
-                {connections && connections.map((connection, key) => (
+                {connections && connections.map((conn, key) => (
                     <View
                         key={key}
                         style={{
@@ -108,7 +77,13 @@ export default () => {
                             gap: 10,
                         }}
                     >
-                        {renderSocketId(connection.socketId)}
+                        <ThemedText
+                            color={isConnection(conn.socketId) ? 'tomato' : theme?.colors.textDefault}
+                            bold={isConnection(conn.socketId) ? true : false}
+                            size={16}
+                        >
+                            {conn.username ? conn.username : getShortId(conn.socketId)}
+                        </ThemedText>
                     </View>
                 ))}
             </View>

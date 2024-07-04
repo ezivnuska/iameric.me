@@ -25,7 +25,7 @@ export default SignInForm = () => {
     } = useApp()
 
     const {
-        signIn,
+        notifySocket,
     } = useSocket()
     const {
         clearForm,
@@ -137,7 +137,10 @@ export default SignInForm = () => {
             storeToken(user.token)
             setUser(user)
             clearForm()
-            signIn(user)
+            notifySocket('user_signed_in', {
+                userId: user._id,
+                username: user.username,
+            })
             // socket.emit('user_signed_in', {
             //     userId: user._id,
             //     username: user.username,

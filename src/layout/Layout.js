@@ -84,13 +84,13 @@ const Header = ({ height, onPress }) => {
     } = useApp()
 
     const {
-        signOut,
+        notifySocket,
     } = useSocket()
 
     const handleSignout = async id => {
         await signout(id)
         cleanStorage()
-        signOut(id)
+        notifySocket('user_signed_out', id)
         setUser(null)
     }
 

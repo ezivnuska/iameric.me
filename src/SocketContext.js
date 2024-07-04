@@ -10,16 +10,13 @@ import { useApp } from '@app'
 import socket from './socket'
 
 const initialState = {
-    connected: false,
     connections: [],
-    onlineUsers: [],
-    socketId: null,
+    socket: null,
     socketLoaded: false,
     socketLoading: false,
     emit: () => {},
     notifySocket: () => {},
     signIn: () => {},
-    signOut: () => {},
 }
 
 export const SocketContext = createContext(initialState)
@@ -33,36 +30,18 @@ export const useSocket = () => {
 
 export const SocketContextProvider = ({ children }) => {
 
-    const { user } = useApp()
+    const { user, setUser } = useApp()
 
     const [state, dispatch] = useReducer(reducer, initialState)
-
-    const { connected } = state
-
-    const setConnected = payload => {
-        dispatch({ type: 'SET_CONNECTED', payload })
-    }
-
-    const setSocketId = payload => {
-        dispatch({ type: 'SET_SOCKET_ID', payload })
-    }
 
     const setConnections = payload => {
         dispatch({ type: 'SET_CONNECTIONS', payload })
     }
 
-    const connect = () => {
-        if (!socket.connected) {
-            socket.connect()
-        }
-    }
-
-    const handleConnection = message => {
-        console.log(message)
-        setSocketId(socket.id)
-        if (!connected) setConnected(true)
+    const handleConnection = (message = null) => {
+        if (message) console.log(message)
         if (user) {
-            socket.emit('signed_in_user', {
+            socket.emit('user_connected', {
                 userId: user._id,
                 username: user.username,
             })
@@ -82,21 +61,17 @@ export const SocketContextProvider = ({ children }) => {
         }
     }
 
-    const refreshConnections = () => {
-        socket.emit('refresh_connections')
-    }
-
+    // fired upon connection event from server
     const onConnect = () => {
-        handleConnection(`\n< connect >\n`)
-        refreshConnections()
+        handleConnection(`< connect >\n`)
     }
 
     const onReconnect = () => {
-        handleConnection(`\n< reconnect >\n`)
+        handleConnection(`< reconnect >\n`)
     }
 
     const onReconnectAttempt = () => {
-        handleConnection(`\n< reconnect_attempt >\n`)
+        handleConnection(`< reconnect_attempt >\n`)
     }
 
     const onConnectError = err => {
@@ -104,57 +79,54 @@ export const SocketContextProvider = ({ children }) => {
     }
 
     const onDisconnect = (reason, details) => {
-        handleConnectionError(`< disconnect >\nreason: ${reason}\ndetails: ${details}`)
+        handleConnectionError(`< disconnect >\nreason: ${reason}\ndetails: ${details}\n`)
     }
 
-    const onFreshConnections = connections => {
+    const onRefreshConnections = connections => {
         setConnections(connections)
+    }
+
+    const onForceSignout = socketId => {
+        if (socket.id === socketId) {
+            setUser(null)
+            socket.emit('forced_signout_complete')
+        }
     }
 
     useEffect(() => {
         
         socket.on('connect',                    onConnect)
         socket.on('connect_error',              onConnectError)
+        socket.on('force_signout',              onForceSignout)
         socket.on('reconnect',                  onReconnect)
         socket.on('reconnect_attempt',          onReconnectAttempt)
         socket.on('disconnect',                 onDisconnect)
 
-        socket.on('fresh_connections',          onFreshConnections)
+        socket.on('refresh_connections',        onRefreshConnections)
 
-        if (socket.connected) setConnected(true)
-        else connect() 
+        if (!socket.connected) socket.connect()
 
         dispatch({ type: 'SOCKET_LOADED' })
     }, [])
 
     useEffect(() => {
         if (user) {
-            socket.emit('user_signed_in', user)
+            console.log(`${user.username} signed in; sending details...`)
+            socket.emit('connection_details', user)
         }
     }, [user])
 
     const actions = useMemo(() => ({
-        signIn: async user => {
-            socket.emit('signed_in_user', {
-                userId: user._id,
-                username: user.username,
-            })
-        },
-        emit: async (name, ...args) => {
-            socket.emit(name, ...args)
-        },
         notifySocket: async (eventName, ...args) => {
             socket.emit(eventName, ...args)
         },
-        signOut: async userId => {
-            socket.emit('signed_out_user', userId)
-        },
     }), [state, dispatch])
-
+    
     return (
         <SocketContext.Provider
             value={{
                 ...state,
+                socket,
                 ...actions,
             }}
         >
@@ -171,50 +143,10 @@ const reducer = (state, action) => {
     const { payload, type } = action
     // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
-        case 'SET_SOCKET_ID':
-            return { ...state, socketId: payload }; break
         case 'SOCKET_LOADED':
             return { ...state, socketLoaded: true }; break
-        case 'SET_CONNECTED':
-            return { ...state, connected: payload }; break
-        case 'ADD_ONLINE_USER': return {
-            ...state,
-                onlineUsers: [
-                    ...state.onlineUsers,
-                    payload,
-                ],
-            }
-            break
-        case 'REMOVE_ONLINE_USER':
-            return {
-                ...state,
-                onlineUsers: state.onlineUsers
-                    .filter(user => user.userId !== payload),
-            }
-            break
-        case 'SET_ONLINE_USERS':
-            return { ...state, onlineUsers: payload }; break
         case 'SET_CONNECTIONS':
-            // console.log('CONNECTIONS', payload)
             return { ...state, connections: payload }; break
-        case 'ADD_CONNECTION':
-            const connectionExists = state.connections.indexOf(payload) > -1
-            if (connectionExists) return state
-            return {
-                ...state,
-                connections: [
-                    ...state.connections,
-                    payload,
-                ],
-            }
-            break
-        case 'REMOVE_CONNECTION':
-            return {
-                ...state,
-                connections: state.connections
-                    .filter(user => user !== payload),
-            }
-            break
         default:
             throw new Error()
     }

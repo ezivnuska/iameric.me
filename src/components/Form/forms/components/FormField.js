@@ -19,18 +19,39 @@ export default FormField = ({ dirty, error, value, focused, label = null, requir
         <View
             style={{
                 gap: 10,
+                marginBottom: 10,
             }}
         >
-            {label && (
-                <ThemedText
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                }}
+            >
+                {label && (
+                    <ThemedText
+                        style={{
+                            flexGrow: 0,
+                            color: theme?.colors.inputLabel,
+                        }}
+                    >
+                        {label}
+                    </ThemedText>
+                )}
+
+                <Text
                     style={{
-                        flexGrow: 0,
-                        color: theme?.colors.inputLabel,
+                        flexGrow: 1,
+                        color: error ? '#f00' : dirty ? '#00f' : '#ccc',
+                        marginTop: 2,
+                        fontSize: 12,
+                        lineHeight: 16,
+                        textAlign: 'right',
                     }}
                 >
-                    {label}
-                </ThemedText>
-            )}
+                    {required ? error && dirty ? error : `*required` : ' '}
+                </Text>
+            </View>
 
             <View
                 style={{
@@ -42,17 +63,17 @@ export default FormField = ({ dirty, error, value, focused, label = null, requir
                     style={{ borderBottomColor: dirty ? error ? '#f00' : '#1f1' : '#00f' }}
                 >
                     <View
-                        style={{ background: focused ? dark ? '#333' : '#111' : theme?.colors.inputBackground }}
+                        style={{ background: focused ? theme?.colors.inputBackgroundFocused : theme?.colors.inputBackground }}
                     >
                         <TextInput
                             value={value}
                             multiline={false}
                             autoCorrect={false}
+                            placeholderTextColor={focused ? theme?.colors.inputPlaceholderTextFocused : theme?.colors.inputPlaceholderText}
                             spellCheck={false}
                             style={{
-                                paddingHorizontal: 10,
-                                color: focused ? '#fff' : theme?.colors.inputText,
-                                placeholderTextColor: theme?.colors.inputPlaceholder,
+                                paddingHorizontal: 5,
+                                color: focused ? theme?.colors.inputTextFocused : theme?.colors.inputText,
                                 background: 'transparent',
                                 fontSize: 18,
                                 lineHeight: 40,
@@ -65,18 +86,6 @@ export default FormField = ({ dirty, error, value, focused, label = null, requir
                     </View>
 
                 </View>
-
-                <Text
-                    style={{
-                        color: error ? '#f00' : dirty ? '#00f' : '#ccc',
-                        marginTop: 2,
-                        fontSize: 12,
-                        lineHeight: 16,
-                        textAlign: 'right',
-                    }}
-                >
-                    {required ? error && dirty ? error : `*required` : ' '}
-                </Text>
 
             </View>
 

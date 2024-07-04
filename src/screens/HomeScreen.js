@@ -5,6 +5,7 @@ import {
     Screen,
     SimpleButton,
     Socket,
+    ThemedText,
 } from '@components'
 import { useApp } from '@app'
 
@@ -13,12 +14,17 @@ export default props => {
     // we are using the navigate method below.
 
     const { user } = useApp()
+
+    const getDisplayName = () => {
+        if (user) return user.username
+        else return 'anonymous guest'
+    }
     
     return (
         <Screen
             {...props}
             secure={false}
-            title='Home'
+            // title='Home'
         >
             <View
                 style={{
@@ -29,6 +35,13 @@ export default props => {
             >
 
                 <View style={{ flexGrow: 1 }}>
+                    <ThemedText
+                        style={{
+                            marginBottom: 10,
+                        }}
+                    >
+                        Connected as {getDisplayName()}
+                    </ThemedText>
                     <Socket />
                     {!user && <Form type='SIGN_IN' />}
                 </View>
