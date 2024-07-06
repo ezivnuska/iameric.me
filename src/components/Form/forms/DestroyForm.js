@@ -7,7 +7,10 @@ import {
 } from '@components'
 import { unsubscribe } from '@utils/auth'
 import { getFields, validateFields } from '../utils'
+import { signout } from '@utils/auth'
+import { cleanStorage } from '@utils/storage'
 import { useApp } from '@app'
+import { useSocket } from '../../../SocketContext'
 import { useForm } from '../FormContext'
 
 export default DestroyForm = () => {
@@ -41,6 +44,10 @@ export default DestroyForm = () => {
         setFormValues,
     } = useForm()
 
+    const {
+        notifySocket,
+    } = useSocket()
+
     const [initialValues, setInitialValues] = useState(null)
 
     const {
@@ -59,6 +66,13 @@ export default DestroyForm = () => {
     useEffect(() => {
         if (formReady) validateFields(formFields, validateField)
     }, [username])
+
+    const handleSignout = async id => {
+        await signout(id)
+        cleanStorage()
+        notifySocket('user_signed_out', id)
+        setUser(null)
+    }
 
     // const validateFields = () => {
     //     const keys = Object.keys(formFields)
@@ -111,6 +125,7 @@ export default DestroyForm = () => {
 
         setFormLoading(true)
 		const { id } = await unsubscribe(user._id)
+        console.log('unsubscribe id', id)
         setFormLoading(false)
 
 		if (!id) {
@@ -118,7 +133,7 @@ export default DestroyForm = () => {
             setFormError({ name: 'confirmUsername', message: 'Unsubscribe failed.' })
         } else {
             if (formError) clearFormError()
-            setUser(null)
+            handleSignout(id)
             // clearForm()
             // clearImages()
             // clearCart()
