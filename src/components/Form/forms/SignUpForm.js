@@ -11,6 +11,7 @@ import { getFields, validateFields } from '../utils'
 import { storeToken } from '@utils/storage'
 import { useApp } from '@app'
 import { useForm } from '../FormContext'
+import { useModal } from '@components/Modal/ModalContext'
 import { useSocket } from '../../../SocketContext'
 import { classes } from '@styles'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -51,6 +52,8 @@ export default SignUpForm = () => {
         dims,
         setUser,
     } = useApp()
+
+    const { closeModal } = useModal()
 
     const {
         notifySocket,
@@ -177,6 +180,7 @@ export default SignUpForm = () => {
             storeToken(user.token)
             setUser(user)
             clearForm()
+            closeModal()
             notifySocket('user_signed_in', {
                 userId: user._id,
                 username: user.username,

@@ -1,6 +1,7 @@
 import AuthView from './AuthView'
 import Contacts from './Contacts'
 import Form from './Form'
+import Modal from './Modal'
 import Notification from './Notification'
 import Screen from './common/Screen'
 import SimpleButton from './common/SimpleButton'
@@ -11,6 +12,7 @@ export {
     AuthView,
     Contacts,
     Form,
+    Modal,
     Notification,
     Screen,
     SimpleButton,

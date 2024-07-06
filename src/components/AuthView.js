@@ -6,13 +6,12 @@ import {
 } from '@components'
 
 export default () => {
-
     const [showSignUp, setShowSignUp] = useState(false)
     const authType = useMemo(() => showSignUp ? 'SIGN_UP' : 'SIGN_IN', [showSignUp])
+
     return (
-        <View>
+        <View style={{ paddingBottom: 20 }}>
             <Form type={authType} />
-            
             <SimpleButton
                 label={authType === 'SIGN_IN' ? 'Sign Up' : 'Sign In'}
                 onPress={() => setShowSignUp(!showSignUp)}

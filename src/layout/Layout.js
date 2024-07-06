@@ -5,12 +5,13 @@ import {
     View,
 } from 'react-native'
 import {
+    Modal,
     SimpleButton,
     ThemedText,
 } from '@components'
 import AppNavigation from '../AppNavigation'
 import { useApp } from '@app'
-import NotificationList from '@components/Notification'
+import { Notification } from '@components'
 import { useSocket } from '../SocketContext'
 import {
     PaperProvider,
@@ -18,6 +19,7 @@ import {
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { navigate } from '@utils/navigationRef'
+import { useModal } from '@components/Modal/ModalContext'
 
 const HEADER_HEIGHT = 50
 
@@ -41,6 +43,7 @@ export default () => {
             }}
         >
             <PaperProvider theme={theme}>
+                <Modal />
                 <View
                     style={{
                         flex: 1,
@@ -63,7 +66,7 @@ export default () => {
                             height: 'auto',
                         }}
                     >
-                        <NotificationList />
+                        <Notification />
                     </View>
 
                     <View
@@ -98,6 +101,8 @@ const Header = ({ height, onPress }) => {
         user,
         setUser,
     } = useApp()
+
+    const { setModal } = useModal()
 
     const {
         notifySocket,
@@ -152,7 +157,12 @@ const Header = ({ height, onPress }) => {
                             onPress={() => handleSignout(user._id)}
                         />
                     </View>
-                ) : null}
+                ) : (
+                    <SimpleButton
+                        label='Sign In or Sign Up'
+                        onPress={() => setModal('AUTH')}
+                    />
+                )}
             </View>
 
             

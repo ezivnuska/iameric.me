@@ -8,6 +8,7 @@ import { getFields, validateFields } from '../utils'
 import { storeToken } from '@utils/storage'
 import { useForm } from '../FormContext'
 import { useApp } from '@app'
+import { useModal } from '@components/Modal/ModalContext'
 import { useSocket } from '@socket'
 
 export default SignInForm = () => {
@@ -23,6 +24,8 @@ export default SignInForm = () => {
         // socket,
         // userId,
     } = useApp()
+
+    const { closeModal } = useModal()
 
     const {
         notifySocket,
@@ -138,6 +141,7 @@ export default SignInForm = () => {
             storeToken(user.token)
             setUser(user)
             clearForm()
+            closeModal()
             notifySocket('user_signed_in', {
                 userId: user._id,
                 username: user.username,

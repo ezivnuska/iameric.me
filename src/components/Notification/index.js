@@ -10,6 +10,5 @@ export default NotificationList
 export {
     NotificationContext,
     NotificationContextProvider,
-    NotificationList,
     useNotification,
 }

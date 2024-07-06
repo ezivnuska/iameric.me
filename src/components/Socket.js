@@ -70,7 +70,11 @@ export default () => {
     )
 
     return (
-        <View>
+        <View
+            style={{
+                marginBottom: 15,
+            }}
+        >
 
             {renderHeading()}
 
