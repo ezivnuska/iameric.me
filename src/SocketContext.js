@@ -95,7 +95,7 @@ export const SocketContextProvider = ({ children }) => {
     }
 
     const onForceSignout = socketId => {
-        console.log(`signing out previous scoket connection: ${socketId}`)
+        console.log(`signing out previous socket connection: ${socketId}`)
         if (socket.id === socketId) {
             setUser(null)
             socket.emit('forced_signout_complete', socketId)

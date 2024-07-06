@@ -5,22 +5,14 @@ import {
     Screen,
     SimpleButton,
     Socket,
-    ThemedText,
 } from '@components'
 import { useApp } from '@app'
-import { useSocket } from '../SocketContext'
 
 export default props => {
     // console.log('check out available props from navigation container...', props)
     // we are using the navigate method below.
 
     const { user } = useApp()
-    const { socket } = useSocket()
-
-    const getDisplayName = () => {
-        if (user) return user.username
-        else return `...${String(socket.id).substring(socket.id.length - 3)}`
-    }
     
     return (
         <Screen
@@ -37,15 +29,11 @@ export default props => {
             >
 
                 <View style={{ flexGrow: 1 }}>
-                    <ThemedText
-                        style={{
-                            marginBottom: 10,
-                        }}
-                    >
-                        {`Connected as ${getDisplayName()}`}
-                    </ThemedText>
+                    
                     <Socket />
+                    
                     {!user && <Form type='SIGN_IN' />}
+
                 </View>
 
                 <View style={{ flexGrow: 0 }}>
