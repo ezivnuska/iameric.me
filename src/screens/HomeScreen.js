@@ -8,16 +8,18 @@ import {
     ThemedText,
 } from '@components'
 import { useApp } from '@app'
+import { useSocket } from '../SocketContext'
 
 export default props => {
     // console.log('check out available props from navigation container...', props)
     // we are using the navigate method below.
 
     const { user } = useApp()
+    const { socket } = useSocket()
 
     const getDisplayName = () => {
         if (user) return user.username
-        else return 'anonymous guest'
+        else return `guest`
     }
     
     return (
@@ -40,7 +42,7 @@ export default props => {
                             marginBottom: 10,
                         }}
                     >
-                        Connected as {getDisplayName()}
+                        {`Connected as ${getDisplayName()} ...${String(socket.id).substring(socket.id.length - 3)}`}
                     </ThemedText>
                     <Socket />
                     {!user && <Form type='SIGN_IN' />}

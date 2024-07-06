@@ -14,7 +14,6 @@ const initialState = {
     socket: null,
     socketLoaded: false,
     socketLoading: false,
-    emit: () => {},
     notifySocket: () => {},
     signIn: () => {},
 }
@@ -34,13 +33,22 @@ export const SocketContextProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
+    const { connections } = state
+
     const setConnections = payload => {
         dispatch({ type: 'SET_CONNECTIONS', payload })
     }
+    
+    // fires when socket first connects
 
-    const handleConnection = (message = null) => {
+    const handleConnection = async (message = null) => {
+
         if (message) console.log(message)
+
         if (user) {
+
+            // notify server of user details
+            
             socket.emit('user_connected', {
                 userId: user._id,
                 username: user.username,
@@ -87,9 +95,10 @@ export const SocketContextProvider = ({ children }) => {
     }
 
     const onForceSignout = socketId => {
+        console.log(`signing out previous scoket connection: ${socketId}`)
         if (socket.id === socketId) {
             setUser(null)
-            socket.emit('forced_signout_complete')
+            socket.emit('forced_signout_complete', socketId)
         }
     }
 
@@ -126,6 +135,7 @@ export const SocketContextProvider = ({ children }) => {
         <SocketContext.Provider
             value={{
                 ...state,
+                connections,
                 socket,
                 ...actions,
             }}

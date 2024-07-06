@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     View,
 } from 'react-native'
@@ -14,6 +14,32 @@ export default () => {
         connections,
         socket,
     } = useSocket()
+
+    const numSockets = useMemo(() => {
+        let sockets = 0
+        if (connections) {
+            const connection = connections.filter(c => c.socketId === socket.id)[0]
+            if (connection && connection.sockets) {
+                sockets = connection.sockets.length
+            }
+        }
+        return sockets
+    }, [connections, socket])
+    
+    const listItems = useMemo(() => {
+		const array = []
+		return connections.filter(connection => {
+			if (!connection.username) return true
+			else {
+				const exists = array.indexOf(connection.username) > -1
+				if (exists) return false
+				else {
+					array.push(connection.username)
+					return true
+				}
+			}
+		})
+    }, [connections])
 
     const getShortId = id => {
         if (!id) return ''
@@ -59,6 +85,15 @@ export default () => {
                     {user ? user.username : getShortId(socket.id)}
                 </ThemedText>
 
+                {numSockets > 1 && (
+                    <ThemedText
+                        size={16}
+                    >
+                        {numSockets} connections
+                    </ThemedText>
+
+                )}
+
             </View>
 
             <View
@@ -68,7 +103,7 @@ export default () => {
                     paddingBottom: 20,
                 }}
             >
-                {connections && connections.map((conn, key) => (
+                {listItems && listItems.map((conn, key) => (
                     <View
                         key={key}
                         style={{
