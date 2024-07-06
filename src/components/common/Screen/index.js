@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     ScrollView,
     View,
@@ -12,12 +12,19 @@ export default ({ children, secure = true, title = null, ...props }) => {
         user,
     } = useApp()
 
+    const authorized = useMemo(() => {
+        if(secure) {
+            if (user) return true
+            else return false
+        } else return true
+    }, [secure, user])
+
     useEffect(() => {
-        if (secure && !user) {
+        if (!authorized) {
             console.log(`not authorized for path ${props.route.path || props.route.name}`)
             props.navigation.navigate('Home')
         }
-    }, [user])
+    }, [authorized])
 
     return (
         <ScrollView
@@ -29,7 +36,7 @@ export default ({ children, secure = true, title = null, ...props }) => {
                 
                 {title && <ScreenTitle title={title} />}
                 
-                {children}
+                {authorized && children}
 
             </View>
         </ScrollView>

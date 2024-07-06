@@ -10,13 +10,14 @@ import {
 } from '@components'
 import AppNavigation from '../AppNavigation'
 import { useApp } from '@app'
-import NotificationList, { useNotification } from '@components/Notification'
+import NotificationList from '@components/Notification'
 import { useSocket } from '../SocketContext'
 import {
     PaperProvider,
 } from 'react-native-paper'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
+import { navigate } from '@utils/navigationRef'
 
 const HEADER_HEIGHT = 50
 
@@ -29,10 +30,6 @@ export default () => {
         theme,
         toggleTheme,
     } = useApp()
-
-    const {
-        notification,
-    } = useNotification()
 
     return (
         <SafeAreaView
@@ -144,7 +141,12 @@ const Header = ({ height, onPress }) => {
                             gap: 10,
                         }}
                     >
-                        <ThemedText>{user.username}</ThemedText>
+                        <Pressable
+                            onPress={() => navigate('Profile')}
+                        >
+                            <ThemedText>{user.username}</ThemedText>
+                        </Pressable>
+
                         <SimpleButton
                             label={'Sign Out'}
                             onPress={() => handleSignout(user._id)}

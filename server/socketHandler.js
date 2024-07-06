@@ -97,8 +97,6 @@ const socketHandler = io => socket => {
 
 	const signOutPreviousSocketId = async userId => {
 		const prevId = await isPrevId(userId)
-		
-		console.log('prevId', prevId)
 
 		if (prevId) {
 			socket.broadcast.to(prevId).emit('force_signout', prevId)

@@ -7,6 +7,7 @@ import {
     ContactsScreen,
     // FallbackScreen,
     HomeScreen,
+    ProfileScreen,
 } from '@screens'
 import navigationRef from '@utils/navigationRef'
 
@@ -15,9 +16,8 @@ const linking = {
     config: {
         screens: {
             Home: '',
-            Contacts: {
-                path: 'contacts'
-            },
+            Contacts: 'contacts',
+            Profile: 'profile',
         },
     },
 }
@@ -45,6 +45,13 @@ const AppStackScreen = () => {
                 children={props => <ContactsScreen {...props} />}
                 // component={AnotherScreen}
                 options={{ title: 'Contacts' }}
+            />
+
+            <AppStack.Screen
+                name='Profile'
+                children={props => <ProfileScreen {...props} />}
+                // component={AnotherScreen}
+                options={{ title: 'Profile' }}
             />
 
         </AppStack.Navigator>
