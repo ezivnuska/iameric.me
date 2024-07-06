@@ -89,20 +89,25 @@ const socketHandler = io => socket => {
 		refreshConnections()
 	}
 
-	const signOutPreviousSocketId = async userId => {
-		
+	const isPrevId = async userId => {
 		const socketIds = await getUserSocketIds(userId)
 		
-		const previousId = socketIds.filter(id => id !== socket.id)[0]
+		return socketIds.filter(id => id !== socket.id)[0]
+	}
 
-		if (previousId) {
-			socket.broadcast.to(previousId).emit('force_signout', previousId)
+	const signOutPreviousSocketId = async userId => {
+		const prevId = await isPrevId(userId)
+		
+		console.log('prevId', prevId)
+
+		if (prevId) {
+			socket.broadcast.to(prevId).emit('force_signout', prevId)
 		}
 	}
 
 	const onUserConnected = async data => {
 		
-		await signOutPreviousSocketId(data.userId)
+		// await signOutPreviousSocketId(data.userId)
 		
 		socket.data = {
 			...socket.data,

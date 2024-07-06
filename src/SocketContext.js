@@ -41,16 +41,10 @@ export const SocketContextProvider = ({ children }) => {
     const {
         addNotification,
     } = useNotification()
-
-    const setConnections = payload => {
-        dispatch({ type: 'SET_CONNECTIONS', payload })
-    }
     
     // fires when socket first connects
 
     const handleConnection = async (message = null) => {
-
-        addNotification('Socket connected')
 
         if (message) console.log(message)
 
@@ -99,17 +93,15 @@ export const SocketContextProvider = ({ children }) => {
         handleConnectionError(`< disconnect >\nreason: ${reason}\ndetails: ${details}\n`)
     }
 
-    const onRefreshConnections = connections => {
-        setConnections(connections)
+    const onRefreshConnections = payload => {
+        dispatch({ type: 'SET_CONNECTIONS', payload })
     }
 
     const onForceSignout = socketId => {
-        console.log(`signing out previous socket connection: ${socketId}`)
         if (socket.id === socketId) {
-            addNotification('Signed in on another device.')
-            addNotification('Signing out.')
             setUser(null)
             socket.emit('forced_signout_complete', socketId)
+            addNotification('Switched to another device.')
         }
     }
 
@@ -131,9 +123,8 @@ export const SocketContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (user) {
-            addNotification(`${user.username} signed in`)
-            // console.log(`${user.username} signed in; sending details...`)
             socket.emit('connection_details', user)
+            addNotification(`${user.username} signed in`)
         }
     }, [user])
 
