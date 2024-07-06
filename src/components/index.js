@@ -1,3 +1,4 @@
+import AuthView from './AuthView'
 import Contacts from './Contacts'
 import Form from './Form'
 import Notification from './Notification'
@@ -7,6 +8,7 @@ import Socket from './Socket'
 import ThemedText from './common/ThemedText'
 
 export {
+    AuthView,
     Contacts,
     Form,
     Notification,

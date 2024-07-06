@@ -13,7 +13,7 @@ import {
 
 export default FormField = ({ dirty, error, value, focused, label = null, required = false, ...props }) => {
 
-    const { dark, theme } = useApp()
+    const { theme } = useApp()
 
     return (
         <View
@@ -66,7 +66,7 @@ export default FormField = ({ dirty, error, value, focused, label = null, requir
                         style={{ background: focused ? theme?.colors.inputBackgroundFocused : theme?.colors.inputBackground }}
                     >
                         <TextInput
-                            value={value}
+                            value={value || ''}
                             multiline={false}
                             autoCorrect={false}
                             placeholderTextColor={focused ? theme?.colors.inputPlaceholderTextFocused : theme?.colors.inputPlaceholderText}

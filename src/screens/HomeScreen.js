@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import {
-    Form,
+    AuthView,
     Screen,
     SimpleButton,
     Socket,
@@ -32,7 +32,7 @@ export default props => {
                     
                     <Socket />
                     
-                    {!user && <Form type='SIGN_IN' />}
+                    {!user && <AuthView />}
 
                 </View>
 

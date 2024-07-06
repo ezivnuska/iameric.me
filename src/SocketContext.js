@@ -18,7 +18,6 @@ const initialState = {
     socketLoaded: false,
     socketLoading: false,
     notifySocket: () => {},
-    signIn: () => {},
 }
 
 export const SocketContext = createContext(initialState)

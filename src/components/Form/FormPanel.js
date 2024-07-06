@@ -4,18 +4,15 @@ import {
 } from 'react-native'
 import {
     SignInForm,
+    SignUpForm,
 } from './forms'
-import {
-    useApp,
-} from '@app'
 
 export default ({ type }) => {
-
-    const { dims } = useApp()
 
     const renderForm = type => {
         switch(type) {
             case 'SIGN_IN': return <SignInForm />; break
+            case 'SIGN_UP': return <SignUpForm />; break
             default: return null
         }
     }
