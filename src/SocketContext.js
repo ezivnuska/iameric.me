@@ -8,6 +8,9 @@ import React, {
 import { ActivityIndicator } from 'react-native-paper'
 import { useApp } from '@app'
 import socket from './socket'
+import {
+    useNotification,
+} from '@components/Notification'
 
 const initialState = {
     connections: [],
@@ -35,6 +38,10 @@ export const SocketContextProvider = ({ children }) => {
 
     const { connections } = state
 
+    const {
+        addNotification,
+    } = useNotification()
+
     const setConnections = payload => {
         dispatch({ type: 'SET_CONNECTIONS', payload })
     }
@@ -42,6 +49,8 @@ export const SocketContextProvider = ({ children }) => {
     // fires when socket first connects
 
     const handleConnection = async (message = null) => {
+
+        addNotification('Socket connected')
 
         if (message) console.log(message)
 
@@ -97,6 +106,8 @@ export const SocketContextProvider = ({ children }) => {
     const onForceSignout = socketId => {
         console.log(`signing out previous socket connection: ${socketId}`)
         if (socket.id === socketId) {
+            addNotification('Signed in on another device.')
+            addNotification('Signing out.')
             setUser(null)
             socket.emit('forced_signout_complete', socketId)
         }
@@ -120,7 +131,8 @@ export const SocketContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (user) {
-            console.log(`${user.username} signed in; sending details...`)
+            addNotification(`${user.username} signed in`)
+            // console.log(`${user.username} signed in; sending details...`)
             socket.emit('connection_details', user)
         }
     }, [user])

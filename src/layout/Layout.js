@@ -10,6 +10,7 @@ import {
 } from '@components'
 import AppNavigation from '../AppNavigation'
 import { useApp } from '@app'
+import NotificationList, { useNotification } from '@components/Notification'
 import { useSocket } from '../SocketContext'
 import {
     PaperProvider,
@@ -28,6 +29,10 @@ export default () => {
         theme,
         toggleTheme,
     } = useApp()
+
+    const {
+        notification,
+    } = useNotification()
 
     return (
         <SafeAreaView
@@ -48,8 +53,22 @@ export default () => {
                         maxWidth: 400,
                         marginHorizontal: 'auto',
                         backgroundColor: theme?.colors.background,
+                        position: 'relative',
                     }}
                 >
+                    <View
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            zIndex: 100,
+                            height: 'auto',
+                        }}
+                    >
+                        <NotificationList />
+                    </View>
+
                     <View
                         style={{
                             flexBasis: HEADER_HEIGHT,

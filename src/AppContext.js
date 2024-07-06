@@ -20,7 +20,7 @@ import { validateToken } from '@utils/auth'
 import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
-// import { SocketContextProvider } from './SocketContext'
+import { useNotification } from '@components/Notification'
 
 // import socket from '../socket'
 
@@ -54,6 +54,10 @@ export const AppContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const dims = useWindowDimensions()
+
+    const {
+        addNotification,
+    } = useNotification()
 
     useEffect(() => {
 
@@ -97,17 +101,25 @@ export const AppContextProvider = ({ children }) => {
         init()
     }, [])
 
+    const signOut = async () => {
+        addNotification(`signing out ${state.user.username}`)
+        dispatch({ type: 'SET_USER', payload: null })
+    }
+
+    const setUser = async payload => {
+        dispatch({ type: 'SET_USER', payload })
+    }
+
+    const toggleTheme = async () => {
+        setItem('dark', !state.dark)
+        dispatch({ type: 'TOGGLE_THEME' })
+        addNotification(`Theme changed to ${!state.dark ? 'dark' : 'light'}`)
+    }
+
     const actions = useMemo(() => ({
-        // setToken: async payload => {
-        //     dispatch({ type: 'SET_TOKEN', payload })
-        // },
-        setUser: async payload => {
-            dispatch({ type: 'SET_USER', payload })
-        },
-        toggleTheme: async () => {
-            setItem('dark', !state.dark)
-            dispatch({ type: 'TOGGLE_THEME' })
-        },
+        signOut,
+        setUser,
+        toggleTheme,
     }), [state, dispatch])
 
     return (
