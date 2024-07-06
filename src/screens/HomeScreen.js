@@ -19,7 +19,7 @@ export default props => {
 
     const getDisplayName = () => {
         if (user) return user.username
-        else return `guest`
+        else return `...${String(socket.id).substring(socket.id.length - 3)}`
     }
     
     return (
@@ -42,7 +42,7 @@ export default props => {
                             marginBottom: 10,
                         }}
                     >
-                        {`Connected as ${getDisplayName()} ...${String(socket.id).substring(socket.id.length - 3)}`}
+                        {`Connected as ${getDisplayName()}`}
                     </ThemedText>
                     <Socket />
                     {!user && <Form type='SIGN_IN' />}
