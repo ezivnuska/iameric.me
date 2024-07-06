@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { FormField } from './components'
-import { SimpleButton } from '@components'
+import {
+    SimpleButton,
+    ThemedText,
+} from '@components'
 import { setItem } from '@utils/storage'
 import { isValidEmail, signin, } from '@utils/auth'
 import { getFields, validateFields } from '../utils'
@@ -195,7 +198,11 @@ export default SignInForm = () => {
                 maxWidth: dims.width,
             }}
         >
-            <View style={{ marginBottom: 10 }}>
+            <ThemedText bold size={20}>
+                Sign In
+            </ThemedText>
+
+            <View style={{ marginVertical: 10 }}>
                 {formReady && renderFields()}
             </View>
 

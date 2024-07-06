@@ -267,20 +267,19 @@ export default SignUpForm = () => {
                 maxWidth: dims.width,
             }}
         >
+            <ThemedText bold size={20}>
+                Sign Up
+            </ThemedText>
 
-            <View style={{ paddingVertical: 20 }}>
-
-                <View style={{ marginBottom: 10 }}>
-                    {formReady && renderFields()}
-                </View>
-
-                <SimpleButton
-                    label={formLoading ? 'Signing Up' : 'Sign Up'}
-                    // disabled={formLoading || formError}
-                    onPress={submitFormData}
-                />
-
+            <View style={{ marginVertical: 10 }}>
+                {formReady && renderFields()}
             </View>
+
+            <SimpleButton
+                label={formLoading ? 'Signing Up' : 'Sign Up'}
+                // disabled={formLoading || formError}
+                onPress={submitFormData}
+            />
             
         </View>
     ) : null

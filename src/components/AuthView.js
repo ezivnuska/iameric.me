@@ -15,6 +15,7 @@ export default () => {
             <SimpleButton
                 label={authType === 'SIGN_IN' ? 'Sign Up' : 'Sign In'}
                 onPress={() => setShowSignUp(!showSignUp)}
+                transparent
             />
         </View>
     )
