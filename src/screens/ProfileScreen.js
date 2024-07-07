@@ -18,7 +18,7 @@ export default props => {
     return (
         <Screen
             {...props}
-            title={user.username}
+            title={user ? user.username : null}
         >
 
             <View
