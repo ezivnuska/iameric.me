@@ -4,6 +4,7 @@ import { LoadingView } from '@components'
 import { ContactListItem } from './components'
 import { useApp } from '@app'
 import { useContacts } from '@contacts'
+import { useModal } from '@modal'
 
 export default () => {
 
@@ -12,6 +13,9 @@ export default () => {
         contacts,
         contactsLoading,
     } = useContacts()
+    const {
+        setModal,
+    } = useModal()
 
     if (contactsLoading) return <LoadingView loading='Loading contacts...' />
 
@@ -22,7 +26,7 @@ export default () => {
                 return (
                     <ContactListItem
                         item={contact}
-                        onPress={() => console.log(`pressed ${contact.username}`)}
+                        onPress={() => setModal('MESSAGE', contact)}
                         key={`contact-${index}`}
                     />
                 )

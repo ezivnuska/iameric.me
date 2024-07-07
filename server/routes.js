@@ -84,6 +84,12 @@ const {
     getEntries,
   } = require('./api/entries')
 
+  const {
+    createMessage,
+    deleteMessageById,
+    getMessages,
+  } = require('./api/mail')
+
 // auth
 router.post(   '/signin',                 handleSignin)
 router.post(   '/signup',                 handleSignup)
@@ -114,6 +120,11 @@ router.get(    '/vendors',                 getVendors)
 router.post(   '/entry',                   createEntry)
 router.get(    '/entries',                 getEntries)
 router.delete( '/entry/delete/:id',        deleteEntryById)
+
+// mail
+router.post(   '/message',                 createMessage)
+router.get(    '/messages',                getMessages)
+router.delete( '/message/delete/:id',      deleteMessageById)
 
 // location
 router.post(   '/location',                createOrUpdateLocation)

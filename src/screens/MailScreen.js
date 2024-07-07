@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import {
-    Forum,
+    Mail,
     Screen,
     SimpleButton,
 } from '@components'
@@ -11,7 +11,7 @@ export default props => {
     return (
         <Screen
             {...props}
-            title='Forum'
+            title='Mail'
         >
             <View
                 style={{
@@ -21,7 +21,7 @@ export default props => {
                 }}
             >
                 <View style={{ flexGrow: 1 }}>
-                    <Forum />
+                    <Mail />
                 </View>
 
                 <View style={{ flexGrow: 0 }}>

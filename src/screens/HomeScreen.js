@@ -60,6 +60,14 @@ export default props => {
                         disabled={!user}
                         style={{ flexGrow: 1 }}
                     />
+
+                    <SimpleButton
+                        label='Mail'
+                        onPress={() => props.navigation.navigate('Mail')}
+                        disabled={!user}
+                        style={{ flexGrow: 1 }}
+                    />
+                    
                 </View>
             </View>
             

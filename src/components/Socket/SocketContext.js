@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import { ActivityIndicator } from 'react-native-paper'
 import { useApp } from '@app'
+import { useMail } from '@mail'
 import { useNotification } from '@notification'
 import socket from './socket'
 
@@ -30,6 +31,7 @@ export const useSocket = () => {
 export const SocketContextProvider = ({ children }) => {
 
     const { user, setUser } = useApp()
+    const { addMessage } = useMail()
 
     const { addNotification } = useNotification()
 
@@ -108,6 +110,11 @@ export const SocketContextProvider = ({ children }) => {
         }
     }
 
+    const onNewMessage = data => {
+        console.log('new message', data)
+        addMessage(data)
+    }
+
     useEffect(() => {
         
         socket.on('connect',                    onConnect)
@@ -116,6 +123,7 @@ export const SocketContextProvider = ({ children }) => {
         socket.on('reconnect',                  onReconnect)
         socket.on('reconnect_attempt',          onReconnectAttempt)
         socket.on('disconnect',                 onDisconnect)
+        socket.on('new_message',                onNewMessage)
 
         socket.on('refresh_connections',        onRefreshConnections)
 

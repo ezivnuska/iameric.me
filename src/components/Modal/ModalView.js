@@ -3,6 +3,7 @@ import {
     AuthForm,
     DestroyForm,
     FeedbackForm,
+    MessageForm,
     useForm,
 } from '@forms'
 import { useModal } from '@modal'
@@ -22,6 +23,7 @@ export default () => {
             case 'AUTH': return <AuthForm />; break
             case 'DESTROY': return <DestroyForm />; break
             case 'FEEDBACK': return <FeedbackForm />; break
+            case 'MESSAGE': return <MessageForm data={data} />; break
             default: return null
         }
     }

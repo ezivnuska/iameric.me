@@ -8,6 +8,7 @@ import ThemedText from './common/ThemedText'
 import Cabinet from './Cabinet'
 import Contacts from './Contacts'
 import Forum from './Forum'
+import Mail from './Mail'
 import Modal from './Modal'
 import Notification from './Notification'
 import Socket from './Socket'
@@ -17,6 +18,7 @@ export {
     Contacts,
     Forum,
     LoadingView,
+    Mail,
     Modal,
     Notification,
     Screen,

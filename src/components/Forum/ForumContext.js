@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { useApp } from '@app'
 import { loadEntries } from '@utils/forum'
 
 const initialState = {
@@ -26,7 +25,6 @@ export const useForum = () => {
 
 export const ForumContextProvider = props => {
     
-    const { user } = useApp()
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const loadForum = async () => {

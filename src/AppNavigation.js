@@ -8,6 +8,7 @@ import {
     ForumScreen,
     // FallbackScreen,
     HomeScreen,
+    MailScreen,
     ProfileScreen,
 } from '@screens'
 import navigationRef from '@utils/navigation'
@@ -19,6 +20,7 @@ const linking = {
             Contacts: 'contacts',
             Forum: 'forum',
             Home: '',
+            Mail: 'mail',
             Profile: 'profile',
         },
     },
@@ -61,6 +63,13 @@ const AppStackScreen = () => {
                 children={props => <ForumScreen {...props} />}
                 // component={ForumScreen}
                 options={{ title: 'Profile' }}
+            />
+
+            <AppStack.Screen
+                name='Mail'
+                children={props => <MailScreen {...props} />}
+                // component={MailScreen}
+                options={{ title: 'Mail' }}
             />
 
         </AppStack.Navigator>

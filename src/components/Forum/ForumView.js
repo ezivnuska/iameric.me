@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { SimpleButton } from '@components'
 import { ForumList } from './components'
+import { useApp } from '@app'
 import { useForum } from '@forum'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
@@ -9,6 +10,7 @@ import { deleteEntryWithId } from '@utils/forum'
 
 export default () => {
 
+    const { user } = useApp()
     const { socket } = useSocket()
 
     const {
@@ -22,6 +24,8 @@ export default () => {
         closeModal,
         setModal,
     } = useModal()
+
+    const mail = useMemo(() => entries.filter(e => e.author._id === user._id && e.private))
 
     useEffect(() => {
         socket.on('new_entry', addEntry)

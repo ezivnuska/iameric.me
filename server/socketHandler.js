@@ -111,7 +111,6 @@ const socketHandler = io => socket => {
 	}
 
 	const onConnectionDetails = async user => {
-		console.log('connection_details', user)
 		
 		const prevId = await isPrevId(user._id)
 
@@ -124,7 +123,6 @@ const socketHandler = io => socket => {
 			username: user.username,
 			userId: user._id,
 		}
-		console.log('socket data', socket.data)
 		
 		refreshConnections()
 	}
@@ -155,6 +153,24 @@ const socketHandler = io => socket => {
 		io.emit('deleted_entry', entry)
 	}
 
+	const getSocketIdWithUserId = async userId => {
+		
+		const connections = await getDataFromConnections()
+		let socketId = null
+		connections.map(c => {
+			if (c.userId === userId) {
+				socketId = c.socketId
+			}
+		})
+		return socketId
+	}
+
+	const onPrivateMessage = async data => {
+		const { from, to, text } = data
+		const receiverSocketId = await getSocketIdWithUserId(to)
+		socket.broadcast.to(receiverSocketId).emit('new_message', data)
+	}
+
 	socket.on('disconnect', 				onDisconnect)
 	socket.on('user_connected', 			onUserConnected)
 	// socket.on('signed_out_user', 			onSignedOutUser)
@@ -163,6 +179,7 @@ const socketHandler = io => socket => {
 	socket.on('forced_signout_complete', 	onForcedSignoutComplete)
 	socket.on('new_entry', 					onNewEntry)
 	socket.on('entry_deleted', 				onEntryDeleted)
+	socket.on('private_message', 			onPrivateMessage)
 
 	onConnected()
 }

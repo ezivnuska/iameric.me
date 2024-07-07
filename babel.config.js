@@ -19,6 +19,7 @@ module.exports = {
           '@components':    './src/components',
           '@contacts':      './src/components/Contacts',
           '@forum':         './src/components/Forum',
+          '@mail':          './src/components/Mail',
           '@modal':         './src/components/Modal',
           '@notification':  './src/components/Notification',
           '@socket':        './src/components/Socket',
