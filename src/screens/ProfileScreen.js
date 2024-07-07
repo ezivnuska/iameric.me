@@ -5,14 +5,15 @@ import {
     SimpleButton,
     ThemedText,
 } from '@components'
-import { DestroyForm } from '@forms'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 
 export default props => {
     // console.log('check out available props from navigation container...', props)
     // we are using the navigate method below.
 
     const { user } = useApp()
+    const { setModal } = useModal()
     
     return (
         <Screen
@@ -33,7 +34,10 @@ export default props => {
                         {user && user.username}
                     </ThemedText>
                     
-                    <DestroyForm />
+                    <SimpleButton
+                        label='Close Account'
+                        onPress={() => setModal('DESTROY')}
+                    />
 
                 </View>
 

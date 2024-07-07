@@ -4,11 +4,14 @@ import {
     View,
 } from 'react-native'
 import { ThemedText } from '@components'
+import { useApp } from '@app'
 import { useForm } from '@forms'
 import { useModal } from '@modal'
+import Icon from 'react-native-vector-icons/Ionicons'
 
-export default FormHeader = ({ title }) => {
+export default ({ title }) => {
 
+    const { theme } = useApp()
     const { clearForm } = useForm()
     const { closeModal } = useModal()
 
@@ -22,6 +25,8 @@ export default FormHeader = ({ title }) => {
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                alignContent: 'center',
+                paddingBottom: 10,
             }}
         >
             <ThemedText bold size={20}>
@@ -29,7 +34,11 @@ export default FormHeader = ({ title }) => {
             </ThemedText>
 
             <Pressable onPress={handleClose}>
-                <ThemedText bold>X</ThemedText>
+                <Icon
+                    name={'close'}
+                    size={24}
+                    color={theme?.colors.textDefault}
+                />
             </Pressable>
         </View>
     )

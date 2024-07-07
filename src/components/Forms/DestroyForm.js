@@ -1,33 +1,32 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { FormField } from './components'
 import {
     SimpleButton,
     ThemedText,
 } from '@components'
+import {
+    FormField,
+    FormHeader,
+} from './components'
 import { unsubscribe } from '@utils/auth'
 import { getFields, validateFields } from './utils'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { useApp } from '@app'
-import { useNotification } from '@notification'
+import { useModal } from '@modal'
 import { useSocket } from '../Socket/SocketContext'
 import { useForm } from './FormContext'
 
 export default DestroyForm = () => {
 
-    const initialState = {
-        username: '',
-    }
+    const initialState = { username: '' }
 
     const {
         setUser,
         user,
     } = useApp()
 
-    const {
-        addNotification,
-    } = useNotification()
+    const { closeModal } = useModal()
 
     const {
         clearForm,
@@ -49,15 +48,12 @@ export default DestroyForm = () => {
         setFormValues,
     } = useForm()
 
-    const {
-        notifySocket,
-    } = useSocket()
+    // do we need to notify socket?
+    const { notifySocket } = useSocket()
 
     const [initialValues, setInitialValues] = useState(null)
 
-    const {
-        username,
-    } = useMemo(() => formFields, [formFields])
+    const { username } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
         const fields = getFields(initialState)
@@ -72,31 +68,32 @@ export default DestroyForm = () => {
         if (formReady) validateFields(formFields, validateField)
     }, [username])
 
-    const handleSignout = async id => {
+    const onBurned = async id => {
         await signout(id)
+        clearForm()
+        closeModal()
         cleanStorage()
         notifySocket('user_signed_out', id)
         setUser(null)
     }
-
-    // const validateFields = () => {
-    //     const keys = Object.keys(formFields)
-    //     let index = 0
-    //     while (index < keys.length) {
-    //         const key = keys[index]
-    //         const isValid = validateField(key)
-    //         if (!isValid) return
-    //         else index++
-    //     }
-    // }
 
     const validateField = name => {
         let isValid = true
         switch (name) {
             case 'username':
                 if (username !== user.username) {
-                    setFormError({ name: 'username', message: 'Incorrect username.' })
+                    setFormError({ name: 'username', message: 'Incorrect username' })
                     isValid = false
+                } else {
+                    if (
+                        user.username === 'Driver' ||
+                        user.username === 'Vendor' ||
+                        user.username === 'Customer' ||
+                        user.username === 'test'// for testing
+                    ) {
+                        setFormError({ name: 'username', message: 'Deletion not allowed' })
+                        isValid = false
+                    }
                 }
                 break
             default:
@@ -128,10 +125,6 @@ export default DestroyForm = () => {
             return
 		}
 
-        if (user.username === 'Driver' || user.username === 'Vendor' || user.username === 'Customer' || user.username === 'test') {
-            addNotification('do not delete')
-        }
-
         setFormLoading(true)
 		const { id } = await unsubscribe(user._id)
         console.log('unsubscribe id', id)
@@ -142,7 +135,7 @@ export default DestroyForm = () => {
             setFormError({ name: 'confirmUsername', message: 'Unsubscribe failed.' })
         } else {
             if (formError) clearFormError()
-            handleSignout(id)
+            onBurned(id)
 		}
     }
 
@@ -168,33 +161,25 @@ export default DestroyForm = () => {
     return (
         <View>
 
-            <View>
+            <FormHeader title='Delete Account' />
 
+            <ThemedText style={{ marginBottom: 15 }}>
+                Enter username to permanently close account and delete all data.
+            </ThemedText>
 
-                <View style={{ paddingVertical: 10 }}>
-                    <ThemedText bold>
-                        Delete Account
-                    </ThemedText>
-                </View>
+            {focused !== null ? (
+                <>
+                    <View style={{ marginBottom: 10 }}>
+                        {renderFields()}
+                    </View>
 
-                <ThemedText style={{ marginBottom: 15 }}>
-                    Enter username to permanently close account and delete all data.
-                </ThemedText>
-
-                {focused !== null ? (
-                    <>
-                        <View style={{ marginBottom: 10 }}>
-                            {renderFields()}
-                        </View>
-
-                        <SimpleButton
-                            label={formLoading ? 'Burning...' : 'Burn it all.'}
-                            // disabled={formLoading || formError}
-                            onPress={submitFormData}
-                        />
-                    </>
-                ) : null}
-            </View>
+                    <SimpleButton
+                        label={formLoading ? 'Burning...' : 'Burn it all.'}
+                        // disabled={formLoading || formError}
+                        onPress={submitFormData}
+                    />
+                </>
+            ) : null}
         </View>
     )
 }

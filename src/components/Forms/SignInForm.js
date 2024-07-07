@@ -69,21 +69,6 @@ export default SignInForm = () => {
         if (formReady) validateFields(formFields, validateField)
     }, [email, password])
 
-    // useEffect(() => {
-    //     if (userId) clearModal()
-    // }, [userId])
-
-    // const validateFields = () => {
-    //     const keys = Object.keys(formFields)
-    //     let index = 0
-    //     while (index < keys.length) {
-    //         const key = keys[index]
-    //         const isValid = validateField(key)
-    //         if (!isValid) return
-    //         else index++
-    //     }
-    // }
-
     const validateField = name => {
         let isValid = true
         switch (name) {
@@ -185,28 +170,6 @@ export default SignInForm = () => {
             />
         </>
     )
-
-    // const renderHeader = () => (
-    //     <View
-    //         style={{
-    //             flexDirection: 'row',
-    //             justifyContent: 'space-between',
-    //         }}
-    //     >
-    //         <ThemedText bold size={20}>
-    //             Sign In
-    //         </ThemedText>
-
-    //         <Pressable
-    //             onPress={() => {
-    //                 clearForm()
-    //                 closeModal()
-    //             }}
-    //         >
-    //             <ThemedText bold>X</ThemedText>
-    //         </Pressable>
-    //     </View>
-    // )
     
     return focused !== null ? (
         <View
@@ -215,7 +178,6 @@ export default SignInForm = () => {
                 maxWidth: dims.width,
             }}
         >
-            {/* {renderHeader()} */}
             <FormHeader title='Sign In' />
 
             <View style={{ marginVertical: 10 }}>
@@ -224,7 +186,7 @@ export default SignInForm = () => {
 
             <SimpleButton
                 label={formLoading ? 'Signing In' : 'Sign In'}
-                // disabled={formLoading || formError}
+                disabled={formLoading || formError}
                 onPress={submitFormData}
             />
 
