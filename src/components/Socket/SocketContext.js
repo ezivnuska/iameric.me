@@ -31,13 +31,18 @@ export const SocketContextProvider = ({ children }) => {
 
     const { user, setUser } = useApp()
 
+    const { addNotification } = useNotification()
+
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const { connections } = state
 
-    const {
-        addNotification,
-    } = useNotification()
+    useEffect(() => {
+        if (user) {
+            socket.emit('connection_details', user)
+            addNotification(`you are signed in as ${user.username}`)
+        }
+    }, [user])
     
     // fires when socket first connects
 
@@ -48,7 +53,7 @@ export const SocketContextProvider = ({ children }) => {
         if (user) {
 
             // notify server of user details
-            
+
             socket.emit('user_connected', {
                 userId: user._id,
                 username: user.username,
@@ -119,12 +124,12 @@ export const SocketContextProvider = ({ children }) => {
         dispatch({ type: 'SOCKET_LOADED' })
     }, [])
 
-    useEffect(() => {
-        if (user) {
-            socket.emit('connection_details', user)
-            addNotification(`you are signed in as ${user.username}`)
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user) {
+    //         socket.emit('connection_details', user)
+    //         addNotification(`you are signed in as ${user.username}`)
+    //     }
+    // }, [user])
 
     const actions = useMemo(() => ({
         notifySocket: async (eventName, ...args) => {

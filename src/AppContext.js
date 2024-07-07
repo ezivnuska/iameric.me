@@ -10,7 +10,7 @@ import {
     DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native'
 import {
-    ActivityIndicator,
+    // ActivityIndicator,
     MD2DarkTheme,
     MD2LightTheme,
 } from 'react-native-paper'
@@ -20,8 +20,6 @@ import { validateToken } from '@utils/auth'
 import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
-import { useNotification } from '@notification'
-import { useSocket } from '@socket'
 
 // import socket from '../socket'
 
@@ -54,10 +52,6 @@ export const AppContextProvider = ({ children }) => {
 
     const dims = useWindowDimensions()
 
-    const { addNotification } = useNotification()
-
-    const { socket } = useSocket()
-
     useEffect(() => {
 
         const init = async () => {
@@ -86,9 +80,6 @@ export const AppContextProvider = ({ children }) => {
                         type: 'SET_USER',
                         payload: user,
                     })
-                    
-                    socket.emit('connection_details', user)
-                    addNotification(`you are signed in as ${user.username}`)
 
                 } else {
                     console.log('validation failed')
@@ -130,11 +121,7 @@ export const AppContextProvider = ({ children }) => {
                 ...actions,
             }}
         >
-            {state.appLoaded
-                ? children
-                : <ActivityIndicator style={{ marginHorizontal: 'auto' }} />
-            }
-
+            {state.appLoaded && children}
         </AppContext.Provider>
     )
 }

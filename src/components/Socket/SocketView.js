@@ -15,21 +15,6 @@ export default () => {
         socket,
     } = useSocket()
     
-    const listItems = useMemo(() => {
-		const array = []
-		return connections.filter(connection => {
-			if (!connection.username) return true
-			else {
-				const exists = array.indexOf(connection.username) > -1
-				if (exists) return false
-				else {
-					array.push(connection.username)
-					return true
-				}
-			}
-		})
-    }, [connections])
-
     const getShortId = id => {
         if (!id) return ''
         const prefix = '-'
@@ -39,11 +24,8 @@ export default () => {
 
     const isConnection = id => id === socket.id
 
-
-
     const getDisplayName = () => {
-        if (user) return user.username
-        else return getShortId(socket.id)
+        return user ? user.username : getShortId(socket.id)
     }
 
     const renderHeading = () => (
@@ -51,16 +33,32 @@ export default () => {
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                paddingBottom: 10,
                 gap: 10,
             }}
         >
-            <ThemedText size={16}>
-                {`${connections.length || 'No'} connection${connections.length !== 1 ? `s` : ''}`}
-            </ThemedText>
-
-            <ThemedText style={{ marginBottom: 10 }} >
-                {`Connected as ${getDisplayName()}`}
-            </ThemedText>
+            <View
+                style={{
+                    flexGrow: 0,
+                    flexShrink: 0,
+                }}
+            >
+                <ThemedText
+                    size={16}
+                >
+                    {`${connections.length || 'No'} connection${connections.length !== 1 ? `s` : ''}`}
+                </ThemedText>
+            </View>
+            <View
+                style={{
+                    flexGrow: 1,
+                    textAlign: 'right',
+                }}
+            >
+                <ThemedText>
+                    {`Connected as ${getDisplayName()}`}
+                </ThemedText>
+            </View>
         </View>
     )
 
@@ -87,7 +85,7 @@ export default () => {
                         // paddingBottom: 20,
                     }}
                 >
-                    {listItems && listItems.map((conn, key) => (
+                    {connections.map((conn, key) => (
                         <View
                             key={key}
                             style={{

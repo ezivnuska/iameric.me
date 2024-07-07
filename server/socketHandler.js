@@ -91,16 +91,11 @@ const socketHandler = io => socket => {
 
 	const isPrevId = async userId => {
 		const socketIds = await getUserSocketIds(userId)
-		
-		return socketIds.filter(id => id !== socket.id)[0]
+		return socketIds.filter(id => id !== socket.id).length > 0
 	}
 
 	const signOutPreviousSocketId = async userId => {
-		const prevId = await isPrevId(userId)
-
-		if (prevId) {
-			socket.broadcast.to(prevId).emit('force_signout', prevId)
-		}
+		socket.broadcast.to(prevId).emit('force_signout', userId)
 	}
 
 	const onUserConnected = async data => {
@@ -116,14 +111,20 @@ const socketHandler = io => socket => {
 	}
 
 	const onConnectionDetails = async user => {
+		console.log('connection_details', user)
 		
-		await signOutPreviousSocketId(user._id)
+		const prevId = await isPrevId(user._id)
+
+		if (prevId) {
+			await signOutPreviousSocketId(user._id)
+		}
 
 		socket.data = {
 			...socket.data,
 			username: user.username,
 			userId: user._id,
 		}
+		console.log('socket data', socket.data)
 		
 		refreshConnections()
 	}
