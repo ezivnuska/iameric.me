@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import { View } from 'react-native'
+import { SimpleButton } from '@components'
 import { ForumList } from './components'
-import { useApp } from '@app'
 import { useForum } from '@forum'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
@@ -17,26 +18,35 @@ export default () => {
         setForumLoading,
     } = useForum()
 
-    const { closeModal } = useModal()
+    const {
+        closeModal,
+        setModal,
+    } = useModal()
 
-    useEffect(() => {
-        socket.on('add_entry', entry => addEntry(entry))
-        socket.on('deleted_entry', id => deleteEntry(id))
-    }, [])
+    // useEffect(() => {
+    //     socket.on('add_entry', entry => addEntry(entry))
+    //     socket.on('deleted_entry', id => deleteEntry(id))
+    // }, [])
 
     const removeEntry = async id => {
         setForumLoading(true)
         await deleteEntryWithId(id)
         setForumLoading(false)
-        socket.emit('delete_entry', id)
+        socket.emit('entry_deleted', id)
         deleteEntry(id)
         closeModal()
     }
     
     return (
-        <ForumList
-            entries={entries}
-            onDelete={removeEntry}
-        />
+        <View>
+            <SimpleButton
+                label='Add Comment'
+                onPress={() => setModal('FEEDBACK')}
+            />
+            <ForumList
+                entries={entries}
+                onDelete={removeEntry}
+            />
+        </View>
     )
 }

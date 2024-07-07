@@ -1,5 +1,6 @@
 import AuthForm from './AuthForm'
 import DestroyForm from './DestroyForm'
+import FeedbackForm from './FeedbackForm'
 import {
     FormContextProvider,
     useForm,
@@ -8,6 +9,7 @@ import {
 export {
     AuthForm,
     DestroyForm,
+    FeedbackForm,
     FormContextProvider,
     useForm,
 }

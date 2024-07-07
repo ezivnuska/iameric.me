@@ -146,12 +146,22 @@ const socketHandler = io => socket => {
 		refreshConnections()
 	}
 
+	const onNewEntry = async entry => {
+		socket.broadcast.emit('new_entry', entry)
+	}
+
+	const onEntryDeleted = async entry => {
+		socket.broadcast.emit('deleted_entry', entry)
+	}
+
 	socket.on('disconnect', 				onDisconnect)
 	socket.on('user_connected', 			onUserConnected)
 	// socket.on('signed_out_user', 			onSignedOutUser)
 	socket.on('connection_details', 		onConnectionDetails)
 	socket.on('user_signed_out', 			onUserSignedOut)
 	socket.on('forced_signout_complete', 	onForcedSignoutComplete)
+	socket.on('new_entry', 					onNewEntry)
+	socket.on('entry_deleted', 				onEntryDeleted)
 
 	onConnected()
 }

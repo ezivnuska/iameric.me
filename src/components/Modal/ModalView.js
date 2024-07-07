@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import {
     AuthForm,
     DestroyForm,
+    FeedbackForm,
     useForm,
 } from '@forms'
 import { useModal } from '@modal'
@@ -20,6 +21,7 @@ export default () => {
         switch(type) {
             case 'AUTH': return <AuthForm />; break
             case 'DESTROY': return <DestroyForm />; break
+            case 'FEEDBACK': return <FeedbackForm />; break
             default: return null
         }
     }

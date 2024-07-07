@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { FormField } from './components'
+import { FormField, FormHeader } from './components'
+import { SimpleButton } from '@components'
 import { useApp } from '@app'
 import { useForm } from '@forms'
 import { useForum } from '@forum'
 import { useModal } from '@modal'
+import { useSocket } from '@socket'
 import { getFields, validateFields } from './utils'
 import { createEntry } from '@utils/forum'
 
@@ -12,10 +14,8 @@ export default ({ data }) => {
 
     const initialState = { text: '' }
 
-    const {
-        profile,
-        socket,
-    } = useApp()
+    const { user } = useApp()
+    const { socket } = useSocket()
 
     const {
         clearForm,
@@ -37,13 +37,9 @@ export default ({ data }) => {
         setFormValues,
     } = useForm()
 
-    const {
-        addEntry,
-    } = useForum()
+    const { addEntry } = useForum()
 
-    const {
-        closeModal,
-    } = useModal()
+    const { closeModal } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -106,7 +102,7 @@ export default ({ data }) => {
             return
 		}
 
-        const { _id } = profile
+        const { _id } = user
 
         const newEntry = {
             author: _id,
@@ -147,22 +143,21 @@ export default ({ data }) => {
     )
 
     return focused !== null ? (
-        <View style={classes.centerV}>
-            <View
-                style={{ paddingVertical: 20 }}
-            >
-                <View style={{ marginBottom: 10 }}>
-                    {renderFields()}
-                </View>
+        <View
+            style={{ paddingVertical: 20 }}
+        >
+            <FormHeader title='Feedback' />
 
-                <IconButton
-                    type='primary'
-                    label={formLoading ? 'Sending' : 'Send'}
-                    disabled={formLoading || formError}
-                    onPress={submitFormData}
-                />
-
+            <View style={{ marginBottom: 10 }}>
+                {renderFields()}
             </View>
+
+            <SimpleButton
+                label={formLoading ? 'Sending' : 'Send'}
+                disabled={formLoading || formError}
+                onPress={submitFormData}
+            />
+
         </View>
     ) : null
 }

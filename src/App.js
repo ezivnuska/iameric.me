@@ -5,6 +5,7 @@ import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
 import { ModalContextProvider } from '@modal'
 import { FormContextProvider } from '@forms'
+import { ForumContextProvider } from '@forum'
 
 export default App = () => {
 
@@ -13,9 +14,11 @@ export default App = () => {
             <ModalContextProvider>
                 <NotificationContextProvider>
                     <AppContextProvider>
-                        <SocketContextProvider>
-                            <Layout />
-                        </SocketContextProvider>
+                        <ForumContextProvider>
+                            <SocketContextProvider>
+                                <Layout />
+                            </SocketContextProvider>
+                        </ForumContextProvider>
                     </AppContextProvider>
                 </NotificationContextProvider>
             </ModalContextProvider>
