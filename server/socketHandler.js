@@ -90,14 +90,15 @@ const socketHandler = io => socket => {
 	}
 
 	const getPrevId = async userId => {
-		const socketIds = await getUserSocketIds(userId)
-		return socketIds.filter(id => id !== socket.id)[0]
+		const connections = await getUserSocketIds(userId)
+		const prevId = connections.filter(id => id !== socket.id)[0]
+		return prevId
 	}
 
 	const signOutPreviousSocketId = async userId => {
 		const prevId = await getPrevId(userId)
 		if (prevId) {
-			socket.broadcast.to(prevId).emit('force_signout', userId)
+			socket.broadcast.to(prevId).emit('force_signout', prevId)
 		}
 	}
 

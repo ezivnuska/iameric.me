@@ -111,7 +111,6 @@ export const SocketContextProvider = ({ children }) => {
     }
 
     const onNewMessage = data => {
-        console.log('new message', data)
         addMessage(data)
     }
 
