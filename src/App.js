@@ -5,23 +5,21 @@ import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
 import { ModalContextProvider } from '@modal'
 import { FormContextProvider } from '@forms'
-import { ForumContextProvider } from '@forum'
+import { compose as Compose } from '@utils'
 
 export default App = () => {
 
     return (
-        <FormContextProvider>
-            <ModalContextProvider>
-                <NotificationContextProvider>
-                    <AppContextProvider>
-                        <ForumContextProvider>
-                            <SocketContextProvider>
-                                <Layout />
-                            </SocketContextProvider>
-                        </ForumContextProvider>
-                    </AppContextProvider>
-                </NotificationContextProvider>
-            </ModalContextProvider>
-        </FormContextProvider>
+        <Compose
+			components={[
+				SocketContextProvider,
+				AppContextProvider,
+                NotificationContextProvider,
+				ModalContextProvider,
+				FormContextProvider,
+			]}
+		>
+            <Layout />
+        </Compose>   
     )
 }

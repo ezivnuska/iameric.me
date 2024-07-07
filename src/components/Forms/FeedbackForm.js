@@ -115,7 +115,6 @@ export default ({ data }) => {
 
         if (!entry) console.log('Error saving entry', err)
         else {
-            console.log('>> new_entry <<', entry)
             socket.emit('new_entry', entry)
             addEntry(entry)
             clearForm()

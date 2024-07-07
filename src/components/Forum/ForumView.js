@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { SimpleButton } from '@components'
 import { ForumList } from './components'
@@ -23,6 +23,11 @@ export default () => {
         setModal,
     } = useModal()
 
+    useEffect(() => {
+        socket.on('new_entry', addEntry)
+        socket.on('deleted_entry', deleteEntry)
+    }, [])
+
     // useEffect(() => {
     //     socket.on('add_entry', entry => addEntry(entry))
     //     socket.on('deleted_entry', id => deleteEntry(id))
@@ -38,15 +43,20 @@ export default () => {
     }
     
     return (
-        <View>
+        <View
+            style={{ gap: 10 }}
+        >
+
             <SimpleButton
                 label='Add Comment'
                 onPress={() => setModal('FEEDBACK')}
             />
+
             <ForumList
                 entries={entries}
                 onDelete={removeEntry}
             />
+
         </View>
     )
 }

@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 import { ActivityIndicator } from 'react-native-paper'
 import { useApp } from '@app'
-import { useForum } from '@forum'
 import { useNotification } from '@notification'
 import socket from './socket'
 
@@ -31,7 +30,6 @@ export const useSocket = () => {
 export const SocketContextProvider = ({ children }) => {
 
     const { user, setUser } = useApp()
-    const { addEntry, deleteEntry } = useForum()
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -105,14 +103,6 @@ export const SocketContextProvider = ({ children }) => {
         }
     }
 
-    const onNewEntry = async entry => {
-        addEntry(entry)
-    }
-
-    const onDeletedEntry = async entry => {
-        deleteEntry(entry)
-    }
-
     useEffect(() => {
         
         socket.on('connect',                    onConnect)
@@ -121,8 +111,6 @@ export const SocketContextProvider = ({ children }) => {
         socket.on('reconnect',                  onReconnect)
         socket.on('reconnect_attempt',          onReconnectAttempt)
         socket.on('disconnect',                 onDisconnect)
-        socket.on('new_entry',                  onNewEntry)
-        socket.on('deleted_entry',              onDeletedEntry)
 
         socket.on('refresh_connections',        onRefreshConnections)
 

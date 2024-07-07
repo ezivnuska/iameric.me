@@ -29,22 +29,21 @@ export const ForumContextProvider = props => {
     const { user } = useApp()
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    useEffect(() => {
-        const initForum = async () => {
-            
-            if (user) {
-                dispatch({ type: 'SET_FORUM_LOADING', payload: true })
-                const entries = await loadEntries()
-                dispatch({ type: 'SET_FORUM_LOADING', payload: false })
-                
-                if (!entries) console.log('could not load entries')
-                else dispatch({ type: 'SET_ENTRIES', payload: entries })
-            }
-            
-            dispatch({ type: 'SET_FORUM_LOADED' })
-        }
+    const loadForum = async () => {
+        dispatch({ type: 'SET_FORUM_LOADING', payload: true })
+        const entries = await loadEntries()
+        dispatch({ type: 'SET_FORUM_LOADING', payload: false })
         
-        if (!state.forumLoaded) initForum()
+        if (!entries) console.log('could not load entries')
+        else dispatch({ type: 'SET_ENTRIES', payload: entries })
+
+        dispatch({ type: 'SET_FORUM_LOADED' })
+    }
+    
+    useEffect(() => {
+        if (user) {
+            loadForum()
+        }
     }, [user])
 
     const actions = useMemo(() => ({
