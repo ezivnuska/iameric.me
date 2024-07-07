@@ -90,7 +90,7 @@ export default () => {
                         contentContainerStyle={{
                             flex: 1,
                             paddingHorizontal: 10,
-                            paddingVertical: 20,
+                            paddingVertical: 10,
                             width: '100%',
                             maxWidth: 400,
                             marginHorizontal: 'auto',
