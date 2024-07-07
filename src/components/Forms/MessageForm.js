@@ -98,8 +98,7 @@ export default ({ data }) => {
             return
 		}
 
-        const { _id } = user
-        const from = _id
+        const from = user._id
         const to = data._id
 
         const newMessage = {
@@ -114,7 +113,7 @@ export default ({ data }) => {
 
         if (!message) console.log('Error saving message', err)
         else {
-            socket.emit('private_message', newMessage)
+            socket.emit('private_message', message)
             clearForm()
             closeModal()
         }

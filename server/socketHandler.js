@@ -89,13 +89,16 @@ const socketHandler = io => socket => {
 		refreshConnections()
 	}
 
-	const isPrevId = async userId => {
+	const getPrevId = async userId => {
 		const socketIds = await getUserSocketIds(userId)
-		return socketIds.filter(id => id !== socket.id).length > 0
+		return socketIds.filter(id => id !== socket.id)[0]
 	}
 
 	const signOutPreviousSocketId = async userId => {
-		socket.broadcast.to(prevId).emit('force_signout', userId)
+		const prevId = await getPrevId(userId)
+		if (prevId) {
+			socket.broadcast.to(prevId).emit('force_signout', userId)
+		}
 	}
 
 	const onUserConnected = async data => {
@@ -112,7 +115,7 @@ const socketHandler = io => socket => {
 
 	const onConnectionDetails = async user => {
 		
-		const prevId = await isPrevId(user._id)
+		const prevId = await getPrevId(user._id)
 
 		if (prevId) {
 			await signOutPreviousSocketId(user._id)
@@ -166,8 +169,7 @@ const socketHandler = io => socket => {
 	}
 
 	const onPrivateMessage = async data => {
-		const { from, to, text } = data
-		const receiverSocketId = await getSocketIdWithUserId(to)
+		const receiverSocketId = await getSocketIdWithUserId(data.to._id)
 		socket.broadcast.to(receiverSocketId).emit('new_message', data)
 	}
 

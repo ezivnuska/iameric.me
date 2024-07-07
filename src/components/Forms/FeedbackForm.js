@@ -117,12 +117,8 @@ export default ({ data }) => {
         if (!entry) console.log('Error saving entry', err)
         else {
             console.log('form submit:data:', data)
-            if (!data) {
-                socket.emit('new_entry', entry)
-                addEntry(entry)
-            } else {
-                socket.emit('private_message', _id, data._id, entry)
-            }
+            socket.emit('new_entry', entry)
+            addEntry(entry)
             clearForm()
             closeModal()
         }

@@ -22,7 +22,7 @@ export default () => {
     } = useModal()
 
     useEffect(() => {
-        socket.on('new_message', addMessage)
+        // socket.on('new_message', addMessage)
         socket.on('deleted_message', deleteMessage)
     }, [])
 

@@ -7,10 +7,21 @@ import {
 import { ThemedText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { loadMessage } from '@utils/mail'
 
 export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) => {
 
     const { theme } = useApp()
+
+    const [message, setMessage] = useState(null)
+
+    useEffect(() => {
+        const init = async () => {
+            const loadedMessage = await loadMessage(item._id)
+            setMessage(loadedMessage)
+        }
+        init()
+    }, [])
 
     const renderHeader = () => (
         <View
@@ -42,7 +53,7 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
                         bold
                         size={18}
                     >
-                        {`${item.from.username} > ${item.to.username}`}
+                        {`${message.from.username} > ${item.to.username}`}
                     </ThemedText>
 
                 </View>
@@ -69,7 +80,7 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
         </View>
     )
 
-    return (
+    return message && (
         <View
             style={{
                 paddingBottom: 5,
@@ -105,7 +116,7 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
                         paddingBottom: 10,
                     }}
                 >
-                    {item.text}
+                    {message.text}
                 </ThemedText>
 
             </View>

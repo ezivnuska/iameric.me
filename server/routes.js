@@ -87,6 +87,7 @@ const {
   const {
     createMessage,
     deleteMessageById,
+    getMessage,
     getMessages,
   } = require('./api/mail')
 
@@ -123,6 +124,7 @@ router.delete( '/entry/delete/:id',        deleteEntryById)
 
 // mail
 router.post(   '/message',                 createMessage)
+router.get(    '/message/:id',             getMessage)
 router.get(    '/messages',                getMessages)
 router.delete( '/message/delete/:id',      deleteMessageById)
 
