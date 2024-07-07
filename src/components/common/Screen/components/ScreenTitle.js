@@ -5,8 +5,9 @@ export default ({ title }) => {
     return (
         <ThemedText
             bold
-            size={18}
-            style={{ paddingVertical: 5, marginBottom: 5 }}
+            size={22}
+            color='tomato'
+            style={{ paddingBottom: 7 }}
         >
             {title}
         </ThemedText>

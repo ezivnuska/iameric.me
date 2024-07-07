@@ -4,7 +4,6 @@ import {
     Cabinet,
     Screen,
     SimpleButton,
-    ThemedText,
 } from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
@@ -17,7 +16,10 @@ export default props => {
     const { setModal } = useModal()
     
     return (
-        <Screen {...props}>
+        <Screen
+            {...props}
+            title={user.username}
+        >
 
             <View
                 style={{
@@ -28,17 +30,13 @@ export default props => {
             >
                 <View style={{ flexGrow: 1 }}>
                     
-                    <ThemedText bold size={20}>
-                        {user && user.username}
-                    </ThemedText>
-                    
-                    <Cabinet
-                        title='Account'
-                    >
+                    <Cabinet title='Account'>
+
                         <SimpleButton
                             label='Close Account'
                             onPress={() => setModal('DESTROY')}
                         />
+
                     </Cabinet>
 
                 </View>

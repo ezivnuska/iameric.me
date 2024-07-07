@@ -65,11 +65,7 @@ export default () => {
     )
 
     return (
-        <View
-            style={{
-                marginBottom: 15,
-            }}
-        >
+        <View>
 
             {renderHeading()}
 
@@ -88,7 +84,7 @@ export default () => {
                     style={{
                         gap: 7,
                         flexGrow: 1,
-                        paddingBottom: 20,
+                        // paddingBottom: 20,
                     }}
                 >
                     {listItems && listItems.map((conn, key) => (

@@ -4,7 +4,6 @@ import {
     Contacts,
     Screen,
     SimpleButton,
-    ThemedText,
 } from '@components'
 import { useSocket } from '@socket'
 
@@ -15,7 +14,10 @@ export default props => {
     } = useSocket()
     
     return (
-        <Screen title='Contacts' {...props}>
+        <Screen
+            {...props}
+            title='Contacts'
+        >
             
             <View
                 style={{

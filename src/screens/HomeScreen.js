@@ -1,6 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import {
+    Cabinet,
     Screen,
     SimpleButton,
     Socket,
@@ -17,7 +18,7 @@ export default props => {
         <Screen
             {...props}
             secure={false}
-            // title='Home'
+            title='Home'
         >
             <View
                 style={{
@@ -28,8 +29,13 @@ export default props => {
             >
 
                 <View style={{ flexGrow: 1 }}>
-                    
-                    <Socket />
+
+                    <Cabinet
+                        title='Socket Details'
+                        closed={false}
+                    >
+                        <Socket />
+                    </Cabinet>
 
                 </View>
 
