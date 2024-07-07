@@ -130,7 +130,7 @@ const handleSignin = async (req, res) => {
 
 const validateToken = async (req, res) => {
     const { token } = req.params
-    console.log('validating token...')
+    
     const decodedUser = getDecodedUser(token)
 
     if (!decodedUser) return res.status(200).json(null)
