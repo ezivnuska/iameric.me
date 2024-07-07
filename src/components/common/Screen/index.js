@@ -1,16 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
-import {
-    ScrollView,
-    View,
-} from 'react-native'
+import { View } from 'react-native'
 import { ScreenTitle } from './components'
 import { useApp } from '@app'
 
-export default ({ children, secure = true, title = null, ...props }) => {
+export default Screen = ({ children, secure = true, title = null, ...props }) => {
 
-    const {
-        user,
-    } = useApp()
+    const { user } = useApp()
 
     const authorized = useMemo(() => {
         if(secure) {
@@ -27,18 +22,12 @@ export default ({ children, secure = true, title = null, ...props }) => {
     }, [authorized])
 
     return (
-        <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ flex: 1 }}
-            contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 10 }}
-        >
-            <View style={{ flexGrow: 1, paddingBottom: 15 }}>
-                
-                {title && <ScreenTitle title={title} />}
-                
-                {authorized && children}
+        <View style={{ flexGrow: 1 }}>
+            
+            {title && <ScreenTitle title={title} />}
+            
+            {authorized && children}
 
-            </View>
-        </ScrollView>
+        </View>
     )
 }

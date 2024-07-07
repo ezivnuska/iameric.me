@@ -79,6 +79,7 @@ export const AppContextProvider = ({ children }) => {
 
                 // dispatch({ type: 'SET_TOKEN', payload})
                 const user = await validateToken(payload)
+                
                 if (user) {
                     console.log('token verified.')
                     
@@ -86,6 +87,8 @@ export const AppContextProvider = ({ children }) => {
                         type: 'SET_USER',
                         payload: user,
                     })
+                } else {
+                    console.log('validation failed')
                 }
 
                 // SO FOR NOW...
@@ -101,11 +104,6 @@ export const AppContextProvider = ({ children }) => {
         init()
     }, [])
 
-    const signOut = async () => {
-        addNotification(`signing out ${state.user.username}`)
-        dispatch({ type: 'SET_USER', payload: null })
-    }
-
     const setUser = async payload => {
         dispatch({ type: 'SET_USER', payload })
     }
@@ -113,11 +111,10 @@ export const AppContextProvider = ({ children }) => {
     const toggleTheme = async () => {
         setItem('dark', !state.dark)
         dispatch({ type: 'TOGGLE_THEME' })
-        addNotification(`Theme changed to ${!state.dark ? 'dark' : 'light'}`)
+        addNotification(`Changed to ${!state.dark ? 'dark' : 'light'} theme`)
     }
 
     const actions = useMemo(() => ({
-        signOut,
         setUser,
         toggleTheme,
     }), [state, dispatch])

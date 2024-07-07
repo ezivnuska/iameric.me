@@ -1,24 +1,24 @@
 import React from 'react'
 import { Layout } from '@layout'
-import { AppContextProvider } from './AppContext'
-import { SocketContextProvider } from './SocketContext'
-import { NotificationContextProvider } from '@components/Notification'
-import { ModalContextProvider } from '@components/Modal'
-import { FormContextProvider } from '@components/Form/FormContext'
+import { AppContextProvider } from '@app'
+import { SocketContextProvider } from '@socket'
+import { NotificationContextProvider } from '@notification'
+import { ModalContextProvider } from '@modal'
+import { FormContextProvider } from '@forms'
 
-export default () => {
+export default App = () => {
 
     return (
-        <ModalContextProvider>
-            <NotificationContextProvider>
-                <FormContextProvider>
+        <FormContextProvider>
+            <ModalContextProvider>
+                <NotificationContextProvider>
                     <AppContextProvider>
                         <SocketContextProvider>
                             <Layout />
                         </SocketContextProvider>
                     </AppContextProvider>
-                </FormContextProvider>
-            </NotificationContextProvider>
-        </ModalContextProvider>
+                </NotificationContextProvider>
+            </ModalContextProvider>
+        </FormContextProvider>
     )
 }

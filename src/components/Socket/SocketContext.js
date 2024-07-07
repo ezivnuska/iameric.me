@@ -7,10 +7,8 @@ import React, {
 } from 'react'
 import { ActivityIndicator } from 'react-native-paper'
 import { useApp } from '@app'
+import { useNotification } from '@notification'
 import socket from './socket'
-import {
-    useNotification,
-} from '@components/Notification'
 
 const initialState = {
     connections: [],
@@ -100,7 +98,8 @@ export const SocketContextProvider = ({ children }) => {
         if (socket.id === socketId) {
             setUser(null)
             socket.emit('forced_signout_complete', socketId)
-            addNotification('Switched to another device.')
+            addNotification('Signed out')
+            addNotification('Signed in on another client')
         }
     }
 
@@ -123,7 +122,7 @@ export const SocketContextProvider = ({ children }) => {
     useEffect(() => {
         if (user) {
             socket.emit('connection_details', user)
-            addNotification(`${user.username} signed in`)
+            addNotification(`you are signed in as ${user.username}`)
         }
     }, [user])
 

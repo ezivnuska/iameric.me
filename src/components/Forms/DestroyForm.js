@@ -6,12 +6,13 @@ import {
     ThemedText,
 } from '@components'
 import { unsubscribe } from '@utils/auth'
-import { getFields, validateFields } from '../utils'
+import { getFields, validateFields } from './utils'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { useApp } from '@app'
-import { useSocket } from '../../../SocketContext'
-import { useForm } from '../FormContext'
+import { useNotification } from '@notification'
+import { useSocket } from '../Socket/SocketContext'
+import { useForm } from './FormContext'
 
 export default DestroyForm = () => {
 
@@ -23,6 +24,10 @@ export default DestroyForm = () => {
         setUser,
         user,
     } = useApp()
+
+    const {
+        addNotification,
+    } = useNotification()
 
     const {
         clearForm,
@@ -123,6 +128,10 @@ export default DestroyForm = () => {
             return
 		}
 
+        if (user.username === 'Driver' || user.username === 'Vendor' || user.username === 'Customer' || user.username === 'test') {
+            addNotification('do not delete')
+        }
+
         setFormLoading(true)
 		const { id } = await unsubscribe(user._id)
         console.log('unsubscribe id', id)
@@ -134,16 +143,6 @@ export default DestroyForm = () => {
         } else {
             if (formError) clearFormError()
             handleSignout(id)
-            // clearForm()
-            // clearImages()
-            // clearCart()
-            // clearProducts()
-            // clearUser()
-            // signOut()
-            // closeModal()
-            // cleanStorage()
-            // removeContact(id)
-            // socket.emit('account_deleted', id)
 		}
     }
 

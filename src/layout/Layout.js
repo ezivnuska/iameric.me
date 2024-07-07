@@ -2,6 +2,7 @@ import React from 'react'
 import {
     Pressable,
     SafeAreaView,
+    ScrollView,
     View,
 } from 'react-native'
 import {
@@ -12,7 +13,7 @@ import {
 import AppNavigation from '../AppNavigation'
 import { useApp } from '@app'
 import { Notification } from '@components'
-import { useSocket } from '../SocketContext'
+import { useSocket } from '@socket'
 import {
     PaperProvider,
 } from 'react-native-paper'
@@ -40,34 +41,34 @@ export default () => {
                 height: dims.height,
                 width: dims.width,
                 backgroundColor: theme?.colors.background,
+                position: 'relative',
             }}
         >
+            <View
+                style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    right: 0,
+                    zIndex: 100,
+                    height: 'auto',
+                }}
+            >
+                <Notification />
+            </View>
+
             <PaperProvider theme={theme}>
+                
                 <Modal />
+                
                 <View
                     style={{
                         flex: 1,
                         height: dims.height,
                         width: '100%',
                         minWidth: 300,
-                        maxWidth: 400,
-                        marginHorizontal: 'auto',
                         backgroundColor: theme?.colors.background,
-                        position: 'relative',
                     }}
                 >
-                    <View
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            zIndex: 100,
-                            height: 'auto',
-                        }}
-                    >
-                        <Notification />
-                    </View>
 
                     <View
                         style={{
@@ -80,15 +81,23 @@ export default () => {
                             onPress={toggleTheme}
                         />
                     </View>
-
-                    <View
+                    
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
                         style={{
-                            flexBasis: 'auto',
                             flexGrow: 1,
+                         }}
+                        contentContainerStyle={{
+                            flex: 1,
+                            paddingHorizontal: 10,
+                            paddingVertical: 20,
+                            width: '100%',
+                            maxWidth: 400,
+                            marginHorizontal: 'auto',
                         }}
-                    >
+                    >    
                         <AppNavigation theme={theme} />
-                    </View>
+                    </ScrollView>
 
                 </View>
             </PaperProvider>
@@ -122,7 +131,11 @@ const Header = ({ height, onPress }) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 height,
+                width: '100%',
+                minWidth: 300,
+                maxWidth: 400,
                 paddingHorizontal: 10,
+                marginHorizontal: 'auto',
             }}
         >
             <Pressable

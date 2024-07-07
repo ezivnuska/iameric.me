@@ -56,7 +56,7 @@ export default ({ item, onPress, ...props }) => {
                 />
             )} */}
             
-            <ThemedText>{item.username || item.socketId}</ThemedText>
+            <ThemedText>{item.username || `Guest-${String(item.socketId).substring(item.socketId.length - 3)}`}</ThemedText>
 
         </Pressable>
     )

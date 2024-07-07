@@ -1,5 +1,5 @@
-import PopUpModal from './PopUpModal'
+import ModalContainer from './ModalContainer'
 
 export {
-    PopUpModal,
+    ModalContainer,
 }

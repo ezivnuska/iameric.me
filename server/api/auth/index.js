@@ -130,14 +130,14 @@ const handleSignin = async (req, res) => {
 
 const validateToken = async (req, res) => {
     const { token } = req.params
-    
+    console.log('validating token...')
     const decodedUser = getDecodedUser(token)
 
     if (!decodedUser) return res.status(200).json(null)
     
     const { _id, exp } = decodedUser
 
-    if (!_id) return res.status(200).json(null)
+    // if (!_id) return res.status(200).json(null)
     
     const user = await User
         .findOne({ _id })
@@ -147,7 +147,7 @@ const validateToken = async (req, res) => {
     if (!user) return res.status(200).json(null)
 
     const newDate = new Date(exp) - Date.now()
-    const expired = (newDate > 0)
+    const expired = newDate > 0
 
     if (expired) return res.status(200).json(null)
 

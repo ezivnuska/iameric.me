@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import {
     View,
 } from 'react-native'
 import {
     ThemedText,
 } from '@components'
-import { useSocket } from '../SocketContext'
+import { useSocket } from './SocketContext'
 import { useApp } from '@app'
 
 export default () => {
@@ -14,17 +14,6 @@ export default () => {
         connections,
         socket,
     } = useSocket()
-
-    const numSockets = useMemo(() => {
-        let sockets = 0
-        if (connections) {
-            const connection = connections.filter(c => c.socketId === socket.id)[0]
-            if (connection && connection.sockets) {
-                sockets = connection.sockets.length
-            }
-        }
-        return sockets
-    }, [connections, socket])
     
     const listItems = useMemo(() => {
 		const array = []
@@ -43,9 +32,9 @@ export default () => {
 
     const getShortId = id => {
         if (!id) return ''
-        const prefix = '...'
+        const prefix = '-'
         const last = id.substring(id.length - 3)
-        return `${prefix}${last}`
+        return `Guest${prefix}${last}`
     }
 
     const isConnection = id => id === socket.id
@@ -58,9 +47,15 @@ export default () => {
     }
 
     const renderHeading = () => (
-        <View style={{ gap: 10 }}>
+        <View
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: 10,
+            }}
+        >
             <ThemedText size={16}>
-                {`${connections.length} open socket${connections.length > 1 ? `s` : ''}`}
+                {`${connections.length || 'No'} connection${connections.length !== 1 ? `s` : ''}`}
             </ThemedText>
 
             <ThemedText style={{ marginBottom: 10 }} >

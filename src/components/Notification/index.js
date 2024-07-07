@@ -1,6 +1,5 @@
 import NotificationList from './NotificationList'
 import {
-    NotificationContext,
     NotificationContextProvider,
     useNotification,
 } from './NotificationContext'
@@ -8,7 +7,6 @@ import {
 export default NotificationList
 
 export {
-    NotificationContext,
     NotificationContextProvider,
     useNotification,
 }

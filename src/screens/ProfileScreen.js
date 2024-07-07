@@ -1,11 +1,11 @@
 import React from 'react'
 import { View } from 'react-native'
 import {
-    Form,
     Screen,
     SimpleButton,
     ThemedText,
 } from '@components'
+import { DestroyForm } from '@forms'
 import { useApp } from '@app'
 
 export default props => {
@@ -33,7 +33,7 @@ export default props => {
                         {user && user.username}
                     </ThemedText>
                     
-                    <Form type='DESTROY' />
+                    <DestroyForm />
 
                 </View>
 

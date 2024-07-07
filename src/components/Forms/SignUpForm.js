@@ -5,15 +5,13 @@ import {
     SimpleButton,
     ThemedText,
 } from '@components'
-import { setItem } from '@utils/storage'
+import { setItem, storeToken } from '@utils/storage'
 import { isValidEmail, signup } from '@utils/auth'
-import { getFields, validateFields } from '../utils'
-import { storeToken } from '@utils/storage'
+import { getFields, validateFields } from './utils'
 import { useApp } from '@app'
-import { useForm } from '../FormContext'
-import { useModal } from '@components/Modal/ModalContext'
-import { useSocket } from '../../../SocketContext'
-import { classes } from '@styles'
+import { useForm } from './FormContext'
+import { useModal } from '@modal'
+import { useSocket } from '@socket'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const PublicCheckbox = ({ checked, setChecked }) => {

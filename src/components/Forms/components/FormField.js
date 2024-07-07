@@ -4,12 +4,8 @@ import {
     TextInput,
     View,
 } from 'react-native'
-import {
-    ThemedText,
-} from '@components'
-import {
-    useApp,
-} from '@app'
+import { ThemedText } from '@components'
+import { useApp } from '@app'
 
 export default FormField = ({ dirty, error, value, focused, label = null, required = false, ...props }) => {
 
@@ -18,7 +14,7 @@ export default FormField = ({ dirty, error, value, focused, label = null, requir
     return (
         <View
             style={{
-                gap: 10,
+                gap: 5,
                 marginBottom: 10,
             }}
         >

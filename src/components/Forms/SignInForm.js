@@ -1,17 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { FormField } from './components'
-import {
-    SimpleButton,
-    ThemedText,
-} from '@components'
-import { setItem } from '@utils/storage'
+import { FormField, FormHeader } from './components'
+import { SimpleButton } from '@components'
+import { setItem, storeToken } from '@utils/storage'
 import { isValidEmail, signin, } from '@utils/auth'
-import { getFields, validateFields } from '../utils'
-import { storeToken } from '@utils/storage'
-import { useForm } from '../FormContext'
+import { getFields, validateFields } from './utils'
+import { useForm } from './FormContext'
 import { useApp } from '@app'
-import { useModal } from '@components/Modal/ModalContext'
+import { useModal } from '@modal'
 import { useSocket } from '@socket'
 
 export default SignInForm = () => {
@@ -189,18 +185,38 @@ export default SignInForm = () => {
             />
         </>
     )
+
+    // const renderHeader = () => (
+    //     <View
+    //         style={{
+    //             flexDirection: 'row',
+    //             justifyContent: 'space-between',
+    //         }}
+    //     >
+    //         <ThemedText bold size={20}>
+    //             Sign In
+    //         </ThemedText>
+
+    //         <Pressable
+    //             onPress={() => {
+    //                 clearForm()
+    //                 closeModal()
+    //             }}
+    //         >
+    //             <ThemedText bold>X</ThemedText>
+    //         </Pressable>
+    //     </View>
+    // )
     
     return focused !== null ? (
         <View
             style={{
-                paddingVertical: 20,
                 width: '100%',
                 maxWidth: dims.width,
             }}
         >
-            <ThemedText bold size={20}>
-                Sign In
-            </ThemedText>
+            {/* {renderHeader()} */}
+            <FormHeader title='Sign In' />
 
             <View style={{ marginVertical: 10 }}>
                 {formReady && renderFields()}
