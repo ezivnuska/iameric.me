@@ -41,10 +41,10 @@ export const ForumContextProvider = props => {
     }
     
     useEffect(() => {
-        if (user) {
+        // if (user) {
             loadForum()
-        }
-    }, [user])
+        // }
+    }, [])
 
     const actions = useMemo(() => ({
         addEntry: async payload => {

@@ -20,7 +20,8 @@ import { validateToken } from '@utils/auth'
 import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
-import { useNotification } from '@components/Notification'
+import { useNotification } from '@notification'
+import { useSocket } from '@socket'
 
 // import socket from '../socket'
 
@@ -34,9 +35,7 @@ const initialState = {
     dark: false,
     appLoaded: false,
     theme: CombinedDefaultTheme,
-    // token: null,
     user: null,
-    // setToken: () => {},
     setUser: () => {},
     toggleTheme: () => {},
 }
@@ -55,9 +54,9 @@ export const AppContextProvider = ({ children }) => {
 
     const dims = useWindowDimensions()
 
-    const {
-        addNotification,
-    } = useNotification()
+    const { addNotification } = useNotification()
+
+    const { socket } = useSocket()
 
     useEffect(() => {
 
@@ -68,9 +67,9 @@ export const AppContextProvider = ({ children }) => {
             if (storedValue && storedValue === 'true') dispatch({ type: 'TOGGLE_THEME' })
             else await setItem('dark', false)
 
-            const payload = await getStoredToken()
+            const token = await getStoredToken()
             
-            if (payload) {
+            if (token) {
                 console.log('found token.')
 
                 // WE DON'T NEED TO VALIDATE TOKEN, YET
@@ -78,7 +77,7 @@ export const AppContextProvider = ({ children }) => {
                 // FOR NOW WE'RE JUST FAKING IT
 
                 // dispatch({ type: 'SET_TOKEN', payload})
-                const user = await validateToken(payload)
+                const user = await validateToken(token)
                 
                 if (user) {
                     console.log('token verified.')
@@ -87,6 +86,10 @@ export const AppContextProvider = ({ children }) => {
                         type: 'SET_USER',
                         payload: user,
                     })
+                    
+                    socket.emit('connection_details', user)
+                    addNotification(`you are signed in as ${user.username}`)
+
                 } else {
                     console.log('validation failed')
                 }

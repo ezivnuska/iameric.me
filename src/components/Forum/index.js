@@ -1,8 +1,8 @@
 import ForumView from './ForumView'
 import {
-    ForumContextProvider,
     useForum,
 } from './ForumContext'
+import { ForumContextProvider } from './ForumContext'
 
 export default ForumView
 

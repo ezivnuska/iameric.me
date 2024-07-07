@@ -10,16 +10,17 @@ import { compose as Compose } from '@utils'
 export default App = () => {
 
     return (
-        <Compose
-			components={[
-				SocketContextProvider,
-				AppContextProvider,
-                NotificationContextProvider,
-				ModalContextProvider,
-				FormContextProvider,
-			]}
-		>
-            <Layout />
-        </Compose>   
+        <SocketContextProvider>
+            <Compose
+                components={[
+                    ModalContextProvider,
+                    FormContextProvider,
+                    AppContextProvider,
+                    NotificationContextProvider,
+                ]}
+            >
+                <Layout />
+            </Compose>   
+        </SocketContextProvider>
     )
 }
