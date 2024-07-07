@@ -22,7 +22,7 @@ export default Screen = ({ children, secure = true, title = null, ...props }) =>
     }, [authorized])
 
     return (
-        <View style={{ flexGrow: 1 }}>
+        <View style={{ flexGrow: 1, paddingBottom: 30 }}>
             
             {title && <ScreenTitle title={title} />}
             

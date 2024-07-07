@@ -9,7 +9,7 @@ import {
     HomeScreen,
     ProfileScreen,
 } from '@screens'
-import navigationRef from '@utils/navigationRef'
+import navigationRef from '@utils/navigation'
 
 const linking = {
     prefixes: ['https://iameric.me'],

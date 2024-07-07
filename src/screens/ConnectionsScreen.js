@@ -5,14 +5,20 @@ import {
     Screen,
     SimpleButton,
 } from '@components'
-import { ContactsContextProvider } from '@contacts'
+import { useSocket } from '@socket'
 
-export default props => (
-    <Screen
-        {...props}
-        title='Contacts'
-    >
-        <ContactsContextProvider>
+export default props => {
+
+    const {
+        connections,
+    } = useSocket()
+    
+    return (
+        <Screen
+            {...props}
+            title='Contacts'
+        >
+            
             <View
                 style={{
                     flexGrow: 1,
@@ -21,7 +27,7 @@ export default props => (
                 }}
             >
                 <View style={{ flexGrow: 1 }}>
-                    <Contacts />
+                    {connections && connections.length && <Contacts contacts={connections} />}
                 </View>
 
                 <View style={{ flexGrow: 0 }}>
@@ -31,6 +37,7 @@ export default props => (
                     />
                 </View>
             </View>
-        </ContactsContextProvider>
-    </Screen>
-)
+
+        </Screen>
+    )
+}

@@ -1,11 +1,13 @@
 import auth from './auth'
 import compose from './compose'
-import navigationRef from './navigationRef'
+import contacts from './contacts'
+import navigation from './navigation'
 import storage from './storage'
 
 export {
     auth,
     compose,
-    navigationRef,
+    contacts,
+    navigation,
     storage,
 }

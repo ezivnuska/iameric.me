@@ -16,7 +16,6 @@ module.exports = {
       {
         alias: {
           '@app':           './src/AppContext',
-          '@navigation':    './src/AppNavigation',
           '@components':    './src/components',
           '@contacts':      './src/components/Contacts',
           '@modal':         './src/components/Modal',

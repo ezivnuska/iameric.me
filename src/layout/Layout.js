@@ -14,13 +14,11 @@ import AppNavigation from '../AppNavigation'
 import { useApp } from '@app'
 import { Notification } from '@components'
 import { useSocket } from '@socket'
-import {
-    PaperProvider,
-} from 'react-native-paper'
+import { PaperProvider } from 'react-native-paper'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
-import { navigate } from '@utils/navigationRef'
-import { useModal } from '@components/Modal/ModalContext'
+import { navigate } from '@utils/navigation'
+import { useModal } from '@modal'
 
 const HEADER_HEIGHT = 50
 
@@ -156,7 +154,7 @@ const Header = ({ height, onPress }) => {
                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
-                            gap: 10,
+                            gap: 15,
                         }}
                     >
                         <Pressable

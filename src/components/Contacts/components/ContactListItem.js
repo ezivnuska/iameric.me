@@ -7,11 +7,18 @@ import { ThemedText } from '@components'
 import { useApp } from '@app'
 // import { getProfileImagePathFromUser } from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { useSocket } from '@socket'
 
 export default ({ item, onPress, ...props }) => {
     // let imagePath = getProfileImagePathFromUser(item)
     
     const { theme } = useApp()
+    const { connections } = useSocket()
+
+    const isConnected = useMemo(() => {
+        const connectedIds = connections.map(c => c.userId)
+        return connectedIds.indexOf(item._id) > -1 
+    }, [connections])
 
     return (
         <Pressable
@@ -26,7 +33,7 @@ export default ({ item, onPress, ...props }) => {
                     alignItems: 'center',
                     gap: 12,
                     flexWrap: 'nowrap',
-                    paddingBottom: 10,
+                    paddingVertical: 5,
                 },
                 props.style,
             ]}
@@ -43,9 +50,9 @@ export default ({ item, onPress, ...props }) => {
             /> */}
 
             <Icon
-                name={item.userId ? 'ellipse' : 'ellipse-outline'}
+                name={isConnected ? 'ellipse' : 'ellipse-outline'}
                 size={18}
-                color={item.userId ? theme?.colors.statusOn : theme?.colors.statusOff}
+                color={isConnected ? theme?.colors.statusOn : theme?.colors.statusOff}
             />
 
             {/* {item.userId && item.available && (
