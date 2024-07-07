@@ -7,6 +7,7 @@ import ThemedText from './common/ThemedText'
 // modules
 import Cabinet from './Cabinet'
 import Contacts from './Contacts'
+import Forum from './Forum'
 import Modal from './Modal'
 import Notification from './Notification'
 import Socket from './Socket'
@@ -14,6 +15,7 @@ import Socket from './Socket'
 export {
     Cabinet,
     Contacts,
+    Forum,
     LoadingView,
     Modal,
     Notification,

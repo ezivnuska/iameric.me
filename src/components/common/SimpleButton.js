@@ -5,7 +5,7 @@ import {
     Text,
 } from 'react-native'
 
-export default ({ disabled, label, onPress, transparent = false }) => {
+export default ({ disabled, label, onPress, transparent = false, ...props }) => {
     return (
         <Pressable
             disabled={disabled}
@@ -17,6 +17,7 @@ export default ({ disabled, label, onPress, transparent = false }) => {
                 borderRadius: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
+                ...props.style,
             }}
         >
             <Text

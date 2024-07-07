@@ -1,12 +1,10 @@
 import React from 'react'
-import {
-    Text,
-} from 'react-native'
+import { Text } from 'react-native'
 import { useApp } from '@app'
 
 export default ({ children, bold = false, color = null, size = 16, ...props }) => {
     
-    const { dims, theme } = useApp()
+    const { theme } = useApp()
     
     return (
         <Text
@@ -16,10 +14,10 @@ export default ({ children, bold = false, color = null, size = 16, ...props }) =
                     fontWeight: bold ? 700 : 400,
                     color: color || theme?.colors.textDefault,
                     lineHeight: size + 5,
-                    // width: '100%',
-                    // maxWidth: dims.width,
+                    width: '100%',
+                    maxWidth: 400,
+                    ...props.style,
                 },
-                props.style,
             ]}
         >
             {children}

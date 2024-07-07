@@ -39,11 +39,26 @@ export default props => {
 
                 </View>
 
-                <View style={{ flexGrow: 0 }}>
+                <View
+                    style={{
+                        flexGrow: 0,
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        gap: 10,
+                    }}
+                >
                     <SimpleButton
                         label='Contacts'
                         onPress={() => props.navigation.navigate('Contacts')}
                         disabled={!user}
+                        style={{ flexGrow: 1 }}
+                    />
+
+                    <SimpleButton
+                        label='Forum'
+                        onPress={() => props.navigation.navigate('Forum')}
+                        disabled={!user}
+                        style={{ flexGrow: 1 }}
                     />
                 </View>
             </View>

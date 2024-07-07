@@ -5,6 +5,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     ContactsScreen,
+    ForumScreen,
     // FallbackScreen,
     HomeScreen,
     ProfileScreen,
@@ -15,8 +16,9 @@ const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
-            Home: '',
             Contacts: 'contacts',
+            Forum: 'forum',
+            Home: '',
             Profile: 'profile',
         },
     },
@@ -43,14 +45,21 @@ const AppStackScreen = () => {
             <AppStack.Screen
                 name='Contacts'
                 children={props => <ContactsScreen {...props} />}
-                // component={AnotherScreen}
+                // component={ContactsScreen}
                 options={{ title: 'Contacts' }}
             />
 
             <AppStack.Screen
                 name='Profile'
                 children={props => <ProfileScreen {...props} />}
-                // component={AnotherScreen}
+                // component={ProfileScreen}
+                options={{ title: 'Profile' }}
+            />
+
+            <AppStack.Screen
+                name='Forum'
+                children={props => <ForumScreen {...props} />}
+                // component={ForumScreen}
                 options={{ title: 'Profile' }}
             />
 

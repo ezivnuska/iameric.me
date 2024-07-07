@@ -18,6 +18,7 @@ module.exports = {
           '@app':           './src/AppContext',
           '@components':    './src/components',
           '@contacts':      './src/components/Contacts',
+          '@forum':         './src/components/Forum',
           '@modal':         './src/components/Modal',
           '@notification':  './src/components/Notification',
           '@socket':        './src/components/Socket',
