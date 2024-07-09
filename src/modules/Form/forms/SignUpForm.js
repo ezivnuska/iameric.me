@@ -1,27 +1,54 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { FormField, FormHeader } from './components'
-import { SimpleButton } from '@components'
+import { FormField } from './components'
+import {
+    SimpleButton,
+    ThemedText,
+} from '@components'
 import { setItem, storeToken } from '@utils/storage'
-import { isValidEmail, signin, } from '@utils/auth'
+import { isValidEmail, signup } from '@utils/auth'
 import { getFields, validateFields } from './utils'
-import { useForm } from './FormContext'
 import { useApp } from '@app'
+import { useForm } from '../FormContext'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
+import Icon from 'react-native-vector-icons/Ionicons'
 
-export default SignInForm = () => {
+const PublicCheckbox = ({ checked, setChecked }) => {
+    const { theme } = useApp()
+    return (
+        <View
+            style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 10,
+                marginBottom: 15,
+            }}
+        >
+            <Icon
+                name={checked ? 'ellipse' : 'ellipse-outline'}
+                size={24}
+                onPress={() => setChecked(!checked)}
+                color={theme?.colors.textDefault}
+            />
+            <ThemedText>Public Accomodation</ThemedText>
+        </View>
+    )
+}
+
+export default SignUpForm = () => {
 
     const initialState = {
         email: '',
+        username: '',
         password: '',
+        confirmPassword: '',
+        fiction: false,
     }
 
     const {
         dims,
         setUser,
-        // socket,
-        // userId,
     } = useApp()
 
     const { closeModal } = useModal()
@@ -29,7 +56,7 @@ export default SignInForm = () => {
     const {
         notifySocket,
     } = useSocket()
-    
+
     const {
         clearForm,
         clearFormError,
@@ -53,11 +80,15 @@ export default SignInForm = () => {
 
     const {
         email,
+        username,
         password,
+        confirmPassword,
+        fiction,
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
         const fields = getFields(initialState, formFields)
+        // initForm(fields)
         setInitialValues(fields)
     }, [])
     
@@ -67,7 +98,18 @@ export default SignInForm = () => {
 
     useEffect(() => {
         if (formReady) validateFields(formFields, validateField)
-    }, [email, password])
+    }, [fiction, email, username, password, confirmPassword])
+
+    // const validateFields = () => {
+    //     const keys = Object.keys(formFields)
+    //     let index = 0
+    //     while (index < keys.length) {
+    //         const key = keys[index]
+    //         const isValid = validateField(key)
+    //         if (!isValid) return
+    //         else index++
+    //     }
+    // }
 
     const validateField = name => {
         let isValid = true
@@ -78,14 +120,26 @@ export default SignInForm = () => {
                     isValid = false
                 }
                 break
+            case 'username':
+                if (!username.length) {
+                    setFormError({ name, message: 'Username required.'})
+                    isValid = false
+                }
+                break
             case 'password':
                 if (!password.length) {
                     setFormError({ name, message: 'Password required.'})
                     isValid = false
                 }
                 break
+            case 'confirmPassword':
+                if (password.length && confirmPassword !== password) {
+                    setFormError({ name, message: 'Passwords must match.'})
+                    isValid = false
+                }
+                break
             default:
-                // console.log('No field to validate')
+                console.log('No field to validate')
         }
 
         if (isValid && getError(name)) {
@@ -109,17 +163,16 @@ export default SignInForm = () => {
 
     const submitFormData = async () => {
         if (formError) {
-			console.log(`Error in form field ${formError.name}: ${formError.message}`)
-            return
+			return console.log(`Error in form field ${formError.name}: ${formError.message}`)
 		}
 
         setFormLoading(true)
 		await setItem('email', email)
-		const user = await signin(email, password)
+		const user = await signup(email, password, username, fiction)
         setFormLoading(false)
         
 		if (!user) {
-            setFormError({ name: 'email', message: 'Signin failed.' })
+            setFormError({ name: 'email', message: 'Signup failed.' })
         } else {
             if (formError) clearFormError()
             storeToken(user.token)
@@ -136,6 +189,7 @@ export default SignInForm = () => {
 
     const renderFields = () => (
         <>
+            <PublicCheckbox checked={fiction} setChecked={value => onChange('fiction', value)} />
             <FormField
                 label='Email'
                 value={email}
@@ -153,6 +207,22 @@ export default SignInForm = () => {
                 focused={focused === 'email'}
             />
             <FormField
+                label='Username'
+                value={username}
+                error={getError('username')}
+                placeholder='username'
+                textContentType='none'
+                keyboardType='default'
+                autoCapitalize='none'
+                onChangeText={value => onChange('username', value)}
+                autoFocus={getFocus('username')}
+                onKeyPress={onEnter}
+                dirty={getDirty('username')}
+                required
+                onFocus={() => setFocus('username')}
+                focused={focused === 'username'}
+            />
+            <FormField
                 label='Password'
                 value={password}
                 error={getError('password')}
@@ -168,28 +238,47 @@ export default SignInForm = () => {
                 onFocus={() => setFocus('password')}
                 focused={focused === 'password'}
             />
+            <FormField
+                label='Confirm Password'
+                value={confirmPassword}
+                error={getError('confirmPassword')}
+                placeholder='confirm password'
+                textContentType='password'
+                autoCapitalize='none'
+                secureTextEntry={true}
+                onChangeText={value => onChange('confirmPassword', value)}
+                autoFocus={getFocus('confirmPassword')}
+                onKeyPress={onEnter}
+                dirty={getDirty('confirmPassword')}
+                required
+                onFocus={() => setFocus('confirmPassword')}
+                focused={focused === 'confirmPassword'}
+            />
         </>
     )
     
     return focused !== null ? (
         <View
             style={{
+                paddingVertical: 20,
                 width: '100%',
                 maxWidth: dims.width,
             }}
         >
-            <FormHeader title='Sign In' />
+            <ThemedText bold size={20}>
+                Sign Up
+            </ThemedText>
 
             <View style={{ marginVertical: 10 }}>
                 {formReady && renderFields()}
             </View>
 
             <SimpleButton
-                label={formLoading ? 'Signing In' : 'Sign In'}
-                disabled={formLoading || formError}
+                label={formLoading ? 'Signing Up' : 'Sign Up'}
+                // disabled={formLoading || formError}
                 onPress={submitFormData}
             />
-
+            
         </View>
     ) : null
 }

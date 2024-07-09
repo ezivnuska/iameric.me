@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react'
-import {
-    AuthForm,
-    DestroyForm,
-    FeedbackForm,
-    MessageForm,
-    useForm,
-} from '@forms'
+import React from 'react'
+// import {
+//     AuthForm,
+//     DestroyForm,
+//     FeedbackForm,
+//     MessageForm,
+// } from '@forms'
+import { Form } from '@modules'
+import { useForm } from '@form'
 import { useModal } from '@modal'
 import { ModalContainer } from './components'
 
@@ -14,11 +15,10 @@ export default () => {
     const { closeModal, modal, modals } = useModal()
     const { clearForm } = useForm()
 
-    // const modal = useMemo(() => modals[modals.length - 1], [modals])
-
     const renderModalContent = () => {
         if (!modal) return null
         const { type, data } = modal
+        return <Form type={type} data={data} />
         switch(type) {
             case 'AUTH': return <AuthForm />; break
             case 'DESTROY': return <DestroyForm />; break

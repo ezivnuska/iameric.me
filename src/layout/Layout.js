@@ -6,19 +6,19 @@ import {
     View,
 } from 'react-native'
 import {
-    Modal,
     SimpleButton,
     ThemedText,
 } from '@components'
+import { Modal } from '@modules'
 import AppNavigation from '../AppNavigation'
 import { useApp } from '@app'
-import { Notification } from '@components'
+import { Notification } from '@modules'
 import { useSocket } from '@socket'
-import { PaperProvider } from 'react-native-paper'
+import { useModal } from '@modal'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { navigate } from '@utils/navigation'
-import { useModal } from '@modal'
+import { PaperProvider } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const HEADER_HEIGHT = 50

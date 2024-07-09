@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import { ThemedText } from '@components'
 import { useApp } from '@app'
-import { useForm } from '@forms'
+import { useForm } from '@form'
 import { useModal } from '@modal'
 import Icon from 'react-native-vector-icons/Ionicons'
 

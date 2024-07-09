@@ -1,9 +1,9 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
-import { useApp } from '@app'
 import Modal from 'react-native-modal'
+import { useApp } from '@app'
 
-export default PopUpModal = ({ children, onRequestClose, transparent = false, ...props }) => {
+export default ({ children, onRequestClose, transparent = false, ...props }) => {
     
     const { dims, theme } = useApp()
     

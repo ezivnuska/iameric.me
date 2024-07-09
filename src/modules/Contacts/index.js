@@ -1,10 +1,10 @@
-import ContactsView from './ContactsView'
+import Contacts from './Contacts'
 import {
     ContactsContextProvider,
     useContacts,
 } from './ContactsContext'
 
-export default ContactsView
+export default Contacts
 
 export {
     ContactsContextProvider,

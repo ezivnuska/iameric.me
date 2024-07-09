@@ -1,10 +1,10 @@
-import ModalView from './ModalView'
+import Modal from './Modal'
 import {
     ModalContextProvider,
     useModal,
 } from './ModalContext'
 
-export default ModalView
+export default Modal
 
 export {
     ModalContextProvider,

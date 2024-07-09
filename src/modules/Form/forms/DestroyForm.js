@@ -8,16 +8,21 @@ import {
     FormField,
     FormHeader,
 } from './components'
-import { unsubscribe } from '@utils/auth'
-import { getFields, validateFields } from './utils'
-import { signout } from '@utils/auth'
+import {
+    getFields,
+    validateFields,
+} from './utils'
+import { useForm } from '../FormContext'
+import {
+    signout,
+    unsubscribe,
+} from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { useApp } from '@app'
 import { useModal } from '@modal'
-import { useSocket } from '../Socket/SocketContext'
-import { useForm } from './FormContext'
+import { useSocket } from '@socket'
 
-export default DestroyForm = () => {
+export default () => {
 
     const initialState = { username: '' }
 
@@ -89,7 +94,7 @@ export default DestroyForm = () => {
                         user.username === 'Driver' ||
                         user.username === 'Vendor' ||
                         user.username === 'Customer' ||
-                        user.username === 'test'// for testing
+                        user.username === 'iameric'
                     ) {
                         setFormError({ name: 'username', message: 'Deletion not allowed' })
                         isValid = false

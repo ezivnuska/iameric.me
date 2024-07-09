@@ -1,10 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
-import {
-    Contacts,
-    Screen,
-    SimpleButton,
-} from '@components'
+import { Screen } from '@components'
+import { Contacts } from '@modules'
 import { ContactsContextProvider } from '@contacts'
 
 export default props => (
@@ -13,6 +10,7 @@ export default props => (
         title='Contacts'
     >
         <ContactsContextProvider>
+
             <View
                 style={{
                     flexGrow: 1,
@@ -23,7 +21,10 @@ export default props => (
                 <View style={{ flexGrow: 1 }}>
                     <Contacts />
                 </View>
+
             </View>
+
         </ContactsContextProvider>
+        
     </Screen>
 )

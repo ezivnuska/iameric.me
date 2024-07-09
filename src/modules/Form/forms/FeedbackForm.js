@@ -1,13 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { FormField, FormHeader } from './components'
+import {
+    FormField,
+    FormHeader,
+} from './components'
 import { SimpleButton } from '@components'
 import { useApp } from '@app'
-import { useForm } from '@forms'
-import { useMail } from '@mail'
+import { useForm } from '@form'
+import { useForum } from '@forum'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { getFields, validateFields } from './utils'
+import { createEntry } from '@utils/forum'
 
 export default ({ data }) => {
 
@@ -36,14 +40,18 @@ export default ({ data }) => {
         setFormValues,
     } = useForm()
 
-    const { addMessage } = useMail()
+    const { addEntry } = useForum()
+
     const { closeModal } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
-    const text = useMemo(() => formFields.text, [formFields])
+    const {
+        text,
+    } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
+        console.log('data in form', data)
         const init = async () => {
             const fields = getFields(initialState, data)
             setInitialValues(fields)
@@ -98,23 +106,22 @@ export default ({ data }) => {
             return
 		}
 
-        const from = user._id
-        const to = data._id
+        const { _id } = user
 
-        const newMessage = {
-            from,
-            to,
+        const newEntry = {
+            author: _id,
             text,
         }
         
         setFormLoading(true)
-        const message = await createMessage(newMessage)
+        const entry = await createEntry(newEntry)
         setFormLoading(false)
 
-        if (!message) console.log('Error saving message', err)
+        if (!entry) console.log('Error saving entry', err)
         else {
-            addMessage(message)
-            socket.emit('new_message', message)
+            console.log('form submit:data:', data)
+            socket.emit('new_entry', entry)
+            addEntry(entry)
             clearForm()
             closeModal()
         }
@@ -123,7 +130,7 @@ export default ({ data }) => {
     const renderFields = () => (
         <>
             <FormField
-                label={`Send new message to ${data.username}`}
+                label='Add Comment'
                 value={text}
                 error={getError('text')}
                 placeholder='say something...'
@@ -143,7 +150,7 @@ export default ({ data }) => {
         <View
             style={{ paddingVertical: 20 }}
         >
-            <FormHeader title='Private Message' />
+            <FormHeader title='Feedback' />
 
             <View style={{ marginBottom: 10 }}>
                 {renderFields()}

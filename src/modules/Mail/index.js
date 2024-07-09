@@ -1,10 +1,10 @@
-import MailView from './MailView'
+import Mail from './Mail'
 import {
     MailContextProvider,
     useMail,
 } from './MailContext'
 
-export default MailView
+export default Mail
 
 export {
     MailContextProvider,

@@ -7,7 +7,7 @@ import {
 import { ThemedText } from '@components'
 import { useApp } from '@app'
 
-export default FormField = ({ dirty, error, value, focused, label = null, required = false, ...props }) => {
+export default ({ dirty, error, value, focused, label = null, required = false, ...props }) => {
 
     const { theme } = useApp()
 
@@ -20,33 +20,41 @@ export default FormField = ({ dirty, error, value, focused, label = null, requir
         >
             <View
                 style={{
+                    flexGrow: 0,
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
                 }}
             >
-                {label && (
-                    <ThemedText
+            
+                <View style={{ flexGrow: 1 }}>
+
+                    {label && (
+                        <ThemedText
+                            style={{
+                                flexGrow: 0,
+                                color: theme?.colors.inputLabel,
+                            }}
+                        >
+                            {label}
+                        </ThemedText>
+                    )}
+
+                </View>
+
+                <View style={{ flexGrow: 0 }}>
+                    <Text
                         style={{
-                            flexGrow: 0,
-                            color: theme?.colors.inputLabel,
+                            color: error ? '#f00' : dirty ? '#00f' : '#ccc',
+                            marginTop: 2,
+                            fontSize: 12,
+                            lineHeight: 16,
+                            textAlign: 'right',
                         }}
                     >
-                        {label}
-                    </ThemedText>
-                )}
+                        {required ? error && dirty ? error : `*required` : ' '}
+                    </Text>
+                </View>
 
-                <Text
-                    style={{
-                        flexGrow: 1,
-                        color: error ? '#f00' : dirty ? '#00f' : '#ccc',
-                        marginTop: 2,
-                        fontSize: 12,
-                        lineHeight: 16,
-                        textAlign: 'right',
-                    }}
-                >
-                    {required ? error && dirty ? error : `*required` : ' '}
-                </Text>
             </View>
 
             <View

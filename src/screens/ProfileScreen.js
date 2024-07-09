@@ -40,8 +40,8 @@ export default props => {
                     </Cabinet>
 
                 </View>
-            </View>
             
+            </View>
 
         </Screen>
     )

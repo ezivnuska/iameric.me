@@ -3,9 +3,10 @@ import { View } from 'react-native'
 import {
     Cabinet,
     Screen,
-    SimpleButton,
-    Socket,
 } from '@components'
+import {
+    Socket,
+} from '@modules'
 import { useApp } from '@app'
 
 export default props => {

@@ -3,12 +3,11 @@ import { View } from 'react-native'
 import { FormField, FormHeader } from './components'
 import { SimpleButton } from '@components'
 import { useApp } from '@app'
-import { useForm } from '@forms'
-import { useForum } from '@forum'
+import { useForm } from '@form'
+import { useMail } from '@mail'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { getFields, validateFields } from './utils'
-import { createEntry } from '@utils/forum'
 
 export default ({ data }) => {
 
@@ -37,18 +36,14 @@ export default ({ data }) => {
         setFormValues,
     } = useForm()
 
-    const { addEntry } = useForum()
-
+    const { addMessage } = useMail()
     const { closeModal } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
-    const {
-        text,
-    } = useMemo(() => formFields, [formFields])
+    const text = useMemo(() => formFields.text, [formFields])
 
     useEffect(() => {
-        console.log('data in form', data)
         const init = async () => {
             const fields = getFields(initialState, data)
             setInitialValues(fields)
@@ -103,22 +98,23 @@ export default ({ data }) => {
             return
 		}
 
-        const { _id } = user
+        const from = user._id
+        const to = data._id
 
-        const newEntry = {
-            author: _id,
+        const newMessage = {
+            from,
+            to,
             text,
         }
         
         setFormLoading(true)
-        const entry = await createEntry(newEntry)
+        const message = await createMessage(newMessage)
         setFormLoading(false)
 
-        if (!entry) console.log('Error saving entry', err)
+        if (!message) console.log('Error saving message', err)
         else {
-            console.log('form submit:data:', data)
-            socket.emit('new_entry', entry)
-            addEntry(entry)
+            addMessage(message)
+            socket.emit('new_message', message)
             clearForm()
             closeModal()
         }
@@ -127,7 +123,7 @@ export default ({ data }) => {
     const renderFields = () => (
         <>
             <FormField
-                label='Add Comment'
+                label={`Send new message to ${data.username}`}
                 value={text}
                 error={getError('text')}
                 placeholder='say something...'
@@ -147,7 +143,7 @@ export default ({ data }) => {
         <View
             style={{ paddingVertical: 20 }}
         >
-            <FormHeader title='Feedback' />
+            <FormHeader title='Private Message' />
 
             <View style={{ marginBottom: 10 }}>
                 {renderFields()}

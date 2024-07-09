@@ -35,10 +35,18 @@ export default ({ children, closed = true, title = null }) => {
                     background: '#ccc',
                 }}
             >
+                <Pressable
+                    onPress={() => setOpen(!open)}
+                    disabled={open}
+                    style={{ flexGrow: 1 }}
+                >
+                    {title && <ThemedText bold size={18}>{title}</ThemedText>}
+                </Pressable>
 
-                {title && <ThemedText bold size={18}>{title}</ThemedText>}
-
-                <Pressable onPress={() => setOpen(!open)}>    
+                <Pressable
+                    onPress={() => setOpen(!open)}
+                    style={{ flexGrow: 0 }}
+                >
                     <Icon
                         name={open ? 'chevron-up' : 'chevron-down'}
                         size={24}

@@ -4,7 +4,7 @@ import { SimpleButton } from '@components'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 
-export default AuthForm = () => {
+export default () => {
     
     const [showSignUp, setShowSignUp] = useState(false)
 

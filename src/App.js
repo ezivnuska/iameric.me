@@ -5,7 +5,7 @@ import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
 import { MailContextProvider } from '@mail'
 import { ModalContextProvider } from '@modal'
-import { FormContextProvider } from '@forms'
+import { FormContextProvider } from '@form'
 import { ForumContextProvider } from '@forum'
 import { compose as Compose } from '@utils'
 
