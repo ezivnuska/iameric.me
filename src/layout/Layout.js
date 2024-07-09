@@ -19,6 +19,7 @@ import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { navigate } from '@utils/navigation'
 import { useModal } from '@modal'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const HEADER_HEIGHT = 50
 
@@ -68,27 +69,17 @@ export default () => {
                     }}
                 >
 
-                    <View
-                        style={{
-                            flexBasis: HEADER_HEIGHT,
-                            flexGrow: 0,
-                        }}
-                    >
-                        <Header
-                            height={HEADER_HEIGHT}
-                            onPress={toggleTheme}
-                        />
+                    <View style={ {flexGrow: 0 }}>
+                        <Header/>
                     </View>
                     
                     <ScrollView
                         showsVerticalScrollIndicator={false}
-                        style={{
-                            flexGrow: 1,
-                         }}
+                        style={{ flexGrow: 1 }}
                         contentContainerStyle={{
                             flex: 1,
                             paddingHorizontal: 10,
-                            paddingVertical: 7,
+                            paddingBottom: 7,
                             width: '100%',
                             maxWidth: 400,
                             marginHorizontal: 'auto',
@@ -103,11 +94,12 @@ export default () => {
     )
 }
 
-const Header = ({ height, onPress }) => {
+const Header = () => {
     const {
-        user,
-        setUser,
+        dims,
         reset,
+        theme,
+        user,
     } = useApp()
 
     const { setModal } = useModal()
@@ -123,13 +115,33 @@ const Header = ({ height, onPress }) => {
         reset()
     }
 
+    const renderBrand = () => dims.width < 340 ? 'iam' : 'iameric'
+
+    const renderSignOutButton = () => {
+        return dims.width < 390 ? (
+            <SimpleButton onPress={() => handleSignout(user._id)}>
+                <Icon
+                    name='close-outline'
+                    size={20}
+                    color='#fff'
+                />
+            </SimpleButton>
+        ) : (
+            <SimpleButton
+                label={'Sign Out'}
+                onPress={() => handleSignout(user._id)}
+            />
+        )
+    }
+
     return (
         <View
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                height,
+                gap: 10,
+                height: HEADER_HEIGHT,
                 width: '100%',
                 minWidth: 300,
                 maxWidth: 400,
@@ -137,16 +149,72 @@ const Header = ({ height, onPress }) => {
                 marginHorizontal: 'auto',
             }}
         >
-            <Pressable
-                onPress={onPress}
-                style={{ flex: 1, flexGrow: 1 }}
-            >
-                <ThemedText bold style={{ fontSize: 24 }}>iameric</ThemedText>
-            </Pressable>
+            <View style={{ flexGrow: 0 }}>
+                <Pressable onPress={() => navigate('Home')}>
+                    <ThemedText bold style={{ fontSize: 24 }}>
+                        {renderBrand()}
+                    </ThemedText>
+                </Pressable>
+            </View>
 
             <View
                 style={{
-                    flexBasis: 'auto',
+                    flexGrow: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                    gap: 3,
+                }}
+            >
+
+                <Pressable
+                    onPress={() => navigate('Home')}
+                    style={{ padding: 5 }}
+                >
+                    <Icon
+                        name='home-outline'
+                        size={16}
+                        color={theme?.colors.textDefault}
+                    />
+                </Pressable>
+
+                <Pressable
+                    onPress={() => navigate('Forum')}
+                    style={{ padding: 5 }}
+                >
+                    <Icon
+                        name='chatbubbles-outline'
+                        size={16}
+                        color={theme?.colors.textDefault}
+                    />
+                </Pressable>
+
+                <Pressable
+                    onPress={() => navigate('Contacts')}
+                    style={{ padding: 5 }}
+                >
+                    <Icon
+                        name='people-outline'
+                        size={16}
+                        color={theme?.colors.textDefault}
+                    />
+                </Pressable>
+
+                <Pressable
+                    onPress={() => navigate('Mail')}
+                    style={{ padding: 5 }}
+                >
+                    <Icon
+                        name='mail-outline'
+                        size={16}
+                        color={theme?.colors.textDefault}
+                    />
+                </Pressable>
+            </View>
+
+                        
+            <View
+                style={{
                     flexGrow: 0,
                 }}
             >
@@ -155,19 +223,14 @@ const Header = ({ height, onPress }) => {
                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
-                            gap: 15,
+                            gap: 10,
                         }}
                     >
-                        <Pressable
-                            onPress={() => navigate('Profile')}
-                        >
+                        <Pressable onPress={() => navigate('Profile')}>
                             <ThemedText>{user.username}</ThemedText>
                         </Pressable>
 
-                        <SimpleButton
-                            label={'Sign Out'}
-                            onPress={() => handleSignout(user._id)}
-                        />
+                        {renderSignOutButton()}
                     </View>
                 ) : (
                     <SimpleButton
@@ -176,8 +239,6 @@ const Header = ({ height, onPress }) => {
                     />
                 )}
             </View>
-
-            
 
         </View>
     )

@@ -43,6 +43,11 @@ export const MailContextProvider = props => {
 
     useEffect(() => {
         if (user) loadMail()
+    }, [user])
+
+    useEffect(() => {
+        if (user) loadMail()
+        else dispatch({ type: 'SET_MAIL_LOADED' })
     }, [])
 
     const actions = useMemo(() => ({
@@ -65,7 +70,7 @@ export const MailContextProvider = props => {
 
     return  (
         <MailContext.Provider value={{ ...state, ...actions }}>
-            {state.mailLoaded && props.children}
+            {props.children}
         </MailContext.Provider>
     )
 }

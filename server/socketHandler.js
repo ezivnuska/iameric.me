@@ -1,5 +1,8 @@
 const socketHandler = io => socket => {
 
+	let ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address
+	console.log(new Date(), 'new user with socket id:', socket.id, ip)
+	
 	// const SESSION_RELOAD_INTERVAL = 30 * 1000
 	
 	// helper methods

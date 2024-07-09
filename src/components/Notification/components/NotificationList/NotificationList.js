@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Notification } from './components'
-import { useNotification } from './NotificationContext'
+import { NotificationListItem } from './components'
+import { useNotification } from '../../NotificationContext'
 
 export default () => {
 
@@ -24,9 +24,10 @@ export default () => {
                     key={`note-${index}`}
                     style={{ justifyContent: 'flex-end' }}
                 >
-                    <Notification
+                    <NotificationListItem
                         text={note}
-                        onPress={() => removeNotification(index)} />
+                        onPress={() => removeNotification(index)}
+                    />
                 </View>
             ))}
         </View>

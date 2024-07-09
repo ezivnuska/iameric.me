@@ -29,13 +29,6 @@ export default props => {
                 <View style={{ flexGrow: 1 }}>
                     {connections && connections.length && <Contacts contacts={connections} />}
                 </View>
-
-                <View style={{ flexGrow: 0 }}>
-                    <SimpleButton
-                        label='Go Back'
-                        onPress={() => props.navigation.navigate('Home')}
-                    />
-                </View>
             </View>
 
         </Screen>

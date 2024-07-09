@@ -34,6 +34,7 @@ export default () => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingBottom: 10,
+                paddingHorizontal: 5,
                 gap: 10,
             }}
         >
@@ -43,12 +44,11 @@ export default () => {
                     flexShrink: 0,
                 }}
             >
-                <ThemedText
-                    size={16}
-                >
+                <ThemedText size={16}>
                     {`${connections.length || 'No'} connection${connections.length !== 1 ? `s` : ''}`}
                 </ThemedText>
             </View>
+
             <View
                 style={{
                     flexGrow: 1,

@@ -2,7 +2,7 @@ import React from 'react'
 import { Pressable } from 'react-native'
 import { ThemedText } from '@components'
 
-export default Notification = ({ text, onPress }) => (
+export default ({ text, onPress }) => (
     <Pressable
         onPress={onPress}
         style={{

@@ -6,6 +6,7 @@ import {
 } from 'react-native'
 import { ThemedText } from '@components'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -14,6 +15,7 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
     const { author, text } = item
 
     const { theme } = useApp()
+    const { setModal } = useModal()
     const { connections } = useSocket()
 
     const isOnline = useMemo(() => {
@@ -21,111 +23,67 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
         return connectionIds.indexOf(author._id) > -1
     }, [author, connections])
 
-    const renderHeader = () => (
-        <View
-            style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                paddingBottom: 6,
-                marginBottom: 10,
-                borderBottomWidth: 1,
-                borderBottomStyle: 'dotted',
-                borderBottomColor: theme?.colors.border,
-            }}
-        >
-            <View
-                style={{
-                    flexGrow: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    gap: 5,
-                }}
-            >
-                <View
-                    style={{ flexGrow: 0 }}
-                >
-                    <ThemedText
-                        bold
-                        size={18}
-                    >
-                        {author.username}
-                    </ThemedText>
-                </View>
-
-                {isOnline && (
-                    <View
-                        style={{ flexGrow: 0 }}
-                    >
-                        <Icon
-                            name='flash'
-                            size={16}
-                            color={theme?.colors.textDefault}
-                        />
-                    </View>
-                )}
-
-            </View>
-
-            {(owner && onDelete) && (
-                <View style={{ flexGrow: 0 }}>
-
-                    <Pressable
-                        onPress={() => onDelete(item._id)}
-                        style={{ padding: 5 }}
-                    >
-                        <Icon
-                            name='trash'
-                            size={16}
-                            color={theme?.colors.textDefault}
-                        />
-                    </Pressable>
-
-                </View>
-            )}
-
-        </View>
-    )
-
     return (
         <View
             style={{
-                paddingBottom: 5,
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                gap: 10,
+                paddingLeft: 3,
+                paddingTop: 7,
+                borderBottomWidth: 1,
+                borderBottomColor: '#aaa',
             }}
             {...props}
         >
-            {/* <View
-                style={{
-                    flexBasis: 'auto',
-                    flexGrow: 0,
-                }}
-            >
-                <Image
+
+            <View style={{ flexGrow: 0 }}>
+                <ThemedText bold>{author.username}:</ThemedText>
+                {/* <Image
                     style={{
                         width: 30,
                         height: 30,
                     }}
                     source={imagePath}
-                />
-            </View> */}
+                /> */}
+            </View>
+
+            <View style={{ flex: 1, paddingBottom: 7 }}>
+                <ThemedText>{text}</ThemedText>
+            </View>
 
             <View
                 style={{
-                    flexBasis: 'auto',
-                    flexGrow: 1,
+                    flexGrow: 0,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    flexWrap: 'wrap',
                 }}
             >
-                {renderHeader()}
                 
-                <ThemedText
-                    style={{
-                        flex: 1,
-                        paddingBottom: 10,
-                    }}
+                <Pressable
+                    onPress={() => setModal('FEEDBACK', item)}
+                    style={{ padding: 5 }}
                 >
-                    {text}
-                </ThemedText>
+                    <Icon
+                        name='chatbox-ellipses-outline'
+                        size={16}
+                        color={theme?.colors.textDefault}
+                    />
+                </Pressable>
+            
+                {owner && (
+                    <Pressable
+                        onPress={() => onDelete(item._id)}
+                        style={{ padding: 5 }}
+                    >
+                        <Icon
+                            name='trash-outline'
+                            size={16}
+                            color={theme?.colors.textDefault}
+                        />
+                    </Pressable>
+                )}
 
             </View>
 

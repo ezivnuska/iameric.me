@@ -92,7 +92,7 @@ export const AppContextProvider = ({ children }) => {
                 console.log('no token found')
                 // dispatch({ type: 'SET_TOKEN', payload: false })
             }
-
+            console.log('App Loaded')
             dispatch({ type: 'APP_LOADED' })
         }
         
@@ -136,30 +136,10 @@ const reducer = (state, action) => {
     const { payload, type } = action
     // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
-        case 'RESET':
-            return {
-                ...state,
-                user: null,
-            }
-            break
-        case 'APP_LOADED':
-            return {
-                ...state,
-                appLoaded: true,
-            }
-            break
-        case 'SET_TOKEN':
-            return {
-                ...state,
-                token: payload,
-            }
-            break
-        case 'SET_USER':
-            return {
-                ...state,
-                user: payload,
-            }
-            break
+        case 'RESET': return { ...state, user: null }; break
+        case 'APP_LOADED': return { ...state, appLoaded: true }; break
+        case 'SET_TOKEN': return { ...state, token: payload }; break
+        case 'SET_USER': return { ...state, user: payload }; break
         case 'TOGGLE_THEME':
             return {
                 ...state,
@@ -169,7 +149,6 @@ const reducer = (state, action) => {
                     : CombinedDefaultTheme,
             }
             break
-        default:
-            throw new Error()
+        default: throw new Error()
     }
 }

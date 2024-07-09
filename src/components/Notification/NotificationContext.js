@@ -77,7 +77,7 @@ export const NotificationContextProvider = ({ children }) => {
                 ...actions,
             }}
         >
-            {children}
+            {state.notificationsLoaded && children}
 
         </NotificationContext.Provider>
     )
@@ -87,6 +87,9 @@ const reducer = (state, action) => {
     const { payload, type } = action
     // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
+        case 'SET_NOTIFICATIONS_LOADED':
+            return { ...state, notificationsLoaded: true }
+            break
         case 'ADD_NOTIFICATION':
             return {
                 ...state,

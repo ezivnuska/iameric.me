@@ -40,15 +40,6 @@ export default props => {
                     </Cabinet>
 
                 </View>
-
-                <View style={{ flexGrow: 0 }}>
-
-                    <SimpleButton
-                        label='Home'
-                        onPress={() => props.navigation.navigate('Home')}
-                    />
-                    
-                </View>
             </View>
             
 
