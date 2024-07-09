@@ -61,8 +61,16 @@ export default () => {
                         borderTopLeftRadius: 6,
                         borderBottomLeftRadius: 6,
                     }}
+                >
+                    <ThemedText
+                        bold={messageType === 'out'}
+                        style={{
+                            textAlign: 'center',
+                            lineHeight: 30,
+                        }}
                     >
-                    <ThemedText style={{ textAlign: 'center' }}>In</ThemedText>
+                        In
+                    </ThemedText>
                 </Pressable>
 
                 <Pressable
@@ -73,7 +81,16 @@ export default () => {
                         background: messageType === 'all' ? 'tomato' : 'transparent',
                     }}
                 >
-                    <ThemedText style={{ textAlign: 'center' }}>All</ThemedText>
+                    <ThemedText
+                        bold={messageType === 'all'}
+                        style={{
+                            textAlign: 'center',
+                            lineHeight: 30,
+                        }}
+                    >
+                        All
+                    </ThemedText>
+
                 </Pressable>
 
                 <Pressable
@@ -86,7 +103,17 @@ export default () => {
                         borderBottomRightRadius: 6,
                     }}
                 >
-                    <ThemedText style={{ textAlign: 'center' }}>Out</ThemedText>
+                    
+                    <ThemedText
+                        bold={messageType === 'out'}
+                        style={{
+                            textAlign: 'center',
+                            lineHeight: 30,
+                        }}
+                    >
+                        Out
+                    </ThemedText>
+
                 </Pressable>
             </View>
         )
