@@ -1,10 +1,10 @@
-import NotificationList from './components/NotificationList/NotificationList'
+import Notification from './Notification'
 import {
     NotificationContextProvider,
     useNotification,
 } from './NotificationContext'
 
-export default NotificationList
+export default Notification
 
 export {
     NotificationContextProvider,

@@ -1,5 +1,3 @@
-import Notification from './Notification'
+import NotificationListItem from './NotificationListItem'
 
-export {
-    Notification,
-}
+export default NotificationListItem
