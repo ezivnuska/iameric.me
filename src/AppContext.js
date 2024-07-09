@@ -92,7 +92,7 @@ export const AppContextProvider = ({ children }) => {
                 console.log('no token found')
                 // dispatch({ type: 'SET_TOKEN', payload: false })
             }
-            console.log('App Loaded')
+            
             dispatch({ type: 'APP_LOADED' })
         }
         
