@@ -1,3 +1,3 @@
-import MessageListContainer from './MessageListContainer'
+import MessageList from './MessageList'
 
-export default MessageListContainer
+export default MessageList

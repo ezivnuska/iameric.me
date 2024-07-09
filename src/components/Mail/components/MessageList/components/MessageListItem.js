@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import {
     Image,
     Pressable,
@@ -7,64 +7,37 @@ import {
 import { ThemedText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { loadMessage } from '@utils/mail'
 
 export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) => {
 
     const { theme } = useApp()
 
-    const [message, setMessage] = useState(null)
-
-    useEffect(() => {
-        const init = async () => {
-            const loadedMessage = await loadMessage(item._id)
-            setMessage(loadedMessage)
-        }
-        init()
-    }, [])
-
-    const renderHeader = () => (
+    return (
         <View
             style={{
                 flexDirection: 'row',
-                justifyContent: 'flex-start',
                 alignItems: 'center',
-                paddingBottom: 6,
-                marginBottom: 10,
+                gap: 10,
+                paddingLeft: 5,
+                paddingVertical: 3,
                 borderBottomWidth: 1,
-                borderBottomStyle: 'dotted',
-                borderBottomColor: theme?.colors.border,
+                borderBottomColor: '#aaa',
             }}
+            {...props}
         >
-            <View
-                style={{
-                    flexGrow: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    gap: 5,
-                }}
-            >
-                <View
-                    style={{ flexGrow: 0 }}
-                >
+            <View style={{ flexGrow: 0 }}>
+                <ThemedText bold>{item.from.username}:</ThemedText>
+            </View>
 
-                    <ThemedText
-                        bold
-                        size={18}
-                    >
-                        {`${message.from.username} > ${item.to.username}`}
-                    </ThemedText>
-
-                </View>
-
+            <View style={{ flex: 1 }}>
+                <ThemedText>{item.text}</ThemedText>
             </View>
 
             {(owner && onDelete) && (
                 <View style={{ flexGrow: 0 }}>
 
                     <Pressable
-                        onPress={() => onDelete(item._id)}
+                        onPress={onDelete}
                         style={{ padding: 5 }}
                     >
                         <Icon
@@ -77,16 +50,6 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
                 </View>
             )}
 
-        </View>
-    )
-
-    return message && (
-        <View
-            style={{
-                paddingBottom: 5,
-            }}
-            {...props}
-        >
             {/* <View
                 style={{
                     flexBasis: 'auto',
@@ -101,25 +64,6 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
                     source={imagePath}
                 />
             </View> */}
-
-            <View
-                style={{
-                    flexBasis: 'auto',
-                    flexGrow: 1,
-                }}
-            >
-                {renderHeader()}
-                
-                <ThemedText
-                    style={{
-                        flex: 1,
-                        paddingBottom: 10,
-                    }}
-                >
-                    {message.text}
-                </ThemedText>
-
-            </View>
 
         </View>
     )

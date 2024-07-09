@@ -11,10 +11,10 @@ import { ModalContainer } from './components'
 
 export default () => {
 
-    const { closeModal, modals } = useModal()
+    const { closeModal, modal, modals } = useModal()
     const { clearForm } = useForm()
 
-    const modal = useMemo(() => modals[modals.length - 1], [modals])
+    // const modal = useMemo(() => modals[modals.length - 1], [modals])
 
     const renderModalContent = () => {
         if (!modal) return null

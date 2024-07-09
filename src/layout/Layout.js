@@ -107,6 +107,7 @@ const Header = ({ height, onPress }) => {
     const {
         user,
         setUser,
+        reset,
     } = useApp()
 
     const { setModal } = useModal()
@@ -117,9 +118,9 @@ const Header = ({ height, onPress }) => {
 
     const handleSignout = async id => {
         await signout(id)
-        cleanStorage()
         notifySocket('user_signed_out', id)
-        setUser(null)
+        cleanStorage()
+        reset()
     }
 
     return (

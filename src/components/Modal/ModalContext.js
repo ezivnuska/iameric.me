@@ -49,7 +49,12 @@ export const ModalContextProvider = props => {
     }), [state, dispatch])
 
     return (
-        <ModalContext.Provider value={{ ...state, ...actions }}>
+        <ModalContext.Provider
+            value={{
+                ...state,
+                modal: state.modals[state.modals.length - 1],
+                ...actions,
+                }}>
             {props.children}
         </ModalContext.Provider>
     )

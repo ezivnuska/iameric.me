@@ -30,7 +30,7 @@ export default props => {
             >
                 <View style={{ flexGrow: 1 }}>
                     
-                    <Cabinet title='Account'>
+                    <Cabinet title='Close Account'>
 
                         <SimpleButton
                             label='Close Account'
@@ -42,10 +42,12 @@ export default props => {
                 </View>
 
                 <View style={{ flexGrow: 0 }}>
+
                     <SimpleButton
                         label='Home'
                         onPress={() => props.navigation.navigate('Home')}
                     />
+                    
                 </View>
             </View>
             

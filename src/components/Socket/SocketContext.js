@@ -30,7 +30,7 @@ export const useSocket = () => {
 
 export const SocketContextProvider = ({ children }) => {
 
-    const { user, setUser } = useApp()
+    const { reset, setUser, user } = useApp()
     const { addMessage } = useMail()
 
     const { addNotification } = useNotification()
@@ -103,16 +103,16 @@ export const SocketContextProvider = ({ children }) => {
 
     const onForceSignout = socketId => {
         if (socket.id === socketId) {
-            setUser(null)
+            reset()
             socket.emit('forced_signout_complete', socketId)
             addNotification('Signed out')
             addNotification('Signed in on another client')
         }
     }
 
-    const onNewMessage = data => {
-        addMessage(data)
-    }
+    // const onNewMessage = data => {
+    //     addMessage(data)
+    // }
 
     useEffect(() => {
         
@@ -122,7 +122,7 @@ export const SocketContextProvider = ({ children }) => {
         socket.on('reconnect',                  onReconnect)
         socket.on('reconnect_attempt',          onReconnectAttempt)
         socket.on('disconnect',                 onDisconnect)
-        socket.on('new_message',                onNewMessage)
+        // socket.on('new_message',                onNewMessage)
 
         socket.on('refresh_connections',        onRefreshConnections)
 

@@ -24,6 +24,7 @@ export default ({ children, closed = true, title = null }) => {
                 // borderBottomRightRadius: 10,
             }}
         >
+
             <View
                 style={{
                     flexDirection: 'row',
@@ -34,37 +35,21 @@ export default ({ children, closed = true, title = null }) => {
                     background: '#ccc',
                 }}
             >
-                {title && (
-                    <ThemedText
-                        size={18}
-                        bold={open}
-                    >
-                        {title}
-                    </ThemedText>
-                )}
 
-                <Pressable
-                    onPress={() => setOpen(!open)}
-                >
-                    
+                {title && <ThemedText bold size={18}>{title}</ThemedText>}
+
+                <Pressable onPress={() => setOpen(!open)}>    
                     <Icon
                         name={open ? 'chevron-up' : 'chevron-down'}
                         size={24}
                         color={theme?.colors.textDefault}
                     />
                 </Pressable>
+
             </View>
             
-            {open && (
-                <View
-                    style={{
-                        paddingHorizontal: 10,
-                        paddingVertical: 10,
-                    }}
-                >
-                    {children}
-                </View>
-            )}
+            {open && <View style={{ padding: 10 }}>{children}</View>}
+
         </View>
     )
 }

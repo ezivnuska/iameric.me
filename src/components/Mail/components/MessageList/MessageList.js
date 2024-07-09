@@ -19,17 +19,22 @@ export default ({ messages, onDelete }) => {
                 <MessageListItem
                     item={item}
                     // imagePath={getProfileImagePathFromUser(item)}
-                    onDelete={onDelete}
+                    onDelete={() => onDelete(item)}
                     // onPress={() => setModal('CONTACT', item.author)}
-                    // owner={user && user._id === item.author._id}
+                    owner={user && user._id === item.from._id}
                 />
             )}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-                paddingBottom: 20,
-            }}
             style={{
                 width: '100%',
+                // borderWidth: 1,
+                flexGrow: 1,
+            }}
+            contentContainerStyle={{
+                flexGrow: 1,
+                paddingBottom: 20,
+                // borderWidth: 1,
+                // borderStyle: 'dotted',
             }}
         />
     )

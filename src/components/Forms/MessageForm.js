@@ -4,6 +4,7 @@ import { FormField, FormHeader } from './components'
 import { SimpleButton } from '@components'
 import { useApp } from '@app'
 import { useForm } from '@forms'
+import { useMail } from '@mail'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { getFields, validateFields } from './utils'
@@ -35,13 +36,12 @@ export default ({ data }) => {
         setFormValues,
     } = useForm()
 
+    const { addMessage } = useMail()
     const { closeModal } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
-    const {
-        text,
-    } = useMemo(() => formFields, [formFields])
+    const text = useMemo(() => formFields.text, [formFields])
 
     useEffect(() => {
         const init = async () => {
@@ -113,7 +113,8 @@ export default ({ data }) => {
 
         if (!message) console.log('Error saving message', err)
         else {
-            socket.emit('private_message', message)
+            addMessage(message)
+            socket.emit('new_message', message)
             clearForm()
             closeModal()
         }
@@ -122,7 +123,7 @@ export default ({ data }) => {
     const renderFields = () => (
         <>
             <FormField
-                label='Send Message'
+                label={`Send new message to ${data.username}`}
                 value={text}
                 error={getError('text')}
                 placeholder='say something...'

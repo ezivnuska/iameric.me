@@ -34,6 +34,7 @@ const initialState = {
     appLoaded: false,
     theme: CombinedDefaultTheme,
     user: null,
+    reset: () => {},
     setUser: () => {},
     toggleTheme: () => {},
 }
@@ -98,6 +99,10 @@ export const AppContextProvider = ({ children }) => {
         init()
     }, [])
 
+    const reset = async () => {
+        dispatch({ type: 'RESET' })
+    }
+
     const setUser = async payload => {
         dispatch({ type: 'SET_USER', payload })
     }
@@ -109,6 +114,7 @@ export const AppContextProvider = ({ children }) => {
     }
 
     const actions = useMemo(() => ({
+        reset,
         setUser,
         toggleTheme,
     }), [state, dispatch])
@@ -130,6 +136,12 @@ const reducer = (state, action) => {
     const { payload, type } = action
     // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
+        case 'RESET':
+            return {
+                ...state,
+                user: null,
+            }
+            break
         case 'APP_LOADED':
             return {
                 ...state,

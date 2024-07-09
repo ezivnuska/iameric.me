@@ -10,7 +10,10 @@ const DURATION = 5000
 
 const initialState = {
     notifications: [],
+    notificationsLoaded: false,
     addNotification: () => {},
+    nextNotification: () => {},
+    removeNotification: () => {},
 }
 
 export const NotificationContext = createContext(initialState)
@@ -31,13 +34,9 @@ export const NotificationContextProvider = ({ children }) => {
 
     let timer = undefined
 
-    const addNotification = payload => {
-        dispatch({ type: 'ADD_NOTIFICATION', payload })
-    }
-
-    const startTimer = () => {
-        timer = setTimeout(nextNotification, DURATION)
-    }
+    useEffect(() => {
+        dispatch({ type: 'NOTIFICATIONS_LOADED' })
+    }, [])
 
     useEffect(() => {
         if (notification) {
@@ -48,12 +47,20 @@ export const NotificationContextProvider = ({ children }) => {
         }
     }, [notification])
 
+    const addNotification = payload => {
+        dispatch({ type: 'ADD_NOTIFICATION', payload })
+    }
+
     const removeNotification = payload => {
         dispatch({ type: 'REMOVE_NOTIFICATION', payload })
     }
 
     const nextNotification = () => {
         dispatch({ type: 'NEXT_NOTIFICATION' })
+    }
+
+    const startTimer = () => {
+        timer = setTimeout(nextNotification, DURATION)
     }
     
     const actions = useMemo(() => ({
@@ -94,6 +101,9 @@ const reducer = (state, action) => {
                 ...state,
                 notifications: state.notifications.slice(1),
             }
+            break
+        case 'NOTIFICATIONS_LOADED':
+            return { ...state, notificationsLoaded: true }
             break
         case 'REMOVE_NOTIFICATION':
             return {

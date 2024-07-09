@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
+import { ThemedText } from '@components'
 import { MessageList } from './components'
 import { useMail } from '@mail'
 import { useModal } from '@modal'
@@ -7,8 +8,6 @@ import { useSocket } from '@socket'
 import { deleteMessageWithId } from '@utils/mail'
 
 export default () => {
-
-    const { socket } = useSocket()
 
     const {
         addMessage,
@@ -21,29 +20,31 @@ export default () => {
         closeModal,
     } = useModal()
 
+    const { socket } = useSocket()
+
     useEffect(() => {
-        // socket.on('new_message', addMessage)
-        socket.on('deleted_message', deleteMessage)
+        socket.on('new_message', message => addMessage(message))
+        socket.on('deleted_message', message => deleteMessage(message))
     }, [])
 
-    const removeMessage = async id => {
+    const removeMessage = async message => {
         setMailLoading(true)
-        await deleteMessageWithId(id)
+        await deleteMessageWithId(message._id)
         setMailLoading(false)
-        socket.emit('message_deleted', id)
-        deleteMessage(id)
+        
+        socket.emit('message_deleted', message)
+        deleteMessage(message)
         closeModal()
     }
     
     return (
-        <View
-            style={{ gap: 10 }}
-        >
+        <View style={{ gap: 10, flexGrow: 1 }}>
 
-            <MessageList
-                messages={messages}
-                onDelete={removeMessage}
-            />
+            {
+                messages.length
+                ? <MessageList messages={messages} onDelete={removeMessage} />
+                : <ThemedText>Mailbox empty.</ThemedText>
+            }
 
         </View>
     )

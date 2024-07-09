@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { loadMessages } from '@utils/mail'
+import { useApp } from '@app'
 
 const initialState = {
     messages: [],
@@ -24,12 +25,14 @@ export const useMail = () => {
 }
 
 export const MailContextProvider = props => {
+
+    const { user } = useApp()
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const loadMail = async () => {
         dispatch({ type: 'SET_MAIL_LOADING', payload: true })
-        const messages = await loadMessages()
+        const messages = await loadMessages(user._id)
         dispatch({ type: 'SET_MAIL_LOADING', payload: false })
         
         if (!messages) console.log('could not load messages')
@@ -37,11 +40,9 @@ export const MailContextProvider = props => {
 
         dispatch({ type: 'SET_MAIL_LOADED' })
     }
-    
+
     useEffect(() => {
-        // if (user) {
-            loadMail()
-        // }
+        if (user) loadMail()
     }, [])
 
     const actions = useMemo(() => ({
@@ -64,13 +65,14 @@ export const MailContextProvider = props => {
 
     return  (
         <MailContext.Provider value={{ ...state, ...actions }}>
-            {props.children}
+            {state.mailLoaded && props.children}
         </MailContext.Provider>
     )
 }
 
 const reducer = (state, action) => {
     const { payload, type } = action
+    let messages
     switch(type) {
         case 'ADD_MESSAGE':
             return {
@@ -79,37 +81,24 @@ const reducer = (state, action) => {
             }
             break
         case 'SET_MAIL_LOADED':
-            return {
-                ...state,
-                mailLoaded: true,
-            }
+            return { ...state, mailLoaded: true }
             break
         case 'SET_MAIL_LOADING':
-            return {
-                ...state,
-                mailLoading: payload,
-            }
+            return { ...state, mailLoading: payload }
             break
         case 'SET_MESSAGES':
-            return {
-                ...state,
-                messages: payload,
-            }
+            return { ...state, messages: payload }
             break
         case 'UPDATE_MESSAGE':
-            const messages = state.messages.map(message => {
+            messages = state.messages.map(message => {
                 if (message._id === payload._id) return payload
-                else return entry
+                else return message
             })
-            return {
-                ...state,
-                messages,
-            }
+            return { ...state, messages }
             break
         case 'DELETE_MESSAGE':
-            return {
-                ...state,
-                messages: state.messages.filter(message => message._id !== payload)}
+            messages = state.messages.filter(message => message._id !== payload._id)
+            return { ...state, messages }
             break
         default:
             throw new Error()

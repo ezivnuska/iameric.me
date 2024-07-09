@@ -53,9 +53,16 @@ const getMessage = async (req, res) => {
 }
 
 const getMessages = async (req, res) => {
+
+    const { id } = req.params
     
     const messages = await Message
-        .find({})
+        .find({
+            $or: [
+                { from: id },
+                { to: id },
+            ],
+        })
         .populate({
             path: 'from',
             select: 'username profileImage',
@@ -72,7 +79,7 @@ const getMessages = async (req, res) => {
         console.log('error fetching messages.')
         return res.status(200).json(null)
     }
-
+    
     return res.status(200).json({ messages })
 }
 

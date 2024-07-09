@@ -125,7 +125,7 @@ router.delete( '/entry/delete/:id',        deleteEntryById)
 // mail
 router.post(   '/message',                 createMessage)
 router.get(    '/message/:id',             getMessage)
-router.get(    '/messages',                getMessages)
+router.get(    '/messages/:id',            getMessages)
 router.delete( '/message/delete/:id',      deleteMessageById)
 
 // location

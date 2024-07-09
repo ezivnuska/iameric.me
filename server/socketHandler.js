@@ -169,9 +169,15 @@ const socketHandler = io => socket => {
 		return socketId
 	}
 
-	const onPrivateMessage = async data => {
+	const onNewMessage = async data => {
 		const receiverSocketId = await getSocketIdWithUserId(data.to._id)
 		socket.broadcast.to(receiverSocketId).emit('new_message', data)
+	}
+
+	const onMessageDeleted = async message => {
+		console.log('message deleted by sender', message.text)
+		const receiverSocketId = await getSocketIdWithUserId(message.to._id)
+		socket.broadcast.to(receiverSocketId).emit('deleted_message', message)
 	}
 
 	socket.on('disconnect', 				onDisconnect)
@@ -182,7 +188,8 @@ const socketHandler = io => socket => {
 	socket.on('forced_signout_complete', 	onForcedSignoutComplete)
 	socket.on('new_entry', 					onNewEntry)
 	socket.on('entry_deleted', 				onEntryDeleted)
-	socket.on('private_message', 			onPrivateMessage)
+	socket.on('message_deleted', 			onMessageDeleted)
+	socket.on('new_message', 				onNewMessage)
 
 	onConnected()
 }
