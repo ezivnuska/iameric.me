@@ -166,50 +166,55 @@ const Header = () => {
                     gap: 3,
                 }}
             >
+                
+                {user && (
+                    <>
+                        <Pressable
+                            onPress={() => navigate('Home')}
+                            style={{ padding: 5 }}
+                        >
+                            <Icon
+                                name='home-outline'
+                                size={16}
+                                color={theme?.colors.textDefault}
+                            />
+                        </Pressable>
 
-                <Pressable
-                    onPress={() => navigate('Home')}
-                    style={{ padding: 5 }}
-                >
-                    <Icon
-                        name='home-outline'
-                        size={16}
-                        color={theme?.colors.textDefault}
-                    />
-                </Pressable>
+                        <Pressable
+                            onPress={() => navigate('Forum')}
+                            style={{ padding: 5 }}
+                        >
+                            <Icon
+                                name='chatbubbles-outline'
+                                size={16}
+                                color={theme?.colors.textDefault}
+                            />
+                        </Pressable>
 
-                <Pressable
-                    onPress={() => navigate('Forum')}
-                    style={{ padding: 5 }}
-                >
-                    <Icon
-                        name='chatbubbles-outline'
-                        size={16}
-                        color={theme?.colors.textDefault}
-                    />
-                </Pressable>
+                        <Pressable
+                            onPress={() => navigate('Contacts')}
+                            style={{ padding: 5 }}
+                        >
+                            <Icon
+                                name='people-outline'
+                                size={16}
+                                color={theme?.colors.textDefault}
+                            />
+                        </Pressable>
 
-                <Pressable
-                    onPress={() => navigate('Contacts')}
-                    style={{ padding: 5 }}
-                >
-                    <Icon
-                        name='people-outline'
-                        size={16}
-                        color={theme?.colors.textDefault}
-                    />
-                </Pressable>
-
-                <Pressable
-                    onPress={() => navigate('Mail')}
-                    style={{ padding: 5 }}
-                >
-                    <Icon
-                        name='mail-outline'
-                        size={16}
-                        color={theme?.colors.textDefault}
-                    />
-                </Pressable>
+                        <Pressable
+                            onPress={() => navigate('Mail')}
+                            style={{ padding: 5 }}
+                        >
+                            <Icon
+                                name='mail-outline'
+                                size={16}
+                                color={theme?.colors.textDefault}
+                            />
+                        </Pressable>
+                    </>
+                )
+            }
             </View>
 
                         
@@ -234,7 +239,7 @@ const Header = () => {
                     </View>
                 ) : (
                     <SimpleButton
-                        label='Sign In or Sign Up'
+                        label='Sign In'
                         onPress={() => setModal('AUTH')}
                     />
                 )}
