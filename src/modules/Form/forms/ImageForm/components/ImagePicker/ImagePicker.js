@@ -16,7 +16,7 @@ import {
     openFileSelector,
     uploadImage,
 } from './utils'
-import { getMaxAvailableImageSize } from '@utils/images'
+// import { getMaxAvailableImageSize } from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { ActivityIndicator } from 'react-native-paper'
 
@@ -38,12 +38,12 @@ export default ImagePicker = () => {
 
     const { closeModal } = useModal()
 
-    const [size, setSize] = useState(initialSize)
+    // const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
     const [ready, setReady] = useState(false)
     let timer
-    const previewDims = useMemo(() => preview && getMaxAvailableImageSize(dims, preview.width, preview.height), [dims, preview])
+    // const previewDims = useMemo(() => preview && getMaxAvailableImageSize(dims, preview.width, preview.height), [dims, preview])
 
     useEffect(() => {
         const init = async () => {
@@ -148,11 +148,11 @@ export default ImagePicker = () => {
                 // }}
             >
                 <ImageClone
-                    width={previewDims?.width}
-                    height={previewDims?.height}
+                    width={preview.width}
+                    height={preview.height}
                     style={{
-                        width: previewDims?.width,
-                        height: previewDims?.height,
+                        width: preview.width,
+                        height: preview.height,
                         resizeMode: 'cover',
                         borderWidth: 1,
                     }}

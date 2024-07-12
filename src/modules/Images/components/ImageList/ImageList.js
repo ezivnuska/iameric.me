@@ -73,11 +73,14 @@ export default ImageList = ({ images, loading, restricted = false }) => {
                     key={`image-${index}`}
                     onPress={() => setModal('SHOWCASE', image)}
                     // disabled={loading}
-                    style={{
-                        // flexBasis: 'auto',
-                        width: imageSize,
-                        height: imageSize,
-                    }}
+                    style={[
+                        {
+                            // flexBasis: 'auto',
+                            width: imageSize,
+                            height: imageSize,
+                        },
+                        buttonStyle,
+                    ]}
                 >
                     <ImageListItem image={image} size={imageSize} />
                 </Pressable>
@@ -87,9 +90,8 @@ export default ImageList = ({ images, loading, restricted = false }) => {
                 onPress={handleUpload}
                 style={[
                     {
-                        flexBasis: 'auto',
-                        display: 'flex',
-                        flexDirection: 'row',
+                        // flexBasis: 'auto',
+                        // flexDirection: 'row',
                         justifyContent: 'center',
                         alignItems: 'center',
                         width: imageSize,

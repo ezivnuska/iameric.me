@@ -1,19 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Image,
     Pressable,
     View,
 } from 'react-native'
-import { SimpleButton } from '@components'
-// import { useApp } from '@app'
+import {
+    SimpleButton,
+    ThemedText,
+} from '@components'
+import { useApp } from '@app'
 import { useImages } from '@images'
 import { useModal } from '@modal'
-import { deleteImage } from '@utils/images'
+import {
+    deleteImage,
+    // getMaxImageDims,
+} from '@utils/images'
+import { ActivityIndicator } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ImageDisplay = ({ image }) => {
-    // const { user } = useApp()
+    const { theme } = useApp()
     const {
         imagesLoading,
         removeImage,
@@ -22,11 +30,18 @@ export default ImageDisplay = ({ image }) => {
 
     const { closeModal } = useModal()
 
+    // const [imageDims, setImageDims] = useState(null)
+
+    // useEffect(() => {
+    //     // const imageSize = getMaxImageDims(image.width, image.height, dims)
+    //     setImageDims(imageSize)
+    // }, [])
+
     const handleDelete = async () => {
         setImagesLoading(true)
         const deletedImage = await deleteImage(image._id)
         setImagesLoading(false)
-        
+
         if (deletedImage) {
             removeImage(deletedImage._id)
             closeModal()
@@ -36,28 +51,48 @@ export default ImageDisplay = ({ image }) => {
     }
 
     return (
-        <View>
-
-            <Pressable
-                onPress={() => closeModal()}
+        <View
+            style={{
+                gap: 10,
+            }}
+        >
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
             >
-                <Image
-                    source={{
-                        uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}`,
-                    }}
-                    style={{
-                        resizeMode: 'contain',
-                        height: image.height,
-                        width: image.width,
-                        marginHorizontal: 'auto',
-                    }}
-                />
-            </Pressable>
+                <ThemedText>Image Preview</ThemedText>
+
+                <Pressable
+                    onPress={() => closeModal()}
+                    style={{ padding: 5, flexGrow: 0 }}
+                >
+                    <Icon
+                        name='close-outline'
+                        size={24}
+                        color={theme?.colors.textDefault}
+                    />
+                </Pressable>
+            </View>
+            <Image
+                source={{
+                    uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
+                }}
+                style={{
+                    resizeMode: 'contain',
+                    height: image.height,
+                    width: image.width,
+                    marginHorizontal: 'auto',
+                }}
+            />
             <SimpleButton
                 label='Delete'
                 onPress={handleDelete}
                 disabled={imagesLoading}
             />
+
         </View>
     )
 }

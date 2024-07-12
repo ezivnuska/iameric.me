@@ -12,7 +12,7 @@ export default Images = () => {
 
     const isDev = process.env.NODE_ENV === 'development'
     
-    const restrictUpload = () => (uploading || isDev)
+    const isRestricted = () => (uploading || isDev)
 
     const hideUpload = () => {
         return false// temp
@@ -28,7 +28,7 @@ export default Images = () => {
     }
 
     const uploadImage = () => {
-        if (uploading || isDev) alert(`can't upload in dev mode`)
+        if (isDev) alert(`can't upload in dev mode`)
         else setModal('IMAGE')
     }
     
@@ -48,7 +48,7 @@ export default Images = () => {
             <ImageList
                 images={images}
                 loading={uploading}
-                restricted={() => restrictUpload()}
+                restricted={isDev}
             />
 
         </View>
