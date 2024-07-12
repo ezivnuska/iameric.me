@@ -6,8 +6,8 @@ import {
     ThemedText,
 } from '@components'
 import { setItem, storeToken } from '@utils/storage'
-import { isValidEmail, signup } from '@utils/auth'
-import { getFields, validateFields } from './utils'
+import { signup } from '@utils/auth'
+import { getFields, isValidEmail, validateFields } from './utils'
 import { useApp } from '@app'
 import { useForm } from '../FormContext'
 import { useModal } from '@modal'

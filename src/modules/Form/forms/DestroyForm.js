@@ -10,13 +10,11 @@ import {
 } from './components'
 import {
     getFields,
+    unsubscribe,
     validateFields,
 } from './utils'
 import { useForm } from '../FormContext'
-import {
-    signout,
-    unsubscribe,
-} from '@utils/auth'
+import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { useApp } from '@app'
 import { useModal } from '@modal'
