@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import React, { useEffect, useMemo, useState } from 'react'
+import {
+    Pressable,
+    View,
+} from 'react-native'
 import {
     ImageClone,
     SimpleButton,
@@ -13,6 +16,8 @@ import {
     openFileSelector,
     uploadImage,
 } from './utils'
+import { getMaxAvailableImageSize } from '@utils/images'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const initialSize = 280
 
@@ -20,6 +25,7 @@ export default ImagePicker = () => {
 
     const {
         dims,
+        theme,
         user,
     } = useApp()
 
@@ -29,13 +35,13 @@ export default ImagePicker = () => {
         uploading,
     } = useImages()
 
-    const {
-        // closeModal,
-    } = useModal()
+    const { closeModal } = useModal()
 
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
+
+    const previewDims = useMemo(() => preview && getMaxAvailableImageSize(dims, preview.width, preview.height), [dims, preview])
 
     useEffect(() => {
         const init = async () => {
@@ -79,7 +85,7 @@ export default ImagePicker = () => {
         const image = new Image()
         image.onload = async () => {
             const data = await handleImageData(id, image, exif)
-            setUploading(false)
+            // setUploading(false)
             if (!data) console.log('error loading image')
             else setPayload(data)
         }
@@ -106,91 +112,90 @@ export default ImagePicker = () => {
         if (!image) console.log('error uploading image')
         else addImage(image)
 
-        // closeModal()
+        closeModal()
     }
 
     const onSubmit = async () => {
         if (!payload) console.log('no image data to submit.')
         else {
             const { imageData, thumbData, userId } = payload
-            // handleUpload({ imageData, thumbData, userId })
-            console.log('submitting', payload)
+            handleUpload({ imageData, thumbData, userId })
+            // console.log('submitting', payload)
             setPayload(null)
         }
     }
 
-    return (
-        <View>
+    return preview ? (
+        <View
+            // id='dropzone'
+            style={{
+                flexDirection: 'row',
+                // flexWrap: 'wrap',
+                gap: 10,
+            }}
+        >
             <View
-                id='dropzone'
+                // style={{
+                //     flexGrow: 1,
+                // }}
+            >
+                <ImageClone
+                    width={previewDims?.width}
+                    height={previewDims?.height}
+                    style={{
+                        width: previewDims?.width,
+                        height: previewDims?.height,
+                        resizeMode: 'cover',
+                        borderWidth: 1,
+                    }}
+                    source={{ uri: preview.uri }}
+                />
+            </View>
+            <View
                 style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
+                    flex: 1,
+                    flexShrink: 1,
+                    flexGrow: 0,
                 }}
             >
-                {preview ? (
-                    <View
-                        style={{
-                            marginBottom: 15,
-                        }}
-                    >
-                        <ImageClone
-                            width={preview.width}
-                            height={preview.height}
-                            style={{
-                                width: preview.width,
-                                height: preview.height,
-                                resizeMode: 'cover',
-                                borderWidth: 1,
-                            }}
-                            source={{ uri: preview.uri }}
-                        />
-                    </View>
-                ) : null}
-                
                 <View
                     style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-evenly',
-                        width: size,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        flexWrap: 'wrap',
+                        gap: 10,
                     }}
                 >
-                    {preview ? (
-                        <View
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                width: size,
-                            }}
-                        >
-                            <SimpleButton
-                                label='Upload Image'
-                                onPress={onSubmit}
-                                disabled={uploading}
-                            />
-
-                            <SimpleButton
-                                label='Change Image'
-                                onPress={openSelector}
-                                disabled={uploading}
-                            />
-
-                        </View>
-
-                    ) : (
-                        <SimpleButton
-                            label='Select Image'
-                            onPress={openSelector}
-                            disabled={uploading}
+                    <Pressable
+                        onPress={onSubmit}
+                        disabled={uploading}
+                    >
+                        <Icon
+                            name='cloud-upload-outline'
+                            size={24}
+                            color={theme?.colors.textDefault}
                         />
-                    )}
+                    </Pressable>
+
+                    <Pressable
+                        onPress={openSelector}
+                        disabled={uploading}
+                    >
+                        <Icon
+                            name='arrow-undo-outline'
+                            size={24}
+                            color={theme?.colors.textDefault}
+                        />
+                    </Pressable>
 
                 </View>
             </View>
         </View>
+    ) : (
+        <SimpleButton
+            label='Select Image'
+            onPress={openSelector}
+            disabled={uploading}
+        />
     )
 }

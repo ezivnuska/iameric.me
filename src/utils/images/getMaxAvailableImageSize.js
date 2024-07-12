@@ -1,6 +1,8 @@
 export default getMaxAvailableImageSize = (dims, width, height) => {
-    let maxHeight = dims.height - 100
-    let maxWidth = dims.width - 100
+    // let maxHeight = dims.height / 2
+    // let maxWidth = dims.width / 2
+    let maxHeight = 200
+    let maxWidth = 200
 
     const landscape = dims.width > dims.height
 
@@ -31,6 +33,30 @@ export default getMaxAvailableImageSize = (dims, width, height) => {
                 scale = maxWidth / imageWidth
                 imageWidth = maxWidth
                 imageHeight *= scale
+            }
+        }
+    } else {
+        if (imageHeight > imageWidth) {
+            if (imageHeight > maxHeight) {
+                scale = maxHeight / imageHeight 
+                imageHeight = maxHeight
+                imageWidth *= scale
+            }
+            if (imageWidth > maxWidth) {
+                scale = maxWidth / imageWidth
+                imageWidth = maxWidth
+                imageHeight *= scale
+            }
+        } else {
+            if (imageWidth > maxWidth) {
+                scale = maxWidth / imageWidth
+                imageWidth = maxWidth
+                imageHeight *= scale
+            }
+            if (imageWidth > maxWidth) {
+                scale = maxHeight / imageHeight
+                imageHeight = maxHeight
+                imageWidth *= scale
             }
         }
     }

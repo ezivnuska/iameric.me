@@ -35,48 +35,25 @@ export default ImageForm = ({ removeImage, source = null }) => {
 
     const { formLoading } = useForm()
 
-    const renderControls = () => (
-        <View style={{
-            flexGrow: 1,
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            height: 50,
-        }}>
-            
-            {(source !== null && typeof source === 'object') && (
-                <SimpleButton
-                    label='Delete'
-                    onPress={removeImage}
-                    disabled={formLoading}
-                />
-            )}
-
-            <ImagePicker />
-
-        </View>
-    )
-
     return (
         <View
-            style={{ paddingVertical: 20 }}
+            style={{
+                borderWidth: 1,
+                borderColor: 'red',
+            }}
         >
             <FormHeader title='Upload Image' />
 
             <View
                 style={{
-                    display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    marginVertical: 10,
-                    paddingHorizontal: 10,
-                    paddingVertical: 10,
+                    flexWrap: 'wrap',
                     borderWidth: 1,
-                    borderColor: '#fff',
+                    borderColor: 'green',
                 }}
             >
                 {source && (
-                    <View style={{ paddingRight: 10 }}>
+                    <>
                         <ImageClone
                             source={source}
                             width={50}
@@ -89,10 +66,15 @@ export default ImageForm = ({ removeImage, source = null }) => {
                                 borderColor: 'pink',
                             }}
                         />
-                    </View>
+                        <SimpleButton
+                            label='Delete'
+                            onPress={removeImage}
+                            disabled={formLoading}
+                        />
+                    </>
                 )}
                     
-                {renderControls()}
+                <ImagePicker />
 
             </View>
 
