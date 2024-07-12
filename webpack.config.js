@@ -138,7 +138,9 @@ module.exports = {
     // },
   },
   resolve: {
-    // modules: ['node_modules'],
+    // modules: [
+    //   path.join(__dirname, 'node_modules'),
+    // ],
     extensions: [
       '.mjs',
       '.web.tsx',
@@ -156,6 +158,15 @@ module.exports = {
       'react-native$': 'react-native-web',
       // 'react-native-vector-icons': 'react-native-vector-icons/dist',
       'react-native-linear-gradient': 'react-native-web-linear-gradient',
+    },
+    fallback: {
+      crypto: require.resolve('crypto-browserify'),
+      assert: require.resolve('assert'),
+      http: require.resolve('stream-http'),
+      https: require.resolve('https-browserify'),
+      os: require.resolve('os-browserify/browser'),
+      stream: require.resolve('stream-browserify'),
+      vm: require.resolve('vm-browserify'),
     },
   },
   module: {
