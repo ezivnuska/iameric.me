@@ -152,7 +152,7 @@ const socketHandler = io => socket => {
 	}
 
 	const onNewEntry = async entry => {
-		io.emit('new_entry', entry)
+		socket.broadcast.emit('new_entry', entry)
 	}
 
 	const onEntryDeleted = async entry => {

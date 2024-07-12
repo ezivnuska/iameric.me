@@ -9,6 +9,7 @@ import { useApp } from '@app'
 import { useImages } from '@images'
 import { useModal } from '@modal'
 import { ActivityIndicator } from 'react-native-paper'
+import { ImageListItem } from './components'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -83,95 +84,23 @@ export default ImageList = ({ images, loading, restricted = false }) => {
                 width: '100%',
             }}
         >
-            {images && images.map((image, index) => {
-                return image.user ? (
-                    // <Pressable
-                    //     key={`image-${index}`}
-                    //     onPress={() => setModal('IMAGE', image)}
-                    //     disabled={loading}
-                    //     style={[
-                    //         {
-                    //             flexBasis: 'auto',
-                    //             width: imageSize,
-                    //             height: imageSize,
-                    //         },
-                    //         buttonStyle,
-                    //     ]}
-                    // >
-                    <View
-                        key={`image-${index}`}
-                        // onPress={() => setModal('IMAGE', image)}
-                        // disabled={loading}
-                        style={[
-                            {
-                                flexBasis: 'auto',
-                                width: imageSize,
-                                height: imageSize,
-                            },
-                            buttonStyle,
-                        ]}
-                    >
-                        <Image
-                            width={imageSize}
-                            height={imageSize}
-                            source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
-                            style={{
-                                resizeMode: 'cover',
-                                width: '100%',
-                                height: '100%',
-                            }}
-                        />
-                    </View>
-
-                ) : null
-            })}
-
-            {loading && (
-                <View
-                    key={`image-${images.length}`}
-                    style={[
-                        {
-                            flexBasis: 'auto',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: imageSize,
-                            height: imageSize,
-                        },
-                        buttonStyle,
-                    ]}
-                >
-                    <ActivityIndicator />
-                </View>
-            )}
-
-            {!hideUpload() && (
+            {images.map((image, index) => (
                 <Pressable
-                    key={`image-${images.length + (loading ? 1 : 0)}`}
-                    onPress={handleUpload}
+                    key={`image-${index}`}
+                    onPress={() => setModal('SHOWCASE', image)}
+                    // disabled={loading}
                     style={[
                         {
                             flexBasis: 'auto',
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
                             width: imageSize,
                             height: imageSize,
                         },
-                        buttonStyle,
+                        // buttonStyle,
                     ]}
                 >
-                    <Icon
-                        name='add-outline'
-                        size={32}
-                        color={theme?.colors.textDefault}
-                    />
-
+                    <ImageListItem image={image} size={imageSize} />
                 </Pressable>
-            )}
-            
+            ))}
         </View>
     )
 }

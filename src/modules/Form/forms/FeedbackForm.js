@@ -51,7 +51,6 @@ export default ({ data }) => {
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
-        console.log('data in form', data)
         const init = async () => {
             const fields = getFields(initialState, data)
             setInitialValues(fields)
@@ -119,7 +118,6 @@ export default ({ data }) => {
 
         if (!entry) console.log('Error saving entry', err)
         else {
-            console.log('form submit:data:', data)
             socket.emit('new_entry', entry)
             addEntry(entry)
             clearForm()

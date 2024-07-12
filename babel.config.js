@@ -25,6 +25,7 @@ module.exports = {
           '@notification':  './src/modules/Notification',
           '@socket':        './src/modules/Socket',
           '@form':          './src/modules/Form',
+          '@forms':         './src/modules/Form/forms',
           '@images':        './src/modules/Images',
           '@layout':        './src/layout',
           '@modules':       './src/modules',

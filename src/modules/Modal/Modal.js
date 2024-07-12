@@ -1,14 +1,18 @@
 import React from 'react'
-// import {
-//     AuthForm,
-//     DestroyForm,
-//     FeedbackForm,
-//     MessageForm,
-// } from '@forms'
-import { Form } from '@modules'
+import {
+    AuthForm,
+    DestroyForm,
+    FeedbackForm,
+    ImageForm,
+    MessageForm,
+} from '@forms'
+// import { Form } from '@modules'
 import { useForm } from '@form'
 import { useModal } from '@modal'
-import { ModalContainer } from './components'
+import {
+    ImageDisplay,
+    ModalContainer,
+} from './components'
 
 export default () => {
 
@@ -18,7 +22,16 @@ export default () => {
     const renderModalContent = () => {
         if (!modal) return null
         const { type, data } = modal
-        return <Form type={type} data={data} />
+        switch(type) {
+            case 'SHOWCASE': return <ImageDisplay image={data} />; break
+            case 'AUTH': return <AuthForm />; break
+            case 'DESTROY': return <DestroyForm />; break
+            case 'FEEDBACK': return <FeedbackForm />; break
+            case 'IMAGE': return <ImageForm />; break
+            case 'MESSAGE': return <MessageForm data={data} />; break
+            default: return null
+                // return <Form type={type} data={data} />
+        }
         switch(type) {
             case 'AUTH': return <AuthForm />; break
             case 'DESTROY': return <DestroyForm />; break
