@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     Image,
     Pressable,
@@ -13,7 +13,7 @@ import { useImages } from '@images'
 import { useModal } from '@modal'
 import {
     deleteImage,
-    // getMaxImageDims,
+    getMaxImageDims,
 } from '@utils/images'
 import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -21,7 +21,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ImageDisplay = ({ image }) => {
-    const { theme } = useApp()
+    const { dims, theme } = useApp()
     const {
         imagesLoading,
         removeImage,
@@ -31,6 +31,8 @@ export default ImageDisplay = ({ image }) => {
     const { closeModal } = useModal()
 
     // const [imageDims, setImageDims] = useState(null)
+
+    const imageDims = useMemo(() => getMaxImageDims(image.width, image.height, dims.width, dims.height), [image])
 
     // useEffect(() => {
     //     // const imageSize = getMaxImageDims(image.width, image.height, dims)
@@ -82,8 +84,8 @@ export default ImageDisplay = ({ image }) => {
                 }}
                 style={{
                     resizeMode: 'contain',
-                    height: image.height,
-                    width: image.width,
+                    width: imageDims.width,
+                    height: imageDims.height,
                     marginHorizontal: 'auto',
                 }}
             />
