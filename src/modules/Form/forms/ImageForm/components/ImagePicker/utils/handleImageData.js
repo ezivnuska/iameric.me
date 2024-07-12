@@ -70,7 +70,7 @@ const getThumbData = async (image, srcOrientation) => {
     }
 }
 
-export default handleImageUpload = async (userId, image, srcOrientation) => {
+export default handleImageData = async (userId, image, srcOrientation) => {
     const imageData = await getImageData(image, srcOrientation)
     const thumbData = await getThumbData(image, srcOrientation)
     const filename = `${userId}-${Date.now()}.png`

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout } from '@layout'
 import { AppContextProvider } from '@app'
+import { ImagesContextProvider } from '@images'
 import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
 import { MailContextProvider } from '@mail'
@@ -14,20 +15,22 @@ export default App = () => {
     return (
         <NotificationContextProvider>
             <AppContextProvider>
-                <MailContextProvider>
-                    <ForumContextProvider>
-                        <SocketContextProvider>
-                            <Compose
-                                components={[
-                                    ModalContextProvider,
-                                    FormContextProvider,
-                                ]}
-                            >
-                                <Layout />
-                            </Compose>   
-                        </SocketContextProvider>
-                    </ForumContextProvider>
-                </MailContextProvider>
+                <ImagesContextProvider>
+                    <MailContextProvider>
+                        <ForumContextProvider>
+                            <SocketContextProvider>
+                                <Compose
+                                    components={[
+                                        ModalContextProvider,
+                                        FormContextProvider,
+                                    ]}
+                                >
+                                    <Layout />
+                                </Compose>   
+                            </SocketContextProvider>
+                        </ForumContextProvider>
+                    </MailContextProvider>
+                </ImagesContextProvider>
             </AppContextProvider>
         </NotificationContextProvider>
     )

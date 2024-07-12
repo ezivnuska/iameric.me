@@ -1,3 +1,5 @@
 import ImageForm from './ImageForm'
 
-export default ImageForm
+export {
+    ImageForm,
+}
