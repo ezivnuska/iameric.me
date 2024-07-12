@@ -5,7 +5,9 @@ import {
     Screen,
     SimpleButton,
 } from '@components'
+import { Images } from '@modules'
 import { useApp } from '@app'
+import { useImages } from '@images'
 import { useModal } from '@modal'
 
 export default props => {
@@ -13,6 +15,7 @@ export default props => {
     // we are using the navigate method below.
 
     const { user } = useApp()
+    const { images } = useImages()
     const { setModal } = useModal()
     
     return (
@@ -43,6 +46,8 @@ export default props => {
                         label='Upload Image'
                         onPress={() => setModal('IMAGE')}
                     />
+
+                    <Images />
 
                 </View>
             

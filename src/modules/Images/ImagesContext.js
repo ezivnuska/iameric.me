@@ -29,24 +29,22 @@ export const useImages = () => {
 
 export const ImagesContextProvider = props => {
     
-    const { userId } = useApp()
+    const { user } = useApp()
     const [state, dispatch] = useReducer(reducer, initialState)
     
     useEffect(() => {
         const initImages = async () => {
-            if (userId) {
-                dispatch({type: 'SET_IMAGES_LOADING', payload: true })
-                const items = await loadImages(userId)
-                dispatch({type: 'SET_IMAGES_LOADING', payload: false })
-                dispatch({type: 'SET_IMAGES', payload: items })
-            }
+            dispatch({type: 'SET_IMAGES_LOADING', payload: true })
+            const items = await loadImages(user._id)
+            dispatch({type: 'SET_IMAGES_LOADING', payload: false })
+            dispatch({type: 'SET_IMAGES', payload: items })
 
             dispatch({type: 'SET_IMAGES_LOADED' })
         }
         
-        initImages()
+        if (user) initImages()
         
-    }, [userId])
+    }, [user])
 
     const actions = useMemo(() => ({
         addImage: payload => {

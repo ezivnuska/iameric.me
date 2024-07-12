@@ -37,10 +37,10 @@ export default ImageForm = ({ removeImage, source = null }) => {
 
     return (
         <View
-            style={{
-                borderWidth: 1,
-                borderColor: 'red',
-            }}
+            // style={{
+            //     borderWidth: 1,
+            //     borderColor: 'red',
+            // }}
         >
             <FormHeader title='Upload Image' />
 
@@ -48,8 +48,8 @@ export default ImageForm = ({ removeImage, source = null }) => {
                 style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    borderWidth: 1,
-                    borderColor: 'green',
+                    // borderWidth: 1,
+                    // borderColor: 'green',
                 }}
             >
                 {source && (
