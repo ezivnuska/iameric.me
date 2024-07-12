@@ -99,6 +99,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "babel-plugin-react-native-web": "^0.18.12",
     "babel-preset-expo": "^11.0.10",
+    "babel-preset-react-native": "^4.0.1",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "eslint": "^8.19.0",
@@ -117,9 +118,6 @@
     "webpack-bundle-analyzer": "^4.9.1",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.11.1"
-  },
-  "jest": {
-    "preset": "react-native"
   },
   "browser": {
     "fs": false,

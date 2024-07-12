@@ -11,6 +11,7 @@ module.exports = {
     },
   },
   plugins: [
+    ['@babel/plugin-transform-private-property-in-object', { 'loose': true }],
     [
       'module-resolver',
       {
@@ -33,13 +34,14 @@ module.exports = {
         },
       },
     ],
-    '@babel/plugin-transform-async-generator-functions',
-    '@babel/plugin-transform-class-properties',
-    '@babel/plugin-transform-nullish-coalescing-operator',
-    '@babel/plugin-transform-object-rest-spread',
-    '@babel/plugin-transform-optional-catch-binding',
-    '@babel/plugin-transform-optional-chaining',
-    '@babel/plugin-transform-export-namespace-from',
+    // '@babel/plugin-transform-async-generator-functions',
+    // '@babel/plugin-transform-class-properties',
+    // '@babel/plugin-transform-nullish-coalescing-operator',
+    // '@babel/plugin-transform-object-rest-spread',
+    // '@babel/plugin-transform-optional-catch-binding',
+    // '@babel/plugin-transform-optional-chaining',
+    // '@babel/plugin-transform-export-namespace-from',
+
     // 'react-native-reanimated/plugin',
   ],
 }
