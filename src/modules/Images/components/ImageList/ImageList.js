@@ -21,6 +21,7 @@ export default ImageList = ({ images, loading, restricted = false }) => {
         user,
     } = useApp()
     
+    const { setUploading, uploading } = useImages()
     const { setModal } = useModal()
 
     const imageGap = 5
@@ -31,7 +32,7 @@ export default ImageList = ({ images, loading, restricted = false }) => {
     useEffect(() => {
         if (dims) {
             let dimWidth = dims.width
-            if (dimWidth > 400) dimWidth = 400
+            if (dimWidth > 380) dimWidth = 380
             setImageSize((dimWidth - (numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
         }
     }, [dims])
@@ -50,25 +51,8 @@ export default ImageList = ({ images, loading, restricted = false }) => {
         backgroundColor: theme?.colors.background,
     }
 
-    const isDev = process.env.NODE_ENV === 'development'
-    
-    const restrictUpload = () => (loading || isDev)
-
-    const hideUpload = () => {
-        return false// temp
-        if (!user || restricted) return true
-        switch(user.username) {
-            case 'Customer':
-            case 'Driver':
-            case 'Vendor':
-                return true
-            default:
-                return false
-        }
-    }
-
     const handleUpload = () => {
-        if (restrictUpload()) alert(`can't upload in dev mode`)
+        if (restricted) alert(`can't upload in dev mode`)
         else setModal('IMAGE')
     }
     
@@ -89,18 +73,38 @@ export default ImageList = ({ images, loading, restricted = false }) => {
                     key={`image-${index}`}
                     onPress={() => setModal('SHOWCASE', image)}
                     // disabled={loading}
-                    style={[
-                        {
-                            flexBasis: 'auto',
-                            width: imageSize,
-                            height: imageSize,
-                        },
-                        // buttonStyle,
-                    ]}
+                    style={{
+                        // flexBasis: 'auto',
+                        width: imageSize,
+                        height: imageSize,
+                    }}
                 >
                     <ImageListItem image={image} size={imageSize} />
                 </Pressable>
             ))}
+            <Pressable
+                key={`image-${images.length + (uploading ? 1 : 0)}`}
+                onPress={handleUpload}
+                style={[
+                    {
+                        flexBasis: 'auto',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: imageSize,
+                        height: imageSize,
+                    },
+                    buttonStyle,
+                ]}
+            >
+                <Icon
+                    name='add-outline'
+                    size={32}
+                    color={theme?.colors.textDefault}
+                />
+
+            </Pressable>
         </View>
     )
 }

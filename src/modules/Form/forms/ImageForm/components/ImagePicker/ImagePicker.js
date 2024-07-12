@@ -18,6 +18,7 @@ import {
 } from './utils'
 import { getMaxAvailableImageSize } from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { ActivityIndicator } from 'react-native-paper'
 
 const initialSize = 280
 
@@ -130,6 +131,8 @@ export default ImagePicker = () => {
         }
     }
 
+    if (uploading) return <ActivityIndicator size='large' />
+    
     return preview ? (
         <View
             // id='dropzone'

@@ -42,11 +42,6 @@ export default props => {
 
                     </Cabinet>
 
-                    <SimpleButton
-                        label='Upload Image'
-                        onPress={() => setModal('IMAGE')}
-                    />
-
                     <Images />
 
                 </View>
