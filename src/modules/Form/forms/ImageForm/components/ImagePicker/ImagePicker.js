@@ -40,7 +40,8 @@ export default ImagePicker = () => {
     const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
-
+    const [ready, setReady] = useState(false)
+    let timer
     const previewDims = useMemo(() => preview && getMaxAvailableImageSize(dims, preview.width, preview.height), [dims, preview])
 
     useEffect(() => {
@@ -48,6 +49,10 @@ export default ImagePicker = () => {
             // setUploading(true)
             await openSelector(user._id)
         }
+        timer = setInterval(() => {
+            timer = null
+            setReady(true)
+        }, 2000)
         init()
     }, [])
     
@@ -59,15 +64,15 @@ export default ImagePicker = () => {
         }
     }
     
-    useEffect(() => {
-        const dropzone = document.getElementById('dropzone')
-        if (dropzone) {
-            const maxWidth = size
-            const actualWidth = dropzone.offsetWidth
-            const width = actualWidth > maxWidth ? maxWidth : actualWidth
-            setSize(width)
-        }
-    }, [dims])
+    // useEffect(() => {
+    //     const dropzone = document.getElementById('dropzone')
+    //     if (dropzone) {
+    //         const maxWidth = size
+    //         const actualWidth = dropzone.offsetWidth
+    //         const width = actualWidth > maxWidth ? maxWidth : actualWidth
+    //         setSize(width)
+    //     }
+    // }, [dims])
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
@@ -195,7 +200,7 @@ export default ImagePicker = () => {
         <SimpleButton
             label='Select Image'
             onPress={openSelector}
-            disabled={uploading}
+            disabled={uploading || !ready}
         />
     )
 }
