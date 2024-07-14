@@ -1,10 +1,6 @@
-import React, { useMemo } from 'react'
-import {
-    View,
-} from 'react-native'
-import {
-    ThemedText,
-} from '@components'
+import React from 'react'
+import { View } from 'react-native'
+import { ThemedText } from '@components'
 import { useSocket } from './SocketContext'
 import { useApp } from '@app'
 

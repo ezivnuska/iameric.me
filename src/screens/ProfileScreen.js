@@ -28,11 +28,11 @@ export default props => {
                 }}
             >
                 <View style={{ flexGrow: 1 }}>
-
                     <Images />
+                </View>
 
+                <View style={{ flexGrow: 0 }}>
                     <AdvancedSettings />
-
                 </View>
             
             </View>

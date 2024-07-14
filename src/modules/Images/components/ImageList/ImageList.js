@@ -14,7 +14,7 @@ export default ImageList = ({ images, loading, upload = null }) => {
     
     const { setModal } = useModal()
 
-    const imageGap = 0
+    const imageGap = 4
 
     const containerRef = useRef(null)
 
@@ -23,7 +23,7 @@ export default ImageList = ({ images, loading, upload = null }) => {
 
     useEffect(() => {
         if (containerRef) {
-            setImageSize(containerRef.current.clientWidth / numImagesPerRow)
+            setImageSize((containerRef.current.clientWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
         }
     }, [containerRef])
 

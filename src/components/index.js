@@ -1,5 +1,6 @@
 // common
 import Cabinet from './Cabinet'
+import Footer from './Footer'
 import Heading from './Heading'
 import ImageClone from './ImageClone'
 import LoadingView from './LoadingView'
@@ -9,6 +10,7 @@ import ThemedText from './ThemedText'
 
 export {
     Cabinet,
+    Footer,
     Heading,
     ImageClone,
     LoadingView,

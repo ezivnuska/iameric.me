@@ -42,7 +42,7 @@ export default ImagePicker = () => {
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
     const [ready, setReady] = useState(false)
-    let timer
+    // let timer
     const imageDims = useMemo(() => preview && getMaxImageDims(preview.width, preview.height, dims.width * 0.7, 300), [dims, preview])
 
     useEffect(() => {

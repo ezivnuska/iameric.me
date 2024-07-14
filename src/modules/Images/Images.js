@@ -1,5 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
+import { Heading } from '@components'
 import { ImageList } from './components'
 import { useImages } from '@images'
 import { useModal } from '@modal'
@@ -10,7 +11,9 @@ export default Images = () => {
     const { setModal } = useModal()
     
     return (
-        <View style={{ marginVertical: 20  }}>
+        <View>
+
+            <Heading title='Images' />
 
             <ImageList
                 images={images}
