@@ -28,7 +28,7 @@ export default props => {
                 }}
             >
                 <View style={{ flexGrow: 1 }}>
-                    
+
                 </View>
 
                 <View style={{ flexGrow: 0 }}>

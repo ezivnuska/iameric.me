@@ -7,6 +7,7 @@ import {
     ImageClone,
     SimpleButton,
 } from '@components'
+import { Checkbox } from '@forms/components'
 import EXIF from 'exif-js'
 import { useApp } from '@app'
 import { useModal } from '@modal'
@@ -158,6 +159,12 @@ export default ImagePicker = () => {
                         borderWidth: 1,
                     }}
                     source={{ uri: preview.uri }}
+                />
+                <Checkbox
+                    label='Make profile image'
+                    onChange={value => {
+                        //append value to request...
+                    }}
                 />
             </View>
             <View
