@@ -21,7 +21,7 @@ export default ({ entries, onDelete }) => {
                     // imagePath={getProfileImagePathFromUser(item)}
                     onDelete={onDelete}
                     // onPress={() => setModal('CONTACT', item.author)}
-                    owner={user && user._id === item.author._id}
+                    owner={user && (user._id === item.author._id) || user.role === 'admin'}
                 />
             )}
             showsVerticalScrollIndicator={false}

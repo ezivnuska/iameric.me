@@ -18,11 +18,6 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
     const { setModal } = useModal()
     const { connections } = useSocket()
 
-    const isOnline = useMemo(() => {
-        const connectionIds = connections.map(c => c.userId)
-        return connectionIds.indexOf(author._id) > -1
-    }, [author, connections])
-
     return (
         <View
             style={{
