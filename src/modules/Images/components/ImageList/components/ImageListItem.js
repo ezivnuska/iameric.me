@@ -1,10 +1,7 @@
 import React from 'react'
 import { Image } from 'react-native'
-import { useApp } from '@app'
-import { useModal } from '@modal'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-
 
 export default ImageListItem = ({ image, size }) => (
     <Image

@@ -5,17 +5,13 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useApp } from '@app'
-import { useImages } from '@images'
 import { useModal } from '@modal'
 import { ImageListItem } from './components'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-
-export default ImageList = ({ images, loading, upload = null, restricted = false }) => {
+export default ImageList = ({ images, loading, upload = null }) => {
 
     const { theme } = useApp()
     
-    const { setUploading, uploading } = useImages()
     const { setModal } = useModal()
 
     const imageGap = 0
@@ -72,7 +68,7 @@ export default ImageList = ({ images, loading, upload = null, restricted = false
             
             {upload && (
                 <Pressable
-                    key={`image-${images.length + (uploading ? 1 : 0)}`}
+                    key={`image-${images.length + (loading ? 1 : 0)}`}
                     onPress={upload}
                     style={[
                         {

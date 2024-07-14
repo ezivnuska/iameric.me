@@ -1,5 +1,6 @@
 // common
 import Cabinet from './Cabinet'
+import Heading from './Heading'
 import ImageClone from './ImageClone'
 import LoadingView from './LoadingView'
 import Screen from './Screen'
@@ -8,6 +9,7 @@ import ThemedText from './ThemedText'
 
 export {
     Cabinet,
+    Heading,
     ImageClone,
     LoadingView,
     Screen,
