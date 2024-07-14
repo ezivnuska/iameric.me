@@ -12,10 +12,11 @@ export default ({ disabled, name, onPress }) => {
         <Pressable
             disabled={disabled}
             onPress={onPress}
+            style={{ flexDirection: 'row', alignItems: 'center', height: 24 }}
         >
             <Icon
                 name={name}
-                size={22}
+                size={18}
                 color={disabled ? 'rgba(200, 200, 200, 0.5)' : theme?.colors.textDefault}
             />
         </Pressable>

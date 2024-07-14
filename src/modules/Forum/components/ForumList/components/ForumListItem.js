@@ -1,22 +1,30 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
     Image,
-    Pressable,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
+import {
+    IconButton,
+    ThemedText,
+} from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
-import { useSocket } from '@socket'
-import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) => {
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+
+export default ({ item, onDelete = null, ...props }) => {
     
     const { author, text } = item
 
-    const { theme } = useApp()
+    const { user } = useApp()
     const { setModal } = useModal()
-    const { connections } = useSocket()
+
+    const getProfileImagePathFromUser = data => {
+        return data.profileImage
+            ? `${IMAGE_PATH}/${data.username}/${data.profileImage.filename}`
+            : `${IMAGE_PATH}/avatar-default-small.png`}
+
+    const imagePath = useMemo(() => getProfileImagePathFromUser(item.author), [item])
 
     return (
         <View
@@ -24,8 +32,7 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
                 flexDirection: 'row',
                 alignItems: 'flex-start',
                 gap: 10,
-                paddingLeft: 3,
-                paddingTop: 7,
+                paddingVertical: 5,
                 borderBottomWidth: 1,
                 borderBottomColor: '#aaa',
             }}
@@ -33,51 +40,54 @@ export default ({ item, imagePath, onPress, owner, onDelete = null, ...props }) 
         >
 
             <View style={{ flexGrow: 0 }}>
-                <ThemedText bold>{author.username}:</ThemedText>
-                {/* <Image
+                <View
                     style={{
-                        width: 30,
-                        height: 30,
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                        gap: 10,
                     }}
-                    source={imagePath}
-                /> */}
+                >
+                    <View
+                        style={{
+                            borderRadius: 12,
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <Image
+                            source={imagePath}
+                            style={{
+                                width: 24,
+                                height: 24,
+                            }}
+                        />
+                    </View>
+                    {/* <ThemedText bold style={{ lineHeight: 24 }}>{author.username}:</ThemedText> */}
+                </View>
             </View>
 
-            <View style={{ flex: 1, paddingBottom: 7 }}>
-                <ThemedText>{text}</ThemedText>
-            </View>
+            <ThemedText style={{ flexGrow: 1, lineHeight: 24 }}>{text}</ThemedText>
 
             <View
                 style={{
                     flexGrow: 0,
                     flexDirection: 'row',
+                    alignItems: 'flexStart',
                     justifyContent: 'space-between',
                     flexWrap: 'wrap',
+                    gap: 10,
                 }}
             >
                 
-                <Pressable
+                <IconButton
+                    name='chatbox-ellipses-outline'
                     onPress={() => setModal('FEEDBACK', item)}
-                    style={{ padding: 5 }}
-                >
-                    <Icon
-                        name='chatbox-ellipses-outline'
-                        size={16}
-                        color={theme?.colors.textDefault}
-                    />
-                </Pressable>
+                />
             
-                {owner && (
-                    <Pressable
+                {user._id === item.author._id && (
+                    <IconButton
+                        name='trash-outline'
                         onPress={() => onDelete(item._id)}
-                        style={{ padding: 5 }}
-                    >
-                        <Icon
-                            name='trash-outline'
-                            size={16}
-                            color={theme?.colors.textDefault}
-                        />
-                    </Pressable>
+                    />
                 )}
 
             </View>

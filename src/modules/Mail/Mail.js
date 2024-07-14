@@ -22,7 +22,7 @@ export default () => {
 
     const { closeModal } = useModal()
 
-    const { socket } = useSocket()
+    const { socket, notifySocket } = useSocket()
 
     const [messageType, setMessageType] = useState('all')
 
@@ -123,8 +123,7 @@ export default () => {
         setMailLoading(true)
         await deleteMessageWithId(message._id)
         setMailLoading(false)
-        
-        socket.emit('message_deleted', message)
+        notifySocket('message_deleted', message)
         deleteMessage(message)
         closeModal()
     }

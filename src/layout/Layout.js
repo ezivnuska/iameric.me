@@ -21,7 +21,6 @@ import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 import { navigate } from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const HEADER_HEIGHT = 50
@@ -71,8 +70,8 @@ export default () => {
                     }}
                 >
 
-                    <View style={ {flexGrow: 0 }}>
-                        <Header/>
+                    <View style={ { flexGrow: 0 }}>
+                        <Header />
                     </View>
                     
                     <ScrollView
@@ -96,6 +95,7 @@ export default () => {
 }
 
 const Header = () => {
+
     const {
         dims,
         reset,
@@ -148,62 +148,44 @@ const Header = () => {
                 </Pressable>
             </View>
 
-            <View
-                style={{
-                    flexGrow: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    alignItems: 'center',
-                    gap: 3,
-                }}
-            >
+            <View style={{ flexGrow: 1 }}>
                 
                 {user && (
-                    <>
-                        <Pressable
+                    <View
+                        style={{
+                            flexGrow: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            alignItems: 'center',
+                            gap: 3,
+                            // borderLeftWidth: 1,
+                            // borderRightWidth: 1,
+                        }}
+                    >
+                        <IconButton
                             onPress={() => navigate('Home')}
-                            style={{ padding: 5 }}
-                        >
-                            <Icon
-                                name='home-outline'
-                                size={16}
-                                color={theme?.colors.textDefault}
-                            />
-                        </Pressable>
+                            name='home-outline'
+                            // disabled={routeName === 'Home'}
+                        />
 
-                        <Pressable
+                        <IconButton
+                            name='chatbubbles-outline'
                             onPress={() => navigate('Forum')}
-                            style={{ padding: 5 }}
-                        >
-                            <Icon
-                                name='chatbubbles-outline'
-                                size={16}
-                                color={theme?.colors.textDefault}
-                            />
-                        </Pressable>
+                            // disabled={routeName === 'Forum'}
+                        />
 
-                        <Pressable
+                        <IconButton
+                            name='people-outline'
                             onPress={() => navigate('Contacts')}
-                            style={{ padding: 5 }}
-                        >
-                            <Icon
-                                name='people-outline'
-                                size={16}
-                                color={theme?.colors.textDefault}
-                            />
-                        </Pressable>
+                            // disabled={routeName === 'Contacts'}
+                        />
 
-                        <Pressable
+                        <IconButton
+                            name='mail-outline'
                             onPress={() => navigate('Mail')}
-                            style={{ padding: 5 }}
-                        >
-                            <Icon
-                                name='mail-outline'
-                                size={16}
-                                color={theme?.colors.textDefault}
-                            />
-                        </Pressable>
-                    </>
+                            // disabled={routeName === 'Mail'}
+                        />
+                    </View>
                 )
             }
             </View>

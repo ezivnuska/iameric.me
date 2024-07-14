@@ -1,19 +1,32 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
     Image,
     Pressable,
+    View,
 } from 'react-native'
-import { ThemedText } from '@components'
+import {
+    IconButton,
+    ThemedText,
+} from '@components'
 import { useApp } from '@app'
-// import { getProfileImagePathFromUser } from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { useModal } from '@modal'
 import { useSocket } from '@socket'
 
-export default ({ item, onPress, ...props }) => {
-    // let imagePath = getProfileImagePathFromUser(item)
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+
+export default ({ item, onPress }) => {
     
     const { theme } = useApp()
+    const { setModal } = useModal()
     const { connections } = useSocket()
+
+    const getProfileImagePathFromUser = user => {
+        return user.profileImage
+            ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+            : `${IMAGE_PATH}/avatar-default-small.png`}
+
+    const imagePath = useMemo(() => getProfileImagePathFromUser(item), [item])
 
     const isConnected = useMemo(() => {
         const connectedIds = connections.map(c => c.userId)
@@ -21,50 +34,72 @@ export default ({ item, onPress, ...props }) => {
     }, [connections])
 
     return (
-        <Pressable
-            onPress={() => onPress(item)}
-            style={[
-                {
-                    flexBasis: 'auto',
-                    flexGrow: 1,
-                    flexShrink: 0,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    gap: 12,
-                    flexWrap: 'nowrap',
-                    paddingVertical: 5,
-                },
-                props.style,
-            ]}
+        <View
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+            }}
         >
-            {/* <Image
-                style={{
-                    flexBasis: 'auto',
-                    flexGrow: 0,
-                    width: 50,
-                    height: 50,
-                    resizeMode: 'center',
-                }}
-                source={imagePath}
-            /> */}
+            <Pressable
+                onPress={() => onPress(item)}
+                style={[
+                    {
+                        flexBasis: 'auto',
+                        flexGrow: 0,
+                        flexShrink: 0,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        gap: 10,
+                        flexWrap: 'nowrap',
+                        paddingVertical: 5,
+                    },
+                    // props.style,
+                ]}
+            >
+                <View
+                    style={{
+                        flexGrow: 0,
+                        borderRadius: 12,
+                        height: 24,
+                        overflow: 'hidden',
+                        borderWidth: 1,
+                        borderColor: '#777',
+                    }}
+                >
+                    <Image
+                        style={{
+                            width: 24,
+                            height: 24,
+                            resizeMode: 'cover',
+                        }}
+                        source={imagePath}
+                    />
+                </View>
 
-            <Icon
-                name={isConnected ? 'ellipse' : 'ellipse-outline'}
-                size={18}
-                color={isConnected ? theme?.colors.statusOn : theme?.colors.statusOff}
-            />
-
-            {/* {item.userId && item.available && (
                 <Icon
-                    name={'move-outline'}
+                    name={isConnected ? 'ellipse' : 'ellipse-outline'}
                     size={18}
-                    color={theme?.colors.textDefault}
+                    color={isConnected ? theme?.colors.statusOn : theme?.colors.statusOff}
                 />
-            )} */}
-            
-            <ThemedText>{item.username || `Guest-${String(item.socketId).substring(item.socketId.length - 3)}`}</ThemedText>
 
-        </Pressable>
+                {/* {item.userId && item.available && (
+                    <Icon
+                        name={'move-outline'}
+                        size={18}
+                        color={theme?.colors.textDefault}
+                    />
+                )} */}
+                
+                <ThemedText>{item.username || `Guest-${String(item.socketId).substring(item.socketId.length - 3)}`}</ThemedText>
+
+            </Pressable>
+
+            <IconButton
+                name='mail-outline'
+                onPress={onPress}
+            />
+        </View>
     )
 }
