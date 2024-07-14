@@ -99,7 +99,20 @@ export default ImageDisplay = ({ image }) => {
                     alignItems: 'center',
                 }}
             >
-                <ThemedText style={{ flexGrow: 1 }}>{caption || 'Image Preview'}</ThemedText>
+                <View
+                    style={{
+                        flexGrow: 0,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        gap: 10,
+                    }}
+                >
+                    <ThemedText>{caption || 'Image Preview'}</ThemedText>
+                    <IconButton
+                        name='create-outline'
+                        onPress={() => setModal('CAPTION', image)}
+                    />
+                </View>
 
                 <IconButton
                     name='close-outline'
@@ -128,13 +141,6 @@ export default ImageDisplay = ({ image }) => {
                     gap: 5,
                 }}
             >
-
-                <SimpleButton
-                    label={`${image.caption ? 'Update' : 'Add'} Caption`}
-                    onPress={() => setModal('CAPTION', image)}
-                    disabled={imagesLoading}
-                    style={{ flexGrow: 1 }}
-                />
 
                 {isProfileImage ? (
                     <SimpleButton

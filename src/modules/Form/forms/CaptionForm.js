@@ -70,7 +70,7 @@ export default ({ data }) => {
         switch (name) {
             case 'text':
                 if (!text.length) {
-                    setFormError({ name, message: 'Entry invalid.'})
+                    setFormError({ name, message: 'caption invalid.'})
                     isValid = false
                 }
                 break
@@ -108,7 +108,7 @@ export default ({ data }) => {
         const image = await setCaption(data._id, text)
         setFormLoading(false)
 
-        if (!image) console.log('Error saving entry', err)
+        if (!image) console.log('Error saving caption', err)
         else {
             updateImage(image)
             clearForm()
@@ -120,10 +120,10 @@ export default ({ data }) => {
     const renderFields = () => (
         <>
             <FormField
-                label='Add Comment'
+                label='New Caption'
                 value={text}
                 error={getError('text')}
-                placeholder='say something...'
+                placeholder='caption'
                 textContentType='default'
                 keyboardType='default'
                 autoCapitalize='sentences'
@@ -140,14 +140,14 @@ export default ({ data }) => {
         <View
             // style={{ paddingVertical: 20 }}
         >
-            <FormHeader title='Feedback' />
+            <FormHeader title='Change Caption' />
 
             <View style={{ marginBottom: 10 }}>
                 {renderFields()}
             </View>
 
             <SimpleButton
-                label={formLoading ? 'Sending' : 'Send'}
+                label={formLoading ? 'Updating' : 'Update'}
                 disabled={formLoading || formError}
                 onPress={submitFormData}
             />
