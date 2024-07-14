@@ -8,6 +8,7 @@ import {
     ForumScreen,
     // FallbackScreen,
     HomeScreen,
+    ImagesScreen,
     MailScreen,
     ProfileScreen,
 } from '@screens'
@@ -17,13 +18,60 @@ const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
-            Contacts: 'contacts',
-            Forum: 'forum',
-            Home: '',
-            Mail: 'mail',
-            Profile: 'profile',
+            Contacts: {
+                path: 'contacts',
+            },
+            Forum: {
+                path: 'forum',
+            },
+            Home: {
+                path: '',
+            },
+            Mail: {
+                path: 'mail',
+            },
+            Profile: {
+                path: 'profile',
+                screens: {
+                    Images: {
+                        path: 'images',
+                    },
+                    User: {
+                        path: '',
+                    },
+                },
+            },
         },
     },
+}
+
+const UserStack = createNativeStackNavigator()
+const UserStackScreen = () => {
+
+    return (
+        <UserStack.Navigator
+            initialRouteName='Profile'
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+
+            <UserStack.Screen
+                name='User'
+                children={props => <ProfileScreen {...props} />}
+                // component={ProfileScreen}
+                options={{ title: 'Profile' }}
+            />
+
+            <UserStack.Screen
+                name='Images'
+                children={props => <ImagesScreen {...props} />}
+                // component={ImagesScreen}
+                options={{ title: 'Images' }}
+            />
+
+        </UserStack.Navigator>
+    )
 }
 
 const AppStack = createNativeStackNavigator()
@@ -53,16 +101,16 @@ const AppStackScreen = () => {
 
             <AppStack.Screen
                 name='Profile'
-                children={props => <ProfileScreen {...props} />}
+                children={props => <UserStackScreen {...props} />}
                 // component={ProfileScreen}
-                options={{ title: 'Profile' }}
+                // options={{ title: 'Profile' }}
             />
 
             <AppStack.Screen
                 name='Forum'
                 children={props => <ForumScreen {...props} />}
                 // component={ForumScreen}
-                options={{ title: 'Profile' }}
+                options={{ title: 'Forum' }}
             />
 
             <AppStack.Screen

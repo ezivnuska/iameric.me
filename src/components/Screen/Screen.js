@@ -9,10 +9,9 @@ export default Screen = ({ children, secure = true, title = null, ...props }) =>
     const { user } = useApp()
 
     const authorized = useMemo(() => {
-        if(secure) {
-            if (user) return true
-            else return false
-        } else return true
+        let isAuthorized = true
+        if(secure && !user) isAuthorized = false
+        return isAuthorized
     }, [secure, user])
 
     useEffect(() => {

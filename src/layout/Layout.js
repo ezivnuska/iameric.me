@@ -102,10 +102,8 @@ const Header = () => {
     } = useApp()
 
     const { setModal } = useModal()
-
-    const {
-        notifySocket,
-    } = useSocket()
+    
+    const { notifySocket } = useSocket()
 
     const handleSignout = async id => {
         await signout(id)
