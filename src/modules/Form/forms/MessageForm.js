@@ -140,9 +140,8 @@ export default ({ data }) => {
     )
 
     return focused !== null ? (
-        <View
-            style={{ paddingVertical: 20 }}
-        >
+        <View>
+            
             <FormHeader title='Private Message' />
 
             <View style={{ marginBottom: 10 }}>

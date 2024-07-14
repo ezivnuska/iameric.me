@@ -4,13 +4,10 @@ import {
     View,
 } from 'react-native'
 import {
-    Cabinet,
-    Heading,
     Screen,
     SimpleButton,
 } from '@components'
 import { useApp } from '@app'
-import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
@@ -71,26 +68,10 @@ export default props => {
                         label={'Sign Out'}
                         onPress={() => handleSignout(user._id)}
                     />
-                    
-                    <AdvancedSettings />
                 </View>
 
             </View>
 
         </Screen>
-    )
-}
-
-const AdvancedSettings = () => {
-    const { setModal } = useModal()
-    return (
-        <Cabinet title='Advanced Settings'>
-            <Heading title='Close Account' />
-            <SimpleButton
-                label='Close Account'
-                onPress={() => setModal('DESTROY')}
-            />
-
-        </Cabinet>
     )
 }

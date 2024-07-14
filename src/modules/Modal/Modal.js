@@ -5,8 +5,8 @@ import {
     FeedbackForm,
     ImageForm,
     MessageForm,
+    SettingsForm,
 } from '@forms'
-// import { Form } from '@modules'
 import { useForm } from '@form'
 import { useModal } from '@modal'
 import {
@@ -29,14 +29,7 @@ export default () => {
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'IMAGE': return <ImageForm />; break
             case 'MESSAGE': return <MessageForm data={data} />; break
-            default: return null
-                // return <Form type={type} data={data} />
-        }
-        switch(type) {
-            case 'AUTH': return <AuthForm />; break
-            case 'DESTROY': return <DestroyForm />; break
-            case 'FEEDBACK': return <FeedbackForm />; break
-            case 'MESSAGE': return <MessageForm data={data} />; break
+            case 'SETTINGS': return <SettingsForm />; break
             default: return null
         }
     }

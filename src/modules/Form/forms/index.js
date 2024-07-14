@@ -3,6 +3,7 @@ import DestroyForm from './DestroyForm'
 import FeedbackForm from './FeedbackForm'
 import ImageForm from './ImageForm/ImageForm'
 import MessageForm from './MessageForm'
+import SettingsForm from './SettingsForm'
 
 export {
     AuthForm,
@@ -10,4 +11,5 @@ export {
     FeedbackForm,
     ImageForm,
     MessageForm,
+    SettingsForm,
 }
