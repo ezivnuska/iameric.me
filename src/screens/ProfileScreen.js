@@ -7,15 +7,11 @@ import {
 } from '@components'
 import { Images } from '@modules'
 import { useApp } from '@app'
-import { useImages } from '@images'
 import { useModal } from '@modal'
 
 export default props => {
-    // console.log('check out available props from navigation container...', props)
-    // we are using the navigate method below.
 
     const { user } = useApp()
-    const { images } = useImages()
     const { setModal } = useModal()
     
     return (

@@ -29,7 +29,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
                     width: '100%',
                     maxWidth: 400,
                     marginHorizontal: 'auto',
-                    paddingVertical: 10,
+                    padding: 10,
                 }}
             >
                 {children}

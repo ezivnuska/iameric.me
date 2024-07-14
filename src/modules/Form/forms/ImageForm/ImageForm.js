@@ -11,6 +11,7 @@ import {
 import EXIF from 'exif-js'
 import { useApp } from '@app'
 import { useForm } from '@form'
+import { useImages } from '@images'
 
 // USAGE
 
@@ -34,38 +35,35 @@ import { useForm } from '@form'
 export default ImageForm = ({ removeImage, source = null }) => {
 
     const { formLoading } = useForm()
+    const { uploading } = useImages()
 
     return (
-        <View
-            // style={{
-            //     borderWidth: 1,
-            //     borderColor: 'red',
-            // }}
-        >
-            <FormHeader title='Upload Image' />
+        <View>
+
+            <FormHeader 
+                title={`Upload${uploading ? 'ing' : ''} Image`}
+                closeable={!uploading}
+            />
 
             <View
                 style={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    // borderWidth: 1,
-                    // borderColor: 'green',
                 }}
             >
                 {source && (
                     <>
                         <ImageClone
                             source={source}
-                            width={50}
-                            height={50}
+                            width={200}
+                            height='auto'
                             style={{
-                                width: 50,
-                                height: 50,
-                                resizeMode: 'stretch',
-                                borderWidth: 1,
-                                borderColor: 'pink',
+                                width: 200,
+                                height: 'auto',
+                                // resizeMode: 'stretch',
                             }}
                         />
+
                         <SimpleButton
                             label='Delete'
                             onPress={removeImage}

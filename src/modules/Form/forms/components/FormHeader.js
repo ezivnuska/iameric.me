@@ -9,7 +9,7 @@ import { useForm } from '@form'
 import { useModal } from '@modal'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ title }) => {
+export default ({ title, closeable = true }) => {
 
     const { theme } = useApp()
     const { clearForm } = useForm()
@@ -25,7 +25,7 @@ export default ({ title }) => {
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                alignContent: 'center',
+                alignItems: 'center',
                 paddingBottom: 10,
             }}
         >
@@ -33,11 +33,14 @@ export default ({ title }) => {
                 {title}
             </ThemedText>
 
-            <Pressable onPress={handleClose}>
+            <Pressable 
+                onPress={handleClose}
+                diabled={!closeable}
+            >
                 <Icon
                     name={'close'}
                     size={24}
-                    color={theme?.colors.textDefault}
+                    color={closeable ? theme?.colors.textDefault : 'rgba(200, 200, 200, 0.5)'}
                 />
             </Pressable>
         </View>

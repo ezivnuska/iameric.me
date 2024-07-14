@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
-    Image,
     Pressable,
     View,
 } from 'react-native'
@@ -8,34 +7,29 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { useApp } from '@app'
 import { useImages } from '@images'
 import { useModal } from '@modal'
-import { ActivityIndicator } from 'react-native-paper'
 import { ImageListItem } from './components'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ImageList = ({ images, loading, restricted = false }) => {
+export default ImageList = ({ images, loading, upload = null, restricted = false }) => {
 
-    const {
-        dims,
-        theme,
-        user,
-    } = useApp()
+    const { theme } = useApp()
     
     const { setUploading, uploading } = useImages()
     const { setModal } = useModal()
 
-    const imageGap = 5
+    const imageGap = 0
+
+    const containerRef = useRef(null)
 
     const numImagesPerRow = 4
-    const [imageSize, setImageSize] = useState((dims.width - (20 + numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
+    const [imageSize, setImageSize] = useState(0)
 
     useEffect(() => {
-        if (dims) {
-            let dimWidth = dims.width
-            if (dimWidth > 380) dimWidth = 380
-            setImageSize((dimWidth - (numImagesPerRow * (imageGap - 1))) / numImagesPerRow)
+        if (containerRef) {
+            setImageSize(containerRef.current.clientWidth / numImagesPerRow)
         }
-    }, [dims])
+    }, [containerRef])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -50,32 +44,22 @@ export default ImageList = ({ images, loading, restricted = false }) => {
         elevation: 1,
         backgroundColor: theme?.colors.background,
     }
-
-    const handleUpload = () => {
-        if (restricted) alert(`can't upload in dev mode`)
-        else setModal('IMAGE')
-    }
     
     return (
         <View
+            ref={containerRef}
             style={{
-                display: 'flex',
                 flexDirection: 'row',
-                justifyContent: 'flex-start',
-                alignItems: 'space-between',
                 flexWrap: 'wrap',
                 gap: imageGap,
-                width: '100%',
             }}
         >
             {images.map((image, index) => (
                 <Pressable
                     key={`image-${index}`}
                     onPress={() => setModal('SHOWCASE', image)}
-                    // disabled={loading}
                     style={[
                         {
-                            // flexBasis: 'auto',
                             width: imageSize,
                             height: imageSize,
                         },
@@ -85,28 +69,30 @@ export default ImageList = ({ images, loading, restricted = false }) => {
                     <ImageListItem image={image} size={imageSize} />
                 </Pressable>
             ))}
-            <Pressable
-                key={`image-${images.length + (uploading ? 1 : 0)}`}
-                onPress={handleUpload}
-                style={[
-                    {
-                        // flexBasis: 'auto',
-                        // flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: imageSize,
-                        height: imageSize,
-                    },
-                    buttonStyle,
-                ]}
-            >
-                <Icon
-                    name='add-outline'
-                    size={32}
-                    color={theme?.colors.textDefault}
-                />
+            
+            {upload && (
+                <Pressable
+                    key={`image-${images.length + (uploading ? 1 : 0)}`}
+                    onPress={upload}
+                    style={[
+                        {
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: imageSize,
+                            height: imageSize,
+                        },
+                        buttonStyle,
+                    ]}
+                >
+                    <Icon
+                        name='add-outline'
+                        size={32}
+                        color={theme?.colors.textDefault}
+                    />
 
-            </Pressable>
+                </Pressable>
+            )}
+
         </View>
     )
 }

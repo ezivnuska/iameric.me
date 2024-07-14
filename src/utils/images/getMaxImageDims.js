@@ -1,7 +1,7 @@
 export default getMaxImageDims = (w, h, maxW, maxH) => {
     const landscape = w > h
     const maxHeight = landscape ? maxH : maxH - 120
-    const maxWidth = maxW > 380 ? 380 : maxW
+    const maxWidth = maxW > 350 ? 350 : maxW
     let scale = 1
     let width = w
     let height = h

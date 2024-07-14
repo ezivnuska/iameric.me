@@ -33,22 +33,13 @@ export default Images = () => {
     }
     
     return (
-        <View
-            style={{
-                marginVertical: 20,
-                gap: 10,
-            }}
-        >
-
-            <SimpleButton
-                label='Upload Image'
-                onPress={uploadImage}
-            />
+        <View style={{ marginVertical: 20  }}>
 
             <ImageList
                 images={images}
                 loading={uploading}
                 restricted={isDev}
+                upload={uploadImage}
             />
 
         </View>

@@ -146,7 +146,7 @@ export default ({ data }) => {
 
     return focused !== null ? (
         <View
-            style={{ paddingVertical: 20 }}
+            // style={{ paddingVertical: 20 }}
         >
             <FormHeader title='Feedback' />
 

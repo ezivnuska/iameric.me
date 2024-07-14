@@ -32,7 +32,7 @@ export default ImageDisplay = ({ image }) => {
 
     // const [imageDims, setImageDims] = useState(null)
 
-    const imageDims = useMemo(() => getMaxImageDims(image.width, image.height, dims.width, dims.height), [image])
+    const imageDims = useMemo(() => getMaxImageDims(image.width, image.height, dims.width, dims.height - 100), [image])
 
     // useEffect(() => {
     //     // const imageSize = getMaxImageDims(image.width, image.height, dims)
@@ -69,7 +69,7 @@ export default ImageDisplay = ({ image }) => {
 
                 <Pressable
                     onPress={() => closeModal()}
-                    style={{ padding: 5, flexGrow: 0 }}
+                    style={{ flexGrow: 0 }}
                 >
                     <Icon
                         name='close-outline'
@@ -78,6 +78,7 @@ export default ImageDisplay = ({ image }) => {
                     />
                 </Pressable>
             </View>
+
             <Image
                 source={{
                     uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
@@ -89,6 +90,7 @@ export default ImageDisplay = ({ image }) => {
                     marginHorizontal: 'auto',
                 }}
             />
+            
             <SimpleButton
                 label='Delete'
                 onPress={handleDelete}

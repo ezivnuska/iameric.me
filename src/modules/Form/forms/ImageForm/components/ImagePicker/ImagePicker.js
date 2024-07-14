@@ -43,17 +43,18 @@ export default ImagePicker = () => {
     const [payload, setPayload] = useState(null)
     const [ready, setReady] = useState(false)
     let timer
-    // const previewDims = useMemo(() => preview && getMaxAvailableImageSize(dims, preview.width, preview.height), [dims, preview])
+    const imageDims = useMemo(() => preview && getMaxImageDims(preview.width, preview.height, dims.width * 0.7, 300), [dims, preview])
 
     useEffect(() => {
         const init = async () => {
             // setUploading(true)
             await openSelector(user._id)
-        }
-        timer = setInterval(() => {
-            timer = null
             setReady(true)
-        }, 2000)
+        }
+        // timer = setInterval(() => {
+        //     timer = null
+        //     setReady(true)
+        // }, 2000)
         init()
     }, [])
     
@@ -148,11 +149,11 @@ export default ImagePicker = () => {
                 // }}
             >
                 <ImageClone
-                    width={preview.width}
-                    height={preview.height}
+                    width={imageDims.width}
+                    height={imageDims.height}
                     style={{
-                        width: preview.width,
-                        height: preview.height,
+                        width: imageDims.width,
+                        height: imageDims.height,
                         resizeMode: 'cover',
                         borderWidth: 1,
                     }}
