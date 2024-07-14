@@ -48,6 +48,7 @@ export default ImageList = ({ images, loading, upload = null }) => {
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 gap: imageGap,
+                width: '100%',
             }}
         >
             {images.map((image, index) => (

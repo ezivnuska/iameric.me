@@ -29,6 +29,7 @@ export default ImagePicker = () => {
         dims,
         theme,
         user,
+        setProfileImage,
     } = useApp()
 
     const {
@@ -43,39 +44,27 @@ export default ImagePicker = () => {
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
     const [ready, setReady] = useState(false)
-    // let timer
+    const [timer, setTimer] = useState(null)
+    const [avatarCheckbox, setAvatarCheckbox] = useState(false)
     const imageDims = useMemo(() => preview && getMaxImageDims(preview.width, preview.height, dims.width * 0.7, 300), [dims, preview])
 
     useEffect(() => {
         const init = async () => {
-            // setUploading(true)
+            setTimer(setInterval(() => {
+                setReady(true)
+                setTimer(null)
+            }, 2000))
             await openSelector(user._id)
-            setReady(true)
         }
-        // timer = setInterval(() => {
-        //     timer = null
-        //     setReady(true)
-        // }, 2000)
         init()
     }, [])
     
     const openSelector = async id => {
         const uri = await openFileSelector()
         if (uri) {
-            // console.log('image selected', uri)
             handleSelectedImage(uri, id)
         }
     }
-    
-    // useEffect(() => {
-    //     const dropzone = document.getElementById('dropzone')
-    //     if (dropzone) {
-    //         const maxWidth = size
-    //         const actualWidth = dropzone.offsetWidth
-    //         const width = actualWidth > maxWidth ? maxWidth : actualWidth
-    //         setSize(width)
-    //     }
-    // }, [dims])
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
@@ -93,7 +82,6 @@ export default ImagePicker = () => {
         const image = new Image()
         image.onload = async () => {
             const data = await handleImageData(id, image, exif)
-            // setUploading(false)
             if (!data) console.log('error loading image')
             else setPayload(data)
         }
@@ -106,7 +94,6 @@ export default ImagePicker = () => {
             setPreview({ uri, height, width })
         } else if (preview) {
             setPreview(null)
-            // closeModal()
         }
     }, [payload])
 
@@ -114,11 +101,14 @@ export default ImagePicker = () => {
         if (process.env.NODE_ENV === 'development') return alert('cant upload in dev')
         
         setUploading(true)
-        const image = await uploadImage(imageData)
+        const image = await uploadImage({ ...imageData, avatar: avatarCheckbox })
         setUploading(false)
         
         if (!image) console.log('error uploading image')
-        else addImage(image)
+        else {
+            addImage(image)
+            setProfileImage(image)
+        }
 
         closeModal()
     }
@@ -128,7 +118,6 @@ export default ImagePicker = () => {
         else {
             const { imageData, thumbData, userId } = payload
             handleUpload({ imageData, thumbData, userId })
-            // console.log('submitting', payload)
             setPayload(null)
         }
     }
@@ -137,17 +126,15 @@ export default ImagePicker = () => {
     
     return preview ? (
         <View
-            // id='dropzone'
             style={{
                 flexDirection: 'row',
-                // flexWrap: 'wrap',
                 gap: 10,
             }}
         >
             <View
-                // style={{
-                //     flexGrow: 1,
-                // }}
+                style={{
+                    gap: 10,
+                }}
             >
                 <ImageClone
                     width={imageDims.width}
@@ -162,9 +149,7 @@ export default ImagePicker = () => {
                 />
                 <Checkbox
                     label='Make profile image'
-                    onChange={value => {
-                        //append value to request...
-                    }}
+                    onChange={value => setAvatarCheckbox(value)}
                 />
             </View>
             <View

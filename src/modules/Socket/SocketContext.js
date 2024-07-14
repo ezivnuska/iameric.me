@@ -42,7 +42,7 @@ export const SocketContextProvider = ({ children }) => {
     useEffect(() => {
         if (user) {
             socket.emit('connection_details', user)
-            addNotification(`you are signed in as ${user.username}`)
+            // addNotification(`you are signed in as ${user.username}`)
         }
     }, [user])
     
