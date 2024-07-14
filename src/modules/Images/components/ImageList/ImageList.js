@@ -10,7 +10,7 @@ import { ImageListItem } from './components'
 
 export default ImageList = ({ images, loading, upload = null }) => {
 
-    const { theme } = useApp()
+    const { dims, theme } = useApp()
     
     const { setModal } = useModal()
 
@@ -25,7 +25,7 @@ export default ImageList = ({ images, loading, upload = null }) => {
         if (containerRef) {
             setImageSize((containerRef.current.clientWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
         }
-    }, [containerRef])
+    }, [dims])
 
     const buttonStyle = {
         borderWidth: 1,

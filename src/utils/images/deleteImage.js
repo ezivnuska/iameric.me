@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export default deleteImage = async (imageId, isProductImage = null, isProfileImage = null) => {
+export default deleteImage = async (imageId, isProfileImage = null, isProductImage = null) => {
     const { data } = await axios.post('/api/images/delete', {
         imageId,
         isProductImage,

@@ -70,16 +70,22 @@ const getImageWithUsernameByImageId = async (req, res) => {
 const updateProfileImage = async (req, res) => {
     const { userId, imageId } = req.body
     
-    const user = await User
-        .findOneAndUpdate({ _id: userId }, { $set: { profileImage: imageId } }, { new: true })
-        .populate({ path: 'profileImage', select: 'filename width height' })
+    let user = null
+    if (imageId) {
+        user = await User
+            .findOneAndUpdate({ _id: userId }, { $set: { profileImage: imageId } }, { new: true })
+            .populate({ path: 'profileImage', select: 'filename width height' })
+    } else {
+        user = await User
+            .findOneAndUpdate({ _id: userId }, { $set: { profileImage: null } }, { new: true })
+    }
 
     if (!user) {
         console.log('Error: could not find user while updating avatar')
         return res.status(200).json(null)
     }
     
-    return res.status(200).json(user.profileImage)
+    return res.status(200).json({ user })
 }
 
 const removeImage = path => rm(path, () => console.log('removed file at path', path))

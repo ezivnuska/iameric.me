@@ -14,7 +14,7 @@ import { useModal } from '@modal'
 import {
     deleteImage,
     getMaxImageDims,
-    setImageAsAvatar,
+    setAvatar,
 } from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -36,35 +36,45 @@ export default ImageDisplay = ({ image }) => {
 
     const { closeModal } = useModal()
 
-    // const [imageDims, setImageDims] = useState(null)
+    const imageDims = useMemo(() => getMaxImageDims(image.width, image.height, dims.width, dims.height - 100), [dims, image])
 
-    const imageDims = useMemo(() => getMaxImageDims(image.width, image.height, dims.width, dims.height - 100), [image])
-
-    // useEffect(() => {
-    //     // const imageSize = getMaxImageDims(image.width, image.height, dims)
-    //     setImageDims(imageSize)
-    // }, [])
-
+    const isProfileImage = useMemo(() => (user && user.profileImage && user.profileImage._id === image._id), [image, user])
+    
     const handleDelete = async () => {
-        setImagesLoading(true)
-        const deletedImage = await deleteImage(image._id)
-        setImagesLoading(false)
 
+        if (process.env.NODE_ENV === 'development') return alert(`Can't delete in development`)
+
+        setImagesLoading(true)
+        const deletedImage = await deleteImage(image._id, isProfileImage)
+        setImagesLoading(false)
+        
         if (deletedImage) {
+            if (isProfileImage) setProfileImage(null)
             removeImage(deletedImage._id)
             closeModal()
         } else {
-            console.log('could not delete image')
+            console.log('Error deleting image.')   
         }
     }
 
     const makeAvatar = async () => {
 
         setImagesLoading(true)
-        const avatar = await setImageAsAvatar(image._id, user._id)
+        const avatar = await setAvatar(user._id, image._id)
         setImagesLoading(false)
         
         if (avatar) setProfileImage(avatar)
+
+        closeModal()
+    }
+
+    const removeAvatar = async () => {
+
+        setImagesLoading(true)
+        await setAvatar(user._id)
+        setImagesLoading(false)
+        
+        setProfileImage(null)
 
         closeModal()
     }
@@ -114,11 +124,19 @@ export default ImageDisplay = ({ image }) => {
                 disabled={imagesLoading}
             />
 
-            <SimpleButton
-                label='Make Avatar'
-                onPress={makeAvatar}
-                disabled={imagesLoading}
-            />
+            {isProfileImage ? (
+                <SimpleButton
+                    label='Remove as Avatar'
+                    onPress={removeAvatar}
+                    disabled={imagesLoading}
+                />
+            ) : (
+                <SimpleButton
+                    label='Make Avatar'
+                    onPress={makeAvatar}
+                    disabled={imagesLoading}
+                />
+            )}
 
         </View>
     )
