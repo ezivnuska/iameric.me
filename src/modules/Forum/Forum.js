@@ -1,6 +1,9 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { SimpleButton } from '@components'
+import {
+    SimpleButton,
+    ThemedText,
+} from '@components'
 import { ForumList } from './components'
 import { useApp } from '@app'
 import { useForum } from '@forum'
@@ -56,10 +59,14 @@ export default () => {
                 onPress={() => setModal('FEEDBACK')}
             />
 
-            <ForumList
-                entries={entries}
-                onDelete={removeEntry}
-            />
+            {entries.length ? (
+                <ForumList
+                    entries={entries}
+                    onDelete={removeEntry}
+                />
+            ) : (
+                <ThemedText>No entries yet.</ThemedText>
+            )}
 
         </View>
     )
