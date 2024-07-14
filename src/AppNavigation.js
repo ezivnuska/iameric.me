@@ -30,49 +30,44 @@ const linking = {
             Mail: {
                 path: 'mail',
             },
-            Profile: {
-                path: 'profile',
-                screens: {
-                    Images: {
-                        path: 'images',
-                    },
-                    User: {
-                        path: '',
-                    },
-                },
+            Images: {
+                path: 'images',
+            },
+            User: {
+                path: 'user',
             },
         },
     },
 }
 
-const UserStack = createNativeStackNavigator()
-const UserStackScreen = () => {
+// const UserStack = createNativeStackNavigator()
+// const UserStackScreen = () => {
 
-    return (
-        <UserStack.Navigator
-            initialRouteName='Profile'
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
+//     return (
+//         <UserStack.Navigator
+//             initialRouteName='Profile'
+//             screenOptions={{
+//                 headerShown: false,
+//             }}
+//         >
 
-            <UserStack.Screen
-                name='User'
-                children={props => <ProfileScreen {...props} />}
-                // component={ProfileScreen}
-                options={{ title: 'Profile' }}
-            />
+//             <UserStack.Screen
+//                 name='Profile'
+//                 children={props => <ProfileScreen {...props} />}
+//                 // component={ProfileScreen}
+//                 options={{ title: 'Profile' }}
+//             />
 
-            <UserStack.Screen
-                name='Images'
-                children={props => <ImagesScreen {...props} />}
-                // component={ImagesScreen}
-                options={{ title: 'Images' }}
-            />
+//             <UserStack.Screen
+//                 name='Images'
+//                 children={props => <ImagesScreen {...props} />}
+//                 // component={ImagesScreen}
+//                 options={{ title: 'Images' }}
+//             />
 
-        </UserStack.Navigator>
-    )
-}
+//         </UserStack.Navigator>
+//     )
+// }
 
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
@@ -100,10 +95,17 @@ const AppStackScreen = () => {
             />
 
             <AppStack.Screen
-                name='Profile'
-                children={props => <UserStackScreen {...props} />}
+                name='User'
+                children={props => <ProfileScreen {...props} />}
                 // component={ProfileScreen}
-                // options={{ title: 'Profile' }}
+                options={{ title: 'Profile' }}
+            />
+
+            <AppStack.Screen
+                name='Images'
+                children={props => <ImagesScreen {...props} />}
+                // component={ImagesScreen}
+                options={{ title: 'Images' }}
             />
 
             <AppStack.Screen

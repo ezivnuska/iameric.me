@@ -6,6 +6,7 @@ import {
     View,
 } from 'react-native'
 import {
+    IconButton,
     SimpleButton,
     ThemedText,
 } from '@components'
@@ -116,13 +117,10 @@ const Header = () => {
 
     const renderSignOutButton = () => {
         return dims.width < 390 ? (
-            <SimpleButton onPress={() => handleSignout(user._id)}>
-                <Icon
-                    name='close-outline'
-                    size={20}
-                    color='#fff'
-                />
-            </SimpleButton>
+            <IconButton
+                onPress={() => handleSignout(user._id)}
+                name='close-outline'
+            />
         ) : (
             <SimpleButton
                 label={'Sign Out'}
@@ -228,7 +226,7 @@ const Header = () => {
                             gap: 10,
                         }}
                     >
-                        <Pressable onPress={() => navigate('Profile')}>
+                        <Pressable onPress={() => navigate('User')}>
                             <ThemedText>{user.username}</ThemedText>
                         </Pressable>
 

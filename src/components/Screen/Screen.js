@@ -1,10 +1,13 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { ScreenTitle } from './components'
+import {
+    ScreenTitle,
+    UserNav,
+} from './components'
 import { Footer } from '@components'
 import { useApp } from '@app'
 
-export default Screen = ({ children, secure = true, title = null, ...props }) => {
+export default Screen = ({ title, children, secure = true, profile = false, ...props }) => {
 
     const { user } = useApp()
 
@@ -25,8 +28,11 @@ export default Screen = ({ children, secure = true, title = null, ...props }) =>
         <View style={{ flexGrow: 1 }}>
 
             <View style={{ flexGrow: 1 }}>
-            
-                {title && <ScreenTitle title={title} />}
+                <ScreenTitle
+                    {...props}
+                    title={title}
+                    profile={profile}
+                />
                 
                 {authorized && children}
             </View>
