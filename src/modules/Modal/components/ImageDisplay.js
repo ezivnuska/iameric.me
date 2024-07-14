@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
 import {
     Image,
-    Pressable,
     View,
 } from 'react-native'
 import {
+    IconButton,
     SimpleButton,
     ThemedText,
 } from '@components'
@@ -16,7 +16,6 @@ import {
     getMaxImageDims,
     setAvatar,
 } from '@utils/images'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -24,17 +23,25 @@ export default ImageDisplay = ({ image }) => {
     const {
         dims,
         setProfileImage,
-        theme,
         user,
     } = useApp()
 
     const {
+        images,
         imagesLoading,
         removeImage,
         setImagesLoading,
     } = useImages()
 
-    const { closeModal } = useModal()
+    const {
+        closeModal,
+        setModal,
+    } = useModal()
+
+    const caption = useMemo(() => {
+        const img = images.filter(i => i._id === image._id)[0]
+        return img.caption
+    }, [image, user])
 
     const imageDims = useMemo(() => getMaxImageDims(image.width, image.height, dims.width, dims.height - 100), [dims, image])
 
@@ -92,32 +99,36 @@ export default ImageDisplay = ({ image }) => {
                     alignItems: 'center',
                 }}
             >
-                <ThemedText>Image Preview</ThemedText>
+                <ThemedText style={{ flexGrow: 1 }}>Image Preview</ThemedText>
 
-                <Pressable
+                <IconButton
+                    name='close-outline'
                     onPress={() => closeModal()}
                     style={{ flexGrow: 0 }}
-                >
-                    <Icon
-                        name='close-outline'
-                        size={24}
-                        color={theme?.colors.textDefault}
-                    />
-                </Pressable>
+                />
             </View>
 
-            <Image
-                source={{
-                    uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
-                }}
-                style={{
-                    resizeMode: 'contain',
-                    width: imageDims.width,
-                    height: imageDims.height,
-                    marginHorizontal: 'auto',
-                }}
+            <View>
+                <Image
+                    source={{
+                        uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
+                    }}
+                    style={{
+                        resizeMode: 'contain',
+                        width: imageDims.width,
+                        height: imageDims.height,
+                        marginHorizontal: 'auto',
+                    }}
+                />
+                {caption && <ThemedText>{caption}</ThemedText>}
+            </View>
+
+            <SimpleButton
+                label='Add Caption'
+                onPress={() => setModal('CAPTION', image)}
+                disabled={imagesLoading}
             />
-            
+
             <SimpleButton
                 label='Delete'
                 onPress={handleDelete}

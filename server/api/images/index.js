@@ -434,6 +434,19 @@ const deletePreview = async (req, res) => {
     return res.status(200).json({ filename })
 }
 
+const setImageCaption = async (req, res) => {
+    const { id, text } = req.body
+    let image = await UserImage.findOne({ _id: id })
+    if (!image) console.log('Error adding image caption')
+    else {
+        image.caption = text
+        image = await UserImage
+            .findOneAndUpdate({ _id: id }, { $set: { caption: text } }, { new: true })
+            .populate('user', 'username')
+    }
+    return res.status(200).json(image ? { image } : null)
+}
+
 module.exports = {
     deleteImageById,
     deletePreview,
@@ -446,6 +459,7 @@ module.exports = {
     removeImage,
     removeImageAndThumb,
     saveUserImage,
+    setImageCaption,
     updateProfileImage,
     uploadAvatar,
     uploadImage,

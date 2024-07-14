@@ -37,6 +37,7 @@ const {
     getImageWithUsernameByImageId,
     getImageIdFromFilename,
     getProfileImageByUserId,
+    setImageCaption,
     updateProfileImage,
     uploadAvatar,
     uploadImage,
@@ -143,6 +144,7 @@ router.get(    '/product/:id',             getProductById)
 
 // images
 router.post(   '/user/avatar',             updateProfileImage)
+router.post(   '/user/image/caption',      setImageCaption)
 router.post(   '/image/upload',            uploadImage)
 router.get(    '/image/:id',               getImageWithUsernameByImageId)
 router.get(    '/avatar/:id',              getProfileImageByUserId)

@@ -1,9 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import {
-    ScreenTitle,
-    UserNav,
-} from './components'
+import { ScreenTitle } from './components'
 import { Footer } from '@components'
 import { useApp } from '@app'
 

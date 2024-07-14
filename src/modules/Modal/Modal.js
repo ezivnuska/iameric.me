@@ -1,6 +1,7 @@
 import React from 'react'
 import {
     AuthForm,
+    CaptionForm,
     DestroyForm,
     FeedbackForm,
     ImageForm,
@@ -23,6 +24,7 @@ export default () => {
         if (!modal) return null
         const { type, data } = modal
         switch(type) {
+            case 'CAPTION': return <CaptionForm data={data} />; break
             case 'SHOWCASE': return <ImageDisplay image={data} />; break
             case 'AUTH': return <AuthForm />; break
             case 'DESTROY': return <DestroyForm />; break

@@ -15,6 +15,7 @@ const initialState = {
     setImages: () => {},
     setImagesLoading: () => {},
     setUploading: () => {},
+    updateImage: () => {},
 }
 
 export const ImagesContext = createContext(initialState)
@@ -66,6 +67,9 @@ export const ImagesContextProvider = props => {
         },
         setUploading: payload => {
             dispatch({ type: 'SET_UPLOADING', payload })
+        },
+        updateImage: payload => {
+            dispatch({ type: 'UPDATE_IMAGE', payload })
         },
     }), [state, dispatch])
 
@@ -119,6 +123,13 @@ const reducer = (state, action) => {
                 images: [],
                 imagesLoaded: false,
             }
+            break
+        case 'UPDATE_IMAGE':
+            return {
+                ...state,
+                images: state.images.map(image => image._id === payload._id ? payload : image),
+            }
+            break
         default:
             throw new Error()
     }
