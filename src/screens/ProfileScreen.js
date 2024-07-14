@@ -1,5 +1,8 @@
 import React from 'react'
-import { View } from 'react-native'
+import {
+    Image,
+    View,
+} from 'react-native'
 import {
     Cabinet,
     Heading,
@@ -9,9 +12,15 @@ import {
 import { useApp } from '@app'
 import { useModal } from '@modal'
 
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+
 export default props => {
 
-    const { user } = useApp()
+    const { theme, user } = useApp()
+
+    const source = (user && user.profileImage)
+        ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+        : `${IMAGE_PATH}/avatar-default.png`
     
     return (
         <Screen
@@ -28,7 +37,16 @@ export default props => {
                 }}
             >
                 <View style={{ flexGrow: 1 }}>
-
+                    <Image
+                        source={source}
+                        style={{
+                            width: 100,
+                            height: 100,
+                            resizeMode: 'cover',
+                            borderWidth: 1,
+                            borderColor: theme?.colors.textDefault,
+                        }}
+                    />
                 </View>
 
                 <View style={{ flexGrow: 0 }}>

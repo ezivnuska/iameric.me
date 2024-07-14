@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
     Image,
     Pressable,
@@ -14,14 +14,20 @@ import { useModal } from '@modal'
 import {
     deleteImage,
     getMaxImageDims,
+    setImageAsAvatar,
 } from '@utils/images'
-import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ImageDisplay = ({ image }) => {
-    const { dims, theme } = useApp()
+    const {
+        dims,
+        setProfileImage,
+        theme,
+        user,
+    } = useApp()
+
     const {
         imagesLoading,
         removeImage,
@@ -50,6 +56,17 @@ export default ImageDisplay = ({ image }) => {
         } else {
             console.log('could not delete image')
         }
+    }
+
+    const makeAvatar = async () => {
+
+        setImagesLoading(true)
+        const avatar = await setImageAsAvatar(image._id, user._id)
+        setImagesLoading(false)
+        
+        if (avatar) setProfileImage(avatar)
+
+        closeModal()
     }
 
     return (
@@ -94,6 +111,12 @@ export default ImageDisplay = ({ image }) => {
             <SimpleButton
                 label='Delete'
                 onPress={handleDelete}
+                disabled={imagesLoading}
+            />
+
+            <SimpleButton
+                label='Make Avatar'
+                onPress={makeAvatar}
                 disabled={imagesLoading}
             />
 

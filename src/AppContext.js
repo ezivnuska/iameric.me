@@ -36,6 +36,7 @@ const initialState = {
     user: null,
     reset: () => {},
     setUser: () => {},
+    setProfileImage: () => {},
     toggleTheme: () => {},
 }
 
@@ -99,12 +100,16 @@ export const AppContextProvider = ({ children }) => {
         init()
     }, [])
 
-    const reset = async () => {
+    const reset = () => {
         dispatch({ type: 'RESET' })
     }
 
-    const setUser = async payload => {
+    const setUser = payload => {
         dispatch({ type: 'SET_USER', payload })
+    }
+
+    const setProfileImage = payload => {
+        dispatch({ type: 'SET_PROFILE_IMAGE', payload })
     }
 
     const toggleTheme = async () => {
@@ -115,6 +120,7 @@ export const AppContextProvider = ({ children }) => {
 
     const actions = useMemo(() => ({
         reset,
+        setProfileImage,
         setUser,
         toggleTheme,
     }), [state, dispatch])
@@ -138,6 +144,15 @@ const reducer = (state, action) => {
     switch(type) {
         case 'RESET': return { ...state, user: null }; break
         case 'APP_LOADED': return { ...state, appLoaded: true }; break
+        case 'SET_PROFILE_IMAGE':
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    profileImage: payload,
+                },
+            }
+            break
         case 'SET_TOKEN': return { ...state, token: payload }; break
         case 'SET_USER': return { ...state, user: payload }; break
         case 'TOGGLE_THEME':
