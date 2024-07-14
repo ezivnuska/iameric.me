@@ -5,21 +5,17 @@ import {
     FormHeader,
 } from './components'
 import { SimpleButton } from '@components'
-import { useApp } from '@app'
 import { useForm } from '@form'
 import { useImages } from '@images'
 import { useModal } from '@modal'
-import { useSocket } from '@socket'
 import { getFields, validateFields } from './utils'
 import { setCaption } from '@utils/images'
 
 export default ({ data }) => {
 
-    const initialState = { text: '' }
+    const initialState = { text: data.caption }
 
-    const { user } = useApp()
     const { updateImage } = useImages()
-    const { socket } = useSocket()
 
     const {
         clearForm,

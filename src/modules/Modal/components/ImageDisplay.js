@@ -99,7 +99,7 @@ export default ImageDisplay = ({ image }) => {
                     alignItems: 'center',
                 }}
             >
-                <ThemedText style={{ flexGrow: 1 }}>Image Preview</ThemedText>
+                <ThemedText style={{ flexGrow: 1 }}>{caption || 'Image Preview'}</ThemedText>
 
                 <IconButton
                     name='close-outline'
@@ -107,47 +107,58 @@ export default ImageDisplay = ({ image }) => {
                     style={{ flexGrow: 0 }}
                 />
             </View>
+            
+            <Image
+                source={{
+                    uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
+                }}
+                style={{
+                    resizeMode: 'contain',
+                    width: imageDims.width,
+                    height: imageDims.height,
+                    marginHorizontal: 'auto',
+                }}
+            />
 
-            <View>
-                <Image
-                    source={{
-                        uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
-                    }}
-                    style={{
-                        resizeMode: 'contain',
-                        width: imageDims.width,
-                        height: imageDims.height,
-                        marginHorizontal: 'auto',
-                    }}
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                    gap: 5,
+                }}
+            >
+
+                <SimpleButton
+                    label={`${image.caption ? 'Update' : 'Add'} Caption`}
+                    onPress={() => setModal('CAPTION', image)}
+                    disabled={imagesLoading}
+                    style={{ flexGrow: 1 }}
                 />
-                {caption && <ThemedText>{caption}</ThemedText>}
+
+                {isProfileImage ? (
+                    <SimpleButton
+                        label='Unset Avatar'
+                        onPress={removeAvatar}
+                        disabled={imagesLoading}
+                        style={{ flexGrow: 1 }}
+                    />
+                ) : (
+                    <SimpleButton
+                        label='Make Avatar'
+                        onPress={makeAvatar}
+                        disabled={imagesLoading}
+                        style={{ flexGrow: 1 }}
+                    />
+                )}
+
+                <SimpleButton
+                    label='Delete'
+                    onPress={handleDelete}
+                    disabled={imagesLoading}
+                    style={{ flexGrow: 1 }}
+                />
             </View>
-
-            <SimpleButton
-                label='Add Caption'
-                onPress={() => setModal('CAPTION', image)}
-                disabled={imagesLoading}
-            />
-
-            <SimpleButton
-                label='Delete'
-                onPress={handleDelete}
-                disabled={imagesLoading}
-            />
-
-            {isProfileImage ? (
-                <SimpleButton
-                    label='Remove as Avatar'
-                    onPress={removeAvatar}
-                    disabled={imagesLoading}
-                />
-            ) : (
-                <SimpleButton
-                    label='Make Avatar'
-                    onPress={makeAvatar}
-                    disabled={imagesLoading}
-                />
-            )}
 
         </View>
     )
