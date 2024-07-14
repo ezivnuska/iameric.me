@@ -1,5 +1,6 @@
 import React from 'react'
 import {
+    Image,
     Pressable,
     SafeAreaView,
     ScrollView,
@@ -22,6 +23,7 @@ import { navigate } from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const HEADER_HEIGHT = 50
 
 // Header code at bottom
@@ -31,7 +33,6 @@ export default () => {
     const {
         dims,
         theme,
-        toggleTheme,
     } = useApp()
 
     return (
@@ -113,21 +114,16 @@ const Header = () => {
         reset()
     }
 
+    <SimpleButton
+        label={'Sign Out'}
+        onPress={() => handleSignout(user._id)}
+    />
+
     const renderBrand = () => dims.width < 340 ? 'iam' : 'iameric'
 
-    const renderSignOutButton = () => {
-        return dims.width < 390 ? (
-            <IconButton
-                onPress={() => handleSignout(user._id)}
-                name='close-outline'
-            />
-        ) : (
-            <SimpleButton
-                label={'Sign Out'}
-                onPress={() => handleSignout(user._id)}
-            />
-        )
-    }
+    const source = (user && user.profileImage)
+        ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+        : `${IMAGE_PATH}/avatar-default.png`
 
     return (
         <View
@@ -212,26 +208,40 @@ const Header = () => {
             }
             </View>
 
-                        
-            <View
-                style={{
-                    flexGrow: 0,
-                }}
-            >
+            <View style={{ flexGrow: 0 }}>
+
                 {user ? (
-                    <View
+                    <Pressable
+                        onPress={() => navigate('User')}
                         style={{
                             flexDirection: 'row',
                             alignItems: 'center',
                             gap: 10,
                         }}
                     >
-                        <Pressable onPress={() => navigate('User')}>
-                            <ThemedText>{user.username}</ThemedText>
-                        </Pressable>
+                        <View
+                            style={{
+                                width: 24,
+                                height: 24,
+                                borderRadius: 12,
+                                borderWidth: 1,
+                                borderColor: theme?.colors.textDefault,
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <Image
+                                source={source}
+                                style={{
+                                    width: 24,
+                                    height: 24,
+                                    resizeMode: 'cover',
+                                }}
+                            />
+                        </View>
 
-                        {renderSignOutButton()}
-                    </View>
+                        <ThemedText>{user.username}</ThemedText>
+                        
+                    </Pressable>
                 ) : (
                     <SimpleButton
                         label='Sign In'

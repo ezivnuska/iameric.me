@@ -11,16 +11,27 @@ import {
 } from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
+import { useSocket } from '@socket'
+import { signout } from '@utils/auth'
+import { cleanStorage } from '@utils/storage'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default props => {
 
-    const { theme, user } = useApp()
+    const { reset, theme, user } = useApp()
+    const { notifySocket } = useSocket()
 
     const source = (user && user.profileImage)
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
         : `${IMAGE_PATH}/avatar-default.png`
+
+    const handleSignout = async id => {
+        await signout(id)
+        notifySocket('user_signed_out', id)
+        cleanStorage()
+        reset()
+    }
     
     return (
         <Screen
@@ -49,7 +60,18 @@ export default props => {
                     />
                 </View>
 
-                <View style={{ flexGrow: 0 }}>
+                <View
+                    style={{
+                        flexGrow: 0,
+                        gap: 10,
+                    }}
+                >
+
+                    <SimpleButton
+                        label={'Sign Out'}
+                        onPress={() => handleSignout(user._id)}
+                    />
+                    
                     <AdvancedSettings />
                 </View>
 
