@@ -1,10 +1,13 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import {
-    SimpleButton,
+    IconButton,
     ThemedText,
 } from '@components'
-import { ForumList } from './components'
+import {
+    ForumHeader,
+    ForumList,
+} from './components'
 import { useApp } from '@app'
 import { useForum } from '@forum'
 import { useModal } from '@modal'
@@ -13,7 +16,6 @@ import { deleteEntryWithId } from '@utils/forum'
 
 export default () => {
 
-    const { user } = useApp()
     const { socket } = useSocket()
 
     const {
@@ -28,17 +30,10 @@ export default () => {
         setModal,
     } = useModal()
 
-    const mail = useMemo(() => entries.filter(e => e.author._id === user._id && e.private))
-
     useEffect(() => {
         socket.on('new_entry', addEntry)
         socket.on('deleted_entry', deleteEntry)
     }, [])
-
-    // useEffect(() => {
-    //     socket.on('add_entry', entry => addEntry(entry))
-    //     socket.on('deleted_entry', id => deleteEntry(id))
-    // }, [])
 
     const removeEntry = async id => {
         setForumLoading(true)
@@ -54,10 +49,15 @@ export default () => {
             style={{ gap: 10 }}
         >
 
-            <SimpleButton
-                label='Add Comment'
-                onPress={() => setModal('FEEDBACK')}
-            />
+            <ForumHeader title='Forum'>
+
+                <IconButton
+                    name='add-outline'
+                    onPress={() => setModal('FEEDBACK')}
+                    size={24}
+                />
+
+            </ForumHeader>
 
             {entries.length ? (
                 <ForumList
