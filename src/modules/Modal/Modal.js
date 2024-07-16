@@ -24,7 +24,7 @@ export default () => {
         const { type, data } = modal
         switch(type) {
             case 'CAPTION': return <CaptionForm data={data} />; break
-            case 'SHOWCASE': return <ImageDisplay image={data} />; break
+            case 'SHOWCASE': return <ImageDisplay data={data} />; break
             case 'AUTH': return <AuthForm />; break
             case 'DESTROY': return <DestroyForm />; break
             case 'FEEDBACK': return <FeedbackForm />; break

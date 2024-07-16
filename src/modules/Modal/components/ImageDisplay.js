@@ -14,12 +14,13 @@ import { useModal } from '@modal'
 import {
     deleteImage,
     getMaxImageDims,
+    loadImage,
     setAvatar,
 } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ImageDisplay = ({ image }) => {
+export default ImageDisplay = ({ data }) => {
 
     const containerRef = useRef()
 
@@ -40,23 +41,30 @@ export default ImageDisplay = ({ image }) => {
         setModal,
     } = useModal()
 
+    const [image, setImage] = useState(null)
     const [imageDims, setImageDims] = useState(null)
     
-    const isProfileImage = useMemo(() => (user && user.profileImage && user.profileImage._id === image._id), [image, user])
+    const isOwner = useMemo(() => image && image.user._id === user._id, [image, user])
+    const isProfileImage = useMemo(() => (user && user.profileImage && user.profileImage._id === data), [data, user])
 
     useEffect(() => {
-        // if (containerRef.current) {
+        const init = async () => {
+            const img = await loadImage(data)
+            setImage(img)
+        }
+        init()
+    }, [])
+
+    useEffect(() => {
+        console.log('image', image)
+        if (image) {
             const maxWidth = containerRef.current.clientWidth
             setImageDims(getMaxImageDims(image.width, image.height, maxWidth))
-        // }
+        }
+    }, [image])
 
-    }, [containerRef])
-
-    const caption = useMemo(() => {
-        const img = images.filter(i => i._id === image._id)[0]
-        return img.caption
-    }, [image, user])
-
+    // useEffect(() => {
+    // }, [containerRef])
     
     const handleDelete = async () => {
 
@@ -100,12 +108,14 @@ export default ImageDisplay = ({ image }) => {
     return (
         <View>
 
-            <ModalHeader title={caption || 'Image Preview'}>
-                <IconButton
-                    name='create-outline'
-                    onPress={() => setModal('CAPTION', image)}
-                    size={20}
-                />
+            <ModalHeader title={data.caption || 'Image Preview'}>
+                {isOwner && (
+                    <IconButton
+                        name='create-outline'
+                        onPress={() => setModal('CAPTION', image)}
+                        size={20}
+                    />
+                )}
             </ModalHeader>
             
             <View
@@ -118,7 +128,7 @@ export default ImageDisplay = ({ image }) => {
                     ref={containerRef}
                     style={{ flexGrow: 1 }}
                 >
-                    {imageDims && (
+                    {image && imageDims && (
                         <Image
                             source={{
                                 uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
@@ -133,29 +143,31 @@ export default ImageDisplay = ({ image }) => {
                     )}
                 </View>
 
-                <View
-                    style={{
-                        flexGrow: 0,
-                        // justifyContent: 'space-evenly',
-                        gap: 10,
-                    }}
-                >
+                {image && image.user._id === user._id && (
+                    <View
+                        style={{
+                            flexGrow: 0,
+                            // justifyContent: 'space-evenly',
+                            gap: 10,
+                        }}
+                    >
 
-                    <IconButton
-                        name={'image-sharp'}
-                        onPress={isProfileImage ? removeAvatar : makeAvatar}
-                        disabled={imagesLoading}
-                        style={{ padding: 3 }}
-                    />
+                        <IconButton
+                            name={'image-sharp'}
+                            onPress={isProfileImage ? removeAvatar : makeAvatar}
+                            disabled={imagesLoading}
+                            style={{ padding: 3 }}
+                        />
 
-                    <IconButton
-                        name='trash-sharp'
-                        onPress={handleDelete}
-                        disabled={imagesLoading}
-                        style={{ padding: 3 }}
-                    />
-                    
-                </View>
+                        <IconButton
+                            name='trash-sharp'
+                            onPress={handleDelete}
+                            disabled={imagesLoading}
+                            style={{ padding: 3 }}
+                        />
+                        
+                    </View>
+                )}
 
             </View>
 

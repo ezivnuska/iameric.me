@@ -1,16 +1,19 @@
 import React from 'react'
 import {
     Image,
+    Pressable,
     View,
 } from 'react-native'
 import { ContactHeader } from './components'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ contact }) => {
 
     const { theme } = useApp()
+    const { setModal } = useModal()
 
     const source = contact.profileImage
         ? `${IMAGE_PATH}/${contact.username}/${contact.profileImage.filename}`
@@ -19,8 +22,9 @@ export default ({ contact }) => {
     return (
         <View>
             <ContactHeader title={contact.username} />
-            
-            <View style={{ flexGrow: 1 }}>
+            <Pressable
+                onPress={() => setModal('SHOWCASE', contact.profileImage._id)}
+            >
                 <Image
                     source={source}
                     style={{
@@ -31,7 +35,7 @@ export default ({ contact }) => {
                         borderColor: theme?.colors.textDefault,
                     }}
                 />
-            </View>
+            </Pressable>
 
         </View>
     )

@@ -54,7 +54,7 @@ export default ImageList = ({ images, loading, upload = null }) => {
             {images.map((image, index) => (
                 <Pressable
                     key={`image-${index}`}
-                    onPress={() => setModal('SHOWCASE', image)}
+                    onPress={() => setModal('SHOWCASE', image._id)}
                     style={[
                         {
                             width: imageSize,

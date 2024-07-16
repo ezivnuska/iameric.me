@@ -113,7 +113,7 @@ export default ({ data }) => {
             updateImage(image)
             clearForm()
             clearModal()
-            setModal('SHOWCASE', image)
+            setModal('SHOWCASE', image._id)
         }
     }
 
