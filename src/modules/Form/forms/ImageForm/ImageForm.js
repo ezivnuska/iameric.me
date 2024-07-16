@@ -48,7 +48,6 @@ export default ImageForm = ({ removeImage, source = null }) => {
             <View
                 style={{
                     flexDirection: 'row',
-                    flexWrap: 'wrap',
                 }}
             >
                 {source && (

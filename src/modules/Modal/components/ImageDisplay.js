@@ -125,8 +125,8 @@ export default ImageDisplay = ({ image }) => {
                             }}
                             style={{
                                 resizeMode: 'contain',
-                                width: imageDims?.width || 'auto',
-                                height: imageDims?.height || 'auto',
+                                width: imageDims.width,
+                                height: imageDims.height,
                                 marginHorizontal: 'auto',
                             }}
                         />
@@ -136,6 +136,7 @@ export default ImageDisplay = ({ image }) => {
                 <View
                     style={{
                         flexGrow: 0,
+                        justifyContent: 'space-evenly',
                         gap: 10,
                     }}
                 >
@@ -144,14 +145,14 @@ export default ImageDisplay = ({ image }) => {
                         name={'image-sharp'}
                         onPress={isProfileImage ? removeAvatar : makeAvatar}
                         disabled={imagesLoading}
-                        style={{ padding: 5 }}
+                        style={{ padding: 3 }}
                     />
 
                     <IconButton
                         name='trash-sharp'
                         onPress={handleDelete}
                         disabled={imagesLoading}
-                        style={{ padding: 5 }}
+                        style={{ padding: 3 }}
                     />
                     
                 </View>

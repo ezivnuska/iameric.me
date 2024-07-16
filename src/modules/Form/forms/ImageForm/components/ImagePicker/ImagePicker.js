@@ -1,9 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { View } from 'react-native'
 import {
-    Pressable,
-    View,
-} from 'react-native'
-import {
+    IconButton,
     ImageClone,
     SimpleButton,
 } from '@components'
@@ -17,17 +15,12 @@ import {
     openFileSelector,
     uploadImage,
 } from './utils'
-// import { getMaxAvailableImageSize } from '@utils/images'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { getMaxImageDims } from '@utils/images'
 import { ActivityIndicator } from 'react-native-paper'
-
-const initialSize = 280
 
 export default ImagePicker = () => {
 
     const {
-        dims,
-        theme,
         user,
         setProfileImage,
     } = useApp()
@@ -40,14 +33,16 @@ export default ImagePicker = () => {
 
     const { closeModal } = useModal()
 
+    const containerRef = useRef()
+
     // const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
     const [ready, setReady] = useState(false)
     const [timer, setTimer] = useState(null)
     const [avatarCheckbox, setAvatarCheckbox] = useState(false)
-    const imageDims = useMemo(() => preview && getMaxImageDims(preview.width, preview.height, dims.width * 0.7, 300), [dims, preview])
-
+    const [imageDims, setImageDims] = useState(null)
+    
     useEffect(() => {
         const init = async () => {
             setTimer(setInterval(() => {
@@ -58,6 +53,14 @@ export default ImagePicker = () => {
         }
         init()
     }, [])
+
+    useEffect(() => {
+        if (preview && containerRef.current) {
+            const maxWidth = containerRef.current.clientWidth
+            setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
+        }
+
+    }, [containerRef, preview])
     
     const openSelector = async id => {
         const uri = await openFileSelector()
@@ -98,7 +101,7 @@ export default ImagePicker = () => {
     }, [payload])
 
     const handleUpload = async imageData => {
-        if (process.env.NODE_ENV === 'development') return alert('cant upload in dev')
+        if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
         
         setUploading(true)
         const image = await uploadImage({ ...imageData, avatar: avatarCheckbox })
@@ -107,7 +110,7 @@ export default ImagePicker = () => {
         if (!image) console.log('error uploading image')
         else {
             addImage(image)
-            setProfileImage(image)
+            if (avatarCheckbox) setProfileImage(image)
         }
 
         closeModal()
@@ -122,75 +125,71 @@ export default ImagePicker = () => {
         }
     }
 
+    const handleNewSelection = () => {
+        setPreview(null)
+        openSelector()
+    }
+
     if (uploading) return <ActivityIndicator size='large' />
     
     return preview ? (
         <View
             style={{
+                flex: 1,
                 flexDirection: 'row',
                 gap: 10,
             }}
         >
             <View
+                ref={containerRef}
                 style={{
                     gap: 10,
+                    flexGrow: 1,
                 }}
             >
-                <ImageClone
-                    width={imageDims.width}
-                    height={imageDims.height}
-                    style={{
-                        width: imageDims.width,
-                        height: imageDims.height,
-                        resizeMode: 'cover',
-                        borderWidth: 1,
-                    }}
-                    source={{ uri: preview.uri }}
-                />
+                {imageDims && (
+                    <ImageClone
+                        source={{ uri: preview.uri }}
+                        width={imageDims.width}
+                        height={imageDims.height}
+                        style={{
+                            borderWidth: 1,
+                            width: imageDims.width,
+                            height: imageDims.height,
+                        }}
+                    />
+                )}
+
                 <Checkbox
                     label='Make profile image'
                     onChange={value => setAvatarCheckbox(value)}
                 />
+
             </View>
+
             <View
                 style={{
-                    flex: 1,
-                    flexShrink: 1,
                     flexGrow: 0,
+                    justifyContent: 'space-evenly',
+                    gap: 10,
                 }}
             >
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        flexWrap: 'wrap',
-                        gap: 10,
-                    }}
-                >
-                    <Pressable
-                        onPress={onSubmit}
-                        disabled={uploading}
-                    >
-                        <Icon
-                            name='cloud-upload-outline'
-                            size={24}
-                            color={theme?.colors.textDefault}
-                        />
-                    </Pressable>
+                <IconButton
+                    name='thumbs-up-sharp'
+                    onPress={onSubmit}
+                    disabled={uploading}
+                    style={{ padding: 3 }}
+                />
 
-                    <Pressable
-                        onPress={openSelector}
-                        disabled={uploading}
-                    >
-                        <Icon
-                            name='arrow-undo-outline'
-                            size={24}
-                            color={theme?.colors.textDefault}
-                        />
-                    </Pressable>
+                <IconButton
+                    name='thumbs-down-sharp'
+                    onPress={handleNewSelection}
+                    disabled={uploading}
+                    style={{ padding: 3 }}
+                />
 
-                </View>
             </View>
+
         </View>
     ) : (
         <SimpleButton

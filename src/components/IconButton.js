@@ -14,6 +14,7 @@ export default ({ disabled, name, onPress, size = 18, ...props }) => {
             onPress={onPress}
             style={[
                 {
+                    flexGrow: 0,
                     flexDirection: 'row',
                     alignItems: 'center',
                     height: 24,
