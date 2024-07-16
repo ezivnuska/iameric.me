@@ -4,10 +4,7 @@ import { Screen } from '@components'
 import { Mail } from '@modules'
 
 export default props => (
-    <Screen
-        {...props}
-        title='Mail'
-    >
+    <Screen {...props}>
 
         <View
             style={{

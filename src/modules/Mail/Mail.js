@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
 import {
+    MailHeader,
     MailNav,
     MessageList,
 } from './components'
@@ -56,23 +57,19 @@ export default () => {
     return (
         <View style={{ gap: 10, flexGrow: 1 }}>
 
-            {
-                !messages.length
+            <MailHeader title='Mail'>
+                <MailNav type={messageType} onChange={value => setMessageType(value)} />
+            </MailHeader>
+
+            {!messages.length
                 ? <ThemedText>Mailbox empty.</ThemedText>
-                : (
-                    <>
-                        <MailNav type={messageType} onChange={value => setMessageType(value)} />
-                        {
-                            selectedMessages.length
-                                ? <MessageList messages={selectedMessages} onDelete={removeMessage} />
-                                : (
-                                    <ThemedText>
-                                        {`No ${messageType === 'in' ? 'incoming' : 'sent'} messages.`}
-                                    </ThemedText>
-                                )
-                        }
-                    </>
-                )
+                : selectedMessages.length
+                    ? <MessageList messages={selectedMessages} onDelete={removeMessage} />
+                    : (
+                        <ThemedText>
+                            {`No ${messageType === 'in' ? 'incoming' : 'sent'} messages.`}
+                        </ThemedText>
+                    )
             }
 
         </View>
