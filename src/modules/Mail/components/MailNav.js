@@ -12,53 +12,80 @@ export default ({ onChange, type }) => (
             justifyContent: 'space-evenly',
         }}
     >
-
-        <Pressable
-            onPress={() => onChange('in')}
-            disabled={type === 'in'}
-            style={{ flex: 1 }}
+        <View
+            style={{
+                flex: 1,
+                paddingHorizontal: 2,
+            }}
         >
-            <ThemedText
-                bold={type === 'in'}
-                style={{ textAlign: 'center' }}
+            <Pressable
+                onPress={() => onChange('in')}
+                disabled={type === 'in'}
+                style={{
+                    borderRadius: 4,
+                    background: type === 'in' ? '#eee' : 'transparent',
+                }}
             >
-                In
-            </ThemedText>
-        </Pressable>
+                <ThemedText
+                    bold={type === 'in'}
+                    style={{ textAlign: 'center' }}
+                >
+                    In
+                </ThemedText>
+            </Pressable>
+        </View>
 
-        <Pressable
-            onPress={() => onChange('all')}
-            disabled={type === 'all'}
+        <View
             style={{
                 flex: 1,
                 borderLeftWidth: 1,
                 borderRightWidth: 1,
-                borderLeftColor: '#aaa',
-                borderRightColor: '#aaa',
+                borderLeftColor: '#eee',
+                borderRightColor: '#eee',
+                paddingHorizontal: 2,
             }}
         >
-            <ThemedText
-                bold={type === 'all'}
-                style={{ textAlign: 'center' }}
+            <Pressable
+                onPress={() => onChange('all')}
+                disabled={type === 'all'}
+                style={{
+                    borderRadius: 4,
+                    background: type === 'all' ? '#eee' : 'transparent',
+                }}
             >
-                All
-            </ThemedText>
+                <ThemedText
+                    bold={type === 'all'}
+                    style={{ textAlign: 'center' }}
+                >
+                    All
+                </ThemedText>
 
-        </Pressable>
+            </Pressable>
+        </View>
 
-        <Pressable
-            onPress={() => onChange('out')}
-            disabled={type === 'out'}
-            style={{ flex: 1 }}
+        <View
+            style={{
+                flex: 1,
+                paddingHorizontal: 2,
+            }}
         >
-
-            <ThemedText
-                bold={type === 'out'}
-                style={{ textAlign: 'center' }}
+            <Pressable
+                onPress={() => onChange('out')}
+                disabled={type === 'out'}
+                style={{
+                    borderRadius: 4,
+                    background: type === 'out' ? '#eee' : 'transparent',
+                }}
             >
-                Out
-            </ThemedText>
 
-        </Pressable>
+                <ThemedText
+                    bold={type === 'out'}
+                    style={{ textAlign: 'center' }}
+                >
+                    Out
+                </ThemedText>
+
+            </Pressable>
+        </View>
     </View>
 )

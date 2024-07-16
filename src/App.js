@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout } from '@layout'
 import { AppContextProvider } from '@app'
+import { ContactsContextProvider } from '@contacts'
 import { ImagesContextProvider } from '@images'
 import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
@@ -21,6 +22,7 @@ export default App = () => {
                             <SocketContextProvider>
                                 <Compose
                                     components={[
+                                        ContactsContextProvider,
                                         ModalContextProvider,
                                         FormContextProvider,
                                     ]}
