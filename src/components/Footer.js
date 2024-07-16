@@ -1,5 +1,8 @@
 import React from 'react'
-import { View } from 'react-native'
+import {
+    Pressable,
+    View,
+} from 'react-native'
 import {
     IconButton,
     ThemedText,
@@ -16,15 +19,19 @@ export default () => {
         <View
             style={{
                 flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 height: 35,
             }}
         >
-            <View style={{ flexGrow: 1 }}>
+            <Pressable
+                onPress={() => setModal('SOCKETS')}
+                style={{ flexGrow: 0 }}
+            >
                 <ThemedText size={14} color='#aaa'>
                     {`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
                 </ThemedText>
-            </View>
+            </Pressable>
 
             <View style={{ flexGrow: 0 }}>
                 <IconButton

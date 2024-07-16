@@ -13,7 +13,7 @@ import { setCaption } from '@utils/images'
 
 export default ({ data }) => {
 
-    const initialState = { text: data.caption }
+    const initialState = { text: data?.caption || '' }
 
     const { updateImage } = useImages()
 

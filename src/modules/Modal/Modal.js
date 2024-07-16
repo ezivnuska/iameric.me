@@ -8,18 +8,17 @@ import {
     MessageForm,
     SettingsForm,
 } from '@forms'
-import { useForm } from '@form'
 import { useModal } from '@modal'
 import {
     ImageDisplay,
     ModalContainer,
+    SocketDisplay,
 } from './components'
 
 export default () => {
 
     const { closeModal, modal, modals } = useModal()
-    const { clearForm } = useForm()
-
+    
     const renderModalContent = () => {
         if (!modal) return null
         const { type, data } = modal
@@ -32,19 +31,15 @@ export default () => {
             case 'IMAGE': return <ImageForm />; break
             case 'MESSAGE': return <MessageForm data={data} />; break
             case 'SETTINGS': return <SettingsForm />; break
+            case 'SOCKETS': return <SocketDisplay />; break
             default: return null
         }
-    }
-    
-    const handleClose = () => {
-        clearForm()
-        closeModal(null)
     }
     
     return (
         <ModalContainer
             isVisible={modals.length > 0}
-            onRequestClose={handleClose}
+            onRequestClose={closeModal}
         >
             {renderModalContent()}
         </ModalContainer>

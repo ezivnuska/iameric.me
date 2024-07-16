@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
 import { useSocket } from './SocketContext'
@@ -10,6 +10,10 @@ export default () => {
         connections,
         socket,
     } = useSocket()
+
+    useEffect(() => {
+        console.log('connections', connections)
+    }, [])
     
     const getShortId = id => {
         if (!id) return ''

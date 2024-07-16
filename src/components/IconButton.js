@@ -4,7 +4,7 @@ import { Pressable } from 'react-native'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ disabled, name, onPress }) => {
+export default ({ disabled, name, onPress, size = 18, ...props }) => {
 
     const { theme } = useApp()
     
@@ -12,11 +12,18 @@ export default ({ disabled, name, onPress }) => {
         <Pressable
             disabled={disabled}
             onPress={onPress}
-            style={{ flexDirection: 'row', alignItems: 'center', height: 24 }}
+            style={[
+                {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    height: 24,
+                },
+                props.style,
+            ]}
         >
             <Icon
                 name={name}
-                size={18}
+                size={size}
                 color={disabled ? 'rgba(200, 200, 200, 0.5)' : theme?.colors.textDefault}
             />
         </Pressable>

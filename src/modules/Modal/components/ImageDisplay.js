@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useRef, useState, useMemo } from 'react'
 import {
     Image,
     View,
 } from 'react-native'
+import { ModalHeader } from '.'
 import {
     IconButton,
     SimpleButton,
-    ThemedText,
 } from '@components'
 import { useApp } from '@app'
 import { useImages } from '@images'
@@ -20,8 +20,10 @@ import {
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ImageDisplay = ({ image }) => {
+
+    const containerRef = useRef()
+
     const {
-        dims,
         setProfileImage,
         user,
     } = useApp()
@@ -38,14 +40,23 @@ export default ImageDisplay = ({ image }) => {
         setModal,
     } = useModal()
 
+    const [imageDims, setImageDims] = useState(null)
+    
+    const isProfileImage = useMemo(() => (user && user.profileImage && user.profileImage._id === image._id), [image, user])
+
+    useEffect(() => {
+        // if (containerRef.current) {
+            const maxWidth = containerRef.current.clientWidth
+            setImageDims(getMaxImageDims(image.width, image.height, maxWidth))
+        // }
+
+    }, [containerRef])
+
     const caption = useMemo(() => {
         const img = images.filter(i => i._id === image._id)[0]
         return img.caption
     }, [image, user])
 
-    const imageDims = useMemo(() => getMaxImageDims(image.width, image.height, dims.width, dims.height - 100), [dims, image])
-
-    const isProfileImage = useMemo(() => (user && user.profileImage && user.profileImage._id === image._id), [image, user])
     
     const handleDelete = async () => {
 
@@ -87,83 +98,64 @@ export default ImageDisplay = ({ image }) => {
     }
 
     return (
-        <View
-            style={{
-                gap: 10,
-            }}
-        >
+        <View>
+
+            <ModalHeader title={caption || 'Image Preview'}>
+                <IconButton
+                    name='create-outline'
+                    onPress={() => setModal('CAPTION', image)}
+                    size={20}
+                />
+            </ModalHeader>
+            
             <View
                 style={{
                     flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
+                    gap: 10,
                 }}
             >
                 <View
+                    ref={containerRef}
+                    style={{ flexGrow: 1 }}
+                >
+                    {imageDims && (
+                        <Image
+                            source={{
+                                uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
+                            }}
+                            style={{
+                                resizeMode: 'contain',
+                                width: imageDims?.width || 'auto',
+                                height: imageDims?.height || 'auto',
+                                marginHorizontal: 'auto',
+                            }}
+                        />
+                    )}
+                </View>
+
+                <View
                     style={{
                         flexGrow: 0,
-                        flexDirection: 'row',
-                        alignItems: 'center',
                         gap: 10,
                     }}
                 >
-                    <ThemedText>{caption || 'Image Preview'}</ThemedText>
+
                     <IconButton
-                        name='create-outline'
-                        onPress={() => setModal('CAPTION', image)}
+                        name={'image-sharp'}
+                        onPress={isProfileImage ? removeAvatar : makeAvatar}
+                        disabled={imagesLoading}
+                        style={{ padding: 5 }}
                     />
+
+                    <IconButton
+                        name='trash-sharp'
+                        onPress={handleDelete}
+                        disabled={imagesLoading}
+                        style={{ padding: 5 }}
+                    />
+                    
                 </View>
 
-                <IconButton
-                    name='close-outline'
-                    onPress={() => closeModal()}
-                    style={{ flexGrow: 0 }}
-                />
-            </View>
-            
-            <Image
-                source={{
-                    uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
-                }}
-                style={{
-                    resizeMode: 'contain',
-                    width: imageDims.width,
-                    height: imageDims.height,
-                    marginHorizontal: 'auto',
-                }}
-            />
-
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    alignItems: 'center',
-                    gap: 5,
-                }}
-            >
-
-                {isProfileImage ? (
-                    <SimpleButton
-                        label='Unset Avatar'
-                        onPress={removeAvatar}
-                        disabled={imagesLoading}
-                        style={{ flexGrow: 1 }}
-                    />
-                ) : (
-                    <SimpleButton
-                        label='Make Avatar'
-                        onPress={makeAvatar}
-                        disabled={imagesLoading}
-                        style={{ flexGrow: 1 }}
-                    />
-                )}
-
-                <SimpleButton
-                    label='Delete'
-                    onPress={handleDelete}
-                    disabled={imagesLoading}
-                    style={{ flexGrow: 1 }}
-                />
             </View>
 
         </View>
