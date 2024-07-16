@@ -4,6 +4,7 @@ import {
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
+    ContactScreen,
     ContactsScreen,
     ForumScreen,
     // FallbackScreen,
@@ -18,6 +19,9 @@ const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
+            Contact: {
+                path: 'contact/:username',
+            },
             Contacts: {
                 path: 'contacts',
             },
@@ -85,6 +89,13 @@ const AppStackScreen = () => {
                 children={props => <HomeScreen {...props} />}
                 // component={HomeScreen}
                 options={{ title: 'Home' }}
+            />
+
+            <AppStack.Screen
+                name='Contact'
+                children={props => <ContactScreen {...props} />}
+                // component={ContactsScreen}
+                options={{ title: 'Contact' }}
             />
 
             <AppStack.Screen

@@ -9,16 +9,14 @@ import {
     ThemedText,
 } from '@components'
 import { useApp } from '@app'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { useModal } from '@modal'
 import { useSocket } from '@socket'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item, onPress }) => {
     
     const { theme } = useApp()
-    const { setModal } = useModal()
     const { connections } = useSocket()
 
     const getProfileImagePathFromUser = user => {
