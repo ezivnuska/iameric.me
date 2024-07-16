@@ -170,7 +170,7 @@ export default ImagePicker = () => {
             <View
                 style={{
                     flexGrow: 0,
-                    justifyContent: 'space-evenly',
+                    // justifyContent: 'space-evenly',
                     gap: 10,
                 }}
             >
