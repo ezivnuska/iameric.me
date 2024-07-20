@@ -17,7 +17,7 @@ export default props => (
             }}
         >
             <View style={{ flexGrow: 1 }}>
-                <Contacts />
+                <Contacts {...props} />
             </View>
 
         </View>

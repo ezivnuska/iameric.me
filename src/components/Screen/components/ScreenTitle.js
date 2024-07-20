@@ -2,7 +2,6 @@ import React from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
 import { Pressable } from 'react-native'
-import { navigate } from '@utils/navigation'
 import { useApp } from '@app'
 
 export default ({ title, ...props }) => {
@@ -21,7 +20,7 @@ export default ({ title, ...props }) => {
         >
             <View style={{ flexGrow: 0 }}>
                 <Pressable
-                    onPress={() => navigate('User')}
+                    onPress={() => props.navigation.navigate('User')}
                 >
                     <ThemedText
                         bold

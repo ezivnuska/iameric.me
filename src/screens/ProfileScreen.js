@@ -24,43 +24,42 @@ export default props => {
         : `${IMAGE_PATH}/avatar-default.png`
     
     return (
-        <Screen
-            {...props}
-            // title={user ? user.username : null}
-            // profile
-        >
+        <Screen {...props}>
 
             <View
                 style={{
-                    flexGrow: 1,
+                    flex: 1,
                     justifyContent: 'space-between',
                     gap: 20,
                 }}
             >
-                <View style={{ flexGrow: 0 }}>
 
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            alignItems: 'center',
-                            gap: 10,
-                            marginBottom: 10,
-                        }}
+                <View
+                    style={{
+                        flexGrow: 0,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        gap: 10,
+                        marginBottom: 10,
+                    }}
+                >
+                    <Pressable
+                        onPress={() => props.navigation.navigate('Profile')}
+                        disabled={props.route.name === 'Profile'}
+                        style={{ flexGrow: 0 }}
                     >
-                        <View style={{ flexGrow: 0 }}>
-                            <ThemedText bold size={18}>
-                                {user.username}
-                            </ThemedText>
-                        </View>
+                        <ThemedText bold size={18}>
+                            {user.username}
+                        </ThemedText>
+                    </Pressable>
 
-                        <View style={{ flexGrow: 1 }}>
-                            <IconButton
-                                name='images-outline'
-                                onPress={() => props.navigation.navigate('Images')}
-                                disabled={props.route.name === 'Images'}
-                            />
-                        </View>
+                    <View style={{ flexGrow: 1 }}>
+                        <IconButton
+                            name='images-outline'
+                            onPress={() => props.navigation.navigate('Images')}
+                            disabled={props.route.name === 'Images'}
+                        />
                     </View>
                 </View>
 

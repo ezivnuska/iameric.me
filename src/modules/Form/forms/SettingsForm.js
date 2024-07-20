@@ -23,24 +23,37 @@ export default () => {
         reset()
     }
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            style={{
+                flex: 1,
+            }}
+        >
             
             <FormHeader title='Settings' />
 
-            <View style={{ flexGrow: 1 }}>
-                <Heading title='Sign Out' />
-                <SimpleButton
-                    label={'Sign Out'}
-                    onPress={() => handleSignout()}
-                />
-            </View>
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'space-evenly',
+                }}
+            >
 
-            <View style={{ flexGrow: 0, marginBottom: 100 }}>
-                <Heading title='Close Account' />
-                <SimpleButton
-                    label='Close Account'
-                    onPress={() => setModal('DESTROY')}
-                />
+                <View>
+                    <Heading title='Sign Out' />
+                    <SimpleButton
+                        label={'Sign Out'}
+                        onPress={() => handleSignout()}
+                    />
+                </View>
+                
+                <View>
+                    <Heading title='Close Account' />
+                    <SimpleButton
+                        label='Close Account'
+                        onPress={() => setModal('DESTROY')}
+                    />
+                </View>
+
             </View>
             
         </View>

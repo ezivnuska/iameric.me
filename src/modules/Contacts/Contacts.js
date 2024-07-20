@@ -6,7 +6,7 @@ import { useApp } from '@app'
 import { useContacts } from '@contacts'
 import { navigate } from '@utils/navigation'
 
-export default () => {
+export default props => {
 
     const { user } = useApp()
     const {
@@ -24,7 +24,12 @@ export default () => {
                     <ContactListItem
                         item={contact}
                         key={`contact-${index}`}
-                        onPress={() => navigate('Contact', { username: contact.username })}
+                        onPress={() => {
+                            console.log('route', props.route)
+                            console.log('contact.username', contact.username)
+
+                            props.navigation.navigate('Contact', { screen: 'Details', params: { username: contact.username } })
+                        }}
                     />
                 )
             })}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Screen } from '@components'
 import { Contact } from '@modules'
 import { useContacts } from '@contacts'
@@ -12,7 +12,7 @@ export default props => {
         updateContact,
     } = useContacts()
 
-    const { username } = props.route.params
+    const username = useMemo(() => props.route.params?.username, [props])
 
     const [contact, setContact] = useState(null)
     
@@ -21,21 +21,28 @@ export default props => {
         setContact(loadedContact)
         updateContact(loadedContact)
     }
+    
+    const checkOrFetchContact = async name => {
+        const user = getContact(name)
+        if (user) setContact(user)
+        else await fetchContact(name)
+    }
 
     useEffect(() => {
-        if (!username) setContact(null)
-        else {
-            if (!contact || contact.username !== username) {
-                const user = getContact(username)
-                if (user) setContact(user)
-                else fetchContact(username)
-            }
+        if (username) {
+            checkOrFetchContact(username)
         }
     }, [username])
 
+    useEffect(() => {
+        if (contact && contact.username !== username) {
+            checkOrFetchContact(username)
+        }
+    }, [contact])
+
     return (
         <Screen {...props}>
-            {contact
+            {contact && contact.username === username
                 ? <Contact contact={contact} {...props} />
                 : <ActivityIndicator size='large' />
             }
