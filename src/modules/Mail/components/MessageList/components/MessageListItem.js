@@ -14,12 +14,12 @@ export default ({ item, onDelete = null, ...props }) => {
     const { user } = useApp()
     const { setModal } = useModal()
 
-    const getProfileImagePathFromUser = user => {
-        return user.profileImage
-            ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
+    const getProfileImagePathFromUser = contact => {
+        return contact.profileImage
+            ? `${IMAGE_PATH}/${contact.username}/${contact.profileImage.filename}`
             : `${IMAGE_PATH}/avatar-default-small.png`}
 
-    const imagePath = useMemo(() => getProfileImagePathFromUser(item.from), [item])
+    const imagePath = useMemo(() => getProfileImagePathFromUser(item.to._id === user._id ? item.from : item.to), [item, user])
 
     return (
         <View
@@ -59,7 +59,7 @@ export default ({ item, onDelete = null, ...props }) => {
                 </View>
             </View>
 
-                <ThemedText style={{ flexGrow: 1, lineHeight: 24 }}>{item.text}</ThemedText>
+            <ThemedText style={{ flexGrow: 1, lineHeight: 24 }}>{item.text}</ThemedText>
 
             <View
                 style={{
