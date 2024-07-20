@@ -1,6 +1,7 @@
 import React from 'react'
 import {
     Image,
+    Pressable,
     View,
 } from 'react-native'
 import {
@@ -8,6 +9,7 @@ import {
     SimpleButton,
 } from '@components'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
@@ -17,6 +19,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 export default props => {
 
     const { reset, theme, user } = useApp()
+    const { setModal } = useModal()
     const { notifySocket } = useSocket()
 
     const source = (user && user.profileImage)
@@ -45,16 +48,20 @@ export default props => {
                 }}
             >
                 <View style={{ flexGrow: 1 }}>
-                    <Image
-                        source={source}
-                        style={{
-                            width: 100,
-                            height: 100,
-                            resizeMode: 'cover',
-                            borderWidth: 1,
-                            borderColor: theme?.colors.textDefault,
-                        }}
-                    />
+                    <Pressable
+                        onPress={() => setModal('SHOWCASE', user.profileImage)}
+                    >
+                        <Image
+                            source={source}
+                            style={{
+                                width: 100,
+                                height: 100,
+                                resizeMode: 'cover',
+                                borderWidth: 1,
+                                borderColor: theme?.colors.textDefault,
+                            }}
+                        />
+                    </Pressable>
                 </View>
 
                 <View

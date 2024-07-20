@@ -443,8 +443,9 @@ const setImageCaption = async (req, res) => {
         image = await UserImage
             .findOneAndUpdate({ _id: id }, { $set: { caption: text } }, { new: true })
             .populate('user', 'username')
+            return res.status(200).json({ image })
     }
-    return res.status(200).json(image ? { image } : null)
+    return res.status(200).json(null)
 }
 
 const loadImage = async (req, res) => {

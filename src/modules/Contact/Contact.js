@@ -23,7 +23,7 @@ export default ({ contact }) => {
         <View>
             <ContactHeader title={contact.username} />
             <Pressable
-                onPress={() => setModal('SHOWCASE', contact.profileImage._id)}
+                onPress={() => setModal('SHOWCASE', contact.profileImage)}
             >
                 <Image
                     source={source}

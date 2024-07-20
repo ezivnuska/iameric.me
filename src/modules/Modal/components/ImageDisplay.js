@@ -4,10 +4,7 @@ import {
     View,
 } from 'react-native'
 import { ModalHeader } from '.'
-import {
-    IconButton,
-    SimpleButton,
-} from '@components'
+import { IconButton } from '@components'
 import { useApp } from '@app'
 import { useImages } from '@images'
 import { useModal } from '@modal'
@@ -17,20 +14,22 @@ import {
     loadImage,
     setAvatar,
 } from '@utils/images'
+import { ActivityIndicator } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ImageDisplay = ({ data }) => {
+export default ({ data }) => {
 
     const containerRef = useRef()
 
     const {
+        dims,
         setProfileImage,
         user,
     } = useApp()
 
     const {
-        images,
+        getImage,
         imagesLoading,
         removeImage,
         setImagesLoading,
@@ -43,28 +42,43 @@ export default ImageDisplay = ({ data }) => {
 
     const [image, setImage] = useState(null)
     const [imageDims, setImageDims] = useState(null)
-    
-    const isOwner = useMemo(() => image && image.user._id === user._id, [image, user])
-    const isProfileImage = useMemo(() => (user && user.profileImage && user.profileImage._id === data), [data, user])
+    const [isProfileImage, setIsProfileImage] = useState(false)
+
+    const userImage = useMemo(() => getImage(data._id), [data])
 
     useEffect(() => {
-        const init = async () => {
-            const img = await loadImage(data)
+        
+        const loadContactImage = async () => {
+            const img = await loadImage(data._id)
             setImage(img)
         }
-        init()
+
+        if (userImage) setImage(userImage)
+        else loadContactImage()
     }, [])
 
     useEffect(() => {
-        console.log('image', image)
+        if (userImage) setImage(userImage)
+    }, [userImage])
+
+    const getImageDims = () => {
+        if (!image) return null
+        const maxWidth = containerRef.current.clientWidth
+        setImageDims(getMaxImageDims(image.width, image.height, maxWidth))
+    }
+
+    useEffect(() => {
         if (image) {
-            const maxWidth = containerRef.current.clientWidth
-            setImageDims(getMaxImageDims(image.width, image.height, maxWidth))
+            if (user.profileImage && image.user.profileImage) {
+                setIsProfileImage(user.profileImage._id === image.user.profileImage._id)
+            }
+            getImageDims()
         }
     }, [image])
 
-    // useEffect(() => {
-    // }, [containerRef])
+    useEffect(() => {
+        getImageDims()
+    }, [dims])
     
     const handleDelete = async () => {
 
@@ -105,11 +119,13 @@ export default ImageDisplay = ({ data }) => {
         closeModal()
     }
 
+    if (!image) return <ActivityIndicator size='large' />
+
     return (
         <View>
 
-            <ModalHeader title={data.caption || 'Image Preview'}>
-                {isOwner && (
+            <ModalHeader title={image && image.caption || 'Image Preview'}>
+                {userImage && (
                     <IconButton
                         name='create-outline'
                         onPress={() => setModal('CAPTION', image)}
@@ -126,7 +142,10 @@ export default ImageDisplay = ({ data }) => {
             >
                 <View
                     ref={containerRef}
-                    style={{ flexGrow: 1 }}
+                    style={{
+                        flexGrow: 1,
+                        flexShrink: 1,
+                    }}
                 >
                     {image && imageDims && (
                         <Image
@@ -143,11 +162,11 @@ export default ImageDisplay = ({ data }) => {
                     )}
                 </View>
 
-                {image && image.user._id === user._id && (
+                {userImage && (
                     <View
                         style={{
                             flexGrow: 0,
-                            // justifyContent: 'space-evenly',
+                            flexShrink: 0,
                             gap: 10,
                         }}
                     >

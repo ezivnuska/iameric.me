@@ -10,7 +10,6 @@ const initialState = {
     uploading: false,
     addImage: () => {},
     clearImages: () => {},
-    getImage: () => {},
     removeImage: () => {},
     setImages: () => {},
     setImagesLoading: () => {},
@@ -47,6 +46,8 @@ export const ImagesContextProvider = props => {
         
     }, [user])
 
+    const getImage = id => state.images.filter(image => image._id === id)[0] || null
+
     const actions = useMemo(() => ({
         addImage: payload => {
             dispatch({ type: 'ADD_IMAGE', payload })
@@ -54,7 +55,6 @@ export const ImagesContextProvider = props => {
         clearImages: () => {
             dispatch({ type: 'RESET' })
         },
-        getImage: imageId => state.images.map(image => image._id === imageId)[0] || null,
         removeImage: payload => {
             dispatch({ type: 'REMOVE_IMAGE', payload })
         },
@@ -74,7 +74,13 @@ export const ImagesContextProvider = props => {
     }), [state, dispatch])
 
     return (
-        <ImagesContext.Provider value={{ ...state, ...actions }}>
+        <ImagesContext.Provider
+            value={{
+                ...state,
+                ...actions,
+                getImage,
+            }}
+        >
             {props.children}
         </ImagesContext.Provider>
     )

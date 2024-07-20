@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { loadContacts } from '@utils/contacts'
-import { useApp } from '@app'
+// import { useApp } from '@app'
 
 const initialState = {
     contacts: [],
@@ -29,8 +29,8 @@ export const useContacts = () => {
 export const ContactsContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
-    const { user } = useApp()
-    const userId = user._id
+    // const { user } = useApp()
+    // const userId = user._id
 
     useEffect(() => {
 
@@ -48,13 +48,13 @@ export const ContactsContextProvider = props => {
         init()
         // else if (!userId) dispatch({ type: 'RESET' })
 
-    }, [userId])
+    }, [])
 
     const actions = useMemo(() => ({
         addContact: async payload => {
             dispatch({ type: 'ADD_CONTACT', payload })
         },
-        getContact: payload => state.contacts.filter(c => c.username === payload)[0],
+        getContact: payload => state.contacts.filter(contact => contact.username === payload)[0],
         removeContact: async payload => {
             dispatch({ type: 'REMOVE_CONTACT', payload })
         },
@@ -91,7 +91,7 @@ const reducer = (state, action) => {
         case 'REMOVE_CONTACT':
             return {
                 ...state,
-                contacts: state.contacts.filter(user => user._id !== payload),
+                contacts: state.contacts.filter(contact => contact._id !== payload),
             }
             break
         case 'SET_CONTACTS':
@@ -107,11 +107,11 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 contacts: state.contacts.length
-                    ? state.contacts.map(user => {
-                        if (user._id === payload._id) {
-                            return { ...user, ...payload }
+                    ? state.contacts.map(contact => {
+                        if (contact._id === payload._id) {
+                            return { ...contact, ...payload }
                         }
-                        return user
+                        return contact
                     })
                     : [payload]
             }
