@@ -25,7 +25,8 @@ const {
     getNumberOfOnlineUsers,
     getAllVendors,
     getVendors,
-    getUserById,
+    // getUserById,
+    getUserByUsername,
     getUserAndImagesById,
     getVendor,
   } = require('./api/users')
@@ -109,7 +110,7 @@ router.get(    '/profile/image/:id',       getProfileImage)
 router.post(   '/profile/status',         toggleStatus)
 
 // users
-router.get(    '/user/:id',                getUserById)
+router.get(    '/user/:username',          getUserByUsername)
 router.get(    '/user/full/:id',           getUserAndImagesById)
 router.get(    '/user/details/:id',        getUserDetailsById)
 router.get(    '/users',                   getUsers)

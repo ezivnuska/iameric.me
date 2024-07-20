@@ -174,6 +174,17 @@ const getUserById = async (req, res) => {
     return res.status(406).json(null)
 }
 
+const getUserByUsername = async (req, res) => {
+    
+    const user = await User.findOne({ username: req.params.username })
+        .populate({ path: 'profileImage', select: 'filename width height' })
+        .populate('location')
+        
+    if (!user) console.log('could not get user by username.')
+    else return res.status(200).json({ user })
+    return res.status(406).json(null)
+}
+
 const getUserAndImagesById = async (req, res) => {
     
     const user = await User
@@ -226,6 +237,7 @@ module.exports = {
     getAllVendors,
     getVendors,
     getUserById,
+    getUserByUsername,
     getUserAndImagesById,
     getUserDetailsById,
     getVendor,

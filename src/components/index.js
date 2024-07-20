@@ -8,6 +8,7 @@ import LoadingView from './LoadingView'
 import Screen from './Screen'
 import SimpleButton from './SimpleButton'
 import ThemedText from './ThemedText'
+import UserNav from './UserNav'
 
 export {
     Cabinet,
@@ -19,4 +20,5 @@ export {
     Screen,
     SimpleButton,
     ThemedText,
+    UserNav,
 }

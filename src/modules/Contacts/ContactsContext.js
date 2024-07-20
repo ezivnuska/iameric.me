@@ -8,7 +8,6 @@ const initialState = {
     contactLoading: false,
     contactsLoading: false,
     addContact: () => {},
-    getContact: () => {},
     removeContact: () => {},
     setContacts: () => {},
     setContactsLoaded: () => {},
@@ -50,11 +49,12 @@ export const ContactsContextProvider = props => {
 
     }, [])
 
+    const getContact = payload => state.contacts.filter(contact => contact.username === payload)[0]
+
     const actions = useMemo(() => ({
         addContact: async payload => {
             dispatch({ type: 'ADD_CONTACT', payload })
         },
-        getContact: payload => state.contacts.filter(contact => contact.username === payload)[0],
         removeContact: async payload => {
             dispatch({ type: 'REMOVE_CONTACT', payload })
         },
@@ -73,7 +73,13 @@ export const ContactsContextProvider = props => {
     }), [state, dispatch])
 
     return (
-        <ContactsContext.Provider value={{ ...state, ...actions }}>
+        <ContactsContext.Provider
+            value={{
+                ...state,
+                ...actions,
+                getContact,
+            }}
+        >
             {props.children}
         </ContactsContext.Provider>
     )

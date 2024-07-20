@@ -5,39 +5,29 @@ import {
     View,
 } from 'react-native'
 import {
+    IconButton,
     Screen,
-    SimpleButton,
+    ThemedText,
 } from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
-import { useSocket } from '@socket'
-import { signout } from '@utils/auth'
-import { cleanStorage } from '@utils/storage'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default props => {
 
-    const { reset, theme, user } = useApp()
+    const { theme, user } = useApp()
     const { setModal } = useModal()
-    const { notifySocket } = useSocket()
 
     const source = (user && user.profileImage)
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
         : `${IMAGE_PATH}/avatar-default.png`
-
-    const handleSignout = async id => {
-        await signout(id)
-        notifySocket('user_signed_out', id)
-        cleanStorage()
-        reset()
-    }
     
     return (
         <Screen
             {...props}
-            title={user ? user.username : null}
-            profile
+            // title={user ? user.username : null}
+            // profile
         >
 
             <View
@@ -47,6 +37,33 @@ export default props => {
                     gap: 20,
                 }}
             >
+                <View style={{ flexGrow: 0 }}>
+
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'flex-start',
+                            alignItems: 'center',
+                            gap: 10,
+                            marginBottom: 10,
+                        }}
+                    >
+                        <View style={{ flexGrow: 0 }}>
+                            <ThemedText bold size={18}>
+                                {user.username}
+                            </ThemedText>
+                        </View>
+
+                        <View style={{ flexGrow: 1 }}>
+                            <IconButton
+                                name='images-outline'
+                                onPress={() => props.navigation.navigate('Images')}
+                                disabled={props.route.name === 'Images'}
+                            />
+                        </View>
+                    </View>
+                </View>
+
                 <View style={{ flexGrow: 1 }}>
                     <Pressable
                         onPress={() => setModal('SHOWCASE', user.profileImage)}
@@ -62,19 +79,6 @@ export default props => {
                             }}
                         />
                     </Pressable>
-                </View>
-
-                <View
-                    style={{
-                        flexGrow: 0,
-                        gap: 10,
-                    }}
-                >
-
-                    <SimpleButton
-                        label={'Sign Out'}
-                        onPress={() => handleSignout(user._id)}
-                    />
                 </View>
 
             </View>

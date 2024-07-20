@@ -1,17 +1,13 @@
 import React from 'react'
-import { View } from 'react-native'
 import { ThemedText } from '@components'
 
 export default ({ title }) => (
-    <View style={{ marginBottom: 10 }}>
-        
-        <ThemedText
-            bold
-            size={18}
-            color='tomato'
-        >
-            {title}
-        </ThemedText>
-        
-    </View>
+    <ThemedText
+        bold
+        size={18}
+        color='tomato'
+        style={{ marginBottom: 10 }}
+    >
+        {title}
+    </ThemedText>
 )

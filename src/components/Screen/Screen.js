@@ -28,7 +28,7 @@ export default Screen = ({ title, children, secure = true, profile = false, ...p
                 <ScreenTitle
                     {...props}
                     title={title}
-                    profile={profile}
+                    // profile={profile}
                 />
                 
                 {authorized && children}
