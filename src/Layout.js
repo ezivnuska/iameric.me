@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import {
     Image,
@@ -33,6 +33,8 @@ export default () => {
         theme,
     } = useApp()
 
+    const [currentRoute, setCurrentRoute] = useState(null)
+
     return (
         <SafeAreaView
             style={{
@@ -61,6 +63,8 @@ export default () => {
                     ref={navigationRef}
                     linking={linking}
                     theme={theme}
+                    onStateChange={state => setCurrentRoute(navigationRef.getCurrentRoute())}
+                    onReady={() => setCurrentRoute(navigationRef.getCurrentRoute())}
                     // fallback={<FallbackScreen />} // not working or used, necessary as of yet
                 >
                     <Modal />
@@ -76,7 +80,7 @@ export default () => {
                     >
 
                         <View style={ { flexGrow: 0 }}>
-                            <Header />
+                            <Header route={currentRoute} />
                         </View>
                         
                         <ScrollView
@@ -100,11 +104,10 @@ export default () => {
     )
 }
 
-const Header = () => {
+const Header = ({ route }) => {
 
     const {
         dims,
-        reset,
         theme,
         user,
     } = useApp()
@@ -112,6 +115,8 @@ const Header = () => {
     const { setModal } = useModal()
 
     const renderBrand = () => dims.width < 340 ? 'iam' : 'iameric'
+
+    const isCurrentRoute = name => route && route.name === name
 
     const source = (user && user.profileImage)
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
@@ -157,27 +162,27 @@ const Header = () => {
                         }}
                     >
                         <IconButton
-                            name='home-outline'
+                            name={`home-${isCurrentRoute('Home') ? 'sharp' : 'outline'}`}
                             onPress={() => navigate('Home')}
-                            // disabled={routeName === 'Home'}
+                            disabled={isCurrentRoute('Home')}
                         />
 
                         <IconButton
-                            name='chatbubbles-outline'
+                            name={`chatbubbles-${isCurrentRoute('Forum') ? 'sharp' : 'outline'}`}
                             onPress={() => navigate('Forum')}
-                            // disabled={routeName === 'Forum'}
+                            disabled={isCurrentRoute('Forum')}
                         />
 
                         <IconButton
-                            name='people-outline'
+                            name={`people-${isCurrentRoute('Contacts') ? 'sharp' : 'outline'}`}
                             onPress={() => navigate('Contacts')}
-                            // disabled={routeName === 'Contacts'}
+                            disabled={isCurrentRoute('Contacts')}
                         />
 
                         <IconButton
-                            name='mail-outline'
+                            name={`mail-${isCurrentRoute('Mail') ? 'sharp' : 'outline'}`}
                             onPress={() => navigate('Mail')}
-                            // disabled={routeName === 'Mail'}
+                            disabled={isCurrentRoute('Mail')}
                         />
                     </View>
                 )
