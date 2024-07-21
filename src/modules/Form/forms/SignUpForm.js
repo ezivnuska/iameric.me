@@ -5,9 +5,13 @@ import {
     SimpleButton,
     ThemedText,
 } from '@components'
+import {
+    getFields,
+    isValidEmail,
+    signup,
+    validateFields,
+} from './utils'
 import { setItem, storeToken } from '@utils/storage'
-import { signup } from '@utils/auth'
-import { getFields, isValidEmail, validateFields } from './utils'
 import { useApp } from '@app'
 import { useForm } from '../FormContext'
 import { useModal } from '@modal'

@@ -9,27 +9,20 @@ import {
     FormHeader,
 } from './components'
 import {
+    destroy,
     getFields,
-    unsubscribe,
     validateFields,
 } from './utils'
 import { useForm } from '../FormContext'
-import { signout } from '@utils/auth'
-import { cleanStorage } from '@utils/storage'
+import { navigate } from '@utils/navigation'
 import { useApp } from '@app'
-import { useModal } from '@modal'
 import { useSocket } from '@socket'
 
 export default () => {
 
     const initialState = { username: '' }
 
-    const {
-        setUser,
-        user,
-    } = useApp()
-
-    const { closeModal } = useModal()
+    const { user } = useApp()
 
     const {
         clearForm,
@@ -71,13 +64,9 @@ export default () => {
         if (formReady) validateFields(formFields, validateField)
     }, [username])
 
-    const onBurned = async id => {
-        await signout(id)
+    const onBurned = () => {
         clearForm()
-        closeModal()
-        cleanStorage()
-        notifySocket('user_signed_out', id)
-        setUser(null)
+        navigate('Home', { destroy: true })
     }
 
     const validateField = name => {
@@ -129,12 +118,11 @@ export default () => {
 		}
 
         setFormLoading(true)
-		const { id } = await unsubscribe(user._id)
-        console.log('unsubscribe id', id)
+		const { id } = await destroy(user._id)
         setFormLoading(false)
 
 		if (!id) {
-            console.log('Error unsubscribing user: NULL')
+            console.log('Error destroying user: NULL')
             setFormError({ name: 'confirmUsername', message: 'Unsubscribe failed.' })
         } else {
             if (formError) clearFormError()

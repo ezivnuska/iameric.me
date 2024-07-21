@@ -4,11 +4,8 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import {
-    IconButton,
-    Screen,
-    ThemedText,
-} from '@components'
+import { UserHeader } from './components'
+import { Screen } from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
 
@@ -30,38 +27,11 @@ export default props => {
                 style={{
                     flex: 1,
                     justifyContent: 'space-between',
-                    gap: 20,
+                    gap: 10,
                 }}
             >
 
-                <View
-                    style={{
-                        flexGrow: 0,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        gap: 10,
-                        marginBottom: 10,
-                    }}
-                >
-                    <Pressable
-                        onPress={() => props.navigation.navigate('Profile')}
-                        disabled={props.route.name === 'Profile'}
-                        style={{ flexGrow: 0 }}
-                    >
-                        <ThemedText bold size={18}>
-                            {user.username}
-                        </ThemedText>
-                    </Pressable>
-
-                    <View style={{ flexGrow: 1 }}>
-                        <IconButton
-                            name='images-outline'
-                            onPress={() => props.navigation.navigate('Images')}
-                            disabled={props.route.name === 'Images'}
-                        />
-                    </View>
-                </View>
+                <UserHeader username={user.username} {...props} />
 
                 <View style={{ flexGrow: 1 }}>
                     <Pressable

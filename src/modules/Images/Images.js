@@ -11,7 +11,7 @@ export default Images = () => {
     const { setModal } = useModal()
     
     return (
-        <View style={{ marginVertical: 10 }}>
+        <View>
 
             <Heading title='Images' />
 

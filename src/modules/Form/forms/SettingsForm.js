@@ -5,23 +5,17 @@ import {
     Heading,
     SimpleButton,
 } from '@components'
-import { useApp } from '@app'
 import { useModal } from '@modal'
-import { useSocket } from '@socket'
-import { signout } from '@utils/auth'
-import { cleanStorage } from '@utils/storage'
+import { navigate } from '@utils/navigation'
 
 export default () => {
-    const { reset, user } = useApp()
-    const { setModal } = useModal()
-    const { notifySocket } = useSocket()
     
-    const handleSignout = async () => {
-        await signout(user._id)
-        notifySocket('user_signed_out', user._id)
-        cleanStorage()
-        reset()
+    const { setModal } = useModal()
+    
+    const handleSignout = () => {
+        navigate('Home', { signout: true })
     }
+
     return (
         <View
             style={{

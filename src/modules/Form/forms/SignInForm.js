@@ -2,9 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { FormField, FormHeader } from './components'
 import { SimpleButton } from '@components'
+import {
+    getFields,
+    isValidEmail,
+    signin,
+    validateFields,
+} from './utils'
 import { setItem, storeToken } from '@utils/storage'
-import { signin } from '@utils/auth'
-import { getFields, isValidEmail, validateFields } from './utils'
 import { useForm } from '../FormContext'
 import { useApp } from '@app'
 import { useModal } from '@modal'
