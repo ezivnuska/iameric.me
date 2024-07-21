@@ -21,7 +21,7 @@ export default ({ item, onDelete = null }) => {
             ? `${IMAGE_PATH}/${contact.username}/${contact.profileImage.filename}`
             : `${IMAGE_PATH}/avatar-default-small.png`}
     
-    const otherUser = () => item.to._id === user._id ? item.from : item.to
+    const otherUser = item.to._id === user._id ? item.from : item.to
     const imagePath = getProfileImagePathFromUser(otherUser)
     
     return (
@@ -36,7 +36,7 @@ export default ({ item, onDelete = null }) => {
             }}
         >
             <Pressable
-                onPress={() => navigate('Contact', { screen: 'Details', params: { username: otherUser.username } })}
+                onPress={() => navigate('Contact', { screen: 'Details', params: { username: otherUser().username } })}
                 style={{
                     flexGrow: 0,
                     borderRadius: 12,
@@ -76,7 +76,7 @@ export default ({ item, onDelete = null }) => {
                     />
                 )}
 
-                {(item.from && user._id === item.from._id || user.role === 'admin') && (
+                {(user._id === item.from._id || user.role === 'admin') && (
                     <IconButton
                         name='trash-outline'
                         size={22}
