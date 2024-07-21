@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { View } from 'react-native'
 import { UserHeader } from './components'
-import { Screen } from '@components'
+import { Screen } from './components'
 import { Images } from '@modules'
 import { useApp } from '@app'
 

@@ -4,8 +4,10 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { UserHeader } from './components'
-import { Screen } from '@components'
+import {
+    Screen,
+    UserHeader,
+} from './components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
 

@@ -4,10 +4,12 @@ import { Pressable } from 'react-native'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ disabled, name, onPress, size = 18, ...props }) => {
+export default ({ disabled, name, onPress, color = null, size = 18, ...props }) => {
 
     const { theme } = useApp()
     
+    const iconColor = color || theme?.colors.textDefault
+
     return (
         <Pressable
             disabled={disabled}
@@ -25,7 +27,7 @@ export default ({ disabled, name, onPress, size = 18, ...props }) => {
             <Icon
                 name={name}
                 size={size}
-                color={disabled ? 'rgba(200, 200, 200, 0.5)' : theme?.colors.textDefault}
+                color={disabled ? 'tomato' : iconColor}
             />
         </Pressable>
     )

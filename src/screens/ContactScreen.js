@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Screen } from '@components'
+import { Screen } from './components'
 import { Contact } from '@modules'
 import { useContacts } from '@contacts'
 import { loadContact } from '@utils/contacts'

@@ -19,7 +19,7 @@ import { useSocket } from '@socket'
 import { useModal } from '@modal'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
-import { navigate } from '@utils/navigation'
+import { getCurrentRoute, navigate } from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'

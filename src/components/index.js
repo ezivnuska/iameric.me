@@ -5,7 +5,6 @@ import Heading from './Heading'
 import IconButton from './IconButton'
 import ImageClone from './ImageClone'
 import LoadingView from './LoadingView'
-import Screen from './Screen'
 import SimpleButton from './SimpleButton'
 import ThemedText from './ThemedText'
 
@@ -16,7 +15,6 @@ export {
     IconButton,
     ImageClone,
     LoadingView,
-    Screen,
     SimpleButton,
     ThemedText,
 }

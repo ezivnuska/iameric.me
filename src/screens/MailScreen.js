@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Screen } from '@components'
+import { Screen } from './components'
 import { Mail } from '@modules'
 
 export default props => (

@@ -21,21 +21,23 @@ export default () => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                height: 35,
+                height: 40,
             }}
         >
             <Pressable
                 onPress={() => setModal('SOCKETS')}
                 style={{ flexGrow: 0 }}
             >
-                <ThemedText size={14} color='#aaa'>
+                <ThemedText color='#777'>
                     {`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
                 </ThemedText>
             </Pressable>
 
             <View style={{ flexGrow: 0 }}>
                 <IconButton
-                    name='cog'
+                    name='settings-sharp'
+                    size={22}
+                    color='#777'
                     onPress={() => setModal('SETTINGS')}
                 />
             </View>
