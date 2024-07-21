@@ -8,8 +8,6 @@ import { useApp } from '@app'
 export default props => {
 
     const { user } = useApp()
-
-    const username = useMemo(() => props.route.params?.username || user.username, [props, user])
     
     return (
         <Screen {...props}>
@@ -22,7 +20,7 @@ export default props => {
                 }}
             >
 
-                <UserHeader username={username} {...props} />
+                <UserHeader username={props.route.params?.username || user.username} {...props} />
                     
                 <View style={{ flexGrow: 1 }}>
                     <Images />

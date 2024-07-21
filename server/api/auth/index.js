@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Entry = require('../../models/Entry')
 const Location = require('../../models/Location')
+const Message = require('../../models/Message')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
 const {
@@ -296,6 +297,17 @@ const deleteAccount = async (req, res) => {
         console.log('could not delete entries.')
     } else {
         console.log(`deleted ${deletedEntries.deletedCount} entries`)
+    }
+
+    const messages = await Message.find({ $or: [{ to: id }, { from: id }] })
+    console.log('messages', messages)
+
+    const deletedMessages = await Message.deleteMany({ $or: [{ from: id }, { to: id }] })
+    console.log('deletedMessages', deletedMessages)    
+    if (!deletedMessages) {
+        console.log('could not delete messages.')
+    } else {
+        console.log(`deleted ${deletedMessages.deletedCount} messages`)
     }
 
     const deletedLocation = await Location.deleteOne({ user: id })

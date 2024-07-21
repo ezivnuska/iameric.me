@@ -9,14 +9,17 @@ import {
     ThemedText,
 } from '@components'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { navigate } from '@utils/navigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ item, onPress }) => {
+export default ({ item }) => {
     
     const { theme } = useApp()
+    const { setModal } = useModal()
     const { connections } = useSocket()
 
     const getProfileImagePathFromUser = user => {
@@ -40,7 +43,7 @@ export default ({ item, onPress }) => {
             }}
         >
             <Pressable
-                onPress={() => onPress(item)}
+                onPress={() => navigate('Contact', { screen: 'Details', params: { username: item.username } })}
                 style={[
                     {
                         flexBasis: 'auto',
@@ -96,7 +99,7 @@ export default ({ item, onPress }) => {
 
             <IconButton
                 name='mail-outline'
-                onPress={onPress}
+                onPress={() => setModal('MESSAGE', item)}
             />
         </View>
     )

@@ -4,34 +4,29 @@ import { ScreenTitle } from './components'
 import { Footer } from '@components'
 import { useApp } from '@app'
 
-export default Screen = ({ title, children, secure = true, profile = false, ...props }) => {
+export default Screen = ({ title, children, secure = true, ...props }) => {
 
     const { user } = useApp()
 
-    const authorized = useMemo(() => {
-        let isAuthorized = true
-        if(secure && !user) isAuthorized = false
-        return isAuthorized
-    }, [secure, user])
+    const authorized = () => !secure || user
 
     useEffect(() => {
-        if (!authorized) {
+        if (!authorized()) {
             console.log(`not authorized for path ${props.route.path || props.route.name}`)
             props.navigation.navigate('Home')
         }
-    }, [authorized])
+    }, [user])
 
-    return (
+    return authorized() ? (
         <View style={{ flexGrow: 1 }}>
 
             <View style={{ flexGrow: 1 }}>
                 <ScreenTitle
                     {...props}
                     title={title}
-                    // profile={profile}
                 />
                 
-                {authorized && children}
+                {children}
             </View>
 
             <View style={{ flexGrow: 0 }}>
@@ -39,5 +34,5 @@ export default Screen = ({ title, children, secure = true, profile = false, ...p
             </View>
 
         </View>
-    )
+    ) : null
 }

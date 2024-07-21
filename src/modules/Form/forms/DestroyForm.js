@@ -77,12 +77,7 @@ export default () => {
                     setFormError({ name: 'username', message: 'Incorrect username' })
                     isValid = false
                 } else {
-                    if (
-                        user.username === 'Driver' ||
-                        user.username === 'Vendor' ||
-                        user.username === 'Customer' ||
-                        user.username === 'iameric'
-                    ) {
+                    if (user.role === 'admin') {
                         setFormError({ name: 'username', message: 'Deletion not allowed' })
                         isValid = false
                     }

@@ -4,7 +4,6 @@ import { LoadingView } from '@components'
 import { ContactListItem } from './components'
 import { useApp } from '@app'
 import { useContacts } from '@contacts'
-import { navigate } from '@utils/navigation'
 
 export default () => {
 
@@ -24,7 +23,6 @@ export default () => {
                     <ContactListItem
                         item={contact}
                         key={`contact-${index}`}
-                        onPress={() => navigate('Contact', { screen: 'Details', params: { username: contact.username } })}
                     />
                 )
             })}

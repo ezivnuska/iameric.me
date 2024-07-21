@@ -17,12 +17,12 @@ export default ({ item, onDelete = null }) => {
     const { setModal } = useModal()
 
     const getProfileImagePathFromUser = contact => {
-        return contact.profileImage
+        return contact && contact.profileImage
             ? `${IMAGE_PATH}/${contact.username}/${contact.profileImage.filename}`
             : `${IMAGE_PATH}/avatar-default-small.png`}
     
-    const otherUser = useMemo(() => item.to._id === user._id ? item.from : item.to, [item, user])
-    const imagePath = useMemo(() => getProfileImagePathFromUser(otherUser), [otherUser])
+    const otherUser = () => item.to._id === user._id ? item.from : item.to
+    const imagePath = getProfileImagePathFromUser(otherUser)
     
     return (
         <View
@@ -76,7 +76,7 @@ export default ({ item, onDelete = null }) => {
                     />
                 )}
 
-                {(user._id === item.from._id || user.role === 'admin') && (
+                {(item.from && user._id === item.from._id || user.role === 'admin') && (
                     <IconButton
                         name='trash-outline'
                         size={22}
