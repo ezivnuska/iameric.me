@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavigationContainer, useNavigation } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 import {
     Image,
     Pressable,
@@ -133,7 +133,12 @@ const Header = () => {
             }}
         >
             <View style={{ flexGrow: 0 }}>
-                <Pressable onPress={() => navigate('Home')}>
+                <Pressable
+                    onPress={() => {
+                        console.log('pressed')
+                        navigate('Home')
+                    }}
+                >
                     <ThemedText bold style={{ fontSize: 24 }}>
                         {renderBrand()}
                     </ThemedText>

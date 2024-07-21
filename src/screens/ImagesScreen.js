@@ -9,7 +9,7 @@ export default props => {
 
     const { user } = useApp()
 
-    const username = useMemo(() => props.route.params?.username || user.username, [props])
+    const username = useMemo(() => props.route.params?.username || user.username, [props, user])
     
     return (
         <Screen {...props}>

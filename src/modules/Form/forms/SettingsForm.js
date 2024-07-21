@@ -21,31 +21,50 @@ export default () => {
             style={{
                 flex: 1,
             }}
-        >
+            >
             
             <FormHeader title='Settings' />
 
             <View
                 style={{
                     flex: 1,
-                    justifyContent: 'space-evenly',
+                    gap: 50,
+                    // justifyContent: 'space-evenly',
                 }}
             >
 
-                <View>
-                    <Heading title='Sign Out' />
-                    <SimpleButton
-                        label={'Sign Out'}
-                        onPress={() => handleSignout()}
-                    />
+                <View
+                    // style={{
+                    //     flexDirection: 'row',
+                    //     justifyContent: 'space-evenly',
+                    // }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Heading title='Sign Out' />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <SimpleButton
+                            label={'Sign Out'}
+                            onPress={() => handleSignout()}
+                        />
+                    </View>
                 </View>
                 
-                <View>
-                    <Heading title='Close Account' />
-                    <SimpleButton
-                        label='Close Account'
-                        onPress={() => setModal('DESTROY')}
-                    />
+                <View
+                    // style={{
+                    //     flexDirection: 'row',
+                    //     justifyContent: 'space-evenly',
+                    // }}
+                >
+                    <View style={{ flex: 1 }}>
+                        <Heading title='Close Account' />
+                    </View>
+                    <View style={{ flex: 1 }}>
+                        <SimpleButton
+                            label='Close Account'
+                            onPress={() => setModal('DESTROY')}
+                        />
+                    </View>
                 </View>
 
             </View>

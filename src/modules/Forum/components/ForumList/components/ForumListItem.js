@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react'
 import {
     Image,
+    Pressable,
     View,
 } from 'react-native'
 import {
@@ -9,10 +10,11 @@ import {
 } from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
+import { navigate } from '@utils/navigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ item, onDelete = null, ...props }) => {
+export default ({ item, onDelete = null }) => {
     
     const { author, text } = item
 
@@ -36,34 +38,26 @@ export default ({ item, onDelete = null, ...props }) => {
                 borderBottomWidth: 1,
                 borderBottomColor: '#aaa',
             }}
-            {...props}
         >
-
-            <View style={{ flexGrow: 0 }}>
-                <View
+            <Pressable
+                onPress={() => {
+                    navigate('Contact', { screen: 'Details', params: { username: author.username } })
+                }}
+                style={{
+                    flexGrow: 0,
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    borderWidth: 1,
+                }}
+            >
+                <Image
+                    source={imagePath}
                     style={{
-                        flexDirection: 'row',
-                        alignItems: 'flex-start',
-                        gap: 10,
+                        width: 24,
+                        height: 24,
                     }}
-                >
-                    <View
-                        style={{
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                        }}
-                    >
-                        <Image
-                            source={imagePath}
-                            style={{
-                                width: 24,
-                                height: 24,
-                            }}
-                        />
-                    </View>
-                    {/* <ThemedText bold style={{ lineHeight: 24 }}>{author.username}:</ThemedText> */}
-                </View>
-            </View>
+                />
+            </Pressable>
 
             <ThemedText style={{ flexGrow: 1, lineHeight: 24 }}>{text}</ThemedText>
 
