@@ -24,7 +24,7 @@ export default ({ item, onDelete = null, ...props }) => {
             ? `${IMAGE_PATH}/${data.username}/${data.profileImage.filename}`
             : `${IMAGE_PATH}/avatar-default-small.png`}
 
-    const imagePath = useMemo(() => getProfileImagePathFromUser(item.author), [item])
+    const imagePath = useMemo(() => getProfileImagePathFromUser(author), [author])
 
     return (
         <View
@@ -80,12 +80,14 @@ export default ({ item, onDelete = null, ...props }) => {
                 
                 <IconButton
                     name='chatbox-ellipses-outline'
+                    size={22}
                     onPress={() => setModal('FEEDBACK', item)}
                 />
             
                 {user._id === item.author._id && (
                     <IconButton
                         name='trash-outline'
+                        size={22}
                         onPress={() => onDelete(item._id)}
                     />
                 )}

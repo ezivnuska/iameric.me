@@ -55,7 +55,12 @@ export default () => {
     }
     
     return (
-        <View style={{ gap: 10, flexGrow: 1 }}>
+        <View
+            style={{
+                flex: 1,
+                gap: 10,
+            }}
+        >
 
             <MailHeader title='Mail'>
                 <MailNav type={messageType} onChange={value => setMessageType(value)} />
@@ -64,12 +69,13 @@ export default () => {
             {!messages.length
                 ? <ThemedText>Mailbox empty.</ThemedText>
                 : selectedMessages.length
-                    ? <MessageList messages={selectedMessages} onDelete={removeMessage} />
-                    : (
-                        <ThemedText>
-                            {`No ${messageType === 'in' ? 'incoming' : 'sent'} messages.`}
-                        </ThemedText>
+                    ? (
+                        <MessageList
+                            messages={selectedMessages}
+                            onDelete={removeMessage}
+                        />
                     )
+                    : <ThemedText>{`No ${messageType === 'in' ? 'incoming' : 'sent'} messages.`}</ThemedText>
             }
 
         </View>

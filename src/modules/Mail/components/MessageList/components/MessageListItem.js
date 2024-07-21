@@ -1,15 +1,17 @@
 import React, { useMemo } from 'react'
 import {
     Image,
+    Pressable,
     View,
 } from 'react-native'
 import { IconButton, ThemedText } from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
+import { navigate } from '@utils/navigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ item, onDelete = null, ...props }) => {
+export default ({ item, onDelete = null }) => {
 
     const { user } = useApp()
     const { setModal } = useModal()
@@ -18,9 +20,10 @@ export default ({ item, onDelete = null, ...props }) => {
         return contact.profileImage
             ? `${IMAGE_PATH}/${contact.username}/${contact.profileImage.filename}`
             : `${IMAGE_PATH}/avatar-default-small.png`}
-
-    const imagePath = useMemo(() => getProfileImagePathFromUser(item.to._id === user._id ? item.from : item.to), [item, user])
-
+    
+    const otherUser = useMemo(() => item.to._id === user._id ? item.from : item.to, [item, user])
+    const imagePath = useMemo(() => getProfileImagePathFromUser(otherUser), [otherUser])
+    
     return (
         <View
             style={{
@@ -31,35 +34,28 @@ export default ({ item, onDelete = null, ...props }) => {
                 borderBottomWidth: 1,
                 borderBottomColor: '#aaa',
             }}
-            {...props}
         >
-            <View style={{ flexGrow: 0 }}>
-                <View
+            <Pressable
+                onPress={() => navigate('Contact', { screen: 'Details', params: { username: otherUser.username } })}
+                style={{
+                    flexGrow: 0,
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    borderWidth: 1,
+                }}
+            >
+                <Image
+                    source={imagePath}
                     style={{
-                        flexDirection: 'row',
-                        alignItems: 'flex-start',
-                        gap: 10,
+                        width: 24,
+                        height: 24,
                     }}
-                >
-                    <View
-                        style={{
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                        }}
-                    >
-                        <Image
-                            source={imagePath}
-                            style={{
-                                width: 24,
-                                height: 24,
-                            }}
-                        />
-                    </View>
-                    {/* <ThemedText bold style={{ lineHeight: 24 }}>{item.from.username}:</ThemedText> */}
-                </View>
+                />
+            </Pressable>
+            
+            <View style={{ flexGrow: 1 }}>
+                <ThemedText style={{ lineHeight: 24 }}>{item.text}</ThemedText>
             </View>
-
-            <ThemedText style={{ flexGrow: 1, lineHeight: 24 }}>{item.text}</ThemedText>
 
             <View
                 style={{
@@ -75,6 +71,7 @@ export default ({ item, onDelete = null, ...props }) => {
                 {user._id === item.to._id && (
                     <IconButton
                         name='chatbox-ellipses-outline'
+                        size={22}
                         onPress={() => setModal('MESSAGE', item.from)}
                     />
                 )}
@@ -82,6 +79,7 @@ export default ({ item, onDelete = null, ...props }) => {
                 {(user._id === item.from._id || user.role === 'admin') && (
                     <IconButton
                         name='trash-outline'
+                        size={22}
                         onPress={onDelete}
                     />
                 )}

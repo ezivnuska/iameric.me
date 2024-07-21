@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from '@layout'
+import Layout from './Layout'
 import { AppContextProvider } from '@app'
 import { ContactsContextProvider } from '@contacts'
 import { ImagesContextProvider } from '@images'

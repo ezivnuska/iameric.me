@@ -16,10 +16,7 @@ export default ({ messages, onDelete }) => {
                 />
             )}
             showsVerticalScrollIndicator={false}
-            style={{
-                width: '100%',
-                flexGrow: 1,
-            }}
+            style={{ flexGrow: 1 }}
             contentContainerStyle={{
                 flexGrow: 1,
                 paddingBottom: 20,

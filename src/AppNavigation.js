@@ -1,7 +1,4 @@
 import React from 'react'
-import {
-    NavigationContainer,
-} from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     ContactScreen,
@@ -13,49 +10,6 @@ import {
     MailScreen,
     ProfileScreen,
 } from '@screens'
-import navigationRef from '@utils/navigation'
-
-const linking = {
-    prefixes: ['https://iameric.me'],
-    config: {
-        screens: {
-            Contact: {
-                path: 'contact',
-                screens: {
-                    Details: {
-                        path: '/:username',
-                    },
-                    ContactImages: {
-                        path: 'images',
-                    },
-                },
-            },
-            Contacts: {
-                path: 'contacts',
-            },
-            Forum: {
-                path: 'forum',
-            },
-            Home: {
-                path: '',
-            },
-            Mail: {
-                path: 'mail',
-            },
-            User: {
-                path: 'user',
-                screens: {
-                    Profile: {
-                        path: 'profile',
-                    },
-                    Images: {
-                        path: 'images',
-                    },
-                }
-            },
-        },
-    },
-}
 
 const UserStack = createNativeStackNavigator()
 const UserStackScreen = () => {
@@ -179,16 +133,17 @@ const AppStackScreen = () => {
     )
 }
 
-export default ({ theme }) => {
+export default AppStackScreen
+// {
     
-    return (
-        <NavigationContainer
-            ref={navigationRef}
-            linking={linking}
-            theme={theme}
-            // fallback={<FallbackScreen />} // not working or used, necessary as of yet
-        >
-            <AppStackScreen />
-        </NavigationContainer>
-    )
-}
+//     return (
+//         <NavigationContainer
+//             ref={navigationRef}
+//             linking={linking}
+//             theme={theme}
+//             // fallback={<FallbackScreen />} // not working or used, necessary as of yet
+//         >
+            
+//         </NavigationContainer>
+//     )
+// }

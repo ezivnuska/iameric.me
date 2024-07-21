@@ -20,11 +20,10 @@ export default ({ entries, onDelete }) => {
                 />
             )}
             showsVerticalScrollIndicator={false}
+            style={{ flex: 1 }}
             contentContainerStyle={{
+                flex: 1,
                 paddingBottom: 20,
-            }}
-            style={{
-                width: '100%',
             }}
         />
     )

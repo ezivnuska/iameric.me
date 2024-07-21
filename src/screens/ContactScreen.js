@@ -7,14 +7,16 @@ import { ActivityIndicator } from 'react-native-paper'
 
 export default props => {
 
+    const { username } = props.route.params
+
     const {
         getContact,
         updateContact,
     } = useContacts()
 
-    const username = useMemo(() => props.route.params?.username, [props])
-
     const [contact, setContact] = useState(null)
+
+    const userDetails = useMemo(() => getContact(username), [username])
     
     const fetchContact = async data => {
         const loadedContact = await loadContact(data)
@@ -22,29 +24,20 @@ export default props => {
         updateContact(loadedContact)
     }
     
-    const checkOrFetchContact = async name => {
-        const user = getContact(name)
-        if (user) setContact(user)
-        else await fetchContact(name)
+    const checkOrFetchContact = async () => {
+        if (userDetails) setContact(userDetails)
+        else await fetchContact(username)
     }
 
     useEffect(() => {
-        if (username) {
-            checkOrFetchContact(username)
-        }
+        if (username) checkOrFetchContact()
     }, [username])
-
-    useEffect(() => {
-        if (contact && contact.username !== username) {
-            checkOrFetchContact(username)
-        }
-    }, [contact])
 
     return (
         <Screen {...props}>
-            {contact && contact.username === username
-                ? <Contact contact={contact} {...props} />
-                : <ActivityIndicator size='large' />
+            {contact
+                ? <Contact contact={contact} key={Date.now()} />
+                : <ActivityIndicator size='small' />
             }
         </Screen>
     )

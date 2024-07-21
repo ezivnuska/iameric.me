@@ -130,7 +130,7 @@ export default ImagePicker = () => {
         openSelector()
     }
 
-    if (uploading) return <ActivityIndicator size='large' />
+    if (uploading) return <ActivityIndicator size='medium' />
     
     return preview ? (
         <View

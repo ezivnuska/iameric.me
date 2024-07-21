@@ -27,7 +27,6 @@ module.exports = {
           '@form':          './src/modules/Form',
           '@forms':         './src/modules/Form/forms',
           '@images':        './src/modules/Images',
-          '@layout':        './src/layout',
           '@modules':       './src/modules',
           '@screens':       './src/screens',
           '@styles':        './src/styles',

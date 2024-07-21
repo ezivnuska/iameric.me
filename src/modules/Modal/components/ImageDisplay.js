@@ -119,7 +119,7 @@ export default ({ data }) => {
         closeModal()
     }
 
-    if (!image) return <ActivityIndicator size='large' />
+    if (!image) return <ActivityIndicator size='small' />
 
     return (
         <View>

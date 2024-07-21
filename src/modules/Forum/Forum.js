@@ -1,14 +1,10 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import {
-    IconButton,
-    ThemedText,
-} from '@components'
+import { ThemedText } from '@components'
 import {
     ForumHeader,
     ForumList,
 } from './components'
-import { useApp } from '@app'
 import { useForum } from '@forum'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
@@ -16,19 +12,15 @@ import { deleteEntryWithId } from '@utils/forum'
 
 export default () => {
 
-    const { socket } = useSocket()
-
+    
     const {
         addEntry,
         entries,
         deleteEntry,
         setForumLoading,
     } = useForum()
-
-    const {
-        closeModal,
-        setModal,
-    } = useModal()
+    const { closeModal } = useModal()
+    const { socket } = useSocket()
 
     useEffect(() => {
         socket.on('new_entry', addEntry)
@@ -46,27 +38,28 @@ export default () => {
     
     return (
         <View
-            style={{ gap: 10 }}
+            style={{
+                flex: 1,
+                gap: 10,
+            }}
         >
 
-            <ForumHeader title='Forum'>
+            <View style={{ flexGrow: 0 }}>
+                <ForumHeader />
+            </View>
 
-                <IconButton
-                    name='add-outline'
-                    onPress={() => setModal('FEEDBACK')}
-                    size={24}
-                />
+            <View style={{ flexGrow: 1 }}>
 
-            </ForumHeader>
-
-            {entries.length ? (
-                <ForumList
-                    entries={entries}
-                    onDelete={removeEntry}
-                />
-            ) : (
-                <ThemedText>No entries yet.</ThemedText>
-            )}
+                {entries.length ? (
+                    <ForumList
+                        entries={entries}
+                        onDelete={removeEntry}
+                    />
+                ) : (
+                    <ThemedText>No entries yet.</ThemedText>
+                )}
+                
+            </View>
 
         </View>
     )

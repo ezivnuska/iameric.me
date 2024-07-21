@@ -13,22 +13,19 @@ import { useModal } from '@modal'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ contact, ...props }) => {
+export default ({ contact }) => {
 
     const { theme } = useApp()
     const { setModal } = useModal()
 
-    const source = contact.profileImage
+    const source = contact && contact.profileImage
         ? `${IMAGE_PATH}/${contact.username}/${contact.profileImage.filename}`
         : `${IMAGE_PATH}/avatar-default.png`
 
-    return (
+    return contact ? (
         <View>
             
-            <ContactHeader
-                title={contact.username}
-                {...props}
-            />
+            <ContactHeader title={contact.username} />
 
             <Pressable
                 onPress={() => setModal('SHOWCASE', contact.profileImage)}
@@ -50,5 +47,5 @@ export default ({ contact, ...props }) => {
             </View>
 
         </View>
-    )
+    ) : null
 }

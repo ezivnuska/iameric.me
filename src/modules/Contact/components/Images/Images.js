@@ -28,7 +28,7 @@ export default ({ contactId }) => {
                 <ImageList
                     images={images}
                 />
-            ) : <ActivityIndicator size='large' />}
+            ) : <ActivityIndicator size='small' />}
 
         </View>
     )

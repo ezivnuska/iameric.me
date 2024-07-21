@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavigationContainer, useNavigation } from '@react-navigation/native'
 import {
     Image,
     Pressable,
@@ -12,15 +13,13 @@ import {
     ThemedText,
 } from '@components'
 import { Modal } from '@modules'
-import AppNavigation from '../AppNavigation'
+import AppNavigation from './AppNavigation'
 import { useApp } from '@app'
 import { Notification } from '@modules'
-import { useSocket } from '@socket'
 import { useModal } from '@modal'
-import { signout } from '@utils/auth'
-import { cleanStorage } from '@utils/storage'
-import { getCurrentRoute, navigate } from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
+import navigationRef, { navigate } from '@utils/navigation'
+import linking from './linking'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const HEADER_HEIGHT = 50
@@ -58,37 +57,44 @@ export default () => {
 
             <PaperProvider theme={theme}>
                 
-                <Modal />
-                
-                <View
-                    style={{
-                        flex: 1,
-                        height: dims.height,
-                        width: '100%',
-                        minWidth: 300,
-                        backgroundColor: theme?.colors.background,
-                    }}
+                <NavigationContainer
+                    ref={navigationRef}
+                    linking={linking}
+                    theme={theme}
+                    // fallback={<FallbackScreen />} // not working or used, necessary as of yet
                 >
-
-                    <View style={ { flexGrow: 0 }}>
-                        <Header />
-                    </View>
+                    <Modal />
                     
-                    <ScrollView
-                        showsVerticalScrollIndicator={false}
-                        style={{ flexGrow: 1 }}
-                        contentContainerStyle={{
+                    <View
+                        style={{
                             flex: 1,
-                            paddingHorizontal: 10,
+                            height: dims.height,
                             width: '100%',
-                            maxWidth: 400,
-                            marginHorizontal: 'auto',
+                            minWidth: 300,
+                            backgroundColor: theme?.colors.background,
                         }}
-                    >    
-                        <AppNavigation theme={theme} />
-                    </ScrollView>
+                    >
 
-                </View>
+                        <View style={ { flexGrow: 0 }}>
+                            <Header />
+                        </View>
+                        
+                        <ScrollView
+                            showsVerticalScrollIndicator={false}
+                            style={{ flexGrow: 1 }}
+                            contentContainerStyle={{
+                                flex: 1,
+                                paddingHorizontal: 10,
+                                width: '100%',
+                                maxWidth: 400,
+                                marginHorizontal: 'auto',
+                            }}
+                        >    
+                            <AppNavigation />
+                        </ScrollView>
+
+                    </View>
+                </NavigationContainer>
             </PaperProvider>
         </SafeAreaView>
     )
@@ -104,20 +110,6 @@ const Header = () => {
     } = useApp()
 
     const { setModal } = useModal()
-    
-    const { notifySocket } = useSocket()
-
-    const handleSignout = async id => {
-        await signout(id)
-        notifySocket('user_signed_out', id)
-        cleanStorage()
-        reset()
-    }
-
-    <SimpleButton
-        label={'Sign Out'}
-        onPress={() => handleSignout(user._id)}
-    />
 
     const renderBrand = () => dims.width < 340 ? 'iam' : 'iameric'
 
