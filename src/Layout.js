@@ -133,16 +133,15 @@ const Header = () => {
             }}
         >
             <View style={{ flexGrow: 0 }}>
-                <Pressable
-                    onPress={() => {
-                        console.log('pressed')
-                        navigate('Home')
-                    }}
-                >
+
+                <Pressable onPress={() => navigate('Home')}>
+
                     <ThemedText bold style={{ fontSize: 24 }}>
                         {renderBrand()}
                     </ThemedText>
+
                 </Pressable>
+
             </View>
 
             <View style={{ flexGrow: 1 }}>
@@ -155,13 +154,11 @@ const Header = () => {
                             justifyContent: 'space-evenly',
                             alignItems: 'center',
                             gap: 3,
-                            // borderLeftWidth: 1,
-                            // borderRightWidth: 1,
                         }}
                     >
                         <IconButton
-                            onPress={() => navigate('Home')}
                             name='home-outline'
+                            onPress={() => navigate('Home')}
                             // disabled={routeName === 'Home'}
                         />
 
