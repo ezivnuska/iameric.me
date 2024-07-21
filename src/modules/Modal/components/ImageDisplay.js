@@ -68,12 +68,11 @@ export default ({ data }) => {
     }
 
     useEffect(() => {
-        if (image) {
-            if (user.profileImage && image.user.profileImage) {
-                setIsProfileImage(user.profileImage._id === image.user.profileImage._id)
-            }
-            getImageDims()
+        if (image && user._id === image.user._id) {
+            const imageIsProfileImage = user.profileImage && user.profileImage._id === image._id
+            setIsProfileImage(imageIsProfileImage)
         }
+        getImageDims()
     }, [image])
 
     useEffect(() => {
@@ -103,7 +102,7 @@ export default ({ data }) => {
         const avatar = await setAvatar(user._id, image._id)
         setImagesLoading(false)
         
-        if (avatar) setProfileImage(avatar)
+        if (avatar) setProfileImage(avatar.profileImage)
 
         closeModal()
     }

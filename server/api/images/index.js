@@ -71,17 +71,20 @@ const updateProfileImage = async (req, res) => {
     const { userId, imageId } = req.body
     
     let user = null
+    let message = null
     if (imageId) {
         user = await User
             .findOneAndUpdate({ _id: userId }, { $set: { profileImage: imageId } }, { new: true })
             .populate({ path: 'profileImage', select: 'filename width height' })
+        if (!user) message = 'Error updating profile image'
     } else {
         user = await User
             .findOneAndUpdate({ _id: userId }, { $set: { profileImage: null } }, { new: true })
+        if (!user) message = 'Error clearing profile image'
     }
 
-    if (!user) {
-        console.log('Error: could not find user while updating avatar')
+    if (message) {
+        console.log(message)
         return res.status(200).json(null)
     }
     
