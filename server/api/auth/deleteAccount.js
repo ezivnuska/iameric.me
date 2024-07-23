@@ -3,7 +3,7 @@ const Location = require('../../models/Location')
 const Message = require('../../models/Message')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
-const { removeAllImageFilesByUsername } = require('../images/index-old')
+const { removeAllImageFilesByUsername } = require('../images')
 
 const deleteAccount = async (req, res) => {
     const { id } = req.body

@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { ThemedText } from '@components'
 import { MailNav } from './components'
 
-export default () => (
+export default ({ onChange, type = 'in' }) => (
     <View
         style={{
             flexDirection: 'row',
@@ -18,7 +18,10 @@ export default () => (
         </View>
 
         <View style={{ flex: 3 }}>
-            <MailNav />
+            <MailNav
+                type={type}
+                onChange={onChange}
+            />
         </View>
 
     </View>

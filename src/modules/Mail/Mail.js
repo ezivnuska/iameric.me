@@ -54,9 +54,12 @@ export default () => {
     }
     
     return (
-        <View style={{ flex: 1, gap: 10 }}>
+        <View style={{ flex: 1 }}>
 
-            <MailHeader />
+            <MailHeader
+                type={messageType}
+                onChange={value => setMessageType(value)}
+            />
 
             {!messages.length
                 ? <ThemedText>Mailbox empty.</ThemedText>
