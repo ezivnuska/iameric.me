@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
-const locationSchema = Schema({
+const LocationSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -36,6 +36,6 @@ const locationSchema = Schema({
   timestamps: true,
 })
 
-const LocationModel = mongoose.model('Location', locationSchema)
+const LocationModel = mongoose.model('Location', LocationSchema)
 
 module.exports = LocationModel

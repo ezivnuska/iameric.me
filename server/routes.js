@@ -11,11 +11,11 @@ const {
   } = require('./api/auth')
   
   const {
-    addToDeposit,
-    withdrawDeposit,
+    // addToDeposit,
+    // withdrawDeposit,
     getUser,
-    getProfileImage,
-    toggleStatus,
+    // getProfileImage,
+    // toggleStatus,
   } = require('./api/user')
   
   const {
@@ -103,11 +103,11 @@ router.post(   '/unsubscribe',            deleteAccount)
 router.get(    '/token/:token',           validateToken)
 
 // user
-router.post(   '/deposit',                addToDeposit)
-router.post(   '/deposit/withdraw',       withdrawDeposit)
-router.get(    '/profile/:id',             getUser)
-router.get(    '/profile/image/:id',       getProfileImage)
-router.post(   '/profile/status',         toggleStatus)
+// router.post(   '/deposit',                addToDeposit)
+// router.post(   '/deposit/withdraw',       withdrawDeposit)
+router.get(    '/profile/:id',            getUser)
+// router.get(    '/profile/image/:id',      getProfileImage)
+// router.post(   '/profile/status',         toggleStatus)
 
 // users
 router.get(    '/user/:username',          getUserByUsername)

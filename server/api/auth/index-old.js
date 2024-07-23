@@ -7,7 +7,7 @@ const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
 const {
     removeAllImageFilesByUsername,
-} = require('../images')
+} = require('../images/index-old')
 const SESSION_SECRET = process.env.JWT_SECRET || 'super.super.secret.shhhh'//config.JWT_SECRET
 
 const getSanitizedUser = ({ _id, email, location, profileImage, role, username, token, exp }) => ({
