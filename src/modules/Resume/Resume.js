@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import { ThemedText } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useApp } from '@app'
@@ -147,7 +147,7 @@ const jobs = [
 
 const Company = ({ name }) => (
     <View>
-        <ThemedText bold size={20}>{name}</ThemedText>
+        <ThemedText bold size={18}>{name}</ThemedText>
     </View>
 )
 
@@ -159,15 +159,15 @@ const Title = ({ title }) => (
 
 const City = ({ city }) => (
     <View>
-        <ThemedText size={20} color='#777'>{city}</ThemedText>
+        <ThemedText size={18} color='#777'>{city}</ThemedText>
     </View>
 )
 
 const Time = ({ start, end }) => {
-    const string = start === end ? start : `${start}-${end}`
+    const string = start === end ? start : `${start}-${end.substring(2)}`
     return (
         <View>
-            <ThemedText size={18} bold color='#777'>{string}</ThemedText>
+            <ThemedText size={18} color='#777'>{string}</ThemedText>
         </View>
     )
 }
@@ -180,17 +180,19 @@ const BulletListItem = ({ text, ...props }) => {
             style={{
                 flexDirection: 'row',
                 gap: 5,
+                flexShrink: 1,
             }}
         >
-            <View style={{ flexGrow: 0 }}>
+
+            <View style={{ flexGrow: 0, marginTop: 5 }}>
                 <Icon
                     name={'chevron-forward'}
                     size={16}
                     color={theme?.colors.textDefault}
-                    style={{ paddingTop: 5 }}
                 />
             </View>
-            <View style={{ flexGrow: 1 }}>
+
+            <View style={{ flexShrink: 1 }}>
                 <ThemedText>{text}</ThemedText>
             </View>
         </View>
@@ -201,7 +203,7 @@ const BulletedList = ({ items, listKey }) => (
     <View
         style={{
             gap: 10,
-            paddingHorizontal: 10,
+            marginHorizontal: 7,
             marginTop: 5,
         }}
     >
@@ -219,7 +221,7 @@ const Job = ({ section, ...props }) => {
     return (
         <View
             key={props.key}
-            style={{ gap: 3, marginBottom: 15 }}
+            style={{ gap: 3 }}
         >
             <View
                 style={{
@@ -227,9 +229,9 @@ const Job = ({ section, ...props }) => {
                     alignContent: 'center',
                     gap: 10,
                     background: '#eee',
-                    paddingHorizontal: 10,
+                    paddingHorizontal: 7,
                     paddingVertical: 3,
-                    marginBottom: 10,
+                    marginBottom: 5,
                 }}
             >
                 <Company name={company} />
@@ -241,7 +243,7 @@ const Job = ({ section, ...props }) => {
                     flexDirection: 'row',
                     alignContent: 'center',
                     gap: 10,
-                    paddingHorizontal: 10,
+                    paddingHorizontal: 7,
                 }}
             >
                 <Title title={title} />
@@ -256,15 +258,23 @@ const Job = ({ section, ...props }) => {
 const JobList = () => jobs.map((section, index) => <Job section={section} key={`section-${index}`} />) 
 
 const Intro = () => (
-    <View style={{ margin: 10 }}>
+    <View
+        style={{
+            marginVertical: 10,
+        }}
+    >
         <View
             style={{
                 flexDirection: 'row',
                 gap: 7,
             }}
         >
-            <View style={{ flexGrow: 0 }}>
-                <ThemedText bold size={18}>I am Eric.</ThemedText>
+            <View style={{ flexGrow: 0, flexDirection: 'row', gap: 5 }}>
+                <ThemedText bold size={18}>I am</ThemedText>
+                <View style={{ flexGrow: 0, flexDirection: 'row' }}>
+                    <ThemedText bold size={18} color='tomato'>Eric</ThemedText>
+                    <ThemedText bold size={18}>.</ThemedText>
+                </View>
             </View>
 
             <View style={{ flexGrow: 0 }}>
@@ -275,7 +285,12 @@ const Intro = () => (
 )
 
 export default () => (
-    <View style={{ gap: 10 }}>
+    <View
+        style={{
+            gap: 10,
+            marginBottom: 100,
+        }}
+    >
         <Intro />
         <JobList />
     </View>
