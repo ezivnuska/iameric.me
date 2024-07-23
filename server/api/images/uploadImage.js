@@ -1,6 +1,9 @@
 const handleFileUpload = require('./handleFileUpload')
 const saveUserImage = require('./saveUserImage')
 const User = require('../../models/User')
+const path = require('path')
+
+const uploadDir = '/var/www/iameric.me/html/assets'
 
 const uploadImage = async (req, res) => {
     

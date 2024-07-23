@@ -1,5 +1,7 @@
 const saveUserImage = require('./saveUserImage')
 
+const uploadDir = '/var/www/iameric.me/html/assets'
+
 const uploadProductImage = async payload => {
     
     const { userId, imageData, thumbData } = payload

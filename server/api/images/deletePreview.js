@@ -1,6 +1,8 @@
 const removeImageAndThumb = require('./removeImageAndThumb')
 const path = require('path')
 
+const uploadDir = '/var/www/iameric.me/html/assets'
+
 const deletePreview = async (req, res) => {
     const { username, filename } = req.body
     const userDir = path.join(uploadDir, username)
