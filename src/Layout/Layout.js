@@ -5,14 +5,14 @@ import {
     ScrollView,
     View,
 } from 'react-native'
+import { Header } from './components'
+import AppNavigation from '../AppNavigation'
+import linking from '../linking'
 import { Modal } from '@modules'
-import AppNavigation from './AppNavigation'
 import { useApp } from '@app'
 import { Notification } from '@modules'
-import { PaperProvider } from 'react-native-paper'
 import navigationRef from '@utils/navigation'
-import linking from './linking'
-import Header from './Header'
+import { PaperProvider } from 'react-native-paper'
 
 export default () => {
 
