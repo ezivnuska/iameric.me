@@ -22,20 +22,19 @@ const createOrUpdateLocation = async (req, res) => {
     const user = await User.findOne({ _id: userId })
 
     // not likely, but just in case...
-    if (!user) {
-        console.log('could not find user to update location.')
+    if (!user) console.log('could not find user to update location.')
+    else {
+        // set user location
+        user.location = location._id
+
+        // save user before continuing
+        await user.save()
+
+        // return location data
         return res.status(200).json({ location })
     }
-
-    // set user location
-    user.location = location._id
-
-    // save user before continuing
-    await user.save()
-
-    // return location data
+        
     return res.status(200).json({ location })
-    
 }
 
 module.exports = createOrUpdateLocation
