@@ -6,7 +6,7 @@ const session = require('express-session')
 const cors = require('cors')
 const path = require('path')
 const routes = require('./routes')
-const { getNumberOfOnlineUsers } = require('./api/users')
+const { getNumberOfOnlineUsers } = require('./api/users/index-old')
 const socketHandler = require('./socketHandler')
 require('dotenv').config()
 
