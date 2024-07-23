@@ -20,7 +20,7 @@ export default props => {
                 }}
             >
 
-                <UserHeader username={props.route.params?.username || user.username} {...props} />
+                <UserHeader username={props.route.params?.username || user?.username} {...props} />
                     
                 <View style={{ flexGrow: 1 }}>
                     <Images />

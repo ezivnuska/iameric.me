@@ -37,30 +37,19 @@ export default () => {
     }
     
     return (
-        <View
-            style={{
-                flex: 1,
-                gap: 10,
-            }}
-        >
+        <View style={{ flex: 1 }}>
 
-            <View style={{ flexGrow: 0 }}>
-                <ForumHeader />
-            </View>
+            <ForumHeader />
 
-            <View style={{ flexGrow: 1 }}>
-
-                {entries.length ? (
-                    <ForumList
-                        entries={entries}
-                        onDelete={removeEntry}
-                    />
-                ) : (
-                    <ThemedText>No entries yet.</ThemedText>
-                )}
+            {entries.length ? (
+                <ForumList
+                    entries={entries}
+                    onDelete={removeEntry}
+                />
+            ) : (
+                <ThemedText>No entries yet.</ThemedText>
+            )}
                 
-            </View>
-
         </View>
     )
 }

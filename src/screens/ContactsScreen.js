@@ -4,10 +4,7 @@ import { Screen } from './components'
 import { Contacts } from '@modules'
 
 export default props => (
-    <Screen
-        {...props}
-        title='Contacts'
-    >
+    <Screen {...props}>
         
         <View
             style={{
@@ -16,7 +13,7 @@ export default props => (
                 gap: 20,
             }}
         >
-            <View style={{ flexGrow: 1 }}>
+            <View style={{ flex: 1 }}>
                 <Contacts {...props} />
             </View>
 

@@ -3,7 +3,6 @@ import { View } from 'react-native'
 import { ThemedText } from '@components'
 import {
     MailHeader,
-    MailNav,
     MessageList,
 } from './components'
 import { useApp } from '@app'
@@ -55,16 +54,9 @@ export default () => {
     }
     
     return (
-        <View
-            style={{
-                flex: 1,
-                gap: 10,
-            }}
-        >
+        <View style={{ flex: 1, gap: 10 }}>
 
-            <MailHeader title='Mail'>
-                <MailNav type={messageType} onChange={value => setMessageType(value)} />
-            </MailHeader>
+            <MailHeader />
 
             {!messages.length
                 ? <ThemedText>Mailbox empty.</ThemedText>

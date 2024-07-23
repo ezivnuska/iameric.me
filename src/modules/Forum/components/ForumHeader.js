@@ -17,6 +17,7 @@ export default () => {
                 // justifyContent: 'flex-start',
                 alignItems: 'center',
                 gap: 10,
+                marginBottom: 10,
             }}
         >
             <ThemedText bold size={20}>

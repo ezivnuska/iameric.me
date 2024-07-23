@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { LoadingView } from '@components'
-import { ContactListItem } from './components'
+import { ContactListItem, ContactsHeader } from './components'
 import { useApp } from '@app'
 import { useContacts } from '@contacts'
 
@@ -13,18 +13,14 @@ export default () => {
         contactsLoading,
     } = useContacts()
 
-    if (contactsLoading) return <LoadingView loading='Loading contacts...' />
-
     return (
         <View>
+            <ContactsHeader />
             {contacts.map((contact, index) => {
                 if (user && user._id === contact._id) return null
-                return (
-                    <ContactListItem
-                        item={contact}
-                        key={`contact-${index}`}
-                    />
-                )
+                return contactsLoading
+                    ? <LoadingView loading='Loading contacts...' />
+                    : <ContactListItem item={contact} key={`contact-${index}`} />
             })}
         </View>
     )
