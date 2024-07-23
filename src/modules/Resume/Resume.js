@@ -202,9 +202,10 @@ const BulletListItem = ({ text, ...props }) => {
 const BulletedList = ({ items, listKey }) => (
     <View
         style={{
-            gap: 10,
+            gap: 7,
             marginHorizontal: 7,
-            marginTop: 5,
+            marginBottom: 10,
+            marginTop: 2,
         }}
     >
         {items.map((text, index) => (
