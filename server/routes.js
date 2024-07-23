@@ -53,7 +53,7 @@ const {
     getProductById,
     getProductsByVendorId,
     addImageIdToProduct,
-  } = require('./api/products')
+  } = require('./api/products/index-old')
   
   const {
     createOrUpdateLocation,
