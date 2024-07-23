@@ -13,7 +13,7 @@ export default ({ children, bold = false, color = null, size = 16, ...props }) =
                     fontSize: size,
                     fontWeight: bold ? 700 : 400,
                     color: color || theme?.colors.textDefault,
-                    lineHeight: size + 5,
+                    lineHeight: size + 10,
                     width: '100%',
                     maxWidth: 400,
                     ...props.style,

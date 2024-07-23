@@ -6,6 +6,7 @@ import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
+import { Resume } from '@modules'
 
 export default props => {
     const { params } = props.route
@@ -34,7 +35,7 @@ export default props => {
             secure={false}
         >
             <View style={{ flex: 1 }}>
-                
+                <Resume />               
             </View>
 
         </Screen>

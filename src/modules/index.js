@@ -6,6 +6,7 @@ import Images from './Images'
 import Mail from './Mail'
 import Modal from './Modal'
 import Notification from './Notification'
+import Resume from './Resume'
 import Socket from './Socket'
 
 export {
@@ -17,5 +18,6 @@ export {
     Mail,
     Modal,
     Notification,
+    Resume,
     Socket,
 }
