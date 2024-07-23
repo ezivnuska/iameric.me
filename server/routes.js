@@ -4,9 +4,9 @@ const router = express.Router()
 const {
     authenticate,
     deleteAccount,
-    handleSignin,
-    handleSignout,
-    handleSignup,
+    handleSignIn,
+    handleSignOut,
+    handleSignUp,
     validateToken,
   } = require('./api/auth')
   
@@ -95,10 +95,10 @@ const {
   } = require('./api/mail')
 
 // auth
-router.post(   '/signin',                 handleSignin)
-router.post(   '/signup',                 handleSignup)
+router.post(   '/signin',                 handleSignIn)
+router.post(   '/signup',                 handleSignUp)
 router.post(   '/authenticate',           authenticate)
-router.get(    '/signout/:id',            handleSignout)
+router.get(    '/signout/:id',            handleSignOut)
 router.post(   '/unsubscribe',            deleteAccount)
 router.get(    '/token/:token',           validateToken)
 
