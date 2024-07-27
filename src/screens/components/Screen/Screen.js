@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo } from 'react'
-import { View } from 'react-native'
+import {
+    ScrollView,
+    View,
+} from 'react-native'
 import { Footer } from '@components'
 import { useApp } from '@app'
 
@@ -17,9 +20,17 @@ export default Screen = ({ title, children, secure = true, ...props }) => {
     return authorized ? (
         <View style={{ flex: 1 }}>
 
-            <View style={{ flexGrow: 1 }}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{ flexGrow: 1 }}
+                contentContainerStyle={{
+                    flex: 1,
+                    paddingHorizontal: 10,
+                    width: '100%',
+                }}
+            >    
                 {children}
-            </View>
+            </ScrollView>
 
             <View style={{ flexGrow: 0 }}>
                 <Footer />

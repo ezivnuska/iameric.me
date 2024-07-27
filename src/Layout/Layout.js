@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import {
     SafeAreaView,
-    ScrollView,
     View,
 } from 'react-native'
 import { Header } from './components'
@@ -71,19 +70,16 @@ export default () => {
                             <Header route={currentRoute} />
                         </View>
                         
-                        <ScrollView
-                            showsVerticalScrollIndicator={false}
-                            style={{ flexGrow: 1 }}
-                            contentContainerStyle={{
-                                flex: 1,
-                                paddingHorizontal: 10,
+                        <View
+                            style={{
+                                flexGrow: 1,
                                 width: '100%',
                                 maxWidth: 400,
                                 marginHorizontal: 'auto',
                             }}
-                        >    
+                        >
                             <AppNavigation />
-                        </ScrollView>
+                        </View>
 
                     </View>
                 </NavigationContainer>
