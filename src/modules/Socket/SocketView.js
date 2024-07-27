@@ -36,7 +36,7 @@ export default () => {
         >
             <View
                 style={{
-                    flexGrow: 0,
+                    flexGrow: 1,
                     flexShrink: 0,
                 }}
             >
@@ -47,7 +47,7 @@ export default () => {
 
             <View
                 style={{
-                    flexGrow: 1,
+                    flexGrow: 0,
                     textAlign: 'right',
                 }}
             >
