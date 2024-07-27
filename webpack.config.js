@@ -18,7 +18,7 @@ const compileNodeModules = [
 ].map(moduleName => path.resolve(appDirectory, `node_modules/${moduleName}`));
 
 const babelLoaderConfiguration = {
-  test: /\.js$|tsx?$/,
+  test: /\.(js|jsx|ts|tsx)$/,
   // Add every directory that needs to be compiled by Babel during the build.
   include: [
     path.resolve(__dirname, 'index.web.js'), // Entry to your application
@@ -38,11 +38,6 @@ const babelLoaderConfiguration = {
       presets,
       plugins: [
         'react-native-web',
-        [
-          'import',
-          { libraryName: 'antd', style: true },
-          'antd',
-        ],
         'react-native-reanimated/plugin',
       ],
     },

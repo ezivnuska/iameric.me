@@ -6,7 +6,7 @@ import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
-import { Resume } from '@modules'
+import { Map, Resume } from '@modules'
 
 export default props => {
     const { params } = props.route
@@ -34,8 +34,14 @@ export default props => {
             {...props}
             secure={false}
         >
-            <View style={{ flex: 1 }}>
-                <Resume />               
+            <View
+                style={{
+                    flex: 1,
+                    height: '100vh',
+                    width: '100%',
+                }}
+            >
+                <Map />
             </View>
 
         </Screen>

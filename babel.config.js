@@ -1,9 +1,9 @@
 module.exports = {
   presets: [
-    'module:metro-react-native-babel-preset',
     // 'babel-preset-expo',
-    // '@babel/preset-env',
-    ['@babel/preset-react', {'runtime': 'automatic'}],
+    '@babel/preset-env',
+    '@babel/preset-react',
+    'module:metro-react-native-babel-preset',
   ],
   env: {
     production: {
@@ -11,7 +11,13 @@ module.exports = {
     },
   },
   plugins: [
-    ['@babel/plugin-transform-private-property-in-object', { 'loose': true }],
+    // @babel/plugin-transform-class-properties,
+    // @babel/plugin-transform-private-methods,
+    // @babel/plugin-transform-private-property-in-object
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-proposal-private-methods', { loose: true }],
+    ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
+    ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
     [
       'module-resolver',
       {
