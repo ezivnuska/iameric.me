@@ -24,7 +24,7 @@ export default ({ jobs }) => {
     return (
         <View
             style={{
-                gap: 2,
+                gap: 1,
                 marginBottom: 100,
             }}
         >

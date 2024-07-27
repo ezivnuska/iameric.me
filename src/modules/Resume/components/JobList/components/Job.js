@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {
     Pressable,
     View,
@@ -81,12 +81,11 @@ export default ({ section, onPress, visible = false, ...props }) => {
     
     const { theme } = useApp()
     return (
-        <View
+        <Pressable
+            onPress={onPress}
             key={`job-${props.key}`}
-            style={{ gap: 3 }}
         >
-            <Pressable
-                onPress={onPress}
+            <View
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
@@ -117,7 +116,7 @@ export default ({ section, onPress, visible = false, ...props }) => {
                         color={theme?.colors.textDefault}
                     />
                 </View>
-            </Pressable>
+            </View>
             
             {visible && (
                 <>
@@ -136,6 +135,6 @@ export default ({ section, onPress, visible = false, ...props }) => {
                     <BulletedList items={section.bullets} listKey={props.key} />
                 </>
             )}
-        </View>
+        </Pressable>
     )
 }
