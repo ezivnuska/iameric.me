@@ -188,7 +188,7 @@ const BulletListItem = ({ text, ...props }) => {
                 <Icon
                     name={'chevron-forward'}
                     size={16}
-                    color={theme?.colors.textDefault}
+                    color='tomato'
                 />
             </View>
 
