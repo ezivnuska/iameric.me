@@ -3,7 +3,7 @@ import {
     ScrollView,
     View,
 } from 'react-native'
-import { Footer } from '@components'
+import { Footer } from './components'
 import { useApp } from '@app'
 
 export default Screen = ({ title, children, secure = true, ...props }) => {
