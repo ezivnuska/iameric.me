@@ -1,8 +1,9 @@
 import React from 'react'
-import { Text, View } from 'react-native'
-import { ThemedText } from '@components'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { useApp } from '@app'
+import { View } from 'react-native'
+import {
+    Intro,
+    JobList,
+} from './components'
 
 const jobs = [
     {
@@ -11,7 +12,7 @@ const jobs = [
         start: '2015',
         end: '2015',
         duration: '5 months',
-        title: 'Frontend Developer',
+        title: 'Frontend',
         bullets: [
             'Built banner ads using Flash/Actionscript',
             'Wrote Jade templates for mobile app',
@@ -24,7 +25,7 @@ const jobs = [
         start: '2015',
         end: '2015',
         duration: '2 months',
-        title: 'Frontend Developer',
+        title: 'Frontend',
         bullets: [
             'Built microsite with Node, Gulp and Sass/Bourbon',
         ],
@@ -35,7 +36,7 @@ const jobs = [
         start: '2014',
         end: '2015',
         duration: '1 year, 2 months',
-        title: 'Actionscript Developer',
+        title: 'Frontend',
         bullets: [
             'Built expandable and polite-loading rich-media creatives for DoubleClick and MediaMind (now Sizemek) platforms',
         ],
@@ -46,7 +47,7 @@ const jobs = [
         start: '2013',
         end: '2013',
         duration: '1 month',
-        title: 'Actionscript Developer',
+        title: 'Frontend',
         bullets: [
             'Built expandable rich-media creatives using Actionscript on DoubleClick platform',
         ],
@@ -57,7 +58,7 @@ const jobs = [
         start: '2013',
         end: '2013',
         duration: '1 month',
-        title: 'Actionscript Developer',
+        title: 'Frontend',
         bullets: [
             'Built Flash banner ads in various sizes',
         ],
@@ -68,7 +69,7 @@ const jobs = [
         start: '2010',
         end: '2012',
         duration: '2 years',
-        title: 'Frontend and iPhone Developer',
+        title: 'Frontend/iOS',
         bullets: [
             'Maintained and facilitated updates and promotions for Flash application created with AS3 and PureMVC framework which allowed customers to order localized cable, internet and telephone service bundles',
             'Built the Lift Calculator, a simple app for iPhone, for calculating the response rate for marketing campaigns and comparing them to industry averages.',
@@ -82,7 +83,7 @@ const jobs = [
         start: '2010',
         end: '2010',
         duration: '4 months',
-        title: 'Actionscript Developer',
+        title: 'Frontend',
         bullets: [
             'Built Flash banner campaigns',
         ],
@@ -93,7 +94,7 @@ const jobs = [
         start: '2010',
         end: '2010',
         duration: '4 months',
-        title: 'Actionscript Developer',
+        title: 'Frontend',
         bullets: [
             'Built XML driven interactive expandable rich media Flash banners for online reality show',
         ],
@@ -104,7 +105,7 @@ const jobs = [
         start: '2010',
         end: '2010',
         duration: '2 months',
-        title: 'Actionscript Developer',
+        title: 'Frontend',
         bullets: [
             'Built standard and expandable interactive Flash banners',
         ],
@@ -115,7 +116,7 @@ const jobs = [
         start: '2008',
         end: '2009',
         duration: '4 months',
-        title: 'Actionscript Developer',
+        title: 'Frontend',
         bullets: [
             'Built 3 Flash interactive video case studies to be used as marketing materials for pharmaceutical companies',
         ],  
@@ -126,7 +127,7 @@ const jobs = [
         start: '2006',
         end: '2008',
         duration: '2 years',
-        title: 'Lead Frontend Developer',
+        title: 'Frontend',
         bullets: [
             'Built all client web sites using HTML, CSS, JavaScript, and ActionScript',
             'Built email templates for a CMS-based email software',
@@ -138,161 +139,21 @@ const jobs = [
         start: '2001',
         end: '2006',
         duration: '5 years',
-        title: 'Lead Frontend Developer',
+        title: 'Frontend',
         bullets: [
-            'Built all client sites and landing pages using HTML, CSS, Javascript, and Flash',
+            'Built out all client sites from existing design composites (HTML|CSS|JS|AS)',
         ],
     }
 ]
 
-const Company = ({ name }) => (
-    <View>
-        <ThemedText bold size={18}>{name}</ThemedText>
-    </View>
-)
-
-const Title = ({ title }) => (
-    <View>
-        <ThemedText bold color='tomato' size={18}>{title}</ThemedText>
-    </View>
-)
-
-const City = ({ city }) => (
-    <View>
-        <ThemedText size={18} color='#777'>{city}</ThemedText>
-    </View>
-)
-
-const Time = ({ start, end }) => {
-    const string = start === end ? start : `${start}-${end.substring(2)}`
-    return (
-        <View>
-            <ThemedText size={18} color='#777'>{string}</ThemedText>
-        </View>
-    )
-}
-
-const BulletListItem = ({ text, ...props }) => {
-    const { theme } = useApp()
-    return (
-        <View
-            key={props.key}
-            style={{
-                flexDirection: 'row',
-                gap: 5,
-                flexShrink: 1,
-            }}
-        >
-
-            <View style={{ flexGrow: 0, marginTop: 5 }}>
-                <Icon
-                    name={'chevron-forward'}
-                    size={16}
-                    color='tomato'
-                />
-            </View>
-
-            <View style={{ flexShrink: 1 }}>
-                <ThemedText>{text}</ThemedText>
-            </View>
-        </View>
-    )
-}
-
-const BulletedList = ({ items, listKey }) => (
-    <View
-        style={{
-            gap: 7,
-            marginHorizontal: 7,
-            marginBottom: 10,
-            marginTop: 2,
-        }}
-    >
-        {items.map((text, index) => (
-            <BulletListItem
-                text={text}
-                key={`${listKey}-${index}`}
-            />
-        ))}
-    </View>
-)
-
-const Job = ({ section, ...props }) => {
-    const { company, city, start, end, title } = section
-    return (
-        <View
-            key={props.key}
-            style={{ gap: 3 }}
-        >
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignContent: 'center',
-                    gap: 10,
-                    background: '#eee',
-                    paddingHorizontal: 7,
-                    paddingVertical: 3,
-                    marginBottom: 5,
-                }}
-            >
-                <Company name={company} />
-                <City city={city} />
-            </View>
-            
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignContent: 'center',
-                    gap: 10,
-                    paddingHorizontal: 7,
-                }}
-            >
-                <Title title={title} />
-                <Time start={start} end={end} />
-            </View>
-
-            <BulletedList items={section.bullets} listKey={props.key} />
-        </View>
-    )
-}
-
-const JobList = () => jobs.map((section, index) => <Job section={section} key={`section-${index}`} />) 
-
-const Intro = () => (
-    <View
-        style={{
-            marginVertical: 10,
-        }}
-    >
-        <View
-            style={{
-                flexDirection: 'row',
-                gap: 7,
-            }}
-        >
-            <View style={{ flexGrow: 0, flexDirection: 'row', gap: 5 }}>
-                <ThemedText bold size={18}>I am</ThemedText>
-                <View style={{ flexGrow: 0, flexDirection: 'row' }}>
-                    <ThemedText bold size={18} color='tomato'>Eric</ThemedText>
-                    <ThemedText bold size={18}>.</ThemedText>
-                </View>
-            </View>
-
-            <View style={{ flexGrow: 0 }}>
-                <ThemedText size={18}>Welcome to my project.</ThemedText>
-            </View>
-        </View>
-    </View>
-)
-
 export default () => (
     <View
         style={{
-            gap: 10,
+            gap: 2,
             marginBottom: 100,
         }}
     >
         <Intro />
-        <JobList />
+        <JobList jobs={jobs} />
     </View>
 )

@@ -22,10 +22,16 @@ export default Screen = ({ title, children, secure = true, ...props }) => {
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                style={{ flexGrow: 1 }}
+                style={{
+                    flexGrow: 1,
+                    marginHorizontal: 5,
+                    borderWidth: 1,
+                    borderRadius: 6,
+                    borderColor: '#aaa',
+                }}
                 contentContainerStyle={{
                     flex: 1,
-                    paddingHorizontal: 10,
+                    paddingHorizontal: 5,
                     width: '100%',
                 }}
             >    

@@ -21,7 +21,7 @@ export default () => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingHorizontal: 10,
+                paddingHorizontal: 20,
                 height: 40,
             }}
         >
