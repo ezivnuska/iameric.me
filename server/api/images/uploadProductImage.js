@@ -1,6 +1,6 @@
 const saveUserImage = require('./saveUserImage')
 
-const uploadDir = '/var/www/iameric.me/html/assets'
+const uploadDir = process.env.IMAGE_PATH || 'assets'
 
 const uploadProductImage = async payload => {
     

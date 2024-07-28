@@ -3,7 +3,7 @@ const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
 const path = require('path')
 
-const uploadDir = '/var/www/iameric.me/html/assets'
+const uploadDir = process.env.IMAGE_PATH || 'assets'
 
 const uploadAvatar = async (req, res) => {
     const { _id, avatar, timestamp } = req.body

@@ -3,7 +3,7 @@ const saveUserImage = require('./saveUserImage')
 const User = require('../../models/User')
 const path = require('path')
 
-const uploadDir = '/var/www/iameric.me/html/assets'
+const uploadDir = process.env.IMAGE_PATH || 'assets'
 
 const uploadImage = async (req, res) => {
     
@@ -15,7 +15,7 @@ const uploadImage = async (req, res) => {
     const filename = `${userId}-${Date.now()}.png`
     
     const userDir = path.join(uploadDir, user.username)
-    
+    console.log('userDir', userDir)
     const imagesUploaded = await handleFileUpload({ imageData, thumbData }, userDir, filename)
     
     if (!imagesUploaded) {
