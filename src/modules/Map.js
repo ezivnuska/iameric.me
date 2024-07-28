@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
-import GoogleMapReact from 'google-map-react'
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 
 const defaultProps = {
     center: {
@@ -20,7 +20,7 @@ export default () => {
         getLocation()
     }, [])
 
-    const getLocation = () => {
+    const getLocation = async () => {
         if (navigator.geolocation) {
             
             navigator.geolocation.getCurrentPosition(position => {
@@ -38,40 +38,40 @@ export default () => {
 
     return (
         <View style={{ flex: 1 }}>
-            {location && location.lat && location.lng ? (
-                <ThemedText>
-                    Latitude: {location.lat}, Longitude: {location.lng}
-                </ThemedText>
-            ) : (
-                <ThemedText>No location data available.</ThemedText>
-            )}
+
+            {
+                location && location.lat && location.lng
+                ? null
+                : <ThemedText>No location data available.</ThemedText>
+            }
 
             {error && <ThemedText>Error: {error}</ThemedText>}
 
             {location && (
-                <View
-                    style={{
-                        height: '100vh',
-                        width: '100%',
-                    }}
-                >
-                    <GoogleMapReact
-                        bootstrapURLKeys={{ key: '' }}
-                        defaultCenter={location}
-                        defaultZoom={defaultProps.zoom}
-                        yesIWantToUseGoogleMapApiInternals
+                <View>
+                    <LoadScript
+                        googleMapsApiKey='AIzaSyDHdT4IZ747lyHYGT53SHsoq31rRkdco6I'
                     >
-                        <View
-                            lat={location.lat}
-                            lng={location.lng}
-                            style={{
-                                backgroundColor: 'pink',
-                                height: 6,
-                                width: 6,
-                                borderRadius: 3,
+                        <GoogleMap
+                            mapContainerStyle={{
+                                marginTop: 5,
+                                height: '100vh',
+                                width: '100%',
                             }}
-                        />
-                    </GoogleMapReact>
+                            center={location}
+                            zoom={defaultProps.zoom}
+                        >
+                            <Marker
+                                position={location}
+                                // style={{
+                                //     backgroundColor: 'yellow',
+                                //     height: 6,
+                                //     width: 6,
+                                //     borderRadius: 3,
+                                // }}
+                            />
+                        </GoogleMap>
+                    </LoadScript>
                 </View>
             )}
         </View>

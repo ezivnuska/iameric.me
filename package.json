@@ -15,9 +15,11 @@
     "deploy:prod": "scp -r /Users/home/Projects/web/dist eric@143.244.182.101:/var/www/iameric.me/html",
     "deploy:server": "scp -r /Users/home/Projects/web/server eric@143.244.182.101:/var/www/iameric.me/html",
     "deploy:package": "scp /Users/home/Projects/web/package.json eric@143.244.182.101:/var/www/iameric.me/html",
+    "deploy:images": "scp -r /Users/home/Projects/web/images eric@143.244.182.101:/var/www/iameric.me/html/assets",
     "analyze": "webpack --profile --json > stats.json"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.19.3",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.12",
@@ -61,7 +63,6 @@
     "react-native-svg": "^14.1.0",
     "react-native-vector-icons": "^10.0.3",
     "react-native-web": "^0.18.12",
-    "react-native-web-linear-gradient": "^1.1.2",
     "react-router-dom": "^6.22.3",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",

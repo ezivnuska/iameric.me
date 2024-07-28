@@ -4,6 +4,7 @@ const removeImage = require('./removeImage')
 const Product = require('../../models/Product')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
+const path = require('path')
 
 const uploadDir = '/var/www/iameric.me/html/assets'
 
