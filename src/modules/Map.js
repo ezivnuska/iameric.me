@@ -17,6 +17,7 @@ const defaultProps = {
 export default () => {
 
     const [location, setLocation] = useState(null)
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
     useEffect(() => {
@@ -25,14 +26,16 @@ export default () => {
 
     const getLocation = async () => {
         if (navigator.geolocation) {
-            
+            setLoading(true)
             navigator.geolocation.getCurrentPosition(position => {
-                console.log('location', position.coords.latitude, position.coords.longitude)
+                
                 setLocation({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude,
                 })
+
                 setError(null)
+                setLoading(false)
             },
             err => setError(err.message))
         } else {
@@ -41,23 +44,33 @@ export default () => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, gap: 5 }}>
 
-            {
-                location && location.lat && location.lng
-                ? null
-                : <ThemedText>No location data available.</ThemedText>
-            }
+            <View style={{ flexGrow: 0 }}>
 
-            {error && <ThemedText>Error: {error}</ThemedText>}
-
-            <SimpleButton
-                label='Get Location'
-                onPress={getLocation}
-            />
+                {loading
+                    ? <ThemedText>Loading...</ThemedText>
+                    : (
+                        <View style={{ gap: 10 }}>
+                            <SimpleButton
+                                label={`${location ? 'Refresh' : 'Load'} Location`}
+                                onPress={getLocation}
+                            />
+                            
+                            {location
+                                ? <ThemedText>{location.lat}, {location.lng}</ThemedText>
+                                : <ThemedText>No location data available.</ThemedText>
+                            }
+            
+                            {error && <ThemedText color='red'>Error: {error}</ThemedText>}
+                        </View>
+                    )
+                }
+                
+            </View>
 
             {location && (
-                <View>
+                <View style={{ flexGrow: 1 }}>
                     <LoadScript
                         googleMapsApiKey='AIzaSyDHdT4IZ747lyHYGT53SHsoq31rRkdco6I'
                     >
