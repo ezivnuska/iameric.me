@@ -46,7 +46,7 @@ export default () => {
     return (
         <View style={{ flex: 1, gap: 5 }}>
 
-            <View style={{ flexGrow: 0 }}>
+            <View style={{ flexBasis: 30, flexGrow: 0 }}>
 
                 {loading
                     ? <ThemedText>Loading...</ThemedText>
@@ -57,9 +57,7 @@ export default () => {
                                 onPress={getLocation}
                             />
                             
-                            {location
-                                ? <ThemedText>{location.lat}, {location.lng}</ThemedText>
-                                : <ThemedText>No location data available.</ThemedText>
+                            {!location && <ThemedText>Location not available.</ThemedText>
                             }
             
                             {error && <ThemedText color='red'>Error: {error}</ThemedText>}
