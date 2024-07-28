@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ThemedText } from '@components'
+import {
+    SimpleButton,
+    ThemedText,
+} from '@components'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 
 const defaultProps = {
@@ -46,6 +49,11 @@ export default () => {
             }
 
             {error && <ThemedText>Error: {error}</ThemedText>}
+
+            <SimpleButton
+                label='Get Location'
+                onPress={getLocation}
+            />
 
             {location && (
                 <View>
