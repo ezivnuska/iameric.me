@@ -16,7 +16,7 @@
     "deploy:api": "scp -r /Users/home/Projects/web/server/api eric@143.244.182.101:/var/www/iameric.me/html/server",
     "deploy:models": "scp -r /Users/home/Projects/web/server/models eric@143.244.182.101:/var/www/iameric.me/html/server",
     "deploy:server": "scp /Users/home/Projects/web/server/index.js eric@143.244.182.101:/var/www/iameric.me/html/server/index.js",
-    "deploy:backend": "scp -r /Users/home/Projects/web/server eric@143.244.182.101:/var/www/iameric.me/html/server/index.js",
+    "deploy:backend": "scp -r /Users/home/Projects/web/server eric@143.244.182.101:/var/www/iameric.me/html",
     "deploy:package": "scp /Users/home/Projects/web/package.json eric@143.244.182.101:/var/www/iameric.me/html",
     "deploy:images": "scp -r /Users/home/Projects/web/images eric@143.244.182.101:/var/www/iameric.me/html/assets",
     "deploy:env": "scp /Users/home/Projects/web/.env eric@143.244.182.101:/var/www/iameric.me/html/.env",

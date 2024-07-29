@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-const SESSION_SECRET = process.env.JWT_SECRET
 
 const createToken = ({
     _id,
@@ -17,7 +16,7 @@ const createToken = ({
             email,
             role,
             exp: expiration,
-        }, SESSION_SECRET, {}),
+        }, process.env.JWT_SECRET, {}),
         exp: expiration,
     }
 }

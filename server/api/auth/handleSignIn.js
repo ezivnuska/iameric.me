@@ -4,7 +4,6 @@ const User = require('../../models/User')
 
 const handleSignIn = async (req, res) => {
     const { email, password } = req.body
-    console.log('email', email)
     
     const user = await User
         .findOne({ email })

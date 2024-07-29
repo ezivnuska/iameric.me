@@ -9,15 +9,11 @@ const routes = require('./routes')
 const socketHandler = require('./socketHandler')
 require('dotenv').config()
 
-const SESSION_SECRET = process.env.JWT_SECRET
-const db = process.env.DB_CONNECTION_STRING
-const PORT = process.env.PORT
-
 const app = express()
 const server = createServer(app)
 
 const sessionMiddleware = session({
-	secret: SESSION_SECRET,
+	secret: process.env.JWT_SECRET,
 	resave: false,// set to true to reset session on every request
 	saveUninitialized: true,
 })
@@ -47,7 +43,7 @@ app.use('/assets', express.static(path.resolve(__dirname, '../assets')))
 app.use('/api', routes)
 
 // Set up Mongoose connection
-mongoose.connect(db, {
+mongoose.connect(process.env.DB_CONNECTION_STRING, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 })
@@ -105,6 +101,6 @@ app.use(
 		res.status(status).send(errorResponse)
 	})
 
-server.listen(PORT, () => {
-	console.log(`\n\n*************************\nServer running on port ${PORT}`)
+server.listen(process.env.PORT, () => {
+	console.log(`\n\n*************************\nServer running on port ${process.env.PORT}`)
 })
