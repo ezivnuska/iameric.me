@@ -27,7 +27,7 @@ const createUser = async (email, hashedPassword, username, fiction) => {
             { new: true },
         )
         .populate('profileImage', 'filename width height')
-        .populate('location')
+        .populate('address')
 
     if (user) return user
     else console.log('Error updating user with token')

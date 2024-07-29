@@ -23,7 +23,7 @@ const authenticate = async (req, res) => {
     const user = await User
         .findOne({ _id: userFromToken._id })
         .populate('profileImage', 'filename width height')
-        .populate('location')
+        .populate('address')
 
     if (!user) {
         console.log('failed to refresh user token')

@@ -1,5 +1,5 @@
 const Entry = require('../../models/Entry')
-const Location = require('../../models/Location')
+const Address = require('../../models/Address')
 const Message = require('../../models/Message')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
@@ -32,11 +32,11 @@ const deleteAccount = async (req, res) => {
         console.log(`deleted ${deletedMessages.deletedCount} messages`)
     }
 
-    const deletedLocation = await Location.deleteOne({ user: id })
-    if (!deletedLocation) {
-        console.log('could not delete user location.')
+    const deletedAddress = await Address.deleteOne({ user: id })
+    if (!deletedAddress) {
+        console.log('could not delete user address.')
     } else {
-        console.log(`deleted ${deletedLocation.deletedCount} location`)
+        console.log(`deleted ${deletedAddress.deletedCount} address`)
     }
 
     const deletedImages = await UserImage.deleteMany({ user: id })

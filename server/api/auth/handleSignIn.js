@@ -9,7 +9,7 @@ const handleSignIn = async (req, res) => {
     const user = await User
         .findOne({ email })
         .populate('profileImage', 'filename width height')
-        .populate('location')
+        .populate('address')
         
     if (!user) {
         return res.status(200).json({ error: true, invalidField: 'email', msg: 'No user found with that email.' })

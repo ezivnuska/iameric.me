@@ -10,7 +10,7 @@ const getVendor = async (req, res) => {
 
     let vendor = await User
         .findOne({ _id: id })
-        .populate('location')
+        .populate('address')
         .populate({
             path: 'profileImage',
             select: 'filename width height'

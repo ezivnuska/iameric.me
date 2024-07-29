@@ -4,7 +4,7 @@ const getUserDetailsById = async (req, res) => {
     const user = await User
         .findOne({ _id: req.params.id })
         .populate('profileImage', 'filename width height')
-        .populate('location')
+        .populate('address')
         .populate('images')
         
     if (!user) console.log('could not get user by id.')

@@ -8,13 +8,13 @@ const getOrdersByVendorId = async (req, res) => {
         .find({ vendor: id })
         .populate({
             path: 'customer',
-            select: 'username location',
-            populate: { path: 'location' },
+            select: 'username address',
+            populate: { path: 'address' },
         })
         .populate({
             path: 'vendor',
-            select: 'username location',
-            populate: { path: 'location' },
+            select: 'username address',
+            populate: { path: 'address' },
         })
         .populate('driver', 'username')
         .populate({

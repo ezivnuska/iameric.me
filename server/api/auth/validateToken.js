@@ -15,7 +15,7 @@ const validateToken = async (req, res) => {
     const user = await User
         .findOne({ _id })
         .populate('profileImage', 'filename width height')
-        .populate('location')
+        .populate('address')
     
     if (!user) return res.status(200).json(null)
 

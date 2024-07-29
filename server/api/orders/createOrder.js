@@ -23,13 +23,13 @@ const createOrder = async (req, res) => {
         .findOne({ _id: order._id })
         .populate({
             path: 'customer',
-            select: 'username location',
-            populate: { path: 'location' },
+            select: 'username address',
+            populate: { path: 'address' },
         })
         .populate({
             path: 'vendor',
-            select: 'username location',
-            populate: { path: 'location' },
+            select: 'username address',
+            populate: { path: 'address' },
         })
         .populate('driver', 'username')
         .populate({

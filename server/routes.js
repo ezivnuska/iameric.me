@@ -56,10 +56,10 @@ const {
   } = require('./api/products')
   
   const {
-    createOrUpdateLocation,
-    getLocationByUserId,
-    getUserLocationWithLocationId,
-  } = require('./api/location')
+    createOrUpdateAddress,
+    getAddressByUserId,
+    getUserAddressWithAddressId,
+  } = require('./api/address')
   
   const {
     acceptOrder,
@@ -131,10 +131,10 @@ router.get(    '/message/:id',             getMessage)
 router.get(    '/messages/:id',            getMessages)
 router.delete( '/message/delete/:id',      deleteMessageById)
 
-// location
-router.post(   '/location',                createOrUpdateLocation)
-router.get(    '/location/:userId',        getLocationByUserId)
-router.get(    '/user/location/:locationId', getUserLocationWithLocationId)
+// address
+router.post(   '/address',                 createOrUpdateAddress)
+router.get(    '/address/:userId',         getAddressByUserId)
+router.get(    '/user/address/:addressId', getUserAddressWithAddressId)
 
 // products
 router.post(   '/product',                 createOrUpdateProduct)

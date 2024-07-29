@@ -39,9 +39,9 @@ const UserSchema = new Schema({
     token: {
         type: Schema.Types.String,
     },
-    location: {
+    address: {
         type: Schema.Types.ObjectId,
-        ref: 'Location',
+        ref: 'Address',
     },
     exp: {
         type: Date,
