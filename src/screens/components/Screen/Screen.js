@@ -10,7 +10,9 @@ export default Screen = ({ title, children, secure = true, ...props }) => {
 
     const { user } = useApp()
 
-    const authorized = useMemo(() => (!secure || user !== null), [secure, user])
+    const authorized = useMemo(() => {
+        return (!secure || user !== null)
+    }, [secure, user])
 
     useEffect(() => {
         // console.log(`${authorized ? '' : 'not '}authorized for path ${props.route.path || props.route.name}`)

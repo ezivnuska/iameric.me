@@ -33,7 +33,10 @@ export default () => {
         socket.on('deleted_message', message => deleteMessage(message))
     }, [])
 
-    const messagesOut = useMemo(() => messages.filter(m => m.from && m.from._id === user._id), [messages, user])
+    const messagesOut = useMemo(() => messages.filter(m => {
+        console.log(m.from, user._id)
+        return m.from && m.from._id === user._id
+    }), [messages, user])
     const messagesIn = useMemo(() => messages.filter(m => m.to && m.to._id === user._id), [messages, user])
     const selectedMessages = useMemo(() => {
         return messageType === 'all'

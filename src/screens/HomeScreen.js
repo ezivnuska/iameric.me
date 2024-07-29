@@ -20,13 +20,15 @@ export default props => {
     }, [params])
 
     const handleSignout = async () => {
-        const userId = user._id
-        if (params.signout) await signout(userId)
+        if (params.signout && user) {
+            const userId = user._id
+            await signout(userId)
             notifySocket('user_signed_out', userId)
-        cleanStorage()
-        reset()
+            cleanStorage()
+            reset()
+            clearModal()
+        }
         props.navigation.navigate('Home')
-        clearModal()
     }
 
     return (
