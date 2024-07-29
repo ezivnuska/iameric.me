@@ -43,55 +43,45 @@ export default () => {
         }
     }
 
+    const renderGoogleMap = () => (
+
+        <LoadScript googleMapsApiKey='AIzaSyDHdT4IZ747lyHYGT53SHsoq31rRkdco6I'>
+
+            <GoogleMap
+                mapContainerStyle={{
+                    height: '100vh',
+                    width: '100%',
+                }}
+                center={location}
+                zoom={defaultProps.zoom}
+            >
+                <Marker position={location} />
+            </GoogleMap>
+        </LoadScript>
+    )
+
     return (
         <View style={{ flex: 1, gap: 5 }}>
 
             <View style={{ flexBasis: 30, flexGrow: 0 }}>
 
-                {loading
-                    ? <ThemedText>Loading...</ThemedText>
-                    : (
-                        <View style={{ gap: 10 }}>
-                            <SimpleButton
-                                label={`${location ? 'Refresh' : 'Load'} Location`}
-                                onPress={getLocation}
-                            />
-                            
-                            {!location && <ThemedText>Location not available.</ThemedText>
-                            }
-            
-                            {error && <ThemedText color='red'>Error: {error}</ThemedText>}
-                        </View>
-                    )
-                }
+                <View style={{ gap: 10 }}>
+                    <SimpleButton
+                        label={loading ? 'Loading...' : `${location ? 'Refresh' : 'Load'} Location`}
+                        onPress={getLocation}
+                        disabled={loading}
+                    />
+                    
+                    {!loading && !location && <ThemedText>Location not available.</ThemedText>}
+    
+                    {error && <ThemedText color='red'>Error: {error}</ThemedText>}
+                </View>
                 
             </View>
 
             {location && (
-                <View style={{ flexGrow: 1 }}>
-                    <LoadScript
-                        googleMapsApiKey='AIzaSyDHdT4IZ747lyHYGT53SHsoq31rRkdco6I'
-                    >
-                        <GoogleMap
-                            mapContainerStyle={{
-                                marginTop: 5,
-                                height: '100vh',
-                                width: '100%',
-                            }}
-                            center={location}
-                            zoom={defaultProps.zoom}
-                        >
-                            <Marker
-                                position={location}
-                                // style={{
-                                //     backgroundColor: 'yellow',
-                                //     height: 6,
-                                //     width: 6,
-                                //     borderRadius: 3,
-                                // }}
-                            />
-                        </GoogleMap>
-                    </LoadScript>
+                <View style={{ flexGrow: 1, marginTop: 5 }}>
+                    {renderGoogleMap()}
                 </View>
             )}
         </View>
