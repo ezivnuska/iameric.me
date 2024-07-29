@@ -5,6 +5,9 @@ import {
     ThemedText,
 } from '@components'
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
+import { setUserLocation } from '@utils/map'
+import { useApp } from '@app'
+import { useContacts } from '@contacts'
 
 const defaultProps = {
     center: {
@@ -16,13 +19,33 @@ const defaultProps = {
 
 export default () => {
 
+    const { updateUser, user } = useApp()
+    const { contacts } = useContacts()
+
     const [location, setLocation] = useState(null)
+    const [contactLocations, setContactLocations] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
     useEffect(() => {
         getLocation()
+        getLocationsFromContacts()
     }, [])
+
+    const getLocationsFromContacts = () => {
+        const contactsWithLocations = contacts.filter(contact => contact.location !== null)
+        const locations = contactsWithLocations.map(contact => {
+            const { _id, username, location } = contact
+            return { _id, username, location }
+        })
+        setContactLocations(locations)
+    }
+
+    const savePosition = async ({ latitude, longitude }) => {
+        const updatedUser = await setUserLocation(latitude, longitude, user._id)
+        if (updatedUser) updateUser({ location: { latitude, longitude } })
+        else console.log('Error updating user')
+    }
 
     const getLocation = async () => {
         if (navigator.geolocation) {
@@ -34,6 +57,8 @@ export default () => {
                     lng: position.coords.longitude,
                 })
 
+                savePosition(position.coords)
+
                 setError(null)
                 setLoading(false)
             },
@@ -42,6 +67,14 @@ export default () => {
             setError('Geolocation is not supported by this browser.')
         }
     }
+
+    const renderContactLocations = () => (
+        <>
+            {contactLocations.map((data, index) => (
+                <Marker position={location} />
+            ))}
+        </>
+    )
 
     const renderGoogleMap = () => (
 
@@ -56,6 +89,7 @@ export default () => {
                 zoom={defaultProps.zoom}
             >
                 <Marker position={location} />
+                {renderContactLocations()}
             </GoogleMap>
         </LoadScript>
     )

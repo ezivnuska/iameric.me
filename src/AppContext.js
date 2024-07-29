@@ -20,6 +20,7 @@ import { validateToken } from '@utils/auth'
 import { dark, light } from '@styles/colors'
 import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
+import { useNotification } from '@notification'
 
 // import socket from '../socket'
 
@@ -38,6 +39,7 @@ const initialState = {
     setUser: () => {},
     setProfileImage: () => {},
     toggleTheme: () => {},
+    updateUser: () => {},
 }
 
 export const AppContext = createContext(initialState)
@@ -51,6 +53,8 @@ export const useApp = () => {
 export const AppContextProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
+    
+    const { addNotification } = useNotification()
 
     const dims = useWindowDimensions()
 
@@ -107,15 +111,23 @@ export const AppContextProvider = ({ children }) => {
     const setUser = payload => {
         dispatch({ type: 'SET_USER', payload })
     }
-
+    
     const setProfileImage = payload => {
         dispatch({ type: 'SET_PROFILE_IMAGE', payload })
     }
-
+    
     const toggleTheme = async () => {
         setItem('dark', !state.dark)
         dispatch({ type: 'TOGGLE_THEME' })
         addNotification(`Changed to ${!state.dark ? 'dark' : 'light'} theme`)
+    }
+    
+    const updateUser = payload => {
+        dispatch({ type: 'UPDATE_USER', payload })
+        
+        // used only for dev purposes
+        const keys = Object.keys(payload)
+        addNotification(`User ${keys.toString()} updated`)
     }
 
     const actions = useMemo(() => ({
@@ -123,6 +135,7 @@ export const AppContextProvider = ({ children }) => {
         setProfileImage,
         setUser,
         toggleTheme,
+        updateUser,
     }), [state, dispatch])
 
     return (
@@ -160,8 +173,17 @@ const reducer = (state, action) => {
                 ...state,
                 dark: !state.dark,
                 theme: !state.dark
-                    ? CombinedDarkTheme
-                    : CombinedDefaultTheme,
+                ? CombinedDarkTheme
+                : CombinedDefaultTheme,
+            }
+            break
+        case 'UPDATE_USER':
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    payload,
+                },
             }
             break
         default: throw new Error()

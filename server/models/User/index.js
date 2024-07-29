@@ -43,6 +43,14 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Address',
     },
+    location: {
+        latitude: {
+            type: Schema.Types.String,
+        },
+        longitude: {
+            type: Schema.Types.String,
+        },
+    },
     exp: {
         type: Date,
         // required: true,
