@@ -27,7 +27,7 @@ export default () => {
             case 'SHOWCASE': return <ImageDisplay data={data} />; break
             case 'AUTH': return <AuthForm />; break
             case 'DESTROY': return <DestroyForm />; break
-            case 'FEEDBACK': return <FeedbackForm />; break
+            case 'FEEDBACK': return <FeedbackForm data={data} />; break
             case 'IMAGE': return <ImageForm />; break
             case 'MESSAGE': return <MessageForm data={data} />; break
             case 'SETTINGS': return <SettingsForm />; break

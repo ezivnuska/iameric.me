@@ -31,12 +31,9 @@ export default ({ item, onDelete = null }) => {
 
     return (
         <View
-            style={{
-                marginBottom: 3,
-                borderBottomWidth: 1,
-                borderBottomColor: '#aaa',
-            }}
+            key={`entry-${item._id}`}
         >
+
             <View
                 style={{
                     flexDirection: 'row',

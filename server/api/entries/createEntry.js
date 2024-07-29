@@ -3,7 +3,7 @@ const Entry = require('../../models/Entry')
 const createEntry = async (req, res) => {
     
     // pull values from request body
-    const { author, text } = req.body
+    const { author, text, threadId } = req.body
 
     // create a new mongo Entry doc
     const newEntry = await Entry.create({ author, text })
@@ -11,6 +11,10 @@ const createEntry = async (req, res) => {
     // if error, notify console
     if (!newEntry) console.log('Problem creating entry.')
     else {
+        if (threadId) {
+            newEntry.threadId = threadId
+            await newEntry.save()
+        }
         // fetch new (populated) Entry
         const entry = await Entry
             .findOne({ _id: newEntry._id })

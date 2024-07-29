@@ -15,6 +15,9 @@ import { createEntry } from '@utils/forum'
 
 export default ({ data }) => {
 
+    const originalMessage = data
+    const threadId = originalMessage._id
+
     const initialState = { text: '' }
 
     const { user } = useApp()
@@ -52,7 +55,7 @@ export default ({ data }) => {
 
     useEffect(() => {
         const init = async () => {
-            const fields = getFields(initialState, data)
+            const fields = getFields(initialState)
             setInitialValues(fields)
         }
         init()
@@ -107,10 +110,17 @@ export default ({ data }) => {
 
         const { _id } = user
 
-        const newEntry = {
+        let newEntry = {
             author: _id,
             text,
         }
+
+        if (threadId) {
+            newEntry = {
+                ...newEntry,
+                threadId,
+            }
+        } 
         
         setFormLoading(true)
         const entry = await createEntry(newEntry)

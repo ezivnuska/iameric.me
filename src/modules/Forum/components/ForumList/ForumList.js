@@ -17,7 +17,8 @@ export default ({ entries, onDelete }) => (
         style={{ flex: 1 }}
         contentContainerStyle={{
             flex: 1,
-            paddingBottom: 20,
+            paddingHorizontal: 5,
+            // paddingBottom: 20,
         }}
     />
 )

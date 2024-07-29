@@ -8,13 +8,12 @@ const EntrySchema = new Schema({
         ref: 'User',
         required: true,
     },
-    // username: {
-    //     type: Schema.Types.String,
-    //     required: true,
-    // },
     text: {
         type: Schema.Types.String,
         required: true,
+    },
+    threadId: {
+        type: Schema.Types.String,
     },
 },
 {
