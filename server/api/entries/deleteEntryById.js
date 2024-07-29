@@ -5,6 +5,9 @@ const deleteEntryById = async (req, res) => {
     const entry = await Entry
         .findByIdAndDelete(req.params.id)
     
+    await Entry
+        .deleteMany({ threadId: req.params.id })
+
     if (!entry) {
         console.log('error deleting entry.')
         return res.status(200).json(null)

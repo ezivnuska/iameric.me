@@ -16,7 +16,7 @@ import { createEntry } from '@utils/forum'
 export default ({ data }) => {
 
     const originalMessage = data
-    const threadId = originalMessage._id
+    const threadId = originalMessage?._id
 
     const initialState = { text: '' }
 
