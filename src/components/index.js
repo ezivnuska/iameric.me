@@ -6,6 +6,7 @@ import ImageClone from './ImageClone'
 import LoadingView from './LoadingView'
 import SimpleButton from './SimpleButton'
 import ThemedText from './ThemedText'
+import Time from './Time'
 
 export {
     Cabinet,
@@ -15,4 +16,5 @@ export {
     LoadingView,
     SimpleButton,
     ThemedText,
+    Time,
 }
