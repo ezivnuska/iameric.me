@@ -9,9 +9,9 @@ const routes = require('./routes')
 const socketHandler = require('./socketHandler')
 require('dotenv').config()
 
-const SESSION_SECRET = process.env.JWT_SECRET || require('../config').JWT_SECRET
-const db = process.env.DB_CONNECTION_STRING || require('../config').DB_CONNECTION_STRING
-const PORT = process.env.PORT || require('../config').development.port
+const SESSION_SECRET = process.env.JWT_SECRET
+const db = process.env.DB_CONNECTION_STRING
+const PORT = process.env.PORT
 
 const app = express()
 const server = createServer(app)
