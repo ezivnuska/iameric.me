@@ -16,6 +16,7 @@
     "deploy:server": "scp -r /Users/home/Projects/web/server eric@143.244.182.101:/var/www/iameric.me/html",
     "deploy:package": "scp /Users/home/Projects/web/package.json eric@143.244.182.101:/var/www/iameric.me/html",
     "deploy:images": "scp -r /Users/home/Projects/web/images eric@143.244.182.101:/var/www/iameric.me/html/assets",
+    "deploy:env": "scp /Users/home/Projects/web/.env eric@143.244.182.101:/var/www/iameric.me/html/.env",
     "analyze": "webpack --profile --json > stats.json"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.12",
+    "@vis.gl/react-google-maps": "^1.1.0",
     "axios": "1.6.1",
     "bcrypt": "^5.1.1",
     "canvas": "^2.11.2",

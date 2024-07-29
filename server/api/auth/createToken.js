@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
-const SESSION_SECRET = process.env.JWT_SECRET || 'super.super.secret.shhhh'//config.JWT_SECRET
+const config = require('../../../config')
+const SESSION_SECRET = process.env.JWT_SECRET || config.JWT_SECRET
 
 const createToken = ({
     _id,
