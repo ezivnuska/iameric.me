@@ -1,27 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
-// import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import { setUserLocation } from '@utils/map'
 import { useApp } from '@app'
 import { useContacts } from '@contacts'
-import { getAddress } from '@utils/map'
 import { GOOGLE_MAPS_API_KEY } from '../../../config'
 import { APIProvider, Map } from '@vis.gl/react-google-maps'
-import {
-    AdvancedMarker,
-    InfoWindow,
-    useAdvancedMarkerRef,
-} from '@vis.gl/react-google-maps'
 import { InfoMarker } from './components'
-
-const defaultProps = {
-    center: {
-        latitude: 10.99835602,
-        longitude: 77.01502627,
-    },
-    zoom: 11,
-}
+import { getAddress } from '@utils/map'
 
 export default () => {
 
@@ -34,45 +20,47 @@ export default () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
+    let timer
+
     useEffect(() => {
         getLocation()
         getLocationsFromContacts()
+        timer = setInterval(getLocation, 60 * 1000)
     }, [])
 
-    // useEffect(() => {
-    //     if (location) addressDescriptorReverseGeocoding(location)
-    //     else setAddress(null)
-    // }, [location])
+    useEffect(() => {
+        if (location) getAddressFromCoords(location)
+        else setAddress(null)
+    }, [location])
 
-    // const addressDescriptorReverseGeocoding = coords => {
-    //     const string = `${coords.lat},${coords.lng}`
-    //     var latlng = new google.maps.LatLng(coords.lat, coords.lng)
-    //     geocoder
-    //         .geocode({
-    //             location: latlng,
-    //             extraComputations: ['ADDRESS_DESCRIPTORS']
-    //         })
-    //         .then(response => {
-    //             console.log(response.address_descriptor)
-    //             setAddress(response.address_descriptor)
-    //         })
-    //         .catch(error => {
-    //             window.alert(`Error: ${error}`)
-    //         })
-    //   }
-    
+    const getAddressFromCoords = async coords => {
 
-    // const getAddressFromCoords = async coords => {
-    //     const response = await getAddress(coords)
-    //     setAddress(response)
-    // }
+        const { results } = await getAddress(coords)
+        
+        if (results && results.length) {
+            console.log('ZACH:')
+            console.log('')
+            console.log('reverse geolocation returns an array of possible results...', results)
+            const currentAddress = results[0]
+            console.log('')
+            console.log('we pick the first one', currentAddress)
+            setAddress(currentAddress.formatted_address)
+            console.log('')
+            console.log('this is all of the pieces', currentAddress.address_components)
+        }
+    }
 
     const getLocationsFromContacts = () => {
-        const contactsWithLocations = contacts.filter(contact => contact.location !== null)
+        const contactsWithLocations = contacts.filter(contact => {
+            return contact.location !== undefined
+            // return contact._id !== user._id && contact.location !== undefined
+        })
+        
         const locations = contactsWithLocations.map(contact => {
             const { _id, username, location } = contact
             return { _id, username, location }
         })
+        
         setContactLocations(locations)
     }
 
@@ -92,7 +80,7 @@ export default () => {
                     lng: position.coords.longitude,
                 })
 
-                savePosition(position.coords)
+                if (user) savePosition(position.coords)
 
                 setError(null)
                 setLoading(false)
@@ -104,51 +92,36 @@ export default () => {
     }
 
     const renderContactLocations = () => (
-        <>
+        <View>
             {contactLocations.map((data, index) => (
                 <InfoMarker
                     key={`contact-location-${index}`}
                     position={data.location}
                     user={data}
                 />
-            ))}
-        </>
+            )
+            )}
+        </View>
     )
 
-    // const renderGoogleMap = () => (
-
-    //     <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
-
-    //         <GoogleMap
-    //             mapContainerStyle={{
-    //                 height: '100%',
-    //                 width: '100%',
-    //             }}
-    //             center={location}
-    //             zoom={defaultProps.zoom}
-    //         >
-    //             <Marker position={location} />
-    //             {renderContactLocations()}
-    //         </GoogleMap>
-    //     </LoadScript>
-    // )
-
     const renderMap = () => (
-        <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
+        <APIProvider apiKey={GOOGLE_MAPS_API_KEY} libraries={['marker', 'geocoding']}>
             <Map
-                mapId={`map-${user._id}`}
+                mapId={`map-${Date.now()}`}
                 defaultCenter={location}
                 defaultZoom={10}
                 gestureHandling={'greedy'}
                 disableDefaultUI={false}
                 style={{width: '100%', height: '100%'}}
             >
-                {renderContactLocations()}
-                <InfoMarker
-                    key={`contact-location-${contactLocations.length}`}
-                    position={location}
-                    user={user}
-                />
+                {contactLocations && renderContactLocations()}
+                {/* {user.location && (
+                    <InfoMarker
+                        key={`contact-location-${contactLocations.length || 0}`}
+                        position={user.location}
+                        user={user}
+                    />
+                )} */}
             </Map>
         </APIProvider>
     )
@@ -159,12 +132,9 @@ export default () => {
             <View style={{ flexGrow: 0 }}>
 
                 <View style={{ gap: 10 }}>
-                    {/* <SimpleButton
-                        label={loading ? 'Loading...' : `${location ? 'Refresh' : 'Load'} Location`}
-                        onPress={getLocation}
-                        disabled={loading}
-                    /> */}
-                    {address && <ThemedText>{address}</ThemedText>}
+
+                    {address ? <ThemedText>{address}</ThemedText> : null}
+                    
                     {!loading && !location && <ThemedText>Location not available.</ThemedText>}
     
                     {error && <ThemedText color='red'>Error: {error}</ThemedText>}

@@ -80,7 +80,7 @@ export const ContactsContextProvider = props => {
                 getContact,
             }}
         >
-            {props.children}
+            {state.contactsLoaded && props.children}
         </ContactsContext.Provider>
     )
 }
