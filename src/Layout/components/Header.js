@@ -54,8 +54,7 @@ export default ({ route }) => {
             <View style={{ flexGrow: 0 }}>
 
                 <Pressable
-                    onPress={() => navigate('Home')}
-                    disabled={routeName === 'Home'}
+                    onPress={() => navigate(user ? 'About' : 'Home')}
                 >
 
                     <ThemedText bold style={{ fontSize: 24 }}>
@@ -66,15 +65,23 @@ export default ({ route }) => {
 
             </View>
 
-            <View style={{ flexGrow: 1 }}>
                 
-                {user && (
+            <View
+                style={{
+                    flexGrow: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                    gap: 3,
+                }}
+            >
+                {user ? (
                     <View
                         style={{
                             flexGrow: 1,
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
-                            alignItems: 'center',
+                            alignItems: 'baseline',
                             gap: 3,
                         }}
                     >
@@ -102,6 +109,17 @@ export default ({ route }) => {
                             disabled={isCurrentRoute('Mail')}
                         />
                     </View>
+                ) : (
+                    <Pressable
+                        onPress={() => navigate('About')}
+                        disabled={isCurrentRoute('About')}
+                    >
+                        <ThemedText
+                            bold={routeName === 'About'}
+                        >
+                            Who is Eric?
+                        </ThemedText>
+                    </Pressable>
                 )
             }
             </View>

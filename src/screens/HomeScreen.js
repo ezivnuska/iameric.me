@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
+import { View } from 'react-native'
 import { Screen } from './components'
 import { ThemedText } from '@components'
 import { useApp } from '@app'
@@ -43,11 +40,6 @@ export default props => {
 
                 <Intro />
 
-                <Pressable
-                    onPress={() => props.navigation.navigate('About')}
-                >
-                    <ThemedText>About Me</ThemedText>
-                </Pressable>
             </View>
 
         </Screen>
