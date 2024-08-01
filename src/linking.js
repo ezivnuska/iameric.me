@@ -22,9 +22,6 @@ export default linking = {
             Home: {
                 path: '',
             },
-            Map: {
-                path: 'map',
-            },
             Mail: {
                 path: 'mail',
             },
@@ -39,6 +36,9 @@ export default linking = {
                     },
                     Images: {
                         path: 'images',
+                    },
+                    Map: {
+                        path: 'map',
                     },
                 },
             },

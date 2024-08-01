@@ -31,11 +31,24 @@ export default ({ username, ...props }) => {
                 </ThemedText>
             </Pressable>
 
-            <View style={{ flexGrow: 1 }}>
+            <View
+                style={{
+                    flexGrow: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                }}
+            >
                 <IconButton
-                    name='images-outline'
+                    name='images-sharp'
                     onPress={() => props.navigation.navigate('Images')}
                     disabled={props.route.name === 'Images'}
+                />
+
+                <IconButton
+                    name='map-sharp'
+                    onPress={() => props.navigation.navigate('Map')}
+                    disabled={props.route.name === 'Map'}
                 />
             </View>
         </View>

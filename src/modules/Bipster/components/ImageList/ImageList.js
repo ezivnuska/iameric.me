@@ -7,12 +7,13 @@ import {
 import { useApp } from '@app'
 // import { useModal } from '@modal'
 import { ImageListItem } from './components'
+import { ActivityIndicator } from 'react-native-paper'
 
-export default ImageList = ({ images }) => {
+export default ImageList = ({ images, loading }) => {
 
     const {
         dims,
-        // theme,
+        theme,
     } = useApp()
     
     // const { setModal } = useModal()
@@ -22,6 +23,7 @@ export default ImageList = ({ images }) => {
     const containerRef = useRef(null)
 
     const numImagesPerRow = 4
+
     const [imageSize, setImageSize] = useState(0)
 
     useEffect(() => {
@@ -30,19 +32,19 @@ export default ImageList = ({ images }) => {
         }
     }, [dims])
 
-    // const buttonStyle = {
-    //     borderWidth: 1,
-    //     borderColor: theme?.colors.border,
-    //     shadowColor: theme?.colors.shadow,
-    //     shadowOffset: {
-    //         width: 1,
-    //         height: 1,
-    //     },
-    //     shadowOpacity: 0.25,
-    //     shadowRadius: 3,
-    //     elevation: 1,
-    //     backgroundColor: theme?.colors.background,
-    // }
+    const buttonStyle = {
+        borderWidth: 1,
+        borderColor: theme?.colors.border,
+        shadowColor: theme?.colors.shadow,
+        shadowOffset: {
+            width: 1,
+            height: 1,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+        elevation: 1,
+        backgroundColor: theme?.colors.background,
+    }
     
     return (
         <View
@@ -55,24 +57,40 @@ export default ImageList = ({ images }) => {
             }}
         >
             {images.map((image, index) => (
-                // <Pressable
-                    // key={`image-${index}`}
-                //     onPress={() => setModal('SHOWCASE', image)}
-                //     style={[
-                //         {
-                //             width: imageSize,
-                //             height: imageSize,
-                //         },
-                //         buttonStyle,
-                //     ]}
-                // >
+                <View
+                    key={`image-${index}`}
+                    style={[
+                        {
+                            width: imageSize,
+                            height: imageSize,
+                        },
+                        buttonStyle,
+                    ]}
+                >
                     <ImageListItem
                         image={image}
                         size={imageSize}
-                        key={`image-${index}`}
                     />
-                // </Pressable>
+                </View>
             ))}
+
+            {loading && (
+                <View
+                    key={`image-${images.length}`}
+                    style={[
+                        {
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: imageSize,
+                            height: imageSize,
+                        },
+                        buttonStyle,
+                    ]}
+                >
+                    <ActivityIndicator size='small' />
+                </View>
+            )}
 
         </View>
     )

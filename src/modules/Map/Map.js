@@ -4,8 +4,7 @@ import { ThemedText } from '@components'
 import { setUserLocation } from '@utils/map'
 import { useApp } from '@app'
 import { useContacts } from '@contacts'
-import { GOOGLE_MAPS_API_KEY } from '../../../config'
-import { APIProvider, Map } from '@vis.gl/react-google-maps'
+import { Map } from '@vis.gl/react-google-maps'
 import { InfoMarker } from './components'
 import { getAddress } from '@utils/map'
 
@@ -105,25 +104,23 @@ export default () => {
     )
 
     const renderMap = () => (
-        <APIProvider apiKey={GOOGLE_MAPS_API_KEY} libraries={['marker', 'geocoding']}>
-            <Map
-                mapId={`map-${Date.now()}`}
-                defaultCenter={location}
-                defaultZoom={10}
-                gestureHandling={'greedy'}
-                disableDefaultUI={false}
-                style={{width: '100%', height: '100%'}}
-            >
-                {contactLocations && renderContactLocations()}
-                {/* {user.location && (
-                    <InfoMarker
-                        key={`contact-location-${contactLocations.length || 0}`}
-                        position={user.location}
-                        user={user}
-                    />
-                )} */}
-            </Map>
-        </APIProvider>
+        <Map
+            mapId={`map-${Date.now()}`}
+            defaultCenter={location}
+            defaultZoom={10}
+            gestureHandling={'greedy'}
+            disableDefaultUI={false}
+            style={{width: '100%', height: '100%'}}
+        >
+            {contactLocations && renderContactLocations()}
+            {/* {user.location && (
+                <InfoMarker
+                    key={`contact-location-${contactLocations.length || 0}`}
+                    position={user.location}
+                    user={user}
+                />
+            )} */}
+        </Map>
     )
 
     return (

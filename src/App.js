@@ -10,6 +10,8 @@ import { ModalContextProvider } from '@modal'
 import { FormContextProvider } from '@form'
 import { ForumContextProvider } from '@forum'
 import { compose as Compose } from '@utils'
+import { GOOGLE_MAPS_API_KEY } from '../config'
+import { APIProvider } from '@vis.gl/react-google-maps'
 
 export default App = () => {
 
@@ -20,15 +22,17 @@ export default App = () => {
                     <MailContextProvider>
                         <ForumContextProvider>
                             <SocketContextProvider>
-                                <Compose
-                                    components={[
-                                        ContactsContextProvider,
-                                        ModalContextProvider,
-                                        FormContextProvider,
-                                    ]}
-                                >
-                                    <Layout />
-                                </Compose>   
+                                <APIProvider apiKey={GOOGLE_MAPS_API_KEY} libraries={['marker', 'geocoding']}>
+                                    <Compose
+                                        components={[
+                                            ContactsContextProvider,
+                                            ModalContextProvider,
+                                            FormContextProvider,
+                                        ]}
+                                    >
+                                        <Layout />
+                                    </Compose>
+                                </APIProvider>
                             </SocketContextProvider>
                         </ForumContextProvider>
                     </MailContextProvider>

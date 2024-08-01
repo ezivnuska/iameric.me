@@ -34,31 +34,33 @@ export default () => {
             console.log('Camera is not available on this platform.')
             setLoading(false)
             return
-        }
+        } else {
+            const { status } = await requestCameraPermissionsAsync()
+            
+            if (status !== 'granted') {
+                alert('Permission to access camera is required!')
+                console.log('Permission to access camera is required!')
+            } else {
 
-        const { status } = await requestCameraPermissionsAsync()
+                try {
         
-        if (status !== 'granted') {
-            alert('Permission to access camera is required!')
-            console.log('Permission to access camera is required!')
-            setLoading(false)
-            return
-        }
-        
-        try {
-
-            const result = await launchCameraAsync({
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1,
-            })
-        
-            if (!result.canceled) {
-                addImage(result.assets[0].uri)
+                    const result = await launchCameraAsync({
+                        allowsEditing: true,
+                        aspect: [4, 3],
+                        quality: 1,
+                    })
+                
+                    if (!result.canceled) {
+                        addImage(result.assets[0].uri)
+                    }
+                } catch (error) {
+                    alert('Error accessing the camera', error.message)
+                }
             }
-        } catch (error) {
-            alert('Error accessing the camera', error.message)
+            setLoading(false)
+            
         }
+
         
         setLoading(false)
     }
@@ -90,20 +92,10 @@ export default () => {
                         gap: 2,
                     }}
                 >
-                    {images.length > 0 && (
-                        <ImageList
-                            images={images}
-                        />
-                    )}
-
-                    {/* {images.length > 0 && images.map((img, i) => (
-                        <View key={`bip-pic-${i}-${Date.now()}`} style={{ flexGrow: 0 }}>
-                            <Image
-                                source={{ uri: img }}
-                                style={{ width: 100, height: 100 }}
-                            />
-                        </View>
-                    ))} */}
+                    <ImageList
+                        images={images}
+                        loading={loading}
+                    />
 
                 </View>
 
@@ -111,7 +103,6 @@ export default () => {
                     <SimpleButton
                         label='Submit'
                         onPress={() => setImages([])}
-                        // style={{ flexGrow: 0 }}
                     />
                 )}
 
@@ -131,7 +122,7 @@ const BigRoundButton = ({ loading, onPress }) => (
             height: 100,
             width: 100,
             borderRadius: 50,
-            background: 'tomato',
+            background: loading ? '#ccc' : 'tomato',
             textAlign: 'center',
             marginHorizontal: 'auto',
         }}

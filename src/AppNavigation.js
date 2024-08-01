@@ -38,6 +38,13 @@ const UserStackScreen = () => {
                 options={{ title: 'Images' }}
             />
 
+            <UserStack.Screen
+                name='Map'
+                children={props => <MapScreen {...props} />}
+                // component={MapScreen}
+                options={{ title: 'Map' }}
+            />
+
         </UserStack.Navigator>
     )
 }
@@ -101,13 +108,6 @@ const AppStackScreen = () => {
                 children={props => <ContactsScreen {...props} />}
                 // component={ContactsScreen}
                 options={{ title: 'Contacts' }}
-            />
-
-            <AppStack.Screen
-                name='Map'
-                children={props => <MapScreen {...props} />}
-                // component={MapScreen}
-                options={{ title: 'Map' }}
             />
 
             <AppStack.Screen
