@@ -1,3 +1,4 @@
+import Bipster from './Bipster'
 import Contact from './Contact'
 import Contacts from './Contacts'
 import Form from './Form'
@@ -12,6 +13,7 @@ import Socket from './Socket'
 import Work from './Work'
 
 export {
+    Bipster,
     Contact,
     Contacts,
     Form,

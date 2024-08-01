@@ -7,6 +7,7 @@ import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
+import { Bipster } from '@modules'
 
 export default props => {
     const { params } = props.route
@@ -38,7 +39,10 @@ export default props => {
         >
             <View style={{ flex: 1 }}>
 
-                <Intro />
+                {user
+                    ? <Bipster />
+                    : <Intro />
+                }
 
             </View>
 
