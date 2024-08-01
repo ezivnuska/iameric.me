@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react'
-import { View } from 'react-native'
+import {
+    Pressable,
+    View,
+} from 'react-native'
 import { Screen } from './components'
+import { ThemedText } from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
-import { Map, Resume } from '@modules'
 
 export default props => {
     const { params } = props.route
@@ -36,16 +39,50 @@ export default props => {
             {...props}
             secure={false}
         >
-            <View
-                style={{
-                    flex: 1,
-                    height: '100vh',
-                    width: '100%',
-                }}
-            >
-                <Map />
+            <View style={{ flex: 1 }}>
+
+                <Intro />
+
+                <Pressable
+                    onPress={() => props.navigation.navigate('Resume')}
+                >
+                    <ThemedText>Resume</ThemedText>
+                </Pressable>
+
+                <Pressable
+                    onPress={() => props.navigation.navigate('Map')}
+                >
+                    <ThemedText>Map</ThemedText>
+                </Pressable>
             </View>
 
         </Screen>
     )
 }
+
+const Intro = () => (
+    <View
+        style={{
+            marginVertical: 10,
+        }}
+    >
+        <View
+            style={{
+                flexDirection: 'row',
+                gap: 7,
+            }}
+        >
+            <View style={{ flexGrow: 0, flexDirection: 'row', gap: 5 }}>
+                <ThemedText bold size={18}>I am</ThemedText>
+                <View style={{ flexGrow: 0, flexDirection: 'row' }}>
+                    <ThemedText bold size={18} color='tomato'>Eric</ThemedText>
+                    <ThemedText bold size={18}>.</ThemedText>
+                </View>
+            </View>
+
+            <View style={{ flexGrow: 0 }}>
+                <ThemedText size={18}>Welcome to my project.</ThemedText>
+            </View>
+        </View>
+    </View>
+)

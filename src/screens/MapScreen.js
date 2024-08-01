@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { Screen } from './components'
-import { Map, Resume } from '@modules'
+import { Heading } from '@components'
+import { Map } from '@modules'
 
 export default props => {
 
@@ -13,11 +14,22 @@ export default props => {
             <View
                 style={{
                     flex: 1,
-                    height: '100%',
-                    width: '100%',
                 }}
             >
-                <Map />
+                <Heading
+                    title='Map'
+                    onBack={() => props.navigation.goBack()}
+                />
+                
+                <View
+                    style={{
+                        flex: 1,
+                        height: '100%',
+                        width: '100%',
+                    }}
+                >
+                    <Map />
+                </View>
             </View>
 
         </Screen>

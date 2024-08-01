@@ -1,9 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
-import {
-    Intro,
-    JobList,
-} from './components'
+import { JobList } from './components'
 
 const jobs = [
     {
@@ -146,14 +142,4 @@ const jobs = [
     }
 ]
 
-export default () => (
-    <View
-        style={{
-            gap: 2,
-            marginBottom: 100,
-        }}
-    >
-        <Intro />
-        <JobList jobs={jobs} />
-    </View>
-)
+export default () => <JobList jobs={jobs} />

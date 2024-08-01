@@ -9,6 +9,7 @@ import {
     ImagesScreen,
     MapScreen,
     MailScreen,
+    ResumeScreen,
     ProfileScreen,
 } from '@screens'
 
@@ -106,7 +107,7 @@ const AppStackScreen = () => {
                 name='Map'
                 children={props => <MapScreen {...props} />}
                 // component={MapScreen}
-                options={{ title: 'Contacts' }}
+                options={{ title: 'Map' }}
             />
 
             <AppStack.Screen
@@ -135,6 +136,13 @@ const AppStackScreen = () => {
                 children={props => <MailScreen {...props} />}
                 // component={MailScreen}
                 options={{ title: 'Mail' }}
+            />
+
+            <AppStack.Screen
+                name='Resume'
+                children={props => <ResumeScreen {...props} />}
+                // component={ResumeScreen}
+                options={{ title: 'Resume' }}
             />
 
         </AppStack.Navigator>

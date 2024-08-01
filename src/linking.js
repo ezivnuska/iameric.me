@@ -28,6 +28,9 @@ export default linking = {
             Mail: {
                 path: 'mail',
             },
+            Resume: {
+                path: 'resume',
+            },
             User: {
                 path: 'user',
                 screens: {

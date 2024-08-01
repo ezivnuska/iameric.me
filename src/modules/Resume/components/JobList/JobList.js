@@ -22,12 +22,7 @@ export default ({ jobs }) => {
     ))
 
     return (
-        <View
-            style={{
-                gap: 1,
-                marginBottom: 100,
-            }}
-        >
+        <View style={{ gap: 1 }}>
             {jobs.length && renderJobs()}
         </View>
     )
