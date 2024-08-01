@@ -53,7 +53,10 @@ export default ({ route }) => {
         >
             <View style={{ flexGrow: 0 }}>
 
-                <Pressable onPress={() => navigate('Home')}>
+                <Pressable
+                    onPress={() => navigate('Home')}
+                    disabled={routeName === 'Home'}
+                >
 
                     <ThemedText bold style={{ fontSize: 24 }}>
                         {renderBrand()}

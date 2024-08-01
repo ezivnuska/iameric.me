@@ -12,20 +12,17 @@ export default Screen = ({ title, children, secure = true, ...props }) => {
 
     const authorized = useMemo(() => (!secure || user !== null), [secure, user])
 
+    const navigateHome = () => {
+        console.log('not authorized. going home.')
+        props.navigation.navigate('Home')
+    }
+
     useEffect(() => {
-        console.log(`${props.route.name} screen initialized. authorized:`, authorized)
-        if (!authorized) {
-            console.log('not authorized. going home.')
-            props.navigation.navigate('Home')
-        }
+        if (!authorized) navigateHome()
     }, [])
 
     useEffect(() => {
-        console.log('user changed', user)
-        if (!authorized) {
-            console.log('not authorized. going home.')
-            props.navigation.navigate('Home')
-        }
+        if (!authorized) navigateHome()
     }, [user])
 
     return authorized ? (

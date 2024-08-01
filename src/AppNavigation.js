@@ -1,6 +1,7 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
+    AboutScreen,
     ContactScreen,
     ContactsScreen,
     ForumScreen,
@@ -9,7 +10,6 @@ import {
     ImagesScreen,
     MapScreen,
     MailScreen,
-    ResumeScreen,
     ProfileScreen,
 } from '@screens'
 
@@ -137,12 +137,12 @@ const AppStackScreen = () => {
                 // component={MailScreen}
                 options={{ title: 'Mail' }}
             />
-
+            
             <AppStack.Screen
-                name='Resume'
-                children={props => <ResumeScreen {...props} />}
-                // component={ResumeScreen}
-                options={{ title: 'Resume' }}
+                name='About'
+                children={props => <AboutScreen {...props} />}
+                // component={AboutScreen}
+                options={{ title: 'About' }}
             />
 
         </AppStack.Navigator>

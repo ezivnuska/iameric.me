@@ -7,8 +7,9 @@ import Mail from './Mail'
 import Map from './Map/Map'
 import Modal from './Modal'
 import Notification from './Notification'
-import Resume from './Resume'
+import Play from './Play'
 import Socket from './Socket'
+import Work from './Work'
 
 export {
     Contact,
@@ -20,6 +21,7 @@ export {
     Map,
     Modal,
     Notification,
-    Resume,
+    Play,
     Socket,
+    Work,
 }

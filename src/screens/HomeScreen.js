@@ -44,15 +44,9 @@ export default props => {
                 <Intro />
 
                 <Pressable
-                    onPress={() => props.navigation.navigate('Resume')}
+                    onPress={() => props.navigation.navigate('About')}
                 >
-                    <ThemedText>Resume</ThemedText>
-                </Pressable>
-
-                <Pressable
-                    onPress={() => props.navigation.navigate('Map')}
-                >
-                    <ThemedText>Map</ThemedText>
+                    <ThemedText>About Me</ThemedText>
                 </Pressable>
             </View>
 

@@ -28,8 +28,8 @@ export default linking = {
             Mail: {
                 path: 'mail',
             },
-            Resume: {
-                path: 'resume',
+            About: {
+                path: 'about',
             },
             User: {
                 path: 'user',
@@ -40,7 +40,7 @@ export default linking = {
                     Images: {
                         path: 'images',
                     },
-                }
+                },
             },
         },
     },
