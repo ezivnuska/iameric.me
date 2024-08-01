@@ -7,6 +7,7 @@ import {
     // FallbackScreen,
     HomeScreen,
     ImagesScreen,
+    MapScreen,
     MailScreen,
     ProfileScreen,
 } from '@screens'
@@ -102,6 +103,13 @@ const AppStackScreen = () => {
             />
 
             <AppStack.Screen
+                name='Map'
+                children={props => <MapScreen {...props} />}
+                // component={MapScreen}
+                options={{ title: 'Contacts' }}
+            />
+
+            <AppStack.Screen
                 name='User'
                 children={props => <UserStackScreen {...props} />}
                 // component={ProfileScreen}
@@ -134,6 +142,9 @@ const AppStackScreen = () => {
 }
 
 export default AppStackScreen
+
+// moved into Layout
+
 // {
     
 //     return (

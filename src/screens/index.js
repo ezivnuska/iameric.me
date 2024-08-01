@@ -5,6 +5,7 @@ import ForumScreen from './ForumScreen'
 import HomeScreen from './HomeScreen'
 import ImagesScreen from './ImagesScreen'
 import MailScreen from './MailScreen'
+import MapScreen from './MapScreen'
 import ProfileScreen from './ProfileScreen'
 
 export {
@@ -14,6 +15,7 @@ export {
     // FallbackScreen,
     HomeScreen,
     ImagesScreen,
+    MapScreen,
     MailScreen,
     ProfileScreen,
 }

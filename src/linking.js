@@ -22,6 +22,9 @@ export default linking = {
             Home: {
                 path: '',
             },
+            Map: {
+                path: 'map',
+            },
             Mail: {
                 path: 'mail',
             },
