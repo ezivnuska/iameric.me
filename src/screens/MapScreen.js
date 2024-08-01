@@ -13,7 +13,7 @@ export default props => {
 
                 <Heading
                     title='Map'
-                    onBack={() => props.navigation.goBack()}
+                    onBack={() => props.navigation.navigate('Home')}
                 />
                 
                 <View style={{ flexGrow: 1 }}>
