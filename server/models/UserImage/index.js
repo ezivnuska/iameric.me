@@ -16,6 +16,14 @@ const UserImageSchema = new Schema({
         type: Schema.Types.String,
         required: true,
     },
+    location: {
+        latitude: {
+            type: Schema.Types.String,
+        },
+        longitude: {
+            type: Schema.Types.String,
+        },
+    },
     caption: {
         type: Schema.Types.String,
         // required: true,

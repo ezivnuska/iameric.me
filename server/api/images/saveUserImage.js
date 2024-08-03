@@ -1,8 +1,16 @@
 const UserImage = require('../../models/UserImage')
 
-const saveUserImage = async (userId, filename, height, width) => {
+const saveUserImage = async (userId, filename, height, width, location = null) => {
+
+    const userImage = {
+        user: userId,
+        filename,
+        height,
+        width,
+    }
+    if (location) userImage.location = location
     
-    const image = new UserImage({ user: userId, filename, height, width })
+    const image = new UserImage(userImage)
     
     await image.save()
 

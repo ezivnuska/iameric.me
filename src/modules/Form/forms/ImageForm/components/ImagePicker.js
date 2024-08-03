@@ -11,11 +11,11 @@ import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useImages } from '@images'
 import {
+    getMaxImageDims,
     handleImageData,
     openFileSelector,
     uploadImage,
-} from './utils'
-import { getMaxImageDims } from '@utils/images'
+} from '@utils/images'
 import { ActivityIndicator } from 'react-native-paper'
 
 export default ImagePicker = () => {

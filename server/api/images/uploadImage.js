@@ -7,7 +7,7 @@ const uploadDir = process.env.IMAGE_PATH || 'assets'
 
 const uploadImage = async (req, res) => {
     
-    const { userId, imageData, thumbData, avatar } = req.body
+    const { userId, imageData, thumbData, avatar, location } = req.body
     const { height, width } = imageData
     
     const user = await User.findOne({ _id: userId })
@@ -15,7 +15,7 @@ const uploadImage = async (req, res) => {
     const filename = `${userId}-${Date.now()}.png`
     
     const userDir = path.join(uploadDir, user.username)
-    console.log('userDir', userDir)
+    
     const imagesUploaded = await handleFileUpload({ imageData, thumbData }, userDir, filename)
     
     if (!imagesUploaded) {
@@ -23,12 +23,14 @@ const uploadImage = async (req, res) => {
         return res.status(200).json(null)
     }
     
-    const { image } = await saveUserImage(user._id, filename, height, width)
+    const { image } = await saveUserImage(user._id, filename, height, width, location)
     
     if (!image) console.log('Error saving UserImage to User Images')
     else {
-        user.profileImage = image._id
-        await user.save()
+        if (avatar) {
+            user.profileImage = image._id
+            await user.save()
+        }
         return res.status(200).json({ image })
     }
     return res.status(200).json(null)
