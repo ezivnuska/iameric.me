@@ -9,6 +9,7 @@ import { ImageList } from './components'
 import {
     Heading,
     SimpleButton,
+    ThemedText,
 } from '@components'
 import {
     launchCameraAsync,
@@ -27,42 +28,44 @@ export default () => {
 
     const openCamera = async () => {
 
-        setLoading(true)
-
+        // setLoading(true)
+        console.log('OS', Platform.OS)
         if (Platform.OS === 'desktop') {
             alert('Camera is not available on this platform.')
             console.log('Camera is not available on this platform.')
-            setLoading(false)
+            // setLoading(false)
             return
-        } else {
-            const { status } = await requestCameraPermissionsAsync()
-            
-            if (status !== 'granted') {
-                alert('Permission to access camera is required!')
-                console.log('Permission to access camera is required!')
-            } else {
-
-                try {
-        
-                    const result = await launchCameraAsync({
-                        allowsEditing: true,
-                        aspect: [4, 3],
-                        quality: 1,
-                    })
-                
-                    if (!result.canceled) {
-                        addImage(result.assets[0].uri)
-                    }
-                } catch (error) {
-                    alert('Error accessing the camera', error.message)
-                }
-            }
-            setLoading(false)
-            
         }
 
+        const { status } = await requestCameraPermissionsAsync()
+        console.log('camera status', status)
         
-        setLoading(false)
+        if (status !== 'granted') {
+            alert('Permission to access camera is required!')
+            console.log('Permission to access camera is required!')
+            // setLoading(false)
+            return
+        }
+
+        try {
+            const result = await launchCameraAsync({
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            })
+            console.log('result', result)
+            
+            if (!result.canceled) {
+                addImage(result.assets[0].uri)
+            }
+
+        } catch (error) {
+            console.log('Error accessing the camera', error.message)
+            alert('Error accessing the camera', error.message)
+        }
+        console.log('done loading')
+        // setLoading(false)
+        
     }
 
     return (
@@ -74,21 +77,10 @@ export default () => {
                     flex: 1,
                     gap: 50,
                 }}
-            >
-                <View style={{ flexGrow: 0 }}>
-                    <BigRoundButton
-                        loading={loading}
-                        onPress={openCamera}
-                    />
-                </View>
-
-                
+            >   
                 <View
                     style={{
-                        flexGrow: 0,
-                        flexDirection: 'row',
-                        justifyContent: 'flexStart',
-                        flexWrap: 'wrap',
+                        flexGrow: 1,
                         gap: 2,
                     }}
                 >
@@ -96,15 +88,24 @@ export default () => {
                         images={images}
                         loading={loading}
                     />
-
+                    {images.length > 0 ? (
+                        <View style={{ marginVertical: 10 }}>
+                            <SimpleButton
+                                label='Submit'
+                                onPress={() => setImages([])}
+                            />
+                        </View>
+                    ) : (
+                        <ThemedText>{loading ? 'Waiting for camera...' : 'No photos yet.'}</ThemedText>
+                    )}
                 </View>
 
-                {images.length > 0 && (
-                    <SimpleButton
-                        label='Submit'
-                        onPress={() => setImages([])}
+                <View style={{ flexGrow: 0 }}>
+                    <BigRoundButton
+                        loading={loading}
+                        onPress={openCamera}
                     />
-                )}
+                </View>
 
             </View>
         </View>

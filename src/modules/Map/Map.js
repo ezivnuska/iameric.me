@@ -37,15 +37,8 @@ export default () => {
         const { results } = await getAddress(coords)
         
         if (results && results.length) {
-            console.log('ZACH:')
-            console.log('')
-            console.log('reverse geolocation returns an array of possible results...', results)
             const currentAddress = results[0]
-            console.log('')
-            console.log('we pick the first one', currentAddress)
             setAddress(currentAddress.formatted_address)
-            console.log('')
-            console.log('this is all of the pieces', currentAddress.address_components)
         }
     }
 
