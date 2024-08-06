@@ -49,7 +49,7 @@ export default ImagePicker = () => {
                 setReady(true)
                 setTimer(null)
             }, 2000))
-            await openSelector(user._id)
+            await openSelector()
         }
         init()
     }, [])
@@ -62,21 +62,21 @@ export default ImagePicker = () => {
 
     }, [containerRef, preview])
     
-    const openSelector = async id => {
+    const openSelector = async () => {
         const uri = await openFileSelector()
         if (uri) {
-            handleSelectedImage(uri, id)
+            handleSelectedImage(uri)
         }
     }
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
-    const handleSelectedImage = async (uri, id) => {
+    const handleSelectedImage = async uri => {
         const blob = await dataURItoBlob(uri)
         const reader = new FileReader()
         reader.onload = ({ target }) => {
             const exif = EXIF.readFromBinaryFile(target.result)
-            loadImage(uri, exif, id)
+            loadImage(uri, exif, user._id)
         }
         reader.readAsArrayBuffer(blob)
     }

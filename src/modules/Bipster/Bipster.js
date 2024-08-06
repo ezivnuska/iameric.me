@@ -1,113 +1,168 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-    Image,
-    Platform,
     Pressable,
     View,
 } from 'react-native'
-import { ImageList } from './components'
+import {
+    BipList,
+    PreviewList,
+} from './components'
 import {
     Heading,
+    ImageList,
     SimpleButton,
     ThemedText,
 } from '@components'
+import { useApp } from '@app'
+import { useBips } from '@bips'
 import {
-    launchCameraAsync,
-    requestCameraPermissionsAsync,
-} from 'expo-image-picker'
+    handleImageData,
+    openCamera,
+    uploadBipImage,
+} from '@utils/images'
+import {
+    createBip,
+} from '@utils/bips'
+import EXIF from 'exif-js'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 export default () => {
 
-    const [ images, setImages ] = useState([])
+    const { user } = useApp()
+    const {
+        addBip,
+        bips,
+        setBipImages,
+    } = useBips()
+
+    const [ previews, setPreviews ] = useState([])
     const [ loading, setLoading ] = useState(false)
 
-    const addImage = image => {
-        setImages([image, ...images])
+    const addPreview = preview => {
+        setPreviews([
+            preview,
+            ...previews,
+        ])
     }
 
-    const openCamera = async () => {
-
-        // setLoading(true)
-        console.log('OS', Platform.OS)
-        if (Platform.OS === 'desktop') {
-            alert('Camera is not available on this platform.')
-            console.log('Camera is not available on this platform.')
-            // setLoading(false)
-            return
+    const launchCamera = async () => {
+        const uri = await openCamera()
+        if (uri) {
+            handleSelectedImage(uri)
         }
+    }
 
-        const { status } = await requestCameraPermissionsAsync()
-        console.log('camera status', status)
+    const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
+
+    const handleSelectedImage = async uri => {
+        const blob = await dataURItoBlob(uri)
+        const reader = new FileReader()
+        reader.onload = ({ target }) => {
+            const exif = EXIF.readFromBinaryFile(target.result)
+            loadImage(uri, exif, user._id)
+        }
+        reader.readAsArrayBuffer(blob)
+    }
+
+    const loadImage = async (src, exif, id) => {
+        const image = new Image()
+        image.onload = async () => {
+            const data = await handleImageData(id, image, exif)
+            if (!data) console.log('error loading image')
+            else addPreview(data)
+        }
+        image.src = src
+    }
+
+    const uploadBipImages = async (bipId, bipImages) => {
+        const uploads = []
+        while (uploads.length < bipImages.length) {
+            const imageToUpload = bipImages[uploads.length]
+            const uploadedImage = await uploadBipImage(bipId, imageToUpload)
+            uploads.push(uploadedImage)
+        }
+        console.log(`uploading finished... ${uploads.length} image${uploads.length === 1 ? '' : 's'} uploaded.`)
+        return uploads
+    }
+
+    const onSubmitImagesForUpload = async () => {
+        setLoading(true)
+        const bip = await createBip(user._id, user.location)
         
-        if (status !== 'granted') {
-            alert('Permission to access camera is required!')
-            console.log('Permission to access camera is required!')
-            // setLoading(false)
-            return
-        }
-
-        try {
-            const result = await launchCameraAsync({
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 1,
+        if (!bip) console.log('Error creating new bip')
+        else {
+            const bipImages = await uploadBipImages(bip._id, previews)
+            addBip(bip)
+            setBipImages({
+                bipId: bip._id,
+                images: bipImages,
             })
-            console.log('result', result)
-            
-            if (!result.canceled) {
-                addImage(result.assets[0].uri)
-            }
-
-        } catch (error) {
-            console.log('Error accessing the camera', error.message)
-            alert('Error accessing the camera', error.message)
+            setPreviews([])
         }
-        console.log('done loading')
-        // setLoading(false)
-        
+        setLoading(false)
     }
 
     return (
         <View style={{ flex: 1 }}>
             <Heading title='Bipster' />
-
             <View
                 style={{
-                    flex: 1,
-                    gap: 50,
+                    flexGrow: 1,
+                    gap: 2,
                 }}
-            >   
-                <View
-                    style={{
-                        flexGrow: 1,
-                        gap: 2,
-                    }}
-                >
-                    <ImageList
-                        images={images}
-                        loading={loading}
-                    />
-                    {images.length > 0 ? (
-                        <View style={{ marginVertical: 10 }}>
-                            <SimpleButton
-                                label='Submit'
-                                onPress={() => setImages([])}
+            >
+                <View>
+                    {previews.length > 0 ? (
+                        <View>
+                            <Heading title='Image Preview (not uploaded, yet)' />
+                            <PreviewList
+                                previews={previews.map(p => p.thumbData)}
                             />
+                            <View
+                                style={{
+                                    marginVertical: 10,
+                                    gap: 10,
+                                }}
+                            >
+                                <SimpleButton
+                                    label='Submit'
+                                    onPress={onSubmitImagesForUpload}
+                                    disabled={loading}
+                                />
+
+                                <SimpleButton
+                                    label='Clear'
+                                    onPress={() => setPreviews([])}
+                                    disabled={loading}
+                                />
+                            </View>
                         </View>
                     ) : (
-                        <ThemedText>{loading ? 'Waiting for camera...' : 'No photos yet.'}</ThemedText>
+                        <ThemedText>{loading ? 'Waiting for camera...' : 'No photos captured.'}</ThemedText>
                     )}
                 </View>
-
-                <View style={{ flexGrow: 0 }}>
-                    <BigRoundButton
-                        loading={loading}
-                        onPress={openCamera}
-                    />
+                
+                <View style={{ flexGrow: 1 }}>
+                    <BipList bips={bips} />
                 </View>
 
+                <BigRoundButton
+                    loading={loading}
+                    onPress={launchCamera}
+                />
+
+                {/* {images && images.length > 0 ? (
+                    <View>
+                        <Heading title='Uploaded Images' />
+                        <ImageList
+                            images={images}
+                            loading={loading}
+                        />
+                    </View>
+                ) : null} */}
+
             </View>
+
         </View>
     )
 }

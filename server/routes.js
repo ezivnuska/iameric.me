@@ -2,99 +2,107 @@ const express = require('express')
 const router = express.Router()
 
 const {
-    authenticate,
-    deleteAccount,
-    handleSignIn,
-    handleSignOut,
-    handleSignUp,
-    validateToken,
-  } = require('./api/auth')
-  
-  const {
-    // addToDeposit,
-    // withdrawDeposit,
-    getUser,
-    setLocation,
-    // getProfileImage,
-    // toggleStatus,
-  } = require('./api/user')
-  
-  const {
-    getAvailableUsers,
-    getUsers,
-    getUserDetailsById,
-    getNumberOfOnlineUsers,
-    getAllVendors,
-    getVendors,
-    // getUserById,
-    getUserByUsername,
-    getUserAndImagesById,
-    getVendor,
-  } = require('./api/users')
-  
-  const {
-    deleteImageById,
-    deletePreview,
-    getImagesByUserId,
-    getImageWithUsernameByImageId,
-    getImageIdFromFilename,
-    getProfileImageByUserId,
-    loadImage,
-    setImageCaption,
-    updateProfileImage,
-    uploadAvatar,
-    uploadImage,
-    uploadProductImage,
-  } = require('./api/images')
-  
-  const {
-    createOrUpdateProduct,
-    deleteProductById,
-    getAllProducts,
-    getProductById,
-    getProductsByVendorId,
-    addImageIdToProduct,
-  } = require('./api/products')
-  
-  const {
-    createOrUpdateAddress,
-    getAddressByUserId,
-    getUserAddressWithAddressId,
-  } = require('./api/address')
-  
-  const {
-    acceptOrder,
-    closeOrder,
-    confirmOrder,
-    createOrder,
-    deleteOrderByOrderId,
-    getAllOrders,
-    // getOrderIdsByUserId,
-    getOrdersByCustomerId,
-    getOrdersByDriverId,
-    getOrdersByUserId,
-    getOrdersByVendorId,
-    // getRelevantOrdersByUserId,
-    markDriverAtVendorLocation,
-    markOrderAsReady,
-    markOrderCompleted,
-    markOrderReceivedByDriver,
-  } = require('./api/orders')
-    
-  // not currently using entries
-  const {
-    createEntry,
-    deleteEntryById,
-    getEntries,
-    getThread,
-  } = require('./api/entries')
+  authenticate,
+  deleteAccount,
+  handleSignIn,
+  handleSignOut,
+  handleSignUp,
+  validateToken,
+} = require('./api/auth')
 
-  const {
-    createMessage,
-    deleteMessageById,
-    getMessage,
-    getMessages,
-  } = require('./api/mail')
+const {
+  // addToDeposit,
+  // withdrawDeposit,
+  getUser,
+  setLocation,
+  // getProfileImage,
+  // toggleStatus,
+} = require('./api/user')
+
+const {
+  getAvailableUsers,
+  getUsers,
+  getUserDetailsById,
+  getNumberOfOnlineUsers,
+  getAllVendors,
+  getVendors,
+  // getUserById,
+  getUserByUsername,
+  getUserAndImagesById,
+  getVendor,
+} = require('./api/users')
+
+const {
+  deleteImageById,
+  deletePreview,
+  getBipImages,
+  getImagesByUserId,
+  getImageWithUsernameByImageId,
+  getImageIdFromFilename,
+  getProfileImageByUserId,
+  loadImage,
+  setImageCaption,
+  updateProfileImage,
+  uploadAvatar,
+  uploadBipImage,
+  uploadImage,
+  uploadProductImage,
+} = require('./api/images')
+
+const {
+  createOrUpdateProduct,
+  deleteProductById,
+  getAllProducts,
+  getProductById,
+  getProductsByVendorId,
+  addImageIdToProduct,
+} = require('./api/products')
+
+const {
+  createOrUpdateAddress,
+  getAddressByUserId,
+  getUserAddressWithAddressId,
+} = require('./api/address')
+
+const {
+  acceptOrder,
+  closeOrder,
+  confirmOrder,
+  createOrder,
+  deleteOrderByOrderId,
+  getAllOrders,
+  // getOrderIdsByUserId,
+  getOrdersByCustomerId,
+  getOrdersByDriverId,
+  getOrdersByUserId,
+  getOrdersByVendorId,
+  // getRelevantOrdersByUserId,
+  markDriverAtVendorLocation,
+  markOrderAsReady,
+  markOrderCompleted,
+  markOrderReceivedByDriver,
+} = require('./api/orders')
+  
+// not currently using entries
+const {
+  createEntry,
+  deleteEntryById,
+  getEntries,
+  getThread,
+} = require('./api/entries')
+
+const {
+  createMessage,
+  deleteMessageById,
+  getMessage,
+  getMessages,
+} = require('./api/mail')
+
+const {
+  createBip,
+  deleteBip,
+  getBips,
+} = require('./api/bips')
 
 // auth
 router.post(   '/signin',                 handleSignIn)
@@ -179,5 +187,11 @@ router.post(   '/order/received',          markOrderReceivedByDriver)
 router.post(   '/order/complete',          markOrderCompleted)
 router.post(   '/order/close',             closeOrder)
 router.delete( '/order/:id',               deleteOrderByOrderId)
+
+router.post(   '/bip/image/upload',        uploadBipImage)
+router.get(    '/bips',                    getBips)
+router.get(    '/bip/images/:id',          getBipImages)
+router.post(   '/bip/delete',              deleteBip)
+router.post(   '/bip',                     createBip)
 
 module.exports = router

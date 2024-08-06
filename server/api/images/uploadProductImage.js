@@ -1,3 +1,5 @@
+const User = require('../../models/User')
+const handleFileUpload = require('./handleFileUpload')
 const saveUserImage = require('./saveUserImage')
 
 const uploadDir = process.env.IMAGE_PATH || 'assets'

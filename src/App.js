@@ -1,6 +1,7 @@
 import React from 'react'
 import Layout from '@layout'
 import { AppContextProvider } from '@app'
+import { BipContextProvider } from '@bips'
 import { ContactsContextProvider } from '@contacts'
 import { ImagesContextProvider } from '@images'
 import { SocketContextProvider } from '@socket'
@@ -25,6 +26,7 @@ export default App = () => {
                                 <APIProvider apiKey={GOOGLE_MAPS_API_KEY} libraries={['marker', 'geocoding']}>
                                     <Compose
                                         components={[
+                                            BipContextProvider,
                                             ContactsContextProvider,
                                             ModalContextProvider,
                                             FormContextProvider,

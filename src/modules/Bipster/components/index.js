@@ -1,5 +1,7 @@
-import ImageList from './ImageList'
+import BipList from './BipList'
+import PreviewList from './PreviewList'
 
 export {
-    ImageList,
+    BipList,
+    PreviewList,
 }

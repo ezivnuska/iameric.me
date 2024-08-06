@@ -1,5 +1,5 @@
-const getImageData = async (image, srcOrientation) => {
-    
+const getImageData = async (image, srcOrientation, maxWidth = 400) => {
+    // console.log('IMAGE', image)
     const { height, width } = image
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d')
@@ -12,11 +12,9 @@ const getImageData = async (image, srcOrientation) => {
         imageHeight = width
     }
 
-    const MAX_WIDTH = 400
-
-    if (imageWidth >= MAX_WIDTH) {
-        imageWidth = MAX_WIDTH
-        imageHeight *= MAX_WIDTH / width
+    if (imageWidth >= maxWidth) {
+        imageWidth = maxWidth
+        imageHeight *= maxWidth / width
     }
 
     canvas.width = imageWidth
@@ -34,45 +32,10 @@ const getImageData = async (image, srcOrientation) => {
     }
 }
 
-const getThumbData = async (image, srcOrientation) => {
-    
-    const { height, width } = image
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-
-    let imageWidth = width
-    let imageHeight = height
-
-    if (srcOrientation > 4 && srcOrientation < 9) {
-        imageWidth = height
-        imageHeight = width
-    }
-
-    const THUMB_WIDTH = 100
-
-    if (imageWidth >= THUMB_WIDTH) {
-        imageWidth = THUMB_WIDTH
-        imageHeight *= THUMB_WIDTH / width
-    }
-
-    canvas.width = imageWidth
-    canvas.height = imageHeight
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
-
-    const imageURI = canvas.toDataURL('image/png:base64;')
-
-    return {
-        height: imageHeight,
-        width: imageWidth,
-        uri: imageURI,
-    }
-}
-
-export default handleImageData = async (userId, image, srcOrientation) => {
-    const imageData = await getImageData(image, srcOrientation)
-    const thumbData = await getThumbData(image, srcOrientation)
+export default handleImageData = async (userId, imageElement, srcOrientation = null) => {
+    // console.log('imageElement----->', imageElement)
+    const imageData = await getImageData(imageElement, srcOrientation, 400)
+    const thumbData = await getImageData(imageElement, srcOrientation, 100)
     const filename = `${userId}-${Date.now()}.png`
 
     return {

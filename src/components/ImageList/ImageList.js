@@ -1,28 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
-    // Pressable,
+    Pressable,
     View,
 } from 'react-native'
-// import Icon from 'react-native-vector-icons/Ionicons'
+import Icon from 'react-native-vector-icons/Ionicons'
 import { useApp } from '@app'
-// import { useModal } from '@modal'
+import { useModal } from '@modal'
 import { ImageListItem } from './components'
-import { ActivityIndicator } from 'react-native-paper'
 
-export default ImageList = ({ images, loading }) => {
+// const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-    const {
-        dims,
-        theme,
-    } = useApp()
+export default ImageList = ({ images, disabled = false, small = false }) => {
+
+    const { dims, theme, user } = useApp()
     
-    // const { setModal } = useModal()
+    const { setModal } = useModal()
 
     const imageGap = 4
 
     const containerRef = useRef(null)
 
-    const numImagesPerRow = 4
+    const numImagesPerRow = small ? 10 : 4
 
     const [imageSize, setImageSize] = useState(0)
 
@@ -56,9 +54,11 @@ export default ImageList = ({ images, loading }) => {
                 width: '100%',
             }}
         >
-            {images.map((image, index) => (
-                <View
+            {images ? images.map((image, index) => (
+                <Pressable
                     key={`image-${index}`}
+                    onPress={() => setModal('SHOWCASE', image)}
+                    disabled={disabled}
                     style={[
                         {
                             width: imageSize,
@@ -68,29 +68,11 @@ export default ImageList = ({ images, loading }) => {
                     ]}
                 >
                     <ImageListItem
-                        image={image}
+                        path={`${image.path}/${image.filename}`}
                         size={imageSize}
                     />
-                </View>
-            ))}
-
-            {loading && (
-                <View
-                    key={`image-${images.length}`}
-                    style={[
-                        {
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: imageSize,
-                            height: imageSize,
-                        },
-                        buttonStyle,
-                    ]}
-                >
-                    <ActivityIndicator size='small' />
-                </View>
-            )}
+                </Pressable>
+            )) : null}
 
         </View>
     )

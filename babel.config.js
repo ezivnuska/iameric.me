@@ -23,6 +23,7 @@ module.exports = {
       {
         alias: {
           '@app':           './src/AppContext',
+          '@bips':          './src/modules/Bipster',
           '@components':    './src/components',
           '@contacts':      './src/modules/Contacts',
           '@forum':         './src/modules/Forum',

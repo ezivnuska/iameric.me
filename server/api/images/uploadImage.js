@@ -1,12 +1,13 @@
+const User = require('../../models/User')
 const handleFileUpload = require('./handleFileUpload')
 const saveUserImage = require('./saveUserImage')
-const User = require('../../models/User')
 const path = require('path')
 
 const uploadDir = process.env.IMAGE_PATH || 'assets'
 
 const uploadImage = async (req, res) => {
     
+    console.log('req.body', Object.keys(req.body))
     const { userId, imageData, thumbData, avatar, location } = req.body
     const { height, width } = imageData
     
