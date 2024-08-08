@@ -2,42 +2,32 @@ const ensureUploadDirExists = require('./ensureUploadDirExists')
 const { promises } = require('fs')
 const path = require('path')
 
-const handleFileUpload = async ({ imageData, thumbData }, uploadPath, filename) => {
+const uploadFile = async (image, dir, filename) => {
     
-    const regex = /^data:.+\/(.+);base64,(.*)$/
-
-    const image = imageData.uri.match(regex)[2]
-    const imageBuffer = Buffer.from(image, 'base64')
-
-    const thumb = thumbData.uri.match(regex)[2]
-    const thumbBuffer = Buffer.from(thumb, 'base64')
-    
-    let dirExists = ensureUploadDirExists(uploadPath)
-
-    const imageFile = path.join(uploadPath, filename)
+    const buffer = Buffer.from(image, 'base64')
+    let dirExists = await ensureUploadDirExists(dir)
+    const fullPath = `${dir}/${filename}`
 
     try {
-        await promises.writeFile(imageFile, imageBuffer)
+        await promises.writeFile(fullPath, buffer)
     } catch (err) {
         console.log('Error writing file:', err)
         return null
     }
+}
 
-    // repeated code
+const handleFileUpload = async ({ imageData, thumbData }, uploadPath, filename) => {
+    const regex = /^data:.+\/(.+);base64,(.*)$/
+
+    const image = imageData.uri.match(regex)[2]
+    await uploadFile(image, uploadPath, filename)
+    
+    const thumb = thumbData.uri.match(regex)[2]
 
     const thumbPath = path.join(uploadPath, 'thumb')
 
-    dirExists = ensureUploadDirExists(thumbPath)
-
-    const thumbFile = path.join(thumbPath, filename)
-
-    try {
-        await promises.writeFile(thumbFile, thumbBuffer)
-    } catch (err) {
-        console.log('Error writing thumb file:', err)
-        return null
-    }
-    console.log(`returning filename ${filename} at path ${thumbPath}`)
+    await uploadFile(thumb, thumbPath, filename)
+    
     return filename
 }
 

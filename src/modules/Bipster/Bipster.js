@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
     Pressable,
     View,
@@ -35,8 +35,11 @@ export default () => {
         setBipImages,
     } = useBips()
 
-    const [ previews, setPreviews ] = useState([])
     const [ loading, setLoading ] = useState(false)
+    const [ previews, setPreviews ] = useState([])
+    let uploads = []
+
+    const numUploads = useMemo(() => uploads.length, [uploads])
 
     const addPreview = preview => {
         setPreviews([
@@ -75,7 +78,6 @@ export default () => {
     }
 
     const uploadBipImages = async (bipId, bipImages) => {
-        const uploads = []
         while (uploads.length < bipImages.length) {
             const imageToUpload = bipImages[uploads.length]
             const uploadedImage = await uploadBipImage(bipId, imageToUpload)
@@ -98,6 +100,7 @@ export default () => {
                 images: bipImages,
             })
             setPreviews([])
+            uploads = []
         }
         setLoading(false)
     }
@@ -112,7 +115,7 @@ export default () => {
             <View style={{ flexGrow: 0 }}>
                 {previews.length > 0 && (
                     <>
-                        <Heading title='Captured Images' />
+                        <Heading title={`Captured Images (uploaded: ${numUploads})`} />
                         
                         <PreviewList
                             previews={previews.map(p => p.thumbData)}

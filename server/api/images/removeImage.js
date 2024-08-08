@@ -1,5 +1,5 @@
-const { rm } = require('fs')
+const { remove } = require('fs-extra')
 
-const removeImage = path => rm(path, () => console.log('removed file at path', path))
+const removeImage = async path => await remove(path, () => console.log('removed file at path', path))
 
 module.exports = removeImage

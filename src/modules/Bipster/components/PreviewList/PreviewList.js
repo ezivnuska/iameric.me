@@ -17,7 +17,7 @@ export default PreviewList = ({ previews }) => {
 
     const containerRef = useRef(null)
 
-    const numImagesPerRow = 4
+    const numImagesPerRow = 3
 
     const [imageSize, setImageSize] = useState(0)
 

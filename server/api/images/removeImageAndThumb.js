@@ -1,14 +1,14 @@
-const { rm } = require('fs')
+const { remove } = require('fs-extra')
 
 const removeImageAndThumb = async (filename, path) => {
     try {
-        rm(`${path}/${filename}`, () => console.log('removed image:', `${path}/${filename}`))
+        await remove(`${path}/${filename}`, () => console.log('removed image:', `${path}/${filename}`))
     } catch (err) {
         console.log('Error deleting image')
         return null
     }
     try {
-        rm(`${path}/thumb/${filename}`, () => console.log('removed thumb:', `${path}/thumb/${filename}`))
+        await remove(`${path}/thumb/${filename}`, () => console.log('removed thumb:', `${path}/thumb/${filename}`))
     } catch (err) {
         console.log('Error deleting thumb')
         return null

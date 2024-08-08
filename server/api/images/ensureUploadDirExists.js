@@ -1,16 +1,21 @@
-const { mkdir } = require('fs')
+const { ensureDir } = require('fs-extra')
 
-const ensureUploadDirExists = dir => {
+const ensureUploadDirExists = async dir => {
+    let response = false
     try {
-        mkdir(dir, { recursive: true }, err => {
+        await ensureDir(dir, { recursive: true }, err => {
             if (err) throw new Error()
-            else console.log('Assets directory created successfully')
-            return true
+            else {
+                console.log('Assets directory created successfully', dir)
+                response = true
+            }
         })
     } catch (err) {
         console.error('Error creating assets directory:', err)
-        return false
+        response = false
     }
+
+    return response
 }
 
 module.exports = ensureUploadDirExists

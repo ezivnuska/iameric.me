@@ -3,7 +3,7 @@ const handleFileUpload = require('./handleFileUpload')
 const saveBipImage = require('./saveBipImage')
 const path = require('path')
 
-const uploadDir = process.env.IMAGE_PATH || 'assets'
+const assetPath = process.env.IMAGE_PATH || 'assets'
 
 const uploadBipImage = async (req, res) => {
     const { bipId, userId, imageData, thumbData } = req.body
@@ -14,8 +14,8 @@ const uploadBipImage = async (req, res) => {
     
     const filename = `${userId}-${Date.now()}.png`
 
-    const userDir = path.join(uploadDir, user.username)
-    const bipDir = path.join(userDir, 'bips')
+    const userDir = `${assetPath}/${user.username}`
+    const bipDir = `${userDir}/bips`
     
     const uploadFilename = await handleFileUpload({ imageData, thumbData }, bipDir, filename)
     
@@ -25,7 +25,7 @@ const uploadBipImage = async (req, res) => {
     }
     const bipImage = {
         bipId,
-        path: bipDir,
+        path: `${user.username}/bips`,
         filename: uploadFilename,
         height,
         width,

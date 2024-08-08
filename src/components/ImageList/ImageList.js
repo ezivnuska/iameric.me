@@ -20,7 +20,7 @@ export default ImageList = ({ images, disabled = false, small = false }) => {
 
     const containerRef = useRef(null)
 
-    const numImagesPerRow = small ? 10 : 4
+    const numImagesPerRow = small ? 6 : 4
 
     const [imageSize, setImageSize] = useState(0)
 
