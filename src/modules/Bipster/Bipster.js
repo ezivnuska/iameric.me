@@ -102,16 +102,16 @@ export default () => {
         setLoading(false)
     }
 
-    return user && (
+    return (
         <View
             style={{
-                flexGrow: 1,
+                flex: 1,
                 gap: 2,
             }}
         >
-            <View>
+            <View style={{ flexGrow: 0 }}>
                 {previews.length > 0 ? (
-                    <View style={{ flexGrow: 0 }}>
+                    <>
                         <Heading title='Image Preview (not uploaded, yet)' />
                         <PreviewList
                             previews={previews.map(p => p.thumbData)}
@@ -134,24 +134,25 @@ export default () => {
                                 disabled={loading}
                             />
                         </View>
-                    </View>
+                    </>
                 ) : (
                     <ThemedText>{loading ? 'Waiting for camera...' : 'No photos captured.'}</ThemedText>
                 )}
-
-                {bips.length > 0 && (
-                    <View style={{ flexGrow: 1 }}>
-                        <BipList bips={bips} />
-                    </View>
-                )}
-
-                <View style={{ flexGrow: 0 }}>
-                    <BigRoundButton
-                        loading={loading}
-                        onPress={launchCamera}
-                    />
-                </View>
             </View>
+
+            <View style={{ flexGrow: 1 }}>
+                {bips.length > 0 && (
+                    <BipList bips={bips} />
+                )}
+            </View>
+
+            <View style={{ flexGrow: 0 }}>
+                <BigRoundButton
+                    loading={loading}
+                    onPress={launchCamera}
+                />
+            </View>
+            
         </View>
     )
 }

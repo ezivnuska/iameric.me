@@ -2,7 +2,6 @@ import React from 'react'
 import { Image } from 'react-native'
 
 export default ImageListItem = ({ path, size }) => {
-    console.log('ImageListItem:path:', path)
     return (
         <Image
             width={size}
