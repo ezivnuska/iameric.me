@@ -1,4 +1,5 @@
 import AboutScreen from './AboutScreen'
+import BipScreen from './BipScreen'
 import ContactScreen from './ContactScreen'
 import ContactsScreen from './ContactsScreen'
 import ForumScreen from './ForumScreen'
@@ -11,6 +12,7 @@ import ProfileScreen from './ProfileScreen'
 
 export {
     AboutScreen,
+    BipScreen,
     ContactScreen,
     ContactsScreen,
     ForumScreen,

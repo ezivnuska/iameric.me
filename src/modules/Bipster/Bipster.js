@@ -102,67 +102,56 @@ export default () => {
         setLoading(false)
     }
 
-    return (
-        <View style={{ flex: 1 }}>
-            <Heading title='Bipster' />
-            <View
-                style={{
-                    flexGrow: 1,
-                    gap: 2,
-                }}
-            >
-                <View>
-                    {previews.length > 0 ? (
-                        <View>
-                            <Heading title='Image Preview (not uploaded, yet)' />
-                            <PreviewList
-                                previews={previews.map(p => p.thumbData)}
-                            />
-                            <View
-                                style={{
-                                    marginVertical: 10,
-                                    gap: 10,
-                                }}
-                            >
-                                <SimpleButton
-                                    label='Submit'
-                                    onPress={onSubmitImagesForUpload}
-                                    disabled={loading}
-                                />
-
-                                <SimpleButton
-                                    label='Clear'
-                                    onPress={() => setPreviews([])}
-                                    disabled={loading}
-                                />
-                            </View>
-                        </View>
-                    ) : (
-                        <ThemedText>{loading ? 'Waiting for camera...' : 'No photos captured.'}</ThemedText>
-                    )}
-                </View>
-                
-                <View style={{ flexGrow: 1 }}>
-                    <BipList bips={bips} />
-                </View>
-
-                <BigRoundButton
-                    loading={loading}
-                    onPress={launchCamera}
-                />
-
-                {/* {images && images.length > 0 ? (
-                    <View>
-                        <Heading title='Uploaded Images' />
-                        <ImageList
-                            images={images}
-                            loading={loading}
+    return user && (
+        <View
+            style={{
+                flexGrow: 1,
+                gap: 2,
+            }}
+        >
+            <View>
+                {previews.length > 0 ? (
+                    <View style={{ flexGrow: 0 }}>
+                        <Heading title='Image Preview (not uploaded, yet)' />
+                        <PreviewList
+                            previews={previews.map(p => p.thumbData)}
                         />
+                        <View
+                            style={{
+                                marginVertical: 10,
+                                gap: 10,
+                            }}
+                        >
+                            <SimpleButton
+                                label='Submit'
+                                onPress={onSubmitImagesForUpload}
+                                disabled={loading}
+                            />
+
+                            <SimpleButton
+                                label='Clear'
+                                onPress={() => setPreviews([])}
+                                disabled={loading}
+                            />
+                        </View>
                     </View>
-                ) : null} */}
+                ) : (
+                    <ThemedText>{loading ? 'Waiting for camera...' : 'No photos captured.'}</ThemedText>
+                )}
 
+                {bips.length > 0 && (
+                    <View style={{ flexGrow: 1 }}>
+                        <BipList bips={bips} />
+                    </View>
+                )}
+
+                <View style={{ flexGrow: 0 }}>
+                    <BigRoundButton
+                        loading={loading}
+                        onPress={launchCamera}
+                    />
+                </View>
             </View>
-
         </View>
     )
 }

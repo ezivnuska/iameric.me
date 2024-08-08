@@ -30,16 +30,18 @@ export const BipContextProvider = props => {
     
     useEffect(() => {
         const initBips = async () => {
-            dispatch({type: 'SET_BIPS_LOADING', payload: true })
-            const data = await loadBips(user._id)
-            dispatch({type: 'SET_BIPS_LOADING', payload: false })
-            dispatch({type: 'SET_BIPS', payload: data })
+            if (user) {
+                dispatch({type: 'SET_BIPS_LOADING', payload: true })
+                const data = await loadBips(user._id)
+                dispatch({type: 'SET_BIPS_LOADING', payload: false })
+                dispatch({type: 'SET_BIPS', payload: data })
+            }
             dispatch({type: 'SET_BIPS_LOADED' })
         }
         
-        if (user) initBips()
+        initBips()
         
-    }, [user])
+    }, [])
 
     const getBip = id => state.bips.filter(bip => bip._id === id)[0] || null
 

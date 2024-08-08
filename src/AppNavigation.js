@@ -2,6 +2,7 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     AboutScreen,
+    BipScreen,
     ContactScreen,
     ContactsScreen,
     ForumScreen,
@@ -143,6 +144,13 @@ const AppStackScreen = () => {
                 children={props => <AboutScreen {...props} />}
                 // component={AboutScreen}
                 options={{ title: 'About' }}
+            />
+
+            <AppStack.Screen
+                name='Bip'
+                children={props => <BipScreen {...props} />}
+                // component={BipScreen}
+                options={{ title: 'Bip' }}
             />
 
         </AppStack.Navigator>

@@ -28,6 +28,9 @@ export default linking = {
             About: {
                 path: 'about',
             },
+            Bip: {
+                path: 'bip',
+            },
             User: {
                 path: 'user',
                 screens: {

@@ -11,19 +11,20 @@ import { ModalContextProvider } from '@modal'
 import { FormContextProvider } from '@form'
 import { ForumContextProvider } from '@forum'
 import { compose as Compose } from '@utils'
-import { GOOGLE_MAPS_API_KEY } from '../config'
+import { GOOGLE_MAPS_API_KEY } from './../config'
 import { APIProvider } from '@vis.gl/react-google-maps'
 
 export default App = () => {
-
+    console.log('process.env', process.env)
+    const apiKey = process.env.GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY
     return (
-        <NotificationContextProvider>
-            <AppContextProvider>
-                <ImagesContextProvider>
-                    <MailContextProvider>
-                        <ForumContextProvider>
-                            <SocketContextProvider>
-                                <APIProvider apiKey={GOOGLE_MAPS_API_KEY} libraries={['marker', 'geocoding']}>
+        <APIProvider apiKey={apiKey} libraries={['marker', 'geocoding']}>
+            <NotificationContextProvider>
+                <AppContextProvider>
+                    <ImagesContextProvider>
+                        <MailContextProvider>
+                            <ForumContextProvider>
+                                <SocketContextProvider>
                                     <Compose
                                         components={[
                                             BipContextProvider,
@@ -34,12 +35,12 @@ export default App = () => {
                                     >
                                         <Layout />
                                     </Compose>
-                                </APIProvider>
-                            </SocketContextProvider>
-                        </ForumContextProvider>
-                    </MailContextProvider>
-                </ImagesContextProvider>
-            </AppContextProvider>
-        </NotificationContextProvider>
+                                </SocketContextProvider>
+                            </ForumContextProvider>
+                        </MailContextProvider>
+                    </ImagesContextProvider>
+                </AppContextProvider>
+            </NotificationContextProvider>
+        </APIProvider>
     )
 }
