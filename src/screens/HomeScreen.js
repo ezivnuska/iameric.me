@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { Screen } from './components'
 import { ThemedText } from '@components'
@@ -12,12 +12,23 @@ export default props => {
     const { params } = props.route
 
     const { reset, user } = useApp()
-    const { clearModal } = useModal()
+    const { clearModal, setModal } = useModal()
     const { notifySocket } = useSocket()
+
+    const [ authRoute, setAuthRoute ] = useState(null)
 
     useEffect(() => {
         if (params) handleSignout()
     }, [params])
+
+    useEffect(() => {
+        if (user) {
+            if (authRoute) {
+                props.navigation.navigate(authRoute)
+                setAuthRoute(null)
+            }
+        }
+    }, [user])
 
     const handleSignout = async () => {
         if (params.signout && user) {
@@ -31,6 +42,15 @@ export default props => {
         props.navigation.navigate('Home')
     }
 
+    const navigateToBip = () => {
+        if (user) {
+            props.navigation.navigate('Bip')
+        } else {
+            setAuthRoute('Bip')
+            setModal('AUTH')
+        }
+    }
+
     return (
         <Screen
             {...props}
@@ -41,7 +61,7 @@ export default props => {
                 <Intro />
                 
                 <Pressable
-                    onPress={() => props.navigation.navigate('Bip')}
+                    onPress={navigateToBip}
                 >
                     <ThemedText color='tomato' bold>Bipster</ThemedText>
                 </Pressable>

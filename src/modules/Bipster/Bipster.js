@@ -110,12 +110,14 @@ export default () => {
             }}
         >
             <View style={{ flexGrow: 0 }}>
-                {previews.length > 0 ? (
+                {previews.length > 0 && (
                     <>
-                        <Heading title='Image Preview (not uploaded, yet)' />
+                        <Heading title='Captured Images' />
+                        
                         <PreviewList
                             previews={previews.map(p => p.thumbData)}
                         />
+
                         <View
                             style={{
                                 marginVertical: 10,
@@ -135,8 +137,6 @@ export default () => {
                             />
                         </View>
                     </>
-                ) : (
-                    <ThemedText>{loading ? 'Waiting for camera...' : 'No photos captured.'}</ThemedText>
                 )}
             </View>
 
