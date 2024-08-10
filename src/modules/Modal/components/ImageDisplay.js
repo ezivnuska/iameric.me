@@ -4,7 +4,10 @@ import {
     View,
 } from 'react-native'
 import { ModalHeader } from '.'
-import { IconButton } from '@components'
+import {
+    ActivityIndicator,
+    IconButton,
+} from '@components'
 import { useApp } from '@app'
 import { useImages } from '@images'
 import { useModal } from '@modal'
@@ -14,7 +17,6 @@ import {
     loadImage,
     setAvatar,
 } from '@utils/images'
-import { ActivityIndicator } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -49,8 +51,8 @@ export default ({ data }) => {
     useEffect(() => {
         
         const loadContactImage = async () => {
-            const img = await loadImage(data._id)
-            setImage(img)
+            const loadedImage = await loadImage(data._id)
+            setImage(loadedImage)
         }
 
         if (userImage) setImage(userImage)
@@ -118,76 +120,79 @@ export default ({ data }) => {
         closeModal()
     }
 
-    if (!image) return <ActivityIndicator size='small' />
-
     return (
-        <View>
-
-            <ModalHeader title={image && image.caption || 'Image Preview'}>
-                {userImage && (
-                    <IconButton
-                        name='create-outline'
-                        onPress={() => setModal('CAPTION', image)}
-                        size={20}
-                    />
-                )}
-            </ModalHeader>
+        <View style={{ flex: 1 }}>
             
-            <View
-                style={{
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
-            >
-                <View
-                    ref={containerRef}
-                    style={{
-                        flexGrow: 1,
-                        flexShrink: 1,
-                    }}
-                >
-                    {image && imageDims && (
-                        <Image
-                            source={{
-                                uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
-                            }}
-                            style={{
-                                resizeMode: 'contain',
-                                width: imageDims.width,
-                                height: imageDims.height,
-                                marginHorizontal: 'auto',
-                            }}
-                        />
-                    )}
-                </View>
+            {image ? (
+                <View style={{ flex: 1 }}>
 
-                {userImage && (
+                    <ModalHeader title={image && image.caption || 'Image Preview'}>
+                        {userImage && (
+                            <IconButton
+                                name='create-outline'
+                                onPress={() => setModal('CAPTION', image)}
+                                size={20}
+                            />
+                        )}
+                    </ModalHeader>
+                    
                     <View
                         style={{
-                            flexGrow: 0,
-                            flexShrink: 0,
+                            flexDirection: 'row',
                             gap: 10,
                         }}
                     >
+                        <View
+                            ref={containerRef}
+                            style={{
+                                flexGrow: 1,
+                                flexShrink: 1,
+                            }}
+                        >
+                            {image && imageDims && (
+                                <Image
+                                    source={{
+                                        uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
+                                    }}
+                                    style={{
+                                        resizeMode: 'contain',
+                                        width: imageDims.width,
+                                        height: imageDims.height,
+                                        marginHorizontal: 'auto',
+                                    }}
+                                />
+                            )}
+                        </View>
 
-                        <IconButton
-                            name={'image-sharp'}
-                            onPress={isProfileImage ? removeAvatar : makeAvatar}
-                            disabled={imagesLoading}
-                            style={{ padding: 3 }}
-                        />
+                        {userImage && (
+                            <View
+                                style={{
+                                    flexGrow: 0,
+                                    flexShrink: 0,
+                                    gap: 10,
+                                }}
+                            >
 
-                        <IconButton
-                            name='trash-sharp'
-                            onPress={handleDelete}
-                            disabled={imagesLoading}
-                            style={{ padding: 3 }}
-                        />
-                        
+                                <IconButton
+                                    name={'image-sharp'}
+                                    onPress={isProfileImage ? removeAvatar : makeAvatar}
+                                    disabled={imagesLoading}
+                                    style={{ padding: 3 }}
+                                />
+
+                                <IconButton
+                                    name='trash-sharp'
+                                    onPress={handleDelete}
+                                    disabled={imagesLoading}
+                                    style={{ padding: 3 }}
+                                />
+                                
+                            </View>
+                        )}
+
                     </View>
-                )}
-
-            </View>
+                </View>
+            ) : <ActivityIndicator />}
 
         </View>
     )

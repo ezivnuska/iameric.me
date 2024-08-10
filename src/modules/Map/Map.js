@@ -22,9 +22,9 @@ export default () => {
     let timer
 
     useEffect(() => {
-        // getLocation()
-        // getLocationsFromContacts()
-        // timer = setInterval(getLocation, 60 * 1000)
+        getLocation()
+        getLocationsFromContacts()
+        timer = setInterval(getLocation, 60 * 1000 * 60)
     }, [])
 
     useEffect(() => {
