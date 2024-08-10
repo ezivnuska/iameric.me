@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
     Pressable,
+    ScrollView,
     View,
 } from 'react-native'
 import {
@@ -9,9 +10,7 @@ import {
 } from './components'
 import {
     Heading,
-    ImageList,
     SimpleButton,
-    ThemedText,
 } from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
@@ -106,50 +105,58 @@ export default () => {
     }
 
     return (
-        <View
-            style={{
-                flex: 1,
-                gap: 2,
-            }}
-        >
-            <View style={{ flexGrow: 0 }}>
-                {previews.length > 0 && (
-                    <>
-                        <Heading title={`Captured Images (uploaded: ${numUploads})`} />
-                        
-                        <PreviewList
-                            previews={previews.map(p => p.thumbData)}
+        <View style={{ flex: 1 }}>
+
+            {previews.length > 0 && (
+                <View
+                    style={{
+                        flexGrow: 0,
+                    }}
+                >
+                    <Heading title={`Captured Images (uploaded: ${numUploads})`} />
+                    
+                    <PreviewList
+                        previews={previews.map(p => p.thumbData)}
+                    />
+
+                    <View
+                        style={{
+                            marginVertical: 10,
+                            gap: 10,
+                        }}
+                    >
+                        <SimpleButton
+                            label='Submit'
+                            onPress={onSubmitImagesForUpload}
+                            disabled={loading}
                         />
 
-                        <View
-                            style={{
-                                marginVertical: 10,
-                                gap: 10,
-                            }}
-                        >
-                            <SimpleButton
-                                label='Submit'
-                                onPress={onSubmitImagesForUpload}
-                                disabled={loading}
-                            />
+                        <SimpleButton
+                            label='Clear'
+                            onPress={() => setPreviews([])}
+                            disabled={loading}
+                        />
+                    </View>
+                </View>
+            )}
 
-                            <SimpleButton
-                                label='Clear'
-                                onPress={() => setPreviews([])}
-                                disabled={loading}
-                            />
-                        </View>
-                    </>
-                )}
-            </View>
-
-            <View style={{ flexGrow: 1 }}>
+            
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{ flex: 1 }}
+                contentContainerStyle={{ flex: 1 }}
+            >
                 {bips.length > 0 && (
                     <BipList bips={bips} />
                 )}
-            </View>
+            </ScrollView>
 
-            <View style={{ flexGrow: 0 }}>
+            <View
+                style={{
+                    flexGrow: 0,
+                    paddingVertical: 10,
+                }}
+            >
                 <BigRoundButton
                     loading={loading}
                     onPress={launchCamera}

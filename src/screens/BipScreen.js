@@ -19,7 +19,9 @@ export default props => {
                     onBack={() => props.navigation.navigate('Home')}
                 />
 
-                <Bipster />
+                <View style={{ flex: 1 }}>
+                    <Bipster />
+                </View>
     
             </View>
     
