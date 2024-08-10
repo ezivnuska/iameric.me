@@ -7,12 +7,9 @@ const assetPath = process.env.IMAGE_PATH || 'assets'
 
 const uploadBipImage = async (req, res) => {
     const { bipId, userId, imageData, thumbData } = req.body
-    const { height, width } = imageData
+    const { filename, height, width } = imageData
     
     const user = await User.findOne({ _id: userId })
-    // console.log('USR', user)
-    
-    const filename = `${userId}-${Date.now()}.png`
 
     const userDir = `${assetPath}/${user.username}`
     const bipDir = `${userDir}/bips`

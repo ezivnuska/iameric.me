@@ -13,23 +13,24 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
             animationType='fade'
             transparent={true}
             onRequestClose={onRequestClose}
-            style={{ margin: 0 }}
+            style={{ flex: 1 }}
         >
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{
                     flex: 1,
-                    width: dims.width,
+                    // width: dims.width,
                     height: dims.height,
                     background: theme?.colors.modalBackground,
                 }}
                 contentContainerStyle={{
-                    flexGrow: 1,
+                    flex: 1,
                     width: '100%',
                     maxWidth: 400,
                     marginHorizontal: 'auto',
-                    padding: 10,
+                    // padding: 10,
+                    // borderWidth: 1,
                 }}
             >
                 {children}

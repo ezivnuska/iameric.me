@@ -1,23 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
-    Image,
+    Pressable,
     View,
 } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
 import { useApp } from '@app'
-import { ActivityIndicator } from 'react-native-paper'
+import { useModal } from '@modal'
+import { ImageListItem, UploadImage } from './components'
 
-export default PreviewList = ({ previews }) => {
+// const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-    const {
-        dims,
-        theme,
-    } = useApp()
+export default ImageList = ({ images, bipId = null, disabled = false, small = false }) => {
+
+    const { dims, theme, user } = useApp()
+    
+    const { setModal } = useModal()
 
     const imageGap = 4
 
     const containerRef = useRef(null)
 
-    const numImagesPerRow = 3
+    const numImagesPerRow = small ? 6 : 4
 
     const [imageSize, setImageSize] = useState(0)
 
@@ -51,29 +54,13 @@ export default PreviewList = ({ previews }) => {
                 width: '100%',
             }}
         >
-            {previews.map((preview, index) => (
-                <View
-                    key={`image-${index}`}
-                    style={[
-                        {
-                            width: imageSize,
-                            height: imageSize,
-                        },
-                        buttonStyle,
-                    ]}
-                >
-                    <Image
-                        width={imageSize}
-                        height={imageSize}
-                        source={{ uri: preview.uri }}
-                        style={{
-                            resizeMode: 'cover',
-                            width: imageSize,
-                            height: imageSize,
-                        }}
-                    />
-                </View>
-            ))}
+            {images ? images.map((image, index) => (
+                <ImageListItem
+                    path={`${image.path}/${image.filename}`}
+                    size={imageSize}
+                    key={`bip-image-${index}`}
+                />        
+            )) : null}
 
         </View>
     )

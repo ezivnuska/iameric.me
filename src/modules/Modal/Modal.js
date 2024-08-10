@@ -10,6 +10,7 @@ import {
 } from '@forms'
 import { useModal } from '@modal'
 import {
+    BipCapture,
     ImageDisplay,
     ModalContainer,
     SocketDisplay,
@@ -24,6 +25,7 @@ export default () => {
         const { type, data } = modal
         switch(type) {
             case 'CAPTION': return <CaptionForm data={data} />; break
+            case 'CAPTURE': return <BipCapture />; break
             case 'SHOWCASE': return <ImageDisplay data={data} />; break
             case 'AUTH': return <AuthForm />; break
             case 'DESTROY': return <DestroyForm />; break

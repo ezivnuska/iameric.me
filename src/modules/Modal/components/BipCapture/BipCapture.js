@@ -4,10 +4,7 @@ import {
     ScrollView,
     View,
 } from 'react-native'
-import {
-    BipList,
-    // PreviewList,
-} from './components'
+import PreviewList from './components/PreviewList'
 import {
     Heading,
     SimpleButton,
@@ -35,15 +32,15 @@ export default () => {
         bips,
         setBipImages,
     } = useBips()
-    const { setModal } = useModal()
+    const { closeModal } = useModal()
 
     const [ loading, setLoading ] = useState(false)
     const [ previews, setPreviews ] = useState([])
     let uploads = []
 
-    // useEffect(() => {
-    //     setModal('CAPTURE')
-    // }, [])
+    useEffect(() => {
+        launchCamera()
+    }, [])
 
     const addPreview = preview => {
         setPreviews([
@@ -98,23 +95,39 @@ export default () => {
         return uploads
     }
 
+    const submitBip = async () => {
+        setLoading(true)
+        const bip = await createBip(user._id, user.location)
+        if (!bip) console.log('Error adding new bip.')
+        else {
+            addBip({
+                ...bip,
+                uploads: previews,
+            })
+        }
+        setLoading(false)
+        closeModal()
+    }
+
     const onSubmitImagesForUpload = async () => {
         setLoading(true)
         const bip = await createBip(user._id, user.location)
         
         if (!bip) console.log('Error creating new bip')
         else {
-            addBip({
-                ...bip,
-                uploads: previews,
-            })
-            // const bipImages = await uploadBipImages(bip._id, previews)
+            addBip(bip)
+            // const bipImages = 
+            
+            // uploadBipImages(bip._id, previews)
+            // await uploadBipImages(bip._id, previews)
+
             // setBipImages({
             //     bipId: bip._id,
             //     images: bipImages,
             // })
             setPreviews([])
             uploads = []
+            closeModal()
         }
         setLoading(false)
     }
@@ -122,13 +135,12 @@ export default () => {
     return (
         <View style={{ flex: 1 }}>
 
-            {/* {previews.length > 0 && (
+            {previews.length > 0 && (
                 <View
                     style={{
-                        flexGrow: 0,
+                        flex: 1,
                     }}
                 >
-                    <Heading title={`Captured Images (uploaded: ${uploads.length})`} />
                     
                     <PreviewList
                         previews={previews.map(p => p.thumbData)}
@@ -142,7 +154,8 @@ export default () => {
                     >
                         <SimpleButton
                             label='Submit'
-                            onPress={onSubmitImagesForUpload}
+                            onPress={submitBip}
+                            // onPress={onSubmitImagesForUpload}
                             disabled={loading}
                         />
 
@@ -153,29 +166,20 @@ export default () => {
                         />
                     </View>
                 </View>
-            )} */}
-
-            
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                style={{ flex: 1 }}
-                contentContainerStyle={{ flex: 1 }}
-            >
-                {bips.length > 0 && (
-                    <BipList bips={bips} />
-                )}
-            </ScrollView>
+            )}
 
             <View
                 style={{
-                    flexGrow: 0,
+                    flex: 1,
                     paddingVertical: 10,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                 }}
             >
                 <BigRoundButton
                     loading={loading}
-                    onPress={() => setModal('CAPTURE')}
-                    // onPress={launchCamera}
+                    onPress={launchCamera}
                 />
             </View>
             
@@ -188,15 +192,15 @@ const BigRoundButton = ({ loading, onPress }) => (
         onPress={onPress}
         disabled={loading}
         style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
             height: 100,
             width: 100,
             borderRadius: 50,
             background: loading ? '#ccc' : 'tomato',
             textAlign: 'center',
             marginHorizontal: 'auto',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
         }}
     >
         <Icon

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
+import { ImageList } from './components'
 import {
     IconButton,
-    ImageList,
     ThemedText,
     Time,
 } from '@components'
@@ -10,17 +10,47 @@ import { useApp } from '@app'
 import { useBips } from '@bips'
 import { getBipImages } from '@utils/images'
 import { deleteBip } from '@utils/bips'
+import {
+    uploadBipImage,
+} from '@utils/images'
 
 export default ({ item }) => {
 
     const { user } = useApp()
 
     const {
+        addBipImage,
+        getBip,
         removeBip,
         setBipImages,
+        resolveUpload,
     } = useBips()
 
     const [ loading, setLoading ] = useState(false)
+
+    const uploads = useMemo(() => getBip(item._id).uploads, [item])
+
+    const uploadImage = async data => {
+        const uploadedImage = await uploadBipImage(item._id, data)
+        if (uploadedImage) {
+            addBipImage({ bipId: item._id, image: uploadedImage })
+            resolveUpload({ bipId: item._id, filename: uploadedImage.filename })
+        }
+    }
+
+    const uploadImages = async images => {
+        images.map(image => uploadImage(image))
+    }
+
+    useEffect(() => {
+        if (item.uploads) {
+            uploadImages(item.uploads)
+        }
+    }, [])
+
+    // useEffect(() => {
+    //     console.log('uploads changed', uploads)
+    // }, [uploads])
 
     const getImages = async id => {
         setLoading(true)
@@ -82,13 +112,18 @@ export default ({ item }) => {
 
             </View>
 
+            {(uploads && uploads.length > 0)
+                ? <ThemedText>{`Uploading ${uploads.length} image${uploads.length !== 1 ? 's' : ''}`}</ThemedText>
+                : null
+            }
+
             {
                 (item.images && item.images.length > 0)
                     ? (
                         <ImageList
                             images={item.images}
                             loading={loading}
-                            disabled
+                            // disabled
                             small
                         />
                     )

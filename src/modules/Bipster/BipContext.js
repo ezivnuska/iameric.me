@@ -11,6 +11,7 @@ const initialState = {
     addBipImage: () => {},
     removeBip: () => {},
     setBipsLoading: () => {},
+    resolveUpload: () => {},
     setBipImages: () => {},
 }
 
@@ -62,6 +63,9 @@ export const BipContextProvider = props => {
         setBipImages: payload => {
             dispatch({ type: 'SET_BIP_IMAGES', payload })
         },
+        resolveUpload: payload => {
+            dispatch({ type: 'RESOLVE_UPLOAD', payload })
+        },
     }), [state, dispatch])
 
     return (
@@ -90,6 +94,19 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 bipsLoaded: true,
+            }
+            break
+        case 'RESOLVE_UPLOAD':
+            return {
+                ...state,
+                bips: state.bips.map(bip => {
+                    if (bip._id === payload.bipId) {
+                        return {
+                            ...bip,
+                            uploads: bip.uploads.filter(up => up.imageData.filename !== payload.filename),
+                        }
+                    } else return bip
+                }),
             }
             break
         case 'ADD_BIP_IMAGE':
