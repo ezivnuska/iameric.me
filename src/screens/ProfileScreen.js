@@ -38,6 +38,7 @@ export default props => {
                 <View style={{ flexGrow: 1 }}>
                     <Pressable
                         onPress={() => setModal('SHOWCASE', user.profileImage)}
+                        disabled={!user.profileImage}
                     >
                         <Image
                             source={source}

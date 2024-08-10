@@ -29,6 +29,7 @@ export default ({ contact }) => {
 
             <Pressable
                 onPress={() => setModal('SHOWCASE', contact.profileImage)}
+                disabled={!contact.profileImage}
             >
                 <Image
                     source={source}

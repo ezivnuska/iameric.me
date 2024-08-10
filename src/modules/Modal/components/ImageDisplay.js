@@ -44,7 +44,7 @@ export default ({ data }) => {
     const [imageDims, setImageDims] = useState(null)
     const [isProfileImage, setIsProfileImage] = useState(false)
 
-    const userImage = useMemo(() => getImage(data._id), [data])
+    const userImage = useMemo(() => data ? getImage(data._id) : null, [data])
 
     useEffect(() => {
         
@@ -54,7 +54,7 @@ export default ({ data }) => {
         }
 
         if (userImage) setImage(userImage)
-        else loadContactImage()
+        else if (data) loadContactImage()
     }, [])
 
     useEffect(() => {
