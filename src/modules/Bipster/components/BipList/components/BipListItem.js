@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import {
     IconButton,
@@ -10,8 +10,6 @@ import { useApp } from '@app'
 import { useBips } from '@bips'
 import { getBipImages } from '@utils/images'
 import { deleteBip } from '@utils/bips'
-
-// const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item }) => {
 

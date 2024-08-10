@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import {
     Pressable,
     ScrollView,
@@ -30,6 +30,7 @@ export default () => {
     const { user } = useApp()
     const {
         addBip,
+        addBipImage,
         bips,
         setBipImages,
     } = useBips()
@@ -37,8 +38,6 @@ export default () => {
     const [ loading, setLoading ] = useState(false)
     const [ previews, setPreviews ] = useState([])
     let uploads = []
-
-    const numUploads = useMemo(() => uploads.length, [uploads])
 
     const addPreview = preview => {
         setPreviews([
@@ -79,8 +78,15 @@ export default () => {
     const uploadBipImages = async (bipId, bipImages) => {
         while (uploads.length < bipImages.length) {
             const imageToUpload = bipImages[uploads.length]
+            console.log('uploading image', imageToUpload)
             const uploadedImage = await uploadBipImage(bipId, imageToUpload)
+            console.log('uploadedImage/length; pushing to uploads:', uploadedImage, uploads.length)
             uploads.push(uploadedImage)
+            console.log('uploads after push', uploads)
+            addBipImage({
+                bipId,
+                image: uploadedImage,
+            })
         }
         console.log(`uploading finished... ${uploads.length} image${uploads.length === 1 ? '' : 's'} uploaded.`)
         return uploads
@@ -92,12 +98,12 @@ export default () => {
         
         if (!bip) console.log('Error creating new bip')
         else {
-            const bipImages = await uploadBipImages(bip._id, previews)
             addBip(bip)
-            setBipImages({
-                bipId: bip._id,
-                images: bipImages,
-            })
+            const bipImages = await uploadBipImages(bip._id, previews)
+            // setBipImages({
+            //     bipId: bip._id,
+            //     images: bipImages,
+            // })
             setPreviews([])
             uploads = []
         }
@@ -113,7 +119,7 @@ export default () => {
                         flexGrow: 0,
                     }}
                 >
-                    <Heading title={`Captured Images (uploaded: ${numUploads})`} />
+                    <Heading title={`Captured Images (uploaded: ${uploads.length})`} />
                     
                     <PreviewList
                         previews={previews.map(p => p.thumbData)}
