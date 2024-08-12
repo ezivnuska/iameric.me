@@ -16,7 +16,7 @@ export default props => {
     
                 <Heading
                     title='Bipster'
-                    onBack={() => props.navigation.navigate('Home')}
+                    // onBack={() => props.navigation.navigate('Home')}
                 />
 
                 <View style={{ flex: 1 }}>
