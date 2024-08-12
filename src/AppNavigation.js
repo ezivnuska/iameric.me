@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     AboutScreen,
     BipScreen,
+    BipsScreen,
     ContactScreen,
     ContactsScreen,
     ForumScreen,
@@ -13,6 +14,42 @@ import {
     MailScreen,
     ProfileScreen,
 } from '@screens'
+
+const BipStack = createNativeStackNavigator()
+const BipStackScreen = () => {
+
+    return (
+        <BipStack.Navigator
+            initialRouteName='BipList'
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+
+            <BipStack.Screen
+                name='BipList'
+                children={props => <BipsScreen {...props} />}
+                // component={BipsScreen}
+                options={{ title: 'Bips' }}
+            />
+
+            <BipStack.Screen
+                name='Bip'
+                children={props => <BipScreen {...props} />}
+                // component={BipScreen}
+                options={{ title: 'Bip' }}
+            />
+
+            {/* <BipStack.Screen
+                name='BipMap'
+                children={props => <MapScreen {...props} />}
+                // component={MapScreen}
+                options={{ title: 'Map' }}
+            /> */}
+
+        </BipStack.Navigator>
+    )
+}
 
 const UserStack = createNativeStackNavigator()
 const UserStackScreen = () => {
@@ -147,10 +184,10 @@ const AppStackScreen = () => {
             />
 
             <AppStack.Screen
-                name='Bip'
-                children={props => <BipScreen {...props} />}
-                // component={BipScreen}
-                options={{ title: 'Bip' }}
+                name='Bips'
+                children={props => <BipStackScreen {...props} />}
+                // component={BipStackScreen}
+                options={{ title: 'Bips' }}
             />
 
         </AppStack.Navigator>

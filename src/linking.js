@@ -28,8 +28,16 @@ export default linking = {
             About: {
                 path: 'about',
             },
-            Bip: {
-                path: 'bip',
+            Bips: {
+                path: 'bips',
+                screens: {
+                    BipList: {
+                        path: '',
+                    },
+                    Bip: {
+                        path: 'bip/:id',
+                    },
+                }
             },
             User: {
                 path: 'user',

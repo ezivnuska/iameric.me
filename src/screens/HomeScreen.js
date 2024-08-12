@@ -27,6 +27,8 @@ export default props => {
             if (authRoute) {
                 props.navigation.navigate(authRoute)
                 setAuthRoute(null)
+            } else {
+                props.navigation.navigate('Bips')
             }
         }
     }, [user])
@@ -43,14 +45,14 @@ export default props => {
         props.navigation.navigate('Home')
     }
 
-    // const navigateToBip = () => {
-    //     if (user) {
-    //         props.navigation.navigate('Bip')
-    //     } else {
-    //         setAuthRoute('Bip')
-    //         setModal('AUTH')
-    //     }
-    // }
+    const navigateToBip = () => {
+        if (user) {
+            props.navigation.navigate('Bips', { screen: 'BipList' })
+        } else {
+            setAuthRoute('Bips')
+            setModal('AUTH')
+        }
+    }
 
     return (
         <Screen
@@ -58,17 +60,17 @@ export default props => {
             secure={false}
         >
             <View style={{ flex: 1 }}>
-
-                {user
+                <Intro />
+                {/* {user
                     ? <Bipster />
                     : <Intro />
-                }
+                } */}
                 
-                {/* <Pressable
+                <Pressable
                     onPress={navigateToBip}
                 >
                     <ThemedText color='tomato' bold>Bipster</ThemedText>
-                </Pressable> */}
+                </Pressable>
 
             </View>
 
