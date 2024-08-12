@@ -28,25 +28,25 @@ export default ({ item }) => {
 
     const [ loading, setLoading ] = useState(false)
 
-    const uploads = useMemo(() => getBip(item._id).uploads, [item])
+    // const uploads = useMemo(() => getBip(item._id).uploads, [item])
 
-    const uploadImage = async data => {
-        const uploadedImage = await uploadBipImage(item._id, data)
-        if (uploadedImage) {
-            addBipImage({ bipId: item._id, image: uploadedImage })
-            resolveUpload({ bipId: item._id, filename: uploadedImage.filename })
-        }
-    }
+    // const uploadImage = async data => {
+    //     const uploadedImage = await uploadBipImage(item._id, data)
+    //     if (uploadedImage) {
+    //         addBipImage({ bipId: item._id, image: uploadedImage })
+    //         resolveUpload({ bipId: item._id, filename: uploadedImage.filename })
+    //     }
+    // }
 
-    const uploadImages = async images => {
-        images.map(image => uploadImage(image))
-    }
+    // const uploadImages = async images => {
+    //     images.map(image => uploadImage(image))
+    // }
 
-    useEffect(() => {
-        if (item.uploads) {
-            uploadImages(item.uploads)
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (item.uploads) {
+    //         uploadImages(item.uploads)
+    //     }
+    // }, [])
 
     // useEffect(() => {
     //     console.log('uploads changed', uploads)
@@ -78,44 +78,33 @@ export default ({ item }) => {
 
     return item ? (
         <View
-            style={{ flex: 1 }}
+            style={{ flex: 1, paddingBottom: 5 }}
             key={`bip-${item._id}`}
         >
             <View
                 style={{
+                    flexGrow: 1,
                     flexDirection: 'row',
-                    alignItems: 'space-between',
-                    alignContent: 'center',
-                    gap: 10,
-                    paddingVertical: 5,
+                    justifyContent: 'flex-start',
+                    gap: 7,
                 }}
             >
-                <View
-                    style={{
-                        flexGrow: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        gap: 10,
-                    }}
-                >
-                    <ThemedText>{item.user.username}</ThemedText>
-                    <Time time={item.createdAt} />
-                </View>
-
+                <ThemedText>{item.user.username}</ThemedText>
+                <Time time={item.createdAt} />
                 {item.user && item.user._id === user._id ? (
                     <IconButton
-                        name='trash-outline'
-                        size={22}
+                        name='close-sharp'
+                        size={20}
+                        color='tomato'
                         onPress={() => deleteAndRemoveBip(item._id)}
                     />
                 ) : null}
-
             </View>
 
-            {(uploads && uploads.length > 0)
+            {/* {(uploads && uploads.length > 0)
                 ? <ThemedText>{`Uploading ${uploads.length} image${uploads.length !== 1 ? 's' : ''}`}</ThemedText>
                 : null
-            }
+            } */}
 
             {
                 (item.images && item.images.length > 0)

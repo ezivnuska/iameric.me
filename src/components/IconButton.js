@@ -19,7 +19,7 @@ export default ({ disabled, name, onPress, color = null, size = 18, ...props }) 
                     flexGrow: 0,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    height: 24,
+                    height: size + 4,
                 },
                 props.style,
             ]}

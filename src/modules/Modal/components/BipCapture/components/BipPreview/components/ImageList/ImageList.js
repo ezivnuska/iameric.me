@@ -60,6 +60,7 @@ export default ImageList = ({ images, uploading, small = false }) => {
                                 position: 'relative',
                                 width: imageSize,
                                 height: imageSize,
+                                background: '#000',
                             }}
                         >
                             <Image
@@ -80,7 +81,7 @@ export default ImageList = ({ images, uploading, small = false }) => {
                                     buttonStyle,
                                 ]}
                             />
-                            
+
                             {(uploading && image.imageData) && (
                                 <View
                                     style={{
@@ -92,7 +93,7 @@ export default ImageList = ({ images, uploading, small = false }) => {
                                         height: imageSize,
                                     }}
                                 >
-                                    <ActivityIndicator />
+                                    <ActivityIndicator color='#fff' />
                                 </View>
                             )}
                         </View>
