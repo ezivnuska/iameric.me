@@ -2,8 +2,9 @@ import React from 'react'
 import { View } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 
-export default ({ size, color, ...props }) => (
+export default ({ size = 'large', color = 'tomato', ...props }) => (
     <View
+        {...props}
         style={{
             flex: 1,
             flexDirection: 'row',
@@ -12,8 +13,8 @@ export default ({ size, color, ...props }) => (
         }}
     >
         <ActivityIndicator
-            size='large'
-            color='tomato'
+            size={size}
+            color={color}
             style={{ marginHorizontal: 'auto' }}
         />
     </View>

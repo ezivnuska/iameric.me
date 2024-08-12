@@ -1,51 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import {
     Pressable,
-    ScrollView,
     View,
 } from 'react-native'
-import PreviewList from './components/PreviewList'
-import {
-    Heading,
-    SimpleButton,
-} from '@components'
+import { SimpleButton } from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
+// import { Map } from '@modules'
 import {
     handleImageData,
     openCamera,
-    uploadBipImage,
 } from '@utils/images'
-import {
-    createBip,
-} from '@utils/bips'
 import EXIF from 'exif-js'
 import Icon from 'react-native-vector-icons/Ionicons'
+import BipPreview from './components/BipPreview'
 
 export default () => {
 
     const { user } = useApp()
-    const {
-        addBip,
-        addBipImage,
-        bips,
-        setBipImages,
-    } = useBips()
+    const { addBip } = useBips()
     const { closeModal } = useModal()
 
     const [ loading, setLoading ] = useState(false)
-    const [ previews, setPreviews ] = useState([])
-    let uploads = []
+    const [ uploads, setUploads ] = useState([])
 
     useEffect(() => {
         launchCamera()
     }, [])
 
-    const addPreview = preview => {
-        setPreviews([
-            preview,
-            ...previews,
+    const addUpload = upload => {
+        setUploads([
+            ...uploads,
+            upload,
         ])
     }
 
@@ -73,100 +60,33 @@ export default () => {
         image.onload = async () => {
             const data = await handleImageData(id, image, exif)
             if (!data) console.log('error loading image')
-            else addPreview(data)
+            else addUpload(data)
         }
         image.src = src
     }
 
-    const uploadBipImages = async (bipId, bipImages) => {
-        while (uploads.length < bipImages.length) {
-            const imageToUpload = bipImages[uploads.length]
-            console.log('uploading image', imageToUpload)
-            const uploadedImage = await uploadBipImage(bipId, imageToUpload)
-            console.log('uploadedImage/length; pushing to uploads:', uploadedImage, uploads.length)
-            uploads.push(uploadedImage)
-            console.log('uploads after push', uploads)
-            addBipImage({
-                bipId,
-                image: uploadedImage,
-            })
-        }
-        console.log(`uploading finished... ${uploads.length} image${uploads.length === 1 ? '' : 's'} uploaded.`)
-        return uploads
-    }
+    const clearUploads = () => setUploads([])
 
-    const submitBip = async () => {
-        setLoading(true)
-        const bip = await createBip(user._id, user.location)
-        if (!bip) console.log('Error adding new bip.')
-        else {
-            addBip({
-                ...bip,
-                uploads: previews,
-            })
-        }
-        setLoading(false)
+    const closeAndClear = () => {
+        clearUploads()
         closeModal()
     }
-
-    const onSubmitImagesForUpload = async () => {
-        setLoading(true)
-        const bip = await createBip(user._id, user.location)
-        
-        if (!bip) console.log('Error creating new bip')
-        else {
-            addBip(bip)
-            // const bipImages = 
-            
-            // uploadBipImages(bip._id, previews)
-            // await uploadBipImages(bip._id, previews)
-
-            // setBipImages({
-            //     bipId: bip._id,
-            //     images: bipImages,
-            // })
-            setPreviews([])
-            uploads = []
-            closeModal()
-        }
-        setLoading(false)
+    
+    const onBip = async bip => {
+        addBip(bip)
+        closeAndClear()
     }
 
     return (
         <View style={{ flex: 1 }}>
 
-            {previews.length > 0 && (
-                <View
-                    style={{
-                        flex: 1,
-                    }}
-                >
-                    
-                    <PreviewList
-                        previews={previews.map(p => p.thumbData)}
-                    />
+            <BipPreview
+                images={uploads}
+                onBip={onBip}
+                onClear={clearUploads}
+            />
 
-                    <View
-                        style={{
-                            marginVertical: 10,
-                            gap: 10,
-                        }}
-                    >
-                        <SimpleButton
-                            label='Submit'
-                            onPress={submitBip}
-                            // onPress={onSubmitImagesForUpload}
-                            disabled={loading}
-                        />
-
-                        <SimpleButton
-                            label='Clear'
-                            onPress={() => setPreviews([])}
-                            disabled={loading}
-                        />
-                    </View>
-                </View>
-            )}
+            {/* <Map /> */}
 
             <View
                 style={{
@@ -182,6 +102,11 @@ export default () => {
                     onPress={launchCamera}
                 />
             </View>
+
+            <SimpleButton
+                label='Close'
+                onPress={closeAndClear}
+            />
             
         </View>
     )
