@@ -22,7 +22,10 @@ import { ThemedText } from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
-import { handleImageData } from '@utils/images'
+import {
+  handleImageData,
+  openFileSelector,
+} from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
 import EXIF from 'exif-js'
 
@@ -35,6 +38,7 @@ export default () => {
   const [ hasPermission, setHasPermission ] = useState(null)
   const [ cameraType, setCameraType ] = useState(Camera.Constants.Type.back)
   const [ isCameraReady, setIsCameraReady ] = useState(false)
+  const [ isCameraAvailable, setIsCameraAvailable ] = useState(false)
   const [ previews, setPreviews ] = useState([])
   
   const cameraRef = useRef()
@@ -43,10 +47,13 @@ export default () => {
     (async () => {
         const { status } = await Camera.requestCameraPermissionsAsync()
         setHasPermission(status === 'granted')
+        const hasCamera = await Camera.isAvailableAsync()
+        if (hasCamera) setIsCameraAvailable(hasCamera)
     })()
   }, [])
 
   const onCameraReady = () => {
+    alert('camera ready')
     setIsCameraReady(true)
   }
 
@@ -132,6 +139,19 @@ export default () => {
 //     setFacing(current => (current === 'back' ? 'front' : 'back'))
 //   }
 
+  const handleMountError = error => {
+    // alert(`camera error`, error)
+    launchFileSelector()
+    // setIsCameraAvailable(false)
+  }
+
+  const launchFileSelector = async () => {
+    const uri = await openFileSelector()
+    if (uri) {
+        handleSelectedImage(uri)
+    }
+}
+
   return (
     <SafeAreaView
       // style={styles.container}
@@ -145,6 +165,8 @@ export default () => {
           flex: 1,
           width: '100%',
           flexDirection: 'row',
+          opacity: isCameraAvailable && isCameraReady ? 1 : 0,
+          height: isCameraAvailable && isCameraReady ? 'auto' : 0,
         }}    
       >
         <View style={{ flex: 1 }}>
@@ -159,7 +181,7 @@ export default () => {
               type={cameraType}
               // flashMode={Camera.Constants.FlashMode.on}
               onCameraReady={onCameraReady}
-              onMountError={error => alert(`camera error`, error)}
+              onMountError={handleMountError}
           />
         </View>
         <View

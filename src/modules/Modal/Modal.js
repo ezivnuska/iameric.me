@@ -10,8 +10,7 @@ import {
 } from '@forms'
 import { useModal } from '@modal'
 import {
-    BipCapture,
-    Camera,
+    CameraView,
     ImageDisplay,
     ModalContainer,
     SocketDisplay,
@@ -26,9 +25,8 @@ export default () => {
         const { type, data } = modal
         switch(type) {
             case 'AUTH': return <AuthForm />; break
-            case 'CAMERA': return <Camera />; break
             case 'CAPTION': return <CaptionForm data={data} />; break
-            case 'CAPTURE': return <BipCapture />; break
+            case 'CAPTURE': return <CameraView />; break
             case 'DESTROY': return <DestroyForm />; break
             case 'FEEDBACK': return <FeedbackForm data={data} />; break
             case 'IMAGE': return <ImageForm />; break
@@ -44,7 +42,7 @@ export default () => {
         <ModalContainer
             isVisible={modals.length > 0}
             onRequestClose={closeModal}
-            fullscreen={modal && modal.type === 'CAMERA'}
+            fullscreen={modal && modal.type === 'CAPTURE'}
         >
             {renderModalContent()}
         </ModalContainer>
