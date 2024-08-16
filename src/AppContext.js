@@ -22,6 +22,10 @@ import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
 import { useNotification } from '@notification'
 
+// import iconFont from './fonts/Ionicons.ttf'
+// import iconFont from 'react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf'
+import { useFonts } from 'expo-font'
+
 // import socket from '../socket'
 
 const defaultTheme = merge(MD2LightTheme, NavigationDefaultTheme)
@@ -58,51 +62,61 @@ export const AppContextProvider = ({ children }) => {
 
     const dims = useWindowDimensions()
 
-    useEffect(() => {
+    const [fontsLoaded] = useFonts({
+        'Ionicons': require('./fonts/Ionicons.ttf'),
+        // 'MaterialCommunityIcons': require('react-native-vector-icons/build/MaterialCommunityIcons'),
+    })
 
-        const init = async () => {
+    const init = async () => {
+        
+        let storedValue = await getItem('dark')
+
+        if (storedValue && storedValue === 'true') dispatch({ type: 'TOGGLE_THEME' })
+        else await setItem('dark', false)
+
+        const token = await getStoredToken()
+        
+        if (token) {
+            console.log('found token.')
+
+            // WE DON'T NEED TO VALIDATE TOKEN, YET
             
-            let storedValue = await getItem('dark')
+            // FOR NOW WE'RE JUST FAKING IT
 
-            if (storedValue && storedValue === 'true') dispatch({ type: 'TOGGLE_THEME' })
-            else await setItem('dark', false)
-
-            const token = await getStoredToken()
+            // dispatch({ type: 'SET_TOKEN', payload})
+            const user = await validateToken(token)
             
-            if (token) {
-                console.log('found token.')
-
-                // WE DON'T NEED TO VALIDATE TOKEN, YET
+            if (user) {
+                console.log('token verified.')
                 
-                // FOR NOW WE'RE JUST FAKING IT
+                dispatch({
+                    type: 'SET_USER',
+                    payload: user,
+                })
 
-                // dispatch({ type: 'SET_TOKEN', payload})
-                const user = await validateToken(token)
-                
-                if (user) {
-                    console.log('token verified.')
-                    
-                    dispatch({
-                        type: 'SET_USER',
-                        payload: user,
-                    })
-
-                } else {
-                    console.log('validation failed')
-                }
-
-                // SO FOR NOW...
-                // dispatch({ type: 'SET_TOKEN', payload: true })
             } else {
-                console.log('no token found')
-                // dispatch({ type: 'SET_TOKEN', payload: false })
+                console.log('validation failed')
             }
-            
-            dispatch({ type: 'APP_LOADED' })
+
+            // SO FOR NOW...
+            // dispatch({ type: 'SET_TOKEN', payload: true })
+        } else {
+            console.log('no token found')
+            // dispatch({ type: 'SET_TOKEN', payload: false })
         }
         
+        dispatch({ type: 'APP_LOADED' })
+    }
+
+    useEffect(() => {
+        console.log('fontsLoaded', fontsLoaded)
         init()
-    }, [])
+    }, [fontsLoaded])
+
+    // useEffect(() => {
+        
+    //     init()
+    // }, [])
 
     const reset = () => {
         dispatch({ type: 'RESET' })

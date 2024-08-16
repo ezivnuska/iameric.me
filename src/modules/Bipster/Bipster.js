@@ -162,7 +162,13 @@ export default () => {
                 contentContainerStyle={{ flex: 1 }}
             >
                 {bips.length > 0 && (
-                    <BipList bips={bips} />
+                    <>
+                        <BipList bips={bips} />
+                        <SimpleButton
+                            label={`Camera (beta)`}
+                            onPress={() => setModal('CAMERA')}
+                        />
+                    </>
                 )}
             </ScrollView>
 

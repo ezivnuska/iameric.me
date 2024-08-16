@@ -24,8 +24,10 @@ const babelLoaderConfiguration = {
     path.resolve(__dirname, 'index.web.js'), // Entry to your application
     path.resolve(__dirname, 'App.web.js'), // Change this to your main App file
     path.resolve(__dirname, 'src'),
+    path.resolve(__dirname, 'node_modules/@react-native'),
     path.resolve(__dirname, 'node_modules/react-native-modal'),
     path.resolve(__dirname, 'node_modules/react-native-'),
+    path.resolve(__dirname, 'node_modules/@expo/vector-icons/build'),
     ...compileNodeModules,
   ],
   exclude: [
@@ -80,7 +82,11 @@ const fileLoaderConfiguration = {
 const iconLoaderConfiguration = {
   test: /\.ttf$/,
   loader: 'file-loader',
-  include: path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
+  include: [
+    path.resolve(__dirname, 'node_modules/react-native-vector-icons'),
+    path.resolve(__dirname, 'node_modules/@expo/vector-icons/build/vendor'),
+    path.resolve(__dirname, 'src/fonts'),
+  ],
 }
 
 

@@ -2,11 +2,48 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import Modal from 'react-native-modal'
 import { useApp } from '@app'
+import { View } from 'react-native'
 
-export default ({ children, onRequestClose, transparent = false, ...props }) => {
+export default ({ children, onRequestClose, fullscreen = false, transparent = false, ...props }) => {
     
     const { dims, theme } = useApp()
-    
+
+    const renderScrollView = () => (
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{
+                flex: 1,
+                width: dims.width,
+                height: dims.height,
+                background: theme?.colors.modalBackground,
+            }}
+            contentContainerStyle={{
+                flexGrow: 1,
+                width: '100%',
+                maxWidth: 400,
+                marginHorizontal: 'auto',
+                padding: 10,
+            }}
+        >
+            {children}
+        </ScrollView>
+    )
+
+    const renderChildren = () => fullscreen
+        ? (
+            <View
+                style={{
+                    flex: 1,
+                    width: dims.width,
+                    height: dims.height,
+                    background: theme?.colors.modalBackground,
+                }}
+            >
+                {children}
+            </View>
+        )
+        : renderScrollView()
+
     return (
         <Modal
             {...props}
@@ -15,26 +52,7 @@ export default ({ children, onRequestClose, transparent = false, ...props }) => 
             onRequestClose={onRequestClose}
             style={{ margin: 0 }}
         >
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                style={{
-                    flex: 1,
-                    width: dims.width,
-                    height: dims.height,
-                    background: theme?.colors.modalBackground,
-                }}
-                contentContainerStyle={{
-                    flexGrow: 1,
-                    width: '100%',
-                    maxWidth: 400,
-                    marginHorizontal: 'auto',
-                    padding: 10,
-                }}
-            >
-                {children}
-            </ScrollView>
-            
+            {renderChildren()}   
         </Modal>
     )
 }

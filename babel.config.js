@@ -1,6 +1,6 @@
 module.exports = {
   presets: [
-    // 'babel-preset-expo',
+    'babel-preset-expo',
     '@babel/preset-env',
     '@babel/preset-react',
     'module:metro-react-native-babel-preset',
@@ -11,9 +11,14 @@ module.exports = {
     },
   },
   plugins: [
+    // [
+    //   'expo-camera',
+    //   { cameraPermission: 'Allow access your camera.' },
+    // ],
     // @babel/plugin-transform-class-properties,
     // @babel/plugin-transform-private-methods,
     // @babel/plugin-transform-private-property-in-object
+    // ['@babel/plugin-transform-modules-commonjs', { loose: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     ['@babel/plugin-proposal-private-methods', { loose: true }],
     ['@babel/plugin-proposal-object-rest-spread', { loose: true }],

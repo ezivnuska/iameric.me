@@ -1,4 +1,18 @@
 {
-  "name": "web",
-  "displayName": "web"
+  "name": "iameric",
+  "expo": {
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
+        }
+      ]
+    ]
+  }
 }
