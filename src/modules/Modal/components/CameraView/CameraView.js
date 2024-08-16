@@ -1,24 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
-  Button,
-  Dimensions,
   Pressable,
   SafeAreaView,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
 } from 'react-native'
 import {
   Camera,
-  CameraType,
-  useCameraPermissions,
-  isAvailableAsync,
 } from 'expo-camera'
 import {
   BipPreview,
 } from './components'
-import { ThemedText } from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
@@ -63,14 +55,6 @@ export default () => {
       selectedImage,
     ])
   }
-  
-  const updatePreview = updatedItem => {
-    setPreviews(previews.map((item, index) => {
-        return index === previews.length - 1
-            ? updatedItem
-            : item
-    }))
-}
 
   const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
@@ -95,7 +79,6 @@ export default () => {
   }
 
   const takePicture = async () => {
-    // alert('taking picture')
     if (cameraRef.current) {
       const options = {
           quality: 0.5,
@@ -107,8 +90,6 @@ export default () => {
       await cameraRef.current.pausePreview()
 
       await handleSelectedImage(source.uri)
-
-      // addPreview(source)
     }
   }
 
@@ -123,20 +104,8 @@ export default () => {
   }
 
   if (hasPermission === null) {
-    return <View />;
+    return <View />
   }
-//   if (hasPermission === false) {
-//     return (
-//         <View style={styles.container}>
-//             <Text style={styles.message}>We need your permission to show the camera</Text>
-//             <Button onPress={requestPermission} title='grant permission' />
-//         </View>
-//     )
-//   }
-
-//   const toggleCameraFacing = () => {
-//     setFacing(current => (current === 'back' ? 'front' : 'back'))
-//   }
 
   const handleMountError = error => {
     launchFileSelector()
@@ -152,7 +121,6 @@ export default () => {
 
   return (
     <SafeAreaView
-      // style={styles.container}
       style={{
         flex: 1,
         width: '100%',
@@ -265,15 +233,5 @@ export default () => {
         />
       </View>
     </SafeAreaView>
-    // <View style={styles.container}>
-    //   <Camera
-    //      style={styles.camera} facing={facing} ref={cameraRef}>
-    //     {/* <View style={styles.buttonContainer}>
-    //       <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-    //         <Text style={styles.text}>Flip Camera</Text>
-    //       </TouchableOpacity>
-    //     </View> */}
-    //   </Camera>
-    // </View>
   )
 }

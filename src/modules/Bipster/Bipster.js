@@ -28,133 +28,13 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 export default () => {
 
-    const { user } = useApp()
-    const {
-        addBip,
-        addBipImage,
-        bips,
-        setBipImages,
-    } = useBips()
+    const { bips } = useBips()
     const { setModal } = useModal()
 
     const [ loading, setLoading ] = useState(false)
-    const [ previews, setPreviews ] = useState([])
-    let uploads = []
-
-    // useEffect(() => {
-    //     setModal('CAPTURE')
-    // }, [])
-
-    const addPreview = preview => {
-        setPreviews([
-            preview,
-            ...previews,
-        ])
-    }
-
-    const launchCamera = async () => {
-        const uri = await openCamera()
-        if (uri) {
-            handleSelectedImage(uri)
-        }
-    }
-
-    const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
-
-    const handleSelectedImage = async uri => {
-        const blob = await dataURItoBlob(uri)
-        const reader = new FileReader()
-        reader.onload = ({ target }) => {
-            const exif = EXIF.readFromBinaryFile(target.result)
-            loadImage(uri, exif, user._id)
-        }
-        reader.readAsArrayBuffer(blob)
-    }
-
-    const loadImage = async (src, exif, id) => {
-        const image = new Image()
-        image.onload = async () => {
-            const data = await handleImageData(id, image, exif)
-            if (!data) console.log('error loading image')
-            else addPreview(data)
-        }
-        image.src = src
-    }
-
-    const uploadBipImages = async (bipId, bipImages) => {
-        while (uploads.length < bipImages.length) {
-            const imageToUpload = bipImages[uploads.length]
-            console.log('uploading image', imageToUpload)
-            const uploadedImage = await uploadBipImage(bipId, imageToUpload)
-            console.log('uploadedImage/length; pushing to uploads:', uploadedImage, uploads.length)
-            uploads.push(uploadedImage)
-            console.log('uploads after push', uploads)
-            addBipImage({
-                bipId,
-                image: uploadedImage,
-            })
-        }
-        console.log(`uploading finished... ${uploads.length} image${uploads.length === 1 ? '' : 's'} uploaded.`)
-        return uploads
-    }
-
-    const onSubmitImagesForUpload = async () => {
-        setLoading(true)
-        const bip = await createBip(user._id, user.location)
-        
-        if (!bip) console.log('Error creating new bip')
-        else {
-            addBip({
-                ...bip,
-                uploads: previews,
-            })
-            // const bipImages = await uploadBipImages(bip._id, previews)
-            // setBipImages({
-            //     bipId: bip._id,
-            //     images: bipImages,
-            // })
-            setPreviews([])
-            uploads = []
-        }
-        setLoading(false)
-    }
 
     return (
         <View style={{ flex: 1 }}>
-
-            {/* {previews.length > 0 && (
-                <View
-                    style={{
-                        flexGrow: 0,
-                    }}
-                >
-                    <Heading title={`Captured Images (uploaded: ${uploads.length})`} />
-                    
-                    <PreviewList
-                        previews={previews.map(p => p.thumbData)}
-                    />
-
-                    <View
-                        style={{
-                            marginVertical: 10,
-                            gap: 10,
-                        }}
-                    >
-                        <SimpleButton
-                            label='Submit'
-                            onPress={onSubmitImagesForUpload}
-                            disabled={loading}
-                        />
-
-                        <SimpleButton
-                            label='Clear'
-                            onPress={() => setPreviews([])}
-                            disabled={loading}
-                        />
-                    </View>
-                </View>
-            )} */}
-
             
             <ScrollView
                 showsVerticalScrollIndicator={false}
@@ -173,9 +53,8 @@ export default () => {
                 }}
             >
                 <BigRoundButton
-                    loading={loading}
+                    disabled={loading}
                     onPress={() => setModal('CAPTURE')}
-                    // onPress={launchCamera}
                 />
             </View>
             
@@ -183,10 +62,10 @@ export default () => {
     )
 }
 
-const BigRoundButton = ({ loading, onPress }) => (
+const BigRoundButton = ({ disabled, onPress }) => (
     <Pressable
         onPress={onPress}
-        disabled={loading}
+        disabled={disabled}
         style={{
             flexDirection: 'row',
             justifyContent: 'center',
@@ -194,7 +73,7 @@ const BigRoundButton = ({ loading, onPress }) => (
             height: 100,
             width: 100,
             borderRadius: 50,
-            background: loading ? '#ccc' : 'tomato',
+            background: disabled ? '#ccc' : 'tomato',
             textAlign: 'center',
             marginHorizontal: 'auto',
         }}

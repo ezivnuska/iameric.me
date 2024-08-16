@@ -99,6 +99,7 @@ export default ({ images, onBip, onClear }) => {
                 <SimpleButton
                     label={items.length ? 'Clear' : 'Close'}
                     onPress={onClear}
+                    disabled={loading}
                 />
 
             </View>
