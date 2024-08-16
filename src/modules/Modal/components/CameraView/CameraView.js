@@ -38,7 +38,7 @@ export default () => {
   const [ hasPermission, setHasPermission ] = useState(null)
   const [ cameraType, setCameraType ] = useState(Camera.Constants.Type.back)
   const [ isCameraReady, setIsCameraReady ] = useState(false)
-  const [ isCameraAvailable, setIsCameraAvailable ] = useState(false)
+  const [ hideCamera, setHideCamera ] = useState(false)
   const [ previews, setPreviews ] = useState([])
   
   const cameraRef = useRef()
@@ -47,18 +47,17 @@ export default () => {
     (async () => {
         const { status } = await Camera.requestCameraPermissionsAsync()
         setHasPermission(status === 'granted')
-        const hasCamera = await Camera.isAvailableAsync()
-        if (hasCamera) setIsCameraAvailable(hasCamera)
     })()
   }, [])
 
   const onCameraReady = () => {
-    alert('camera ready')
     setIsCameraReady(true)
   }
 
   const addPreview = async selectedImage => {
-    await cameraRef.current.resumePreview()
+    if (cameraRef.current) {
+      await cameraRef.current.resumePreview()
+    }
     setPreviews([
       ...previews,
       selectedImage,
@@ -140,9 +139,8 @@ export default () => {
 //   }
 
   const handleMountError = error => {
-    // alert(`camera error`, error)
     launchFileSelector()
-    // setIsCameraAvailable(false)
+    setHideCamera(true)
   }
 
   const launchFileSelector = async () => {
@@ -160,17 +158,17 @@ export default () => {
         width: '100%',
       }}
     >
-      <View
-        style={{
-          flex: 1,
-          width: '100%',
-          flexDirection: 'row',
-          opacity: isCameraAvailable && isCameraReady ? 1 : 0,
-          height: isCameraAvailable && isCameraReady ? 'auto' : 0,
-        }}    
-      >
-        <View style={{ flex: 1 }}>
-          <Camera
+
+      {!hideCamera && (
+        <View
+          style={{
+            flex: 1,
+            width: '100%',
+            flexDirection: 'row',
+          }}    
+        >
+          <View style={{ flex: 1 }}>
+            <Camera
               ref={cameraRef}
               style={{
                 flex: 1,
@@ -182,72 +180,73 @@ export default () => {
               // flashMode={Camera.Constants.FlashMode.on}
               onCameraReady={onCameraReady}
               onMountError={handleMountError}
-          />
-        </View>
-        <View
-          style={{
-            flexBasis: 50,
-            flexGrow: 0,
-            flexDirection: 'column',
-          }}
-        >
-          <View
-            style={{
-              flex: 1,
-              width: 50,
-            }}
-          >
-            <Pressable
-              onPress={() => closeModal()}
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}
-            >
-              <Icon
-                name='close-sharp'
-                size={35}
-                color={theme?.colors.textDefault}
-                style={{ paddingBottom: 5 }}
-              />
-            </Pressable>
+            />
           </View>
-          
           <View
             style={{
-              flex: 5,
-              width: 50,
+              flexBasis: 50,
+              flexGrow: 0,
+              flexDirection: 'column',
             }}
           >
-            <Pressable
-              disabled={!isCameraReady}
-              onPress={takePicture}
+            <View
               style={{
                 flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center',
-                background: 'tomato',
-                borderRadius: 10,
-                marginHorizontal: 2,
+                width: 50,
               }}
             >
-              <Icon
-                name='aperture-sharp'
-                size={35}
-                color='#fff'
-                style={{ paddingBottom: 5 }}
-              />
-            </Pressable>
+              <Pressable
+                onPress={() => closeModal()}
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}
+              >
+                <Icon
+                  name='close-sharp'
+                  size={35}
+                  color={theme?.colors.textDefault}
+                  style={{ paddingBottom: 5 }}
+                />
+              </Pressable>
+            </View>
+          
+            <View
+              style={{
+                flex: 5,
+                width: 50,
+              }}
+            >
+              <Pressable
+                disabled={!isCameraReady}
+                onPress={takePicture}
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  background: 'tomato',
+                  borderRadius: 10,
+                  marginHorizontal: 2,
+                }}
+              >
+                <Icon
+                  name='aperture-sharp'
+                  size={35}
+                  color='#fff'
+                  style={{ paddingBottom: 5 }}
+                />
+              </Pressable>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                width: 50,
+              }}
+            />
           </View>
-          <View
-            style={{
-              flex: 1,
-              width: 50,
-            }}
-          />
         </View>
-      </View>
+      )}
 
       <View
         style={{
@@ -259,7 +258,10 @@ export default () => {
         <BipPreview
           images={previews}
           onBip={onBip}
-          onClear={() => setPreviews([])}
+          onClear={() => {
+            setPreviews([])
+            closeModal()
+          }}
         />
       </View>
     </SafeAreaView>

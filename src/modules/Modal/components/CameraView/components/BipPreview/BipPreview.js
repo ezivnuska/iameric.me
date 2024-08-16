@@ -96,12 +96,11 @@ export default ({ images, onBip, onClear }) => {
                     disabled={loading}
                 />
 
-                {(!loading && (images && images.length > 0)) && (
-                    <SimpleButton
-                        label='Clear'
-                        onPress={onClear}
-                    />
-                )}
+                <SimpleButton
+                    label={items.length ? 'Clear' : 'Close'}
+                    onPress={onClear}
+                />
+
             </View>
         </View>
     )
