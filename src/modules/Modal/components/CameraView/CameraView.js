@@ -28,7 +28,7 @@ export default () => {
   const { closeModal } = useModal()
 
   const [ hasPermission, setHasPermission ] = useState(null)
-  const [ cameraType, setCameraType ] = useState(Camera.Constants.Type.back)
+  const [ cameraType, setCameraType ] = useState('back')
   const [ isCameraReady, setIsCameraReady ] = useState(false)
   const [ hideCamera, setHideCamera ] = useState(false)
   const [ previews, setPreviews ] = useState([])
