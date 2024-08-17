@@ -6,6 +6,7 @@ import {
     ThemedText,
     Time,
 } from '@components'
+import { Map } from '@modules'
 import { useApp } from '@app'
 import { uploadBipImage } from '@utils/images'
 import { createBip } from '@utils/bips'
@@ -73,7 +74,7 @@ export default ({ images, onBip, onClear, setUploading }) => {
         <View
             style={{
                 flex: 1,
-                gap: 15,
+                gap: 10,
             }}
         >
             <View
@@ -86,6 +87,15 @@ export default ({ images, onBip, onClear, setUploading }) => {
             >
                 <ThemedText>{user.username}</ThemedText>
                 <Time now />
+            </View>
+            
+            <View
+                style={{
+                    flexBasis: 'auto',
+                    flexGrow: 0,
+                }}
+            >
+                <Map nomap />
             </View>
 
             <View style={{ flexGrow: 1 }}>
@@ -108,7 +118,6 @@ export default ({ images, onBip, onClear, setUploading }) => {
                 ) : (
                     <ThemedText>No images captured.</ThemedText>
                 )}
-
 
             </View>
 

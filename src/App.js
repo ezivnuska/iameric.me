@@ -21,24 +21,25 @@ export default App = () => {
         <APIProvider apiKey={apiKey} libraries={['marker', 'geocoding']}>
             <NotificationContextProvider>
                 <AppContextProvider>
-                    <ImagesContextProvider>
-                        <MailContextProvider>
-                            <ForumContextProvider>
-                                <SocketContextProvider>
-                                    <Compose
-                                        components={[
-                                            BipContextProvider,
-                                            ContactsContextProvider,
-                                            ModalContextProvider,
-                                            FormContextProvider,
-                                        ]}
-                                    >
-                                        <Layout />
-                                    </Compose>
-                                </SocketContextProvider>
-                            </ForumContextProvider>
-                        </MailContextProvider>
-                    </ImagesContextProvider>
+                    <BipContextProvider>
+                        <ImagesContextProvider>
+                            <MailContextProvider>
+                                <ForumContextProvider>
+                                    <SocketContextProvider>
+                                        <Compose
+                                            components={[
+                                                ContactsContextProvider,
+                                                ModalContextProvider,
+                                                FormContextProvider,
+                                            ]}
+                                        >
+                                            <Layout />
+                                        </Compose>
+                                    </SocketContextProvider>
+                                </ForumContextProvider>
+                            </MailContextProvider>
+                        </ImagesContextProvider>
+                    </BipContextProvider>
                 </AppContextProvider>
             </NotificationContextProvider>
         </APIProvider>

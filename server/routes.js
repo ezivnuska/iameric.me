@@ -101,6 +101,7 @@ const {
 const {
   createBip,
   deleteBip,
+  getBip,
   getBips,
 } = require('./api/bips')
 
@@ -189,9 +190,10 @@ router.post(   '/order/close',             closeOrder)
 router.delete( '/order/:id',               deleteOrderByOrderId)
 
 router.post(   '/bip/image/upload',        uploadBipImage)
-router.get(    '/bips',                    getBips)
+router.get(    '/bip/:id',                 getBip)
 router.get(    '/bip/images/:id',          getBipImages)
 router.post(   '/bip/delete',              deleteBip)
 router.post(   '/bip',                     createBip)
+router.get(    '/bips',                    getBips)
 
 module.exports = router

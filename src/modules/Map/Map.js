@@ -8,7 +8,7 @@ import { Map } from '@vis.gl/react-google-maps'
 import { InfoMarker } from './components'
 import { getAddress } from '@utils/map'
 
-export default () => {
+export default ({ nomap = false }) => {
 
     const { updateUser, user } = useApp()
     const { contacts } = useContacts()
@@ -22,14 +22,15 @@ export default () => {
     let timer
 
     useEffect(() => {
+        setLoading(true)
         getLocation()
         getLocationsFromContacts()
-        timer = setInterval(getLocation, 60 * 1000 * 60)
+        // timer = setInterval(getLocation, 60 * 1000 * 60)
     }, [])
 
     useEffect(() => {
         if (location) getAddressFromCoords(location)
-        else setAddress(null)
+        // else setAddress(null)
     }, [location])
 
     const getAddressFromCoords = async coords => {
@@ -64,7 +65,6 @@ export default () => {
 
     const getLocation = async () => {
         if (navigator.geolocation) {
-            setLoading(true)
             navigator.geolocation.getCurrentPosition(position => {
                 
                 setLocation({
@@ -80,6 +80,7 @@ export default () => {
             err => setError(err.message))
         } else {
             setError('Geolocation is not supported by this browser.')
+            setLoading(false)
         }
     }
 
@@ -119,20 +120,15 @@ export default () => {
     return (
         <View style={{ flex: 1, gap: 5 }}>
 
-            <View style={{ flexGrow: 0 }}>
-
-                <View style={{ gap: 10 }}>
-
-                    {address ? <ThemedText>{address}</ThemedText> : null}
-                    
-                    {!loading && !location && <ThemedText>Location not available.</ThemedText>}
-    
-                    {error && <ThemedText color='red'>Error: {error}</ThemedText>}
-                </View>
-                
-            </View>
-
-            {location && (
+            {loading
+                ? <ThemedText>Gathering location data...</ThemedText>
+                : address
+                    ? <ThemedText>{address}</ThemedText>
+                    : location
+                        ? <ThemedText>Ascertaining address.</ThemedText>
+                        : <ThemedText>Address not available.</ThemedText>
+            }
+            {!nomap && location && (
                 <View style={{ flexGrow: 1 }}>
                     {renderMap()}
                 </View>

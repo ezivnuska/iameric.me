@@ -9,11 +9,11 @@ const createBip = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    // if (location) {
-    //     console.log('adding bip location', location)
-    //     bip.location = location
-    //     await bip.save()
-    // }
+    if (location) {
+        console.log('adding bip location', location)
+        bip.location = location
+        await bip.save()
+    }
 
     bip = await Bip.findOne({ _id: bip._id })
         .populate('user')
