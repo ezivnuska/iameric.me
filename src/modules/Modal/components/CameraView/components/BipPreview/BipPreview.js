@@ -81,7 +81,7 @@ export default ({ images, onBip, onClear, setUploading }) => {
                     flexGrow: 0,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 10,
+                    gap: 7,
                 }}
             >
                 <ThemedText>{user.username}</ThemedText>

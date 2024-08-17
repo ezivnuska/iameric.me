@@ -11,6 +11,7 @@ import {
 import {
     Heading,
     SimpleButton,
+    ThemedText,
 } from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
@@ -41,8 +42,21 @@ export default () => {
                 style={{ flex: 1 }}
                 contentContainerStyle={{ flex: 1 }}
             >
-                {bips.length > 0 && (
-                    <BipList bips={bips} />
+                {bips.length > 0 ? (
+                    <>
+                        <ThemedText
+                            bold
+                            color='tomato'
+                            size={16}
+                            style={{ marginBottom: 10 }}
+                        >
+                            {`${bips.length} bip${bips.length !== 0 ? 's' : ''}`}
+                        </ThemedText>
+
+                        <BipList bips={bips} />
+                    </>
+                ) : (
+                    <ThemedText bold>{`No bips reported.`}</ThemedText>
                 )}
             </ScrollView>
 
