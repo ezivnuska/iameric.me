@@ -3,9 +3,10 @@ import { View } from 'react-native'
 import { Screen } from './components'
 import { Heading } from '@components'
 import { Bipster } from '@modules'
+import { useBips } from '@bips'
 
 export default props => {
-
+    const { bips } = useBips()
     return (
         <Screen
             {...props}
@@ -15,7 +16,7 @@ export default props => {
             <View style={{ flex: 1 }}>
     
                 <Heading
-                    title='Bipster'
+                    title={`Bipster - ${bips.length} bip${bips.length !== 0 ? 's' : ''}`}
                     // onBack={() => props.navigation.navigate('Home')}
                 />
 

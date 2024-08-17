@@ -56,8 +56,8 @@ export default ({ item }) => {
             onPress={() => navigate('Bips', { screen: 'Bip', params: { id: item._id } })}
             style={{
                 flex: 1,
-                gap: 3,
-                paddingBottom: 7,
+                gap: 2,
+                paddingBottom: 5,
             }}
         >
             <View
@@ -68,7 +68,7 @@ export default ({ item }) => {
                     gap: 7,
                 }}
             >
-                <ThemedText>{item.user.username}</ThemedText>
+                <ThemedText bold>{item.user.username}</ThemedText>
                 <Time time={item.createdAt} />
                 {item.user && item.user._id === user._id ? (
                     <IconButton
@@ -86,7 +86,7 @@ export default ({ item }) => {
                         images={item.images}
                         loading={loading}
                         // disabled
-                        small
+                        // small
                     />
                 </View>
             )}

@@ -20,7 +20,7 @@ export default ImageList = ({ images, bipId = null, disabled = false, small = fa
 
     const containerRef = useRef(null)
 
-    const numImagesPerRow = small ? 6 : 4
+    const numImagesPerRow = small ? 10 : 8
 
     const [imageSize, setImageSize] = useState(0)
 
