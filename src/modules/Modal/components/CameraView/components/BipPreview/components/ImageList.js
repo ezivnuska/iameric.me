@@ -12,11 +12,11 @@ export default ImageList = ({ images, uploading, small = false }) => {
 
     const { dims, theme } = useApp()
 
-    const imageGap = 1
+    const imageGap = 5
 
     const containerRef = useRef(null)
 
-    const numImagesPerRow = small ? 3 : 2
+    const numImagesPerRow = small ? 4 : 3
 
     const [imageSize, setImageSize] = useState(0)
 
@@ -44,6 +44,7 @@ export default ImageList = ({ images, uploading, small = false }) => {
         <View
             ref={containerRef}
             style={{
+                flex: 1,
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 gap: imageGap,

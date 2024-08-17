@@ -109,8 +109,7 @@ export const AppContextProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        console.log('fontsLoaded', fontsLoaded)
-        init()
+        if (fontsLoaded) init()
     }, [fontsLoaded])
 
     // useEffect(() => {

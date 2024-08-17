@@ -10,13 +10,13 @@ import { useApp } from '@app'
 import { uploadBipImage } from '@utils/images'
 import { createBip } from '@utils/bips'
 
-export default ({ images, onBip, onClear }) => {
+export default ({ images, onBip, onClear, setUploading }) => {
 
     const { user } = useApp()
 
     const [ items, setItems ] = useState(images)
     const [ loading, setLoading ] = useState(false)
-    const [ uploading, setUploading ] = useState(false)
+    const [ upload, setUpload ] = useState(null)
 
     const updateItem = updatedItem => {
         setItems(items.map(item => {
@@ -34,9 +34,9 @@ export default ({ images, onBip, onClear }) => {
         let numUploads = 0
         while (numUploads < items.length) {
             const imageToUpload = images[numUploads]
-            setUploading(numUploads)
+            setUpload(numUploads)
             const uploadedImage = await uploadBipImage(bipId, imageToUpload)
-            setUploading(null)
+            setUpload(null)
 
             updateItem(uploadedImage)
             numUploads++
@@ -45,29 +45,42 @@ export default ({ images, onBip, onClear }) => {
     }
 
     const submitBip = async () => {
+        
         setLoading(true)
+        
         const newBip = await createBip(user._id, user.location)
-        if (!newBip) console.log('Error adding new bip.')
-        else {
+        
+        if (newBip) {
             if (images && images.length) {
-                
+        
+                setUploading(true)
                 const imagesUploaded = await uploadBipImages(newBip._id)
+                setUploading(false)
 
                 if (!imagesUploaded) console.log('no images uploaded')
-                onBip(newBip)
+                    
             }
+            onBip(newBip)
+
+        } else {
+            console.log('Error adding new bip.')
         }
+        
         setLoading(false)
     }
 
     return (
-        <View style={{ flexGrow: 0 }}>
-
+        <View
+            style={{
+                flex: 1,
+                gap: 15,
+            }}
+        >
             <View
                 style={{
                     flexGrow: 0,
                     flexDirection: 'row',
-                    justifyContent: 'flex-start',
+                    alignItems: 'center',
                     gap: 10,
                 }}
             >
@@ -75,23 +88,38 @@ export default ({ images, onBip, onClear }) => {
                 <Time now />
             </View>
 
-            {items && items.length > 0 && (
-                <ImageList
-                    images={items}
-                    uploading={uploading}
-                    // disabled
-                    // small
-                />
-            )}
-            
+            <View style={{ flexGrow: 1 }}>
+
+                {items && items.length > 0 ? (
+                    <>
+                        <ImageList
+                            images={items}
+                            uploading={upload}
+                            // disabled
+                            // small
+                        />
+
+                        {(loading && upload !== null) && (
+                            <ThemedText bold color='tomato'>
+                                {`Uploading ${items.length - upload} image${items.length - upload !== 1 ? 's' : ''}`}
+                            </ThemedText>
+                        )}
+                    </>
+                ) : (
+                    <ThemedText>No images captured.</ThemedText>
+                )}
+
+
+            </View>
+
             <View
                 style={{
-                    marginVertical: 10,
+                    // marginVertical: 10,
                     gap: 10,
                 }}
             >
                 <SimpleButton
-                    label={images && images.length ? 'Submit with Images' : 'Submit without Images'}
+                    label='Report Bip'
                     onPress={submitBip}
                     disabled={loading}
                 />

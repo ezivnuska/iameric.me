@@ -52,15 +52,19 @@ export default ({ item }) => {
 
     return (
         <Pressable
-            style={{ flex: 1, paddingBottom: 5 }}
             key={`bip-${item._id}`}
             onPress={() => navigate('Bips', { screen: 'Bip', params: { id: item._id } })}
+            style={{
+                flex: 1,
+                gap: 3,
+                paddingBottom: 7,
+            }}
         >
             <View
                 style={{
-                    flexGrow: 1,
+                    flexGrow: 0,
                     flexDirection: 'row',
-                    justifyContent: 'flex-start',
+                    alignItems: 'center',
                     gap: 7,
                 }}
             >
@@ -77,12 +81,14 @@ export default ({ item }) => {
             </View>
 
             {(item.images && item.images.length > 0) && (
-                <ImageList
-                    images={item.images}
-                    loading={loading}
-                    // disabled
-                    small
-                />
+                <View style={{ flexGrow: 1 }}>
+                    <ImageList
+                        images={item.images}
+                        loading={loading}
+                        // disabled
+                        small
+                    />
+                </View>
             )}
 
         </Pressable>
