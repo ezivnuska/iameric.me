@@ -115,7 +115,7 @@ router.get(    '/token/:token',           validateToken)
 
 // user
 router.get(    '/profile/:id',            getUser)
-router.post(   '/location',           setLocation)
+router.post(   '/location',               setLocation)
 // router.post(   '/deposit',                addToDeposit)
 // router.post(   '/deposit/withdraw',       withdrawDeposit)
 // router.get(    '/profile/image/:id',      getProfileImage)

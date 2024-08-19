@@ -8,16 +8,20 @@ import {
 } from '@components'
 import { Map } from '@modules'
 import { useApp } from '@app'
+import { useNotification } from '@notification'
 import { uploadBipImage } from '@utils/images'
 import { createBip } from '@utils/bips'
 
 export default ({ images, onBip, onClear, setUploading }) => {
 
     const { user } = useApp()
+    const { addNotification } = useNotification()
 
     const [ items, setItems ] = useState(images)
     const [ loading, setLoading ] = useState(false)
     const [ upload, setUpload ] = useState(null)
+    const [ location, setLocation ] = useState(null)
+    const [ locationLoading, setLocationLoading ] = useState(false)
 
     const updateItem = updatedItem => {
         setItems(items.map(item => {
@@ -26,6 +30,23 @@ export default ({ images, onBip, onClear, setUploading }) => {
                 : item
         }))
     }
+
+    useEffect(() => {
+        const init = async () => {
+            setLocationLoading(true)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    setLocation(position.coords)
+                    addNotification('Location set.')
+                })
+            } else {
+                console.log('Geolocation is not supported by this browser.')
+                setLocation(null)
+            }
+            setLocationLoading(false)
+        }
+        init()
+    }, [])
 
     useEffect(() => {
         setItems(images)
@@ -49,7 +70,8 @@ export default ({ images, onBip, onClear, setUploading }) => {
         
         setLoading(true)
         
-        const newBip = await createBip(user._id, user.location)
+        const { latitude, longitude } = location
+        const newBip = await createBip(user._id, { latitude, longitude })
         
         if (newBip) {
             if (images && images.length) {
@@ -95,7 +117,17 @@ export default ({ images, onBip, onClear, setUploading }) => {
                     flexGrow: 0,
                 }}
             >
-                <Map nomap />
+                {locationLoading
+                    ? <ThemedText>Gathering location data...</ThemedText>
+                    : location
+                        ? (
+                            <Map
+                                coords={location}
+                                nomap
+                            />
+                        )
+                        : <ThemedText>Could not determine location.</ThemedText>
+                }
             </View>
 
             <View style={{ flexGrow: 1 }}>

@@ -31,12 +31,13 @@ export const BipContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
     
     useEffect(() => {
+
         const initBips = async () => {
             if (user) {
                 dispatch({type: 'SET_BIPS_LOADING', payload: true })
                 const data = await loadBips(user._id)
-                dispatch({type: 'SET_BIPS_LOADING', payload: false })
                 dispatch({type: 'SET_BIPS', payload: data })
+                dispatch({type: 'SET_BIPS_LOADING', payload: false })
             }
             dispatch({type: 'SET_BIPS_LOADED' })
         }
