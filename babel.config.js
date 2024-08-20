@@ -27,6 +27,7 @@ module.exports = {
       'module-resolver',
       {
         alias: {
+          '@config':        './config',
           '@app':           './src/AppContext',
           '@bips':          './src/modules/Bipster',
           '@components':    './src/components',

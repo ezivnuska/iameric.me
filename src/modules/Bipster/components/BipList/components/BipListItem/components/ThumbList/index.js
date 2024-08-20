@@ -1,5 +1,3 @@
 import ThumbList from './ThumbList'
 
-export {
-    ThumbList,
-}
+export default ThumbList

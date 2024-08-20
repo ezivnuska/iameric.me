@@ -3,7 +3,7 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { ImageList } from './components'
+import { ThumbList } from './components'
 import {
     IconButton,
     ThemedText,
@@ -28,6 +28,28 @@ export default ({ item }) => {
 
     const [ loading, setLoading ] = useState(false)
     const [ address, setAddress ] = useState(null)
+    const [ street, setStreet ] = useState(null)
+    const [ city, setCity ] = useState(null)
+
+    useEffect(() => {
+        if (address) {
+            let streetNumber = null
+            let streetName = null
+            let cityName = null
+            const { address_components } = address
+            address_components.map(comp => {
+                if (comp.types.indexOf('street_number') > -1) {
+                    streetNumber = comp.short_name
+                } else if (comp.types.indexOf('route') > -1) {
+                    streetName = comp.short_name
+                } else if (comp.types.indexOf('locality') > -1) {
+                    cityName = comp.short_name
+                }
+            })
+            setStreet(`${streetNumber} ${streetName}`)
+            setCity(cityName)
+        }
+    }, [address])
 
     const getImages = async id => {
         setLoading(true)
@@ -46,8 +68,7 @@ export default ({ item }) => {
         setLoading(false)
         if (results) {
             const currentAddress = results[0]
-            setAddress(currentAddress.formatted_address)
-            // setBipAddress({ bipId: item._id, address: currentAddress.formatted_address })
+            setAddress(currentAddress)
         }
     }
 
@@ -73,7 +94,8 @@ export default ({ item }) => {
             onPress={() => navigate('Bips', { screen: 'Bip', params: { id: item._id } })}
             style={{
                 flex: 1,
-                paddingBottom: 7,
+                paddingBottom: 5,
+                gap: 3,
             }}
         >
             <View
@@ -84,7 +106,7 @@ export default ({ item }) => {
                     gap: 7,
                 }}
             >
-                <ThemedText bold>{item.user.username}</ThemedText>
+                <ThemedText bold>{city}</ThemedText>
                 <Time time={item.createdAt} />
                 {item.user && item.user._id === user._id ? (
                     <IconButton
@@ -101,26 +123,38 @@ export default ({ item }) => {
                 style={{
                     flexGrow: 0,
                     marginBottom: 3,
+                    flexDirection: 'row',
                 }}
             >
-                {address
-                    ? <ThemedText>{address}</ThemedText>
-                    : loading
-                        ? <ThemedText>Getting address...</ThemedText>
-                        : null//<ThemedText>Address not available.</ThemedText>
-                }
+                {(item.images && item.images.length > 0) && (
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            gap: 10,
+                        }}
+                    >
+                        <ThumbList
+                            images={item.images}
+                            loading={loading}
+                            // disabled
+                            // small
+                        />
+
+                        <View
+                            style={{
+                                flexGrow: 1,
+                            }}
+                        >
+                            {street && <ThemedText bold>{street}</ThemedText>}
+                            <ThemedText color='tomato' bold>{item.user?.username || item.user}</ThemedText>
+
+                        </View>
+                    </View>
+                )}
             </View>
 
-            {(item.images && item.images.length > 0) && (
-                <View style={{ flexGrow: 1 }}>
-                    <ImageList
-                        images={item.images}
-                        loading={loading}
-                        // disabled
-                        // small
-                    />
-                </View>
-            )}
 
         </Pressable>
     )
