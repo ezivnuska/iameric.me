@@ -11,7 +11,10 @@ import {
 import {
   BipPreview,
 } from './components'
-import { ThemedText } from '@components'
+import {
+	ModalHeader,
+	ThemedText,
+} from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
@@ -24,7 +27,7 @@ import EXIF from 'exif-js'
 
 export default () => {
 
-  const { user, theme } = useApp()
+  const { dims, user } = useApp()
   const { addBip } = useBips()
   const { clearModal, closeModal } = useModal()
 
@@ -34,8 +37,11 @@ export default () => {
   const [ previews, setPreviews ] = useState([])
   const [ uploading, setUploading ] = useState(false)
   const [ cameraError, setCameraError ] = useState(null)
+  const [ showInstructions, setShowInstructions ] = useState(true)
   
   const cameraRef = useRef()
+  
+  let timer = undefined
 
   useEffect(() => {
 	(async () => {
@@ -43,7 +49,14 @@ export default () => {
 		setHasPermission(status === 'granted')
 	})()
 
+	timer = setTimeout(stopTimer, 10000)
   }, [])
+
+  const stopTimer = () => {
+	clearTimeout(timer)
+	timer = undefined
+	setShowInstructions(false)
+  }
 
   useEffect(() => {
 	(async () => {
@@ -56,9 +69,14 @@ export default () => {
 
   const addPreview = async selectedImage => {
 	setPreviews([
+		selectedImage,
 	  ...previews,
-	  selectedImage,
 	])
+  }
+
+  const removePreview = index => {
+	const updatedList = previews.filter((img, i) => i !== index)
+	setPreviews(updatedList)
   }
 
   const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
@@ -84,6 +102,9 @@ export default () => {
   }
 
   const takePicture = async () => {
+	
+	stopTimer()
+
 	if (cameraRef.current) {
 	  const options = {
 		  quality: 0.5,
@@ -130,96 +151,92 @@ export default () => {
 
   return (
 	<SafeAreaView
-	  style={{
-		flex: 1,
-		width: '100%',
-	  }}
-	>
-
-	  {!cameraError && (
-		<View
-		  style={{
+		style={{
 			flex: 1,
 			width: '100%',
-			flexDirection: 'row',
-		  }}    
-		>
-		  <View style={{ flex: 1 }}>
-			<Camera
-			  ref={cameraRef}
-			  style={{
-				flex: 1,
-				width: '100%',
-				...StyleSheet.absoluteFillObject,
-				borderWidth: 1,
-			  }}
-			  type={cameraType}
-			  // flashMode={Camera.Constants.FlashMode.on}
-			  onCameraReady={onCameraReady}
-			  onMountError={handleMountError}
+		}}
+	>
+		<View style={{ flex: 1 }}>
+
+			<ModalHeader
+				title='Image Capture'
+				style={{
+					flexBasis: 'auto',
+					paddingTop: 5,
+					paddingLeft: 10,
+					paddingRight: 7,
+				}}
 			/>
-		  </View>
-		  <View
-			style={{
-			  flexBasis: 50,
-			  flexGrow: 0,
-			  flexDirection: 'column',
-			}}
-		  >
-			<View
-			  style={{
-				flex: 1,
-				width: 50,
-			  }}
-			>
-			  <Pressable
-				onPress={() => closeModal()}
-				disabled={uploading}
-				style={{
-				  flexDirection: 'row',
-				  justifyContent: 'center',
-				  opacity: uploading ? 0.5 : 1,
-				}}
-			  >
-				<Icon
-				  name='close-sharp'
-				  size={35}
-				  color={theme?.colors.textDefault}
-				  style={{ paddingBottom: 5 }}
-				/>
-			  </Pressable>
-			</View>
-		  
-			<View
-			  style={{
-				flex: 5,
-				width: 50,
-			  }}
-			>
-			  <Pressable
-				disabled={!isCameraReady || uploading}
-				onPress={takePicture}
-				style={{
-				  flex: 1,
-				  flexDirection: 'row',
-				  justifyContent: 'center',
-				  alignItems: 'center',
-				  background: uploading ? '#aaa' : 'tomato',
-				  borderRadius: 10,
-				  marginHorizontal: 2,
-				}}
-			  >
-				<Icon
-				  name='aperture-sharp'
-				  size={35}
-				  color='#fff'
-				  style={{ paddingBottom: 5 }}
-				/>
-			  </Pressable>
-			</View>
-		  </View>
+
+			{!cameraError && (
+
+				<View
+					style={{
+						flex: 1,
+						position: 'relative',
+						width: '100%',
+						height: 300,
+						marginHorizontal: 'auto',
+					}}
+				>
+					<Pressable
+						disabled={!isCameraReady || uploading}
+						onPress={takePicture}
+						style={{
+							position: 'absolute',
+							top: 0,
+							right: 0,
+							bottom: 0,
+							left: 0,
+						}}
+					>
+						<Camera
+							ref={cameraRef}
+							style={{
+								...StyleSheet.absoluteFillObject,
+							}}
+							type={cameraType}
+							// flashMode={Camera.Constants.FlashMode.on}
+							onCameraReady={onCameraReady}
+							onMountError={handleMountError}
+						/>
+					</Pressable>
+
+					{showInstructions && (
+						<View
+							style={{
+								position: 'absolute',
+								bottom: 20,
+								left: 20,
+								right: 20,
+								height: 50,
+								backgroundColor: 'rgba(0, 0, 0, 0.5)',
+								borderRadius: 25,
+								justifyContent: 'center',
+							}}
+						>
+							<View
+								style={{
+									flexBasis: 'auto',
+									flexDirection: 'row',
+									alignItems: 'center',
+								}}
+							>
+								<ThemedText
+									size={20}
+									color='#fff'
+									align='center'
+									bold
+									style={{ flex: 1 }}
+								>
+									Tap screen to capture image
+								</ThemedText>
+							</View>
+						</View>
+					)}
+				</View>	
+			)}
 		</View>
-	  )}
 
 		<View
 			style={{
@@ -232,6 +249,7 @@ export default () => {
 				images={previews}
 				onBip={onBip}
 				onClear={closeAndClear}
+				onRemove={removePreview}
 				setUploading={setUploading}
 			/>
 		</View>

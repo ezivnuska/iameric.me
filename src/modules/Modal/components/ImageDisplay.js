@@ -3,10 +3,10 @@ import {
     Image,
     View,
 } from 'react-native'
-import { ModalHeader } from '.'
 import {
     ActivityIndicator,
     IconButton,
+    ModalHeader,
 } from '@components'
 import { useApp } from '@app'
 import { useImages } from '@images'

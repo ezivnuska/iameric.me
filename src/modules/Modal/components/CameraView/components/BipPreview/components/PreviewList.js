@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
     Image,
+    Pressable,
     View,
 } from 'react-native'
 import { ActivityIndicator } from '@components'
 import { useApp } from '@app'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ImageList = ({ images, uploading, small = false }) => {
+export default ({ images, remove, uploading, small = false }) => {
 
     const { dims, theme } = useApp()
 
@@ -22,7 +24,7 @@ export default ImageList = ({ images, uploading, small = false }) => {
 
     useEffect(() => {
         if (containerRef) {
-            setImageSize((containerRef.current.clientWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
+            setImageSize((containerRef.current.clientWidth - (imageGap * (numImagesPerRow - 1))) / numImagesPerRow)
         }
     }, [dims])
 
@@ -46,6 +48,8 @@ export default ImageList = ({ images, uploading, small = false }) => {
             style={{
                 flex: 1,
                 flexDirection: 'row',
+                alignItems: 'flex-start',
+                alignContent: 'flex-start',
                 flexWrap: 'wrap',
                 gap: imageGap,
                 width: '100%',
@@ -58,6 +62,7 @@ export default ImageList = ({ images, uploading, small = false }) => {
                         <View
                             key={`bip-image-${index}`}
                             style={{
+                                flexBasis: 'auto',
                                 position: 'relative',
                                 width: imageSize,
                                 height: imageSize,
@@ -83,7 +88,7 @@ export default ImageList = ({ images, uploading, small = false }) => {
                                 ]}
                             />
 
-                            {uploading === index && (
+                            {uploading === index ? (
                                 <View
                                     style={{
                                         position: 'absolute',
@@ -96,6 +101,22 @@ export default ImageList = ({ images, uploading, small = false }) => {
                                 >
                                     <ActivityIndicator color='#fff' />
                                 </View>
+                            ) : (
+                                <Pressable
+                                    onPress={() => remove(index)}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 5,
+                                        right: 5,
+                                        zIndex: 50,
+                                    }}
+                                >
+                                    <Icon
+                                        name='close-sharp'
+                                        size={18}
+                                        color='#fff'
+                                    />
+                                </Pressable>
                             )}
                         </View>
                     )

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
-import ImageList from './components/ImageList'
+import {
+    ScrollView,
+    View,
+} from 'react-native'
+import { PreviewList } from './components'
 import {
     SimpleButton,
     ThemedText,
@@ -12,7 +15,7 @@ import { useNotification } from '@notification'
 import { uploadBipImage } from '@utils/images'
 import { createBip } from '@utils/bips'
 
-export default ({ images, onBip, onClear, setUploading }) => {
+export default ({ images, onBip, onClear, onRemove, setUploading }) => {
 
     const { user } = useApp()
     const { addNotification } = useNotification()
@@ -96,7 +99,7 @@ export default ({ images, onBip, onClear, setUploading }) => {
         <View
             style={{
                 flex: 1,
-                gap: 10,
+                gap: 5,
             }}
         >
             <View
@@ -128,46 +131,46 @@ export default ({ images, onBip, onClear, setUploading }) => {
                         )
                         : <ThemedText>Could not determine location.</ThemedText>
                 }
+
+                {(loading && upload !== null) && (
+                    <ThemedText bold color='tomato'>
+                        {`Uploading ${items.length - upload} image${items.length - upload !== 1 ? 's' : ''}`}
+                    </ThemedText>
+                )}
             </View>
 
-            <View style={{ flexGrow: 1 }}>
-
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
+                    flexGrow: 1,
+                    width: '100%',
+                }}
+                contentContainerStyle={{
+                    flex: 1,
+                    width: '100%',
+                }}
+            >
                 {items && items.length > 0 ? (
-                    <>
-                        <ImageList
-                            images={items}
-                            uploading={upload}
-                            // disabled
-                            // small
-                        />
-
-                        {(loading && upload !== null) && (
-                            <ThemedText bold color='tomato'>
-                                {`Uploading ${items.length - upload} image${items.length - upload !== 1 ? 's' : ''}`}
-                            </ThemedText>
-                        )}
-                    </>
+                    <PreviewList
+                        images={items}
+                        remove={onRemove}
+                        uploading={upload}
+                        // disabled
+                        // small
+                    />
                 ) : (
                     <ThemedText>No images captured.</ThemedText>
                 )}
-
-            </View>
+            </ScrollView>
 
             <View
                 style={{
-                    // marginVertical: 10,
-                    gap: 10,
+                    flexGrow: 0,
                 }}
             >
                 <SimpleButton
-                    label='Report Bip'
+                    label='Save Bip'
                     onPress={submitBip}
-                    disabled={loading}
-                />
-
-                <SimpleButton
-                    label={items.length ? 'Clear' : 'Close'}
-                    onPress={onClear}
                     disabled={loading}
                 />
 

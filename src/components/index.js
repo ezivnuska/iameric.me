@@ -6,6 +6,7 @@ import IconButton from './IconButton'
 import ImageClone from './ImageClone'
 import ImageList from './ImageList'
 import LoadingView from './LoadingView'
+import ModalHeader from './ModalHeader'
 import SimpleButton from './SimpleButton'
 import ThemedText from './ThemedText'
 import Time from './Time'
@@ -18,6 +19,7 @@ export {
     ImageClone,
     ImageList,
     LoadingView,
+    ModalHeader,
     SimpleButton,
     ThemedText,
     Time,

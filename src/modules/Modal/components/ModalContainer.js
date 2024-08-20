@@ -22,7 +22,7 @@ export default ({ children, onRequestClose, fullscreen = false, transparent = fa
                 width: '100%',
                 maxWidth: 400,
                 marginHorizontal: 'auto',
-                padding: 10,
+                // padding: 10,
             }}
         >
             {children}
@@ -52,7 +52,7 @@ export default ({ children, onRequestClose, fullscreen = false, transparent = fa
             onRequestClose={onRequestClose}
             style={{ margin: 0 }}
         >
-            {renderChildren()}   
+            {renderChildren()}
         </Modal>
     )
 }

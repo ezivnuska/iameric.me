@@ -8,7 +8,7 @@ import { useApp } from '@app'
 import { useModal } from '@modal'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ children, title, closeable = true }) => {
+export default ({ children, title, closeable = true, ...props }) => {
 
     const { theme } = useApp()
     const { closeModal } = useModal()
@@ -19,12 +19,15 @@ export default ({ children, title, closeable = true }) => {
 
     return (
         <View
-            style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingBottom: 10,
-            }}
+            style={[
+                {
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingBottom: 5,
+                },
+                props.style,
+            ]}
         >
             <View
                 style={{
