@@ -12,12 +12,19 @@ import { useModal } from '@modal'
 import { loadBips } from '@utils/bips'
 
 export default props => {
-    const { bips, setBips } = useBips()
+    const {
+        bips,
+        bipsLoading,
+        setBips,
+        setBipsLoading,
+    } = useBips()
     const { setModal } = useModal()
 
     useEffect(() => {
         const fetchBips = async () => {
+            setBipsLoading(true)
             const bips = await loadBips()
+            setBipsLoading(false)
             if (bips) setBips(bips)
         }
         if (!bips || !bips.length) {
@@ -46,9 +53,11 @@ export default props => {
                 </Heading>
 
                 <View style={{ flex: 1 }}>
-                    {bips.length > 0
-                        ? <Bipster bips={bips} />
-                        : <ThemedText bold>No bips to report.</ThemedText>
+                    {bipsLoading
+                        ? <ThemedText>Loading Bips...</ThemedText>
+                        : bips.length > 0
+                            ? <Bipster bips={bips} />
+                            : <ThemedText bold>No bips to report.</ThemedText>
                 }
                 </View>
     
