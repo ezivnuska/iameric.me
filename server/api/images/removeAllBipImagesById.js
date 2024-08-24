@@ -10,7 +10,7 @@ const removeAllBipImagesById = async id => {
     const bip = await Bip.findOne({ _id: id })
         .populate('user', 'username')
 
-    if (!bip) return null
+    if (!bip || !bip.user) return null
     
     const { username } = bip.user
     console.log('uploadDir', uploadDir)

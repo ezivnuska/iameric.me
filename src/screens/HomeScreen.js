@@ -19,7 +19,14 @@ export default props => {
     const [ authRoute, setAuthRoute ] = useState(null)
 
     useEffect(() => {
-        if (params) handleSignout()
+        if (params) {
+            console.log('params', params)
+            if (params.signout) {
+                handleSignout()
+            } else if (params.destroy) {
+                clearModal()
+            }
+        }
     }, [params])
 
     useEffect(() => {

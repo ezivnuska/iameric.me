@@ -1,36 +1,72 @@
-const Entry = require('../../models/Entry')
 const Address = require('../../models/Address')
+const Bip = require('../../models/Bip')
+const BipImage = require('../../models/BipImage')
+const Entry = require('../../models/Entry')
 const Message = require('../../models/Message')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
-const { removeAllImageFilesByUsername } = require('../images')
+const { removeUserAssetsByUsername } = require('../images')
 
 const deleteAccount = async (req, res) => {
     const { id } = req.body
+
+    const bips = await Bip.find({ user: id })
+    console.log('bips', bips)
+    console.log('id to delete', id)
+    console.log(`\ndeleting account: ${id}`)
+
+    
+    if (bips && bips.length) {
+        
+        const bipIds = bips.map(b => b._id)
+
+        const deletedBips = await Bip.deleteMany({ user: id })
+        console.log('deletedBips', deletedBips)    
+        if (!deletedBips) {
+            console.log('could not delete bips.')
+        } else {
+            console.log(`deleted ${deletedBips.deletedCount} bips`)
+        }
+
+        const deletedBipImages = await BipImage.deleteMany({ bipId: { $in: bipIds } })
+        
+        if (!deletedBipImages) {
+            console.log('could not delete bip images.')
+        } else {
+            console.log(`deleted ${deletedBipImages.deletedCount} bip images`)
+        }
+    }
 
     const entries = await Entry.find({ author: id })
     console.log('entries', entries)
     console.log('id to delete', id)
     console.log(`\ndeleting account: ${id}`)
 
-    const deletedEntries = await Entry.deleteMany({ author: id })
-    console.log('deletedEntries', deletedEntries)    
-    if (!deletedEntries) {
-        console.log('could not delete entries.')
-    } else {
-        console.log(`deleted ${deletedEntries.deletedCount} entries`)
+    if (entries && entries.length) {
+
+        const deletedEntries = await Entry.deleteMany({ author: id })
+        console.log('deletedEntries', deletedEntries)    
+        if (!deletedEntries) {
+            console.log('could not delete entries.')
+        } else {
+            console.log(`deleted ${deletedEntries.deletedCount} entries`)
+        }
     }
 
     const messages = await Message.find({ $or: [{ to: id }, { from: id }] })
     console.log('messages', messages)
 
-    const deletedMessages = await Message.deleteMany({ $or: [{ from: id }, { to: id }] })
-    console.log('deletedMessages', deletedMessages)    
-    if (!deletedMessages) {
-        console.log('could not delete messages.')
-    } else {
-        console.log(`deleted ${deletedMessages.deletedCount} messages`)
+    if (messages && messages.length) {
+
+        const deletedMessages = await Message.deleteMany({ $or: [{ from: id }, { to: id }] })
+        console.log('deletedMessages', deletedMessages)    
+        if (!deletedMessages) {
+            console.log('could not delete messages.')
+        } else {
+            console.log(`deleted ${deletedMessages.deletedCount} messages`)
+        }
     }
+
 
     const deletedAddress = await Address.deleteOne({ user: id })
     if (!deletedAddress) {
@@ -57,7 +93,7 @@ const deleteAccount = async (req, res) => {
         })
     }
     
-    const imagesRemoved = removeAllImageFilesByUsername(deletedUser.username)
+    const imagesRemoved = removeUserAssetsByUsername(deletedUser.username)
     if (imagesRemoved) console.log('Image files removed.')
 
     return res.status(200).json({

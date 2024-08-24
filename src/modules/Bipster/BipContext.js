@@ -10,6 +10,7 @@ const initialState = {
     addBip: () => {},
     addBipImage: () => {},
     removeBip: () => {},
+    setBips: () => {},
     setBipsLoading: () => {},
     resolveUpload: () => {},
     setBipImages: () => {},
@@ -58,6 +59,9 @@ export const BipContextProvider = props => {
         removeBip: payload => {
             dispatch({ type: 'REMOVE_BIP', payload })
         },
+        setBips: payload => {
+            dispatch({ type: 'SET_BIPS', payload })
+        },
         setBipsLoading: payload => {
             dispatch({ type: 'SET_BIPS_LOADING', payload })
         },
@@ -85,6 +89,12 @@ export const BipContextProvider = props => {
 const reducer = (state, action) => {
     const { type, payload } = action
     switch(type) {
+        case 'SET_BIPS':
+            return {
+                ...state,
+                bips: payload,
+            }
+            break
         case 'SET_BIPS_LOADING':
             return {
                 ...state,
