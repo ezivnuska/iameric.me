@@ -7,11 +7,13 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
+import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 
 export default () => {
 
+    const { user } = useApp()
     const { setModal } = useModal()
     const { connections } = useSocket()
 
@@ -34,14 +36,16 @@ export default () => {
                 </ThemedText>
             </Pressable>
 
-            <View style={{ flexGrow: 0 }}>
-                <IconButton
-                    name='settings-sharp'
-                    size={22}
-                    color='#777'
-                    onPress={() => setModal('SETTINGS')}
-                />
-            </View>
+            {user && (
+                <View style={{ flexGrow: 0 }}>
+                    <IconButton
+                        name='settings-sharp'
+                        size={22}
+                        color='#777'
+                        onPress={() => setModal('SETTINGS')}
+                    />
+                </View>
+            )}
         </View>
     )
 }
