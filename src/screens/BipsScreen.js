@@ -24,7 +24,6 @@ export default props => {
         const fetchBips = async () => {
             setBipsLoading(true)
             const bips = await loadBips()
-            console.log('bips loaded', bips)
             setBipsLoading(false)
             if (bips) setBips(bips)
         }
