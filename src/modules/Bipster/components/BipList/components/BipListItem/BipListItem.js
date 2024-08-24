@@ -82,6 +82,7 @@ export default ({ item }) => {
     }, [])
 
     const deleteAndRemoveBip = async id => {
+        if (__DEV__) return console.log(`Can't delete images in development.`)
         setLoading(true)
         const deletedBip = await deleteBip(id)
         setLoading(false)
@@ -108,7 +109,10 @@ export default ({ item }) => {
             >
                 <ThemedText bold>{city}</ThemedText>
                 <Time time={item.createdAt} />
-                {item.user && item.user._id === user._id ? (
+                {(
+                    (item.user && item.user._id === user._id) ||
+                    user.role === 'admin'
+                ) ? (
                     <IconButton
                         name='close-sharp'
                         size={20}
