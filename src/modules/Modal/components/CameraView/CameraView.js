@@ -5,13 +5,11 @@ import {
   StyleSheet,
   View,
 } from 'react-native'
+import { Camera, FlashMode } from 'expo-camera'
+// import { askAsync, CAMERA } from 'expo-permissions'
+import { BipPreview } from './components'
 import {
-  Camera,
-} from 'expo-camera'
-import {
-  BipPreview,
-} from './components'
-import {
+	IconButton,
 	ModalHeader,
 	ThemedText,
 } from '@components'
@@ -27,7 +25,7 @@ import EXIF from 'exif-js'
 
 export default () => {
 
-  const { dims, user } = useApp()
+  const { theme, user } = useApp()
   const { addBip } = useBips()
   const { clearModal, closeModal } = useModal()
 
@@ -38,6 +36,8 @@ export default () => {
   const [ uploading, setUploading ] = useState(false)
   const [ cameraError, setCameraError ] = useState(null)
   const [ showInstructions, setShowInstructions ] = useState(true)
+  const [ flashMode, setFlashMode ] = useState('off')
+  const [ zoom, setZoom ] = useState(1)
   
   const cameraRef = useRef()
   
@@ -46,11 +46,17 @@ export default () => {
   useEffect(() => {
 	(async () => {
 		const { status } = await Camera.requestCameraPermissionsAsync()
+		// const { status } = await askAsync(CAMERA)
 		setHasPermission(status === 'granted')
 	})()
 
 	timer = setTimeout(stopTimer, 10000)
   }, [])
+
+  const toggleFlash = () => {
+	if (flashMode === 'on') setFlashMode('off')
+	else setFlashMode('on')
+  }
 
   const stopTimer = () => {
 	clearTimeout(timer)
@@ -166,7 +172,26 @@ export default () => {
 					paddingLeft: 10,
 					paddingRight: 7,
 				}}
-			/>
+			>
+				<IconButton
+					name={flashMode === 'on' ? 'flash-off-sharp' : 'flash-sharp'}
+					size={24}
+					color={theme?.colors.textDefault}
+					onPress={toggleFlash}
+				/>
+				<IconButton
+					name={'remove-circle-sharp'}
+					size={24}
+					color={theme?.colors.textDefault}
+					onPress={() => setZoom(zoom * 0.5)}
+				/>
+				<IconButton
+					name={'add-circle-sharp'}
+					size={24}
+					color={theme?.colors.textDefault}
+					onPress={() => setZoom(zoom * 1.5)}
+				/>
+			</ModalHeader>
 
 			{!cameraError && (
 
@@ -196,7 +221,8 @@ export default () => {
 								...StyleSheet.absoluteFillObject,
 							}}
 							type={cameraType}
-							// flashMode={Camera.Constants.FlashMode.on}
+							flashMode={flashMode}
+							zoom={zoom}
 							onCameraReady={onCameraReady}
 							onMountError={handleMountError}
 						/>

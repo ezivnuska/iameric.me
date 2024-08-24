@@ -42,7 +42,7 @@ export default () => {
         <ModalContainer
             isVisible={modals.length > 0}
             onRequestClose={closeModal}
-            // fullscreen={modal && modal.type === 'CAPTURE'}
+            fullscreen={modal && modal.type === 'CAPTURE'}
         >
             {renderModalContent()}
         </ModalContainer>

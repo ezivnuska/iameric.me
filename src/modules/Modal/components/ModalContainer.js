@@ -18,11 +18,11 @@ export default ({ children, onRequestClose, fullscreen = false, transparent = fa
                 background: theme?.colors.modalBackground,
             }}
             contentContainerStyle={{
-                flexGrow: 1,
+                flex: 1,
                 width: '100%',
                 maxWidth: 400,
                 marginHorizontal: 'auto',
-                // padding: 10,
+                padding: 10,
             }}
         >
             {children}
