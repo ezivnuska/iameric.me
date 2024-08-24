@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { Screen } from './components'
 import {
@@ -9,10 +9,22 @@ import {
 import { Bipster } from '@modules'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
+import { loadBips } from '@utils/bips'
 
 export default props => {
-    const { bips } = useBips()
+    const { bips, setBips } = useBips()
     const { setModal } = useModal()
+
+    useEffect(() => {
+        const fetchBips = async () => {
+            const bips = await loadBips()
+            if (bips) setBips(bips)
+        }
+        if (!bips || !bips.length) {
+            fetchBips()
+        }
+    }, [])
+
     return (
         <Screen
             {...props}

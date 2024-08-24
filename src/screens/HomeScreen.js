@@ -31,7 +31,7 @@ export default props => {
                 props.navigation.navigate('Bips')
             }
         }
-    }, [])
+    }, [user])
 
     const handleSignout = async () => {
         if (params.signout && user) {
