@@ -88,7 +88,7 @@ export default ({ images, remove, uploading, small = false }) => {
                                 ]}
                             />
 
-                            {uploading === index ? (
+                            {uploading === index && (
                                 <View
                                     style={{
                                         position: 'absolute',
@@ -101,7 +101,9 @@ export default ({ images, remove, uploading, small = false }) => {
                                 >
                                     <ActivityIndicator color='#fff' />
                                 </View>
-                            ) : (
+                            )}
+                            
+                            {uploading === null && (
                                 <Pressable
                                     onPress={() => remove(index)}
                                     style={{

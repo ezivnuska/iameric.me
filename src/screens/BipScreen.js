@@ -35,7 +35,7 @@ export default props => {
             fetchBipImages(bip._id)
             // if (!address) {
                 // if (bip.location) {
-                    console.log('bip', bip)
+                    // console.log('bip', bip)
                 //     const { latitude, longitude } = bip.location
                 //     // fetchAddress(bip.location)
                 // }
