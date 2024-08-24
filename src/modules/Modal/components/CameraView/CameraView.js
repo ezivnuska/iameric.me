@@ -173,24 +173,26 @@ export default () => {
 					paddingRight: 7,
 				}}
 			>
-				<IconButton
-					name={flashMode === 'on' ? 'flash-off-sharp' : 'flash-sharp'}
-					size={24}
-					color={theme?.colors.textDefault}
-					onPress={toggleFlash}
-				/>
-				<IconButton
-					name={'remove-circle-sharp'}
-					size={24}
-					color={theme?.colors.textDefault}
-					onPress={() => setZoom(zoom * 0.5)}
-				/>
-				<IconButton
-					name={'add-circle-sharp'}
-					size={24}
-					color={theme?.colors.textDefault}
-					onPress={() => setZoom(zoom * 1.5)}
-				/>
+				<>
+					<IconButton
+						name={flashMode === 'on' ? 'flash-off-sharp' : 'flash-sharp'}
+						size={24}
+						color={theme?.colors.textDefault}
+						onPress={toggleFlash}
+					/>
+					<IconButton
+						name={'remove-circle-sharp'}
+						size={24}
+						color={theme?.colors.textDefault}
+						onPress={() => setZoom(zoom * 0.5)}
+					/>
+					<IconButton
+						name={'add-circle-sharp'}
+						size={24}
+						color={theme?.colors.textDefault}
+						onPress={() => setZoom(zoom * 1.5)}
+					/>
+				</>
 			</ModalHeader>
 
 			{!cameraError && (

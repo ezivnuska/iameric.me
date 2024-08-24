@@ -33,19 +33,11 @@ export default ({ item }) => {
 
     useEffect(() => {
         if (address) {
-            let streetNumber = null
-            let streetName = null
-            let cityName = null
-            const { address_components } = address
-            address_components.map(comp => {
-                if (comp.types.indexOf('street_number') > -1) {
-                    streetNumber = comp.short_name
-                } else if (comp.types.indexOf('route') > -1) {
-                    streetName = comp.short_name
-                } else if (comp.types.indexOf('locality') > -1) {
-                    cityName = comp.short_name
-                }
-            })
+            const {
+                streetNumber,
+                streetName,
+                cityName,
+            } = address
             setStreet(`${streetNumber} ${streetName}`)
             setCity(cityName)
         }
@@ -64,11 +56,10 @@ export default ({ item }) => {
     const fetchAddress = async location => {
         const { latitude, longitude } = location
         setLoading(true)
-        const { results } = await getAddress({ lat: latitude, lng: longitude })
+        const results = await getAddress({ lat: latitude, lng: longitude })
         setLoading(false)
         if (results) {
-            const currentAddress = results[0]
-            setAddress(currentAddress)
+            setAddress(results)
         }
     }
 

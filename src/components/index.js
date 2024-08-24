@@ -1,5 +1,6 @@
 // common
 import ActivityIndicator from './ActivityIndicator'
+import AddressView from './AddressView'
 import Cabinet from './Cabinet'
 import Heading from './Heading'
 import IconButton from './IconButton'
@@ -13,6 +14,7 @@ import Time from './Time'
 
 export {
     ActivityIndicator,
+    AddressView,
     Cabinet,
     Heading,
     IconButton,
