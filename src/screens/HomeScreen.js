@@ -7,7 +7,7 @@ import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signin, signout } from '@utils/auth'
-import { cleanStorage } from '@utils/storage'
+import { cleanStorage, setItem, storeToken } from '@utils/storage'
 
 export default props => {
     const { params } = props.route
@@ -21,7 +21,15 @@ export default props => {
     const handleSignin = async (email, password) => {
         const response = await signin(email, password)
         if (!response) console.log('could not sign in user with params')
-        else setUser(response)
+        else {
+            setItem('email', response.email)
+            storeToken(response.token)
+            setUser(response)
+            notifySocket('user_signed_in', {
+                userId: response._id,
+                username: response.username,
+            })
+        }
     }
 
     useEffect(() => {
