@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import {
     AddressView,
+    InfoMarker,
     ThemedText,
 } from '@components'
 import { useApp } from '@app'
 import { Map } from '@vis.gl/react-google-maps'
-import { InfoMarker } from './components'
 import { getAddress } from '@utils/map'
 
 export default ({ coords, nomap = false }) => {

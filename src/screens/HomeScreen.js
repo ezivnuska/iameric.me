@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { Screen } from './components'
 import { ThemedText } from '@components'
-import { Bipster } from '@modules'
+import { BipMap } from '@modules'
 import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
@@ -84,11 +84,7 @@ export default props => {
             secure={false}
         >
             <View style={{ flex: 1 }}>
-                <Intro />
-                {/* {user
-                    ? <Bipster />
-                    : <Intro />
-                } */}
+                <BipMap />
                 
                 <Pressable
                     onPress={navigateToBip}

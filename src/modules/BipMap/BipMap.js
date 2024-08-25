@@ -1,0 +1,76 @@
+import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
+import {
+    InfoMarker,
+    ThemedText,
+} from '@components'
+import { Map } from '@vis.gl/react-google-maps'
+import { Bipster } from '@modules'
+import { useBips } from '@bips'
+import { useNotification } from '@notification'
+import { loadBips } from '@utils/bips'
+
+export default props => {
+    const {
+        bips,
+        bipsLoading,
+        setBips,
+        setBipsLoading,
+    } = useBips()
+    const { addNotification } = useNotification()
+    const [ location, setLocation ] = useState(null)
+
+    const init = async () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords
+                setLocation({ latitude, longitude })
+                addNotification('Location set.')
+            })
+        } else {
+            console.log('Geolocation is not supported by this browser.')
+        }
+
+        if (!bips || !bips.length) {
+            setBipsLoading(true)
+            const bips = await loadBips()
+            setBipsLoading(false)
+            if (bips) setBips(bips)
+        }
+    }
+
+    useEffect(() => {
+        init()
+    }, [])
+
+    return (
+        <View style={{ flex: 1 }}>
+
+            {location && (
+                <Map
+                    mapId={`map-${Date.now()}`}
+                    defaultCenter={{
+                        lat: Number(location.latitude),
+                        lng: Number(location.longitude),
+                    }}
+                    defaultZoom={12}
+                    gestureHandling={'greedy'}
+                    disableDefaultUI={false}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                    }}
+                >
+                    {bips && bips.length && bips.map((bip, key) => (
+                        <InfoMarker
+                            key={`bip-${key}`}
+                            position={bip.location}
+                            user={bip.user}
+                        />
+                    ))}
+                </Map>
+            )}
+
+        </View>
+    )
+}
