@@ -11,6 +11,7 @@ import { BipPreview } from './components'
 import {
 	IconButton,
 	ModalHeader,
+	Slider,
 	ThemedText,
 } from '@components'
 import { useApp } from '@app'
@@ -37,7 +38,7 @@ export default () => {
   const [ cameraError, setCameraError ] = useState(null)
   const [ showInstructions, setShowInstructions ] = useState(true)
   const [ flashMode, setFlashMode ] = useState('off')
-  const [ zoom, setZoom ] = useState(1)
+  const [ zoom, setZoom ] = useState(0.5)
   
   const cameraRef = useRef()
   
@@ -173,7 +174,7 @@ export default () => {
 					paddingRight: 7,
 				}}
 			>
-				<>
+				{/* <>
 					<IconButton
 						name={flashMode === 'on' ? 'flash-off-sharp' : 'flash-sharp'}
 						size={24}
@@ -192,7 +193,7 @@ export default () => {
 						color={theme?.colors.textDefault}
 						onPress={() => setZoom(zoom * 1.5)}
 					/>
-				</>
+				</> */}
 			</ModalHeader>
 
 			{!cameraError && (
@@ -215,20 +216,26 @@ export default () => {
 							right: 0,
 							bottom: 0,
 							left: 0,
+							zIndex: 100,
 						}}
-					>
-						<Camera
-							ref={cameraRef}
-							style={{
-								...StyleSheet.absoluteFillObject,
-							}}
-							type={cameraType}
-							flashMode={flashMode}
-							zoom={zoom}
-							onCameraReady={onCameraReady}
-							onMountError={handleMountError}
-						/>
-					</Pressable>
+					/>
+					<Camera
+						ref={cameraRef}
+						style={{
+							// ...StyleSheet.absoluteFillObject,
+							position: 'absolute',
+							top: 0,
+							right: 0,
+							bottom: 0,
+							left: 0,
+							zIndex: 1,
+						}}
+						type={cameraType}
+						flashMode={flashMode}
+						zoom={zoom}
+						onCameraReady={onCameraReady}
+						onMountError={handleMountError}
+					/>
 
 					{showInstructions && (
 						<View
@@ -241,6 +248,7 @@ export default () => {
 								backgroundColor: 'rgba(0, 0, 0, 0.5)',
 								borderRadius: 25,
 								justifyContent: 'center',
+								zIndex: 10,
 							}}
 						>
 							<View
@@ -264,6 +272,16 @@ export default () => {
 					)}
 				</View>	
 			)}
+		</View>
+
+		<View
+			// style={{ marginVertical: 10 }}
+		>
+			<Slider
+				zoom={zoom}
+				onValueChange={setZoom}
+			/>
+
 		</View>
 
 		<View

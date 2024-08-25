@@ -95,7 +95,7 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
         setLoading(false)
     }
 
-    return (
+    return user !== null && (
         <View
             style={{
                 flex: 1,

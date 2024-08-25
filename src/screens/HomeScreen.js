@@ -6,22 +6,31 @@ import { Bipster } from '@modules'
 import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
-import { signout } from '@utils/auth'
+import { signin, signout } from '@utils/auth'
 import { cleanStorage } from '@utils/storage'
 
 export default props => {
     const { params } = props.route
 
-    const { reset, user } = useApp()
+    const { reset, user, setUser } = useApp()
     const { clearModal, setModal } = useModal()
     const { notifySocket } = useSocket()
 
     const [ authRoute, setAuthRoute ] = useState(null)
 
+    const handleSignin = async (email, password) => {
+        const response = await signin(email, password)
+        if (!response) console.log('could not sign in user with params')
+        else setUser(response)
+    }
+
     useEffect(() => {
         if (params) {
-            console.log('params', params)
-            if (params.signout) {
+            if (!user) {
+                if (params.email && params.password) {
+                    handleSignin(params.email, params.password)
+                }
+            } else if (params.signout) {
                 handleSignout()
             } else if (params.destroy) {
                 clearModal()

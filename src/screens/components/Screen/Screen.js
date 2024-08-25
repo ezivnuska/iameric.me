@@ -5,14 +5,17 @@ import {
 } from 'react-native'
 import { Footer } from './components'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 
 export default Screen = ({ title, children, secure = true, ...props }) => {
 
     const { user } = useApp()
+    const { clearModal } = useModal()
 
     const authorized = useMemo(() => (!secure || user !== null), [secure, user])
 
     const navigateHome = () => {
+        clearModal()
         console.log('not authorized. going home.')
         props.navigation.navigate('Home')
     }
