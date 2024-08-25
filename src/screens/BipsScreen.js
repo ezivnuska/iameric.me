@@ -49,6 +49,7 @@ export default props => {
             fetchBips()
         }
         init()
+        setModal('QUICK')
     }, [])
 
     return (
@@ -69,16 +70,17 @@ export default props => {
                             gap: 10,
                         }}
                     >
-                        <IconButton
-                            name='camera-sharp'
-                            onPress={() => setModal('CAPTURE')}
-                            size={30}
-                            color='tomato'
-                        />
 
                         <IconButton
                             name={`${showMap ? 'list' : 'map'}-sharp`}
                             onPress={() => setShowMap(!showMap)}
+                            size={30}
+                            // color='tomato'
+                        />
+
+                        <IconButton
+                            name='camera-sharp'
+                            onPress={() => setModal('CAPTURE')}
                             size={30}
                             color='tomato'
                         />

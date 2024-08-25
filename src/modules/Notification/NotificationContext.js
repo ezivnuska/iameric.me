@@ -40,12 +40,12 @@ export const NotificationContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (notification) {
-            startTimer()
+            if (!timer) startTimer()
         } else {
             clearTimeout(timer)
             timer = undefined
         }
-    }, [notification])
+    }, [notifications])
 
     const addNotification = payload => {
         dispatch({ type: 'ADD_NOTIFICATION', payload })

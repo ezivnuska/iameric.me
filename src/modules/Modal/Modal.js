@@ -14,6 +14,7 @@ import {
     ImageDisplay,
     ModalContainer,
     SocketDisplay,
+    QuickStart,
 } from './components'
 
 export default () => {
@@ -34,6 +35,7 @@ export default () => {
             case 'SETTINGS': return <SettingsForm />; break
             case 'SHOWCASE': return <ImageDisplay data={data} />; break
             case 'SOCKETS': return <SocketDisplay />; break
+            case 'QUICK': return <QuickStart />; break
             default: return null
         }
     }
