@@ -4,14 +4,11 @@ import { Screen } from './components'
 import {
     Heading,
     IconButton,
-    InfoMarker,
     ThemedText,
 } from '@components'
-import { Map } from '@vis.gl/react-google-maps'
 import { BipMap, Bipster } from '@modules'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
-import { useNotification } from '@notification'
 import { loadBips } from '@utils/bips'
 
 export default props => {
@@ -21,22 +18,21 @@ export default props => {
         setBips,
         setBipsLoading,
     } = useBips()
+
     const { setModal } = useModal()
-    const { addNotification } = useNotification()
-    const [ location, setLocation ] = useState(null)
+    // const [ location, setLocation ] = useState(null)
     const [ showMap, setShowMap ] = useState(true)
 
-    const init = async () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const { latitude, longitude } = position.coords
-                setLocation({ latitude, longitude })
-                addNotification('Location set.')
-            })
-        } else {
-            console.log('Geolocation is not supported by this browser.')
-        }
-    }
+    // const init = async () => {
+    //     if (navigator.geolocation) {
+    //         navigator.geolocation.getCurrentPosition(position => {
+    //             const { latitude, longitude } = position.coords
+    //             setLocation({ latitude, longitude })
+    //         })
+    //     } else {
+    //         console.log('Geolocation is not supported by this browser.')
+    //     }
+    // }
 
     useEffect(() => {
         const fetchBips = async () => {
@@ -48,7 +44,7 @@ export default props => {
         if (!bips || !bips.length) {
             fetchBips()
         }
-        init()
+        // init()
         setModal('QUICK')
     }, [])
 

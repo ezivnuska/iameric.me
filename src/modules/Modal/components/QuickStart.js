@@ -26,8 +26,9 @@ export default () => {
                     label='Capture Bip'
                     onPress={() => setNewModal('CAPTURE')}
                 />
+                
                 <SimpleButton
-                    label='Close'
+                    label='Continue'
                     onPress={closeModal}
                 />
             </View>
