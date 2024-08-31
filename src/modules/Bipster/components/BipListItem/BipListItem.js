@@ -100,6 +100,8 @@ export default ({ item, onPressed, current = false }) => {
                 paddingHorizontal: 7,
                 gap: 3,
                 backgroundColor: current ? 'rgba(200, 100, 100, 0.2)' : 'transparent',
+                borderRadius: 8,
+                overflow: 'hidden',
             }}
         >
             <View

@@ -50,18 +50,20 @@ export default ({ onBipSelected = null, currentIndex = null }) => {
     }, [currentIndex])
 
     const onMarkerPressed = index => {
-        setVisibleIndex(index)
-        if (onBipSelected !== null) {
-            if (currentIndex !== index) {
-                onBipSelected(index)
-            } else {
-                onBipSelected(null)
-            }
+        if (onBipSelected) {
+            onBipSelected(index)
         }
+        setVisibleIndex(index)
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            style={{
+                flex: 1,
+                borderRadius: 8,
+                overflow: 'hidden',
+            }}
+        >
 
             {location && (
                 <Map

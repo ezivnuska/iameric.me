@@ -9,12 +9,15 @@ import {
     ThemedText,
     Time,
 } from '@components'
+import { useModal } from '@modal'
 import { getAddress } from '@utils/map'
 import { navigate } from '@utils/navigation'
 
 export default ({ bip, onClick, disabled = false, open = false, ...props }) => {
 
     const { _id, location, user } = bip
+
+    const { setModal } = useModal()
 
     // const [ infowindowOpen, setInfowindowOpen ] = useState(false)
     const [ address, setAddress ] = useState(null)
@@ -38,11 +41,6 @@ export default ({ bip, onClick, disabled = false, open = false, ...props }) => {
             setAddress(`${cityName}\n${streetNumber} ${streetName}`)
         }
     }
-
-    const showBipDetails = () => {
-        // onClear()
-        navigate('Bips', { screen: 'Bip', params: { id: _id } })
-    }
     
     return (
         <View key={props.key}>
@@ -65,9 +63,9 @@ export default ({ bip, onClick, disabled = false, open = false, ...props }) => {
                     // onCloseClick={() => setInfowindowOpen(false)}
                 >
                     <Pressable
-                        onPress={showBipDetails}
-                        style={{ flex: 1 }}
+                        onPress={() => setModal('BIP', bip)}
                         disabled={disabled}
+                        style={{ flex: 1 }}
                     >
                         <ThemedText>{address ? address : addressLoading ? 'Loading...' : ' '}</ThemedText>
                         <Time time={bip.createdAt} />
