@@ -54,7 +54,7 @@ export default ({ route }) => {
             <View style={{ flexGrow: 0 }}>
 
                 <Pressable
-                    onPress={() => navigate(user ? 'About' : 'Home')}
+                    onPress={() => navigate(isCurrentRoute('Home') ? 'About' : 'Home')}
                 >
 
                     <ThemedText bold style={{ fontSize: 24 }}>
@@ -108,18 +108,20 @@ export default ({ route }) => {
                             disabled={isCurrentRoute('Mail')}
                         />
                     </View>
-                ) : (
-                    <Pressable
-                        onPress={() => navigate('About')}
-                        disabled={isCurrentRoute('About')}
-                    >
-                        <ThemedText
-                            bold={routeName === 'About'}
-                        >
-                            Who is Eric?
-                        </ThemedText>
-                    </Pressable>
                 )
+                : null
+                // (
+                //     <Pressable
+                //         onPress={() => navigate('About')}
+                //         disabled={isCurrentRoute('About')}
+                //     >
+                //         <ThemedText
+                //             bold={routeName === 'About'}
+                //         >
+                //             Who is Eric?
+                //         </ThemedText>
+                //     </Pressable>
+                // )
             }
             </View>
 
