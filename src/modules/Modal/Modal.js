@@ -8,7 +8,7 @@ import {
     MessageForm,
     SettingsForm,
 } from '@forms'
-import { useModal } from '@modal'
+import { NewModal, useModal } from '@modal'
 import {
     CameraView,
     ImageDisplay,
@@ -41,12 +41,20 @@ export default () => {
     }
     
     return (
-        <ModalContainer
+        <NewModal
             isVisible={modals.length > 0}
             onRequestClose={closeModal}
-            fullscreen={modal && modal.type === 'CAPTURE'}
         >
             {renderModalContent()}
-        </ModalContainer>
+        </NewModal>
     )
+    // (
+    //     <ModalContainer
+    //         isVisible={modals.length > 0}
+    //         onRequestClose={closeModal}
+    //         fullscreen={modal && modal.type === 'CAPTURE'}
+    //     >
+    //         {renderModalContent()}
+    //     </ModalContainer>
+    // )
 }

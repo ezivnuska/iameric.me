@@ -10,7 +10,7 @@ export default () => {
     return (
         <View
             style={{
-                flex: 1,
+                // flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
             }}
@@ -19,7 +19,7 @@ export default () => {
             <View
                 style={{
                     flex: 1,
-                    gap: 20,
+                    gap: 10,
                 }}
             >
                 <SimpleButton

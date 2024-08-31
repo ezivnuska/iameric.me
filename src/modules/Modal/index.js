@@ -1,4 +1,5 @@
 import Modal from './Modal'
+import NewModal from './NewModal'
 import {
     ModalContextProvider,
     useModal,
@@ -8,5 +9,6 @@ export default Modal
 
 export {
     ModalContextProvider,
+    NewModal,
     useModal,
 }
