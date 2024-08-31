@@ -16,7 +16,7 @@ import { deleteBip } from '@utils/bips'
 import { getAddress } from '@utils/map'
 import { navigate } from '@utils/navigation'
 
-export default ({ item }) => {
+export default ({ item, current = false }) => {
 
     const { user } = useApp()
 
@@ -87,7 +87,9 @@ export default ({ item }) => {
             style={{
                 flex: 1,
                 paddingBottom: 5,
+                paddingHorizontal: 7,
                 gap: 3,
+                backgroundColor: current ? 'rgba(200, 100, 100, 0.2)' : 'transparent',
             }}
         >
             <View

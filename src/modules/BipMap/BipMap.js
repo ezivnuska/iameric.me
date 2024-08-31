@@ -6,7 +6,7 @@ import { useBips } from '@bips'
 import { useNotification } from '@notification'
 import { loadBips } from '@utils/bips'
 
-export default () => {
+export default ({ onBipSelected, currentIndex = null }) => {
 
     const {
         bips,
@@ -18,8 +18,6 @@ export default () => {
     const { addNotification } = useNotification()
     
     const [ location, setLocation ] = useState(null)
-
-    const [ visibleMarkerIndex, setVisibleMarkerIndex ] = useState(null)
 
     const init = async () => {
         if (navigator.geolocation) {
@@ -44,6 +42,10 @@ export default () => {
         init()
     }, [])
 
+    const onMarkerPressed = index => {
+        onBipSelected(index)
+    }
+
     return (
         <View style={{ flex: 1 }}>
 
@@ -59,25 +61,21 @@ export default () => {
                     gestureHandling={'greedy'}
                     disableDefaultUI={false}
                     reuseMaps={true}
-                    onClick={() => setVisibleMarkerIndex(null)}
+                    onClick={() => onBipSelected(null)}
                     style={{
                         width: '100%',
                         height: '100%',
                     }}
                 >
-                    {bips && bips.length && (
-                        <View style={{ borderWidth: 1 }}>
-                            {bips.map((bip, key) => (
-                                <BipMarker
-                                    key={`bip-${key}`}
-                                    bip={bip}
-                                    open={visibleMarkerIndex === key}
-                                    onClear={() => setVisibleMarkerIndex(null)}
-                                    onClick={() => setVisibleMarkerIndex(key)}
-                                />
-                            ))}
-                        </View>
-                    )}
+                    {(bips && bips.length) && bips.map((bip, index) => (
+                        <BipMarker
+                            key={`bip-${index}`}
+                            bip={bip}
+                            open={currentIndex === index}
+                            onClear={() => onBipSelected(null)}
+                            onClick={() => onMarkerPressed(index)}
+                        />
+                    ))}
                 </Map>
             )}
 

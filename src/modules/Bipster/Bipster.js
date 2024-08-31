@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import { BipList } from './components'
 
-export default ({ bips }) => (
+export default ({ bips, currentIndex = null }) => (
     <View style={{ flex: 1 }}>
         
         <ScrollView
@@ -13,7 +13,7 @@ export default ({ bips }) => (
             style={{ flex: 1 }}
             contentContainerStyle={{ flex: 1 }}
         >
-            <BipList bips={bips} />
+            <BipList bips={bips} currentIndex={currentIndex} />
         </ScrollView>
         
     </View>

@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import {
+    Pressable,
+    View,
+} from 'react-native'
 import { Screen } from './components'
 import {
     Heading,
-    IconButton,
     ThemedText,
 } from '@components'
 import { BipMap, Bipster } from '@modules'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
 import { loadBips } from '@utils/bips'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default props => {
     const {
@@ -21,7 +24,7 @@ export default props => {
 
     const { setNewModal } = useModal()
     // const [ location, setLocation ] = useState(null)
-    const [ showMap, setShowMap ] = useState(true)
+    const [ currentBipIndex, setCurrentBipIndex ] = useState(null)
 
     // const init = async () => {
     //     if (navigator.geolocation) {
@@ -48,6 +51,10 @@ export default props => {
         setNewModal('QUICK')
     }, [])
 
+    const onBipSelected = index => {
+        setCurrentBipIndex(index)
+    }
+
     return (
         <Screen
             {...props}
@@ -62,35 +69,82 @@ export default props => {
                     <View
                         style={{
                             flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            gap: 10,
+                            justifyContent: 'flex-end',
+                            alignItems: 'center',
                         }}
                     >
-
-                        <IconButton
-                            name={`${showMap ? 'list' : 'map'}-sharp`}
-                            onPress={() => setShowMap(!showMap)}
-                            size={30}
-                            // color='tomato'
-                        />
-
-                        <IconButton
-                            name='camera-sharp'
-                            onPress={() => setModal('CAPTURE')}
-                            size={30}
-                            color='tomato'
-                        />
+                        <Pressable
+                            onPress={() => setNewModal('CAPTURE')}
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end',
+                                alignItems: 'center',
+                                gap: 10,
+                            }}
+                        >
+                            <ThemedText color='tomato' bold>Capture Bip</ThemedText>
+                            <Icon
+                                name='camera-sharp'
+                                size={30}
+                                color='tomato'
+                            />
+                        </Pressable>
                     </View>
                 </Heading>
-
-                {showMap
-                    ? <BipMap />
-                    : bipsLoading
-                        ? <ThemedText>Loading Bips...</ThemedText>
-                        : bips.length > 0
-                            ? <Bipster bips={bips} />
-                            : <ThemedText bold>No bips to report.</ThemedText>
-                }
+                
+                <View    
+                    style={{
+                        flex: 1,
+                    }}
+                >
+                    <View
+                        style={{
+                            flex: 1,
+                        }}
+                    >
+                        <BipMap
+                            currentIndex={currentBipIndex}
+                            onBipSelected={onBipSelected}
+                        />
+                    </View>
+                    <View
+                        style={{
+                            flexBasis: 'auto',
+                            // borderWidth: 1,
+                        }}
+                    >
+                        <Pressable
+                            style={{
+                                flex: 1,
+                                height: 40,
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                backgroundColor: '#eee',
+                                borderRadius: 8,
+                                overflow: 'hidden',
+                                marginVertical: 5,
+                            }}
+                        >
+                            <Icon
+                                name='menu-sharp'
+                                size={18}
+                                color='#ccc'
+                            />
+                        </Pressable>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                        }}
+                    >
+                        {bipsLoading
+                            ? <ThemedText>Loading Bips...</ThemedText>
+                            : bips.length > 0
+                                ? <Bipster bips={bips} currentIndex={currentBipIndex} />
+                                : <ThemedText bold>No bips to report.</ThemedText>
+                        }
+                    </View>
+                </View>
     
             </View>
     

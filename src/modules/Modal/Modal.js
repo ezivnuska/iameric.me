@@ -19,7 +19,12 @@ import {
 
 export default () => {
 
-    const { closeModal, modal, modals } = useModal()
+    const {
+        clearModal,
+        closeModal,
+        modal,
+        modals,
+    } = useModal()
     
     const renderModalContent = () => {
         if (!modal) return null
@@ -43,7 +48,7 @@ export default () => {
     return (
         <NewModal
             isVisible={modals.length > 0}
-            onRequestClose={closeModal}
+            onRequestClose={clearModal}
         >
             {renderModalContent()}
         </NewModal>
