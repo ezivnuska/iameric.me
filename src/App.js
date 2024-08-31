@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '@layout'
 import { AppContextProvider } from '@app'
 import { BipContextProvider } from '@bips'
@@ -17,10 +17,16 @@ import { APIProvider } from '@vis.gl/react-google-maps'
 export default App = () => {
     console.log('process.env', process.env)
     const apiKey = process.env.GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY
+    const [ mapsLoaded, setMapsLoaded ] = useState(false)
     return (
-        <APIProvider apiKey={apiKey} libraries={['marker', 'geocoding']}>
-            <NotificationContextProvider>
-                <AppContextProvider>
+        <NotificationContextProvider>
+            <APIProvider
+                apiKey={apiKey}
+                version='weekly'
+                libraries={['marker', 'geocoding']}
+                onLoad={() => setMapsLoaded(true)}
+            >
+                {(mapsLoaded === true) && <AppContextProvider>
                     <BipContextProvider>
                         <ImagesContextProvider>
                             <MailContextProvider>
@@ -40,8 +46,8 @@ export default App = () => {
                             </MailContextProvider>
                         </ImagesContextProvider>
                     </BipContextProvider>
-                </AppContextProvider>
-            </NotificationContextProvider>
-        </APIProvider>
+                </AppContextProvider>}
+            </APIProvider>
+        </NotificationContextProvider>
     )
 }

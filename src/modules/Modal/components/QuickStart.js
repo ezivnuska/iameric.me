@@ -1,9 +1,15 @@
 import React from 'react'
-import { View } from 'react-native'
+import {
+    Pressable,
+    View,
+} from 'react-native'
 import {
     SimpleButton,
+    ThemedText,
 } from '@components'
 import { useModal } from '@modal'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faCarBurst } from '@fortawesome/free-solid-svg-icons/faCarBurst'
 
 export default () => {
     const { closeModal, setNewModal } = useModal()
@@ -15,22 +21,38 @@ export default () => {
                 alignItems: 'center',
             }}
         >
-
             <View
                 style={{
                     flex: 1,
-                    gap: 10,
                 }}
             >
-                <SimpleButton
-                    label='Capture Bip'
+                <Pressable
                     onPress={() => setNewModal('CAPTURE')}
-                />
-                
-                <SimpleButton
-                    label='Continue'
-                    onPress={closeModal}
-                />
+                    style={{
+                        flexDirection: 'row',
+                        gap: 10,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: 'tomato',
+                        height: 40,
+                        borderRadius: 14,
+                        overflow: 'hidden',
+                    }}
+                >
+                    <FontAwesomeIcon
+                        icon={faCarBurst}
+                        size={30}
+                        color='#fff'
+                    />
+
+                    <ThemedText
+                        color='#fff'
+                        size={20}
+                        bold
+                    >
+                        Capture Bip!
+                    </ThemedText>
+                </Pressable>
             </View>
 
         </View>

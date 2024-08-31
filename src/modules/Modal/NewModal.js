@@ -40,40 +40,44 @@ export default ({ children, onRequestClose, ...props }) => {
             onRequestClose={onRequestClose}
             style={{
                 flex: 1,
+                justifyContent: 'flex-end',
                 margin: 0,
+                position: 'relative',
             }}
         >
-            <View
+            <Pressable
+                onPress={onRequestClose}
                 style={{
-                    flex: 1,
+                    // flex: 1,
+                    // flexGrow: 1,
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
                     backgroundColor: 'rgba(0, 0, 0, 0.2)',
                 }}
+            />
+
+            <View
+                style={{
+                    flexBasis: 'auto',
+                    flexGrow: 0,
+                    flexShrink: 1,
+                    backgroundColor: '#fff',
+                    borderTopLeftRadius: 20,
+                    borderTopRightRadius: 20,
+                    overflow: 'hidden',
+                    paddingVertical: 15,
+                    paddingHorizontal: 10,
+                    maxHeight: dims.height - 50,
+                    width: dims.width,
+                    maxWidth: 400,
+                    marginHorizontal: 'auto',
+                }}
             >
-                <Pressable
-                    onPress={onRequestClose}
-                    style={{
-                        flex: 1,
-                        flexGrow: 1,
-                    }}
-                />
-                <View
-                    style={{
-                        flexBasis: 'auto',
-                        flexGrow: 0,
-                        flexShrink: 1,
-                        backgroundColor: '#fff',
-                        borderTopLeftRadius: 20,
-                        borderTopRightRadius: 20,
-                        overflow: 'hidden',
-                        paddingVertical: 15,
-                        paddingHorizontal: 10,
-                        maxHeight: dims.height - 50,
-                    }}
-                >
-                    {renderScrollView()}
-                </View>
+                {renderScrollView()}
             </View>
-            {/* {renderChildren()} */}
         </Modal>
     )
 }

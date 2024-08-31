@@ -91,6 +91,7 @@ export default props => {
         <Screen
             {...props}
             secure={true}
+            key={`bip-screen-${new Date()}`}
         >
     
             <View

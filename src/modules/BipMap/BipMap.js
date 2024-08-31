@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import {
-    InfoMarker,
-    ThemedText,
-} from '@components'
+import { BipMarker } from './components'
 import { Map } from '@vis.gl/react-google-maps'
-import { Bipster } from '@modules'
 import { useBips } from '@bips'
 import { useNotification } from '@notification'
 import { loadBips } from '@utils/bips'
 
-export default props => {
+export default () => {
+
     const {
         bips,
         bipsLoading,
         setBips,
         setBipsLoading,
     } = useBips()
+
     const { addNotification } = useNotification()
+    
     const [ location, setLocation ] = useState(null)
+
+    const [ visibleMarkerIndex, setVisibleMarkerIndex ] = useState(null)
 
     const init = async () => {
         if (navigator.geolocation) {
@@ -48,7 +49,8 @@ export default props => {
 
             {location && (
                 <Map
-                    mapId={`map-${Date.now()}`}
+                    id='bipmap'
+                    mapId='bipmap'
                     defaultCenter={{
                         lat: Number(location.latitude),
                         lng: Number(location.longitude),
@@ -56,18 +58,26 @@ export default props => {
                     defaultZoom={12}
                     gestureHandling={'greedy'}
                     disableDefaultUI={false}
+                    reuseMaps={true}
+                    onClick={() => setVisibleMarkerIndex(null)}
                     style={{
                         width: '100%',
                         height: '100%',
                     }}
                 >
-                    {bips && bips.length && bips.map((bip, key) => (
-                        <InfoMarker
-                            key={`bip-${key}`}
-                            position={bip.location}
-                            user={bip.user}
-                        />
-                    ))}
+                    {bips && bips.length && (
+                        <View style={{ borderWidth: 1 }}>
+                            {bips.map((bip, key) => (
+                                <BipMarker
+                                    key={`bip-${key}`}
+                                    bip={bip}
+                                    open={visibleMarkerIndex === key}
+                                    onClear={() => setVisibleMarkerIndex(null)}
+                                    onClick={() => setVisibleMarkerIndex(key)}
+                                />
+                            ))}
+                        </View>
+                    )}
                 </Map>
             )}
 

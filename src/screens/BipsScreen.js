@@ -19,7 +19,7 @@ export default props => {
         setBipsLoading,
     } = useBips()
 
-    const { setModal } = useModal()
+    const { setNewModal } = useModal()
     // const [ location, setLocation ] = useState(null)
     const [ showMap, setShowMap ] = useState(true)
 
@@ -45,7 +45,7 @@ export default props => {
             fetchBips()
         }
         // init()
-        setModal('QUICK')
+        setNewModal('QUICK')
     }, [])
 
     return (
