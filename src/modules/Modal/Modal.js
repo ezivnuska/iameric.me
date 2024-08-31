@@ -34,6 +34,7 @@ export default ({ fullscreen = false, transparent = false, ...props }) => {
                     <View
                         style={{
                             flex: 1,
+                            width: '100%',
                             position: 'relative',
                             justifyContent: 'center',
                         }}
@@ -63,9 +64,9 @@ export default ({ fullscreen = false, transparent = false, ...props }) => {
                                 paddingVertical: 20,
                                 paddingHorizontal: 10,
                                 maxHeight: dims.height - 100,
-                                // width: dims.width - 20,
-                                maxWidth: 400,
-                                marginHorizontal: 5,
+                                width: dims.width - 10,
+                                maxWidth: 390,
+                                marginHorizontal: 'auto',
                                 zIndex: 100,
                             }}
                         >

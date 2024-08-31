@@ -51,7 +51,7 @@ export default () => {
 		setHasPermission(status === 'granted')
 	})()
 
-	timer = setTimeout(stopTimer, 10000)
+	timer = setTimeout(stopTimer, 3000)
   }, [])
 
   const toggleFlash = () => {
@@ -230,7 +230,7 @@ export default () => {
 						<View
 							style={{
 								position: 'absolute',
-								top: 70,
+								top: '25%',
 								left: 20,
 								right: 20,
 								height: 50,
@@ -242,17 +242,25 @@ export default () => {
 						>
 							<View
 								style={{
+									flex: 1,
 									flexBasis: 'auto',
 									flexDirection: 'row',
 									alignItems: 'center',
+									width: '100%',
+									// position: 'absolute',
+									// top: 70,
+									// left: 0,
+									// right: 0,
 								}}
+							// 	style={{
+							// 	}}
 							>
 								<ThemedText
 									size={20}
 									color='#fff'
 									align='center'
 									bold
-									style={{ flex: 1 }}
+									style={{ width: '100%' }}
 								>
 									Tap screen to capture image
 								</ThemedText>

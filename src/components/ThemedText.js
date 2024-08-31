@@ -10,6 +10,7 @@ export default ({ children, bold = false, color = null, size = 16, align = 'left
         <Text
             style={[
                 {
+                    // width: '100%',
                     fontSize: size,
                     fontWeight: bold ? 700 : 400,
                     color: color || theme?.colors.textDefault,
