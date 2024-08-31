@@ -18,7 +18,7 @@ export default ({ children, onRequestClose, ...props }) => {
                 flex: 1,
                 // width: dims.width,
                 // height: dims.height,
-                background: theme?.colors.modalBackground,
+                // background: theme?.colors.modalBackground,
             }}
             contentContainerStyle={{
                 flex: 1,
@@ -55,7 +55,7 @@ export default ({ children, onRequestClose, ...props }) => {
                     right: 0,
                     bottom: 0,
                     left: 0,
-                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    // backgroundColor: 'rgba(0, 0, 0, 0.2)',
                 }}
             />
 

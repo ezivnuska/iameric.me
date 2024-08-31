@@ -165,37 +165,6 @@ export default () => {
 	>
 		<View style={{ flex: 1 }}>
 
-			<ModalHeader
-				title='Image Capture'
-				style={{
-					flexBasis: 'auto',
-					paddingTop: 5,
-					paddingLeft: 10,
-					paddingRight: 7,
-				}}
-			>
-				{/* <>
-					<IconButton
-						name={flashMode === 'on' ? 'flash-off-sharp' : 'flash-sharp'}
-						size={24}
-						color={theme?.colors.textDefault}
-						onPress={toggleFlash}
-					/>
-					<IconButton
-						name={'remove-circle-sharp'}
-						size={24}
-						color={theme?.colors.textDefault}
-						onPress={() => setZoom(zoom * 0.5)}
-					/>
-					<IconButton
-						name={'add-circle-sharp'}
-						size={24}
-						color={theme?.colors.textDefault}
-						onPress={() => setZoom(zoom * 1.5)}
-					/>
-				</> */}
-			</ModalHeader>
-
 			{!cameraError && (
 
 				<View
@@ -203,22 +172,12 @@ export default () => {
 						flex: 1,
 						position: 'relative',
 						width: '100%',
+						// maxWidth: 400,
+						// maxHeight: 600,
 						// height: 300,
 						marginHorizontal: 'auto',
 					}}
 				>
-					<Pressable
-						disabled={!isCameraReady || uploading}
-						onPress={takePicture}
-						style={{
-							position: 'absolute',
-							top: 0,
-							right: 0,
-							bottom: 0,
-							left: 0,
-							zIndex: 100,
-						}}
-					/>
 					<Camera
 						ref={cameraRef}
 						style={{
@@ -237,6 +196,35 @@ export default () => {
 						onMountError={handleMountError}
 					/>
 
+					<Pressable
+						disabled={!isCameraReady || uploading}
+						onPress={takePicture}
+						style={{
+							position: 'absolute',
+							top: 0,
+							right: 0,
+							bottom: 0,
+							left: 0,
+							zIndex: 100,
+						}}
+					/>
+					
+					<Pressable
+						onPress={closeModal}
+						style={{
+							position: 'absolute',
+							top: 0,
+							right: 0,
+							zIndex: 200,
+							padding: 10, 
+						}}
+					>
+						<Icon
+							name='close-sharp'
+							size={30}
+							color='#fff'
+						/>
+					</Pressable>
 					{showInstructions && (
 						<View
 							style={{
@@ -274,7 +262,7 @@ export default () => {
 			)}
 		</View>
 
-		<View
+		{/* <View
 			// style={{ marginVertical: 10 }}
 		>
 			<Slider
@@ -298,7 +286,7 @@ export default () => {
 				onRemove={removePreview}
 				setUploading={setUploading}
 			/>
-		</View>
+		</View> */}
 	  
 		{cameraError && (
 			<View

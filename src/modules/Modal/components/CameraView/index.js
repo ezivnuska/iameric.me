@@ -1,3 +1,3 @@
-import CameraView from './CameraView'
+import CameraViewFull from './CameraViewFull'
 
-export default CameraView
+export default CameraViewFull

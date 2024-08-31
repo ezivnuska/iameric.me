@@ -29,7 +29,7 @@ export default ({ bips, onSelected, currentIndex = null }) => {
                     <BipListItem
                         item={item}
                         current={currentIndex === index}
-                        onPressed={() => onSelected(null)}
+                        onPressed={() => onSelected(index)}
                     />
                 )}
                 showsVerticalScrollIndicator={false}

@@ -81,7 +81,7 @@ export default ({ item, onPressed, current = false }) => {
     }
 
     const onItemPressed = () => {
-        // onPressed()
+        onPressed()
         navigate('Bips', { screen: 'Bip', params: { id: item._id } })
     }
 
@@ -91,7 +91,8 @@ export default ({ item, onPressed, current = false }) => {
             onPress={onItemPressed}
             style={{
                 flex: 1,
-                paddingBottom: 5,
+                paddingTop: 2,
+                paddingBottom: 6,
                 paddingHorizontal: 7,
                 gap: 3,
                 backgroundColor: current ? 'rgba(200, 100, 100, 0.2)' : 'transparent',

@@ -48,12 +48,16 @@ export default props => {
             fetchBips()
         }
         // init()
-        if (currentBipIndex) {
-            // setCurrentBipIndex(null)
-        } else {
-            // setNewModal('QUICK')
-        }
+        // if (!currentBipIndex) {
+        // //     // setCurrentBipIndex(null)
+        // // } else {
+        //     setNewModal('QUICK')
+        // }
     }, [])
+
+    useEffect(() => {
+        if (!currentBipIndex) setNewModal('QUICK')
+    }, [currentBipIndex])
 
     const onBipSelected = index => {
         setCurrentBipIndex(index)
@@ -148,7 +152,7 @@ export default props => {
                                     <Bipster
                                         bips={bips}
                                         currentIndex={currentBipIndex}
-                                        // onSelected={index => setCurrentBipIndex(index)}
+                                        onSelected={onBipSelected}
                                     />
                                 )
                                 : <ThemedText bold>No bips to report.</ThemedText>
