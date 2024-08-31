@@ -100,6 +100,10 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
             style={{
                 flex: 1,
                 gap: 5,
+                padding: 10,
+                borderRadius: 12,
+                overflow: 'hidden',
+                backgroundColor: 'rgba(255, 255, 255, 0.3)',
             }}
         >
             <View
@@ -110,7 +114,7 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
                     gap: 7,
                 }}
             >
-                <ThemedText>{user.username}</ThemedText>
+                <ThemedText color='#000' bold>{user.username}</ThemedText>
                 <Time now />
             </View>
             
@@ -148,6 +152,7 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
                 contentContainerStyle={{
                     flex: 1,
                     width: '100%',
+                    paddingBottom: 5,
                 }}
             >
                 {items && items.length > 0 ? (

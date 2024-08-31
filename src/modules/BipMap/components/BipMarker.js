@@ -12,7 +12,7 @@ import {
 import { getAddress } from '@utils/map'
 import { navigate } from '@utils/navigation'
 
-export default ({ bip, onClick, open = false, ...props }) => {
+export default ({ bip, onClick, disabled = false, open = false, ...props }) => {
 
     const { _id, location, user } = bip
 
@@ -39,7 +39,7 @@ export default ({ bip, onClick, open = false, ...props }) => {
         }
     }
 
-    const onMarkerPressed = () => {
+    const showBipDetails = () => {
         // onClear()
         navigate('Bips', { screen: 'Bip', params: { id: _id } })
     }
@@ -65,8 +65,9 @@ export default ({ bip, onClick, open = false, ...props }) => {
                     // onCloseClick={() => setInfowindowOpen(false)}
                 >
                     <Pressable
-                        onPress={onMarkerPressed}
+                        onPress={showBipDetails}
                         style={{ flex: 1 }}
+                        disabled={disabled}
                     >
                         <ThemedText>{address ? address : addressLoading ? 'Loading...' : ' '}</ThemedText>
                         <Time time={bip.createdAt} />

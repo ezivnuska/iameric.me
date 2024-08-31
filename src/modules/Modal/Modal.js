@@ -6,8 +6,8 @@ import {
 } from 'react-native'
 import Modal from 'react-native-modal'
 import { useApp } from '@app'
-import { ModalFactory, NewModal, useModal } from '@modal'
-import { CameraView } from './components'
+import { useModal } from '@modal'
+import { CameraView, ModalFactory } from './components'
 
 export default ({ fullscreen = false, transparent = false, ...props }) => {
     

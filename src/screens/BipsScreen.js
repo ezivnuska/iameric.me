@@ -23,7 +23,7 @@ export default props => {
     } = useBips()
 
     const { setNewModal } = useModal()
-    // const [ location, setLocation ] = useState(null)
+    const [ alerted, setAlerted ] = useState(false)
     const [ currentBipIndex, setCurrentBipIndex ] = useState(null)
 
     // const init = async () => {
@@ -56,7 +56,10 @@ export default props => {
     }, [])
 
     useEffect(() => {
-        if (!currentBipIndex) setNewModal('QUICK')
+        if (!alerted) {
+            setAlerted(true)
+            setNewModal('QUICK')
+        }
     }, [currentBipIndex])
 
     const onBipSelected = index => {

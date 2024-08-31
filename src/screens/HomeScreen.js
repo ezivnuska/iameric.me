@@ -85,13 +85,6 @@ export default props => {
         >
             <View style={{ flex: 1 }}>
                 <BipMap />
-                
-                <Pressable
-                    onPress={navigateToBip}
-                >
-                    <ThemedText color='tomato' bold>Bipster</ThemedText>
-                </Pressable>
-
             </View>
 
         </Screen>

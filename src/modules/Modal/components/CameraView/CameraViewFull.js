@@ -225,11 +225,12 @@ export default () => {
 							color='#fff'
 						/>
 					</Pressable>
+
 					{showInstructions && (
 						<View
 							style={{
 								position: 'absolute',
-								bottom: 20,
+								top: 20,
 								left: 20,
 								right: 20,
 								height: 50,
@@ -270,13 +271,18 @@ export default () => {
 				onValueChange={setZoom}
 			/>
 
-		</View>
+		</View> */}
 
 		<View
 			style={{
+				position: 'absolute',
+				bottom: 20,
+				left: 20,
+				right: 20,
 				flex: 1,
 				flexDirection: 'row',
 				padding: 10,
+				
 			}}
 		>
 			<BipPreview
@@ -286,7 +292,7 @@ export default () => {
 				onRemove={removePreview}
 				setUploading={setUploading}
 			/>
-		</View> */}
+		</View>
 	  
 		{cameraError && (
 			<View
