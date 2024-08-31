@@ -16,29 +16,29 @@ import { useApp } from '@app'
 import { useForm } from '../FormContext'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
-import Icon from 'react-native-vector-icons/Ionicons'
+// import Icon from 'react-native-vector-icons/Ionicons'
 
-const PublicCheckbox = ({ checked, setChecked }) => {
-    const { theme } = useApp()
-    return (
-        <View
-            style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10,
-                marginBottom: 15,
-            }}
-        >
-            <Icon
-                name={checked ? 'ellipse' : 'ellipse-outline'}
-                size={24}
-                onPress={() => setChecked(!checked)}
-                color={theme?.colors.textDefault}
-            />
-            <ThemedText>Public Accomodation</ThemedText>
-        </View>
-    )
-}
+// const PublicCheckbox = ({ checked, setChecked }) => {
+//     const { theme } = useApp()
+//     return (
+//         <View
+//             style={{
+//                 flexDirection: 'row',
+//                 alignItems: 'center',
+//                 gap: 10,
+//                 marginBottom: 15,
+//             }}
+//         >
+//             <Icon
+//                 name={checked ? 'ellipse' : 'ellipse-outline'}
+//                 size={24}
+//                 onPress={() => setChecked(!checked)}
+//                 color={theme?.colors.textDefault}
+//             />
+//             <ThemedText>Public Accomodation</ThemedText>
+//         </View>
+//     )
+// }
 
 export default SignUpForm = () => {
 
@@ -47,7 +47,7 @@ export default SignUpForm = () => {
         username: '',
         password: '',
         confirmPassword: '',
-        fiction: false,
+        // fiction: false,
     }
 
     const {
@@ -87,7 +87,7 @@ export default SignUpForm = () => {
         username,
         password,
         confirmPassword,
-        fiction,
+        // fiction,
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
@@ -102,7 +102,7 @@ export default SignUpForm = () => {
 
     useEffect(() => {
         if (formReady) validateFields(formFields, validateField)
-    }, [fiction, email, username, password, confirmPassword])
+    }, [email, username, password, confirmPassword])
 
     // const validateFields = () => {
     //     const keys = Object.keys(formFields)
@@ -172,7 +172,7 @@ export default SignUpForm = () => {
 
         setFormLoading(true)
 		await setItem('email', email)
-		const user = await signup(email, password, username, fiction)
+		const user = await signup(email, password, username)
         setFormLoading(false)
         
 		if (!user) {
@@ -193,7 +193,7 @@ export default SignUpForm = () => {
 
     const renderFields = () => (
         <>
-            <PublicCheckbox checked={fiction} setChecked={value => onChange('fiction', value)} />
+            {/* <PublicCheckbox checked={fiction} setChecked={value => onChange('fiction', value)} /> */}
             <FormField
                 label='Email'
                 value={email}
@@ -264,7 +264,7 @@ export default SignUpForm = () => {
     return focused !== null ? (
         <View
             style={{
-                paddingVertical: 20,
+                // paddingVertical: 20,
                 width: '100%',
                 maxWidth: dims.width,
             }}

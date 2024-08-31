@@ -11,6 +11,7 @@ import {
 } from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
+import { useModal } from '@modal'
 import { getBipImages } from '@utils/images'
 import { deleteBip } from '@utils/bips'
 import { getAddress } from '@utils/map'
@@ -25,6 +26,8 @@ export default ({ item, onPressed, current = false }) => {
         // setBipAddress,
         setBipImages,
     } = useBips()
+
+    const { setModal } = useModal()
 
     const [ loading, setLoading ] = useState(false)
     const [ address, setAddress ] = useState(null)
@@ -82,7 +85,8 @@ export default ({ item, onPressed, current = false }) => {
 
     const onItemPressed = () => {
         onPressed()
-        navigate('Bips', { screen: 'Bip', params: { id: item._id } })
+        // navigate('Bips', { screen: 'Bip', params: { id: item._id } })
+        setModal('BIP', item)
     }
 
     return (

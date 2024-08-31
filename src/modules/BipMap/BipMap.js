@@ -52,10 +52,10 @@ export default ({ onBipSelected = null, currentIndex = null }) => {
     const onMarkerPressed = index => {
         setVisibleIndex(index)
         if (onBipSelected !== null) {
-            if (index === currentIndex) {
-                onBipSelected(null)
-            } else {
+            if (currentIndex !== index) {
                 onBipSelected(index)
+            } else {
+                onBipSelected(null)
             }
         }
     }

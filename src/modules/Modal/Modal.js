@@ -35,9 +35,9 @@ export default ({ fullscreen = false, transparent = false, ...props }) => {
                         style={{
                             flex: 1,
                             position: 'relative',
-                            justifyContent: 'flex-end',
+                            justifyContent: 'center',
                         }}
-                    >
+                        >
                         <Pressable
                             onPress={closeModal}
                             style={{
@@ -56,15 +56,16 @@ export default ({ fullscreen = false, transparent = false, ...props }) => {
                                 flexGrow: 0,
                                 flexShrink: 1,
                                 backgroundColor: '#fff',
-                                borderTopLeftRadius: 20,
-                                borderTopRightRadius: 20,
+                                borderRadius: 20,
+                                // borderTopLeftRadius: 20,
+                                // borderTopRightRadius: 20,
                                 overflow: 'hidden',
-                                paddingVertical: 15,
+                                paddingVertical: 20,
                                 paddingHorizontal: 10,
-                                maxHeight: dims.height - 50,
-                                width: dims.width,
+                                maxHeight: dims.height - 100,
+                                // width: dims.width - 20,
                                 maxWidth: 400,
-                                marginHorizontal: 'auto',
+                                marginHorizontal: 5,
                                 zIndex: 100,
                             }}
                         >

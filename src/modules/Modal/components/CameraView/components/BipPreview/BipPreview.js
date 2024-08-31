@@ -56,6 +56,7 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
     }, [images])
 
     const uploadBipImages = async bipId => {
+        setLoading(true)
         let numUploads = 0
         while (numUploads < items.length) {
             const imageToUpload = images[numUploads]
@@ -66,6 +67,7 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
             updateItem(uploadedImage)
             numUploads++
         }
+        setLoading(false)
         return numUploads
     }
 
@@ -114,8 +116,8 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
                     gap: 7,
                 }}
             >
-                <ThemedText color='#000' bold>{user.username}</ThemedText>
-                <Time now />
+                <ThemedText color='#fff' bold>{user.username}</ThemedText>
+                <Time now color='#fff' />
             </View>
             
             <View
@@ -130,6 +132,7 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
                         ? (
                             <Map
                                 coords={location}
+                                color='#fff'
                                 nomap
                             />
                         )
@@ -164,7 +167,7 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
                         // small
                     />
                 ) : (
-                    <ThemedText>No images captured.</ThemedText>
+                    <ThemedText color='#fff'>No images captured.</ThemedText>
                 )}
             </ScrollView>
 
@@ -176,7 +179,7 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
                 <SimpleButton
                     label='Save Bip'
                     onPress={submitBip}
-                    disabled={loading}
+                    disabled={!images || !images.length || loading}
                 />
 
             </View>

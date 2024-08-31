@@ -12,6 +12,7 @@ import {
     useModal,
 } from '@modal'
 import {
+    BipDetail,
     CameraView,
     ImageDisplay,
     ModalContainer,
@@ -34,7 +35,7 @@ export default () => {
         switch(type) {
             case 'AUTH': return <AuthForm />; break
             case 'CAPTION': return <CaptionForm data={data} />; break
-            // case 'CAPTURE': return <CameraView />; break
+            case 'BIP': return <BipDetail data={data} />; break
             case 'DESTROY': return <DestroyForm />; break
             case 'FEEDBACK': return <FeedbackForm data={data} />; break
             case 'IMAGE': return <ImageForm />; break

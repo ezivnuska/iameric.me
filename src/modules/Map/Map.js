@@ -9,7 +9,7 @@ import { useApp } from '@app'
 import { Map } from '@vis.gl/react-google-maps'
 import { getAddress } from '@utils/map'
 
-export default ({ coords, nomap = false }) => {
+export default ({ coords, color = '#000', nomap = false }) => {
 
     const { user } = useApp()
 
@@ -52,6 +52,7 @@ export default ({ coords, nomap = false }) => {
                 defaultZoom={10}
                 gestureHandling={'greedy'}
                 disableDefaultUI={false}
+                // color='#fff'
                 style={{
                     width: '100%',
                     height: '100%',
@@ -85,14 +86,14 @@ export default ({ coords, nomap = false }) => {
                 // borderColor: 'yellow',
             }}
         >
-            <AddressView address={address} loading={addressLoading} />
+            <AddressView address={address} loading={addressLoading} color={color} />
             {!nomap && <MapView location={coords} />}
         </View>
     )
 }
 
 const MapView = ({ location }) => {
-    console.log('location MapView', location)
+    // console.log('location MapView', location)
     return (
         <Map
             mapId={`map-${Date.now()}`}

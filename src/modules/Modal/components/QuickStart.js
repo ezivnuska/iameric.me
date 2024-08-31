@@ -24,35 +24,37 @@ export default () => {
             <View
                 style={{
                     flex: 1,
+                    gap: 8,
                 }}
             >
-                <Pressable
-                    onPress={() => setNewModal('CAPTURE')}
+                <View
                     style={{
                         flexDirection: 'row',
                         gap: 10,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: 'tomato',
                         height: 40,
-                        borderRadius: 14,
-                        overflow: 'hidden',
                     }}
                 >
                     <FontAwesomeIcon
                         icon={faCarBurst}
                         size={30}
-                        color='#fff'
+                        color='tomato'
                     />
 
                     <ThemedText
-                        color='#fff'
+                        color='tomato'
                         size={20}
                         bold
                     >
                         Capture Bip!
                     </ThemedText>
-                </Pressable>
+                </View>
+
+                <SimpleButton
+                    label='Open Camera'
+                    onPress={() => setNewModal('CAPTURE')}
+                />
             </View>
 
         </View>

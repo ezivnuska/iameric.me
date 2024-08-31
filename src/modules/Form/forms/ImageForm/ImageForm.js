@@ -8,8 +8,8 @@ import {
 import {
     ImagePicker,
 } from './components'
-import EXIF from 'exif-js'
-import { useApp } from '@app'
+// import EXIF from 'exif-js'
+// import { useApp } from '@app'
 import { useForm } from '@form'
 import { useImages } from '@images'
 

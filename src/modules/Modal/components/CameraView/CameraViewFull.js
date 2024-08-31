@@ -127,7 +127,7 @@ export default () => {
 
   const closeAndClear = async () => {
 	if (previews.length) setPreviews([])
-	else closeModal()
+	else clearModal()
   }
 
   const onBip = async bip => {
@@ -210,7 +210,7 @@ export default () => {
 					/>
 					
 					<Pressable
-						onPress={closeModal}
+						onPress={clearModal}
 						style={{
 							position: 'absolute',
 							top: 0,
@@ -230,11 +230,11 @@ export default () => {
 						<View
 							style={{
 								position: 'absolute',
-								top: 20,
+								top: 70,
 								left: 20,
 								right: 20,
 								height: 50,
-								backgroundColor: 'rgba(0, 0, 0, 0.5)',
+								backgroundColor: 'rgba(255, 255, 255, 0.3)',
 								borderRadius: 25,
 								justifyContent: 'center',
 								zIndex: 10,

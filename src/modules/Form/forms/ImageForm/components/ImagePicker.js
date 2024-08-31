@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import {
     IconButton,
     ImageClone,
     SimpleButton,
+    ThemedText,
 } from '@components'
 import { Checkbox } from '@forms/components'
 import EXIF from 'exif-js'
@@ -17,6 +18,7 @@ import {
     uploadImage,
 } from '@utils/images'
 import { ActivityIndicator } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default ImagePicker = () => {
 
@@ -165,28 +167,65 @@ export default ImagePicker = () => {
                     onChange={value => setAvatarCheckbox(value)}
                 />
 
-            </View>
-
-            <View
-                style={{
-                    flexGrow: 0,
-                    // justifyContent: 'space-evenly',
-                    gap: 10,
-                }}
-            >
-                <IconButton
-                    name='thumbs-up-sharp'
-                    onPress={onSubmit}
-                    disabled={uploading}
-                    style={{ padding: 3 }}
-                />
-
-                <IconButton
-                    name='thumbs-down-sharp'
-                    onPress={handleNewSelection}
-                    disabled={uploading}
-                    style={{ padding: 3 }}
-                />
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        gap: 10,
+                    }}
+                >
+                    <Pressable
+                        onPress={onSubmit}
+                        disabled={uploading}
+                        style={{
+                            flex: 1,
+                            borderRadius: 12,
+                            overflow: 'hidden',
+                            backgroundColor: 'tomato',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: 10,
+                            height: 40,
+                        }}
+                    >
+                        <Icon
+                            name='thumbs-up-sharp'
+                            size={20}
+                            color='#fff'
+                            style={{ padding: 3 }}
+                        />
+                        <ThemedText color='#fff' size={20} bold>Upload</ThemedText>
+                    </Pressable>
+    
+                    <Pressable
+                        onPress={handleNewSelection}
+                        disabled={uploading}
+                        style={{
+                            flex: 1,
+                            borderRadius: 12,
+                            overflow: 'hidden',
+                            backgroundColor: '#aaa',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            // borderWidth: 1,
+                            // borderColor: '#aaa',
+                            gap: 10,
+                            height: 40,
+                        }}
+                    >
+                        <Icon
+                            name='thumbs-down'
+                            size={20}
+                            color='#fff'
+                            style={{ padding: 3 }}
+                        />
+                        <ThemedText color='#fff' size={20} bold>Change</ThemedText>
+                    </Pressable>
+    
+                </View>
 
             </View>
 

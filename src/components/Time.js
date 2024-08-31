@@ -3,10 +3,10 @@ import { View } from 'react-native'
 import { ThemedText } from '@components'
 import { format, formatDistance, formatRelative, subDays } from 'date-fns'
 
-export default ({ time = null, prefix = '', suffix = '' }) => {
+export default ({ time = null, color = '#444', prefix = '', suffix = '' }) => {
     return (
         <View>
-            <ThemedText color='#444' size={16}>
+            <ThemedText color={color} size={16}>
                 {time
                     ? `${prefix}${formatRelative(new Date(time), new Date())}${suffix}`
                     : 'Now'

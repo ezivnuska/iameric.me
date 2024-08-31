@@ -60,8 +60,8 @@ export default ({ bip, onClick, disabled = false, open = false, ...props }) => {
                     // headerContent={<View>{bip.createdAt}</View>}
                     // headerContent='hello'
                     anchor={marker}
-                    minWidth={270}
-                    // maxWidth={250}
+                    // minWidth={270}
+                    maxWidth={300}
                     // onCloseClick={() => setInfowindowOpen(false)}
                 >
                     <Pressable
