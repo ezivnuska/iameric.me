@@ -16,7 +16,7 @@ import { deleteBip } from '@utils/bips'
 import { getAddress } from '@utils/map'
 import { navigate } from '@utils/navigation'
 
-export default ({ item, current = false }) => {
+export default ({ item, onPressed, current = false }) => {
 
     const { user } = useApp()
 
@@ -80,10 +80,15 @@ export default ({ item, current = false }) => {
         if (deletedBip) removeBip(id)
     }
 
+    const onItemPressed = () => {
+        // onPressed()
+        navigate('Bips', { screen: 'Bip', params: { id: item._id } })
+    }
+
     return (
         <Pressable
             key={`bip-${item._id}`}
-            onPress={() => navigate('Bips', { screen: 'Bip', params: { id: item._id } })}
+            onPress={onItemPressed}
             style={{
                 flex: 1,
                 paddingBottom: 5,

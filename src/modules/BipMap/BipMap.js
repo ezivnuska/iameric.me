@@ -72,7 +72,7 @@ export default ({ onBipSelected, currentIndex = null }) => {
                             key={`bip-${index}`}
                             bip={bip}
                             open={currentIndex === index}
-                            onClear={() => onBipSelected(null)}
+                            // onClear={() => onBipSelected(null)}
                             onClick={() => onMarkerPressed(index)}
                         />
                     ))}

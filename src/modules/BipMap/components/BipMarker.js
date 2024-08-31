@@ -11,9 +11,8 @@ import {
 } from '@components'
 import { getAddress } from '@utils/map'
 import { navigate } from '@utils/navigation'
-import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ bip, onClear, onClick, open = false, ...props }) => {
+export default ({ bip, onClick, open = false, ...props }) => {
 
     const { _id, location, user } = bip
 
@@ -41,7 +40,7 @@ export default ({ bip, onClear, onClick, open = false, ...props }) => {
     }
 
     const onMarkerPressed = () => {
-        onClear()
+        // onClear()
         navigate('Bips', { screen: 'Bip', params: { id: _id } })
     }
     
@@ -65,30 +64,14 @@ export default ({ bip, onClear, onClick, open = false, ...props }) => {
                     // maxWidth={250}
                     // onCloseClick={() => setInfowindowOpen(false)}
                 >
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            gap: 10,
-                        }}
+                    <Pressable
+                        onPress={onMarkerPressed}
+                        style={{ flex: 1 }}
                     >
-                        <View style={{ flexGrow: 1 }}>
-                            <ThemedText>{address ? address : addressLoading ? 'Loading...' : ' '}</ThemedText>
-                            <Time time={bip.createdAt} />
-                        </View>
+                        <ThemedText>{address ? address : addressLoading ? 'Loading...' : ' '}</ThemedText>
+                        <Time time={bip.createdAt} />
+                    </Pressable>
 
-                        <Pressable
-                            style={{ flexBasis: 'auto' }}
-                            onPress={onMarkerPressed}
-                        >
-                            <Icon
-                                name='chevron-forward'
-                                size={30}
-                            />
-                        </Pressable>
-                    </View>
                 </InfoWindow>
             )}
         </View>

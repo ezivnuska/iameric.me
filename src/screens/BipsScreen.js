@@ -48,7 +48,11 @@ export default props => {
             fetchBips()
         }
         // init()
-        setNewModal('QUICK')
+        if (currentBipIndex) {
+            // setCurrentBipIndex(null)
+        } else {
+            // setNewModal('QUICK')
+        }
     }, [])
 
     const onBipSelected = index => {
@@ -140,7 +144,13 @@ export default props => {
                         {bipsLoading
                             ? <ThemedText>Loading Bips...</ThemedText>
                             : bips.length > 0
-                                ? <Bipster bips={bips} currentIndex={currentBipIndex} />
+                                ? (
+                                    <Bipster
+                                        bips={bips}
+                                        currentIndex={currentBipIndex}
+                                        // onSelected={index => setCurrentBipIndex(index)}
+                                    />
+                                )
                                 : <ThemedText bold>No bips to report.</ThemedText>
                         }
                     </View>
