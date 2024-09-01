@@ -22,11 +22,11 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import EXIF from 'exif-js'
 
-export default props => {
+export default () => {
 
-  const { theme, user } = useApp()
+  const { user } = useApp()
   const { addBip } = useBips()
-  const { clearModal, closeModal } = useModal()
+  const { clearModal } = useModal()
 
   const isFocused = useIsFocused()
 
@@ -233,7 +233,6 @@ export default props => {
 					)}
 					{isFocused && (
 						<Camera
-							{...props}
 							ref={cameraRef}
 							style={{
 								// ...StyleSheet.absoluteFillObject,
