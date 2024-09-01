@@ -12,16 +12,22 @@ import {
 import { BipMap, Bipster } from '@modules'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
+import { useSocket } from '@socket'
 import { loadBips } from '@utils/bips'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 export default props => {
     const {
+        addBip,
         bips,
         bipsLoading,
+        removeBip,
         setBips,
         setBipsLoading,
     } = useBips()
+    const {
+        socket,
+    } = useSocket()
 
     // const container = useRef()
     // const map = useRef()
@@ -73,6 +79,8 @@ export default props => {
         // // } else {
         //     setNewModal('QUICK')
         // }
+        socket.on('new_bip', addBip)
+        socket.on('deleted_bip', removeBip)
     }, [])
 
     // const maxHeight = useMemo(() => {

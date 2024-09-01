@@ -15,6 +15,7 @@ import {
 import { useApp } from '@app'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
+import { useSocket } from '@socket'
 import {
   handleImageData,
   openFileSelector,
@@ -27,6 +28,7 @@ export default () => {
   const { user } = useApp()
   const { addBip } = useBips()
   const { clearModal } = useModal()
+  const { socket } = useSocket()
 
   const isFocused = useIsFocused()
 
@@ -125,6 +127,7 @@ export default () => {
   }
 
   const onBip = async bip => {
+	socket.emit('new_bip', bip)
 	addBip(bip)
 	clearModal()
   }

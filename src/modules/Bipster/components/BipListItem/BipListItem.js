@@ -12,6 +12,7 @@ import {
 import { useApp } from '@app'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
+import { useSocket } from '@socket'
 import { getBipImages } from '@utils/images'
 import { deleteBip } from '@utils/bips'
 import { getAddress } from '@utils/map'
@@ -28,6 +29,7 @@ export default ({ item, onPressed, current = false }) => {
     } = useBips()
 
     const { setModal } = useModal()
+    const { socket } = useSocket()
 
     const [ loading, setLoading ] = useState(false)
     const [ address, setAddress ] = useState(null)
@@ -80,7 +82,10 @@ export default ({ item, onPressed, current = false }) => {
         setLoading(true)
         const deletedBip = await deleteBip(id)
         setLoading(false)
-        if (deletedBip) removeBip(id)
+        if (deletedBip) {
+            socket.emit('bip_deleted', deletedBip)
+            removeBip(id)
+        }   
     }
 
     const onItemPressed = () => {

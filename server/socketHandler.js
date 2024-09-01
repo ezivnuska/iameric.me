@@ -151,6 +151,15 @@ const socketHandler = io => socket => {
 		refreshConnections()
 	}
 
+	const onNewBip = async bip => {
+		console.log('new_bip', bip)
+		socket.broadcast.emit('new_bip', bip)
+	}
+
+	const onBipDeleted = async bip => {
+		io.emit('deleted_bip', bip._id)
+	}
+
 	const onNewEntry = async entry => {
 		socket.broadcast.emit('new_entry', entry)
 	}
@@ -188,6 +197,8 @@ const socketHandler = io => socket => {
 	socket.on('connection_details', 		onConnectionDetails)
 	socket.on('user_signed_out', 			onUserSignedOut)
 	socket.on('forced_signout_complete', 	onForcedSignoutComplete)
+	socket.on('new_bip', 					onNewBip)
+	socket.on('bip_deleted', 				onBipDeleted)
 	socket.on('new_entry', 					onNewEntry)
 	socket.on('entry_deleted', 				onEntryDeleted)
 	socket.on('message_deleted', 			onMessageDeleted)
