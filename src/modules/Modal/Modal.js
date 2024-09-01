@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import {
     Pressable,
     ScrollView,
@@ -61,8 +61,9 @@ export default ({ fullscreen = false, transparent = false, ...props }) => {
                                 // borderTopLeftRadius: 20,
                                 // borderTopRightRadius: 20,
                                 overflow: 'hidden',
-                                paddingVertical: 20,
+                                paddingTop: 10,
                                 paddingHorizontal: 10,
+                                paddingBottom: 30,
                                 maxHeight: dims.height - 100,
                                 width: dims.width - 10,
                                 maxWidth: 390,

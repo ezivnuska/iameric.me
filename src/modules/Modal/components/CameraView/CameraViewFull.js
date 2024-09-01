@@ -285,8 +285,8 @@ export default () => {
 			style={{
 				position: 'absolute',
 				bottom: 20,
-				left: 20,
-				right: 20,
+				left: 10,
+				right: 10,
 				flex: 1,
 				flexDirection: 'row',
 				padding: 10,

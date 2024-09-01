@@ -1,7 +1,12 @@
 import React from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
-import { format, formatDistance, formatRelative, subDays } from 'date-fns'
+import {
+    format,
+    formatDistance,
+    formatRelative,
+    subDays,
+} from 'date-fns'
 
 export default ({ time = null, color = '#444', prefix = '', suffix = '' }) => {
     return (

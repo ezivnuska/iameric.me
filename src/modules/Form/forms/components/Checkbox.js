@@ -24,7 +24,7 @@ export default ({ label, onChange, value = false }) => {
             }}
         >
             <Icon
-                name={checked ? 'ellipse' : 'ellipse-outline'}
+                name={checked ? 'radio-button-on' : 'radio-button-off'}
                 size={22}
                 color={checked ? 'tomato' : theme?.colors.textDefault}
             />

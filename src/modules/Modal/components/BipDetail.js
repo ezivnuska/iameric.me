@@ -82,99 +82,79 @@ export default ({ data }) => {
     // }
 
     return (
-        // <Screen
-        //     {...props}
-        //     secure={true}
-        //     key={`bip-screen-${new Date()}`}
-        // >
-    
-            <View
-                style={{
-                    flexGrow: 1,
-                    // borderWidth: 1,
-                    // borderColor: 'red'
-                }}
-            >
+        <View
+            style={{
+                flexGrow: 1,
+            }}
+        >
 
-                {bipLoading
-                    ? <ThemedText>Loading bip...</ThemedText>
-                    : bip
-                        ? (
+            {bipLoading
+                ? <ThemedText>Loading bip...</ThemedText>
+                : bip
+                    ? (
+                        <View
+                            style={{ flexGrow: 1 }}
+                        >
+
+                            {/* <Heading
+                                title={bip.user.username}
+                                onBack={navigateBack}
+                            /> */}
+                            
+                            {bip.location && <Map coords={bip.location} nomap />}
+                            
+                            <View style={{ flexGrow: 0 }}>
+                                <Time
+                                    time={bip.createdAt}
+                                    prefix={images ? `${images.length} image${images.length !== 1 ? 's' : ''} captured ` : null}
+                                />
+                            </View>
+
                             <View
                                 style={{
                                     flexGrow: 1,
-                                    gap: 5,
-                                    // borderWidth: 1,
-                                    // borderColor: 'blue',
+                                    marginTop: 10,
                                 }}
                             >
-
-                                {/* <Heading
-                                    title={bip.user.username}
-                                    onBack={navigateBack}
-                                /> */}
-                                
-                                {bip.location && <Map coords={bip.location} nomap />}
-                                
-                                <View
-                                    style={{
-                                        flexGrow: 0,
-                                        // borderWidth: 1,
-                                        // borderColor: 'orange',
-                                    }}
-                                >
-                                    <Time time={bip.createdAt} />
-                                </View>
-
-                                <View
-                                    style={{
-                                        flexGrow: 1,
-                                        overflow: 'hidden',
-                                        // borderWidth: 1,
-                                        // borderColor: 'green',
-                                    }}
-                                >
-                                
-                                    {loadingImages
-                                        ? <ThemedText>Loading Images...</ThemedText>
-                                        : (
-                                            <View style={{ gap: 10 }}>
-                                                {(images && images.length > 0) && images.map((image, index) => {
-                                                    return (
-                                                        <View
-                                                            key={`bip-image-${index}`}
+                            
+                                {loadingImages
+                                    ? <ThemedText>Loading Images...</ThemedText>
+                                    : (
+                                        <View style={{ gap: 10 }}>
+                                            {(images && images.length > 0) && images.map((image, index) => {
+                                                return (
+                                                    <View
+                                                        key={`bip-image-${index}`}
+                                                        style={{
+                                                            height: image.height,
+                                                            width: '100%',
+                                                        }}
+                                                    >
+                                                        <Image
+                                                            source={{
+                                                                uri: `${IMAGE_PATH}/${image.path}/${image.filename}`
+                                                            }}
+                                                            // height={image.height}
+                                                            // width={image.width}
+                                                            resizeMethod='scale'
+                                                            resizeMode='cover'
                                                             style={{
                                                                 height: image.height,
-                                                                width: '100%',
+                                                                width: image.width,
                                                             }}
-                                                        >
-                                                            <Image
-                                                                source={{
-                                                                    uri: `${IMAGE_PATH}/${image.path}/${image.filename}`
-                                                                }}
-                                                                // height={image.height}
-                                                                // width={image.width}
-                                                                resizeMethod='scale'
-                                                                resizeMode='cover'
-                                                                style={{
-                                                                    height: image.height,
-                                                                    width: image.width,
-                                                                }}
-                                                            />
-                                                        </View>
-                                                    )
-                                                })}
-                                            </View>
-                                        )
-                                    }
-                                </View>
+                                                        />
+                                                    </View>
+                                                )
+                                            })}
+                                        </View>
+                                    )
+                                }
                             </View>
-                        )
-                        : <ThemedText>No bip.</ThemedText>
-                }
-    
-            </View>
-    
-        // </Screen>
+                        </View>
+                    )
+                    : <ThemedText>No bip.</ThemedText>
+            }
+
+        </View>
     )
 }
