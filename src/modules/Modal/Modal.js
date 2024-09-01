@@ -9,12 +9,12 @@ import { useApp } from '@app'
 import { useModal } from '@modal'
 import { CameraView, ModalFactory } from './components'
 
-export default ({ fullscreen = false, transparent = false, ...props }) => {
+export default ({ fullscreen = false, transparent = false }) => {
     
     const { dims } = useApp()
     const { closeModal, modal } = useModal()
 
-    const isCamera = useMemo(() => modal && modal.type === 'CAPTURE', [modal])
+    const isCamera = useMemo(() => (modal && modal.type === 'CAPTURE'), [modal])
 
     return (
         <Modal

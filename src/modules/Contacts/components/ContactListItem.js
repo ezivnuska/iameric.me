@@ -70,10 +70,10 @@ export default ({ item }) => {
                     }}
                 >
                     <Image
+                        resizeMode='cover'
                         style={{
                             width: 24,
                             height: 24,
-                            resizeMode: 'cover',
                         }}
                         source={imagePath}
                     />

@@ -2,15 +2,13 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
   Pressable,
   SafeAreaView,
-  StyleSheet,
   View,
 } from 'react-native'
+import { useIsFocused } from '@react-navigation/native'
 import { Camera, FlashMode } from 'expo-camera'
-// import { askAsync, CAMERA } from 'expo-permissions'
 import { BipPreview } from './components'
 import {
-	IconButton,
-	ModalHeader,
+	ActivityIndicator,
 	Slider,
 	ThemedText,
 } from '@components'
@@ -24,11 +22,13 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 import EXIF from 'exif-js'
 
-export default () => {
+export default props => {
 
   const { theme, user } = useApp()
   const { addBip } = useBips()
   const { clearModal, closeModal } = useModal()
+
+  const isFocused = useIsFocused()
 
   const [ hasPermission, setHasPermission ] = useState(null)
   const [ cameraType, setCameraType ] = useState('back')
@@ -37,7 +37,7 @@ export default () => {
   const [ uploading, setUploading ] = useState(false)
   const [ cameraError, setCameraError ] = useState(null)
   const [ showInstructions, setShowInstructions ] = useState(true)
-  const [ flashMode, setFlashMode ] = useState('off')
+  const [ flashMode, setFlashMode ] = useState(FlashMode.off)
   const [ zoom, setZoom ] = useState(0.5)
   
   const cameraRef = useRef()
@@ -47,7 +47,6 @@ export default () => {
   useEffect(() => {
 	(async () => {
 		const { status } = await Camera.requestCameraPermissionsAsync()
-		// const { status } = await askAsync(CAMERA)
 		setHasPermission(status === 'granted')
 	})()
 
@@ -55,8 +54,8 @@ export default () => {
   }, [])
 
   const toggleFlash = () => {
-	if (flashMode === 'on') setFlashMode('off')
-	else setFlashMode('on')
+	if (flashMode === FlashMode.on) setFlashMode(FlashMode.off)
+	else setFlashMode(FlashMode.on)
   }
 
   const stopTimer = () => {
@@ -125,11 +124,6 @@ export default () => {
 	}
   }
 
-  const closeAndClear = async () => {
-	if (previews.length) setPreviews([])
-	else clearModal()
-  }
-
   const onBip = async bip => {
 	addBip(bip)
 	clearModal()
@@ -140,8 +134,9 @@ export default () => {
   }
 
   const onCameraReady = async () => {
-	const isAvailable = await Camera.isAvailableAsync()
-	if (isAvailable) setIsCameraReady(true)
+	setIsCameraReady(true)
+	// const isAvailable = await Camera.isAvailableAsync()
+	// if (isAvailable) setIsCameraReady(true)
   }
 
   const handleMountError = error => {
@@ -156,8 +151,47 @@ export default () => {
 	}
 }
 
+// const stopRecord = () => {
+//     setIsRecording(false)
+//     if (cameraRef.current) {
+// 		cameraRef.current.stopRecording()
+// 		console.log('stopped recording')
+//     }
+// }
+
+// const onRecord = async () => {
+//     if (await Camera.isAvailableAsync()) {
+//       	if (cameraRef.current) {
+// 			setIsRecording(true)
+// 			// const options = { quality: '720p', maxDuration: 60 }
+// 			// const data = await cameraRef.current.recordAsync(options)
+// 			// const source = data.uri
+
+// 			// if (source) {
+// 			// 	console.log('now you have a uri')
+// 			// 	navigation.navigate('PostVideoScreen', {
+// 			// 		gameId: gameId,
+// 			// 		title: title,
+// 			// 		videoUrl: source,
+// 			// 		phase: phase,
+// 			// 		gameName: gameName,
+// 			// 	})
+// 			// }
+//     	}
+//     }
+// }
+
+	const handleClose = async () => {
+		if (cameraRef.current && isCameraReady) {
+			await cameraRef.current.pausePreview()
+		}
+		setIsCameraReady(false)
+		clearModal()
+	}
+
   return (
 	<SafeAreaView
+		{...props}
 		style={{
 			flex: 1,
 			width: '100%',
@@ -178,23 +212,45 @@ export default () => {
 						marginHorizontal: 'auto',
 					}}
 				>
-					<Camera
-						ref={cameraRef}
-						style={{
-							// ...StyleSheet.absoluteFillObject,
-							position: 'absolute',
-							top: 0,
-							right: 0,
-							bottom: 0,
-							left: 0,
-							zIndex: 1,
-						}}
-						type={cameraType}
-						flashMode={flashMode}
-						zoom={zoom}
-						onCameraReady={onCameraReady}
-						onMountError={handleMountError}
-					/>
+					{!isCameraReady && (
+						<ActivityIndicator />
+						// <View
+						// 	style={{
+						// 		// ...StyleSheet.absoluteFillObject,
+						// 		position: 'absolute',
+						// 		top: 0,
+						// 		right: 0,
+						// 		bottom: 0,
+						// 		left: 0,
+						// 		zIndex: 200,
+						// 		backgroundColor: '#fff',
+						// 		flexDirection: 'row',
+						// 		alignItems: 'center',
+						// 	}}
+						// >
+						// 	<ActivityIndicator />
+						// </View>
+					)}
+					{isFocused && (
+						<Camera
+							{...props}
+							ref={cameraRef}
+							style={{
+								// ...StyleSheet.absoluteFillObject,
+								position: 'absolute',
+								top: 0,
+								right: 0,
+								bottom: 0,
+								left: 0,
+								zIndex: 1,
+							}}
+							type={cameraType}
+							flashMode={flashMode}
+							zoom={zoom}
+							onCameraReady={onCameraReady}
+							onMountError={handleMountError}
+						/>
+					)}
 
 					<Pressable
 						disabled={!isCameraReady || uploading}
@@ -208,9 +264,26 @@ export default () => {
 							zIndex: 100,
 						}}
 					/>
+
+					<Pressable
+						onPress={toggleFlash}
+						style={{
+							position: 'absolute',
+							top: 0,
+							left: 0,
+							zIndex: 210,
+							padding: 10, 
+						}}
+					>
+						<Icon
+							name={flashMode === FlashMode.on ? 'flash-sharp' : 'flash-off-sharp'}
+							size={30}
+							color='#fff'
+						/>
+					</Pressable>
 					
 					<Pressable
-						onPress={clearModal}
+						onPress={handleClose}
 						style={{
 							position: 'absolute',
 							top: 0,
@@ -296,7 +369,6 @@ export default () => {
 			<BipPreview
 				images={previews}
 				onBip={onBip}
-				onClear={closeAndClear}
 				onRemove={removePreview}
 				setUploading={setUploading}
 			/>

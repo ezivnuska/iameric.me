@@ -148,10 +148,10 @@ export default ({ route }) => {
                         >
                             <Image
                                 source={source}
+                                resizeMode='cover'
                                 style={{
                                     width: 24,
                                     height: 24,
-                                    resizeMode: 'cover',
                                 }}
                             />
                         </View>

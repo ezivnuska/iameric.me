@@ -9,8 +9,8 @@ export default ImageListItem = ({ path, size }) => {
             width={size}
             height={size}
             source={{ uri: `${assetPath}/${path}` }}
+            resizeMode='cover'
             style={{
-                resizeMode: 'cover',
                 width: size,
                 height: size,
             }}

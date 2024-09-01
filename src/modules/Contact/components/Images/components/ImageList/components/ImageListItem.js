@@ -8,8 +8,8 @@ export default ImageListItem = ({ image, size }) => (
         width={size}
         height={size}
         source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
+        resizeMode='cover'
         style={{
-            resizeMode: 'cover',
             width: size,
             height: size,
         }}

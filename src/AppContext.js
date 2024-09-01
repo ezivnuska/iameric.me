@@ -25,6 +25,7 @@ import { useNotification } from '@notification'
 // import iconFont from './fonts/Ionicons.ttf'
 // import iconFont from 'react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf'
 import { useFonts } from 'expo-font'
+import Ionicons from './fonts/Ionicons.ttf'
 
 // import socket from '../socket'
 
@@ -63,7 +64,7 @@ export const AppContextProvider = ({ children }) => {
     const dims = useWindowDimensions()
 
     const [fontsLoaded] = useFonts({
-        'Ionicons': require('./fonts/Ionicons.ttf'),
+        'Ionicons': Ionicons,
         // 'MaterialCommunityIcons': require('react-native-vector-icons/build/MaterialCommunityIcons'),
     })
 

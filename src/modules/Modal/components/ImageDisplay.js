@@ -154,8 +154,8 @@ export default ({ data }) => {
                                     source={{
                                         uri: `${IMAGE_PATH}/${image.user.username}/${image.filename}`,
                                     }}
+                                    resizeMode='contain'
                                     style={{
-                                        resizeMode: 'contain',
                                         width: imageDims.width,
                                         height: imageDims.height,
                                         marginHorizontal: 'auto',

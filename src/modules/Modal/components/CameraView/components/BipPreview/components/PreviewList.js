@@ -73,12 +73,12 @@ export default ({ images, remove, uploading, small = false }) => {
                                 width={imageSize}
                                 height={imageSize}
                                 source={{ uri: uri || image.imageData.uri }}
+                                resizeMode='cover'
                                 style={[
                                     {
                                         position: 'absolute',
                                         top: 0,
                                         left: 0,
-                                        resizeMode: 'cover',
                                         width: imageSize,
                                         height: imageSize,
                                         opacity: (uploading === index) ? 0.75 : 1,

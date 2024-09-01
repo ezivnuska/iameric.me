@@ -15,7 +15,7 @@ import { useNotification } from '@notification'
 import { uploadBipImage } from '@utils/images'
 import { createBip } from '@utils/bips'
 
-export default ({ images, onBip, onClear, onRemove, setUploading }) => {
+export default ({ images, onBip, onRemove, setUploading }) => {
 
     const { user } = useApp()
     const { addNotification } = useNotification()
@@ -140,9 +140,22 @@ export default ({ images, onBip, onClear, onRemove, setUploading }) => {
                 }
 
                 {(loading && upload !== null) && (
-                    <ThemedText bold color='tomato'>
-                        {`Uploading ${items.length - upload} image${items.length - upload !== 1 ? 's' : ''}`}
-                    </ThemedText>
+                    <View
+                        style={{
+                            height: 30,
+                            borderRadius: 8,
+                            backgroundColor: '#fff',
+                            overflow: 'hidden',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            paddingHorizontal: 10,
+                            marginVertical: 10,
+                        }}
+                    >
+                        <ThemedText bold color='tomato' align='center'>
+                            {`Uploading ${items.length - upload} image${items.length - upload !== 1 ? 's' : ''}`}
+                        </ThemedText>
+                    </View>
                 )}
             </View>
 
