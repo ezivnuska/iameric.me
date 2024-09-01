@@ -40,6 +40,11 @@ export default () => {
                         icon={faCarBurst}
                         size={30}
                         color='tomato'
+                        style={{
+                            transform: [{
+                                rotate: '-15deg',
+                            }],
+                        }}
                     />
 
                     <ThemedText
