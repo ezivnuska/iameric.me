@@ -13,21 +13,14 @@ import {
 } from '@modal'
 import {
     BipDetail,
-    CameraView,
     ImageDisplay,
-    ModalContainer,
     SocketDisplay,
     QuickStart,
 } from '.'
 
 export default () => {
 
-    const {
-        clearModal,
-        closeModal,
-        modal,
-        modals,
-    } = useModal()
+    const { modal } = useModal()
     
     const renderModalContent = () => {
         if (!modal) return null
@@ -38,7 +31,7 @@ export default () => {
             case 'BIP': return <BipDetail data={data} />; break
             case 'DESTROY': return <DestroyForm />; break
             case 'FEEDBACK': return <FeedbackForm data={data} />; break
-            case 'IMAGE': return <ImageForm />; break
+            case 'IMAGE': return <ImageForm data={data} />; break
             case 'MESSAGE': return <MessageForm data={data} />; break
             case 'SETTINGS': return <SettingsForm />; break
             case 'SHOWCASE': return <ImageDisplay data={data} />; break

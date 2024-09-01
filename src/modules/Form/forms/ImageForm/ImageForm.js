@@ -8,31 +8,10 @@ import {
 import {
     ImagePicker,
 } from './components'
-// import EXIF from 'exif-js'
-// import { useApp } from '@app'
 import { useForm } from '@form'
 import { useImages } from '@images'
 
-// USAGE
-
-// const renderImageFormModule = () => {
-        
-//     const source = attachment
-//         ? { uri: attachment.thumbData.uri }
-//         : image
-//             ? `${IMAGE_PATH}/${profile.username}/thumb/${image.filename}`
-//             : null
-
-//     return (
-//         <ImageFormModule
-//             onImageSelected={att => setFormValues({ attachment: att })}
-//             removeImage={removeAttachment}
-//             source={source}
-//         />
-//     )
-// }
-
-export default ImageForm = ({ removeImage, source = null }) => {
+export default ImageForm = ({ data, removeImage, source = null }) => {
 
     const { formLoading } = useForm()
     const { uploading } = useImages()
@@ -71,7 +50,7 @@ export default ImageForm = ({ removeImage, source = null }) => {
                     </>
                 )}
                     
-                <ImagePicker />
+                <ImagePicker avatar={data ? data.avatar : false} />
 
             </View>
 

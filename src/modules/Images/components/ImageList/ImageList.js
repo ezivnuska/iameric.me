@@ -49,6 +49,7 @@ export default ImageList = ({ images, loading, upload = null }) => {
                 flexWrap: 'wrap',
                 gap: imageGap,
                 width: '100%',
+                marginVertical: 7,
             }}
         >
             {images.map((image, index) => (

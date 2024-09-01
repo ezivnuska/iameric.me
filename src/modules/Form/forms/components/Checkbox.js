@@ -4,11 +4,11 @@ import { ThemedText } from'@components'
 import { useApp } from'@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ label, onChange }) => {
+export default ({ label, onChange, value = false }) => {
 
     const { theme } = useApp()
 
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(value)
     
     useEffect(() => onChange(checked), [checked])
 
@@ -26,7 +26,7 @@ export default ({ label, onChange }) => {
             <Icon
                 name={checked ? 'ellipse' : 'ellipse-outline'}
                 size={22}
-                color={theme?.colors.textDefault}
+                color={checked ? 'tomato' : theme?.colors.textDefault}
             />
 
             <ThemedText>{label}</ThemedText>

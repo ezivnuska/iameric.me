@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import {
-    IconButton,
     ImageClone,
     SimpleButton,
     ThemedText,
@@ -20,7 +19,7 @@ import {
 import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ImagePicker = () => {
+export default ImagePicker = ({ avatar = false }) => {
 
     const {
         user,
@@ -37,12 +36,11 @@ export default ImagePicker = () => {
 
     const containerRef = useRef()
 
-    // const [size, setSize] = useState(initialSize)
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
     const [ready, setReady] = useState(false)
     const [timer, setTimer] = useState(null)
-    const [avatarCheckbox, setAvatarCheckbox] = useState(false)
+    const [avatarCheckbox, setAvatarCheckbox] = useState(avatar)
     const [imageDims, setImageDims] = useState(null)
     
     useEffect(() => {
@@ -165,6 +163,7 @@ export default ImagePicker = () => {
                 <Checkbox
                     label='Make profile image'
                     onChange={value => setAvatarCheckbox(value)}
+                    value={avatar}
                 />
 
                 <View

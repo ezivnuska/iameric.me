@@ -17,7 +17,7 @@ export default ({ username, ...props }) => {
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 alignItems: 'center',
-                gap: 10,
+                gap: 20,
                 marginBottom: 10,
             }}
         >
@@ -26,7 +26,11 @@ export default ({ username, ...props }) => {
                 disabled={props.route.name === 'Profile'}
                 style={{ flexGrow: 0 }}
             >
-                <ThemedText bold size={20}>
+                <ThemedText
+                    size={22}
+                    color={props.route.name === 'Profile' ? 'tomato' : '#000'}
+                    bold
+                >
                     {username}
                 </ThemedText>
             </Pressable>
@@ -36,20 +40,16 @@ export default ({ username, ...props }) => {
                     flexGrow: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 10,
+                    gap: 20,
                 }}
             >
                 <IconButton
                     name='images-sharp'
+                    size={22}
                     onPress={() => props.navigation.navigate('Images')}
                     disabled={props.route.name === 'Images'}
                 />
 
-                <IconButton
-                    name='map-sharp'
-                    onPress={() => props.navigation.navigate('Map')}
-                    disabled={props.route.name === 'Map'}
-                />
             </View>
         </View>
     )

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import { UserHeader } from './components'
 import { Screen } from './components'
@@ -16,7 +16,6 @@ export default props => {
                 style={{
                     flex: 1,
                     justifyContent: 'space-between',
-                    gap: 10,
                 }}
             >
 
