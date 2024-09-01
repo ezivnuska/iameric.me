@@ -191,7 +191,6 @@ export default () => {
 
   return (
 	<SafeAreaView
-		{...props}
 		style={{
 			flex: 1,
 			width: '100%',
