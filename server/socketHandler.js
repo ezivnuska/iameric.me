@@ -152,7 +152,6 @@ const socketHandler = io => socket => {
 	}
 
 	const onNewBip = async bip => {
-		console.log('new_bip', bip)
 		socket.broadcast.emit('new_bip', bip)
 	}
 
