@@ -107,6 +107,10 @@ export default ({ item, onPressed, current = false }) => {
                 backgroundColor: current ? 'rgba(200, 100, 100, 0.2)' : 'transparent',
                 borderRadius: 8,
                 overflow: 'hidden',
+                borderWidth: 1,
+                borderColor: '#aaa',
+                backgroundColor: '#eee',
+                marginBottom: 5,
             }}
         >
             <View

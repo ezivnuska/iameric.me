@@ -19,6 +19,7 @@
     "deploy:backend": "scp -r /Users/home/Projects/web/server eric@143.244.182.101:/var/www/iameric.me/html",
     "deploy:package": "scp /Users/home/Projects/web/package.json eric@143.244.182.101:/var/www/iameric.me/html",
     "deploy:images": "scp -r /Users/home/Projects/web/images eric@143.244.182.101:/var/www/iameric.me/html/assets",
+    "deploy:sounds": "scp -r /Users/home/Projects/web/sounds eric@143.244.182.101:/var/www/iameric.me/html/assets",
     "deploy:env": "scp /Users/home/Projects/web/.env eric@143.244.182.101:/var/www/iameric.me/html/.env",
     "analyze": "webpack --profile --json > stats.json"
   },
@@ -42,6 +43,7 @@
     "dotenv": "^16.3.1",
     "exif-js": "^2.3.0",
     "expo": "^49.0.0",
+    "expo-av": "~13.4.1",
     "expo-camera": "~13.4.4",
     "expo-constants": "~14.4.2",
     "expo-file-system": "~15.4.5",

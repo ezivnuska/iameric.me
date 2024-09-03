@@ -6,6 +6,11 @@ import React, {
     useReducer,
 } from 'react'
 
+import { Audio } from 'expo-av'
+import { IMAGE_PATH } from '../../../config'
+
+const assetPath = process.env.NODE_ENV === 'production' ? '/assets' : IMAGE_PATH
+
 const DURATION = 5000
 
 const initialState = {
@@ -23,6 +28,17 @@ export const useNotification = () => {
 
     if (!context) throw new Error()
     return context
+}
+
+const playSound = async () => {
+    const sound = new Audio.Sound()
+
+    try {
+        await sound.loadAsync(`${assetPath}/sounds/bell.mp3`, { shouldPlay: true })
+        await sound.unloadAsync()
+    } catch (error) {
+        console.error('AUDIO PLAY: ', error)
+    }
 }
 
 export const NotificationContextProvider = ({ children }) => {
@@ -48,6 +64,7 @@ export const NotificationContextProvider = ({ children }) => {
     }, [notifications])
 
     const addNotification = payload => {
+        playSound()
         dispatch({ type: 'ADD_NOTIFICATION', payload })
     }
 

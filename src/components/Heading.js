@@ -16,7 +16,7 @@ export default ({ title, children = null, onBack = null }) => {
             style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                gap: 20,
+                gap: 10,
                 // marginBottom: 10,
             }}
         >

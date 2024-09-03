@@ -43,6 +43,7 @@ module.exports = {
           '@layout':        './src/layout',
           '@modules':       './src/modules',
           '@screens':       './src/screens',
+          '@sounds':        './sounds',
           '@styles':        './src/styles',
           '@utils':         './src/utils',
         },

@@ -79,6 +79,14 @@ const fileLoaderConfiguration = {
 //   type: 'fonts',
 // }
 
+const soundLoaderConfiguration = {
+  test: /\.mp3$/,
+  loader: 'file-loader',
+  include: [
+    path.resolve(__dirname, 'sounds'),
+  ],
+}
+
 const iconLoaderConfiguration = {
   test: /\.ttf$/,
   loader: 'file-loader',
@@ -105,14 +113,18 @@ let plugins = [
   new webpack.ProvidePlugin({
     process: 'process/browser',
   }),
-  // new CopyPlugin({
-  //   patterns: [
-  //     {
-  //       from: 'src/fonts/style.css',
-  //       to: 'fonts/style.css',
-  //     }
-  //   ],
-  // }),
+  new CopyPlugin({
+    patterns: [
+      {
+        from: 'sounds',
+        to: 'sounds',
+      },
+      // {
+      //   from: 'src/fonts/style.css',
+      //   to: 'fonts/style.css',
+      // }
+    ],
+  }),
 ]
 
 if (isDebug) plugins = [...plugins, new BundleAnalyzerPlugin()]
@@ -154,6 +166,7 @@ module.exports = {
       '.js',
       '.css',
       '.json',
+      '.mp3',
     ],
     alias: {
       'react-native$': 'react-native-web',
@@ -177,6 +190,7 @@ module.exports = {
       imageLoaderConfiguration,
       svgLoaderConfiguration,
       iconLoaderConfiguration,
+      soundLoaderConfiguration,
       // fontLoaderConfiguration,
       // styleLoaderConfig,
     ],

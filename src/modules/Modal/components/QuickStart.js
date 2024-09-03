@@ -33,7 +33,7 @@ export default () => {
                         gap: 10,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        height: 40,
+                        // height: 40,
                     }}
                 >
                     <FontAwesomeIcon
@@ -59,6 +59,13 @@ export default () => {
                 <SimpleButton
                     label='Open Camera'
                     onPress={() => setNewModal('CAPTURE')}
+                />
+
+                <SimpleButton
+                    label='Continue to Bipsy'
+                    color='#666'
+                    onPress={() => closeModal()}
+                    transparent
                 />
             </View>
 

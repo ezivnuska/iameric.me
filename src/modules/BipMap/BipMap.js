@@ -73,6 +73,10 @@ export default ({ onBipSelected = null, currentIndex = null }) => {
                         lat: Number(location.latitude),
                         lng: Number(location.longitude),
                     }}
+                    mapTypeControl={false}
+                    fullscreenControl={false}
+                    streetViewControl={false}
+                    clickableIcons={false}
                     defaultZoom={12}
                     gestureHandling={'greedy'}
                     disableDefaultUI={false}

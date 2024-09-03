@@ -5,7 +5,7 @@ import {
     Text,
 } from 'react-native'
 
-export default ({ disabled, label, onPress, transparent = false, ...props }) => {
+export default ({ disabled, label, onPress, transparent = false, color = '#fff', ...props }) => {
     return (
         <Pressable
             disabled={disabled}
@@ -23,7 +23,7 @@ export default ({ disabled, label, onPress, transparent = false, ...props }) => 
             <Text
                 style={{
                     flex: 1,
-                    color: transparent ? 'tomato' : disabled ? '#eee' : '#fff',
+                    color: transparent ? color ? color : disabled : '#eee',
                     fontSize: 16,
                     lineHeight: 20,
                     letterSpacing: 0.5,

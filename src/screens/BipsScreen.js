@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-    Animated,
+    // Animated,
     Pressable,
     View,
 } from 'react-native'
@@ -12,11 +12,14 @@ import {
 import { BipMap, Bipster } from '@modules'
 import { useBips } from '@bips'
 import { useModal } from '@modal'
+import { useNotification } from '@notification'
 import { useSocket } from '@socket'
 import { loadBips } from '@utils/bips'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faCarBurst } from '@fortawesome/free-solid-svg-icons/faCarBurst'
 
 export default props => {
+    
     const {
         addBip,
         bips,
@@ -25,9 +28,8 @@ export default props => {
         setBips,
         setBipsLoading,
     } = useBips()
-    const {
-        socket,
-    } = useSocket()
+    const { addNotification } = useNotification()
+    const { socket } = useSocket()
 
     // const container = useRef()
     // const map = useRef()
@@ -51,16 +53,10 @@ export default props => {
     //     }).start()
     // }
 
-    // const init = async () => {
-    //     if (navigator.geolocation) {
-    //         navigator.geolocation.getCurrentPosition(position => {
-    //             const { latitude, longitude } = position.coords
-    //             setLocation({ latitude, longitude })
-    //         })
-    //     } else {
-    //         console.log('Geolocation is not supported by this browser.')
-    //     }
-    // }
+    const handleNewBip = bip => {
+        addBip(bip)
+        addNotification('active bip reported')
+    }
 
     useEffect(() => {
         const fetchBips = async () => {
@@ -73,13 +69,7 @@ export default props => {
             fetchBips()
         }
         
-        // init()
-        // if (!currentBipIndex) {
-        // //     // setCurrentBipIndex(null)
-        // // } else {
-        //     setNewModal('QUICK')
-        // }
-        socket.on('new_bip', addBip)
+        socket.on('new_bip', handleNewBip)
         socket.on('deleted_bip', removeBip)
     }, [])
 
@@ -187,114 +177,125 @@ export default props => {
             {...props}
             secure={true}
         >
-    
-            <View style={{ flex: 1 }}>
-    
+            <View
+                // ref={container}
+                // onPointerUp={handleTouchEnd}
+                // onTouchEnd={handleTouchEnd}
+                // onLayout={e => setContainerHeight(e.nativeEvent.target.clientHeight)}
+                style={{
+                    flex: 1,
+                    flexGrow: 1,
+                    gap: 5,
+                }}
+            >
+                <View
+                    // ref={map}
+                    style={{
+                        flex: 5,
+                        // flexBasis: 'auto',
+                        // flexGrow: 1,
+                        // height: maxHeight,
+                        // maxHeight: maxHeight,
+                    }}
+                >
+                    <BipMap
+                        currentIndex={currentBipIndex}
+                        onBipSelected={onBipSelected}
+                    />
+                </View>
+                
+                {/* <Pressable
+                    ref={pad}
+                    onPointerDown={handleTouchStart}
+                    // onPointerMove={handleTouchMove}
+                    onTouchStart={handleTouchStart}
+                    // onTouchMove={handleTouchMove}
+                    style={{
+                        flexBasis: 30,
+                        // flexGrow: 0,
+                        // flexDirection: 'row',
+                        // justifyContent: 'center',
+                        // backgroundColor: '#eee',
+                        // borderRadius: 8,
+                        // overflow: 'hidden',
+                        // marginVertical: 5,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Icon
+                        name='menu-sharp'
+                        size={18}
+                        color='#ccc'
+                        style={{ marginHorizontal: 'auto' }}
+                    />
+                </Pressable> */}
+
                 <Heading
-                    title={`Bipster - ${bips.length} bip${bips.length !== 0 ? 's' : ''}`}
+                    title='Bipsy'
                 >
                     <View
                         style={{
+                            flexBasis: 'auto',
+                            flexGrow: 0,
                             flexDirection: 'row',
-                            justifyContent: 'flex-end',
+                            justifyContent: 'space-between',
                             alignItems: 'center',
                         }}
                     >
+                        <ThemedText style={{ flex: 1, flexGrow: 1 }}>
+                            {`${bips.length} bip${bips.length !== 0 ? 's' : ''}`}
+                        </ThemedText>
                         <Pressable
                             onPress={() => setNewModal('CAPTURE')}
                             style={{
+                                flex: 1,
+                                flexBasis: 'auto',
+                                flexGrow: 0,
                                 flexDirection: 'row',
-                                justifyContent: 'flex-end',
+                                justifyContent: 'center',
                                 alignItems: 'center',
                                 gap: 10,
+                                paddingHorizontal: 15,
+                                height: 28,
+                                borderRadius: 8,
+                                overflow: 'hidden',
+                                backgroundColor: 'tomato',
                             }}
                         >
-                            <ThemedText color='tomato' bold>Capture Bip</ThemedText>
-                            <Icon
-                                name='camera-sharp'
-                                size={30}
-                                color='tomato'
+                            <FontAwesomeIcon
+                                icon={faCarBurst}
+                                size={24}
+                                color='#fff'
+                                style={{
+                                    transform: [{
+                                        rotate: '-15deg',
+                                    }],
+                                }}
                             />
+                            <ThemedText color='#fff' bold>Capture Bip</ThemedText>
                         </Pressable>
                     </View>
                 </Heading>
-                
+
                 <View
-                    // ref={container}
-                    // onPointerUp={handleTouchEnd}
-                    // onTouchEnd={handleTouchEnd}
-                    // onLayout={e => setContainerHeight(e.nativeEvent.target.clientHeight)}
                     style={{
-                        flex: 1,
-                        flexGrow: 1,
-                        gap: 10,
+                        flex: 6,
                     }}
                 >
-                    <View
-                        // ref={map}
-                        style={{
-                            flex: 1,
-                            // flexBasis: 'auto',
-                            // flexGrow: 1,
-                            // height: maxHeight,
-                            // maxHeight: maxHeight,
-                        }}
-                    >
-                        <BipMap
-                            currentIndex={currentBipIndex}
-                            onBipSelected={onBipSelected}
-                        />
-                    </View>
-                    
-                    {/* <Pressable
-                        ref={pad}
-                        onPointerDown={handleTouchStart}
-                        // onPointerMove={handleTouchMove}
-                        onTouchStart={handleTouchStart}
-                        // onTouchMove={handleTouchMove}
-                        style={{
-                            flexBasis: 30,
-                            // flexGrow: 0,
-                            // flexDirection: 'row',
-                            // justifyContent: 'center',
-                            // backgroundColor: '#eee',
-                            // borderRadius: 8,
-                            // overflow: 'hidden',
-                            // marginVertical: 5,
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Icon
-                            name='menu-sharp'
-                            size={18}
-                            color='#ccc'
-                            style={{ marginHorizontal: 'auto' }}
-                        />
-                    </Pressable> */}
-                    <View
-                        style={{
-                            flex: 1,
-                            // flexShrink: 0,
-                            // flexBasis: 'auto',
-                            // minHeight: 70,
-                        }}
-                    >
-                        {bipsLoading
-                            ? <ThemedText>Loading Bips...</ThemedText>
-                            : bips.length > 0
-                                ? (
-                                    <Bipster
-                                        bips={bips}
-                                        currentIndex={currentBipIndex}
-                                        onSelected={onBipSelected}
-                                    />
-                                )
-                                : <ThemedText bold>No bips to report.</ThemedText>
-                        }
-                    </View>
+                    {bipsLoading
+                        ? <ThemedText>Loading Bips...</ThemedText>
+                        : bips.length > 0
+                            ? (
+                                <Bipster
+                                    bips={bips}
+                                    currentIndex={currentBipIndex}
+                                    onSelected={onBipSelected}
+                                />
+                            )
+                            : <ThemedText bold>No bips to report.</ThemedText>
+                    }
                 </View>
-    
             </View>
     
         </Screen>
