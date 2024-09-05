@@ -100,8 +100,7 @@ export default ({ item, onPressed, current = false }) => {
             onPress={onItemPressed}
             style={{
                 flex: 1,
-                paddingTop: 2,
-                paddingBottom: 6,
+                paddingVertical: 6,
                 paddingHorizontal: 7,
                 gap: 3,
                 backgroundColor: current ? 'rgba(200, 100, 100, 0.2)' : 'transparent',
@@ -111,22 +110,67 @@ export default ({ item, onPressed, current = false }) => {
                 borderColor: '#aaa',
                 backgroundColor: '#eee',
                 marginBottom: 5,
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                gap: 10,
+            }}
+        >
+        {(item.images && item.images.length > 0) && (
+            <View
+                style={{
+                    flex: 1,
+                    flexBasis: 'auto',
+                    flexGrow: 0,
+                }}
+            >
+                <ThumbList
+                    images={item.images}
+                    loading={loading}
+                    // disabled
+                    // small
+                />
+                
+            </View>
+        )}
+
+        <View
+            style={{
+                flexGrow: 1,
             }}
         >
             <View
                 style={{
-                    flexGrow: 0,
+                    flex: 1,
                     flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 7,
+                    justifyContent: 'flex-start',
+                    gap: 10,
                 }}
             >
                 <ThemedText bold>{city}</ThemedText>
+                <ThemedText>{street}</ThemedText>
+            </View>
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start',
+                    gap: 10,
+                }}
+            >
+                <ThemedText color='tomato' bold>{item.user?.username || item.user}</ThemedText>
                 <Time time={item.createdAt} />
-                {(
-                    (item.user && item.user._id === user._id) ||
-                    user.role === 'admin'
-                ) ? (
+            </View>
+        </View>
+
+        {(
+            (item.user && item.user._id === user._id) ||
+                user.role === 'admin'
+            ) ? (
+                <View
+                    style={{
+                        flexGrow: 0,
+                    }}
+                >
                     <IconButton
                         name='close-sharp'
                         size={20}
@@ -134,45 +178,8 @@ export default ({ item, onPressed, current = false }) => {
                         onPress={() => deleteAndRemoveBip(item._id)}
                         disabled={loading}
                     />
-                ) : null}
-            </View>
-
-            <View
-                style={{
-                    flexGrow: 0,
-                    marginBottom: 3,
-                    flexDirection: 'row',
-                }}
-            >
-                {(item.images && item.images.length > 0) && (
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            gap: 10,
-                        }}
-                    >
-                        <ThumbList
-                            images={item.images}
-                            loading={loading}
-                            // disabled
-                            // small
-                        />
-
-                        <View
-                            style={{
-                                flexGrow: 1,
-                            }}
-                        >
-                            {street && <ThemedText bold>{street}</ThemedText>}
-                            <ThemedText color='tomato' bold>{item.user?.username || item.user}</ThemedText>
-
-                        </View>
-                    </View>
-                )}
-            </View>
-
+                </View>
+            ) : null}
 
         </Pressable>
     )

@@ -213,7 +213,7 @@ export default () => {
 						style={{
 							height: transition.interpolate({
 								inputRange: [0, 1],
-								outputRange: [0, dims.height * 0.6],
+								outputRange: [0, dims.height * 0.65],
 							}),
 						}}
 					>
@@ -242,7 +242,7 @@ export default () => {
 						style={{
 							height: transition.interpolate({
 								inputRange: [0, 1],
-								outputRange: [dims.height, dims.height * 0.4],
+								outputRange: [dims.height, dims.height * 0.35],
 							}),
 						}}
 					>

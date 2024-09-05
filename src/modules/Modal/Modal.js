@@ -27,7 +27,7 @@ export default ({ fullscreen = false, transparent = false }) => {
                 margin: 0,
             }}
         >
-
+            {/* {isCamera && <View style={{ background: 'yellow', width: 100,  height: 100 }} />} */}
             {isCamera
                 ? (
                     <View
@@ -68,7 +68,7 @@ export default ({ fullscreen = false, transparent = false }) => {
                                 flexBasis: 'auto',
                                 flexGrow: 0,
                                 flexShrink: 1,
-                                backgroundColor: '#fff',
+                                backgroundColor: 'red',
                                 borderRadius: 20,
                                 // borderTopLeftRadius: 20,
                                 // borderTopRightRadius: 20,
