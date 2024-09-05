@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
-  Pressable,
-  SafeAreaView,
-  View,
+	Animated,
+	Pressable,
+	SafeAreaView,
+	View,
 } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 import { Camera, FlashMode } from 'expo-camera'
@@ -25,7 +26,7 @@ import EXIF from 'exif-js'
 
 export default () => {
 
-  const { user } = useApp()
+  const { dims, user } = useApp()
   const { addBip } = useBips()
   const { clearModal } = useModal()
   const { socket } = useSocket()
@@ -35,22 +36,36 @@ export default () => {
   const [ hasPermission, setHasPermission ] = useState(null)
   const [ cameraType, setCameraType ] = useState('back')
   const [ isCameraReady, setIsCameraReady ] = useState(false)
+  const [ containerHeight, setContainerHeight ] = useState(null)
   const [ previews, setPreviews ] = useState([])
   const [ uploading, setUploading ] = useState(false)
   const [ cameraError, setCameraError ] = useState(null)
   const [ showInstructions, setShowInstructions ] = useState(true)
   const [ flashMode, setFlashMode ] = useState(FlashMode.off)
   const [ zoom, setZoom ] = useState(0.5)
-  
+
   const cameraRef = useRef()
+
+  const transition = useRef(new Animated.Value(1)).current
+
+  const animate = () => {
+		Animated.timing(transition, {
+			toValue: 0,
+			duration: 3000,
+			useNativeDriver: true,
+		}).start()
+  }
+  
   
   let timer = undefined
 
+  const getCameraPermission = async () => {
+	const { status } = await Camera.requestCameraPermissionsAsync()
+	setHasPermission(status === 'granted')
+  }
+
   useEffect(() => {
-	(async () => {
-		const { status } = await Camera.requestCameraPermissionsAsync()
-		setHasPermission(status === 'granted')
-	})()
+	if (!hasPermission) getCameraPermission()
 
 	timer = setTimeout(stopTimer, 3000)
   }, [])
@@ -132,14 +147,12 @@ export default () => {
 	clearModal()
   }
 
+	const onSubmission = () => {
+		animate()
+	}
+
   if (hasPermission === null) {
 	return <View />
-  }
-
-  const onCameraReady = async () => {
-	setIsCameraReady(true)
-	// const isAvailable = await Camera.isAvailableAsync()
-	// if (isAvailable) setIsCameraReady(true)
   }
 
   const handleMountError = error => {
@@ -147,42 +160,12 @@ export default () => {
 	launchFileSelector()
   }
 
-  const launchFileSelector = async () => {
-	const uri = await openFileSelector()
-	if (uri) {
-		handleSelectedImage(uri)
+	const launchFileSelector = async () => {
+		const uri = await openFileSelector()
+		if (uri) {
+			handleSelectedImage(uri)
+		}
 	}
-}
-
-// const stopRecord = () => {
-//     setIsRecording(false)
-//     if (cameraRef.current) {
-// 		cameraRef.current.stopRecording()
-// 		console.log('stopped recording')
-//     }
-// }
-
-// const onRecord = async () => {
-//     if (await Camera.isAvailableAsync()) {
-//       	if (cameraRef.current) {
-// 			setIsRecording(true)
-// 			// const options = { quality: '720p', maxDuration: 60 }
-// 			// const data = await cameraRef.current.recordAsync(options)
-// 			// const source = data.uri
-
-// 			// if (source) {
-// 			// 	console.log('now you have a uri')
-// 			// 	navigation.navigate('PostVideoScreen', {
-// 			// 		gameId: gameId,
-// 			// 		title: title,
-// 			// 		videoUrl: source,
-// 			// 		phase: phase,
-// 			// 		gameName: gameName,
-// 			// 	})
-// 			// }
-//     	}
-//     }
-// }
 
 	const handleClose = async () => {
 		if (cameraRef.current && isCameraReady) {
@@ -192,206 +175,204 @@ export default () => {
 		clearModal()
 	}
 
-  return (
-	<SafeAreaView
-		style={{
-			flex: 1,
-			width: '100%',
-		}}
-	>
-		<View style={{ flex: 1 }}>
-
-			{!cameraError && (
-
-				<View
-					style={{
-						flex: 1,
-						position: 'relative',
-						width: '100%',
-						// maxWidth: 400,
-						// maxHeight: 600,
-						// height: 300,
-						marginHorizontal: 'auto',
-					}}
-				>
-					{!isCameraReady && (
-						<ActivityIndicator />
-						// <View
-						// 	style={{
-						// 		// ...StyleSheet.absoluteFillObject,
-						// 		position: 'absolute',
-						// 		top: 0,
-						// 		right: 0,
-						// 		bottom: 0,
-						// 		left: 0,
-						// 		zIndex: 200,
-						// 		backgroundColor: '#fff',
-						// 		flexDirection: 'row',
-						// 		alignItems: 'center',
-						// 	}}
-						// >
-						// 	<ActivityIndicator />
-						// </View>
-					)}
-					{isFocused && (
-						<Camera
-							ref={cameraRef}
-							style={{
-								// ...StyleSheet.absoluteFillObject,
-								position: 'absolute',
-								top: 0,
-								right: 0,
-								bottom: 0,
-								left: 0,
-								zIndex: 1,
-							}}
-							type={cameraType}
-							flashMode={flashMode}
-							zoom={zoom}
-							onCameraReady={onCameraReady}
-							onMountError={handleMountError}
-						/>
-					)}
-
-					<Pressable
-						disabled={!isCameraReady || uploading}
-						onPress={takePicture}
-						style={{
-							position: 'absolute',
-							top: 0,
-							right: 0,
-							bottom: 0,
-							left: 0,
-							zIndex: 100,
-						}}
-					/>
-
-					<Pressable
-						onPress={toggleFlash}
-						style={{
-							position: 'absolute',
-							top: 0,
-							left: 0,
-							zIndex: 210,
-							padding: 10, 
-						}}
-					>
-						<Icon
-							name={flashMode === FlashMode.on ? 'flash-sharp' : 'flash-off-sharp'}
-							size={30}
-							color='#fff'
-						/>
-					</Pressable>
-					
-					<Pressable
-						onPress={handleClose}
-						style={{
-							position: 'absolute',
-							top: 0,
-							right: 0,
-							zIndex: 200,
-							padding: 10, 
-						}}
-					>
-						<Icon
-							name='close-sharp'
-							size={30}
-							color='#fff'
-						/>
-					</Pressable>
-
-					{showInstructions && (
-						<View
-							style={{
-								position: 'absolute',
-								top: '25%',
-								left: 20,
-								right: 20,
-								height: 50,
-								backgroundColor: 'rgba(255, 255, 255, 0.3)',
-								borderRadius: 25,
-								justifyContent: 'center',
-								zIndex: 10,
-							}}
-						>
-							<View
-								style={{
-									flex: 1,
-									flexBasis: 'auto',
-									flexDirection: 'row',
-									alignItems: 'center',
-									width: '100%',
-									// position: 'absolute',
-									// top: 70,
-									// left: 0,
-									// right: 0,
-								}}
-							// 	style={{
-							// 	}}
-							>
-								<ThemedText
-									size={20}
-									color='#fff'
-									align='center'
-									bold
-									style={{ width: '100%' }}
-								>
-									Tap screen to capture image
-								</ThemedText>
-							</View>
-						</View>
-					)}
-				</View>	
-			)}
-		</View>
-
-		{/* <View
-			// style={{ marginVertical: 10 }}
-		>
-			<Slider
-				zoom={zoom}
-				onValueChange={setZoom}
-			/>
-
-		</View> */}
+	return (
 
 		<View
 			style={{
-				position: 'absolute',
-				bottom: 20,
-				left: 10,
-				right: 10,
 				flex: 1,
-				flexDirection: 'row',
-				padding: 10,
-				
+				// height: dims.height,
+				backgroundColor: '#000',
+				justifyContent: 'flex-start',
 			}}
 		>
-			<BipPreview
-				images={previews}
-				onBip={onBip}
-				onRemove={removePreview}
-				setUploading={setUploading}
-			/>
-		</View>
-	  
-		{cameraError && (
+			
+			{/* {!isCameraReady && <ActivityIndicator color='#fff' />} */}
+			
 			<View
+				// onLayout={e => setContainerHeight(e.nativeEvent.target.clientHeight)}
 				style={{
-					flex: 1,
-					flexDirection: 'row',
-					justifyContent: 'center',
-					alignItems: 'center',
+					// flex: 1,
+					flexBasis: 'auto',
+					flexGrow: 1,
+					flexShrink: 1,
+					borderWidth: 1,
+					borderColor: 'yellow',
 				}}
 			>
-				<BigRoundButton
-					disabled={uploading}
-					onPress={launchFileSelector}
+				{dims && (
+					<Animated.View
+						style={{
+							height: transition.interpolate({
+								inputRange: [0, 1],
+								outputRange: [0, dims.height * 0.6],
+							}),
+							// flexShrink: 1,
+							width: '100%',
+							opacity: transition,
+						}}
+					>
+						{!cameraError ? (
+							<View
+								style={{
+									flex: 1,
+									// flexGrow: 1,
+									// flexShrink: 1,
+									width: '100%',
+									// height: 'auto',
+									borderWidth: 1,
+									borderColor: 'pink',
+								}}
+							>
+
+								{isFocused && (
+									<View
+										style={{
+											flex: 1,
+											width: '100%',
+											// height: '100%',
+											borderWidth: 1,
+											position: 'relative',
+										}}
+									>
+										<Camera
+											ref={cameraRef}
+											style={{
+												width: '100%',
+												height: '100%',
+
+												// height: cameraHeight,
+												// ...StyleSheet.absoluteFillObject,
+												// position: 'absolute',
+												// top: 0,
+												// right: 0,
+												// bottom: 0,
+												// left: 0,
+												zIndex: 1,
+											}}
+											type={cameraType}
+											flashMode={flashMode}
+											zoom={zoom}
+											onCameraReady={() => setIsCameraReady(true)}
+											onMountError={handleMountError}
+										/>
+
+										<View
+											style={{
+												position: 'absolute',
+												top: 0,
+												left: 0,
+												right: 0,
+												flexDirection: 'row',
+												justifyContent: 'space-between',
+												alignItems: 'center',
+												paddingHorizontal: 10,
+												zIndex: 200,
+												// background: 'green',
+											}}
+										>
+											<Pressable
+												onPress={toggleFlash}
+												// style={{}}
+											>
+												<Icon
+													name={flashMode === FlashMode.on ? 'flash-sharp' : 'flash-off-sharp'}
+													size={24}
+													color='#fff'
+												/>
+											</Pressable>
+											
+											<Pressable
+												onPress={handleClose}
+												// style={{}}
+											>
+												<Icon
+													name='close-sharp'
+													size={30}
+													color='#fff'
+												/>
+											</Pressable>
+										</View>
+
+										<View
+											style={{
+												position: 'absolute',
+												bottom: 0,
+												left: 0,
+												right: 0,
+												height: 80,
+												zIndex: 300,
+											}}
+										>
+											<Pressable
+												onPress={takePicture}
+												disabled={!isCameraReady || uploading}
+												style={{
+													marginHorizontal: 'auto',
+													width: 50,
+													height: 50,
+													borderRadius: 25,
+													overflow: 'hidden',
+													borderWidth: 3,
+													borderColor: '#fff',
+													backgroundColor: (!isCameraReady || uploading) ? '#ccc' : 'tomato',
+												}}
+											/>
+										</View>
+
+									</View>
+								)}
+							</View>
+						)
+						: (
+							<View
+								style={{
+									flex: 1,
+									flexDirection: 'row',
+									justifyContent: 'center',
+									alignItems: 'center',
+								}}
+							>
+								<BigRoundButton
+									disabled={uploading}
+									onPress={launchFileSelector}
+								/>
+							</View>
+						)}
+					</Animated.View>
+				)}
+
+				{/* <View
+					// style={{ marginVertical: 10 }}
+				>
+					<Slider
+						zoom={zoom}
+						onValueChange={setZoom}
+					/>
+
+				</View> */}
+			</View>
+
+			<View
+				style={{
+					// flex: 1,
+					flexBasis: 'auto',
+					flexGrow: 1,
+					// flexShrink: 0,
+					// flexBasis: 'auto',
+					backgroundColor: '#000',
+					minHeight: '40%',
+				}}
+			>
+				<BipPreview
+					images={previews}
+					onBip={onBip}
+					onSubmission={onSubmission}
+					onRemove={removePreview}
+					setUploading={setUploading}
 				/>
 			</View>
-		)}
-	</SafeAreaView>
-  )
+		</View>
+	)
 }
 
 const BigRoundButton = ({ disabled, onPress }) => (

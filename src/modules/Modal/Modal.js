@@ -29,7 +29,19 @@ export default ({ fullscreen = false, transparent = false }) => {
         >
 
             {isCamera
-                ? <CameraView />
+                ? (
+                    <View
+                        style={{
+                            flex: 1,
+                            width: '100%',
+                            maxWidth: 400,
+                            marginHorizontal: 'auto',
+                        }}
+                    >
+                        <CameraView />
+                    </View>
+                    
+                )
                 : (
                     <View
                         style={{
@@ -38,7 +50,7 @@ export default ({ fullscreen = false, transparent = false }) => {
                             position: 'relative',
                             justifyContent: 'center',
                         }}
-                        >
+                    >
                         <Pressable
                             onPress={closeModal}
                             style={{

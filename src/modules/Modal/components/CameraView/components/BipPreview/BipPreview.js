@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
+    Animated,
+    Pressable,
     ScrollView,
     View,
 } from 'react-native'
@@ -11,13 +13,16 @@ import {
 } from '@components'
 import { Map } from '@modules'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 import { useNotification } from '@notification'
 import { uploadBipImage } from '@utils/images'
 import { createBip } from '@utils/bips'
+import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ images, onBip, onRemove, setUploading }) => {
+export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
 
     const { user } = useApp()
+    const { closeModal } = useModal()
     const { addNotification } = useNotification()
 
     const [ items, setItems ] = useState(images)
@@ -25,6 +30,34 @@ export default ({ images, onBip, onRemove, setUploading }) => {
     const [ upload, setUpload ] = useState(null)
     const [ location, setLocation ] = useState(null)
     const [ locationLoading, setLocationLoading ] = useState(false)
+
+    const transition = useRef(new Animated.Value(0)).current
+
+    const fadeIn = () => {
+		Animated.timing(transition, {
+			toValue: 1,
+			duration: 1000,
+			useNativeDriver: true,
+		}).start()
+    }
+
+    const fadeOut = () => {
+		Animated.timing(transition, {
+			toValue: 0,
+			duration: 3000,
+			useNativeDriver: true,
+		}).start()
+    }
+
+    const submitDisabled = useMemo(() => {
+        return (!images || !images.length || loading)
+    }, [images, loading])
+
+    useEffect(() => {
+        // console.log('submitDisabled', submitDisabled)
+        if (submitDisabled) fadeOut()
+        else fadeIn()
+    }, [submitDisabled])
 
     const updateItem = updatedItem => {
         setItems(items.map(item => {
@@ -72,7 +105,8 @@ export default ({ images, onBip, onRemove, setUploading }) => {
     }
 
     const submitBip = async () => {
-        
+        onSubmission()
+        // return
         setLoading(true)
         
         const { latitude, longitude } = location
@@ -100,48 +134,85 @@ export default ({ images, onBip, onRemove, setUploading }) => {
     return user !== null && (
         <View
             style={{
-                flex: 1,
-                gap: 5,
+                // flex: 1,
                 padding: 10,
-                borderRadius: 12,
-                overflow: 'hidden',
-                backgroundColor: 'rgba(255, 255, 255, 0.3)',
+                gap: 10,
             }}
         >
             <View
                 style={{
+                    flex: 1,
                     flexGrow: 0,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 7,
-                }}
-            >
-                <ThemedText color='#fff' bold>{user.username}</ThemedText>
-                <Time now color='#fff' />
-            </View>
-            
-            <View
-                style={{
                     flexBasis: 'auto',
-                    flexGrow: 0,
+                    gap: 5,
                 }}
             >
-                {locationLoading
-                    ? <ThemedText>Gathering location data...</ThemedText>
-                    : location
-                        ? (
-                            <Map
-                                coords={location}
-                                color='#fff'
-                                nomap
-                            />
-                        )
-                        : <ThemedText>Could not determine location.</ThemedText>
-                }
+                <View
+                    style={{
+                        // flex: 1,
+                        flexBasis: 'auto',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        gap: 7,
+                    }}
+                >
+                    <View
+                        style={{
+                            // flex: 1,
+                            flexBasis: 'auto',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 7,
+                        }}
+                    >
+                        {user.username && <ThemedText color='#fff' bold>{user.username}</ThemedText>}
+                        <Time now color='#fff' />
+                    </View>
+                    
+                    <Pressable
+                        onPress={closeModal}
+                        style={{
+                            flex: 1,
+                            flexGrow: 0,
+                            flexBasis: 'auto',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderRadius: 8,
+                            backgroundColor: '#bbb',
+                            overflow: 'hidden',
+                            borderWidth: 1,
+                            borderColor: '#fff',
+                            paddingHorizontal: 5,
+                        }}
+                    >
+                        <Icon
+                            name='close-sharp'
+                            size={30}
+                            color='#fff'
+                        />
+                    </Pressable>
 
+                </View>
+                <View
+                    style={{
+                        flex: 1,
+                        flexGrow: 0,
+                    }}
+                >
+                    {location
+                        ? <Map coords={location} color='#fff' nomap />
+                        : locationLoading
+                            ? <ThemedText color='#ddd'>Gathering location data...</ThemedText>
+                            : <ThemedText>Could not detect location.</ThemedText>
+                    }
+                </View>
+                
                 {(loading && upload !== null) && (
                     <View
                         style={{
+                            flex: 1,
+                            // flexGrow: 0,
                             height: 30,
                             borderRadius: 8,
                             backgroundColor: '#fff',
@@ -149,7 +220,6 @@ export default ({ images, onBip, onRemove, setUploading }) => {
                             flexDirection: 'row',
                             alignItems: 'center',
                             paddingHorizontal: 10,
-                            marginVertical: 10,
                         }}
                     >
                         <ThemedText bold color='tomato' align='center'>
@@ -158,44 +228,72 @@ export default ({ images, onBip, onRemove, setUploading }) => {
                     </View>
                 )}
             </View>
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                style={{
-                    flexGrow: 1,
-                    width: '100%',
-                }}
-                contentContainerStyle={{
-                    flex: 1,
-                    width: '100%',
-                    paddingBottom: 5,
-                }}
-            >
-                {items && items.length > 0 ? (
-                    <PreviewList
-                        images={items}
-                        remove={onRemove}
-                        uploading={upload}
-                        // disabled
-                        // small
-                    />
-                ) : (
-                    <ThemedText color='#fff'>No images captured.</ThemedText>
-                )}
-            </ScrollView>
-
             <View
                 style={{
-                    flexGrow: 0,
+                    flex: 1,
+                    flexGrow: 1,
+                    flexShrink: 1,
+                    width: '100%',
+                    flexDirection: 'row',
+                    gap: 10,
                 }}
             >
-                <SimpleButton
-                    label='Save Bip'
-                    onPress={submitBip}
-                    disabled={!images || !images.length || loading}
-                />
+                <View
+                    style={{
+                        flex: 1,
+                        flexGrow: 1,
+                    }}
+                >
+                    {items && items.length > 0 ? (
+                        <PreviewList
+                            images={items}
+                            remove={onRemove}
+                            uploading={upload}
+                            // disabled
+                            // small
+                        />
+                    ) : (
+                        <ThemedText color='#fff'>No images captured.</ThemedText>
+                    )}
+                </View>
 
+                <Animated.View
+                    style={{
+                        flex: 1,
+                        flexBasis: 'auto',
+                        flexGrow: 0,
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                        opacity: images && images.length ? submitDisabled ? 0.5 : 1 : 0,
+                    }}
+                >
+                    <Pressable
+                        onPress={submitBip}
+                        disabled={submitDisabled}
+                        style={{
+                            flex: 1,
+                            flexBasis: 'auto',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            borderRadius: 8,
+                            backgroundColor: 'tomato',
+                            overflow: 'hidden',
+                            borderWidth: 1,
+                            borderColor: '#fff',
+                            paddingHorizontal: 5,
+                        }}
+                    >
+                        <Icon
+                            name='chevron-forward-sharp'
+                            size={30}
+                            color='#fff'
+                        />
+                    </Pressable>
+
+                </Animated.View>
             </View>
+            
+            
         </View>
     )
 }

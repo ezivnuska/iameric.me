@@ -1,3 +1,4 @@
-import CameraViewFull from './CameraViewFull'
+// import CameraViewFull from './CameraViewFull'
+import AnimationTest from './AnimationTest'
 
-export default CameraViewFull
+export default AnimationTest

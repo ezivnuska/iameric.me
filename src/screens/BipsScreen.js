@@ -111,7 +111,7 @@ export default props => {
     useEffect(() => {
         if (!alerted) {
             setAlerted(true)
-            setNewModal('QUICK')
+            setNewModal('CAPTURE')
         }
     }, [currentBipIndex])
 
