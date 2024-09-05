@@ -208,12 +208,13 @@ export default ({ disabled, onCapture, ...props }) => {
 						alignItems: 'center',
 						paddingHorizontal: 10,
 						zIndex: 200,
-						// background: 'green',
 					}}
 				>
 					<Pressable
 						onPress={toggleFlash}
-						// style={{}}
+						style={{
+							opacity: disabled ? 0.5 : 1,
+						}}
 						disabled={disabled}
 					>
 						<Icon
@@ -225,7 +226,9 @@ export default ({ disabled, onCapture, ...props }) => {
 					
 					<Pressable
 						onPress={handleClose}
-						// style={{}}
+						style={{
+							opacity: disabled ? 0.5 : 1,
+						}}
 						disabled={disabled}
 					>
 						<Icon

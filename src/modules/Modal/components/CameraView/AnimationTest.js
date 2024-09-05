@@ -33,7 +33,7 @@ export default () => {
 
 	const { dims, user } = useApp()
 	const { addBip } = useBips()
-	const { clearModal } = useModal()
+	const { closeModal } = useModal()
 	const { socket } = useSocket()
 
 	const isFocused = useIsFocused()
@@ -143,7 +143,7 @@ export default () => {
 	const onBip = async bip => {
 		socket.emit('new_bip', bip)
 		addBip(bip)
-		clearModal()
+		closeModal()
 	}
 	
 	const onSubmission = () => {
@@ -171,7 +171,7 @@ export default () => {
 	// 		await cameraRef.current.pausePreview()
 	// 	}
 	// 	setIsCameraReady(false)
-	// 	clearModal()
+	// 	closeModal()
 	// }
 
 	// useEffect(() => {

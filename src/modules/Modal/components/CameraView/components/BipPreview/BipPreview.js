@@ -179,10 +179,10 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
                             flexDirection: 'row',
                             alignItems: 'center',
                             borderRadius: 8,
-                            backgroundColor: '#bbb',
+                            // backgroundColor: '#bbb',
                             overflow: 'hidden',
-                            borderWidth: 1,
-                            borderColor: '#fff',
+                            // borderWidth: 1,
+                            // borderColor: '#fff',
                             paddingHorizontal: 5,
                         }}
                     >
