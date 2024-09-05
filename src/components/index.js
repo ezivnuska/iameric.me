@@ -11,6 +11,7 @@ import LoadingView from './LoadingView'
 import ModalHeader from './ModalHeader'
 import Slider from './Slider'
 import SimpleButton from './SimpleButton'
+import Switch from './Switch'
 import ThemedText from './ThemedText'
 import Time from './Time'
 
@@ -27,6 +28,7 @@ export {
     ModalHeader,
     Slider,
     SimpleButton,
+    Switch,
     ThemedText,
     Time,
 }

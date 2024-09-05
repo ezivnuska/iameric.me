@@ -16,6 +16,7 @@ import {
 	ActivityIndicator,
 	Slider,
 	ThemedText,
+	Switch,
 } from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
@@ -245,6 +246,7 @@ export default () => {
 							}),
 						}}
 					>
+						{/* <Switch /> */}
 						<BipPreview
 							images={previews}
 							onBip={onBip}
