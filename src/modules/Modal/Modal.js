@@ -68,7 +68,7 @@ export default ({ fullscreen = false, transparent = false }) => {
                                 flexBasis: 'auto',
                                 flexGrow: 0,
                                 flexShrink: 1,
-                                backgroundColor: 'red',
+                                backgroundColor: '#fff',
                                 borderRadius: 20,
                                 // borderTopLeftRadius: 20,
                                 // borderTopRightRadius: 20,
