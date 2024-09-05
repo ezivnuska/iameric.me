@@ -196,8 +196,8 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
                 </View>
                 <View
                     style={{
-                        flex: 1,
-                        flexGrow: 0,
+                        flexBasis: 'auto',
+                        // flexGrow: 0,
                     }}
                 >
                     {location
