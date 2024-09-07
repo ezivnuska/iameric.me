@@ -17,7 +17,7 @@ export default ({ title, children = null, onBack = null }) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
-                // marginBottom: 10,
+                marginBottom: 10,
             }}
         >
             <View

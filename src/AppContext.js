@@ -133,7 +133,7 @@ export const AppContextProvider = ({ children }) => {
     const toggleTheme = async () => {
         setItem('dark', !state.dark)
         dispatch({ type: 'TOGGLE_THEME' })
-        addNotification(`Changed to ${!state.dark ? 'dark' : 'light'} theme`)
+        // addNotification(`Changed to ${!state.dark ? 'dark' : 'light'} theme`)
     }
     
     const updateUser = payload => {
@@ -141,7 +141,7 @@ export const AppContextProvider = ({ children }) => {
         
         // used only for dev purposes
         const keys = Object.keys(payload)
-        addNotification(`User ${keys.toString()} updated`)
+        // addNotification(`User ${keys.toString()} updated`)
     }
 
     const actions = useMemo(() => ({

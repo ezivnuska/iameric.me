@@ -88,98 +88,89 @@ export default ({ item, onPressed, current = false }) => {
         }   
     }
 
-    const onItemPressed = () => {
-        onPressed()
-        // navigate('Bips', { screen: 'Bip', params: { id: item._id } })
-        setModal('BIP', item)
-    }
-
     return (
         <Pressable
             key={`bip-${item._id}`}
-            onPress={onItemPressed}
+            onPress={onPressed}
             style={{
                 flex: 1,
-                paddingVertical: 6,
-                paddingHorizontal: 7,
-                gap: 3,
-                backgroundColor: current ? 'rgba(200, 100, 100, 0.2)' : 'transparent',
-                borderRadius: 8,
-                overflow: 'hidden',
-                borderWidth: 1,
-                borderColor: '#aaa',
-                backgroundColor: '#eee',
-                marginBottom: 5,
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 gap: 10,
+                marginBottom: 3,
+                paddingVertical: 6,
+                paddingHorizontal: 7,
+                backgroundColor: current ? 'rgba(200, 100, 100, 0.2)' : 'transparent',
+                borderBottomWidth: 1,
+                borderBottomColor: '#ccc',
             }}
         >
-        {(item.images && item.images.length > 0) && (
-            <View
-                style={{
-                    flex: 1,
-                    flexBasis: 'auto',
-                    flexGrow: 0,
-                }}
-            >
-                <ThumbList
-                    images={item.images}
-                    loading={loading}
-                    // disabled
-                    // small
-                />
-                
-            </View>
-        )}
-
-        <View
-            style={{
-                flexGrow: 1,
-            }}
-        >
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    gap: 10,
-                }}
-            >
-                <ThemedText bold>{city}</ThemedText>
-                <ThemedText>{street}</ThemedText>
-            </View>
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    gap: 10,
-                }}
-            >
-                <ThemedText color='tomato' bold>{item.user?.username || item.user}</ThemedText>
-                <Time time={item.createdAt} />
-            </View>
-        </View>
-
-        {(
-            (item.user && item.user._id === user._id) ||
-                user.role === 'admin'
-            ) ? (
+            {(item.images && item.images.length > 0) && (
                 <View
                     style={{
+                        flex: 1,
+                        flexBasis: 'auto',
                         flexGrow: 0,
                     }}
                 >
-                    <IconButton
-                        name='close-sharp'
-                        size={20}
-                        color='tomato'
-                        onPress={() => deleteAndRemoveBip(item._id)}
-                        disabled={loading}
+                    <ThumbList
+                        images={item.images}
+                        loading={loading}
+                        // disabled
+                        // small
                     />
+                    
                 </View>
-            ) : null}
+            )}
+
+            <View
+                style={{
+                    flexGrow: 1,
+                }}
+            >
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        gap: 10,
+                    }}
+                >
+                    <ThemedText bold>{city}</ThemedText>
+                    <ThemedText>{street}</ThemedText>
+                </View>
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        gap: 10,
+                    }}
+                >
+                    <ThemedText color='tomato' bold>{item.user?.username || item.user}</ThemedText>
+                    <Time time={item.createdAt} />
+                </View>
+            </View>
+
+            {(
+                (item.user && item.user._id === user._id) ||
+                    user.role === 'admin'
+                ) ? (
+                    <View
+                        style={{
+                            flexGrow: 0,
+                        }}
+                    >
+                        <IconButton
+                            name='close-sharp'
+                            size={20}
+                            color='tomato'
+                            onPress={() => deleteAndRemoveBip(item._id)}
+                            disabled={loading}
+                        />
+                    </View>
+                ) : null
+            }
 
         </Pressable>
     )

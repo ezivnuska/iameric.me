@@ -2,12 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
     Animated,
     Pressable,
-    ScrollView,
     View,
 } from 'react-native'
 import { PreviewList } from './components'
 import {
-    SimpleButton,
     ThemedText,
     Time,
 } from '@components'
@@ -54,7 +52,6 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
     }, [images, loading])
 
     useEffect(() => {
-        // console.log('submitDisabled', submitDisabled)
         if (submitDisabled) fadeOut()
         else fadeIn()
     }, [submitDisabled])
@@ -73,7 +70,7 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
                     setLocation(position.coords)
-                    addNotification('Location set.')
+                    // addNotification('Location set.')
                 })
             } else {
                 console.log('Geolocation is not supported by this browser.')
@@ -89,7 +86,6 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
     }, [images])
 
     const uploadBipImages = async bipId => {
-        setLoading(true)
         let numUploads = 0
         while (numUploads < items.length) {
             const imageToUpload = images[numUploads]
@@ -100,7 +96,6 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
             updateItem(uploadedImage)
             numUploads++
         }
-        setLoading(false)
         return numUploads
     }
 
@@ -114,11 +109,7 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
         
         if (newBip) {
             if (images && images.length) {
-        
-                setUploading(true)
                 const imagesUploaded = await uploadBipImages(newBip._id)
-                setUploading(false)
-
                 if (!imagesUploaded) console.log('no images uploaded')
                     
             }
@@ -172,6 +163,7 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
                     
                     <Pressable
                         onPress={closeModal}
+                        disabled={loading}
                         style={{
                             flex: 1,
                             flexGrow: 0,
@@ -184,6 +176,7 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
                             // borderWidth: 1,
                             // borderColor: '#fff',
                             paddingHorizontal: 5,
+                            opacity: loading ? 0.25 : 1,
                         }}
                     >
                         <Icon

@@ -2,6 +2,7 @@
 import ActivityIndicator from './ActivityIndicator'
 import AddressView from './AddressView'
 import Cabinet from './Cabinet'
+import FocusView from './FocusView'
 import Heading from './Heading'
 import IconButton from './IconButton'
 import ImageClone from './ImageClone'
@@ -11,6 +12,7 @@ import LoadingView from './LoadingView'
 import ModalHeader from './ModalHeader'
 import Slider from './Slider'
 import SimpleButton from './SimpleButton'
+import SplitScreen from './SplitScreen'
 import Switch from './Switch'
 import ThemedText from './ThemedText'
 import Time from './Time'
@@ -19,6 +21,7 @@ export {
     ActivityIndicator,
     AddressView,
     Cabinet,
+    FocusView,
     Heading,
     IconButton,
     ImageClone,
@@ -28,6 +31,7 @@ export {
     ModalHeader,
     Slider,
     SimpleButton,
+    SplitScreen,
     Switch,
     ThemedText,
     Time,

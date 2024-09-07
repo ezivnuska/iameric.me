@@ -32,7 +32,7 @@ import EXIF from 'exif-js'
 export default () => {
 
 	const { dims, user } = useApp()
-	const { addBip } = useBips()
+	const { addBip, setNewBip } = useBips()
 	const { closeModal } = useModal()
 	const { socket } = useSocket()
 
@@ -40,7 +40,7 @@ export default () => {
 
 	const [ hasPermission, setHasPermission ] = useState(null)
 	const [ cameraType, setCameraType ] = useState('back')
-	// const [ isCameraReady, setIsCameraReady ] = useState(false)
+	const [ isCameraReady, setIsCameraReady ] = useState(false)
 	const [ containerHeight, setContainerHeight ] = useState(null)
 	const [ previews, setPreviews ] = useState([])
 	const [ uploading, setUploading ] = useState(false)
@@ -50,20 +50,19 @@ export default () => {
 	const [ zoom, setZoom ] = useState(0.5)
 
 	// const cameraRef = useRef()
+	const containerRef = useRef()
 
 	const transition = useRef(new Animated.Value(1)).current
 
 	const animate = () => {
-			// console.log('animating...')
-			Animated.timing(transition, {
-				toValue: 0,
-				duration: 1000,
-				useNativeDriver: true,
-				easing: Easing.bounce,
-			}).start()
-		}
-
-  	const [ initialHeight, setInitialHeight ] = useState(null)
+		// console.log('animating...')
+		Animated.timing(transition, {
+			toValue: 0,
+			duration: 1000,
+			useNativeDriver: true,
+			easing: Easing.bounce,
+		}).start()
+	}
 
 	let timer = undefined
 
@@ -96,6 +95,14 @@ export default () => {
 		])
 	}
 
+    useEffect(() => {
+		if (containerRef.current) setContainerHeight(containerRef.current.clientHeight)
+    }, [containerRef.current])
+
+    // useEffect(() => {
+    //     console.log('containerHeight', containerHeight)
+    // }, [containerHeight])
+
 	const removePreview = index => {
 		const updatedList = previews.filter((img, i) => i !== index)
 		setPreviews(updatedList)
@@ -123,30 +130,16 @@ export default () => {
 		image.src = src
 	}
 
-	const takePicture = async () => {
-	
-		stopTimer()
-
-		if (cameraRef.current) {
-			const options = {
-				quality: 0.5,
-				base64: true,
-				skipProcessing: true,
-			}
-			const source = await cameraRef.current.takePictureAsync(options)
-			if (!source || !source.uri) alert('no source from camera')
-
-			await handleSelectedImage(source.uri)
-		}
-	}
-
 	const onBip = async bip => {
+		setUploading(false)
 		socket.emit('new_bip', bip)
 		addBip(bip)
+		setNewBip(true)
 		closeModal()
 	}
 	
 	const onSubmission = () => {
+		setUploading(true)
 		animate()
 	}
 
@@ -166,97 +159,75 @@ export default () => {
 		}
 	}
 
-	// const handleClose = async () => {
-	// 	if (cameraRef.current && isCameraReady) {
-	// 		await cameraRef.current.pausePreview()
-	// 	}
-	// 	setIsCameraReady(false)
-	// 	closeModal()
-	// }
-
-	// useEffect(() => {
-	// 	console.log('initialHeight', initialHeight)
-	// }, [initialHeight])
-
 	return (
 		<View
-			// onLayout={e => {
-			// 	const { height } = e.nativeEvent.layout
-			// 	console.log('initialHeight', height)
-			// 	setInitialHeight(height)
-			// }}
+			ref={containerRef}
 			style={{
 				flex: 1,
-				// height: '100%',
 				backgroundColor: '#000',
-				justifyContent: 'flex-start',
-				// dev
-				// borderWidth: 1,
-				// borderColor: '#fff',
-				// borderStyle: 'dashed',
 			}}
 		>
-			<View
-				style={{
-					flex: 1,
-					flexBasis: 'auto',
-					width: '100%',
-				}}
-			>
+			{containerHeight ? (
 				<View
 					style={{
 						flex: 1,
-						flexBasis: 'auto',
 					}}
 				>
-					<Animated.View
+					<View
 						style={{
-							height: transition.interpolate({
-								inputRange: [0, 1],
-								outputRange: [0, dims.height * 0.65],
-							}),
+							flex: 1,
+							flexShrink: 1,
 						}}
 					>
-						{!cameraError && (
-							<View
-								style={{
-									flex: 1,
-									width: '100%',
-								}}
-							>
+						<Animated.View
+							style={{
+								height: transition.interpolate({
+									inputRange: [0, 1],
+									outputRange: [0, containerHeight * 0.7],
+								}),
+							}}
+						>
+							{!cameraError && (
+								<View
+									style={{
+										flex: 1,
+										width: '100%',
+									}}
+								>
+									{(isFocused)
+										? (
+											<CameraView
+												disabled={uploading}
+												type={cameraType}
+												flashMode={flashMode}
+												zoom={zoom}
+												// onMountError={handleMountError}
+												// onReady={() => setIsCameraReady(true)}
+												onCapture={addPreview}
+											/>
+										)
+										: <ActivityIndicator />
+									}
+								</View>
+							)}
+						</Animated.View>
 
-								{isFocused && (
-									<CameraView
-										disabled={uploading}
-										type={cameraType}
-										flashMode={flashMode}
-										zoom={zoom}
-										// onMountError={handleMountError}
-										onCapture={addPreview}
-									/>
-								)}
-							</View>
-						)}
-					</Animated.View>
-					<Animated.View
-						style={{
-							height: transition.interpolate({
-								inputRange: [0, 1],
-								outputRange: [dims.height, dims.height * 0.35],
-							}),
-						}}
-					>
-						{/* <Switch /> */}
-						<BipPreview
-							images={previews}
-							onBip={onBip}
-							onSubmission={onSubmission}
-							onRemove={removePreview}
-							setUploading={setUploading}
-						/>
-					</Animated.View>
+						<View
+							style={{
+								flex: 1,
+							}}
+						>
+							<BipPreview
+								images={previews}
+								onBip={onBip}
+								onSubmission={onSubmission}
+								onRemove={removePreview}
+							/>
+						</View>
+					</View>
 				</View>
-			</View>
+			)
+			: <ActivityIndicator />}
 			
 		</View>
 	)

@@ -6,7 +6,9 @@ import {
 import { BipListItem } from './components'
 
 export default ({ bips, onSelected, currentIndex = null }) => {
+    
     const listRef = useRef()
+    
     useEffect(() => {
         if (listRef && listRef.current) {
             if (currentIndex) {
@@ -14,11 +16,17 @@ export default ({ bips, onSelected, currentIndex = null }) => {
             }
         }
     }, [currentIndex])
+
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{ flex: 1 }}
-            contentContainerStyle={{ flex: 1 }}
+            style={{
+                flex: 1,
+                flexGrow: 1,
+            }}
+            contentContainerStyle={{
+                flex: 1,
+            }}
         >
             <FlatList
                 ref={listRef}

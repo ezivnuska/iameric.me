@@ -20,6 +20,7 @@ export default () => {
                 label={showSignUp ? 'Sign In' : 'Sign Up'}
                 onPress={() => setShowSignUp(!showSignUp)}
                 transparent
+                color='tomato'
             />
 
         </View>

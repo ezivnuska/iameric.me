@@ -27,7 +27,7 @@ export default ({ onBipSelected = null, currentIndex = null }) => {
             navigator.geolocation.getCurrentPosition(position => {
                 const { latitude, longitude } = position.coords
                 setLocation({ latitude, longitude })
-                addNotification('Location set.')
+                // addNotification('Location set.')
             })
         } else {
             console.log('Geolocation is not supported by this browser.')
@@ -60,12 +60,14 @@ export default ({ onBipSelected = null, currentIndex = null }) => {
         <View
             style={{
                 flex: 1,
+                borderWidth: 1,
+                borderColor: '#aaa',
                 borderRadius: 8,
                 overflow: 'hidden',
             }}
         >
 
-            {location && (
+            {location !== null && (
                 <Map
                     id='bipmap'
                     mapId='bipmap'

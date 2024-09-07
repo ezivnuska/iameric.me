@@ -192,7 +192,10 @@ export default ({ disabled, onCapture, ...props }) => {
 				type={cameraType}
 				flashMode={flashMode}
 				zoom={zoom}
-				onCameraReady={() => setIsCameraReady(true)}
+				onCameraReady={() => {
+					// onReady()
+					setIsCameraReady(true)
+				}}
 				onMountError={handleMountError}
 			/>
 

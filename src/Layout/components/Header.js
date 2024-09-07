@@ -30,7 +30,10 @@ export default ({ route }) => {
 
     const routeName = useMemo(() => route && route.name, [route])
 
-    const isCurrentRoute = name => name === routeName
+    const isCurrentRoute = name => {
+        console.log('name', name, routeName)
+        return name === routeName
+    }
 
     const source = (user && user.profileImage)
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
@@ -54,7 +57,10 @@ export default ({ route }) => {
             <View style={{ flexGrow: 0 }}>
 
                 <Pressable
-                    onPress={() => navigate(isCurrentRoute('Home') ? 'About' : 'Home')}
+                    onPress={() => {
+                        if (isCurrentRoute('BipList')) navigate('About', { screen: 'work' })
+                        else navigate('BipList')
+                    }}
                 >
 
                     <ThemedText bold style={{ fontSize: 24 }}>
@@ -79,7 +85,7 @@ export default ({ route }) => {
                         style={{
                             flexGrow: 1,
                             flexDirection: 'row',
-                            justifyContent: 'space-evenly',
+                            justifyContent: 'space-between',
                             alignItems: 'baseline',
                             gap: 3,
                         }}
@@ -96,17 +102,21 @@ export default ({ route }) => {
                             disabled={isCurrentRoute('Forum')}
                         />
 
-                        <IconButton
-                            name={`people-${isCurrentRoute('Contacts') ? 'sharp' : 'outline'}`}
-                            onPress={() => navigate('Contacts')}
-                            disabled={isCurrentRoute('Contacts')}
-                        />
+                        {user.role === 'admin' && (
+                            <IconButton
+                                name={`people-${isCurrentRoute('Contacts') ? 'sharp' : 'outline'}`}
+                                onPress={() => navigate('Contacts')}
+                                disabled={isCurrentRoute('Contacts')}
+                            />
+                        )}
 
-                        <IconButton
-                            name={`mail-${isCurrentRoute('Mail') ? 'sharp' : 'outline'}`}
-                            onPress={() => navigate('Mail')}
-                            disabled={isCurrentRoute('Mail')}
-                        />
+                        {user.role === 'admin' && (
+                            <IconButton
+                                name={`mail-${isCurrentRoute('Mail') ? 'sharp' : 'outline'}`}
+                                onPress={() => navigate('Mail')}
+                                disabled={isCurrentRoute('Mail')}
+                            />
+                        )}
                     </View>
                 )
                 : null
