@@ -180,6 +180,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 bips: [ payload, ...state.bips ],
+                newBip: true,
             }
             break
         case 'RESET':

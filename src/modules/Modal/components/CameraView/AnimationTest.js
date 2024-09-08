@@ -26,7 +26,6 @@ import {
   handleImageData,
   openFileSelector,
 } from '@utils/images'
-import Icon from 'react-native-vector-icons/Ionicons'
 import EXIF from 'exif-js'
 
 export default () => {
@@ -134,7 +133,6 @@ export default () => {
 		setUploading(false)
 		socket.emit('new_bip', bip)
 		addBip(bip)
-		setNewBip(true)
 		closeModal()
 	}
 	

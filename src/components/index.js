@@ -15,6 +15,7 @@ import SimpleButton from './SimpleButton'
 import SplitScreen from './SplitScreen'
 import Switch from './Switch'
 import ThemedText from './ThemedText'
+import ThumbList from './ThumbList'
 import Time from './Time'
 
 export {
@@ -34,5 +35,6 @@ export {
     SplitScreen,
     Switch,
     ThemedText,
+    ThumbList,
     Time,
 }

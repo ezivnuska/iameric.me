@@ -7,7 +7,7 @@ import {
 import { ThemedText } from '@components'
 import { useApp } from '@app'
 
-export default ({ dirty, error, value, focused, label = null, required = false, ...props }) => {
+export default ({ dirty, error, value, focused, label = null, multiline = false, required = false, ...props }) => {
 
     const { theme } = useApp()
 
@@ -71,7 +71,7 @@ export default ({ dirty, error, value, focused, label = null, required = false, 
                     >
                         <TextInput
                             value={value || ''}
-                            multiline={false}
+                            multiline={multiline}
                             autoCorrect={false}
                             placeholderTextColor={focused ? theme?.colors.inputPlaceholderTextFocused : theme?.colors.inputPlaceholderText}
                             spellCheck={false}
@@ -80,8 +80,8 @@ export default ({ dirty, error, value, focused, label = null, required = false, 
                                 color: focused ? theme?.colors.inputTextFocused : theme?.colors.inputText,
                                 background: 'transparent',
                                 fontSize: 18,
-                                lineHeight: 40,
-                                height: 40,
+                                lineHeight: multiline ? 24 : 40,
+                                height: multiline ? 100 : 40,
                                 flexWrap: 'nowrap',
                                 // maxWidth: 300,
                             }}

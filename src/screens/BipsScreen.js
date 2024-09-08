@@ -66,8 +66,16 @@ export default props => {
     }, [newBip])
 
     const onBipSelected = index => {
-        if (mode === 0) setMode(0.5)
         setCurrentBipIndex(index)
+    }
+
+    const onBipDeleted = (id, index) => {
+        // const newIndex = currentBipIndex < 1 ? 0 : currentBipIndex - 1
+        // if (currentBipIndex === 0)
+        if (index === currentBipIndex) {
+            setCurrentBipIndex(null)
+        }
+        removeBip(id)
     }
 
     return (
@@ -87,7 +95,7 @@ export default props => {
                     }}
                 >
                     <ThemedText style={{ flex: 1, flexGrow: 1 }}>
-                        {`${bips.length} bip${bips.length !== 0 ? 's' : ''}`}
+                        {`${bips.length} bip${bips.length !== 1 ? 's' : ''}`}
                     </ThemedText>
                     <Pressable
                         onPress={() => setNewModal('CAPTURE')}
@@ -128,18 +136,13 @@ export default props => {
                     currentIndex={currentBipIndex}
                     onBipSelected={onBipSelected}
                 />
-                {bipsLoading
-                    ? <ThemedText>Loading Bips...</ThemedText>
-                    : bips.length > 0
-                        ? (
-                            <Bipster
-                                bips={bips}
-                                currentIndex={currentBipIndex}
-                                onSelected={onBipSelected}
-                            />            
-                        )
-                        : <ThemedText bold>No bips to report.</ThemedText>
-                }
+                <Bipster
+                    bips={bips}
+                    loading={bipsLoading}
+                    currentIndex={currentBipIndex}
+                    onDeleted={onBipDeleted}
+                    onSelected={onBipSelected}
+                />
             </SplitScreen>
             {/* <View
                 // ref={container}

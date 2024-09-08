@@ -3,32 +3,24 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { ThumbList } from './components'
 import {
+    ActivityIndicator,
     IconButton,
     ThemedText,
+    ThumbList,
     Time,
 } from '@components'
 import { useApp } from '@app'
 import { useBips } from '@bips'
-import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { getBipImages } from '@utils/images'
 import { deleteBip } from '@utils/bips'
 import { getAddress } from '@utils/map'
-import { navigate } from '@utils/navigation'
 
-export default ({ item, onPressed, current = false }) => {
+export default ({ item, onDeleted, onPressed, current = false }) => {
 
     const { user } = useApp()
-
-    const {
-        removeBip,
-        // setBipAddress,
-        setBipImages,
-    } = useBips()
-
-    const { setModal } = useModal()
+    const { setBipImages } = useBips()
     const { socket } = useSocket()
 
     const [ loading, setLoading ] = useState(false)
@@ -83,12 +75,12 @@ export default ({ item, onPressed, current = false }) => {
         const deletedBip = await deleteBip(id)
         setLoading(false)
         if (deletedBip) {
+            onDeleted(deletedBip._id)
             socket.emit('bip_deleted', deletedBip)
-            removeBip(id)
         }   
     }
 
-    return (
+    return address ? (
         <Pressable
             key={`bip-${item._id}`}
             onPress={onPressed}
@@ -97,9 +89,8 @@ export default ({ item, onPressed, current = false }) => {
                 flexDirection: 'row',
                 justifyContent: 'flex-start',
                 gap: 10,
-                marginBottom: 3,
                 paddingVertical: 6,
-                paddingHorizontal: 7,
+                paddingHorizontal: 10,
                 backgroundColor: current ? 'rgba(200, 100, 100, 0.2)' : 'transparent',
                 borderBottomWidth: 1,
                 borderBottomColor: '#ccc',
@@ -132,12 +123,13 @@ export default ({ item, onPressed, current = false }) => {
                     style={{
                         flex: 1,
                         flexDirection: 'row',
-                        justifyContent: 'flex-start',
+                        // justifyContent: 'flex-start',
+                        justifyContent: 'space-between',
                         gap: 10,
                     }}
                 >
                     <ThemedText bold>{city}</ThemedText>
-                    <ThemedText>{street}</ThemedText>
+                    <Time time={item.createdAt} />
                 </View>
                 <View
                     style={{
@@ -147,8 +139,8 @@ export default ({ item, onPressed, current = false }) => {
                         gap: 10,
                     }}
                 >
-                    <ThemedText color='tomato' bold>{item.user?.username || item.user}</ThemedText>
-                    <Time time={item.createdAt} />
+                    {/* <ThemedText color='tomato' bold>{item.user?.username || item.user}</ThemedText> */}
+                    <ThemedText>{street}</ThemedText>
                 </View>
             </View>
 
@@ -173,5 +165,5 @@ export default ({ item, onPressed, current = false }) => {
             }
 
         </Pressable>
-    )
+    ) : null//<ActivityIndicator />
 }

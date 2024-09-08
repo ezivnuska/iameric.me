@@ -20,9 +20,9 @@ export default ({ state, change, children }) => {
     const animate = toValue => {
 		Animated.timing(transition, {
 			toValue,
-			duration: 500,
+			duration: 250,
 			useNativeDriver: true,
-            easing: Easing.inOut(Easing.quad),
+            easing: Easing.out(Easing.quad),
 		}).start()
     }
 
@@ -50,7 +50,7 @@ export default ({ state, change, children }) => {
                                 gap: 2,
                                 height: transition.interpolate({
                                     inputRange: [0, 1],
-                                    outputRange: [130, containerHeight - 100],
+                                    outputRange: [170, containerHeight - 180],
                                 }),
                             }}
                         >

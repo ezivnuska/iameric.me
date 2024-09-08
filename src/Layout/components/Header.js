@@ -30,10 +30,7 @@ export default ({ route }) => {
 
     const routeName = useMemo(() => route && route.name, [route])
 
-    const isCurrentRoute = name => {
-        console.log('name', name, routeName)
-        return name === routeName
-    }
+    const isCurrentRoute = name => name === routeName
 
     const source = (user && user.profileImage)
         ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
