@@ -24,10 +24,10 @@ const Field = ({ color, focused, setFocused, ...props }) => {
         else animate(0)
     }, [focused])
 
-    const onPress = () => {
-        console.log('onPress', color)
-        setFocused()
-    }
+    // const onPress = () => {
+    //     console.log('onPress', color)
+    //     setFocused()
+    // }
 
     return (
         <Animated.View
@@ -41,7 +41,7 @@ const Field = ({ color, focused, setFocused, ...props }) => {
             }}
         >
             <Pressable
-                onPress={onPress}
+                onPress={setFocused}
                 style={{
                     flex: 1,
                     flexGrow: 1,
