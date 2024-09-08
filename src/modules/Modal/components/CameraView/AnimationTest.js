@@ -166,14 +166,8 @@ export default () => {
 			}}
 		>
 			{containerHeight ? (
-				<View
-					style={{
-						flex: 1,
-						// width: '100%',
-						borderWidth: 1,
-						borderColor: 'yellow',
-					}}
-				>
+				<View style={{ flex: 1 }}>
+					
 					<View
 						style={{
 							flexBasis: 'auto',
