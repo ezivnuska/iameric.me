@@ -37,14 +37,14 @@ export default () => {
                 </ThemedText>
             </Pressable>
 
-            <Pressable
+            {/* <Pressable
                 onPress={() => navigate('Forum')}
                 style={{ flexGrow: 0 }}
             >
                 <ThemedText color='#777'>
                     Feedback
                 </ThemedText>
-            </Pressable>
+            </Pressable> */}
 
             {user && (
                 <View style={{ flexGrow: 0 }}>

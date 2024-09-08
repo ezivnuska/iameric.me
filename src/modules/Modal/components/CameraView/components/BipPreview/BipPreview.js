@@ -125,7 +125,7 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
     return user !== null && (
         <View
             style={{
-                // flex: 1,
+                flex: 1,
                 padding: 10,
                 gap: 10,
             }}
@@ -148,18 +148,7 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
                         gap: 7,
                     }}
                 >
-                    <View
-                        style={{
-                            // flex: 1,
-                            flexBasis: 'auto',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 7,
-                        }}
-                    >
-                        {user.username && <ThemedText color='#fff' bold>{user.username}</ThemedText>}
-                        <Time now color='#fff' />
-                    </View>
+                    {user.username && <ThemedText color='#fff' bold>{user.username}</ThemedText>}
                     
                     <Pressable
                         onPress={closeModal}
@@ -171,12 +160,9 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
                             flexDirection: 'row',
                             alignItems: 'center',
                             borderRadius: 8,
-                            // backgroundColor: '#bbb',
                             overflow: 'hidden',
-                            // borderWidth: 1,
-                            // borderColor: '#fff',
                             paddingHorizontal: 5,
-                            opacity: loading ? 0.25 : 1,
+                            opacity: loading ? 0 : 1,
                         }}
                     >
                         <Icon
@@ -257,7 +243,7 @@ export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
                         flexGrow: 0,
                         flexDirection: 'row',
                         alignItems: 'flex-start',
-                        opacity: images && images.length ? submitDisabled ? 0.5 : 1 : 0,
+                        opacity: submitDisabled ? 0 : 1,
                     }}
                 >
                     <Pressable

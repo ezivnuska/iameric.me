@@ -44,19 +44,25 @@ export default props => {
     }
 
     useEffect(() => {
+        
         const fetchBips = async () => {
             setBipsLoading(true)
             const bips = await loadBips()
             setBipsLoading(false)
             if (bips) setBips(bips)
         }
+
         if (!bips || !bips.length) {
             fetchBips()
-        }
+        } else setCurrentBipIndex(0)
         
         socket.on('new_bip', handleNewBip)
         socket.on('deleted_bip', removeBip)
     }, [])
+
+    useEffect(() => {
+        if (bips && !currentBipIndex) setCurrentBipIndex(0)
+    }, [bips])
 
     useEffect(() => {
         if (newBip) {
@@ -70,10 +76,14 @@ export default props => {
     }
 
     const onBipDeleted = (id, index) => {
-        // const newIndex = currentBipIndex < 1 ? 0 : currentBipIndex - 1
         // if (currentBipIndex === 0)
         if (index === currentBipIndex) {
-            setCurrentBipIndex(null)
+            setCurrentBipIndex(currentBipIndex < 0 ? currentBipIndex - 1 : null)
+        } else {
+            if (index < currentBipIndex) {
+                setCurrentBipIndex(null)
+                setCurrentBipIndex(currentBipIndex - 1)
+            }
         }
         removeBip(id)
     }

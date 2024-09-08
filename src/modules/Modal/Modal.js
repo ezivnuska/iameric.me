@@ -1,13 +1,10 @@
 import React, { useMemo } from 'react'
 import {
     Pressable,
-    ScrollView,
     View,
 } from 'react-native'
 import { CameraView, ModalFactory } from './components'
-import { Animation } from '@components'
 import Modal from 'react-native-modal'
-import { useApp } from '@app'
 import { useModal } from '@modal'
 
 const FullScreenModal = ({ children }) => {
@@ -33,7 +30,7 @@ const FullScreenModal = ({ children }) => {
                     zIndex: 1,
                 }}
             />
-            
+
             <View
                 style={{
                     flex: 1,
@@ -51,7 +48,6 @@ const FullScreenModal = ({ children }) => {
 
 const StandardModal = () => {
 
-    const { dims } = useApp()
     const { closeModal} = useModal()
     
     return (

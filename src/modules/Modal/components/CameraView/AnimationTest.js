@@ -169,16 +169,20 @@ export default () => {
 				<View
 					style={{
 						flex: 1,
+						// width: '100%',
+						borderWidth: 1,
+						borderColor: 'yellow',
 					}}
 				>
 					<View
 						style={{
-							flex: 1,
+							flexBasis: 'auto',
 							flexShrink: 1,
 						}}
 					>
 						<Animated.View
 							style={{
+								width: '100%',
 								height: transition.interpolate({
 									inputRange: [0, 1],
 									outputRange: [0, containerHeight * 0.7],
@@ -209,19 +213,23 @@ export default () => {
 								</View>
 							)}
 						</Animated.View>
+					</View>
 
-						<View
-							style={{
-								flex: 1,
-							}}
-						>
-							<BipPreview
-								images={previews}
-								onBip={onBip}
-								onSubmission={onSubmission}
-								onRemove={removePreview}
-							/>
-						</View>
+					<View
+						style={{
+							flex: 1,
+							width: '100%',
+							flexGrow: 1,
+							flexDirection: 'row',
+							alignItems: 'flex-start',
+						}}
+					>
+						<BipPreview
+							images={previews}
+							onBip={onBip}
+							onSubmission={onSubmission}
+							onRemove={removePreview}
+						/>
 					</View>
 				</View>
 			)

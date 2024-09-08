@@ -34,7 +34,7 @@ export default ({ bip, onClick, disabled = false, open = false, ...props }) => {
 
     useEffect(() => {
         if (open) {
-            if (!address) getAddressFromCoords({ lat: Number(location.latitude), lng: Number(location.longitude) })
+            getAddressFromCoords({ lat: Number(location.latitude), lng: Number(location.longitude) })
         }
     }, [open])
 
