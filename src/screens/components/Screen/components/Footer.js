@@ -10,6 +10,7 @@ import {
 import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
+import { navigate } from '@utils/navigation'
 
 export default () => {
 
@@ -33,6 +34,15 @@ export default () => {
             >
                 <ThemedText color='#777'>
                     {`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
+                </ThemedText>
+            </Pressable>
+
+            <Pressable
+                onPress={() => navigate('Forum')}
+                style={{ flexGrow: 0 }}
+            >
+                <ThemedText color='#777'>
+                    Feedback
                 </ThemedText>
             </Pressable>
 

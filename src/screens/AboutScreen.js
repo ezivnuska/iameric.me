@@ -30,7 +30,7 @@ export default props => {
     
                 <Heading
                     title='About Me'
-                    onBack={() => props.navigation.navigate('Home')}
+                    onBack={() => props.navigation.navigate('Bips', { screen: 'BipList' })}
                 >
                     <AboutNav
                         type={type}

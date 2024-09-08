@@ -56,7 +56,7 @@ export default ({ route }) => {
                 <Pressable
                     onPress={() => {
                         if (isCurrentRoute('BipList')) navigate('About', { screen: 'work' })
-                        else navigate('BipList')
+                        else  navigate('Bips', { screen: 'BipList' })
                     }}
                 >
 
@@ -87,19 +87,19 @@ export default ({ route }) => {
                             gap: 3,
                         }}
                     >
-                        <IconButton
+                        {/* <IconButton
                             name={`home-${isCurrentRoute('Home') ? 'sharp' : 'outline'}`}
                             onPress={() => navigate('Home')}
                             disabled={isCurrentRoute('Home')}
-                        />
+                        /> */}
 
-                        <IconButton
+                        {/* <IconButton
                             name={`chatbubbles-${isCurrentRoute('Forum') ? 'sharp' : 'outline'}`}
                             onPress={() => navigate('Forum')}
                             disabled={isCurrentRoute('Forum')}
-                        />
+                        /> */}
 
-                        {user.role === 'admin' && (
+                        {/* {user.role === 'admin' && (
                             <IconButton
                                 name={`people-${isCurrentRoute('Contacts') ? 'sharp' : 'outline'}`}
                                 onPress={() => navigate('Contacts')}
@@ -113,7 +113,7 @@ export default ({ route }) => {
                                 onPress={() => navigate('Mail')}
                                 disabled={isCurrentRoute('Mail')}
                             />
-                        )}
+                        )} */}
                     </View>
                 )
                 : null

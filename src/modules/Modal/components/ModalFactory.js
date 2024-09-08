@@ -1,5 +1,9 @@
 import React from 'react'
 import {
+    ScrollView,
+    View,
+} from 'react-native'
+import {
     AuthForm,
     CaptionForm,
     DestroyForm,
@@ -8,9 +12,8 @@ import {
     MessageForm,
     SettingsForm,
 } from '@forms'
-import {
-    useModal,
-} from '@modal'
+import { useApp } from '@app'
+import { useModal } from '@modal'
 import {
     BipDetail,
     CameraView,
@@ -21,10 +24,10 @@ import {
 
 export default () => {
 
+    const { dims } = useApp()
     const { modal } = useModal()
     
     const renderModalContent = () => {
-        if (!modal) return null
         const { type, data } = modal
         switch(type) {
             case 'AUTH': return <AuthForm />; break
@@ -43,5 +46,40 @@ export default () => {
         }
     }
     
-    return renderModalContent()
+    return modal ? (
+        <View
+            style={{
+                flexBasis: 'auto',
+                flexGrow: 0,
+                flexShrink: 1,
+                backgroundColor: '#fff',
+                borderRadius: 20,
+                // borderTopLeftRadius: 20,
+                // borderTopRightRadius: 20,
+                overflow: 'hidden',
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                maxHeight: dims.height - 100,
+                width: dims.width - 10,
+                maxWidth: 390,
+                marginHorizontal: 'auto',
+                zIndex: 100,
+            }}
+        >
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{
+                    flex: 1,
+                }}
+                contentContainerStyle={{
+                    flex: 1,
+                    width: '100%',
+                    maxWidth: 400,
+                    marginHorizontal: 'auto',
+                }}
+            >
+                {renderModalContent()}
+            </ScrollView>
+        </View>
+    ) : null
 }

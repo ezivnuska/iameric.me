@@ -23,16 +23,17 @@ const FullScreenModal = ({ children }) => {
             }}
         >
             <Pressable
-                    onPress={closeModal}
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        bottom: 0,
-                        left: 0,
-                        zIndex: 1,
-                    }}
-                />
+                onPress={closeModal}
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                    zIndex: 1,
+                }}
+            />
+            
             <View
                 style={{
                     flex: 1,
@@ -74,40 +75,7 @@ const StandardModal = () => {
                 }}
             />
 
-            <View
-                style={{
-                    flexBasis: 'auto',
-                    flexGrow: 0,
-                    flexShrink: 1,
-                    backgroundColor: '#fff',
-                    borderRadius: 20,
-                    // borderTopLeftRadius: 20,
-                    // borderTopRightRadius: 20,
-                    overflow: 'hidden',
-                    paddingHorizontal: 10,
-                    paddingVertical: 10,
-                    maxHeight: dims.height - 100,
-                    width: dims.width - 10,
-                    maxWidth: 390,
-                    marginHorizontal: 'auto',
-                    zIndex: 100,
-                }}
-            >
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    style={{
-                        flex: 1,
-                    }}
-                    contentContainerStyle={{
-                        flex: 1,
-                        width: '100%',
-                        maxWidth: 400,
-                        marginHorizontal: 'auto',
-                    }}
-                >
-                    <ModalFactory />
-                </ScrollView>
-            </View>
+            <ModalFactory />
         </View>
     )
 }
