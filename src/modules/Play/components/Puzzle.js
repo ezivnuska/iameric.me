@@ -1,45 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
     Animated,
     Easing,
     Pressable,
-    Text,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
+import {
+    IconButton,
+    ThemedText,
+} from '@components'
 
-const Block = ({ col, row, width, height, maxHeight, maxWidth, label, color, onPress, pressable, ...props }) => {
+const Block = ({ block, height, width, maxHeight, maxWidth, onPress, pressable, ...props }) => {
 
-    const transitionX = useRef(new Animated.Value(col * (width / maxWidth))).current
-    const transitionY = useRef(new Animated.Value(row * (height / maxHeight))).current
+    const [positionX, setPositionX] = useState(block.posX)
+    const [positionY, setPositionY] = useState(block.posY)
 
-    const [ currentColumn, setCurrentColumn ] = useState(null)
-    const [ currentRow, setCurrentRow ] = useState(null)
-
-    useEffect(() => {
-        setCurrentColumn(col)
-        setCurrentRow(row)
-    }, [])
+    const transitionX = useRef(new Animated.Value(positionX)).current
+    const transitionY = useRef(new Animated.Value(positionY)).current
 
     useEffect(() => {
-        animateX(col * (width / maxWidth))
-    }, [currentColumn])
-
-    useEffect(() => {
-        animateY(row * (height / maxHeight))
-    }, [currentRow])
-
-    useEffect(() => {
-        if (col !== currentColumn) {
-            setCurrentColumn(col)
+        if (block) {
+            const { newPosX, newPosY } = block
+            if (newPosX) animateX(newPosX)
+            if (newPosY) animateY(newPosY)
         }
-    }, [col])
-
-    useEffect(() => {
-        if (row !== currentRow) {
-            setCurrentRow(row)
-        }
-    }, [row])
+    }, [block])
 
     const animateX = toValue => {
         Animated.timing(transitionX, {
@@ -61,6 +46,7 @@ const Block = ({ col, row, width, height, maxHeight, maxWidth, label, color, onP
 
     return (
         <Animated.View
+            {...props}
             style={{
                 position: 'absolute',
                 top: transitionY.interpolate({
@@ -74,7 +60,6 @@ const Block = ({ col, row, width, height, maxHeight, maxWidth, label, color, onP
             }}
         >
             <Pressable
-                {...props}
                 onPress={onPress}
                 disabled={!pressable}
                 style={{
@@ -87,7 +72,7 @@ const Block = ({ col, row, width, height, maxHeight, maxWidth, label, color, onP
                     style={{
                         flex: 1,
                         height: '100%',
-                        backgroundColor: color,
+                        backgroundColor: block.color,
                     }}
                 >
                     <ThemedText
@@ -99,7 +84,7 @@ const Block = ({ col, row, width, height, maxHeight, maxWidth, label, color, onP
                             marginHorizontal: 'auto',
                         }}
                     >
-                        {label}
+                        {block.label}
                     </ThemedText>
                 </View>
             </Pressable>
@@ -121,87 +106,161 @@ export default () => {
     const blockHeight = (puzzleDims.height - (numRows - 1) + 2) / numRows
     const blockColors = [ 'tomato', 'olive', 'teal' ]
     const [ blocks, setBlocks ] = useState(null)
-    const [ emptyCol, setEmptyCol ] = useState(numCols - 1)
-    const [ emptyRow, setEmptyRow ] = useState(numRows - 1)
+    const [ emptyIndex, setEmptyIndex ] = useState(numBlocks)
 
-    useEffect(() => {
-        const blockData = []
+    const initBlocks = () => {
+        let tiles = []
         let col = 0
         let row = 0
-        while (blockData.length < numBlocks) {
+        while (tiles.length < numBlocks) {
             const randomNum = Math.floor(Math.random() * blockColors.length)
-            const block = {
-                col: col,
-                row: row,
+            const { positionX, positionY } = getPositionByIndex(tiles.length)
+            const tile = {
+                posX: positionX,
+                posY: positionY,
                 width: blockWidth,
                 height: blockHeight,
                 color: blockColors[randomNum],
+                label: tiles.length + 1,
             }
-            blockData.push(block)
-            if (col + 1 < numCols) {
-                col++
-            } else {
-                col = 0
-                row++
-            }
-            
+            tiles.push(tile)
         }
-        
-        setBlocks(blockData)
+        if (col + 1 < numCols) {
+            col++
+        } else {
+            col = 0
+            row++
+        }
+        setBlocks(tiles)
+    }
+
+    useEffect(() => {
+        initBlocks()
     }, [])
 
-    const updateEmpty = (col, row) => {
-        setEmptyCol(col)
-        setEmptyRow(row)
+    const shuffle = () => {
+        let pile = blocks.slice()
+        let shuffled = []
+        setEmptyIndex(numBlocks)
+        while (shuffled.length < blocks.length) {
+            const index = Math.floor(Math.random() * pile.length)
+            const tile = pile.splice(index, 1)[0]
+            shuffled.push(tile)
+        }
+        setBlocks(shuffled.map((s, i) => {
+            const { positionX, positionY } = getPositionByIndex(i)
+            return {
+                ...s,
+                newPosX: positionX,
+                newPosY: positionY,
+            }
+        }))
     }
 
-    const updateBlock = (index, col, row) => {
-        setBlocks([
-            ...blocks.slice(0, index), {
-                ...blocks[index],
-                col: emptyCol,
-                row: emptyRow,
-            },
-            ...blocks.slice(index + 1),
-        ])
-
-        updateEmpty(col, row)
+    const getCoords = index => {
+        const col = index % numRows
+        const row = Math.floor(index / numCols)
+        
+        return {
+            col,
+            row,
+        }
     }
 
-    return (
-        <View
-            style={{
-                backgroundColor: '#000',
-                width: puzzleDims.width,
-                height: puzzleDims.height,
-                backgroundColor: '#000',
-                padding: 1,
-                marginHorizontal: 'auto',
-            }}
-        >
+    const getPositionByIndex = index => {
+        const col = index % numRows
+        const row = Math.floor(index / numCols)
+        
+        return {
+            positionX: col * (blockWidth / puzzleDims.width),
+            positionY: row * (blockHeight / puzzleDims.height),
+        }
+    }
+
+    const getEmptyCoords = () => {
+        const { col, row } = getCoords(emptyIndex)
+        return {
+            emptyCol: col,
+            emptyRow: row,
+        }
+    }
+
+    const getEmptySpace = () => { 
+        const { positionX, positionY } = getPositionByIndex(emptyIndex)
+        return {
+            emptyPosX: positionX,
+            emptyPosY: positionY,
+        }
+    }
+
+    const switchBlocks = currentIndex => {
+        const index = currentIndex
+        const { emptyPosX, emptyPosY } = getEmptySpace()
+        setEmptyIndex(index)
+        let switched = blocks
+        switched[index] = {
+            ...switched[index],
+            newPosX: emptyPosX,
+            newPosY: emptyPosY,
+        }
+        
+        setBlocks(switched)
+    }
+
+    const handlePress = index => {
+        switchBlocks(index)
+    }
+
+    
+
+    const renderBlocks = () => {
+        return blocks && blocks.map((block, index) => {
+            const { col, row } = getCoords(index)
+            const { emptyCol, emptyRow } = getEmptyCoords()
+            return (
+                <Block
+                    key={`block-${index}`}
+                    block={block}
+                    width={blockWidth}
+                    height={blockHeight}
+                    maxWidth={puzzleDims.width}
+                    maxHeight={puzzleDims.height}
+                    onPress={() => handlePress(index)}
+                    pressable={(row === emptyRow && Math.abs(col - emptyCol) === 1) || (col === emptyCol && Math.abs(row - emptyRow) === 1)}
+                />
+            )
+        })
+    }
+
+    return blocks && (
+        <View style={{ gap: 10 }}>
+
             <View
                 style={{
-                    position: 'relative',
-                    width: '100%',
-                    flex: 1,
-                    // height: puzzleDims.height,
+                    backgroundColor: '#000',
+                    width: puzzleDims.width,
+                    height: puzzleDims.height,
+                    backgroundColor: '#000',
+                    padding: 1,
+                    marginHorizontal: 'auto',
                 }}
             >
-                {blocks !== null && blocks.map(({ col, row, width, height, color }, index) => (
-                    <Block
-                        key={`block-${index}`}
-                        col={col}
-                        row={row}
-                        width={width}
-                        height={height}
-                        maxWidth={puzzleDims.width}
-                        maxHeight={puzzleDims.height}
-                        label={index + 1}
-                        color={color}
-                        onPress={() => updateBlock(index, col, row)}
-                        pressable={(row === emptyRow && Math.abs(col - emptyCol) === 1) || (col === emptyCol && Math.abs(row - emptyRow) === 1)}
-                    />
-                ))}
+                <View
+                    style={{
+                        position: 'relative',
+                        width: '100%',
+                        flex: 1,
+                    }}
+                >
+                    {renderBlocks()}
+                </View>
+            </View>
+            <View style={{ marginHorizontal: 'auto' }}>
+                <IconButton
+                    name='reload-circle-sharp'
+                    size={30}
+                    onPress={shuffle}
+                />
             </View>
         </View>
     )
