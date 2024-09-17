@@ -63,6 +63,8 @@ const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onP
                     height: height,
                     width: width,
                     padding: 1,
+                    borderRadius: 8,
+                    overflow: 'hidden',
                 }}
             >
                 <View
@@ -70,10 +72,19 @@ const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onP
                         flex: 1,
                         height: '100%',
                         backgroundColor: color,
+                        // opacity: 0.9,
+                        shadowColor: '#fff',
+                        shadowOffset: {
+                            width: 3,
+                            height: 3,
+                        },
+                        shadowOpacity: 0.75,
+                        shadowRadius: 1,
+                        elevation: 3,
                     }}
                 >
                     <ThemedText
-                        color='#000'
+                        color='#fee'
                         size={24}
                         bold
                         style={{
@@ -96,12 +107,12 @@ export default () => {
         width: 360,
     }
 
-    const numRows = 5
-    const numCols = 5
+    const numRows = 3
+    const numCols = 3
     const numBlocks = numRows * numCols - 1
     const blockWidth = (puzzleDims.width - (numCols - 1) + 2) / numCols
     const blockHeight = (puzzleDims.height - (numRows - 1) + 2) / numRows
-    const blockColors = [ 'tomato', 'orange', 'yellow' ]
+    const blockColors = [ '#7CB9E8', '#662d91', '#FF69B4' ]
     const [ blocks, setBlocks ] = useState(null)
     const [ emptyPos, setEmptyPos ] = useState({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
     const { emptyCol, emptyRow } = useMemo(() => emptyPos, [emptyPos])
@@ -208,7 +219,7 @@ export default () => {
                     backgroundColor: '#000',
                     width: puzzleDims.width,
                     height: puzzleDims.height,
-                    backgroundColor: '#000',
+                    backgroundColor: 'rgba(200, 0, 0, 0.25)',
                     padding: 1,
                     marginHorizontal: 'auto',
                 }}
