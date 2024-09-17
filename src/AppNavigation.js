@@ -1,18 +1,18 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
-    AboutScreen,
     BipScreen,
     BipsScreen,
     ContactScreen,
     ContactsScreen,
     ForumScreen,
-    // FallbackScreen,
     HomeScreen,
     ImagesScreen,
     MapScreen,
     MailScreen,
+    PlayScreen,
     ProfileScreen,
+    WorkScreen,
 } from '@screens'
 
 const BipStack = createNativeStackNavigator()
@@ -84,6 +84,36 @@ const UserStackScreen = () => {
             />
 
         </UserStack.Navigator>
+    )
+}
+
+
+const AboutStack = createNativeStackNavigator()
+const AboutStackScreen = () => {
+
+    return (
+        <AboutStack.Navigator
+            initialRouteName='Work'
+            screenOptions={{
+                headerShown: false,
+            }}
+        >
+
+            <AboutStack.Screen
+                name='Work'
+                children={props => <WorkScreen {...props} />}
+                // component={WorkScreen}
+                options={{ title: 'Work' }}
+            />
+
+            <AboutStack.Screen
+                name='Play'
+                children={props => <PlayScreen {...props} />}
+                // component={PlayScreen}
+                options={{ title: 'Play' }}
+            />
+
+        </AboutStack.Navigator>
     )
 }
 
@@ -178,8 +208,8 @@ const AppStackScreen = () => {
             
             <AppStack.Screen
                 name='About'
-                children={props => <AboutScreen {...props} />}
-                // component={AboutScreen}
+                children={props => <AboutStackScreen {...props} />}
+                // component={AboutStackScreen}
                 options={{ title: 'About' }}
             />
 

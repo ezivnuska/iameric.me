@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import { ThemedText } from '@components'
 
-export default ({ onChange, type = 'work' }) => (
+export default ({ onPress, type = 'work' }) => (
     <View
         style={{
             flexDirection: 'row',
@@ -21,7 +21,7 @@ export default ({ onChange, type = 'work' }) => (
             }}
         >
             <Pressable
-                onPress={() => onChange('work')}
+                onPress={onPress}
                 disabled={type === 'work'}
                 style={{
                     borderRadius: 4,
@@ -44,7 +44,7 @@ export default ({ onChange, type = 'work' }) => (
             }}
         >
             <Pressable
-                onPress={() => onChange('play')}
+                onPress={onPress}
                 disabled={type === 'play'}
                 style={{
                     borderRadius: 4,

@@ -27,6 +27,14 @@ export default linking = {
             },
             About: {
                 path: 'about',
+                screens: {
+                    Work: {
+                        path: 'work',
+                    },
+                    Play: {
+                        path: 'play',
+                    },
+                },
             },
             Bips: {
                 path: 'bips',
