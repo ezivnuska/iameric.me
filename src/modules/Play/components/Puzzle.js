@@ -8,6 +8,7 @@ import {
 import {
     IconButton,
     ThemedText,
+    TimerDisplay,
 } from '@components'
 
 const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onPress, pressable, ...props }) => {
@@ -116,6 +117,7 @@ export default ({ level = 3 }) => {
     const [ blocks, setBlocks ] = useState(null)
     const [ emptyPos, setEmptyPos ] = useState({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
     const { emptyCol, emptyRow } = useMemo(() => emptyPos, [emptyPos])
+    const [ showTimer, setShowTimer ] = useState(false)
 
     const initBlocks = () => {
         let tiles = []
@@ -155,7 +157,14 @@ export default ({ level = 3 }) => {
         if (!blocks) initBlocks()
     }, [blocks])
 
+    useEffect(() => {
+        if (!showTimer && blocks) shuffle()
+    }, [showTimer])
+
     const shuffle = () => {
+        if (showTimer) {
+            setShowTimer(false)
+        }
         let pile = blocks.slice()
         let col = 0
         let row = 0
@@ -180,6 +189,7 @@ export default ({ level = 3 }) => {
         }
         setBlocks(shuffled)
         setEmptyPos({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
+        setShowTimer(true)
     }
 
     const switchBlocks = currentIndex => {
@@ -242,9 +252,10 @@ export default ({ level = 3 }) => {
                     {blocks && renderBlocks()}
                 </View>
             </View>
+            {showTimer && <TimerDisplay />}
             <View style={{ marginHorizontal: 'auto' }}>
                 <IconButton
-                    name='reload-circle-sharp'
+                    name={showTimer ? 'close-circle-sharp' : 'reload-circle-sharp'}
                     size={30}
                     onPress={shuffle}
                 />
