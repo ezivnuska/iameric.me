@@ -100,18 +100,18 @@ const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onP
     )
 }
 
-export default () => {
+export default ({ level = 3 }) => {
 
     const puzzleDims = {
         height: 360,
         width: 360,
     }
 
-    const numRows = 3
-    const numCols = 3
-    const numBlocks = numRows * numCols - 1
-    const blockWidth = (puzzleDims.width - (numCols - 1) + 2) / numCols
-    const blockHeight = (puzzleDims.height - (numRows - 1) + 2) / numRows
+    const numRows = useMemo(() => level, [level])
+    const numCols = useMemo(() => level, [level])
+    const numBlocks = useMemo(() => numRows * numCols - 1, [numRows, numCols])
+    const blockWidth = useMemo(() => (puzzleDims.width - (numCols - 1) + 2) / numCols, [puzzleDims, numCols])
+    const blockHeight = useMemo(() => (puzzleDims.height - (numRows - 1) + 2) / numRows, [puzzleDims, numRows])
     const blockColors = [ '#7CB9E8', '#662d91', '#FF69B4' ]
     const [ blocks, setBlocks ] = useState(null)
     const [ emptyPos, setEmptyPos ] = useState({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
@@ -139,13 +139,21 @@ export default () => {
                 }
             }
         }
-
+        setEmptyPos({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
         setBlocks(tiles)
     }
 
     useEffect(() => {
         initBlocks()
     }, [])
+
+    useEffect(() => {
+        setBlocks(null)
+    }, [level])
+
+    useEffect(() => {
+        if (!blocks) initBlocks()
+    }, [blocks])
 
     const shuffle = () => {
         let pile = blocks.slice()

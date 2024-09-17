@@ -2,6 +2,7 @@
 import ActivityIndicator from './ActivityIndicator'
 import AddressView from './AddressView'
 import Cabinet from './Cabinet'
+import Counter from './Counter'
 import FocusView from './FocusView'
 import Heading from './Heading'
 import IconButton from './IconButton'
@@ -22,6 +23,7 @@ export {
     ActivityIndicator,
     AddressView,
     Cabinet,
+    Counter,
     FocusView,
     Heading,
     IconButton,
