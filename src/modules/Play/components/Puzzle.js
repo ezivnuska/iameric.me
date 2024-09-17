@@ -10,21 +10,18 @@ import {
     ThemedText,
 } from '@components'
 
-const Block = ({ block, height, width, maxHeight, maxWidth, onPress, pressable, ...props }) => {
+const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onPress, pressable, ...props }) => {
 
-    const [positionX, setPositionX] = useState(block.posX)
-    const [positionY, setPositionY] = useState(block.posY)
-
-    const transitionX = useRef(new Animated.Value(positionX)).current
-    const transitionY = useRef(new Animated.Value(positionY)).current
+    const transitionX = useRef(new Animated.Value(col * (width / maxWidth))).current
+    const transitionY = useRef(new Animated.Value(row * (height / maxHeight))).current
+    
+    useEffect(() => {
+        animateX(col * (width / maxWidth))
+    }, [col])
 
     useEffect(() => {
-        if (block) {
-            const { newPosX, newPosY } = block
-            if (newPosX) animateX(newPosX)
-            if (newPosY) animateY(newPosY)
-        }
-    }, [block])
+        animateY(row * (height / maxHeight))
+    }, [row])
 
     const animateX = toValue => {
         Animated.timing(transitionX, {
@@ -72,7 +69,7 @@ const Block = ({ block, height, width, maxHeight, maxWidth, onPress, pressable, 
                     style={{
                         flex: 1,
                         height: '100%',
-                        backgroundColor: block.color,
+                        backgroundColor: color,
                     }}
                 >
                     <ThemedText
@@ -84,7 +81,7 @@ const Block = ({ block, height, width, maxHeight, maxWidth, onPress, pressable, 
                             marginHorizontal: 'auto',
                         }}
                     >
-                        {block.label}
+                        {label}
                     </ThemedText>
                 </View>
             </Pressable>
@@ -104,9 +101,10 @@ export default () => {
     const numBlocks = numRows * numCols - 1
     const blockWidth = (puzzleDims.width - (numCols - 1) + 2) / numCols
     const blockHeight = (puzzleDims.height - (numRows - 1) + 2) / numRows
-    const blockColors = [ 'tomato', 'olive', 'teal' ]
+    const blockColors = [ 'tomato', 'orange', 'yellow' ]
     const [ blocks, setBlocks ] = useState(null)
-    const [ emptyIndex, setEmptyIndex ] = useState(numBlocks)
+    const [ emptyPos, setEmptyPos ] = useState({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
+    const { emptyCol, emptyRow } = useMemo(() => emptyPos, [emptyPos])
 
     const initBlocks = () => {
         let tiles = []
@@ -114,23 +112,23 @@ export default () => {
         let row = 0
         while (tiles.length < numBlocks) {
             const randomNum = Math.floor(Math.random() * blockColors.length)
-            const { positionX, positionY } = getPositionByIndex(tiles.length)
             const tile = {
-                posX: positionX,
-                posY: positionY,
-                width: blockWidth,
-                height: blockHeight,
+                col,
+                row,
                 color: blockColors[randomNum],
                 label: tiles.length + 1,
             }
             tiles.push(tile)
+            if (col + 1 < numCols) {
+                col++
+            } else {
+                if (row + 1 < numRows) {
+                    col = 0
+                    row++
+                }
+            }
         }
-        if (col + 1 < numCols) {
-            col++
-        } else {
-            col = 0
-            row++
-        }
+
         setBlocks(tiles)
     }
 
@@ -140,70 +138,45 @@ export default () => {
 
     const shuffle = () => {
         let pile = blocks.slice()
+        let col = 0
+        let row = 0
         let shuffled = []
-        setEmptyIndex(numBlocks)
-        while (shuffled.length < blocks.length) {
+        while (shuffled.length < numBlocks) {
             const index = Math.floor(Math.random() * pile.length)
             const tile = pile.splice(index, 1)[0]
-            shuffled.push(tile)
-        }
-        setBlocks(shuffled.map((s, i) => {
-            const { positionX, positionY } = getPositionByIndex(i)
-            return {
-                ...s,
-                newPosX: positionX,
-                newPosY: positionY,
+            shuffled.push({
+                ...tile,
+                col,
+                row,
+            })
+            
+            if (col + 1 < numCols) {
+                col++
+            } else {
+                if (row + 1 < numRows) {
+                    col = 0
+                    row++
+                }
             }
-        }))
-    }
-
-    const getCoords = index => {
-        const col = index % numRows
-        const row = Math.floor(index / numCols)
-        
-        return {
-            col,
-            row,
         }
-    }
-
-    const getPositionByIndex = index => {
-        const col = index % numRows
-        const row = Math.floor(index / numCols)
-        
-        return {
-            positionX: col * (blockWidth / puzzleDims.width),
-            positionY: row * (blockHeight / puzzleDims.height),
-        }
-    }
-
-    const getEmptyCoords = () => {
-        const { col, row } = getCoords(emptyIndex)
-        return {
-            emptyCol: col,
-            emptyRow: row,
-        }
-    }
-
-    const getEmptySpace = () => { 
-        const { positionX, positionY } = getPositionByIndex(emptyIndex)
-        return {
-            emptyPosX: positionX,
-            emptyPosY: positionY,
-        }
+        setBlocks(shuffled)
+        setEmptyPos({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
     }
 
     const switchBlocks = currentIndex => {
-        const index = currentIndex
-        const { emptyPosX, emptyPosY } = getEmptySpace()
-        setEmptyIndex(index)
-        let switched = blocks
-        switched[index] = {
-            ...switched[index],
-            newPosX: emptyPosX,
-            newPosY: emptyPosY,
+        let switched = blocks.slice()
+        // console.log('')
+        // console.log(`moving index from col/row ${switched[currentIndex].col}/${switched[currentIndex].row} to col/row ${emptyCol}/${emptyRow}`)
+        const { col, row } = switched[currentIndex]
+        switched[currentIndex] = {
+            ...switched[currentIndex],
+            col: emptyCol,
+            row: emptyRow,
         }
-        
+        setEmptyPos({
+            emptyCol: col,
+            emptyRow: row,
+        })
         setBlocks(switched)
     }
 
@@ -211,28 +184,23 @@ export default () => {
         switchBlocks(index)
     }
 
-    
+    const renderBlocks = () => blocks.map(({ col, row, ...block }, index) => (
+        <Block
+            key={`block-${index}`}
+            label={block.label}
+            color={block.color}
+            col={col}
+            row={row}
+            width={blockWidth}
+            height={blockHeight}
+            maxWidth={puzzleDims.width}
+            maxHeight={puzzleDims.height}
+            onPress={() => handlePress(index)}
+            pressable={(row === emptyRow && Math.abs(col - emptyCol) === 1) || (col === emptyCol && Math.abs(row - emptyRow) === 1)}
+        />
+    ))
 
-    const renderBlocks = () => {
-        return blocks && blocks.map((block, index) => {
-            const { col, row } = getCoords(index)
-            const { emptyCol, emptyRow } = getEmptyCoords()
-            return (
-                <Block
-                    key={`block-${index}`}
-                    block={block}
-                    width={blockWidth}
-                    height={blockHeight}
-                    maxWidth={puzzleDims.width}
-                    maxHeight={puzzleDims.height}
-                    onPress={() => handlePress(index)}
-                    pressable={(row === emptyRow && Math.abs(col - emptyCol) === 1) || (col === emptyCol && Math.abs(row - emptyRow) === 1)}
-                />
-            )
-        })
-    }
-
-    return blocks && (
+    return (
         <View style={{ gap: 10 }}>
 
             <View
@@ -252,7 +220,7 @@ export default () => {
                         flex: 1,
                     }}
                 >
-                    {renderBlocks()}
+                    {blocks && renderBlocks()}
                 </View>
             </View>
             <View style={{ marginHorizontal: 'auto' }}>
