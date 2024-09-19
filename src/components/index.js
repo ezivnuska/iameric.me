@@ -18,7 +18,6 @@ import Switch from './Switch'
 import ThemedText from './ThemedText'
 import ThumbList from './ThumbList'
 import Time from './Time'
-import TimerDisplay from './TimerDisplay'
 
 export {
     ActivityIndicator,
@@ -40,5 +39,4 @@ export {
     ThemedText,
     ThumbList,
     Time,
-    TimerDisplay,
 }

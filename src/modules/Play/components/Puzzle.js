@@ -8,7 +8,6 @@ import {
 import {
     IconButton,
     ThemedText,
-    TimerDisplay,
 } from '@components'
 
 const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onPress, pressable, ...props }) => {
@@ -101,6 +100,50 @@ const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onP
     )
 }
 
+const TimeDisplay = ({ time }) => {
+
+    const minutes = useMemo(() => {
+        let m = Math.floor(time / 60)
+        return m
+    }, [time])
+
+    const seconds = useMemo(() => {
+        let s = time < 60 ? time : time % 60
+        return s
+    }, [time])
+
+    return (
+        <ThemedText
+            size={24}
+            bold
+        >
+            {minutes > 0 && `${minutes}m `}{`${seconds}s`}
+        </ThemedText>
+    )
+}
+
+const Timer = ({ time, onChange }) => {
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            onChange(time + 1)
+        }, 1000)
+
+        return () => clearInterval(interval)
+    }, [time])
+
+    return (
+        <View
+            style={{
+                marginHorizontal: 'auto',
+            }}
+        >
+            <TimeDisplay time={time} />
+
+        </View>
+    )
+}
+
 export default ({ level = 3 }) => {
 
     const puzzleDims = {
@@ -117,7 +160,10 @@ export default ({ level = 3 }) => {
     const [ blocks, setBlocks ] = useState(null)
     const [ emptyPos, setEmptyPos ] = useState({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
     const { emptyCol, emptyRow } = useMemo(() => emptyPos, [emptyPos])
-    const [ showTimer, setShowTimer ] = useState(false)
+
+    const [ timing, setTiming ] = useState(false)
+    const [ time, setTime ] = useState(0)
+    const [ score, setScore ] = useState(null)
 
     const initBlocks = () => {
         let tiles = []
@@ -157,14 +203,7 @@ export default ({ level = 3 }) => {
         if (!blocks) initBlocks()
     }, [blocks])
 
-    useEffect(() => {
-        if (!showTimer && blocks) shuffle()
-    }, [showTimer])
-
     const shuffle = () => {
-        if (showTimer) {
-            setShowTimer(false)
-        }
         let pile = blocks.slice()
         let col = 0
         let row = 0
@@ -189,13 +228,25 @@ export default ({ level = 3 }) => {
         }
         setBlocks(shuffled)
         setEmptyPos({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
-        setShowTimer(true)
+    }
+
+    const startGame = () => {
+        shuffle()
+        setTime(0)
+        setTiming(true)
+    }
+
+    const handlePress = () => {
+        if (timing) {
+            setScore(time)
+            setTiming(false)
+        } else {
+            startGame()
+        }
     }
 
     const switchBlocks = currentIndex => {
         let switched = blocks.slice()
-        // console.log('')
-        // console.log(`moving index from col/row ${switched[currentIndex].col}/${switched[currentIndex].row} to col/row ${emptyCol}/${emptyRow}`)
         const { col, row } = switched[currentIndex]
         switched[currentIndex] = {
             ...switched[currentIndex],
@@ -209,10 +260,6 @@ export default ({ level = 3 }) => {
         setBlocks(switched)
     }
 
-    const handlePress = index => {
-        switchBlocks(index)
-    }
-
     const renderBlocks = () => blocks.map(({ col, row, ...block }, index) => (
         <Block
             key={`block-${index}`}
@@ -224,13 +271,19 @@ export default ({ level = 3 }) => {
             height={blockHeight}
             maxWidth={puzzleDims.width}
             maxHeight={puzzleDims.height}
-            onPress={() => handlePress(index)}
+            onPress={() => switchBlocks(index)}
             pressable={(row === emptyRow && Math.abs(col - emptyCol) === 1) || (col === emptyCol && Math.abs(row - emptyRow) === 1)}
         />
     ))
 
+    const onTimer = value => {
+        setTime(value)
+    }
+
     return (
         <View style={{ gap: 10 }}>
+
+            {score && <TimeDisplay time={score} />}
 
             <View
                 style={{
@@ -252,12 +305,19 @@ export default ({ level = 3 }) => {
                     {blocks && renderBlocks()}
                 </View>
             </View>
-            {showTimer && <TimerDisplay />}
+            
+            {timing && (
+                <Timer
+                    time={time}
+                    onChange={onTimer}
+                />
+            )}
+            
             <View style={{ marginHorizontal: 'auto' }}>
                 <IconButton
-                    name={showTimer ? 'close-circle-sharp' : 'reload-circle-sharp'}
+                    name={timing ? 'close-circle-sharp' : 'reload-circle-sharp'}
                     size={30}
-                    onPress={shuffle}
+                    onPress={handlePress}
                 />
             </View>
         </View>

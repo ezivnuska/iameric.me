@@ -8,7 +8,7 @@ import { Puzzle } from './components'
 
 export default () => {
 
-    const [ level, setLevel ] = useState(4)
+    const [ level, setLevel ] = useState(1)
 
     return (
         <View
@@ -26,12 +26,12 @@ export default () => {
                 <Counter
                     label='Level'
                     value={level}
-                    min={3}
-                    max={5}
-                    onChange={setLevel}
+                    min={1}
+                    max={3}
+                    onChange={value => setLevel(value)}
                 />
             </View>
-            <Puzzle level={level} />
+            <Puzzle level={level + 2} />
         </View>
     )
 }
