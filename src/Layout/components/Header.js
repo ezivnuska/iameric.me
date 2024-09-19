@@ -55,8 +55,7 @@ export default ({ route }) => {
 
                 <Pressable
                     onPress={() => {
-                        if (isCurrentRoute('BipList')) navigate('About', { screen: 'work' })
-                        else  navigate('Bips', { screen: 'BipList' })
+                        navigate('About')
                     }}
                 >
 

@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
-    Animated,
     Easing,
     Pressable,
     View,
 } from 'react-native'
+import Animated, { useSharedValue, withSpring } from 'react-native-reanimated'
 import {
     IconButton,
     ThemedText,
@@ -12,48 +12,67 @@ import {
 
 const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onPress, pressable, ...props }) => {
 
-    const transitionX = useRef(new Animated.Value(col * (width / maxWidth))).current
-    const transitionY = useRef(new Animated.Value(row * (height / maxHeight))).current
+    const [ posX, setPosX ] = useState((maxWidth / 2) - (width / 2))
+    const [ posY, setPosY ] = useState((maxHeight / 2) - (height / 2))
+
+    const transitionX = useSharedValue(posX)
+    const transitionY = useSharedValue(posY)
     
     useEffect(() => {
-        animateX(col * (width / maxWidth))
-    }, [col])
+        setPosX((maxWidth / 2) - (width / 2))
+        setPosY((maxHeight / 2) - (height / 2))
+    }, [width, height])
 
     useEffect(() => {
-        animateY(row * (height / maxHeight))
+        setPosX(col * (width / maxWidth))
+    }, [col])
+    
+    useEffect(() => {
+        setPosY(row * (height / maxHeight))
     }, [row])
 
-    const animateX = toValue => {
-        Animated.timing(transitionX, {
-            toValue,
-            duration: 100,
-            useNativeDriver: true,
-            easing: Easing.out(Easing.quad),
-        }).start()
-    }
+    useEffect(() => {
+        transitionX.value = withSpring(maxWidth * posX)
+    }, [posX])
 
-    const animateY = toValue => {
-        Animated.timing(transitionY, {
-            toValue,
-            duration: 100,
-            useNativeDriver: true,
-            easing: Easing.out(Easing.quad),
-        }).start()
-    }
+    useEffect(() => {
+        transitionY.value = withSpring(maxHeight * posY)
+    }, [posY])
+
+
+    // const animateX = toValue => {
+    //     Animated.timing(transitionX, {
+    //         toValue,
+    //         duration: 100,
+    //         useNativeDriver: true,
+    //         easing: Easing.out(Easing.quad),
+    //     }).start()
+    // }
+
+    // const animateY = toValue => {
+    //     Animated.timing(transitionY, {
+    //         toValue,
+    //         duration: 100,
+    //         useNativeDriver: true,
+    //         easing: Easing.out(Easing.quad),
+    //     }).start()
+    // }
 
     return (
         <Animated.View
             {...props}
             style={{
                 position: 'absolute',
-                top: transitionY.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, maxHeight],
-                }),
-                left: transitionX.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, maxWidth],
-                }),
+                top: transitionY,
+                left: transitionX,
+                // top: transitionY.interpolate({
+                //     inputRange: [0, 1],
+                //     outputRange: [0, maxHeight],
+                // }),
+                // left: transitionX.interpolate({
+                //     inputRange: [0, 1],
+                //     outputRange: [0, maxWidth],
+                // }),
             }}
         >
             <Pressable
@@ -248,11 +267,14 @@ export default ({ level = 3 }) => {
     const switchBlocks = currentIndex => {
         let switched = blocks.slice()
         const { col, row } = switched[currentIndex]
+        console.log('')
+        console.log('colrow', col, row)
         switched[currentIndex] = {
             ...switched[currentIndex],
             col: emptyCol,
             row: emptyRow,
         }
+        console.log('colrow', col, row)
         setEmptyPos({
             emptyCol: col,
             emptyRow: row,
