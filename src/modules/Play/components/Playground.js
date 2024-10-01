@@ -225,9 +225,17 @@ export default ({ level }) => {
 		const { id } = target.offsetParent
 		const { direction } = getDirectionAndDistance(id)
 		if (directionIsVertical(direction)) {
-			offsetY.value += changeY//translationY
+			if (direction === 'up') {
+				if (translationY >= -itemSize && translationY <= 0) offsetY.value += changeY//translationY
+			} else {
+				if (translationY <= itemSize && translationY >= 0) offsetY.value += changeY//translationY
+			}
 		} else {
-			offsetX.value += changeX//translationX
+			if (direction === 'left') {
+				if (translationX >= -itemSize && translationX <= 0) offsetX.value += changeX//translationX
+			} else {
+				if (translationX <= itemSize && translationX >= 0) offsetX.value += changeX//translationX
+			}
 		}
 	}
 
@@ -313,6 +321,9 @@ export default ({ level }) => {
 		const { direction } = getDirectionAndDistance(id)
 		let moveThreshold = itemSize / 2
 		if (velocityY > 1000 || velocityX > 1000) {
+			const { x, y } = getNewOffset(event)
+			if (directionIsVertical(direction)) offsetY.value = y
+			else offsetX.value = x
 			updateTiles(event)
 		} else {
 			const { x, y } = getNewOffset(event)
