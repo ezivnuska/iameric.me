@@ -67,12 +67,11 @@ export default ({ level }) => {
 	// 	console.log('empty', empty)
 	// }, [empty])
 
-	// useEffect(() => {
-	// 	console.log('tiles', tiles)
-	// 	// if (tiles.length) initTiles()
-	// 	offsetX.value = 0
-	// 	offsetY.value = 0
-	// }, [tiles])
+	useEffect(() => {
+		console.log('tiles', tiles)
+		offsetX.value = 0
+		offsetY.value = 0
+	}, [tiles])
 
 	const getEmptyCol = () => {
 		let cols = []
@@ -140,7 +139,7 @@ export default ({ level }) => {
 		console.log('tileIsDisabled')
 		console.log('empty', emptyRow, emptyCol)
 		console.log('tile', tile.row, tile.col)
-		return emptyCol !== tile.col && emptyRow !== tile.row
+		return !(emptyCol === tile.col || emptyRow === tile.row)
 	}
 
 	const getDirectionAndDistance = id => {
