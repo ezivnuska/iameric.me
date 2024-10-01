@@ -4,7 +4,11 @@ import {
     Counter,
     // FocusView,
 } from '@components'
-import { Puzzle } from './components'
+import { Playground } from './components'
+// import { Puzzle } from './components'
+// import {
+//     GestureHandlerRootView,
+// } from 'react-native-gesture-handler'
 
 export default () => {
 
@@ -31,7 +35,11 @@ export default () => {
                     onChange={value => setLevel(value)}
                 />
             </View>
-            <Puzzle level={level + 2} />
+            
+            <Playground level={level + 2} />
+            {/* <GestureHandlerRootView> */}
+                {/* <Puzzle level={level + 2} /> */}
+            {/* </GestureHandlerRootView> */}
         </View>
     )
 }

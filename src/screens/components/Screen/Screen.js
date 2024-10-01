@@ -45,7 +45,7 @@ export default Screen = ({ title, children, secure = true, ...props }) => {
                     paddingHorizontal: 5,
                     width: '100%',
                 }}
-            >    
+            >
                 {children}
             </ScrollView>
 

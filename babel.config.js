@@ -49,7 +49,7 @@ module.exports = {
         },
       },
     ],
-    'react-native-reanimated/plugin',
+    ['react-native-reanimated/plugin', { loose: true }],
     // '@babel/plugin-transform-async-generator-functions',
     // '@babel/plugin-transform-class-properties',
     // '@babel/plugin-transform-nullish-coalescing-operator',

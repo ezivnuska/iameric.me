@@ -26,27 +26,29 @@ export default App = () => {
                 libraries={['marker', 'geocoding']}
                 onLoad={() => setMapsLoaded(true)}
             >
-                {(mapsLoaded === true) && <AppContextProvider>
-                    <BipContextProvider>
-                        <ImagesContextProvider>
-                            <MailContextProvider>
-                                <ForumContextProvider>
-                                    <SocketContextProvider>
-                                        <Compose
-                                            components={[
-                                                ContactsContextProvider,
-                                                ModalContextProvider,
-                                                FormContextProvider,
-                                            ]}
-                                        >
-                                            <Layout />
-                                        </Compose>
-                                    </SocketContextProvider>
-                                </ForumContextProvider>
-                            </MailContextProvider>
-                        </ImagesContextProvider>
-                    </BipContextProvider>
-                </AppContextProvider>}
+                {(mapsLoaded === true) && (
+                    <AppContextProvider>
+                        <BipContextProvider>
+                            <ImagesContextProvider>
+                                <MailContextProvider>
+                                    <ForumContextProvider>
+                                        <SocketContextProvider>
+                                            <Compose
+                                                components={[
+                                                    ContactsContextProvider,
+                                                    ModalContextProvider,
+                                                    FormContextProvider,
+                                                ]}
+                                            >
+                                                <Layout />
+                                            </Compose>
+                                        </SocketContextProvider>
+                                    </ForumContextProvider>
+                                </MailContextProvider>
+                            </ImagesContextProvider>
+                        </BipContextProvider>
+                    </AppContextProvider>
+                )}
             </APIProvider>
         </NotificationContextProvider>
     )

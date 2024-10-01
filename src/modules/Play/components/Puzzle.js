@@ -9,6 +9,10 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
+import {
+    Gesture,
+    GestureDetector,
+} from 'react-native-gesture-handler'
 
 const Block = ({ col, row, label, color, height, width, maxHeight, maxWidth, onPress, pressable, ...props }) => {
 
@@ -179,10 +183,119 @@ export default ({ level = 3 }) => {
     const [ blocks, setBlocks ] = useState(null)
     const [ emptyPos, setEmptyPos ] = useState({ emptyCol: numCols - 1, emptyRow: numRows - 1 })
     const { emptyCol, emptyRow } = useMemo(() => emptyPos, [emptyPos])
-
+    
     const [ timing, setTiming ] = useState(false)
     const [ time, setTime ] = useState(0)
     const [ score, setScore ] = useState(null)
+
+    // const block = useMemo(() => {
+
+    // }, [blocks, emptyPos])
+
+    const isPressed = useSharedValue(false)
+    const direction = useSharedValue(null)
+    const offset = useSharedValue({ x: 0, y: 0 })
+    const start = useSharedValue({ x: 0, y: 0 })
+    const gesture = Gesture.Pan()
+        .onBegin((e) => {
+            isPressed.value = true
+            direction.value = null
+        })
+        .onUpdate((e) => {
+            const xOffset = e.translationX + start.value.x
+            const yOffset = e.translationY + start.value.y
+            // if (!direction.value) {
+            //     if (xOffset > 70) direction.value = 'right'
+            //     if (xOffset < -70) direction.value = 'left'
+            //     if (yOffset < -70) direction.value = 'up'
+            //     if (yOffset > 70) direction.value = 'down'
+            // }
+            offset.value = {
+                x: xOffset,
+                y: yOffset,
+            }
+            // start.value = {
+            //     x: xOffset,
+            //     y: yOffset,
+            // }
+        })
+        .onEnd(() => {
+            // console.log('offset.value', offset.value)
+            start.value = {
+                x: offset.value.x,
+                y: offset.value.y,
+            }
+        })
+        .onFinalize(() => {
+            isPressed.value = false
+            // onSwipe(offset.value)
+            // swipe(direction.value)
+            // direction.value = null
+        })
+    
+    const swipe = dir => {
+        const movableBlocks = movable()
+        console.log('movable blocks', movableBlocks)
+        if (movableBlocks[dir] !== null) {
+            console.log('move block from', movableBlocks[dir])
+            switchBlocks(movableBlocks[dir])
+        }
+    }
+
+    const onSwipe = ({ x, y }) => {
+
+        // console.log('xy', x, y)
+        let dir
+        if (Math.abs(x) > Math.abs(y)) {
+            dir = x > 0 ? 'right' : 'left'
+        } else {
+            dir = y > 0 ? 'down' : 'up'
+        }
+        const movableBlocks = movable()
+        console.log('movable blocks', movableBlocks)
+        if (movableBlocks[dir] !== null) {
+            console.log('move block from', movableBlocks[dir])
+            switchBlocks(movableBlocks[dir])
+        }
+        // const moveLeft = index - 1 === emptyCol
+        // const moveRight = index + 1 === emptyCol
+        // const moveUp = index - 1 === emptyRow
+        // const moveDown = index + 1 === emptyRow
+
+    }
+
+    const movable = () => {
+        let dir = {
+            left: null,
+            right: null,
+            down: null,
+            up : null,
+        }
+        blocks.map((block, index) => {
+            const { col, row } = block
+            if (row === emptyRow) {
+                if (Math.abs(col - emptyCol) === 1) {
+                    if (col > emptyCol) {
+                        dir['left'] = index
+                    } else {
+                        dir['right'] = index
+                    }
+                }
+            }
+            if (col === emptyCol) {
+                if (Math.abs(row - emptyRow) === 1) {
+                    if (row > emptyRow) {
+                        dir['up'] = index
+                    } else {
+                        dir['down'] = index
+                    }
+                }
+            }
+        })
+        
+        return dir
+        // return (row === emptyRow && Math.abs(col - emptyCol) === 1) || (col === emptyCol && Math.abs(row - emptyRow) === 1)
+    }
 
     const initBlocks = () => {
         let tiles = []
@@ -213,6 +326,10 @@ export default ({ level = 3 }) => {
     useEffect(() => {
         initBlocks()
     }, [])
+
+    useEffect(() => {
+        if (blocks && emptyPos) console.log('movable', movable())
+    }, [emptyPos])
 
     useEffect(() => {
         setBlocks(null)
@@ -264,17 +381,20 @@ export default ({ level = 3 }) => {
         }
     }
 
+    const onBlockPressed = index => {
+        // const array = movable(col, row)
+        // console.log('pressed', array)
+        // switchBlocks(index)
+    }
+
     const switchBlocks = currentIndex => {
         let switched = blocks.slice()
         const { col, row } = switched[currentIndex]
-        console.log('')
-        console.log('colrow', col, row)
         switched[currentIndex] = {
             ...switched[currentIndex],
             col: emptyCol,
             row: emptyRow,
         }
-        console.log('colrow', col, row)
         setEmptyPos({
             emptyCol: col,
             emptyRow: row,
@@ -293,8 +413,8 @@ export default ({ level = 3 }) => {
             height={blockHeight}
             maxWidth={puzzleDims.width}
             maxHeight={puzzleDims.height}
-            onPress={() => switchBlocks(index)}
-            pressable={(row === emptyRow && Math.abs(col - emptyCol) === 1) || (col === emptyCol && Math.abs(row - emptyRow) === 1)}
+            onPress={() => onBlockPressed(index)}
+            pressable={movable(col, row)}
         />
     ))
 
@@ -317,15 +437,17 @@ export default ({ level = 3 }) => {
                     marginHorizontal: 'auto',
                 }}
             >
-                <View
-                    style={{
-                        position: 'relative',
-                        width: '100%',
-                        flex: 1,
-                    }}
-                >
-                    {blocks && renderBlocks()}
-                </View>
+                <GestureDetector gesture={gesture}>
+                    <View
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                            flex: 1,
+                        }}
+                    >
+                        {blocks && renderBlocks()}
+                    </View>
+                </GestureDetector>
             </View>
             
             {timing && (
