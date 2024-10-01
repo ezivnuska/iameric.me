@@ -254,18 +254,22 @@ export default ({ level }) => {
 		if (velocityY > 1000 || velocityX > 1000) {
 			const { x, y } = getNewOffset(event)
 			if (directionIsVertical(direction)) {
-				offsetY.value = withTiming(y, {
-					duration: 50,
-					easing: Easing.in(Easing.quad),
-					reduceMotion: ReduceMotion.System,
-				}, () => updateTiles(event))
+				offsetY.value = y
+				// offsetY.value = withTiming(y, {
+				// 	duration: 50,
+				// 	easing: Easing.in(Easing.quad),
+				// 	reduceMotion: ReduceMotion.System,
+				// }, () => updateTiles(event))
 			} else {
-				offsetX.value = withTiming(x, {
-					duration: 50,
-					easing: Easing.in(Easing.quad),
-					reduceMotion: ReduceMotion.System,
-				}, () => updateTiles(event))
+				offsetX.value = x
+				// offsetX.value = withTiming(x, {
+				// 	duration: 50,
+				// 	easing: Easing.in(Easing.quad),
+				// 	reduceMotion: ReduceMotion.System,
+				// }, () => updateTiles(event))
 			}
+
+			updateTiles(event)
 		} else {
 			const { x, y } = getNewOffset(event)
 			// const clamp = (direction === 'up' || direction === 'left')
@@ -274,11 +278,14 @@ export default ({ level }) => {
 			
 			if (directionIsVertical(direction)) {
 				if (Math.abs(translationY) > moveThreshold) {
-					offsetY.value = withTiming(y, {
-						duration: 50,
-						easing: Easing.out(Easing.quad),
-						reduceMotion: ReduceMotion.System,
-					  }, () => updateTiles(event))
+					offsetY.value = y
+					updateTiles(event)
+					// offsetY.value = withTiming(y, {
+					// 	duration: 50,
+					// 	easing: Easing.out(Easing.quad),
+					// 	reduceMotion: ReduceMotion.System,
+					//   }, () => updateTiles(event))
+
 					// offsetY.value = withDecay({
 					// 	velocity: velocityY,
 					// 	rubberBandEffect: true,
@@ -303,11 +310,13 @@ export default ({ level }) => {
 				}
 			} else {
 				if (Math.abs(translationX) > moveThreshold) {
-					offsetX.value = withTiming(x, {
-						duration: 50,
-						easing: Easing.out(Easing.quad),
-						reduceMotion: ReduceMotion.System,
-					}, () => updateTiles(event))
+					offsetX.value = x
+					updateTiles(event)
+					// offsetX.value = withTiming(x, {
+					// 	duration: 50,
+					// 	easing: Easing.out(Easing.quad),
+					// 	reduceMotion: ReduceMotion.System,
+					// }, () => updateTiles(event))
 					
 				} else {
 					offsetX.value = withSpring(0, {
