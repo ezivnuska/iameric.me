@@ -15,13 +15,63 @@ import {
 	GestureDetector,
 	GestureHandlerRootView,
 } from 'react-native-gesture-handler'
-import { ThemedText } from '@components'
+import {
+	IconButton,
+	ThemedText,
+} from '@components'
+
+const TimeDisplay = ({ time }) => {
+
+    const minutes = useMemo(() => {
+        let m = Math.floor(time / 60)
+        return m
+    }, [time])
+
+    const seconds = useMemo(() => {
+        let s = time < 60 ? time : time % 60
+        return s
+    }, [time])
+
+    return (
+        <ThemedText
+            size={24}
+            bold
+        >
+            {minutes > 0 && `${minutes}m `}{`${seconds}s`}
+        </ThemedText>
+    )
+}
+
+const Timer = ({ time, onChange }) => {
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            onChange(time + 1)
+        }, 1000)
+
+        return () => clearInterval(interval)
+    }, [time])
+
+    return (
+        <View
+            style={{
+                marginHorizontal: 'auto',
+            }}
+        >
+            <TimeDisplay time={time} />
+
+        </View>
+    )
+}
 
 export default ({ level }) => {
 
 	const [ itemSize, setItemSize ] = useState(null)
 
 	const [tiles, setTiles] = useState([])
+    const [ time, setTime ] = useState(0)
+    const [ score, setScore ] = useState(null)
+	const [timing, setTiming] = useState(false)
 	const [availableWidth, setAvailableWidth] = useState(null)
 
 	const offsetX = useSharedValue(0)
@@ -44,6 +94,7 @@ export default ({ level }) => {
 	useEffect(() => {
 		offsetX.value = 0
 		offsetY.value = 0
+        checkTiles()
 	}, [tiles])
 
 	const getEmptyCol = () => {
@@ -99,9 +150,58 @@ export default ({ level }) => {
 		setTiles(array)
 	}
 	
+	const startGame = () => {
+        shuffle()
+        setTime(0)
+        setTiming(true)
+    }
+
+	const onTimer = value => {
+		setTime(value)
+	}
+
+	const stopTiming = () => {
+		setScore(time)
+		setTiming(false)
+	}
+
+	const handlePress = () => {
+		if (timing) {
+            stopTiming()
+        } else {
+            startGame()
+        }
+	}
+	
 	const tileIsDisabled = tile => {
 		return !(emptyCol === tile.col || emptyRow === tile.row)
 	}
+	
+	const shuffle = () => {
+        let pile = tiles.slice()
+        let col = 0
+        let row = 0
+        let shuffled = []
+        while (shuffled.length < level * level - 1) {
+            const index = Math.floor(Math.random() * pile.length)
+            const tile = pile.splice(index, 1)[0]
+            shuffled.push({
+                ...tile,
+                col,
+                row,
+            })
+            
+            if (col + 1 < level) {
+                col++
+            } else {
+                if (row + 1 < level) {
+                    col = 0
+                    row++
+                }
+            }
+        }
+        setTiles(shuffled)
+    }
 
 	const getDirectionAndDistance = id => {
 		const { col, row } = getColRowFromId(id)
@@ -349,6 +449,17 @@ export default ({ level }) => {
 		return { col, row }
 	}
 
+	const checkTiles = () => {
+		let correct = true
+		tiles.map((t, i) => {
+			console.log('tile.id', t.id)
+			if (t.id !== i) correct = false
+		})
+		console.log('correct', correct)
+		if (correct) {
+			stopTiming()
+		}
+	}
 
 	const animatedStyles = useAnimatedStyle(() => ({
 		transform: [
@@ -504,19 +615,38 @@ export default ({ level }) => {
 	}
 
 	return (
-		<GestureHandlerRootView style={styles.container}>
-			<View
-				onLayout={onLayout}
-				style={[
-					styles.container,
-					{
-						position: 'relative',
-					},
-				]}
-			>
-				{tiles.length > 0 && renderTiles()}
+		<View style={{ flex: 1, justifyContent: 'flex-start', gap: 10 }}>
+			{score > 0 && <TimeDisplay time={score} />}
+			<GestureHandlerRootView style={styles.container}>
+				<View
+					onLayout={onLayout}
+					style={[
+						styles.container,
+						{
+							position: 'relative',
+						},
+					]}
+				>
+					{tiles.length > 0 && renderTiles()}
+				</View>
+			</GestureHandlerRootView>
+			<View style={{ flexGrow: 0 }}>
+				{timing && (
+					<Timer
+						time={time}
+						onChange={onTimer}
+					/>
+				)}
+				
+				<View style={{ marginHorizontal: 'auto' }}>
+					<IconButton
+						name={timing ? 'close-circle-sharp' : 'reload-circle-sharp'}
+						size={30}
+						onPress={handlePress}
+					/>
+				</View>
 			</View>
-		</GestureHandlerRootView>
+		</View>
 	)
 }
 

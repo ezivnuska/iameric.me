@@ -22,19 +22,19 @@ export default () => {
             }}
         >
             {/* <FocusView /> */}
-            <View
+            {/* <View
                 style={{
                     flexGrow: 0,
                 }}
             >
                 <Counter
                     label='Level'
-                    value={level}
+                    value={3}
                     min={1}
                     max={3}
                     onChange={value => setLevel(value)}
                 />
-            </View>
+            </View> */}
             
             <Playground level={level + 2} />
             {/* <GestureHandlerRootView> */}
