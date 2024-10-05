@@ -101,21 +101,16 @@ export default ({ status, onGameStart, onGameEnd }) => {
                     />
                 )}
             </View>
-            <View
-                style={{
-                    flexBasis: 100,
-                }}
-            >
-                <ThemedText
-                    size={24}
-                    align='center'
-                    bold
-                >
-                    {ticks > 0 ? timerText : ` `}
+
+            <View style={{ flexBasis: 'auto' }}>
+                <ThemedText>
+                    {score
+                        ? `Score: ${score}`
+                        : ticks > 0
+                            ? timerText
+                            : ` `
+                    }
                 </ThemedText>
-            </View>
-            <View>
-                <ThemedText>{score ? `Score: ${score}` : ' '}</ThemedText>
             </View>
         </View>
     )
