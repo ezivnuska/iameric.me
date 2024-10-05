@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 import React, { useEffect, useMemo, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import Animated, {
 	Easing,
 	ReduceMotion,
@@ -15,65 +15,19 @@ import {
 	GestureDetector,
 	GestureHandlerRootView,
 } from 'react-native-gesture-handler'
-import {
-	IconButton,
-	ThemedText,
-} from '@components'
+import { ThemedText } from '@components'
+import { GameHeader } from './components'
 import { getModifiedColor } from '@utils'
-
-const TimeDisplay = ({ time }) => {
-
-    const minutes = useMemo(() => {
-        let m = Math.floor(time / 60)
-        return m
-    }, [time])
-
-    const seconds = useMemo(() => {
-        let s = time < 60 ? time : time % 60
-        return s
-    }, [time])
-
-    return (
-        <ThemedText
-            size={24}
-            bold
-        >
-            {minutes > 0 && `${minutes}m `}{`${seconds}s`}
-        </ThemedText>
-    )
-}
-
-const Timer = ({ time, onChange }) => {
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            onChange(time + 1)
-        }, 1000)
-
-        return () => clearInterval(interval)
-    }, [time])
-
-    return (
-        <View
-            style={{
-                marginHorizontal: 'auto',
-            }}
-        >
-            <TimeDisplay time={time} />
-
-        </View>
-    )
-}
+import { usePlay } from '../../PlayContext'
 
 export default ({ level = 4 }) => {
 
+	const { ticking } = usePlay()
+
 	const [itemSize, setItemSize] = useState(null)
 	const [tiles, setTiles] = useState([])
-    const [time, setTime] = useState(0)
-    const [score, setScore] = useState(null)
-	const [timing, setTiming] = useState(false)
 	const [gameSize, setGameSize] = useState(null)
-	const [correct, setCorrect] = useState(true)
+	const [gameStatus, setGameStatus] = useState(null)
 
 	const offsetX = useSharedValue(0)
 	const offsetY = useSharedValue(0)
@@ -87,19 +41,27 @@ export default ({ level = 4 }) => {
 	}, [gameSize])
 
 	useEffect(() => {
-		if (itemSize) initTiles()
+		if (itemSize) setGameStatus('idle')
 	}, [itemSize])
 
 	useEffect(() => {
 		resetOffsetValues()
-		// offsetX.value = 0
-		// offsetY.value = 0
         checkTiles()
 	}, [tiles])
 
 	useEffect(() => {
-		if (timing && correct) stopTiming()
-	}, [correct])
+		switch (gameStatus) {
+			case 'idle':
+				initTiles()
+				break
+			case 'active':
+				startGame()
+				break
+			case 'resolved':
+				break
+			default:
+		}
+	}, [gameStatus])
 
 	const resetOffsetValues = () => {
 		offsetX.value = 0
@@ -111,7 +73,10 @@ export default ({ level = 4 }) => {
 	}
 	
 	const checkTiles = () => {
-		if (!timing) return
+		if (gameStatus !== 'active') {
+			console.log('skipping tile check', gameStatus)
+			return
+		}
 
 		const sorted = []
 		let row = 0
@@ -133,7 +98,9 @@ export default ({ level = 4 }) => {
 			}
 		}
 
-		setCorrect(sorted.length === tiles.length)
+		if (sorted.length === tiles.length) {
+			setGameStatus('resolved')
+		}
 	}
 
 	const getEmptyCol = () => {
@@ -187,27 +154,34 @@ export default ({ level = 4 }) => {
 	
 	const startGame = () => {
         shuffle()
-        // devShuffle()
-        setTime(0)
-        setTiming(true)
+	}
+
+	const onGameStart = () => {
+		setGameStatus('active')
+        // setTime(0)
+        // setTiming(true)
     }
 
-	const onTimer = value => {
-		setTime(value)
+	const onGameEnd = () => {
+		setGameStatus('idle')
 	}
 
-	const stopTiming = () => {
-		setScore(time)
-		setTiming(false)
-	}
+	// const onTimer = value => {
+	// 	setTime(value)
+	// }
 
-	const handlePress = () => {
-		if (timing) {
-            stopTiming()
-        } else {
-            startGame()
-        }
-	}
+	// const stopTiming = () => {
+	// 	setScore(time)
+	// 	setTiming(false)
+	// }
+
+	// const handlePress = () => {
+	// 	if (timing) {
+    //         stopTiming()
+    //     } else {
+    //         startGame()
+    //     }
+	// }
 	
 	const tileIsDisabled = tile => {
 		return !(emptyCol === tile.col || emptyRow === tile.row)
@@ -222,7 +196,8 @@ export default ({ level = 4 }) => {
 	}
 	
 	const shuffle = (testing = false) => {
-        let shuffled = null
+		if (!tiles) return
+        let shuffled = []
 		if (testing) {
 			shuffled = tiles.map((t, i) => {
 				return i === tiles.length - 1 ? { ...t, col: t.col + 1 } : t
@@ -376,8 +351,7 @@ export default ({ level = 4 }) => {
 			return t
 		})
 		setTiles(updatedTiles)
-		offsetX.value = 0
-		offsetY.value = 0
+		resetOffsetValues()
 	}
 
 	const getNewOffset = event => {
@@ -408,22 +382,22 @@ export default ({ level = 4 }) => {
 		if (velocityY > 1000 || velocityX > 1000) {
 			const { x, y } = getNewOffset(event)
 			if (directionIsVertical(direction)) {
-				offsetY.value = y
-				// offsetY.value = withTiming(y, {
-				// 	duration: 50,
-				// 	easing: Easing.in(Easing.quad),
-				// 	reduceMotion: ReduceMotion.System,
-				// }, () => moveTiles(event))
+				// offsetY.value = y
+				offsetY.value = withTiming(y, {
+					duration: 50,
+					easing: Easing.in(Easing.quad),
+					reduceMotion: ReduceMotion.System,
+				}, () => moveTiles(event))
 			} else {
-				offsetX.value = x
-				// offsetX.value = withTiming(x, {
-				// 	duration: 50,
-				// 	easing: Easing.in(Easing.quad),
-				// 	reduceMotion: ReduceMotion.System,
-				// }, () => moveTiles(event))
+				// offsetX.value = x
+				offsetX.value = withTiming(x, {
+					duration: 50,
+					easing: Easing.in(Easing.quad),
+					reduceMotion: ReduceMotion.System,
+				}, () => moveTiles(event))
 			}
 
-			moveTiles(event)
+			// moveTiles(event)
 		} else {
 			const { x, y } = getNewOffset(event)
 			// const clamp = (direction === 'up' || direction === 'left')
@@ -432,13 +406,13 @@ export default ({ level = 4 }) => {
 			
 			if (directionIsVertical(direction)) {
 				if (Math.abs(translationY) > moveThreshold) {
-					offsetY.value = y
-					moveTiles(event)
-					// offsetY.value = withTiming(y, {
-					// 	duration: 50,
-					// 	easing: Easing.out(Easing.quad),
-					// 	reduceMotion: ReduceMotion.System,
-					//   }, () => moveTiles(event))
+					// offsetY.value = y
+					// moveTiles(event)
+					offsetY.value = withTiming(y, {
+						duration: 50,
+						easing: Easing.out(Easing.quad),
+						reduceMotion: ReduceMotion.System,
+					  }, () => moveTiles(event))
 
 					// offsetY.value = withDecay({
 					// 	velocity: velocityY,
@@ -464,13 +438,13 @@ export default ({ level = 4 }) => {
 				}
 			} else {
 				if (Math.abs(translationX) > moveThreshold) {
-					offsetX.value = x
-					moveTiles(event)
-					// offsetX.value = withTiming(x, {
-					// 	duration: 50,
-					// 	easing: Easing.out(Easing.quad),
-					// 	reduceMotion: ReduceMotion.System,
-					// }, () => moveTiles(event))
+					// offsetX.value = x
+					// moveTiles(event)
+					offsetX.value = withTiming(x, {
+						duration: 50,
+						easing: Easing.out(Easing.quad),
+						reduceMotion: ReduceMotion.System,
+					}, () => moveTiles(event))
 					
 				} else {
 					offsetX.value = withSpring(0, {
@@ -495,25 +469,30 @@ export default ({ level = 4 }) => {
 		})))
 	}
 
-	const animatedStyles = useAnimatedStyle(() => ({
-		transform: [
-			{ translateX: offsetX.value },
-			{ translateY: offsetY.value },
-			// { scale: withTiming(pressed.value ? 1.2 : 1) },
-		],
-	}))
+	const animatedStyles = useAnimatedStyle(() => {
+		return {
+			transform: [
+				{ translateX: offsetX.value },
+				{ translateY: offsetY.value },
+				// { scale: withTiming(pressed.value ? 1.2 : 1) },
+			],
+		}
+	})
 
-	const getBasicTileStyles = tile => ({
-		position: 'absolute',
+	const getTilePos = tile => ({
 		top: tile.row * itemSize,
 		left: tile.col * itemSize,
+	})
+
+	const tileStyles = {
+		position: 'absolute',
 		height: itemSize,
 		width: itemSize,
 		overflow: 'hidden',
 		borderRadius: 8,
 		cursor: 'default',
 		backgroundColor: getModifiedColor('#b58df1', 25),
-	})
+	}
 
 	const renderTileContents = tile => (
 		<View
@@ -537,7 +516,10 @@ export default ({ level = 4 }) => {
 	const renderDisabledTile = tile => (
 		<View
 			key={`tile-${tile.id}`}
-			style={getBasicTileStyles(tile)}
+			style={[
+				getTilePos(tile),
+				tileStyles,
+			]}
 		>
 			{renderTileContents(tile)}
 		</View>
@@ -556,61 +538,42 @@ export default ({ level = 4 }) => {
 				id={tile.id}
 				key={`tile-${tile.id}`}
 				style={[
-					getBasicTileStyles(tile),
+					getTilePos(tile),
+					tileStyles,
 					{
-						backgroundColor: '#b58df1',
+						backgroundColor: tile.dragging ? getModifiedColor('#b58df1', -25) : '#b58df1',
 						cursor: 'grab'
 					},
 					tile.dragging ? animatedStyles : null,
 				]}
 			>
-				<GestureDetector
-					gesture={pan}
-				>
+				<GestureDetector gesture={pan}>
 					{renderTileContents(tile)}
-					{/* <View
-						style={{
-							flex: 1,
-							width: '100%',
-							margin: 1,
-							overflow: 'hidden',
-							borderRadius: 8,
-							backgroundColor: getModifiedColor('#b58df1', 25),
-						}}
-					>
-						<ThemedText
-							bold
-							color='#FFE04B'
-							align='center'
-							size={48}
-							style={{
-								flex: 1,
-								lineHeight: itemSize,
-							}}
-						>
-							{tile.id + 1}
-						</ThemedText>
-					</View> */}
-					{/* {renderMovableTile(tile)} */}
 				</GestureDetector>
 			</Animated.View>
 		)
 	}
 
 	const renderTile = tile => {
-		return tileIsDisabled(tile)
+		return !ticking || tileIsDisabled(tile)
 			? renderDisabledTile(tile)
 			: renderMovableTile(tile)}
 
 	return (
 		<View style={{ flex: 1, justifyContent: 'flex-start', gap: 10 }}>
 			
-			{correct
+			<GameHeader
+				status={gameStatus}
+				onGameStart={onGameStart}
+				onGameEnd={onGameEnd}
+			/>
+
+			{/* {correct
 				? score > 0
 					? <TimeDisplay time={score} />
 					: <ThemedText>Start Game</ThemedText>
 				: <ThemedText>'Solve It!'</ThemedText>
-			}
+			} */}
 
 			{/* <GestureHandlerRootView style={styles.container}>
 				<View
@@ -652,7 +615,7 @@ export default ({ level = 4 }) => {
 				)}
 			</View>
 
-			<View style={{ flexGrow: 0 }}>
+			{/* <View style={{ flexGrow: 0 }}>
 				{timing && (
 					<Timer
 						time={time}
@@ -667,7 +630,7 @@ export default ({ level = 4 }) => {
 						onPress={handlePress}
 					/>
 				</View>
-			</View>
+			</View> */}
 		</View>
 	)
 }

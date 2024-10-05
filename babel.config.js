@@ -36,6 +36,7 @@ module.exports = {
           '@mail':          './src/modules/Mail',
           '@modal':         './src/modules/Modal',
           '@notification':  './src/modules/Notification',
+          '@play':          './src/modules/Play',
           '@socket':        './src/modules/Socket',
           '@form':          './src/modules/Form',
           '@forms':         './src/modules/Form/forms',
