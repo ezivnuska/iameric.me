@@ -19,6 +19,7 @@ import {
 	IconButton,
 	ThemedText,
 } from '@components'
+import { getModifiedColor } from '@utils'
 
 const TimeDisplay = ({ time }) => {
 
@@ -71,19 +72,19 @@ export default ({ level }) => {
     const [time, setTime] = useState(0)
     const [score, setScore] = useState(null)
 	const [timing, setTiming] = useState(false)
-	const [availableWidth, setAvailableWidth] = useState(null)
+	const [gameSize, setGameSize] = useState(null)
 	const [correct, setCorrect] = useState(true)
 
 	const offsetX = useSharedValue(0)
 	const offsetY = useSharedValue(0)
 
 	const onLayout = e => {
-		setAvailableWidth(e.nativeEvent.target.offsetParent.clientWidth)
+		setGameSize(e.nativeEvent.target.offsetParent.clientWidth)
 	}
 
 	useEffect(() => {
-		setItemSize(availableWidth / level)
-	}, [availableWidth])
+		setItemSize(gameSize / level)
+	}, [gameSize])
 
 	useEffect(() => {
 		if (itemSize) {
@@ -107,6 +108,7 @@ export default ({ level }) => {
 	}
 	
 	const checkTiles = () => {
+		if (!timing) return
 		const sorted = []
 		let row = 0
 		let col = 0
@@ -114,7 +116,9 @@ export default ({ level }) => {
 		
 		while (sorting) {
 			const tile = getTileByColRow(col, row)
-			if (tile) {
+			if (!tile) {
+				sorting = false
+			} else {
 				sorted[sorted.length] = tile
 				
 				if (col + 1 < level) {
@@ -123,8 +127,6 @@ export default ({ level }) => {
 					col = 0
 					row++
 				}
-			} else {
-				sorting = false
 			}
 		}
 		
@@ -498,116 +500,104 @@ export default ({ level }) => {
 		],
 	}))
 
-	const renderDisabledSquare = tile => (
+	const getBasicTileStyles = tile => ({
+		position: 'absolute',
+		top: tile.row * itemSize,
+		left: tile.col * itemSize,
+		height: itemSize,
+		width: itemSize,
+		overflow: 'hidden',
+		borderRadius: 8,
+		cursor: 'default',
+		backgroundColor: getModifiedColor('#b58df1', 25),
+	})
+
+	const renderTileContents = tile => (
+		<View
+			style={{ flex: 1, width: '100%' }}
+		>
+			<ThemedText
+				bold
+				color='#FFE04B'
+				align='center'
+				size={48}
+				style={{
+					flex: 1,
+					lineHeight: itemSize,
+				}}
+			>
+				{tile.id + 1}
+			</ThemedText>
+		</View>
+	)
+
+	const renderDisabledTile = tile => (
 		<View
 			key={`tile-${tile.id}`}
-			style={{
-				position: 'absolute',
-				top: tile.row * itemSize,
-				left: tile.col * itemSize,
-				height: itemSize,
-				width: itemSize,
-				borderWidth: 1,
-				borderColor: '#fff',
-				overflow: 'hidden',
-				borderRadius: 8,
-				cursor: 'default',
-				backgroundColor: '#b58df1',
-			}}
+			style={getBasicTileStyles(tile)}
 		>
-			<ThemedText
-				bold
-				color='#FFE04B'
-				align='center'
-				size={48}
-				style={{
-					flex: 1,
-					lineHeight: itemSize,
-				}}
-			>
-				{tile.id + 1}
-			</ThemedText>
+			{renderTileContents(tile)}
 		</View>
 	)
 
-	const renderMovableSquare = tile => (
-		<View
-			style={{
-				flex: 1,
-				width: '100%',
-				borderWidth: 1,
-				borderStyle: 'dotted',
-			}}
-		>
-			<ThemedText
-				bold
-				color='#FFE04B'
-				align='center'
-				size={48}
-				style={{
-					flex: 1,
-					lineHeight: itemSize,
-				}}
-			>
-				{tile.id + 1}
-			</ThemedText>
-		</View>
-	)
-
-	const renderTile = tile => {
-
-		const disabled = tileIsDisabled(tile)
-		
-		// const tileStyles = {
-		// 	position: 'absolute',
-		// 	top: tile.row * itemSize,
-		// 	left: tile.col * itemSize,
-		// 	height: itemSize,
-		// 	width: itemSize,
-		// 	borderWidth: 1,
-		// 	borderColor: '#fff',
-		// 	overflow: 'hidden',
-		// 	borderRadius: 8,
-		// 	cursor: 'default',
-		// }
+	const renderMovableTile = tile => {
 
 		const pan = Gesture.Pan()
 			.runOnJS(true)
 			.onBegin(onTouchStart)
 			.onChange(onTouchMove)
 			.onFinalize(onTouchEnd)
-		
-		return disabled
-			? renderDisabledSquare(tile)
-			: (
-				<Animated.View
-					id={tile.id}
-					key={`tile-${tile.id}`}
-					style={[
-						{
-							position: 'absolute',
-							top: tile.row * itemSize,
-							left: tile.col * itemSize,
-							height: itemSize,
-							width: itemSize,
-							borderWidth: 1,
-							borderColor: '#fff',
+
+		return (
+			<Animated.View
+				id={tile.id}
+				key={`tile-${tile.id}`}
+				style={[
+					getBasicTileStyles(tile),
+					{
+						backgroundColor: '#b58df1',
+						cursor: 'grab'
+					},
+					tile.dragging ? animatedStyles : null,
+				]}
+			>
+				<GestureDetector
+					gesture={pan}
+				>
+					{renderTileContents(tile)}
+					{/* <View
+						style={{
+							flex: 1,
+							width: '100%',
+							margin: 1,
 							overflow: 'hidden',
 							borderRadius: 8,
-							cursor: 'grab',
-							backgroundColor: '#b58df1',
-						},
-						tile.dragging ? animatedStyles : null,
-					]}
-				>
-					<GestureDetector
-						gesture={pan}
+							backgroundColor: getModifiedColor('#b58df1', 25),
+						}}
 					>
-						{renderMovableSquare(tile)}
-					</GestureDetector>
-				</Animated.View>
-			)
+						<ThemedText
+							bold
+							color='#FFE04B'
+							align='center'
+							size={48}
+							style={{
+								flex: 1,
+								lineHeight: itemSize,
+							}}
+						>
+							{tile.id + 1}
+						</ThemedText>
+					</View> */}
+					{/* {renderMovableTile(tile)} */}
+				</GestureDetector>
+			</Animated.View>
+		)
 	}
+
+	const renderTile = tile => {
+		return tileIsDisabled(tile)
+			? renderDisabledTile(tile)
+			: renderMovableTile(tile)}
 
 	return (
 		<View style={{ flex: 1, justifyContent: 'flex-start', gap: 10 }}>
@@ -619,7 +609,7 @@ export default ({ level }) => {
 				: <ThemedText>'Solve It!'</ThemedText>
 			}
 
-			<GestureHandlerRootView style={styles.container}>
+			{/* <GestureHandlerRootView style={styles.container}>
 				<View
 					onLayout={onLayout}
 					style={[
@@ -631,7 +621,33 @@ export default ({ level }) => {
 				>
 					{tiles.length > 0 && tiles.map(item => renderTile(item))}
 				</View>
-			</GestureHandlerRootView>
+			</GestureHandlerRootView> */}
+
+			<View
+				onLayout={onLayout}
+			>
+				{gameSize && (
+					<GestureHandlerRootView
+						// style={styles.container}
+					>
+						<View
+							// onLayout={onLayout}
+							style={{
+								width: gameSize,
+								height: gameSize,
+								// alignItems: 'center',
+								// justifyContent: 'center',
+								// width: '100%',
+								// borderWidth: 1,
+								// borderColor: 'red',
+								position: 'relative',
+							}}
+						>
+							{tiles.length > 0 && tiles.map(item => renderTile(item))}
+						</View>
+					</GestureHandlerRootView>
+				)}
+			</View>
 
 			<View style={{ flexGrow: 0 }}>
 				{timing && (
@@ -652,12 +668,3 @@ export default ({ level }) => {
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		width: '100%',
-	},
-})

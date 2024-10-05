@@ -110,7 +110,10 @@ const AboutStackScreen = () => {
                 name='Play'
                 children={props => <PlayScreen {...props} />}
                 // component={PlayScreen}
-                options={{ title: 'Play' }}
+                options={{
+                    title: 'Play',
+                    gestureEnabled: false,
+                }}
             />
 
         </AboutStack.Navigator>
