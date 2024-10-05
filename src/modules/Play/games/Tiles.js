@@ -65,7 +65,7 @@ const Timer = ({ time, onChange }) => {
     )
 }
 
-export default ({ level }) => {
+export default ({ level = 4 }) => {
 
 	const [itemSize, setItemSize] = useState(null)
 	const [tiles, setTiles] = useState([])
@@ -83,18 +83,17 @@ export default ({ level }) => {
 	}
 
 	useEffect(() => {
-		setItemSize(gameSize / level)
+		if (gameSize) setItemSize(gameSize / level)
 	}, [gameSize])
 
 	useEffect(() => {
-		if (itemSize) {
-			initTiles()
-		}
+		if (itemSize) initTiles()
 	}, [itemSize])
 
 	useEffect(() => {
-		offsetX.value = 0
-		offsetY.value = 0
+		resetOffsetValues()
+		// offsetX.value = 0
+		// offsetY.value = 0
         checkTiles()
 	}, [tiles])
 
@@ -102,13 +101,18 @@ export default ({ level }) => {
 		if (timing && correct) stopTiming()
 	}, [correct])
 
+	const resetOffsetValues = () => {
+		offsetX.value = 0
+		offsetY.value = 0
+	}
+
 	const getTileByColRow = (col, row) => {
-		const tile = tiles.filter(t => t.col === col && t.row === row)[0]
-		return tile
+		return tiles.filter(t => t.col === col && t.row === row)[0]
 	}
 	
 	const checkTiles = () => {
 		if (!timing) return
+
 		const sorted = []
 		let row = 0
 		let col = 0
@@ -116,20 +120,19 @@ export default ({ level }) => {
 		
 		while (sorting) {
 			const tile = getTileByColRow(col, row)
-			if (!tile) {
-				sorting = false
-			} else {
-				sorted[sorted.length] = tile
-				
+			if (tile && tile.id === sorted.length) {
 				if (col + 1 < level) {
 					col++
-				} else {
+				} else if (row + 1 < level) {
 					col = 0
 					row++
 				}
+				sorted.push(tile)
+			} else {
+				sorting = false
 			}
 		}
-		
+
 		setCorrect(sorted.length === tiles.length)
 	}
 
@@ -217,38 +220,38 @@ export default ({ level }) => {
 		const { col, row } = tileFromId
 		return { col, row }
 	}
-
-	const devShuffle = () => {
-		const array = tiles.map((t, i) => {
-			return i === tiles.length - 1 ? { ...t, col: t.col + 1 } : t
-		})
-		setTiles(array)
-	}
 	
-	const shuffle = () => {
-        let pile = tiles.slice()
-        let col = 0
-        let row = 0
-        let shuffled = []
-        while (shuffled.length < level * level - 1) {
-            const index = Math.floor(Math.random() * pile.length)
-            const tile = pile.splice(index, 1)[0]
-            shuffled.push({
-                ...tile,
-                col,
-                row,
-            })
-            
-            if (col + 1 < level) {
-                col++
-            } else {
-                if (row + 1 < level) {
-                    col = 0
-                    row++
-                }
-            }
-        }
-        setTiles(shuffled)
+	const shuffle = (testing = false) => {
+        let shuffled = null
+		if (testing) {
+			shuffled = tiles.map((t, i) => {
+				return i === tiles.length - 1 ? { ...t, col: t.col + 1 } : t
+			})
+		} else {
+			let pile = tiles.slice()
+			let col = 0
+			let row = 0
+			while (shuffled.length < level * level - 1) {
+				const index = Math.floor(Math.random() * pile.length)
+				const tile = pile.splice(index, 1)[0]
+				shuffled.push({
+					...tile,
+					col,
+					row,
+				})
+				
+				if (col + 1 < level) {
+					col++
+				} else {
+					if (row + 1 < level) {
+						col = 0
+						row++
+					}
+				}
+			}
+		}
+        if (shuffled) setTiles(shuffled)
+		else console.log('Error shuffling tiles')
     }
 
 	const getDirectionAndDistance = id => {
