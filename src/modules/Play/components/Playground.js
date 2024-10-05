@@ -66,13 +66,13 @@ const Timer = ({ time, onChange }) => {
 
 export default ({ level }) => {
 
-	const [ itemSize, setItemSize ] = useState(null)
-
+	const [itemSize, setItemSize] = useState(null)
 	const [tiles, setTiles] = useState([])
-    const [ time, setTime ] = useState(0)
-    const [ score, setScore ] = useState(null)
+    const [time, setTime] = useState(0)
+    const [score, setScore] = useState(null)
 	const [timing, setTiming] = useState(false)
 	const [availableWidth, setAvailableWidth] = useState(null)
+	const [correct, setCorrect] = useState(true)
 
 	const offsetX = useSharedValue(0)
 	const offsetY = useSharedValue(0)
@@ -97,16 +97,48 @@ export default ({ level }) => {
         checkTiles()
 	}, [tiles])
 
+	useEffect(() => {
+		if (timing && correct) stopTiming()
+	}, [correct])
+
+	const getTileByColRow = (col, row) => {
+		const tile = tiles.filter(t => t.col === col && t.row === row)[0]
+		return tile
+	}
+	
+	const checkTiles = () => {
+		const sorted = []
+		let row = 0
+		let col = 0
+		let sorting = true
+		
+		while (sorting) {
+			const tile = getTileByColRow(col, row)
+			if (tile) {
+				sorted[sorted.length] = tile
+				
+				if (col + 1 < level) {
+					col++
+				} else {
+					col = 0
+					row++
+				}
+			} else {
+				sorting = false
+			}
+		}
+		
+		setCorrect(sorted.length === tiles.length)
+	}
+
 	const getEmptyCol = () => {
 		let cols = []
-		let index = 0
-		while (index < level) {
-			cols.push(tiles.filter(t => t.col === index))
-			index++
+		while (cols.length < level) {
+			cols.push(tiles.filter(t => t.col === cols.length))
 		}
 		let emptyCol = null
 		cols.map((c, i) => {
-			if (c.length === 2) {
+			if (c.length < level) {
 				emptyCol = i
 			}
 		})
@@ -115,14 +147,12 @@ export default ({ level }) => {
 	
 	const getEmptyRow = () => {
 		let rows = []
-		let index = 0
-		while (index < level) {
-			rows.push(tiles.filter(t => t.row === index))
-			index++
+		while (rows.length < level) {
+			rows.push(tiles.filter(t => t.row === rows.length))
 		}
 		let emptyRow = null
 		rows.map((r, i) => {
-			if (r.length === 2) {
+			if (r.length < level) {
 				emptyRow = i
 			}
 		})
@@ -152,6 +182,7 @@ export default ({ level }) => {
 	
 	const startGame = () => {
         shuffle()
+        // devShuffle()
         setTime(0)
         setTiming(true)
     }
@@ -175,6 +206,21 @@ export default ({ level }) => {
 	
 	const tileIsDisabled = tile => {
 		return !(emptyCol === tile.col || emptyRow === tile.row)
+	}
+
+	const directionIsVertical = direction => direction === 'up' || direction === 'down'
+
+	const getColRowFromId = id => {
+		const tileFromId = tiles.filter(t => t.id == id)[0]
+		const { col, row } = tileFromId
+		return { col, row }
+	}
+
+	const devShuffle = () => {
+		const array = tiles.map((t, i) => {
+			return i === tiles.length - 1 ? { ...t, col: t.col + 1 } : t
+		})
+		setTiles(array)
 	}
 	
 	const shuffle = () => {
@@ -228,51 +274,55 @@ export default ({ level }) => {
 		}
 	}
 
-	const getExtraTile = id => {
+	const setDraggableTiles = id => {
 		const { direction, distance } = getDirectionAndDistance(id)
 		const { col, row } = getColRowFromId(id)
-		
-		let extra = null
-		if (distance === 2) {
-			let extraCol = col
-			let extraRow = row
-			if (directionIsVertical(direction)) {
-				extraCol = col
-				extraRow = direction === 'up' ? row - 1 : row + 1
-			} else {
-				extraRow = row
-				extraCol = direction === 'left' ? col - 1 : col + 1
-			}
-			
+		const draggableIds = [Number(id)]
+		if (distance > 1) {
 			tiles.map(t => {
-				if (t.col === extraCol && t.row === extraRow) {
-					extra = t
+				if (directionIsVertical(direction)) {
+					if (t.col === emptyCol) {
+						if (direction === 'up') {
+							if (t.row > emptyRow && t.row < row) {
+								draggableIds.push(t.id)
+							}
+						} else {
+							if (t.row < emptyRow && t.row > row) {
+								draggableIds.push(t.id)
+							}
+						}
+					}
+				} else {
+					if (t.row === emptyRow) {
+						if (direction === 'left') {
+							if (t.col > emptyCol && t.col < col) {
+								draggableIds.push(t.id)
+							}
+						} else {
+							if (t.col < emptyCol && t.col > col) {
+								draggableIds.push(t.id)
+							}
+						}
+					}
 				}
+				return t
 			})
 		}
+
+		const updatedTiles = tiles.map(t => draggableIds.indexOf(t.id) > -1
+			? ({
+				...t,
+				dragging: direction,
+			})
+			: t
+		)
 		
-		return extra
+		setTiles(updatedTiles)
 	}
 
 	const onTouchStart = event => {
 		const { id } = event.target.offsetParent
-		const { direction, distance } = getDirectionAndDistance(id)
-		let extra = null
-		if (distance === 2) {
-			extra = getExtraTile(id)
-		}
-
-		const updatedTiles = tiles.map(t => {
-			const current = t.id === Number(id)
-			const extraId = extra?.id
-			if (current || extraId === t.id) {
-				return ({
-					...t,
-					dragging: direction,
-				})
-			} else return t
-		})
-		setTiles(updatedTiles)
+		setDraggableTiles(id)
 	}
 
 	const onTouchMove = event => {
@@ -294,7 +344,7 @@ export default ({ level }) => {
 		}
 	}
 
-	const updateTiles = event => {
+	const moveTiles = event => {
 		const { target } = event
 		const { id } = target.offsetParent
 		const { direction } = getDirectionAndDistance(id)
@@ -326,8 +376,7 @@ export default ({ level }) => {
 	}
 
 	const getNewOffset = event => {
-		const { target, translationX, translationY, velocityX, velocityY } = event
-		const { id } = target.offsetParent
+		const { id } = event.target.offsetParent
 		const { direction } = getDirectionAndDistance(id)
 		let newOffsetX = 0
 		let newOffsetY = 0
@@ -359,17 +408,17 @@ export default ({ level }) => {
 				// 	duration: 50,
 				// 	easing: Easing.in(Easing.quad),
 				// 	reduceMotion: ReduceMotion.System,
-				// }, () => updateTiles(event))
+				// }, () => moveTiles(event))
 			} else {
 				offsetX.value = x
 				// offsetX.value = withTiming(x, {
 				// 	duration: 50,
 				// 	easing: Easing.in(Easing.quad),
 				// 	reduceMotion: ReduceMotion.System,
-				// }, () => updateTiles(event))
+				// }, () => moveTiles(event))
 			}
 
-			updateTiles(event)
+			moveTiles(event)
 		} else {
 			const { x, y } = getNewOffset(event)
 			// const clamp = (direction === 'up' || direction === 'left')
@@ -379,12 +428,12 @@ export default ({ level }) => {
 			if (directionIsVertical(direction)) {
 				if (Math.abs(translationY) > moveThreshold) {
 					offsetY.value = y
-					updateTiles(event)
+					moveTiles(event)
 					// offsetY.value = withTiming(y, {
 					// 	duration: 50,
 					// 	easing: Easing.out(Easing.quad),
 					// 	reduceMotion: ReduceMotion.System,
-					//   }, () => updateTiles(event))
+					//   }, () => moveTiles(event))
 
 					// offsetY.value = withDecay({
 					// 	velocity: velocityY,
@@ -411,12 +460,12 @@ export default ({ level }) => {
 			} else {
 				if (Math.abs(translationX) > moveThreshold) {
 					offsetX.value = x
-					updateTiles(event)
+					moveTiles(event)
 					// offsetX.value = withTiming(x, {
 					// 	duration: 50,
 					// 	easing: Easing.out(Easing.quad),
 					// 	reduceMotion: ReduceMotion.System,
-					// }, () => updateTiles(event))
+					// }, () => moveTiles(event))
 					
 				} else {
 					offsetX.value = withSpring(0, {
@@ -439,26 +488,6 @@ export default ({ level }) => {
 			...t,
 			dragging: null,
 		})))
-	}
-
-	const directionIsVertical = direction => direction === 'up' || direction === 'down'
-
-	const getColRowFromId = id => {
-		const tileFromId = tiles.filter(t => t.id == id)[0]
-		const { col, row } = tileFromId
-		return { col, row }
-	}
-
-	const checkTiles = () => {
-		let correct = true
-		tiles.map((t, i) => {
-			console.log('tile.id', t.id)
-			if (t.id !== i) correct = false
-		})
-		console.log('correct', correct)
-		if (correct) {
-			stopTiming()
-		}
 	}
 
 	const animatedStyles = useAnimatedStyle(() => ({
@@ -529,18 +558,18 @@ export default ({ level }) => {
 
 		const disabled = tileIsDisabled(tile)
 		
-		const tileStyles = {
-			position: 'absolute',
-			top: tile.row * itemSize,
-			left: tile.col * itemSize,
-			height: itemSize,
-			width: itemSize,
-			borderWidth: 1,
-			borderColor: '#fff',
-			overflow: 'hidden',
-			borderRadius: 8,
-			cursor: 'default',
-		}
+		// const tileStyles = {
+		// 	position: 'absolute',
+		// 	top: tile.row * itemSize,
+		// 	left: tile.col * itemSize,
+		// 	height: itemSize,
+		// 	width: itemSize,
+		// 	borderWidth: 1,
+		// 	borderColor: '#fff',
+		// 	overflow: 'hidden',
+		// 	borderRadius: 8,
+		// 	cursor: 'default',
+		// }
 
 		const pan = Gesture.Pan()
 			.runOnJS(true)
@@ -548,75 +577,48 @@ export default ({ level }) => {
 			.onChange(onTouchMove)
 			.onFinalize(onTouchEnd)
 		
-		return disabled ? renderDisabledSquare(tile)
-		// (
-			// <View
-			// 	key={`tile-${tile.id}`}
-			// 	style={[
-			// 		tileStyles,
-			// 		{ backgroundColor: '#b58df1' },
-			// 	]}
-			// />
-		// ) 
-		: (
-			<Animated.View
-				id={tile.id}
-				key={`tile-${tile.id}`}
-				style={[
-					// tileStyles,
-					{
-						position: 'absolute',
-						top: tile.row * itemSize,
-						left: tile.col * itemSize,
-						height: itemSize,
-						width: itemSize,
-						borderWidth: 1,
-						borderColor: '#fff',
-						overflow: 'hidden',
-						borderRadius: 8,
-						cursor: 'grab',
-						backgroundColor: '#b58df1',
-					},
-					tile.dragging ? animatedStyles : null,
-				]}
-			>
-				<GestureDetector
-					gesture={pan}
-				>
-					{renderMovableSquare(tile)}
-					{/* <View
-						style={{
-							flex: 1,
-							width: '100%',
+		return disabled
+			? renderDisabledSquare(tile)
+			: (
+				<Animated.View
+					id={tile.id}
+					key={`tile-${tile.id}`}
+					style={[
+						{
+							position: 'absolute',
+							top: tile.row * itemSize,
+							left: tile.col * itemSize,
+							height: itemSize,
+							width: itemSize,
 							borderWidth: 1,
-							borderStyle: 'dotted',
-						}}
+							borderColor: '#fff',
+							overflow: 'hidden',
+							borderRadius: 8,
+							cursor: 'grab',
+							backgroundColor: '#b58df1',
+						},
+						tile.dragging ? animatedStyles : null,
+					]}
+				>
+					<GestureDetector
+						gesture={pan}
 					>
-						<Text
-							style={{
-								width: itemSize,
-								lineHeight: itemSize,
-								fontSize: 30,
-								textAlign: 'center',
-							}}
-						>
-							{tile.id + 1}
-						</Text>
-					</View> */}
-				</GestureDetector>
-			</Animated.View>
-		)
-	}
-
-	const renderTiles = () => {
-		// offsetX.value = 0
-		// offsetY.value = 0
-		return tiles.map(item => renderTile(item))
+						{renderMovableSquare(tile)}
+					</GestureDetector>
+				</Animated.View>
+			)
 	}
 
 	return (
 		<View style={{ flex: 1, justifyContent: 'flex-start', gap: 10 }}>
-			{score > 0 && <TimeDisplay time={score} />}
+			
+			{correct
+				? score > 0
+					? <TimeDisplay time={score} />
+					: <ThemedText>Start Game</ThemedText>
+				: <ThemedText>'Solve It!'</ThemedText>
+			}
+
 			<GestureHandlerRootView style={styles.container}>
 				<View
 					onLayout={onLayout}
@@ -627,9 +629,10 @@ export default ({ level }) => {
 						},
 					]}
 				>
-					{tiles.length > 0 && renderTiles()}
+					{tiles.length > 0 && tiles.map(item => renderTile(item))}
 				</View>
 			</GestureHandlerRootView>
+
 			<View style={{ flexGrow: 0 }}>
 				{timing && (
 					<Timer

@@ -36,7 +36,7 @@ export default () => {
                 />
             </View> */}
             
-            <Playground level={level + 2} />
+            <Playground level={level + 3} />
             {/* <GestureHandlerRootView> */}
                 {/* <Puzzle level={level + 2} /> */}
             {/* </GestureHandlerRootView> */}
