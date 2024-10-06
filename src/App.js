@@ -11,7 +11,7 @@ import { ModalContextProvider } from '@modal'
 import { FormContextProvider } from '@form'
 import { ForumContextProvider } from '@forum'
 import { compose as Compose } from '@utils'
-import { GOOGLE_MAPS_API_KEY } from './../config'
+import { GOOGLE_MAPS_API_KEY } from '../config'
 import { APIProvider } from '@vis.gl/react-google-maps'
 
 export default App = () => {

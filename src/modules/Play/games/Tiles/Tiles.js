@@ -18,7 +18,7 @@ import {
 import { ThemedText } from '@components'
 import { GameHeader } from './components'
 import { getModifiedColor } from '@utils'
-import { usePlay } from '../../PlayContext'
+import { usePlay } from '@play'
 
 export default ({ level = 4 }) => {
 
