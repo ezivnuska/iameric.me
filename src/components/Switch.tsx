@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import { ThemedText } from '@components'
 
-export default () => {
+const Switch = () => {
     const [ state, setState ] = useState(false)
     const transition = useRef(new Animated.Value(0)).current
 
@@ -81,3 +81,5 @@ export default () => {
         </Pressable>
     )
 }
+
+export default Switch

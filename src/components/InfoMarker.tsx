@@ -8,7 +8,7 @@ import {
 import { ThemedText } from '@components'
 import { getAddress } from '@utils/map'
 
-export default ({ position, user, ...props }) => {
+const InfoMarker = ({ position, user, ...props }) => {
 
     const [ infowindowOpen, setInfowindowOpen ] = useState(false)
     const [ address, setAddress ] = useState(null)
@@ -55,3 +55,5 @@ export default ({ position, user, ...props }) => {
         </View>
     )
 }
+
+export default InfoMarker

@@ -7,7 +7,7 @@ import {
     ThemedText,
 } from '@components'
 
-export default ({ status, onGameStart, onGameEnd }) => {
+const Timer = ({ status, onGameStart, onGameEnd }) => {
     
     let ticker = null
 
@@ -106,3 +106,5 @@ export default ({ status, onGameStart, onGameEnd }) => {
         </View>
     )
 }
+
+export default Timer

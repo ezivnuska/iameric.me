@@ -4,7 +4,7 @@ import {
     AuthForm,
     DestroyForm,
     FeedbackForm,
-    ImageDisplay,
+    // ImageDisplay,
     ImageForm,
     MessageForm,
 } from './forms'
@@ -18,7 +18,7 @@ export default ({ type, data = null }) => {
             case 'FEEDBACK': return <FeedbackForm />; break
             case 'MESSAGE': return <MessageForm data={data} />; break
             case 'IMAGE': return <ImageForm data={data} />; break
-            case 'SHOWCASE': return <ImageDisplay data={data} />; break
+            // case 'SHOWCASE': return <ImageDisplay data={data} />; break
             default: throw new Error('No form type recognized')
         }
     }

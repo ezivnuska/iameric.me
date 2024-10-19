@@ -44,10 +44,10 @@ export default ({ username, ...props }) => {
                 }}
             >
                 <IconButton
-                    name='images-sharp'
+                    name='@images-sharp'
                     size={22}
-                    onPress={() => props.navigation.navigate('Images')}
-                    disabled={props.route.name === 'Images'}
+                    onPress={() => props.navigation.navigate('@images')}
+                    disabled={props.route.name === '@images'}
                 />
 
             </View>

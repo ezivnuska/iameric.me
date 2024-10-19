@@ -7,7 +7,7 @@ import { ThemedText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ title, children = null, onBack = null }) => {
+const Heading = ({ title, children = null, onBack = null }) => {
     
     const { theme } = useApp()
 
@@ -56,3 +56,5 @@ export default ({ title, children = null, onBack = null }) => {
         </View>
     )
 }
+
+export default Heading

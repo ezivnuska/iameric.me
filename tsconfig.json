@@ -1,30 +1,89 @@
 {
-    "compilerOptions": {
-      "allowJs": true,
-      "allowSyntheticDefaultImports": true,
-      "esModuleInterop": true,
-      "isolatedModules": true,
-      "jsx": "react-native",
-      "lib": ["esnext"],
-      "types": ["react-native", "jest"],
-      "moduleResolution": "node",
-      "noEmit": true,
-      "strict": true,
-      "target": "esnext",
-      "noImplicitReturns": true,
-      "resolveJsonModule": true,
-      "skipLibCheck": true,
-      "noUncheckedIndexedAccess": true,
-      "forceConsistentCasingInFileNames": true,
-      "noFallthroughCasesInSwitch": true,
-      "noImplicitOverride": true,
-      "allowUnreachableCode": false
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": true,
+    "paths": {
+      "@config": [
+        "./config/index.js"
+      ],
+      "@sounds/*": [
+        "./sounds/*"
+      ],
+      "@app": [
+        "./src/AppContext.tsx"
+      ],
+      "@bips": [
+        "./src/modules/Bipster/index.js"
+      ],
+      "@components": [
+        "./src/components/index.js"
+      ],
+      "@contacts": [
+        "./src/modules/Contacts/index.js"
+      ],
+      "@forum": [
+        "./src/modules/Forum/index.js"
+      ],
+      "@mail": [
+        "./src/modules/Mail/index.js"
+      ],
+      "@modal": [
+        "./src/modules/Modal/index.js"
+      ],
+      "@notification": [
+        "./src/modules/Notification/index.js"
+      ],
+      "@play": [
+        "./src/modules/Play/index.js"
+      ],
+      "@socket": [
+        "src/modules/Socket/index.js"
+      ],
+      "@form": [
+        "./src/modules/Form/index.js"
+      ],
+      "@forms": [
+        "./src/modules/Form/forms/index.js"
+      ],
+      "@images/*": [
+        "./src/modules/Images/*"
+      ],
+      "@layout": [
+        "./src/layout/index.js"
+      ],
+      "@modules": [
+        "./src/modules/index.js"
+      ],
+      "@screens": [
+        "./src/screens/index.js"
+      ],
+      "@styles": [
+        "./src/styles/index.js"
+      ],
+      "@utils": [
+        "./src/utils/index.js"
+      ]
     },
-    "exclude": [
-      "node_modules",
-      "babel.config.js",
-      "metro.config.js",
-      "jest.config.js",
-      "src-backup"
-    ]
-  } 
+    "preserveSymlinks": true,
+    "target": "es6",
+    "module": "ESNext",
+    "jsx": "react-native",
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src"
+  ],
+  "extends": "@tsconfig/react-native/tsconfig.json"
+  // "extends": "expo/tsconfig.base"
+}

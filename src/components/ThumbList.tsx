@@ -7,7 +7,7 @@ import {
 import { ThemedText } from '@components'
 import { IMAGE_PATH } from '@config'
 
-export default ({ children, images, bipId = null, disabled = false, small = false }) => {
+const ThumbList = ({ children, images, bipId = null, disabled = false, small = false }) => {
 
     const assetPath = process.env.IMAGE_PATH || IMAGE_PATH
     
@@ -130,3 +130,5 @@ export default ({ children, images, bipId = null, disabled = false, small = fals
         </View>
     )
 }
+
+export default ThumbList

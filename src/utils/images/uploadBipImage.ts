@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export default uploadBipImage = async (bipId, image) => {
+const uploadBipImage = async (bipId, image) => {
     // expecting { userId, imageData, thumbData, avatar=null, location=null }
     const { data } = await axios.post(
         `/api/bip/image/upload`, {
@@ -13,3 +13,5 @@ export default uploadBipImage = async (bipId, image) => {
     else return data
     return null
 }
+
+export default uploadBipImage

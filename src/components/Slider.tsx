@@ -122,7 +122,7 @@ const Slider = ({ zoom, onValueChange }) => {
     );
 };
 
-export default Slider;
+export default Slider
 
 const styles = StyleSheet.create({
     sliderContainer: {

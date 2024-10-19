@@ -1,4 +1,4 @@
-export default getMaxImageDims = (w, h, maxW) => {
+const getMaxImageDims = (w, h, maxW) => {
     let scale = 1
     let width = w
     let height = h
@@ -10,3 +10,5 @@ export default getMaxImageDims = (w, h, maxW) => {
     
     return { width, height }
 }
+
+export default getMaxImageDims

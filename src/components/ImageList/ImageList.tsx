@@ -10,7 +10,7 @@ import { ImageListItem } from './components'
 
 // const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ImageList = ({ images, disabled = false, small = false }) => {
+const ImageList = ({ images, disabled = false, small = false }) => {
 
     const { dims, theme, user } = useApp()
     
@@ -77,3 +77,5 @@ export default ImageList = ({ images, disabled = false, small = false }) => {
         </View>
     )
 }
+
+export default ImageList

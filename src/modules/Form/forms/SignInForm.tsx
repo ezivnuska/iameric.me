@@ -14,7 +14,7 @@ import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 
-export default SignInForm = () => {
+const SignInForm = () => {
 
     const initialState = {
         email: '',
@@ -197,3 +197,5 @@ export default SignInForm = () => {
         </View>
     ) : null
 }
+
+export default SignInForm

@@ -1,12 +1,20 @@
 {
-  "name": "iameric",
   "expo": {
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "name": "iameric",
+    "slug": "iameric",
+    "version": "1.0.0",
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "plugins": [
+      // [
+      //   "expo-asset",
+      //   {
+      //     "assets": [
+      //       // "path/to/file.png", "path/to/directory"
+      //     ]
+      //   }
+      // ],
       [
         "expo-camera",
         {

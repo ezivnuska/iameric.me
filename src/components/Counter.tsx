@@ -5,7 +5,7 @@ import {
     ThemedText,
 } from '@components'
 
-export default ({ label, value, min, max, onChange }) => (
+const Counter = ({ label, value, min, max, onChange }) => (
     <View
         style={{
             flex: 1,
@@ -37,3 +37,5 @@ export default ({ label, value, min, max, onChange }) => (
         />
     </View>
 )
+
+export default Counter

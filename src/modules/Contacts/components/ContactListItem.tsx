@@ -98,7 +98,7 @@ export default ({ item }) => {
             </Pressable>
 
             <IconButton
-                name='mail-outline'
+                name='@mail-outline'
                 onPress={() => setModal('MESSAGE', item)}
             />
         </View>

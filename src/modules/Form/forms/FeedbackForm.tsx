@@ -13,7 +13,7 @@ import { useSocket } from '@socket'
 import { getFields, validateFields } from './utils'
 import { createEntry } from '@utils/forum'
 
-export default ({ data }) => {
+const FeedbackForm = ({ data }) => {
 
     const originalMessage = data
     const threadId = originalMessage?._id
@@ -173,3 +173,5 @@ export default ({ data }) => {
         </View>
     ) : null
 }
+
+export default FeedbackForm

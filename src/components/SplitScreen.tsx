@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ state, change, children }) => {
+const SplitScreen = ({ state, change, children }) => {
 
     const [ containerHeight, setContainerHeight ] = useState(null)
     
@@ -169,3 +169,5 @@ export default ({ state, change, children }) => {
         </View>
     )
 }
+
+export default SplitScreen

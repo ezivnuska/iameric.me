@@ -8,7 +8,7 @@ import { useApp } from '@app'
 import { useModal } from '@modal'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ children, title, closeable = true, ...props }) => {
+const ModalHeader = ({ children, title, closeable = true, ...props }) => {
 
     const { theme } = useApp()
     const { closeModal } = useModal()
@@ -57,3 +57,5 @@ export default ({ children, title, closeable = true, ...props }) => {
         </View>
     )
 }
+
+export default ModalHeader

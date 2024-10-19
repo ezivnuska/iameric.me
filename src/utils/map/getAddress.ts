@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { GEOCODING_API_KEY } from '@config'
 
-export default getAddress = async coords => {
+const getAddress = async coords => {
     const apiKey = process.env.GEOCODING_API_KEY || GEOCODING_API_KEY
     // console.log('GeocodingApiKey', apiKey)
     const { lat, lng } = coords
@@ -35,3 +35,5 @@ export default getAddress = async coords => {
     // else return data
     return null
 }
+
+export default getAddress

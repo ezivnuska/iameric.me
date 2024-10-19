@@ -9,7 +9,7 @@ import { useForm } from '@form'
 import { useModal } from '@modal'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ title, closeable = true }) => {
+const FormHeader = ({ title, closeable = true }) => {
 
     const { theme } = useApp()
     const { clearForm } = useForm()
@@ -46,3 +46,5 @@ export default ({ title, closeable = true }) => {
         </View>
     )
 }
+
+export default FormHeader

@@ -4,7 +4,7 @@ import { SimpleButton } from '@components'
 import SignInForm from './SignInForm'
 import SignUpForm from './SignUpForm'
 
-export default () => {
+const AuthForm = () => {
     
     const [showSignUp, setShowSignUp] = useState(false)
 
@@ -26,3 +26,5 @@ export default () => {
         </View>
     )
 }
+
+export default AuthForm

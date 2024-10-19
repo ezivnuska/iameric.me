@@ -6,7 +6,7 @@ import { Socket } from '@modules'
 export default () => {
     return (
         <View>
-            <ModalHeader title={'Sockets'} />
+            <ModalHeader title={'@sockets'} />
             <Socket />
         </View>
     )

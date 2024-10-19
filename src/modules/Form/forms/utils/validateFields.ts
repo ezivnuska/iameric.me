@@ -1,4 +1,4 @@
-export default validateFields = (fields, validate) => {
+const validateFields = (fields, validate) => {
     let index = 0
     const keys = Object.keys(fields)
     while (index < keys.length) {
@@ -8,3 +8,5 @@ export default validateFields = (fields, validate) => {
         else index++
     }
 }
+
+export default validateFields

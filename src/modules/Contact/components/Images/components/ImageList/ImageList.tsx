@@ -8,7 +8,7 @@ import { useApp } from '@app'
 import { useModal } from '@modal'
 import { ImageListItem } from './components'
 
-export default ImageList = ({ images, loading, upload = null }) => {
+const ImageList = ({ images, loading, upload = null }) => {
 
     const { dims, theme } = useApp()
     
@@ -93,3 +93,5 @@ export default ImageList = ({ images, loading, upload = null }) => {
         </View>
     )
 }
+
+export default ImageList

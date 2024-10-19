@@ -1,11 +1,16 @@
 module.exports = {
   presets: [
-    // '@babel/preset-typescript',
-    'babel-preset-expo',
     '@babel/preset-env',
+    [
+      '@babel/preset-react',
+      {
+        runtime: 'automatic',
+      },
+    ],
     '@react-native/babel-preset',
-    '@babel/preset-react',
-    'module:metro-react-native-babel-preset',
+    'babel-preset-expo',
+    '@babel/preset-typescript',
+    // 'module:metro-react-native-babel-preset',
   ],
   env: {
     production: {
@@ -20,7 +25,7 @@ module.exports = {
     // @babel/plugin-transform-class-properties,
     // @babel/plugin-transform-private-methods,
     // @babel/plugin-transform-private-property-in-object
-    // ['@babel/plugin-transform-modules-commonjs', { loose: true }],
+    ['@babel/plugin-transform-runtime', { loose: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     ['@babel/plugin-proposal-private-methods', { loose: true }],
     ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
@@ -28,6 +33,7 @@ module.exports = {
     [
       'module-resolver',
       {
+        root: ['./'],
         alias: {
           '@config':        './config',
           '@app':           './src/AppContext',
@@ -53,6 +59,7 @@ module.exports = {
       },
     ],
     ['react-native-reanimated/plugin', { loose: true }],
+    ['@babel/plugin-transform-react-jsx', { runtime: 'automatic' }],
     // '@babel/plugin-transform-async-generator-functions',
     // '@babel/plugin-transform-class-properties',
     // '@babel/plugin-transform-nullish-coalescing-operator',

@@ -40,7 +40,7 @@ export default () => {
             case 'MESSAGE': return <MessageForm data={data} />; break
             case 'SETTINGS': return <SettingsForm />; break
             case 'SHOWCASE': return <ImageDisplay data={data} />; break
-            case 'SOCKETS': return <SocketDisplay />; break
+            case '@socketS': return <SocketDisplay />; break
             case 'QUICK': return <QuickStart />; break
             default: return null
         }

@@ -11,9 +11,11 @@ import axios from 'axios'
 //     }],
 // }
 
-export default createBip = async (id, location) => {
+const createBip = async (id, location) => {
     const { data } = await axios.post('/api/bip', { user: id, location })
     if (!data || !data.bip) console.log('could not create new bip.')
     else return data.bip
     return null
 }
+
+export default createBip

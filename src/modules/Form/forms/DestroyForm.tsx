@@ -18,7 +18,7 @@ import { navigate } from '@utils/navigation'
 import { useApp } from '@app'
 import { useSocket } from '@socket'
 
-export default () => {
+const DestroyForm = () => {
 
     const initialState = { username: '' }
 
@@ -169,3 +169,5 @@ export default () => {
         </View>
     )
 }
+
+export default DestroyForm

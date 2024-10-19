@@ -51,7 +51,7 @@ export const NotificationContextProvider = ({ children }) => {
     let timer = undefined
 
     useEffect(() => {
-        dispatch({ type: 'NOTIFICATIONS_LOADED' })
+        dispatch({ type: '@notificationS_LOADED' })
     }, [])
 
     useEffect(() => {
@@ -122,7 +122,7 @@ const reducer = (state, action) => {
                 notifications: state.notifications.slice(1),
             }
             break
-        case 'NOTIFICATIONS_LOADED':
+        case '@notificationS_LOADED':
             return { ...state, notificationsLoaded: true }
             break
         case 'REMOVE_NOTIFICATION':

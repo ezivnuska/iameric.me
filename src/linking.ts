@@ -1,4 +1,4 @@
-export default linking = {
+const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
@@ -9,12 +9,12 @@ export default linking = {
                         path: '/:username',
                     },
                     ContactImages: {
-                        path: 'images',
+                        path: '@images',
                     },
                 },
             },
             Contacts: {
-                path: 'contacts',
+                path: '@contacts',
             },
             Forum: {
                 path: 'forum',
@@ -64,3 +64,5 @@ export default linking = {
         },
     },
 }
+
+export default linking

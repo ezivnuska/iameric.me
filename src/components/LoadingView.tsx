@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
 
-export default ({ loading = null }) => (
+const LoadingView = ({ loading = null }) => (
     <View
         style={{
             height: '100%',
@@ -16,3 +16,5 @@ export default ({ loading = null }) => (
 
     </View>
 )
+
+export default LoadingView

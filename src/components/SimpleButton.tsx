@@ -5,7 +5,7 @@ import {
     Text,
 } from 'react-native'
 
-export default ({ disabled, label, onPress, transparent = false, color = '#fff', ...props }) => {
+const SimpleButton = ({ disabled, label, onPress, transparent = false, color = '#fff', ...props }) => {
     return (
         <Pressable
             disabled={disabled}
@@ -36,3 +36,5 @@ export default ({ disabled, label, onPress, transparent = false, color = '#fff',
         </Pressable>
     )
 }
+
+export default SimpleButton

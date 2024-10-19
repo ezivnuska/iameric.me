@@ -1,8 +1,8 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator } from 'react-native-paper'
+import { ActivityIndicator as Indicator } from 'react-native-paper'
 
-export default ({ size = 'large', color = 'tomato', ...props }) => (
+const ActivityIndicator = ({ size = 'large', color = 'tomato', ...props }) => (
     <View
         {...props}
         style={{
@@ -12,10 +12,12 @@ export default ({ size = 'large', color = 'tomato', ...props }) => (
             textAlign: 'center',
         }}
     >
-        <ActivityIndicator
+        <Indicator
             size={size}
             color={color}
             style={{ marginHorizontal: 'auto' }}
         />
     </View>
 )
+
+export default ActivityIndicator

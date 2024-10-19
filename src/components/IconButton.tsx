@@ -4,7 +4,7 @@ import { Pressable } from 'react-native'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ disabled, name, onPress, color = null, size = 18, ...props }) => {
+const IconButton = ({ disabled, name, onPress, color = null, size = 18, ...props }) => {
 
     const { theme } = useApp()
     
@@ -32,3 +32,5 @@ export default ({ disabled, name, onPress, color = null, size = 18, ...props }) 
         </Pressable>
     )
 }
+
+export default IconButton

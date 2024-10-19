@@ -4,7 +4,7 @@ import { ThemedText } from'@components'
 import { useApp } from'@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ label, onChange, value = false }) => {
+const Checkbox = ({ label, onChange, value = false }) => {
 
     const { theme } = useApp()
 
@@ -33,3 +33,5 @@ export default ({ label, onChange, value = false }) => {
         </Pressable>
     )
 }
+
+export default Checkbox

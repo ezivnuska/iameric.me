@@ -32,7 +32,7 @@ const getImageData = async (image, srcOrientation, maxWidth = 400) => {
     }
 }
 
-export default handleImageData = async (userId, imageElement, srcOrientation = null) => {
+const handleImageData = async (userId, imageElement, srcOrientation = null) => {
     // console.log('imageElement----->', imageElement)
     const imageData = await getImageData(imageElement, srcOrientation, 400)
     const thumbData = await getImageData(imageElement, srcOrientation, 100)
@@ -44,3 +44,5 @@ export default handleImageData = async (userId, imageElement, srcOrientation = n
         userId,
     }
 }
+
+export default handleImageData

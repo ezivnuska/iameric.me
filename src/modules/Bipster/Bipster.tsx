@@ -47,7 +47,7 @@ export default ({ bips, loading, onDeleted, onSelected, currentIndex = null }) =
                     <FlatList
                         ref={listRef}
                         data={bips}
-                        listKey={() => 'bips'}
+                        listKey={() => '@bips'}
                         keyExtractor={(item, index) => `${index}-bip-${item._id}`}
                         renderItem={({ item, index }) => (
                             <BipListItem

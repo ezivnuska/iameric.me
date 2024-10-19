@@ -11,7 +11,7 @@ import {
 import { useForm } from '@form'
 import { useImages } from '@images'
 
-export default ImageForm = ({ data, removeImage, source = null }) => {
+const ImageForm = ({ data, removeImage, source = null }) => {
 
     const { formLoading } = useForm()
     const { uploading } = useImages()
@@ -57,3 +57,5 @@ export default ImageForm = ({ data, removeImage, source = null }) => {
         </View>
     )
 }
+
+export default ImageForm

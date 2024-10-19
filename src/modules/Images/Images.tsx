@@ -5,7 +5,7 @@ import { ImageList } from './components'
 import { useImages } from '@images'
 import { useModal } from '@modal'
 
-export default Images = () => {
+const Images = () => {
 
     const { images, uploading } = useImages()
     const { setModal } = useModal()
@@ -13,7 +13,7 @@ export default Images = () => {
     return (
         <View>
 
-            <Heading title='Images' />
+            <Heading title='@images' />
 
             <ImageList
                 images={images}
@@ -24,3 +24,5 @@ export default Images = () => {
         </View>
     )
 }
+
+export default Images

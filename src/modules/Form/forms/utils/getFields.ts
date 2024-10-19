@@ -1,4 +1,4 @@
-export default getFields = (initialState, data) => {
+const getFields = (initialState, data) => {
     if (!data) return initialState
     const initialKeys = Object.keys(initialState)
     const keysAvailable = Object.keys(data)
@@ -9,3 +9,5 @@ export default getFields = (initialState, data) => {
     })
     return reducedArray
 }
+
+export default getFields

@@ -6,7 +6,7 @@ import {
     SimpleButton,
     ThemedText,
 } from '@components'
-import { usePlay } from '@play'
+import { usePlay } from '@modules/Play'
 
 export default ({ status, onGameStart, onGameEnd }) => {
     
@@ -88,7 +88,7 @@ export default ({ status, onGameStart, onGameEnd }) => {
                     label={ticking
                         ? 'Pause'
                         : ticks > 0
-                            ? 'Resume'
+                            ? 'Work'
                             : 'Play'
 
                     }

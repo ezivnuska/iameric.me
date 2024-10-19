@@ -8,7 +8,7 @@ import {
     subDays,
 } from 'date-fns'
 
-export default ({ time = null, color = '#444', prefix = '', suffix = '' }) => {
+const Time = ({ time = null, color = '#444', prefix = '', suffix = '' }) => {
     return (
         <View>
             <ThemedText color={color} size={16}>
@@ -20,6 +20,8 @@ export default ({ time = null, color = '#444', prefix = '', suffix = '' }) => {
         </View>
     )
 }
+
+export default Time
 // format(new Date(), "'Today is a' eeee")
 // //=> "Today is a Monday"
 

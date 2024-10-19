@@ -7,7 +7,7 @@ import {
 import { ThemedText } from '@components'
 import { useApp } from '@app'
 
-export default ({ dirty, error, value, focused, label = null, multiline = false, required = false, ...props }) => {
+const FormField = ({ dirty, error, value, focused, label = null, multiline = false, required = false, ...props }) => {
 
     const { theme } = useApp()
 
@@ -96,3 +96,5 @@ export default ({ dirty, error, value, focused, label = null, multiline = false,
         </View>
     )
 }
+
+export default FormField

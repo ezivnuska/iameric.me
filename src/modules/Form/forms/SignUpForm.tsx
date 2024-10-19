@@ -40,7 +40,7 @@ import { useSocket } from '@socket'
 //     )
 // }
 
-export default SignUpForm = () => {
+const SignUpForm = () => {
 
     const initialState = {
         email: '',
@@ -286,3 +286,5 @@ export default SignUpForm = () => {
         </View>
     ) : null
 }
+
+export default SignUpForm

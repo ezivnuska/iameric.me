@@ -9,7 +9,7 @@ import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { getFields, validateFields } from './utils'
 
-export default ({ data }) => {
+const MessageForm = ({ data }) => {
 
     const initialState = { text: '' }
 
@@ -157,3 +157,5 @@ export default ({ data }) => {
         </View>
     ) : null
 }
+
+export default MessageForm

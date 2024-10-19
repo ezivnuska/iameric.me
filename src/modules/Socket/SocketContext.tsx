@@ -67,7 +67,7 @@ export const SocketContextProvider = ({ children }) => {
         console.log(message)
         if (socket.active) {
             // temporary failure, the socket will automatically try to reconnect
-            console.log('socket still active. reconnecting...')
+            console.log('@socket still active. reconnecting...')
         } else {
             // the connection was denied by the server
             // in that case, `socket.connect()` must be manually called in order to reconnect
@@ -128,7 +128,7 @@ export const SocketContextProvider = ({ children }) => {
 
         if (!socket.connected) socket.connect()
 
-        dispatch({ type: 'SOCKET_LOADED' })
+        dispatch({ type: '@socket_LOADED' })
     }, [])
 
     // useEffect(() => {
@@ -166,7 +166,7 @@ const reducer = (state, action) => {
     const { payload, type } = action
     // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
-        case 'SOCKET_LOADED':
+        case '@socket_LOADED':
             return { ...state, socketLoaded: true }; break
         case 'SET_CONNECTIONS':
             return { ...state, connections: payload }; break

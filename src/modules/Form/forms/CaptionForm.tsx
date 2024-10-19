@@ -11,7 +11,7 @@ import { useModal } from '@modal'
 import { getFields, validateFields } from './utils'
 import { setCaption } from '@utils/images'
 
-export default ({ data }) => {
+const CaptionForm = ({ data }) => {
 
     const initialState = { text: data?.caption || '' }
 
@@ -155,3 +155,5 @@ export default ({ data }) => {
         </View>
     ) : null
 }
+
+export default CaptionForm

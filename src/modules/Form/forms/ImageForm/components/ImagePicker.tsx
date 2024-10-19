@@ -19,7 +19,7 @@ import {
 import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ImagePicker = ({ avatar = false }) => {
+const ImagePicker = ({ avatar = false }) => {
 
     const {
         user,
@@ -237,3 +237,5 @@ export default ImagePicker = ({ avatar = false }) => {
         />
     )
 }
+
+export default ImagePicker
