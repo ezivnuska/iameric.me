@@ -1,0 +1,73 @@
+{
+    "compilerOptions": {
+      // Emit Configuration
+      "noEmit": true,
+  
+      // Type Checking Configuration
+      "allowUnreachableCode": false,
+      "allowUnusedLabels": false,
+      "exactOptionalPropertyTypes": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitThis": true,
+      "noPropertyAccessFromIndexSignature": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitOverride": true,
+      "noImplicitAny": true,
+      "noImplicitReturns": true,
+      // Strict Rules - v4.8
+      "alwaysStrict": true,
+      "strictBindCallApply": true,
+      "strictFunctionTypes": true,
+      "strictNullChecks": true,
+      "strictPropertyInitialization": true,
+      "useUnknownInCatchVariables": true,
+  
+      // Modules Configuration
+      "baseUrl": "./",
+      "module": "ES2022",
+      "moduleResolution": "node",
+  
+      // Language and Environment Configuration
+      "target": "ES2022",
+      "jsx": "react-jsx",
+  
+      // JavaScript Support Configuration
+      "allowJs": true,
+      "checkJs": true,
+  
+      // Interop Constraints Configuration
+      "esModuleInterop": true,
+      "isolatedModules": true,
+
+        "paths": {
+            "config/*":        ["./config/*"],
+            "sounds/*":        ["./sounds/*"],
+            "app/*":           ["./src/AppContext/*"],
+            "bips/*":          ["./src/modules/Bipster/*"],
+            "@components/*":    ["./src/components/*"],
+            "@contacts/*":      ["./src/modules/Contacts/*"],
+            "@forum/*":         ["./src/modules/Forum/*"],
+            "@mail/*":          ["./src/modules/Mail/*"],
+            "@modal/*":         ["./src/modules/Modal/*"],
+            "@notification/*":  ["./src/modules/Notification/*"],
+            "@play/*":          ["./src/modules/Play/*"],
+            "@socket/*":        ["./src/modules/Socket/*"],
+            "@form/*":          ["./src/modules/Form/*"],
+            "@forms/*":         ["./src/modules/Form/forms/*"],
+            "images/*":        ["./src/modules/Images/*"],
+            "layout/*":        ["./src/layout/*"],
+            "@modules/*":       ["./src/modules/*"],
+            "@screens/*":       ["./src/screens/*"],
+            "@styles/*":        ["./src/styles/*"],
+            "@utils/*":         ["./src/utils/*"]
+        }
+    },
+    "include": ["src/**/**/*"],
+    "exclude": [
+        "node_modules",
+        "server",
+        "dist",
+        "src-backup",
+    ],
+}
