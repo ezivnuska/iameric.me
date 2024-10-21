@@ -1,11 +1,14 @@
 import React from 'react'
 import { View } from 'react-native'
 import {
-    AboutNav,
+    // AboutNav,
     Screen,
 } from './components'
 import { Heading } from '@components'
-import { Play } from '@modules'
+import {
+    // Play,
+    Simple,
+} from '@modules'
 
 export default props => (
     <Screen
@@ -15,7 +18,9 @@ export default props => (
 
         <View style={{ flex: 1 }}>
 
-            <Heading
+            <Simple />
+
+            {/* <Heading
                 title='About'
                 onBack={() => props.navigation.navigate('Bips', { screen: 'BipList' })}
             >
@@ -25,7 +30,8 @@ export default props => (
                 />
             </Heading>
 
-            <Play />
+            <Play /> */}
+
 
         </View>
 

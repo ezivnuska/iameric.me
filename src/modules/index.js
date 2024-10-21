@@ -10,6 +10,7 @@ import Map from './Map'
 import Modal from './Modal'
 import Notification from './Notification'
 import Play from './Play'
+import Simple from './Simple'
 import Socket from './Socket'
 import Work from './Work'
 
@@ -27,5 +28,6 @@ export {
     Notification,
     Play,
     Socket,
+    Simple,
     Work,
 }
