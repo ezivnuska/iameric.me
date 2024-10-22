@@ -10,14 +10,14 @@ import {
 export default Simple = () => {
 
     // create string var to store textinput value in state
-    const [textValue, setTextValue] = useState('')
+    const [inputValue, setInputValue] = useState('')
 
-    // create array to store saved values in state
-    const [savedValues, setSavedValues] = useState([])
+    // create array to store comments in state
+    const [comments, setComments] = useState([])
 
     // method to handle button press
     const handlePress = () => {
-        console.log('button pressed', textValue)
+        console.log('saving comment:', inputValue)
         
         // add textinput value to saveValues array
         // 
@@ -30,39 +30,91 @@ export default Simple = () => {
         // new value (but that is also an option).
         // 
         // for now we'll just save it to the stat array...
-        setSavedValues([textValue, ...savedValues])
+        setComments([...comments, inputValue])
 
         // clear text values
-        setTextValue('')
+        setInputValue('')
     }
 
-    // loop through saved values and return list item as jsx element
-    const renderValueList = () => {
-        return (
-            <View style={styles.valueListContainer}>
+    // loop through comments and return list item as jsx element
+    const renderComments = () => comments.length ? comments.map((value, index) => (
+        <Text
+            key={`saved-value-${index}`}
+            style={styles.commentListItem}
+        >
+            {value}
+        </Text>
+    )) : (
+        <Text style={styles.emptyNote}>
+            No comments.
+        </Text>
+    )
+
+    return (
+        <View style={styles.container}>
+
+            {/* header */}
+            <Text style={styles.header}>
+                Comment List Example
+            </Text>
+
+            {/* flex container for textinput and button */}
+            <View style={styles.inputContainer}>
+
+                {/* input field */}
+                <TextInput
+                    value={inputValue}
+                    onChangeText={setInputValue}
+                    placeholder='write something...'
+                    placeholderTextColor='#aaa'
+                    style={styles.textInput}
+                />
+
+                {/* button to init save */}
+                <Pressable
+                    onPress={handlePress}
+                    disabled={!inputValue.length}
+                    style={[
+                        styles.button,
+                        inputValue.length ? styles.buttonEnabled : styles.buttonDisabled,
+                        { flexBasis: 40, flexGrow: 0 },
+                    ]}
+                >
+                    <Text
+                        style={[
+                            styles.buttonLabel,
+                            inputValue.length ? styles.buttonLabelEnabled : styles.buttonLabelDisabled,
+                        ]}
+                    >
+                        {`>`}
+                    </Text>
+
+                </Pressable>
+
+            </View>
+
+            {/* text value preview */}
+            <Text style={styles.textPreview}>
+                {inputValue}
+            </Text>
+            
+            {/* container for comment list header, comments, and clear button */}
+            <View style={styles.commentListContainer}>
                 
-                <Text style={styles.header}>
-                    Comments {savedValues.length ? `(${savedValues.length})` : ''}
+                {/* comment list header */}
+                <Text style={[styles.header]}>
+                    Comments {comments.length ? `(${comments.length})` : ''}
                 </Text>
-
-                <View style={styles.valueList}>
-                    
-                    {savedValues.length ? savedValues.map((value, index) => (
-                        <Text
-                            key={`saved-value-${index}`}
-                            style={styles.valueListItem}
-                        >
-                            {value}
-                        </Text>
-                    )) : (
-                        <Text style={styles.valueListItem}>No comments yet.</Text>
-                    )}
-
+                
+                <View style={styles.commentList}>
+                    {/* render all comments or show empty notification */}
+                    {renderComments()}
                 </View>
-                    
-                {(savedValues.length > 0) && (
+                
+                {/* button to clear comment list */}
+                {(comments.length > 0) && (
                     <Pressable
-                        onPress={() => setSavedValues([])}
+                        onPress={() => setComments([])}
                         style={[
                             styles.button,
                             styles.buttonEnabled,
@@ -76,53 +128,7 @@ export default Simple = () => {
                 )}
 
             </View>
-        )
-    }
-
-    return (
-        <View style={styles.container}>
-
-            {/* header */}
-            <Text style={styles.header}>
-                Comment List Example
-            </Text>
-
-            {/* input field */}
-            <TextInput
-                value={textValue}
-                onChangeText={setTextValue}
-                placeholder='write something...'
-                placeholderTextColor='#aaa'
-                style={styles.textInput}
-            />
-
-            {/* text value preview */}
-            <Text style={styles.textPreview}>
-                {textValue}
-            </Text>
-
-            {/* button to init save */}
-            <Pressable
-                onPress={handlePress}
-                disabled={!textValue.length}
-                style={[
-                    styles.button,
-                    textValue.length ? styles.buttonEnabled : styles.buttonDisabled,
-                ]}
-            >
-                <Text
-                    style={[
-                        styles.buttonLabel,
-                        textValue.length ? styles.buttonLabelEnabled : styles.buttonLabelDisabled,
-                    ]}
-                >
-                    Save Comment
-                </Text>
-
-            </Pressable>
-
             {/* render saved values in value list */}
-            {renderValueList()}
 
         </View>
     )
@@ -131,37 +137,49 @@ export default Simple = () => {
 const styles = StyleSheet.create({
     container: {
         padding: 10,
-        backgroundColor: '#ccc',
+        // backgroundColor: '#efe',
+        borderWidth: 1,
+        borderColor: '#999',
         borderRadius: 6,
         overflow: 'hidden',
+        gap: 10,
     },
     header: {
-        paddingBottom: 10,
         fontSize: 20,
         fontWeight: 700,
         color: '#333',
     },
+    inputContainer: {
+        flexDirection: 'row',
+        gap: 5,
+    },
     textInput: {
+        flexGrow: 1,
         paddingVertical: 4,
         paddingHorizontal: 10,
-        marginBottom: 5,
+        // marginBottom: 5,
         height: 40,
         lineHeight: 40,
         fontSize: 18,
         backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#6c6',
         borderRadius: 6,
         overflow: 'hidden',
     },
     textPreview: {
-        paddingHorizontal: 10,
-        marginBottom: 5,
+        paddingHorizontal: 5,
+        // marginBottom: 5,
         height: 26,
         minHeight: 26,
         lineHeight: 26,
         fontSize: 16,
     },
     button: {
-        marginBottom: 10,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 40,
         borderRadius: 6,
         overflow: 'hidden',
     },
@@ -169,13 +187,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#6c6',
     },
     buttonDisabled: {
+        borderWidth: 1,
+        borderColor: '#ccc',
         backgroundColor: '#eee',
         textColor: '#ccc',
     },
     buttonLabel: {
-        marginHorizontal: 'auto',
-        height: 34,
-        lineHeight: 34,
+        fontWeight: 700,
+        height: 20,
+        lineHeight: 20,
         fontSize: 18,
     },
     buttonLabelEnabled: {
@@ -184,17 +204,37 @@ const styles = StyleSheet.create({
     buttonLabelDisabled: {
         color: '#aaa',
     },
-    valueListContainer: {
-        marginBottom: 7,
+    commentListContainer: {
+        // marginTop: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 6,
+        overflow: 'hidden',
+        gap: 7,
     },
-    valueList: {
-        marginBottom: 7,
+    commentList: {
+        gap: 3,
     },
-    valueListItem: {
+    commentListItem: {
         fontSize: 18,
         lineHeight: 20,
         minHeight: 26,
         paddingHorizontal: 10,
-        paddingBottom: 5,
+        paddingVertical: 7,
+        backgroundColor: '#fff',
+        borderWidth: 1,
+        borderColor: '#ddd',
+        borderRadius: 6,
+        overflow: 'hidden',
+    },
+    emptyNote: {
+        fontSize: 18,
+        lineHeight: 20,
+        minHeight: 26,
+        paddingHorizontal: 10,
+        paddingVertical: 7,
     },
 })
