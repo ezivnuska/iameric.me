@@ -10,7 +10,7 @@ import {
     Time,
 } from '@components'
 import { Map } from '@modules'
-import { useBips } from '@bips'
+import { useBips } from '@modules/Bipster'
 import { loadBip } from '@utils/bips'
 import { getBipImages } from '@utils/images'
 import { getAddress } from '@utils/map'

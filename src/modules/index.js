@@ -1,4 +1,4 @@
-import BipMap from './BipMap'
+
 import Bipster from './Bipster'
 import Contact from './Contact'
 import Contacts from './Contacts'
@@ -15,7 +15,6 @@ import Socket from './Socket'
 import Work from './Work'
 
 export {
-    BipMap,
     Bipster,
     Contact,
     Contacts,

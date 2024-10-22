@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { Screen } from './components'
-import { ThemedText } from '@components'
+import { SimpleButton, ThemedText } from '@components'
 import { BipMap } from '@modules'
 import { useApp } from '@app'
 import { useModal } from '@modal'
@@ -52,7 +52,7 @@ export default props => {
                 props.navigation.navigate(authRoute)
                 setAuthRoute(null)
             } else {
-                props.navigation.navigate('Bips')
+                // props.navigation.navigate('Bips')
             }
         }
     }, [user])
@@ -69,7 +69,7 @@ export default props => {
         props.navigation.navigate('Home')
     }
 
-    const navigateToBip = () => {
+    const navigateToBips = () => {
         if (user) {
             props.navigation.navigate('Bips', { screen: 'BipList' })
         } else {
@@ -84,7 +84,15 @@ export default props => {
             secure={false}
         >
             <View style={{ flex: 1 }}>
-                <BipMap />
+                <View style={{ flex: 1 }}>
+                    <SimpleButton
+                        label='Bipster'
+                        onPress={navigateToBips}
+                    />
+                </View>
+                {/* <View style={{ flex: 1 }}>
+                    <BipMap />
+                </View> */}
             </View>
 
         </Screen>

@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { BipMarker } from './components'
 import { Map } from '@vis.gl/react-google-maps'
 import { useApp } from '@app'
-import { useBips } from '@bips'
+import { useBips } from '@modules/Bipster'
 import { useNotification } from '@notification'
 import { loadBips } from '@utils/bips'
 
@@ -33,12 +33,12 @@ export default ({ onBipSelected = null, currentIndex = null }) => {
             console.log('Geolocation is not supported by this browser.')
         }
 
-        if (!bips || !bips.length) {
-            setBipsLoading(true)
-            const bips = await loadBips()
-            setBipsLoading(false)
-            if (bips) setBips(bips)
-        }
+        // if (!bips || !bips.length) {
+        //     setBipsLoading(true)
+        //     const bips = await loadBips()
+        //     setBipsLoading(false)
+        //     if (bips) setBips(bips)
+        // }
     }
 
     useEffect(() => {

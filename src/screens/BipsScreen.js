@@ -9,8 +9,8 @@ import {
     ThemedText,
     SplitScreen,
 } from '@components'
-import { BipMap, Bipster } from '@modules'
-import { useBips } from '@bips'
+import { Bipster } from '@modules'
+import { BipContextProvider, useBips } from '@modules/Bipster'
 import { useModal } from '@modal'
 import { useNotification } from '@notification'
 import { useSocket } from '@socket'
@@ -45,16 +45,18 @@ export default props => {
 
     useEffect(() => {
         
-        const fetchBips = async () => {
-            setBipsLoading(true)
-            const bips = await loadBips()
-            setBipsLoading(false)
-            if (bips) setBips(bips)
-        }
+        // const fetchBips = async () => {
+        //     console.log('bips not loaded. fetching...')
+        //     setBipsLoading(true)
+        //     const bips = await loadBips()
+        //     console.log('bips-->', bips)
+        //     setBipsLoading(false)
+        //     if (bips) setBips(bips)
+        // }
 
-        if (!bips || !bips.length) {
-            fetchBips()
-        } else setCurrentBipIndex(0)
+        // if (!bips || !bips.length) {
+        //     fetchBips()
+        // } else setCurrentBipIndex(0)
         
         socket.on('new_bip', handleNewBip)
         socket.on('deleted_bip', removeBip)
@@ -71,89 +73,51 @@ export default props => {
         }
     }, [newBip])
 
-    const onBipSelected = index => {
-        setCurrentBipIndex(index)
-    }
-
-    const onBipDeleted = (id, index) => {
-        // if (currentBipIndex === 0)
-        if (index === currentBipIndex) {
-            setCurrentBipIndex(currentBipIndex < 0 ? currentBipIndex - 1 : null)
-        } else {
-            if (index < currentBipIndex) {
-                setCurrentBipIndex(null)
-                setCurrentBipIndex(currentBipIndex - 1)
-            }
-        }
-        removeBip(id)
-    }
-
     return (
         <Screen
             {...props}
             secure={true}
         >
-            <Heading
-                title='Bipsy'
-            >
-                <View
-                    style={{
-                        flexBasis: 'auto',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                    }}
-                >
-                    <ThemedText style={{ flex: 1, flexGrow: 1 }}>
-                        {`${bips.length} bip${bips.length !== 1 ? 's' : ''}`}
-                    </ThemedText>
-                    <Pressable
-                        onPress={() => setNewModal('CAPTURE')}
-                        style={{
-                            flex: 1,
-                            flexBasis: 'auto',
-                            flexGrow: 0,
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: 10,
-                            paddingHorizontal: 15,
-                            height: 28,
-                            borderRadius: 8,
-                            overflow: 'hidden',
-                            backgroundColor: 'tomato',
-                        }}
+            <BipContextProvider>
+                <View style={{ flex: 1 }}>
+                    <Heading
+                        title='Bipster'
                     >
-                        <FontAwesomeIcon
-                            icon={faCarBurst}
-                            size={24}
-                            color='#fff'
+                        <Pressable
+                            onPress={() => setNewModal('CAPTURE')}
                             style={{
-                                transform: [{
-                                    rotate: '-15deg',
-                                }],
+                                // flex: 1,
+                                flexBasis: 'auto',
+                                flexGrow: 0,
+                                flexDirection: 'row',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                gap: 10,
+                                paddingHorizontal: 15,
+                                height: 28,
+                                borderRadius: 8,
+                                overflow: 'hidden',
+                                backgroundColor: 'tomato',
                             }}
-                        />
-                        <ThemedText color='#fff' bold>Capture Bip</ThemedText>
-                    </Pressable>
+                        >
+                            <FontAwesomeIcon
+                                icon={faCarBurst}
+                                size={24}
+                                color='#fff'
+                                style={{
+                                    transform: [{
+                                        rotate: '-15deg',
+                                    }],
+                                }}
+                            />
+                            <ThemedText color='#fff' bold>Capture Bip</ThemedText>
+                        </Pressable>
+                    </Heading>
+
+                    <Bipster />
                 </View>
-            </Heading>
-            <SplitScreen
-                state={mode}
-                change={setMode}
-            >
-                <BipMap
-                    currentIndex={currentBipIndex}
-                    onBipSelected={onBipSelected}
-                />
-                <Bipster
-                    bips={bips}
-                    loading={bipsLoading}
-                    currentIndex={currentBipIndex}
-                    onDeleted={onBipDeleted}
-                    onSelected={onBipSelected}
-                />
-            </SplitScreen>
+            </BipContextProvider>
+            
             {/* <View
                 // ref={container}
                 // onPointerUp={handleTouchEnd}

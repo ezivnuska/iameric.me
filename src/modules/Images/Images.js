@@ -13,7 +13,7 @@ const Images = () => {
     return (
         <View>
 
-            <Heading title='@images' />
+            <Heading title='Images' />
 
             <ImageList
                 images={images}

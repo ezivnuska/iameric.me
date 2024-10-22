@@ -11,6 +11,10 @@ export default ({ bips, loading, onDeleted, onSelected, currentIndex = null }) =
     
     const listRef = useRef()
     
+    // useEffect(() => {
+    //     console.log('bips', bips)
+    // }, [])
+
     useEffect(() => {
         if (currentIndex) {
             if (listRef && listRef.current) {

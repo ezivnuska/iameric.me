@@ -45,6 +45,7 @@ const Heading = ({ title, children = null, onBack = null }) => {
                     bold
                     size={20}
                     color='tomato'
+                    style={{ flexGrow: 1 }}
                 >
                     {title}
                 </ThemedText>

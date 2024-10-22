@@ -70,10 +70,10 @@ const UserStackScreen = () => {
             />
 
             <UserStack.Screen
-                name='@images'
+                name='Images'
                 children={props => <ImagesScreen {...props} />}
                 // component={ImagesScreen}
-                options={{ title: '@images' }}
+                options={{ title: 'Images' }}
             />
 
             <UserStack.Screen
@@ -142,7 +142,7 @@ const ContactStackScreen = () => {
                 name='ContactImages'
                 children={props => <ImagesScreen {...props} />}
                 // component={ImagesScreen}
-                options={{ title: '@images' }}
+                options={{ title: 'Images' }}
             />
 
         </ContactStack.Navigator>

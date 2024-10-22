@@ -15,7 +15,7 @@ import {
 	ThemedText,
 } from '@components'
 import { useApp } from '@app'
-import { useBips } from '@bips'
+import { useBips } from '@modules/Bipster'
 import { useModal } from '@modal'
 import {
   handleImageData,

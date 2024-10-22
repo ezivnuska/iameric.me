@@ -55,7 +55,7 @@ export default ({ route }) => {
 
                 <Pressable
                     onPress={() => {
-                        navigate('About')
+                        navigate(isCurrentRoute('Home') ? 'About' : 'Home')
                     }}
                 >
 

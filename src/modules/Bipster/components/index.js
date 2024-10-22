@@ -1,5 +1,7 @@
-import BipListItem from './BipListItem'
+import BipList from './BipList'
+import BipMap from './BipMap'
 
 export {
-    BipListItem,
+    BipList,
+    BipMap,
 }

@@ -10,10 +10,10 @@
         "./sounds/*"
       ],
       "@app": [
-        "./src/AppContext.tsx"
+        "src/AppContext.js"
       ],
       "@bips": [
-        "./src/modules/Bipster/index.js"
+        "src/modules/BipList/index.js"
       ],
       "@components": [
         "./src/components/index.js"
@@ -49,7 +49,7 @@
         "./src/modules/Images/*"
       ],
       "@layout": [
-        "./src/layout/index.js"
+        "./src/Layout/index.js"
       ],
       "@modules": [
         "./src/modules/index.js"

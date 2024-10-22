@@ -7,7 +7,7 @@ import {
 import { useIsFocused } from '@react-navigation/native'
 import { FlashMode } from 'expo-camera'
 import { useApp } from '@app'
-import { useBips } from '@bips'
+import { useBips } from '@modules/Bipster'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 

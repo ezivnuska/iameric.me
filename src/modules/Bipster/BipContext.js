@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { useApp } from '@app'
 import { loadBips } from '@utils/bips'
+import { ActivityIndicator } from '@components'
 
 const initialState = {
     bips: [],
@@ -32,22 +33,19 @@ export const BipContextProvider = props => {
     
     const { user } = useApp()
     const [state, dispatch] = useReducer(reducer, initialState)
+
+    const initBips = async () => {
+        dispatch({type: 'SET_BIPS_LOADING', payload: true })
+        const data = await loadBips(user._id)
+        dispatch({type: 'SET_BIPS', payload: data })
+        dispatch({type: 'SET_BIPS_LOADING', payload: false })
+        dispatch({type: 'SET_BIPS_LOADED' })
+        // console.log('bips loaded...', data)
+    }
     
     useEffect(() => {
-
-        const initBips = async () => {
-            if (user) {
-                dispatch({type: 'SET_BIPS_LOADING', payload: true })
-                const data = await loadBips(user._id)
-                dispatch({type: 'SET_BIPS', payload: data })
-                dispatch({type: 'SET_BIPS_LOADING', payload: false })
-            }
-            dispatch({type: 'SET_BIPS_LOADED' })
-        }
-        
-        initBips()
-        
-    }, [])
+        if (user) initBips()
+    }, [user])
 
     const getBip = id => state.bips.filter(bip => bip._id === id)[0] || null
 
