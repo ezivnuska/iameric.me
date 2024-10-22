@@ -47,6 +47,9 @@ const linking = {
                     },
                 }
             },
+            Simple: {
+                path: 'simple',
+            },
             User: {
                 path: 'user',
                 screens: {

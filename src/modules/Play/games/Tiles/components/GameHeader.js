@@ -8,7 +8,7 @@ import {
 } from '@components'
 import { usePlay } from '@modules/Play'
 
-export default ({ status, onGameStart, onGameEnd }) => {
+export default GameHeader = ({ status, onGamePause, onGameReset, onGameStart, onGameEnd }) => {
     
     let ticker = null
 
@@ -42,10 +42,13 @@ export default ({ status, onGameStart, onGameEnd }) => {
     useEffect(() => {
         switch (status) {
             case 'idle':
-                stopTicker()
+                // stopTicker()
                 break
             case 'active':
-                startTicker()
+                // startTicker()
+                break
+            case 'paused':
+                // stopTicker()
                 break
             case 'resolved':
                 handleWin()
@@ -57,17 +60,31 @@ export default ({ status, onGameStart, onGameEnd }) => {
     const handleWin = () =>  {
         stopTicker()
         setScore(ticks)
-    }
-
-    const handlePress = () => {
-        if (ticking) stopTicker()
-        else if (ticks > 0) startTicker()
-        else onGameStart()
-    }
-
-    const endGame = () => {
         resetTicks()
         onGameEnd()
+    }
+
+    // const handlePress = () => {
+    //     if (!ticking) onGameStart()
+    //     else if (ticks > 0) stopTicker()
+    //     else startTicker()
+    // }
+
+    const play = () => {
+        startTicker()
+        onGameStart()
+    }
+
+    const pause = () => {
+        stopTicker()
+        onGamePause()
+    }
+
+    const reset = () => {
+        stopTicker()
+        resetTicks()
+        setScore(null)
+        onGameReset()
     }
 
     return (
@@ -84,20 +101,22 @@ export default ({ status, onGameStart, onGameEnd }) => {
                     gap: 10,
                 }}
             >
-                <SimpleButton
-                    label={ticking
-                        ? 'Pause'
-                        : ticks > 0
-                            ? 'Work'
-                            : 'Play'
-
-                    }
-                    onPress={handlePress}
-                />
-                {(!ticking && ticks > 0) && (
+                {!ticking ? (
+                    <SimpleButton
+                        label='Play'
+                        onPress={play}
+                    />
+                ) : (
+                    <SimpleButton
+                        label='Pause'
+                        onPress={pause}
+                    />
+                )}
+                
+                {(status === 'paused' || status === 'resolved') && (
                     <SimpleButton
                         label='Reset'
-                        onPress={endGame}
+                        onPress={reset}
                     />
                 )}
             </View>

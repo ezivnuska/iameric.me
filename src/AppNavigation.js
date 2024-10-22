@@ -12,6 +12,7 @@ import {
     MailScreen,
     PlayScreen,
     ProfileScreen,
+    SimpleScreen,
     WorkScreen,
 } from '@screens'
 
@@ -221,6 +222,13 @@ const AppStackScreen = () => {
                 children={props => <BipStackScreen {...props} />}
                 // component={BipStackScreen}
                 options={{ title: 'Bips' }}
+            />
+
+            <AppStack.Screen
+                name='Simple'
+                children={props => <SimpleScreen {...props} />}
+                // component={SimpleScreen}
+                options={{ title: 'Simple' }}
             />
 
         </AppStack.Navigator>

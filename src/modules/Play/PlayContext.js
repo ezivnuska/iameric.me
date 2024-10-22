@@ -24,20 +24,21 @@ export const PlayContextProvider = props => {
     
     const [ticker, setTicker] = useState(null)
 
-    const tick = async () => {
+    const tick = () => {
         dispatch({ type: 'TICK' })
     }
 
-    const startTicker = async () => {
-        setTicker(setInterval(tick, 1000))
+    const startTicker = () => {
+        const interval = setInterval(tick, 1000)
+        setTicker(interval)
     }
 
-    const stopTicker = async () => {
+    const stopTicker = () => {
         clearInterval(ticker)
         setTicker(null)
     }
 
-    const resetTicks = async () => {
+    const resetTicks = () => {
         dispatch({ type: 'RESET_TICKS' })
     }
 

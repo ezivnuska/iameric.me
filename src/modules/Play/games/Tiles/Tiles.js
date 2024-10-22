@@ -23,10 +23,27 @@ export default () => {
 	const [initialTiles, setInitialTiles] = useState([])
 	
 	const [gameSize, setGameSize] = useState(null)
-	const [gameStatus, setGameStatus] = useState('idle')
+	const [gameStatus, setGameStatus] = useState(null)
+
+	useEffect(() => {
+		switch (gameStatus) {
+			case 'idle':
+				// createInitialTiles()
+				break;
+			case 'active':
+				break;
+			case 'paused':
+				break;
+			case 'resolved':
+				break;
+			default:
+		}
+	}, [gameStatus])
 
 	const onLayout = e => {
-		setGameSize(e.nativeEvent.target.offsetParent.clientWidth)
+		if (e.nativeEvent.target.offsetParent) {
+			setGameSize(e.nativeEvent.target.offsetParent.clientWidth)
+		}
 	}
 
 	const createInitialTiles = async () => {
@@ -48,10 +65,12 @@ export default () => {
 
 	useEffect(() => {
 		if (gameSize) createInitialTiles()
+		// if (gameSize) setGameStatus('idle')
 	}, [gameSize])
 
 	const handleWin = () => {
-		setGameStatus('resolved')
+		// console.log('handleWin', gameStatus)
+		if (gameStatus === 'active') setGameStatus('resolved')
 	}
 
 	return (
@@ -59,14 +78,16 @@ export default () => {
 			
 			<GameHeader
 				status={gameStatus}
+				onGameReset={() => setGameStatus('idle')}
 				onGameStart={() => setGameStatus('active')}
-				onGameEnd={() => setGameStatus('idle')}
+				onGameEnd={() => setGameStatus('resolved')}
+				onGamePause={() => setGameStatus('paused')}
 			/>
 
 			<View
 				onLayout={onLayout}
 			>
-				{initialTiles.length && (
+				{(initialTiles.length > 0) && (
 					<TileGame
 						initialTiles={initialTiles}
 						size={gameSize}
@@ -81,18 +102,27 @@ export default () => {
 
 const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 
+	const initialEmpty = { col: level - 1, row: level - 1 }
 	const [itemSize, setItemSize] = useState(size / level)
 	const [tiles, setTiles] = useState(initialTiles)
-	const [empty, setEmpty] = useState({ col: level - 1, row: level - 1 })
+	const [empty, setEmpty] = useState(initialEmpty)
 	const [refreshing, setRefreshing] = useState(true)
+	const [isPaused, setIsPaused] = useState(false)
 
 	useEffect(() => {
-		console.log('status', status)
+		// console.log('status', status)
 		switch (status) {
 			case 'active':
-				startGame();
+				if (!isPaused) startGame()
+				else setIsPaused(false)
+				break
+			case 'paused':
+				setIsPaused(true)
 				break
 			case 'idle':
+				setRefreshing(true)
+				setEmpty(initialEmpty)
+				setTiles(initialTiles)
 			case 'resolved':
 			default:
 		}
@@ -111,12 +141,19 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 	}
 
 	useEffect(() => {
+		
+		const isCorrect = resolveTiles(tiles)
+		// console.log('isCorrect', isCorrect)
+		if (status === 'active' && isCorrect) {
+			console.log('WINNER')
+			handleWin()
+		}
+
 		if (refreshing) {
-			const tilesResolved = resolveTiles(tiles)
-			if (tilesResolved) handleWin()
 			setRefreshing(false)
 		}
 	}, [refreshing, tiles])
+
 
 	const getDirectionToEmpty = (tile, nextEmpty = null) => {
 		const { col, row } = tile
@@ -186,7 +223,6 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 				return newTile
 			})
 			setEmpty(nextEmpty)
-			console.log('shuffled', shuffled)
 		} else {
 			let pile = tiles.slice()
 			let col = 0
@@ -304,30 +340,36 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 		return tilesToSort.filter(t => t.col === col && t.row === row)[0]
 	}
 	
-	const resolveTiles = async tileArray => {
+	const resolveTiles = tileArray => {
 
 		let numCorrect = 0
 		let row = 0
 		let col = 0
 		let sorting = true
-		
+		let isCorrect = false
+
 		while (sorting) {
 			const tile = getTileByColRow(tileArray, col, row)
 			if (tile && tile.id === numCorrect) {
-				if (col + 1 < level) {
-					col++
-				} else if (row + 1 < level) {
-					col = 0
-					row++
+				numCorrect++
+				// console.log(tile.id, tile.col, tile.row)
+				if (numCorrect === tileArray.length) {
+					isCorrect = true
+				} else {
+					if (col + 1 < level) {
+						col++
+					} else if (row + 1 < level) {
+						col = 0
+						row++
+					}
 				}
 			} else {
 				sorting = false
 			}
-			numCorrect++
 		}
-		const isCorrect = (numCorrect === tileArray.length)
-		if (isCorrect) console.log('WINNER')
-		return isCorrect	
+		
+		// console.log('tiles.resolved', isCorrect)
+		return isCorrect
 	}
 
 	const animatedStyles = useAnimatedStyle(() => {

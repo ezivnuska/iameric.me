@@ -1,14 +1,12 @@
 import React from 'react'
 import { View } from 'react-native'
-import { PlayContextProvider } from '.'
 import { Tiles } from './games'
+import { PlayContextProvider } from '@play'
 
-const Play = () => (
+export default Play = () => (
     <PlayContextProvider>
         <View style={{ flex: 1, gap: 10 }}>
             <Tiles />
         </View>
     </PlayContextProvider>
 )
-
-export default Play

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { Screen } from './components'
-import { SimpleButton, ThemedText } from '@components'
+import { Heading, SimpleButton, ThemedText } from '@components'
 import { BipMap } from '@modules'
 import { useApp } from '@app'
 import { useModal } from '@modal'
@@ -84,11 +84,37 @@ export default props => {
             secure={false}
         >
             <View style={{ flex: 1 }}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flexGrow: 0 }}>
+                    <Intro />
+                </View>
+
+                <View
+                    style={{
+                        flexGrow: 1,
+                        gap: 10,
+                    }}
+                >
+                    
                     <SimpleButton
                         label='Bipster'
                         onPress={navigateToBips}
                     />
+
+                    <SimpleButton
+                        label='Work'
+                        onPress={() => props.navigation.navigate('About', { screen: 'Work' })}
+                    />
+
+                    <SimpleButton
+                        label='Play'
+                        onPress={() => props.navigation.navigate('About', { screen: 'Play' })}
+                    />
+
+                    <SimpleButton
+                        label='Simple'
+                        onPress={() => props.navigation.navigate('Simple')}
+                    />
+
                 </View>
                 {/* <View style={{ flex: 1 }}>
                     <BipMap />
