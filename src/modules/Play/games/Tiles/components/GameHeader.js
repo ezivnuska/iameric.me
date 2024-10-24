@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
+    Pressable,
     Text,
     View,
 } from 'react-native'
@@ -22,8 +23,8 @@ export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset,
     } = usePlay()
 
     const [score, setScore] = useState(null)
-    
-    const timerText = useMemo(() => {
+
+    const formattedTime = useMemo(() => {
         let m = Math.floor(ticks / 60)
         let s = ticks < 60 ? ticks : ticks % 60
         return `${m > 0
@@ -191,16 +192,30 @@ export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset,
         >
             {renderPanel()}           
 
-            <View style={{ flexBasis: 'auto' }}>
-                <ThemedText>
-                    {score
-                        ? `Score: ${score}`
-                        : ticks > 0
-                            ? timerText
-                            : ` `
-                    }
-                </ThemedText>
-            </View>
+            {score
+                ? (
+                    <Pressable
+                        style={{
+                            flexBasis: 'auto',
+                            flexDirection: 'row',
+                            backgroundColor: '#f00',
+                            borderRadius: 6,
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <ThemedText color='#fff' bold>
+                            Save Score: {formattedTime}
+                        </ThemedText>
+                    </Pressable>
+                )
+                : ticks > 0
+                    ? (
+                        <ThemedText>
+                            Time: {formattedTime}
+                        </ThemedText>
+                    )
+                    : null
+            }
         </View>
     )
 }

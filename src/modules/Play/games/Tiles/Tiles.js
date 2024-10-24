@@ -120,7 +120,7 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 				break
 			case 'resolved':
 				setEmpty(initialEmpty)
-				setTiles(initialTiles.map(t => ({ ...t, draggable: null })))
+				setTiles(initialTiles)
 				break
 			default:
 		}
@@ -152,12 +152,13 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 	}
 
 	useEffect(() => {
-		
-		const isCorrect = resolveTiles(tiles)
-		// console.log('isCorrect', isCorrect)
-		if (status === 'playing' && isCorrect) {
-			console.log('WINNER WINNER CHICKEN DINNER')
-			handleWin()
+		if (status === 'playing') {
+			const isCorrect = resolveTiles(tiles)
+			// console.log('isCorrect', isCorrect)
+			if (isCorrect) {
+				console.log('WINNER WINNER CHICKEN DINNER')
+				handleWin()
+			}
 		}
 		
 		if (refreshing) {
@@ -318,7 +319,7 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 			handleFinishMove(tile)
 		} else {
 			setRefreshing(true)
-			setTiles(updatedTiles)
+			setTiles(tiles.map(t => ({ ...t, draggable: null })))
 		}
 		resetOffsetValues()
 	}
