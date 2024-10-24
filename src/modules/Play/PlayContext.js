@@ -1,7 +1,10 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react'
 
 const initialState = {
+    level: 4,
     ticks: 0,
+    tiles: [],
+    setTiles: () => {},
     startTicker: () => {},
     stopTicker: () => {},
     tick: () => {},
@@ -24,8 +27,14 @@ export const PlayContextProvider = props => {
     
     const [ticker, setTicker] = useState(null)
 
+    const getTile = id => state.tiles.filter(t => t.id === id)[0]
+
     const tick = () => {
         dispatch({ type: 'TICK' })
+    }
+
+    const setTiles = payload => {
+        dispatch({ type: 'SET_TILES', payload })
     }
 
     const startTicker = () => {
@@ -43,6 +52,7 @@ export const PlayContextProvider = props => {
     }
 
     useEffect(() => {
+
         // do something?
         return () => {
             console.log('unmounting')
@@ -53,6 +63,7 @@ export const PlayContextProvider = props => {
     const ticking = useMemo(() => ticker && ticker !== null, [ticker])
 
     const actions = useMemo(() => ({
+        setTiles,
         tick,
         startTicker,
         stopTicker,
@@ -65,6 +76,7 @@ export const PlayContextProvider = props => {
                 ...state,
                 ...actions,
                 ticking,
+                getTile,
             }}
         >
             {props.children}
@@ -79,6 +91,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 ticks: state.ticks + 1,
+            }
+            break
+        case 'SET_TILES':
+            return {
+                ...state,
+                tiles: payload,
             }
             break
         case 'RESET_TICKS':
