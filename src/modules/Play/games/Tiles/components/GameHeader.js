@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import {
+    Text,
     View,
 } from 'react-native'
 import {
@@ -8,7 +9,7 @@ import {
 } from '@components'
 import { usePlay } from '@modules/Play'
 
-export default GameHeader = ({ status, onGamePause, onGameReset, onGameStart, onGameEnd }) => {
+export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset, onGameStart, onGameEnd }) => {
     
     let ticker = null
 
@@ -41,10 +42,10 @@ export default GameHeader = ({ status, onGamePause, onGameReset, onGameStart, on
 
     useEffect(() => {
         switch (status) {
-            case 'idle':
+            case 'start':
                 // stopTicker()
                 break
-            case 'active':
+            case 'playing':
                 // startTicker()
                 break
             case 'paused':
@@ -61,7 +62,7 @@ export default GameHeader = ({ status, onGamePause, onGameReset, onGameStart, on
         stopTicker()
         setScore(ticks)
         resetTicks()
-        onGameEnd()
+        onChangeStatus('resolved')
     }
 
     // const handlePress = () => {
@@ -70,21 +71,115 @@ export default GameHeader = ({ status, onGamePause, onGameReset, onGameStart, on
     //     else startTicker()
     // }
 
-    const play = () => {
+    const startPlay = () => {
         startTicker()
-        onGameStart()
+        onChangeStatus('playing')
+    }
+
+    const unpause = () => {
+        startTicker()
+        onChangeStatus('playing')
     }
 
     const pause = () => {
         stopTicker()
-        onGamePause()
+        onChangeStatus('paused')
     }
 
     const reset = () => {
         stopTicker()
         resetTicks()
         setScore(null)
-        onGameReset()
+        onChangeStatus('start')
+    }
+
+    const renderIdlePanel = () => {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    gap: 10,
+                }}
+            >
+                <SimpleButton
+                    label={`Start`}
+                    onPress={startPlay}
+                />
+
+            </View>
+        )
+    }
+
+    const renderPlayingPanel = () => {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    gap: 10,
+                }}
+            >
+                <SimpleButton
+                    label='Pause'
+                    onPress={pause}
+                />
+
+                <Text>Playing</Text>
+
+            </View>
+        )
+    }
+
+    const renderPausedPanel = () => (
+        <View
+            style={{
+                flex: 1,
+                flexDirection: 'row',
+                gap: 10,
+            }}
+        >
+            
+            <SimpleButton
+                label='Continue'
+                onPress={unpause}
+            />
+
+            <SimpleButton
+                label='Give Up'
+                onPress={reset}
+            />
+
+            <Text>Paused</Text>
+        </View>
+    )
+
+    const renderResolvedPanel = () => {
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    gap: 10,
+                }}
+            >
+                <SimpleButton
+                    label={`Finish`}
+                    onPress={reset}
+                />
+
+                <Text>Winner!</Text>
+            </View>
+        )
+    }
+
+    const renderPanel = () => {
+        switch (status) {
+            case 'playing': return renderPlayingPanel(); break
+            case 'paused': return renderPausedPanel(); break
+            case 'resolved': return renderResolvedPanel(); break
+            default: return renderIdlePanel()
+        }
     }
 
     return (
@@ -94,32 +189,7 @@ export default GameHeader = ({ status, onGamePause, onGameReset, onGameStart, on
                 justifyContent: 'space-between',
             }}
         >
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
-            >
-                {!ticking ? (
-                    <SimpleButton
-                        label='Play'
-                        onPress={play}
-                    />
-                ) : (
-                    <SimpleButton
-                        label='Pause'
-                        onPress={pause}
-                    />
-                )}
-                
-                {(status === 'paused' || status === 'resolved') && (
-                    <SimpleButton
-                        label='Reset'
-                        onPress={reset}
-                    />
-                )}
-            </View>
+            {renderPanel()}           
 
             <View style={{ flexBasis: 'auto' }}>
                 <ThemedText>

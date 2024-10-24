@@ -23,22 +23,18 @@ export default () => {
 	const [initialTiles, setInitialTiles] = useState([])
 	
 	const [gameSize, setGameSize] = useState(null)
-	const [gameStatus, setGameStatus] = useState(null)
+	const [gameStatus, setGameStatus] = useState('start')
 
-	useEffect(() => {
-		switch (gameStatus) {
-			case 'idle':
-				// createInitialTiles()
-				break;
-			case 'active':
-				break;
-			case 'paused':
-				break;
-			case 'resolved':
-				break;
-			default:
-		}
-	}, [gameStatus])
+	// useEffect(() => {
+	// 	switch (gameStatus) {
+	// 		case 'idle':
+	// 		case 'active':
+	// 		case 'paused':
+	// 		case 'resolved':
+	// 			break
+	// 		default:
+	// 	}
+	// }, [gameStatus])
 
 	const onLayout = e => {
 		if (e.nativeEvent.target.offsetParent) {
@@ -70,7 +66,7 @@ export default () => {
 
 	const handleWin = () => {
 		// console.log('handleWin', gameStatus)
-		if (gameStatus === 'active') setGameStatus('resolved')
+		if (gameStatus === 'playing') setGameStatus('resolved')
 	}
 
 	return (
@@ -78,15 +74,11 @@ export default () => {
 			
 			<GameHeader
 				status={gameStatus}
-				onGameReset={() => setGameStatus('idle')}
-				onGameStart={() => setGameStatus('active')}
-				onGameEnd={() => setGameStatus('resolved')}
-				onGamePause={() => setGameStatus('paused')}
+				onChangeStatus={setGameStatus}
 			/>
 
-			<View
-				onLayout={onLayout}
-			>
+			<View onLayout={onLayout}>
+
 				{(initialTiles.length > 0) && (
 					<TileGame
 						initialTiles={initialTiles}
@@ -95,7 +87,9 @@ export default () => {
 						handleWin={handleWin}
 					/>
 				)}
+
 			</View>
+
 		</View>
 	)
 }
@@ -106,30 +100,35 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 	const [itemSize, setItemSize] = useState(size / level)
 	const [tiles, setTiles] = useState(initialTiles)
 	const [empty, setEmpty] = useState(initialEmpty)
-	const [refreshing, setRefreshing] = useState(true)
+	const [refreshing, setRefreshing] = useState(false)
 	const [isPaused, setIsPaused] = useState(false)
 
 	useEffect(() => {
 		// console.log('status', status)
 		switch (status) {
-			case 'active':
-				if (!isPaused) startGame()
-				else setIsPaused(false)
+			case 'start':
+				if (isPaused) setIsPaused(false)
+				setEmpty(initialEmpty)
+				setTiles(initialTiles)
+				break
+			case 'playing':
+				if (isPaused) setIsPaused(false)
+				else startGame()
 				break
 			case 'paused':
 				setIsPaused(true)
 				break
-			case 'idle':
-				setRefreshing(true)
-				setEmpty(initialEmpty)
-				setTiles(initialTiles)
 			case 'resolved':
+				setEmpty(initialEmpty)
+				setTiles(initialTiles.map(t => ({ ...t, draggable: null })))
+				break
 			default:
 		}
 	}, [status])
 	
 	const startGame = () => {
-        shuffleTiles(true)
+		setEmpty(initialEmpty)
+        shuffleTiles(initialTiles, true)
 	}
 	
 	const offsetX = useSharedValue(0)
@@ -140,20 +139,32 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 		offsetY.value = 0
 	}
 
+	const setDraggableTiles = draggableTiles => {
+		const updatedTiles = draggableTiles.map(t => {
+			const draggable = getDirectionToEmpty(t)
+			return {
+				...t,
+				draggable,
+				dragging: false,
+			}
+		})
+		setTiles(updatedTiles)
+	}
+
 	useEffect(() => {
 		
 		const isCorrect = resolveTiles(tiles)
 		// console.log('isCorrect', isCorrect)
-		if (status === 'active' && isCorrect) {
-			console.log('WINNER')
+		if (status === 'playing' && isCorrect) {
+			console.log('WINNER WINNER CHICKEN DINNER')
 			handleWin()
 		}
-
+		
 		if (refreshing) {
 			setRefreshing(false)
+			setDraggableTiles(tiles)
 		}
-	}, [refreshing, tiles])
-
+	}, [tiles])
 
 	const getDirectionToEmpty = (tile, nextEmpty = null) => {
 		const { col, row } = tile
@@ -202,14 +213,15 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 		return updatedTiles
 	}
 
-	const shuffleTiles = (dev = false) => {
+	const shuffleTiles = (tileArray = null, dev = false) => {
+		let tilesToShuffle = tileArray || tiles
 		let shuffled = []
 		if (dev) {
 			let nextEmpty = {
 				...empty,
 				col: empty.col - 1,
 			}
-			shuffled = tiles.map(t => {
+			shuffled = tilesToShuffle.map(t => {
 				let newTile = t
 				if (t.col === 2 && t.row === 3) {
 					newTile = {
@@ -218,13 +230,13 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 					}
 				}
 				
-				const draggable = getDirectionToEmpty(newTile, nextEmpty)
-				newTile.draggable = draggable
+				// const draggable = getDirectionToEmpty(newTile, nextEmpty)
+				// newTile.draggable = draggable
 				return newTile
 			})
 			setEmpty(nextEmpty)
 		} else {
-			let pile = tiles.slice()
+			let pile = tilesToShuffle.slice()
 			let col = 0
 			let row = 0
 			while (pile.length > 0) {
@@ -242,14 +254,13 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 					col = 0
 					row++
 				}
-				shuffledTile.draggable = draggable
+				// shuffledTile.draggable = draggable
 	
 				shuffled.push(shuffledTile)
 			}
 		}
 		setRefreshing(true)
-		// setTiles(shuffled)
-		setTiles(shuffled.map(t => ({ ...t, dragging: false })))
+		setTiles(shuffled)
     }
 
 	const onTouchStart = (event, tile) => {
@@ -287,24 +298,25 @@ const TileGame = ({ initialTiles, size, status, handleWin, level = 4  }) => {
 		else return null
 	}
 
-	const shouldFinishMove = event => {
+	const shouldFinishMove = (event, tile) => {
 		const { translationX, translationY } = event
-		let moveThreshold = itemSize / 2
+		const swipe = getSwipeEvent(event)
+		const moveThreshold = itemSize / 2
 		const moveY = Math.abs(translationY) > moveThreshold
 		const moveX = Math.abs(translationX) > moveThreshold
-		return (moveX || moveY)
+		if (swipe) {
+			if (swipe === 'horizontal' && moveX) return true
+			else if (swipe === 'vertical' && moveY) return true
+		}
+		const isVertical = (tile.draggable === 'up' || tile.draggable === 'down')
+		return ((!isVertical && moveX) || (isVertical && moveY))
 	}
 
 	const onTouchEnd = (event, tile) => {
-		let swipe = getSwipeEvent(event)
-		let finishMove = shouldFinishMove(event)
-		if (swipe || finishMove) {
+		let finishMove = shouldFinishMove(event, tile)
+		if (finishMove) {
 			handleFinishMove(tile)
 		} else {
-			let updatedTiles = tiles.map(t => ({
-				...t,
-				dragging: false,
-			}))
 			setRefreshing(true)
 			setTiles(updatedTiles)
 		}
