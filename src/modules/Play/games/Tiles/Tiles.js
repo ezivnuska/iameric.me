@@ -119,19 +119,21 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 	} = usePlay()
 	
 	const itemSize = gameSize / level
-	const initialEmpty = { col: level - 1, row: level - 1 }
+	const initialEmptyCol = level - 1
+	const initialEmptyRow = level - 1
 
-	const [empty, setEmpty] = useState(initialEmpty)
+	const [emptyCol, setEmptyCol] = useState(initialEmptyCol)
+	const [emptyRow, setEmptyRow] = useState(initialEmptyRow)
 	const [refreshing, setRefreshing] = useState(false)
 	const [isPaused, setIsPaused] = useState(false)
-	const [isDragging, setIsDragging] = useState(false)
 
 	useEffect(() => {
 		// console.log('status', status)
 		switch (status) {
 			case 'start':
 				if (isPaused) setIsPaused(false)
-				setEmpty(initialEmpty)
+				setEmptyCol(initialEmptyCol)
+				setEmptyRow(initialEmptyRow)
 				setTiles(initialTiles)
 				break
 			case 'playing':
@@ -142,16 +144,18 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 				setIsPaused(true)
 				break
 			case 'resolved':
-				setEmpty(initialEmpty)
-				setTiles(initialTiles)
+				setEmptyCol(initialEmptyCol)
+				setEmptyRow(initialEmptyRow)
+				setTiles(initialTiles.map(t => ({ ...t, dragging: false, draggable: null })))
 				break
 			default:
 		}
 	}, [status])
 	
 	const startGame = () => {
-		setEmpty(initialEmpty)
-        shuffleTiles(initialTiles, true)
+		setEmptyCol(initialEmptyCol)
+		setEmptyRow(initialEmptyRow)
+        shuffleTiles(initialTiles)
 	}
 	
 	const offsetX = useSharedValue(0)
@@ -164,7 +168,7 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 
 	const setDraggableTiles = () => {
 		const updatedTiles = tiles.map(t => {
-			const draggable = getDirectionToEmpty(t)
+			const draggable = getDirection(t)
 			return {
 				...t,
 				draggable,
@@ -191,17 +195,25 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 		}
 	}, [tiles])
 
-	const getDirectionToEmpty = (tile, nextEmpty = null) => {
-		const { col, row } = tile
-		let emptyPos = nextEmpty || empty
+	const getDirection = tile => {
 		let direction = null
-		if (col === emptyPos.col || row === emptyPos.row) {
-			const isVertical = col === emptyPos.col
-			if (isVertical) {
-				direction = (row < emptyPos.row) ? 'down' : 'up'
-			} else {
-				direction = (col < emptyPos.col) ? 'right' : 'left'
-			}
+		
+		if (tile.col === emptyCol) {
+			direction = (tile.row < emptyRow) ? 'down' : 'up'
+		} else if (tile.row === emptyRow) {
+			direction = (tile.col < emptyCol) ? 'right' : 'left'
+		}
+		return direction
+	}
+
+	const getDirectionToNextEmpty = (tile, nextEmpty) => {
+
+		let direction = null
+		
+		if (tile.col === nextEmpty.col) {
+			direction = (tile.row < nextEmpty.row) ? 'down' : 'up'
+		} else if (tile.row === nextEmpty.row) {
+			direction = (tile.col < nextEmpty.col) ? 'right' : 'left'
 		}
 		return direction
 	}
@@ -214,20 +226,20 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 			let dragging = false
 			if (t.id === tile.id) {
 				dragging = true
-			} else if (t.col === empty.col || t.row === empty.row) {
-				const draggable = getDirectionToEmpty(t)
+			} else if (t.col === emptyCol || t.row === emptyRow) {
+				const draggable = getDirection(t)
 				switch (draggable) {
 					case 'up':
-						if (t.row > empty.row && t.row < row) dragging = true
+						if (t.row > emptyRow && t.row < row) dragging = true
 						break
 					case 'down':
-						if (t.row < empty.row && t.row > row) dragging = true
+						if (t.row < emptyRow && t.row > row) dragging = true
 						break
 					case 'left':
-						if (t.col > empty.col && t.col < col) dragging = true
+						if (t.col > emptyCol && t.col < col) dragging = true
 						break
 					case 'right':
-						if (t.col < empty.col && t.col > col) dragging = true
+						if (t.col < emptyCol && t.col > col) dragging = true
 						break
 					default:
 				}
@@ -242,28 +254,36 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 		setTiles(updatedTiles)
 	}
 
+	const shuffleForDev = tilesToShuffle => {
+
+		const nextEmpty = {
+			row: emptyRow,
+			col: emptyCol - 1,
+		}
+
+		const shuffled = tilesToShuffle.map(t => {
+			let newTile = t
+			if (t.col === 2 && t.row === 3) {
+				newTile = {
+					...newTile,
+					col: 3,
+				}
+			}
+			
+			const draggable = getDirectionToNextEmpty(newTile, nextEmpty)
+			newTile.draggable = draggable
+			return newTile
+		})
+
+		setEmptyCol(nextEmpty.col)
+		return shuffled
+	}
+
 	const shuffleTiles = (tileArray = null, dev = false) => {
 		let tilesToShuffle = tileArray || tiles
 		let shuffled = []
 		if (dev) {
-			let nextEmpty = {
-				...empty,
-				col: empty.col - 1,
-			}
-			shuffled = tilesToShuffle.map(t => {
-				let newTile = t
-				if (t.col === 2 && t.row === 3) {
-					newTile = {
-						...newTile,
-						col: 3,
-					}
-				}
-				
-				const draggable = getDirectionToEmpty(newTile, nextEmpty)
-				newTile.draggable = draggable
-				return newTile
-			})
-			setEmpty(nextEmpty)
+			shuffled = shuffleForDev(tilesToShuffle)
 		} else {
 			let pile = tilesToShuffle.slice()
 			let col = 0
@@ -283,6 +303,7 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 					col = 0
 					row++
 				}
+				const draggable = getDirection(shuffledTile)
 				shuffledTile.draggable = draggable
 				shuffledTile.dragging = false
 	
@@ -294,14 +315,11 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 
 	const onTouchStart = tile => {
 		if (tile.draggable) {
-			setIsDragging(true)
-			// console.log('dragging tiles')
 			setDraggingTiles(tile)
 		}
 	}
 
 	const onTouchMove = (event, tile) => {
-		if (!isDragging) return
 		const { translationX, translationY } = event
 		switch (tile.draggable) {
 			case 'up':
@@ -346,8 +364,6 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 	}
 
 	const onTouchEnd = (event, tile) => {
-		if (!isDragging) return
-		setIsDragging(false)
 		let finishMove = shouldFinishMove(event, tile)
 		// console.log('finishing move', finishMove)
 		if (finishMove) {
@@ -363,6 +379,7 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 	
 	const handleFinishMove = tile => {
 		const nextEmptyPos = { col: tile.col, row: tile.row }
+
 		const updatedTiles = tiles.map(t => {
 			let newTile = { ...t }
 			if (newTile.dragging) {
@@ -376,12 +393,17 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 						: t.col + 1
 				}
 			}
-			const direction = getDirectionToEmpty(newTile, nextEmptyPos)
+
+			const direction = getDirectionToNextEmpty(newTile, nextEmptyPos)
+			
 			newTile.draggable = direction
 			newTile.dragging = false
+			
 			return newTile
 		})
-		setEmpty(nextEmptyPos)
+
+		setEmptyRow(tile.row)
+		setEmptyCol(tile.col)
 		setRefreshing(true)
 		setTiles(updatedTiles)
 	}
@@ -457,8 +479,8 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 		<GestureHandlerRootView>
 			<View
 				style={{
-					width: itemSize,
-					height: itemSize,
+					width: gameSize,
+					height: gameSize,
 					position: 'relative',
 				}}
 			>
@@ -476,21 +498,24 @@ const AnimatedView = ({ tile, size, pan, style, ...props }) => {
 			style={[
 				{
 					position: 'absolute',
-					height: size,
-					width: size,
-					overflow: 'hidden',
-					borderRadius: 8,
 					top: tile.row * size,
 					left: tile.col * size,
-					backgroundColor: tile.draggable ? tile.dragging ? 'purple' : 'green' : '#b58df1',//getModifiedColor('#b58df1', 25),
-					cursor: 'pointer',
+					height: size,
+					width: size,
+					cursor: tile.draggable ? 'pointer' : tile.dragging ? 'grab' : 'default',
 				},
 				style,
 			]}
 		>
 			<GestureDetector gesture={pan}>
-				<SquareWithLabel label={tile.id + 1} size={size} />
+				<Tile
+					label={tile.id + 1}
+					size={size}
+					dragging={tile.dragging}
+					draggable={tile.draggable}
+				/>
 			</GestureDetector>
+			
 		</Animated.View>
 	)
 }

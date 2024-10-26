@@ -201,6 +201,9 @@ export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset,
                             backgroundColor: '#f00',
                             borderRadius: 6,
                             overflow: 'hidden',
+                            paddingHorizontal: 10,
+                            flexDirection: 'row',
+                            alignItems: 'center',
                         }}
                     >
                         <ThemedText color='#fff' bold>
