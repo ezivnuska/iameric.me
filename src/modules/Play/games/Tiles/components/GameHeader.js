@@ -10,7 +10,7 @@ import {
 } from '@components'
 import { usePlay } from '@modules/Play'
 
-export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset, onGameStart, onGameEnd }) => {
+export default GameHeader = ({ status, onChangeStatus }) => {
     
     let ticker = null
 
@@ -77,9 +77,14 @@ export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset,
         onChangeStatus('playing')
     }
 
+    const startDevPlay = () => {
+        startTicker()
+        onChangeStatus('dev')
+    }
+
     const unpause = () => {
         startTicker()
-        onChangeStatus('playing')
+        onChangeStatus(status !== 'dev' ? 'playing' : 'dev')
     }
 
     const pause = () => {
@@ -94,7 +99,7 @@ export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset,
         onChangeStatus('start')
     }
 
-    const renderIdlePanel = () => {
+    const renderDefaultPanel = () => {
         return (
             <View
                 style={{
@@ -106,6 +111,11 @@ export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset,
                 <SimpleButton
                     label={`Start`}
                     onPress={startPlay}
+                />
+
+                <SimpleButton
+                    label={`Easy (dev)`}
+                    onPress={startDevPlay}
                 />
 
             </View>
@@ -126,7 +136,7 @@ export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset,
                     onPress={pause}
                 />
 
-                <Text>Playing</Text>
+                <Text>{status === 'dev' ? 'DEV' : 'Playing'}</Text>
 
             </View>
         )
@@ -176,10 +186,13 @@ export default GameHeader = ({ status, onChangeStatus, onGamePause, onGameReset,
 
     const renderPanel = () => {
         switch (status) {
-            case 'playing': return renderPlayingPanel(); break
+            case 'dev':
+            case 'playing':
+                return renderPlayingPanel()
+                break
             case 'paused': return renderPausedPanel(); break
             case 'resolved': return renderResolvedPanel(); break
-            default: return renderIdlePanel()
+            default: return renderDefaultPanel()
         }
     }
 

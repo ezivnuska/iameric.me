@@ -5,6 +5,7 @@ import { Tiles } from './games'
 
 const Play = () => {
     const [maxWidth, setMaxWidth] = useState(null)
+
     const onLayout = e => {
 		if (e.nativeEvent.target.offsetParent) {
 			setMaxWidth(e.nativeEvent.target.offsetParent.clientWidth)
