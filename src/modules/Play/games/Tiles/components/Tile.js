@@ -1,19 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
-import { getModifiedColor } from '@utils'
 
-const Tile = ({ label, size, dragging, direction, style, ...props }) => {
+const Tile = ({ label, size, ...props }) => {
 
-    const colorBase = '#990000'
-    const colors = {
-        dragged: getModifiedColor(colorBase, 25),
-        enabled: getModifiedColor(colorBase, 50),
-    }
-
+    // useEffect(() => console.log('rendering tile', style), [style])
+    // console.log('dragging/direction', dragging, direction)
     return (
         <View
-            {...props}
             style={[
                 {
                     flex: 1,
@@ -22,13 +16,8 @@ const Tile = ({ label, size, dragging, direction, style, ...props }) => {
                     width: size,
                     overflow: 'hidden',
                     borderRadius: 8,
-					backgroundColor: !direction
-                        ? colors.enabled
-                        : dragging
-                            ? colors.dragged
-                            : colorBase,
                 },
-                style,
+                props.style,
             ]}
         >
             <ThemedText
