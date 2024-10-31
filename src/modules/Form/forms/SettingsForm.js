@@ -10,9 +10,10 @@ import { navigate } from '@utils/navigation'
 
 const SettingsForm = () => {
     
-    const { setModal } = useModal()
+    const { closeModal, setModal } = useModal()
     
     const handleSignout = () => {
+        closeModal()
         navigate('Home', { signout: true })
     }
 
@@ -21,7 +22,7 @@ const SettingsForm = () => {
             style={{
                 flex: 1,
             }}
-            >
+        >
             
             <FormHeader title='Settings' />
 

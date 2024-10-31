@@ -78,6 +78,24 @@ export default props => {
         }
     }
 
+    const navigateToFeed = () => {
+        if (user) {
+            props.navigation.navigate('Feed')
+        } else {
+            setAuthRoute('Feed')
+            setModal('AUTH')
+        }
+    }
+
+    const navigateToForum = () => {
+        if (user) {
+            props.navigation.navigate('Forum')
+        } else {
+            setAuthRoute('Forum')
+            setModal('AUTH')
+        }
+    }
+
     return (
         <Screen
             {...props}
@@ -117,12 +135,12 @@ export default props => {
 
                     <SimpleButton
                         label='Forum'
-                        onPress={() => props.navigation.navigate('Forum')}
+                        onPress={navigateToForum}
                     />
 
                     <SimpleButton
                         label='Feed'
-                        onPress={() => props.navigation.navigate('Feed')}
+                        onPress={navigateToFeed}
                     />
 
                 </View>

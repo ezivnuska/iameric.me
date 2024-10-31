@@ -29,7 +29,6 @@ export default () => {
     }, [])
 
     useEffect(() => {
-        console.log('entries changed...', entries.length)
         if (entries) {
             const threads = getSortedThreads()
             setSortedThreads(threads)

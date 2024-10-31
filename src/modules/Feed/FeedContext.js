@@ -91,7 +91,6 @@ const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
         case 'ADD_POST':
-            console.log('ADD_POST', payload)
             return {
                 ...state,
                 posts: [ payload, ...state.posts ],

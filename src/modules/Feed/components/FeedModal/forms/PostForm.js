@@ -117,14 +117,12 @@ const PostForm = () => {
         
         setFormLoading(true)
         const post = await createPost(newPost)
-        console.log('post created', post)
         setFormLoading(false)
         
         if (!post) console.log('Error saving post')
             else {
             clearForm()
             socket.emit('new_post', post)
-            console.log('adding post', post)
             addPost(post)
             closeModal()
         }

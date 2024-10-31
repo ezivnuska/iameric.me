@@ -55,13 +55,13 @@ export default () => {
         socket.on('deleted_post', deletePost)
     }, [])
 
-    useEffect(() => {
-        if (posts) {
-            console.log('posts changed', posts)
-            // const threads = getSortedThreads()
-            // setSortedThreads(threads)
-        }
-    }, [posts])
+    // useEffect(() => {
+    //     if (posts) {
+    //         console.log('posts changed', posts)
+    //         // const threads = getSortedThreads()
+    //         // setSortedThreads(threads)
+    //     }
+    // }, [posts])
 
     const removePost = async id => {
         setFeedLoading(true)
