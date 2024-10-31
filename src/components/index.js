@@ -3,6 +3,8 @@ import ActivityIndicator from './ActivityIndicator'
 import AddressView from './AddressView'
 import Cabinet from './Cabinet'
 import Counter from './Counter'
+import FormField from './FormField'
+import FormHeader from './FormHeader'
 import Heading from './Heading'
 import IconButton from './IconButton'
 import ImageClone from './ImageClone'
@@ -24,6 +26,8 @@ export {
     AddressView,
     Cabinet,
     Counter,
+    FormField,
+    FormHeader,
     Heading,
     IconButton,
     ImageClone,

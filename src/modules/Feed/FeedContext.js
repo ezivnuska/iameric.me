@@ -2,12 +2,15 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 import { loadPosts } from '@utils/feed'
 
 const initialState = {
+    modals: [],
     posts: [],
     error: null,
     feedLoaded: false,
     feedLoading: false,
     addPost: () => {},
     deletePost: () => {},
+    closeModal: () => {},
+    setModal: () => {},
     setPosts: () => {},
     setFeedLoading: () => {},
     updatePost: () => {},
@@ -57,13 +60,28 @@ export const FeedContextProvider = props => {
         setFeedLoading: async payload => {
             dispatch({ type: 'SET_FEED_LOADING', payload })
         },
+        closeModal: () => {
+            dispatch({ type: 'CLOSE_MODAL' })
+        },
+        setModal: (type, data) => {
+            dispatch({
+                type: 'SET_MODAL',
+                payload: { data, type },
+            })
+        },
         updatePost: async payload => {
             dispatch({ type: 'UPDATE_POST', payload })
         },
     }), [state, dispatch])
 
     return  (
-        <FeedContext.Provider value={{ ...state, ...actions }}>
+        <FeedContext.Provider
+            value={{
+                ...state,
+                ...actions,
+                modal: state.modals[state.modals.length - 1],
+            }}
+        >
             {state.feedLoaded && props.children}
         </FeedContext.Provider>
     )
@@ -73,6 +91,7 @@ const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
         case 'ADD_POST':
+            console.log('ADD_POST', payload)
             return {
                 ...state,
                 posts: [ payload, ...state.posts ],
@@ -88,6 +107,21 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 feedLoading: payload,
+            }
+            break
+        case 'SET_MODAL':
+            return {
+                ...state,
+                modals: [
+                    ...state.modals,
+                    payload,
+                ],
+            }
+            break
+        case 'CLOSE_MODAL':
+            return {
+                ...state,
+                modals: [],
             }
             break
         case 'SET_POSTS':

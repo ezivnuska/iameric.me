@@ -4,12 +4,8 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import { PostForm } from '@forms'
-import { useModal } from '@modal'
 
-const FeedHeader = () => {
-
-    const { setModal } = useModal()
+const FeedHeader = ({ setModal }) => {
     
     return (
         <View

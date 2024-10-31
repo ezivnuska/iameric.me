@@ -5,23 +5,17 @@ import {
     FormHeader,
 } from './components'
 import { SimpleButton } from '@components'
-import { useApp } from '@app'
 import { useForm } from '@form'
-import { useFeed } from '@feed'
+import { useImages } from '@images'
 import { useModal } from '@modal'
-import { useSocket } from '@socket'
-import { getFields, validateFields } from './utils'
-import { createPost } from '@utils/feed'
+import { getFields, validateFields } from '../utils'
+import { setCaption } from '@utils/images'
 
-const PostForm = ({ data }) => {
+const CaptionForm = ({ data }) => {
 
-    const originalMessage = data
-    const threadId = originalMessage?._id
+    const initialState = { text: data?.caption || '' }
 
-    const initialState = { text: '' }
-
-    const { user } = useApp()
-    const { socket } = useSocket()
+    const { updateImage } = useImages()
 
     const {
         clearForm,
@@ -43,9 +37,11 @@ const PostForm = ({ data }) => {
         setFormValues,
     } = useForm()
 
-    const { addPost } = useFeed()
-
-    const { closeModal } = useModal()
+    const {
+        clearModal,
+        closeModal,
+        setModal,
+    } = useModal()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -55,7 +51,7 @@ const PostForm = ({ data }) => {
 
     useEffect(() => {
         const init = async () => {
-            const fields = getFields(initialState)
+            const fields = getFields(initialState, data)
             setInitialValues(fields)
         }
         init()
@@ -74,7 +70,7 @@ const PostForm = ({ data }) => {
         switch (name) {
             case 'text':
                 if (!text.length) {
-                    setFormError({ name, message: 'Form invalid.'})
+                    setFormError({ name, message: 'caption invalid.'})
                     isValid = false
                 }
                 break
@@ -107,42 +103,27 @@ const PostForm = ({ data }) => {
 			console.log(`Error in form field ${formError.name}: ${formError.message}`)
             return
 		}
-
-        const { _id } = user
-
-        let newPost = {
-            author: _id,
-            text,
-        }
-
-        if (threadId) {
-            newPost = {
-                ...newPost,
-                threadId,
-            }
-        } 
         
         setFormLoading(true)
-        const post = await createPost(newPost)
-        console.log('post created', post)
+        const image = await setCaption(data._id, text)
         setFormLoading(false)
 
-        if (!post) console.log('Error saving post')
+        if (!image) console.log('Error saving caption', err)
         else {
+            updateImage(image)
             clearForm()
-            closeModal()
-            addPost(post)
-            socket.emit('new_post', post)
+            clearModal()
+            setModal('SHOWCASE', image)
         }
     }
 
     const renderFields = () => (
         <>
             <FormField
-                label='Add Post'
+                label='New Caption'
                 value={text}
                 error={getError('text')}
-                placeholder='say something...'
+                placeholder='caption'
                 textContentType='default'
                 keyboardType='default'
                 autoCapitalize='sentences'
@@ -159,14 +140,14 @@ const PostForm = ({ data }) => {
         <View
             // style={{ paddingVertical: 20 }}
         >
-            <FormHeader title='New Post' />
+            <FormHeader title='Change Caption' />
 
             <View style={{ marginBottom: 10 }}>
                 {renderFields()}
             </View>
 
             <SimpleButton
-                label={formLoading ? 'Sending' : 'Send'}
+                label={formLoading ? 'Updating' : 'Update'}
                 disabled={formLoading || formError}
                 onPress={submitFormData}
             />
@@ -175,4 +156,4 @@ const PostForm = ({ data }) => {
     ) : null
 }
 
-export default PostForm
+export default CaptionForm

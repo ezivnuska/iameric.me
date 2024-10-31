@@ -114,7 +114,7 @@ export default () => {
     
     const { closeModal, modal } = useModal()
 
-    const isCamera = useMemo(() => (modal && modal.type === 'CAPTURE'), [modal])
+    // const isCamera = useMemo(() => (modal && modal.type === 'CAPTURE'), [modal])
 
     return modal ? (
         <Modal
@@ -128,21 +128,40 @@ export default () => {
             }}
         >
             {/* {isCamera && <View style={{ background: 'yellow', width: 100,  height: 100 }} />} */}
-            {isCamera
-                ? (
-                    <FullScreenModal>
-                        <CameraView />
-                    </FullScreenModal>
-                    
-                )
-                : (
-                    <StandardModal
-                        closeModal={closeModal}
+            <View
+                style={{
+                    flex: 1,
+                    width: '100%',
+                    position: 'relative',
+                }}
+            >
+                <Pressable
+                    onPress={closeModal}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        bottom: 0,
+                        left: 0,
+                        zIndex: 1,
+                    }}
+                />
+
+                <View
+                    style={{
+                        flex: 1,
+                        width: '100%',
+                        maxWidth: 400,
+                        marginHorizontal: 'auto',
+                        zIndex: 100,
+                    }}
+                >
+                    <FormFactory
                         type={modal.type}
                         data={modal.data}
                     />
-                )
-            }
+                </View>
+            </View>
         </Modal>
     ) : null
 }

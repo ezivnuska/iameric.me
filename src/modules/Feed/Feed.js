@@ -1,39 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
 import {
     FeedHeader,
     FeedList,
+    FeedModal,
 } from './components'
-import { useFeed } from '@feed'
-import { useModal } from '@modal'
+import { useFeed } from '.'
 import { useSocket } from '@socket'
-import { deletePostWithId } from '@utils/feed'
+import { deletePostWithId } from './utils'
 
 export default () => {
 
     const {
+        modal,
+        closeModal,
+        setModal,
         addPost,
         posts,
         deletePost,
         setFeedLoading,
     } = useFeed()
-    const { closeModal } = useModal()
+    // const { closeModal } = useModal()
     const { socket } = useSocket()
-
-    const [ sortedThreads, setSortedThreads ] = useState([])
-
-    useEffect(() => {
-        socket.on('new_post', addPost)
-        socket.on('deleted_post', deletePost)
-    }, [])
-
-    useEffect(() => {
-        if (posts) {
-            const threads = getSortedThreads()
-            setSortedThreads(threads)
-        }
-    }, [posts])
 
     const getThreadIds = () => {
         let ids = []
@@ -58,6 +47,21 @@ export default () => {
         })
         return threads
     }
+
+    const sortedThreads = useMemo(() => getSortedThreads(), [posts])
+
+    useEffect(() => {
+        socket.on('new_post', addPost)
+        socket.on('deleted_post', deletePost)
+    }, [])
+
+    useEffect(() => {
+        if (posts) {
+            console.log('posts changed', posts)
+            // const threads = getSortedThreads()
+            // setSortedThreads(threads)
+        }
+    }, [posts])
 
     const removePost = async id => {
         setFeedLoading(true)
@@ -94,12 +98,19 @@ export default () => {
     return (
         <View style={{ flex: 1 }}>
 
-            <FeedHeader />
+            <FeedHeader
+                setModal={setModal}
+            />
 
-            {posts.length
+            {sortedThreads.length
                 ? renderThreads(sortedThreads)
                 : <ThemedText>No posts yet.</ThemedText>
             }
+
+            <FeedModal
+                modal={modal}
+                closeModal={closeModal}
+                />
                 
         </View>
     )
