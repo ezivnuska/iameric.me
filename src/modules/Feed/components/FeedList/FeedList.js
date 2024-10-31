@@ -1,14 +1,14 @@
 import React from 'react'
 import { FlatList } from 'react-native'
-import { ForumListItem } from './components'
+import { FeedListItem } from './components'
 
-export default ({ entries, onDelete }) => (
+export default ({ posts, onDelete }) => (
     <FlatList
-        data={entries}
-        listKey={() => 'entries'}
-        keyExtractor={(item, index) => `${index}-entry-${item._id}`}
+        data={posts}
+        listKey={() => 'posts'}
+        keyExtractor={(item, index) => `${index}-post-${item._id}`}
         renderItem={({ item }) => (
-            <ForumListItem
+            <FeedListItem
                 item={item}
                 onDelete={onDelete}
             />

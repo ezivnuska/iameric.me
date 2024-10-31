@@ -124,14 +124,15 @@ const FeedbackForm = ({ data }) => {
         
         setFormLoading(true)
         const entry = await createEntry(newEntry)
+        console.log('entry created', entry)
         setFormLoading(false)
 
-        if (!entry) console.log('Error saving entry', err)
+        if (!entry) console.log('Error saving entry')
         else {
-            socket.emit('new_entry', entry)
-            addEntry(entry)
             clearForm()
             closeModal()
+            addEntry(entry)
+            socket.emit('new_entry', entry)
         }
     }
 

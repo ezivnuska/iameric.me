@@ -2,44 +2,44 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
 import {
-    ForumHeader,
-    ForumList,
+    FeedHeader,
+    FeedList,
 } from './components'
-import { useForum } from '@forum'
+import { useFeed } from '@feed'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
-import { deleteEntryWithId } from '@utils/forum'
+import { deletePostWithId } from '@utils/feed'
 
 export default () => {
 
     const {
-        addEntry,
-        entries,
-        deleteEntry,
-        setForumLoading,
-    } = useForum()
+        addPost,
+        posts,
+        deletePost,
+        setFeedLoading,
+    } = useFeed()
     const { closeModal } = useModal()
     const { socket } = useSocket()
 
     const [ sortedThreads, setSortedThreads ] = useState([])
 
     useEffect(() => {
-        socket.on('new_entry', addEntry)
-        socket.on('deleted_entry', deleteEntry)
+        socket.on('new_post', addPost)
+        socket.on('deleted_post', deletePost)
     }, [])
 
     useEffect(() => {
-        if (entries) {
+        if (posts) {
             const threads = getSortedThreads()
             setSortedThreads(threads)
         }
-    }, [entries])
+    }, [posts])
 
     const getThreadIds = () => {
         let ids = []
-        entries.map(entry => {
-            if (ids.indexOf(entry._id) < 0) {
-                ids.push(entry._id)
+        posts.map(post => {
+            if (ids.indexOf(post._id) < 0) {
+                ids.push(post._id)
             }
         })
         return ids
@@ -50,7 +50,7 @@ export default () => {
         const threads = []
         threadIds.map(threadId => {
 
-            const thread = entries.filter(entry => (entry.threadId && entry.threadId === threadId) || (!entry.threadId && entry._id === threadId))
+            const thread = posts.filter(post => (post.threadId && post.threadId === threadId) || (!post.threadId && post._id === threadId))
             
             if (thread.length) {
                 threads.push(thread.reverse())
@@ -59,12 +59,12 @@ export default () => {
         return threads
     }
 
-    const removeEntry = async id => {
-        setForumLoading(true)
-        await deleteEntryWithId(id)
-        setForumLoading(false)
-        socket.emit('entry_deleted', id)
-        deleteEntry(id)
+    const removePost = async id => {
+        setFeedLoading(true)
+        await deletePostWithId(id)
+        setFeedLoading(false)
+        socket.emit('post_deleted', id)
+        deletePost(id)
         closeModal()
     }
 
@@ -77,9 +77,9 @@ export default () => {
                 borderRadius: 12,
             }}
         >
-            <ForumList
-                entries={items}
-                onDelete={removeEntry}
+            <FeedList
+                posts={items}
+                onDelete={removePost}
             />
         </View>
     )
@@ -94,11 +94,11 @@ export default () => {
     return (
         <View style={{ flex: 1 }}>
 
-            <ForumHeader />
+            <FeedHeader />
 
-            {entries.length
+            {posts.length
                 ? renderThreads(sortedThreads)
-                : <ThemedText>No entries yet.</ThemedText>
+                : <ThemedText>No posts yet.</ThemedText>
             }
                 
         </View>

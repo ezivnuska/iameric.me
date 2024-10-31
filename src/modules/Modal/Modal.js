@@ -1,15 +1,18 @@
 import React, { useMemo } from 'react'
 import {
     Pressable,
+    ScrollView,
     View,
 } from 'react-native'
 import { CameraView, ModalFactory } from './components'
+import FormFactory from '@form'
 import Modal from 'react-native-modal'
+import { useApp } from '@app'
 import { useModal } from '@modal'
 
 const FullScreenModal = ({ children }) => {
     
-    const { closeModal} = useModal()
+    const { closeModal } = useModal()
 
     return (
         <View
@@ -46,10 +49,8 @@ const FullScreenModal = ({ children }) => {
     )
 }
 
-const StandardModal = () => {
-
-    const { closeModal} = useModal()
-    
+const StandardModal = ({ type, data, closeModal }) => {
+    const { dims } = useApp()
     return (
         <View
             style={{
@@ -70,8 +71,41 @@ const StandardModal = () => {
                     zIndex: 1,
                 }}
             />
-
-            <ModalFactory />
+            <View
+                style={{
+                    flexBasis: 'auto',
+                    flexGrow: 0,
+                    flexShrink: 1,
+                    backgroundColor: '#fff',
+                    borderRadius: 20,
+                    // borderTopLeftRadius: 20,
+                    // borderTopRightRadius: 20,
+                    overflow: 'hidden',
+                    paddingHorizontal: 10,
+                    paddingVertical: 10,
+                    maxHeight: dims.height - 100,
+                    width: dims.width - 10,
+                    maxWidth: 390,
+                    marginHorizontal: 'auto',
+                    zIndex: 100,
+                }}
+            >
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    style={{
+                        flex: 1,
+                    }}
+                    contentContainerStyle={{
+                        flex: 1,
+                        width: '100%',
+                        maxWidth: 400,
+                        marginHorizontal: 'auto',
+                    }}
+                >
+                    <FormFactory type={type} data={data} />
+                </ScrollView>
+            </View>
+            {/* <ModalFactory /> */}
         </View>
     )
 }
@@ -82,7 +116,7 @@ export default () => {
 
     const isCamera = useMemo(() => (modal && modal.type === 'CAPTURE'), [modal])
 
-    return (
+    return modal ? (
         <Modal
             isVisible={modal !== undefined}
             animationType='fade'
@@ -101,8 +135,14 @@ export default () => {
                     </FullScreenModal>
                     
                 )
-                : <StandardModal />
+                : (
+                    <StandardModal
+                        closeModal={closeModal}
+                        type={modal.type}
+                        data={modal.data}
+                    />
+                )
             }
         </Modal>
-    )
+    ) : null
 }

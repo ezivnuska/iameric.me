@@ -115,6 +115,16 @@ export default props => {
                         onPress={() => props.navigation.navigate('Simple')}
                     />
 
+                    <SimpleButton
+                        label='Forum'
+                        onPress={() => props.navigation.navigate('Forum')}
+                    />
+
+                    <SimpleButton
+                        label='Feed'
+                        onPress={() => props.navigation.navigate('Feed')}
+                    />
+
                 </View>
                 {/* <View style={{ flex: 1 }}>
                     <BipMap />

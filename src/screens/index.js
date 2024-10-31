@@ -2,6 +2,7 @@ import BipScreen from './BipScreen'
 import BipsScreen from './BipsScreen'
 import ContactScreen from './ContactScreen'
 import ContactsScreen from './ContactsScreen'
+import FeedScreen from './FeedScreen'
 import ForumScreen from './ForumScreen'
 import HomeScreen from './HomeScreen'
 import ImagesScreen from './ImagesScreen'
@@ -17,6 +18,7 @@ export {
     BipsScreen,
     ContactScreen,
     ContactsScreen,
+    FeedScreen,
     ForumScreen,
     HomeScreen,
     ImagesScreen,

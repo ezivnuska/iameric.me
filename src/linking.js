@@ -16,6 +16,9 @@ const linking = {
             Contacts: {
                 path: '@contacts',
             },
+            Feed: {
+                path: 'feed',
+            },
             Forum: {
                 path: 'forum',
             },

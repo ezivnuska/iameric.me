@@ -10,7 +10,6 @@ import { NotificationContextProvider } from '@notification'
 import { MailContextProvider } from '@mail'
 import { ModalContextProvider } from '@modal'
 import { FormContextProvider } from '@form'
-import { ForumContextProvider } from '@forum'
 import { compose as Compose } from '@utils'
 import { GOOGLE_MAPS_API_KEY } from '../config'
 import { APIProvider } from '@vis.gl/react-google-maps'
@@ -35,24 +34,22 @@ export default () => {
                         <ModalContextProvider>
                             <SocketContextProvider>
                             {/* <BipContextProvider> */}
-                                {/* <ImagesContextProvider> */}
+                                <ImagesContextProvider>
                                     {/* <MailContextProvider> */}
-                                        {/* <ForumContextProvider> */}
-                                            {/* <SocketContextProvider> */}
-                                                <FormContextProvider>
-                                                {/* <Compose
-                                                    components={[
-                                                        // ContactsContextProvider,
-                                                        FormContextProvider,
-                                                    ]}
-                                                > */}
-                                                    <Layout />
-                                                {/* </Compose> */}
-                                                </FormContextProvider>
-                                            {/* </SocketContextProvider> */}
-                                        {/* </ForumContextProvider> */}
+                                        {/* <SocketContextProvider> */}
+                                            <FormContextProvider>
+                                            {/* <Compose
+                                                components={[
+                                                    // ContactsContextProvider,
+                                                    FormContextProvider,
+                                                ]}
+                                            > */}
+                                                <Layout />
+                                            {/* </Compose> */}
+                                            </FormContextProvider>
+                                        {/* </SocketContextProvider> */}
                                     {/* </MailContextProvider> */}
-                                {/* </ImagesContextProvider> */}
+                                </ImagesContextProvider>
                             {/* </BipContextProvider> */}
                             </SocketContextProvider>
                         </ModalContextProvider>

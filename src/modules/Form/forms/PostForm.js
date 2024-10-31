@@ -7,13 +7,13 @@ import {
 import { SimpleButton } from '@components'
 import { useApp } from '@app'
 import { useForm } from '@form'
-import { useForum } from '@forum'
+import { useFeed } from '@feed'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { getFields, validateFields } from './utils'
-import { createEntry } from '@utils/forum'
+import { createPost } from '@utils/feed'
 
-const FeedbackForm = ({ data }) => {
+const PostForm = ({ data }) => {
 
     const originalMessage = data
     const threadId = originalMessage?._id
@@ -43,7 +43,7 @@ const FeedbackForm = ({ data }) => {
         setFormValues,
     } = useForm()
 
-    const { addEntry } = useForum()
+    const { addPost } = useFeed()
 
     const { closeModal } = useModal()
 
@@ -74,7 +74,7 @@ const FeedbackForm = ({ data }) => {
         switch (name) {
             case 'text':
                 if (!text.length) {
-                    setFormError({ name, message: 'Entry invalid.'})
+                    setFormError({ name, message: 'Form invalid.'})
                     isValid = false
                 }
                 break
@@ -110,35 +110,36 @@ const FeedbackForm = ({ data }) => {
 
         const { _id } = user
 
-        let newEntry = {
+        let newPost = {
             author: _id,
             text,
         }
 
         if (threadId) {
-            newEntry = {
-                ...newEntry,
+            newPost = {
+                ...newPost,
                 threadId,
             }
         } 
         
         setFormLoading(true)
-        const entry = await createEntry(newEntry)
+        const post = await createPost(newPost)
+        console.log('post created', post)
         setFormLoading(false)
 
-        if (!entry) console.log('Error saving entry', err)
+        if (!post) console.log('Error saving post')
         else {
-            socket.emit('new_entry', entry)
-            addEntry(entry)
             clearForm()
             closeModal()
+            addPost(post)
+            socket.emit('new_post', post)
         }
     }
 
     const renderFields = () => (
         <>
             <FormField
-                label='Add Comment'
+                label='Add Post'
                 value={text}
                 error={getError('text')}
                 placeholder='say something...'
@@ -158,7 +159,7 @@ const FeedbackForm = ({ data }) => {
         <View
             // style={{ paddingVertical: 20 }}
         >
-            <FormHeader title='Feedback' />
+            <FormHeader title='New Post' />
 
             <View style={{ marginBottom: 10 }}>
                 {renderFields()}
@@ -174,4 +175,4 @@ const FeedbackForm = ({ data }) => {
     ) : null
 }
 
-export default FeedbackForm
+export default PostForm

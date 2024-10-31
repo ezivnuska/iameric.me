@@ -2,6 +2,7 @@
 import Bipster from './Bipster'
 import Contact from './Contact'
 import Contacts from './Contacts'
+import Feed from './Feed'
 import Form from './Form'
 import Forum from './Forum'
 import Images from './Images'
@@ -18,6 +19,7 @@ export {
     Bipster,
     Contact,
     Contacts,
+    Feed,
     Form,
     Forum,
     Images,

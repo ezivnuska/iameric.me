@@ -21,6 +21,9 @@
       "@contacts": [
         "./src/modules/Contacts/index.js"
       ],
+      "@feed": [
+        "./src/modules/Feed/index.js"
+      ],
       "@forum": [
         "./src/modules/Forum/index.js"
       ],

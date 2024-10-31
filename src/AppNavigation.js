@@ -5,6 +5,7 @@ import {
     BipsScreen,
     ContactScreen,
     ContactsScreen,
+    FeedScreen,
     ForumScreen,
     HomeScreen,
     ImagesScreen,
@@ -190,11 +191,18 @@ const AppStackScreen = () => {
             />
 
             {/* <AppStack.Screen
-                name='@images'
+                name='Images'
                 children={props => <ImagesScreen {...props} />}
                 // component={ImagesScreen}
-                options={{ title: '@images' }}
+                options={{ title: 'Images' }}
             /> */}
+
+            <AppStack.Screen
+                name='Feed'
+                children={props => <FeedScreen {...props} />}
+                // component={FeedScreen}
+                options={{ title: 'Feed' }}
+            />
 
             <AppStack.Screen
                 name='Forum'

@@ -64,7 +64,7 @@ export const ForumContextProvider = props => {
 
     return  (
         <ForumContext.Provider value={{ ...state, ...actions }}>
-            {props.children}
+            {state.forumLoaded && props.children}
         </ForumContext.Provider>
     )
 }
@@ -73,6 +73,7 @@ const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
         case 'ADD_ENTRY':
+            console.log('adding new entry in context', payload)
             return {
                 ...state,
                 entries: [ payload, ...state.entries ],

@@ -31,7 +31,7 @@ export default ({ item, onDelete = null }) => {
 
     return (
         <View
-            key={`entry-${item._id}`}
+            key={`post-${item._id}`}
         >
 
             <View

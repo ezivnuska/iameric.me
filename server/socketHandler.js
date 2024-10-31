@@ -163,8 +163,12 @@ const socketHandler = io => socket => {
 		socket.broadcast.emit('new_entry', entry)
 	}
 
-	const onEntryDeleted = async entry => {
-		io.emit('deleted_entry', entry)
+	const onNewPost = async post => {
+		socket.broadcast.emit('new_post', post)
+	}
+
+	const onPostDeleted = async post => {
+		io.emit('deleted_post', post)
 	}
 
 	const getSocketIdWithUserId = async userId => {
@@ -199,7 +203,9 @@ const socketHandler = io => socket => {
 	socket.on('new_bip', 					onNewBip)
 	socket.on('bip_deleted', 				onBipDeleted)
 	socket.on('new_entry', 					onNewEntry)
-	socket.on('entry_deleted', 				onEntryDeleted)
+	socket.on('entry_deleted', 				onPostDeleted)
+	socket.on('new_post', 					onNewEntry)
+	socket.on('post_deleted', 				onPostDeleted)
 	socket.on('message_deleted', 			onMessageDeleted)
 	socket.on('new_message', 				onNewMessage)
 

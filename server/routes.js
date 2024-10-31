@@ -92,6 +92,13 @@ const {
 } = require('./api/entries')
 
 const {
+  createPost,
+  deletePostById,
+  getPosts,
+  getPostThread,
+} = require('./api/posts')
+
+const {
   createMessage,
   deleteMessageById,
   getMessage,
@@ -137,6 +144,12 @@ router.post(   '/entry',                   createEntry)
 router.get(    '/entries',                 getEntries)
 router.get(    '/thread/:threadId',        getThread)
 router.delete( '/entry/delete/:id',        deleteEntryById)
+
+// posts
+router.post(   '/post',                    createPost)
+router.get(    '/posts',                   getPosts)
+router.get(    '/post/thread/:threadId',   getPostThread)
+router.delete( '/post/delete/:id',         deletePostById)
 
 // mail
 router.post(   '/message',                 createMessage)

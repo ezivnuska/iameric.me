@@ -4,9 +4,10 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
+import { PostForm } from '@forms'
 import { useModal } from '@modal'
 
-export default () => {
+const FeedHeader = () => {
 
     const { setModal } = useModal()
     
@@ -21,15 +22,17 @@ export default () => {
             }}
         >
             <ThemedText bold size={20}>
-                Forum
+                Feed
             </ThemedText>
 
             <IconButton
                 name='add-circle-outline'
-                onPress={() => setModal('FEEDBACK')}
+                onPress={() => setModal('POST')}
                 size={22}
             />
 
         </View>
     )
 }
+
+export default FeedHeader

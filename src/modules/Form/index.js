@@ -1,10 +1,12 @@
-import Form from './Form'
+// import Form from './Form'
+import FormFactory from './FormFactory'
+
 import {
     FormContextProvider,
     useForm,
 } from './FormContext'
 
-export default Form
+export default FormFactory
 
 export {
     FormContextProvider,

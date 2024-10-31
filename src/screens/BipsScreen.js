@@ -78,45 +78,45 @@ export default props => {
             {...props}
             secure={true}
         >
-            <BipContextProvider>
-                <View style={{ flex: 1 }}>
-                    <Heading
-                        title='Bipster'
+            <View style={{ flex: 1 }}>
+                <Heading
+                    title='Bipster'
+                >
+                    <Pressable
+                        onPress={() => setNewModal('CAPTURE')}
+                        style={{
+                            // flex: 1,
+                            flexBasis: 'auto',
+                            flexGrow: 0,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: 10,
+                            paddingHorizontal: 15,
+                            height: 28,
+                            borderRadius: 8,
+                            overflow: 'hidden',
+                            backgroundColor: 'tomato',
+                        }}
                     >
-                        <Pressable
-                            onPress={() => setNewModal('CAPTURE')}
+                        <FontAwesomeIcon
+                            icon={faCarBurst}
+                            size={24}
+                            color='#fff'
                             style={{
-                                // flex: 1,
-                                flexBasis: 'auto',
-                                flexGrow: 0,
-                                flexDirection: 'row',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: 10,
-                                paddingHorizontal: 15,
-                                height: 28,
-                                borderRadius: 8,
-                                overflow: 'hidden',
-                                backgroundColor: 'tomato',
+                                transform: [{
+                                    rotate: '-15deg',
+                                }],
                             }}
-                        >
-                            <FontAwesomeIcon
-                                icon={faCarBurst}
-                                size={24}
-                                color='#fff'
-                                style={{
-                                    transform: [{
-                                        rotate: '-15deg',
-                                    }],
-                                }}
-                            />
-                            <ThemedText color='#fff' bold>Capture Bip</ThemedText>
-                        </Pressable>
-                    </Heading>
-
+                        />
+                        <ThemedText color='#fff' bold>Capture Bip</ThemedText>
+                    </Pressable>
+                </Heading>
+                
+                <BipContextProvider>
                     <Bipster />
-                </View>
-            </BipContextProvider>
+                </BipContextProvider>
+            </View>
             
             {/* <View
                 // ref={container}
