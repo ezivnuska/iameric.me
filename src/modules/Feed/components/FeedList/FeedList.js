@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList } from 'react-native'
 import { FeedListItem } from './components'
 
-export default ({ posts, onDelete }) => (
+const FeedList = ({ posts, onDelete }) => (
     <FlatList
         data={posts}
         listKey={() => 'posts'}
@@ -17,8 +17,10 @@ export default ({ posts, onDelete }) => (
         style={{ flex: 1 }}
         contentContainerStyle={{
             flex: 1,
-            paddingHorizontal: 5,
+            // paddingHorizontal: 5,
             // paddingBottom: 20,
         }}
     />
 )
+
+export default FeedList

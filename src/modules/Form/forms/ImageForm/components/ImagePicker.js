@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import {
+    Checkbox,
     ImageClone,
     SimpleButton,
     ThemedText,
 } from '@components'
-import { Checkbox } from '@forms/components'
 import EXIF from 'exif-js'
 import { useApp } from '@app'
 import { useModal } from '@modal'

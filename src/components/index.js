@@ -2,6 +2,7 @@
 import ActivityIndicator from './ActivityIndicator'
 import AddressView from './AddressView'
 import Cabinet from './Cabinet'
+import Checkbox from './Checkbox'
 import Counter from './Counter'
 import FormField from './FormField'
 import FormHeader from './FormHeader'
@@ -25,6 +26,7 @@ export {
     ActivityIndicator,
     AddressView,
     Cabinet,
+    Checkbox,
     Counter,
     FormField,
     FormHeader,

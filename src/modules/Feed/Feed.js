@@ -6,7 +6,7 @@ import {
     FeedList,
     FeedModal,
 } from './components'
-import { useFeed } from '.'
+import { useFeed } from './FeedContext'
 import { useSocket } from '@socket'
 import { deletePostWithId } from './utils'
 
@@ -75,11 +75,11 @@ export default () => {
     const renderThread = (items, index) => (
         <View
             key={`thread-${index}`}
-            style={{
-                borderWidth: 1,
-                borderColor: '#ccc',
-                borderRadius: 12,
-            }}
+            // style={{
+            //     borderWidth: 1,
+            //     borderColor: '#ccc',
+            //     borderRadius: 12,
+            // }}
         >
             <FeedList
                 posts={items}
@@ -110,7 +110,7 @@ export default () => {
             <FeedModal
                 modal={modal}
                 closeModal={closeModal}
-                />
+            />
                 
         </View>
     )

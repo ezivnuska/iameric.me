@@ -27,7 +27,7 @@ const FeedModal = ({ modal, closeModal }) => {
                 }}
             >
                 <Pressable
-                    onPress={() => closeModal()}
+                    onPress={closeModal}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -47,7 +47,7 @@ const FeedModal = ({ modal, closeModal }) => {
                         zIndex: 100,
                     }}
                 >
-                    <PostForm close={closeModal} />
+                    <PostForm />
 
                 </View>
             </View>

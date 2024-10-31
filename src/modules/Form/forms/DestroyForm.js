@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import {
+    FormField,
+    FormHeader,
     SimpleButton,
     ThemedText,
 } from '@components'
-import {
-    FormField,
-    FormHeader,
-} from './components'
 import {
     destroy,
     getFields,

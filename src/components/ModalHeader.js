@@ -21,6 +21,7 @@ const ModalHeader = ({ children, title, closeable = true, ...props }) => {
         <View
             style={[
                 {
+                    flexGrow: 0,
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',

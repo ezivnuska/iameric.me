@@ -10,7 +10,7 @@ import {
     Time,
 } from '@components'
 import { useApp } from '@app'
-import { useModal } from '@modal'
+// import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -20,7 +20,7 @@ export default ({ item, onDelete = null }) => {
     const { author, createdAt, text } = item
 
     const { user } = useApp()
-    const { setModal } = useModal()
+    // const { setModal } = useModal()
 
     const getProfileImagePathFromUser = data => {
         return data.profileImage
@@ -49,9 +49,9 @@ export default ({ item, onDelete = null }) => {
                     }}
                     style={{
                         flexGrow: 0,
-                        borderRadius: 12,
-                        overflow: 'hidden',
-                        borderWidth: 1,
+                        // borderRadius: 12,
+                        // overflow: 'hidden',
+                        // borderWidth: 1,
                     }}
                 >
                     <Image
@@ -87,11 +87,11 @@ export default ({ item, onDelete = null }) => {
                     }}
                 >
                     
-                    <IconButton
+                    {/* <IconButton
                         name='chatbox-ellipses-outline'
                         size={22}
                         onPress={() => setModal('FEEDBACK', item)}
-                    />
+                    /> */}
                 
                     {user._id === item.author._id && (
                         <IconButton
@@ -106,12 +106,18 @@ export default ({ item, onDelete = null }) => {
             </View>
             <View
                 style={{
-                    paddingLeft: 37,
-                    paddingTop: 2,
-                    paddingBottom: 7,
+                    marginLeft: 25,
+                    // paddingTop: 2,
+                    // paddingBottom: 7,
+                    paddingHorizontal: 10,
+                    backgroundColor: '#eee',
+                    borderRadius: 12,
+                    overflow: 'hidden',
                 }}
             >
-                <ThemedText style={{ lineHeight: 24 }}>{text}</ThemedText>
+                <ThemedText
+                    style={{ lineHeight: 30 }}
+                >{text}</ThemedText>
             </View>
         </View>
     )

@@ -153,6 +153,8 @@ const PostForm = () => {
         <View
             style={{
                 flex: 1,
+                paddingVertical: 10,
+                paddingHorizontal: 10,
                 backgroundColor: '#fff',
             }}
         >
@@ -161,9 +163,7 @@ const PostForm = () => {
                 close={closeModal}
             />
 
-            <View style={{ marginBottom: 10 }}>
-                {renderFields()}
-            </View>
+            {renderFields()}
 
             <SimpleButton
                 label={formLoading ? 'Sending' : 'Send'}

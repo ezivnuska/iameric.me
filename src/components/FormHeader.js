@@ -27,7 +27,10 @@ const FormHeader = ({ title, close = null }) => {
                 paddingBottom: 10,
             }}
         >
-            <ThemedText bold size={20}>
+            <ThemedText
+                bold
+                size={20}
+            >
                 {title}
             </ThemedText>
 

@@ -1,7 +1,7 @@
 import React from'react'
 import { View } from'react-native'
-import { FormHeader } from './components'
 import {
+    FormHeader,
     Heading,
     SimpleButton,
 } from '@components'

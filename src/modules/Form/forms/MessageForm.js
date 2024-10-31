@@ -1,7 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { FormField, FormHeader } from './components'
-import { SimpleButton } from '@components'
+import {
+    FormField,
+    FormHeader,
+    SimpleButton,
+} from '@components'
 import { useApp } from '@app'
 import { useForm } from '@form'
 import { useMail } from '@mail'

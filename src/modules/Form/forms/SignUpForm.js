@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { FormField } from './components'
 import {
+    FormField,
     SimpleButton,
     ThemedText,
 } from '@components'

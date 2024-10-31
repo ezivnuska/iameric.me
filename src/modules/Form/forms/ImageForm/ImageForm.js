@@ -1,9 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
-import { FormHeader } from '../components'
 import {
-    SimpleButton,
+    FormHeader,
     ImageClone,
+    SimpleButton,
 } from '@components'
 import {
     ImagePicker,

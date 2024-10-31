@@ -3,8 +3,8 @@ import { View } from 'react-native'
 import {
     FormField,
     FormHeader,
-} from './components'
-import { SimpleButton } from '@components'
+    SimpleButton,
+} from '@components'
 import { useForm } from '@form'
 import { useImages } from '@images'
 import { useModal } from '@modal'
