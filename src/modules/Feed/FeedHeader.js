@@ -4,32 +4,30 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import { useModal } from '@modal'
 
-export default () => {
-
-    const { setModal } = useModal()
+const FeedHeader = ({ setModal }) => {
     
     return (
         <View
             style={{
                 flexDirection: 'row',
-                // justifyContent: 'flex-start',
                 alignItems: 'center',
                 gap: 10,
                 marginBottom: 10,
             }}
         >
             <ThemedText bold size={20}>
-                Forum
+                Feed
             </ThemedText>
 
             <IconButton
                 name='add-circle-outline'
-                onPress={() => setModal('FEEDBACK')}
+                onPress={() => setModal('POST')}
                 size={22}
             />
 
         </View>
     )
 }
+
+export default FeedHeader

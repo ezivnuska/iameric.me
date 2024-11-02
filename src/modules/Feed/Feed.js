@@ -1,27 +1,27 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
 import {
     FeedHeader,
     FeedList,
     FeedModal,
-} from './components'
-import { useFeed } from './FeedContext'
+    useFeed,
+} from '.'
 import { useSocket } from '@socket'
 import { deletePostWithId } from './utils'
 
 export default () => {
 
     const {
-        modal,
-        closeModal,
-        setModal,
+        feedModal,
+        closeFeedModal,
+        setFeedModal,
         addPost,
         posts,
         deletePost,
         setFeedLoading,
     } = useFeed()
-    // const { closeModal } = useModal()
+    
     const { socket } = useSocket()
 
     const getThreadIds = () => {
@@ -55,52 +55,36 @@ export default () => {
         socket.on('deleted_post', deletePost)
     }, [])
 
-    // useEffect(() => {
-    //     if (posts) {
-    //         console.log('posts changed', posts)
-    //         // const threads = getSortedThreads()
-    //         // setSortedThreads(threads)
-    //     }
-    // }, [posts])
-
     const removePost = async id => {
         setFeedLoading(true)
         await deletePostWithId(id)
         setFeedLoading(false)
         socket.emit('post_deleted', id)
         deletePost(id)
-        closeModal()
+        closeFeedModal()
     }
 
-    const renderThread = (items, index) => (
-        <View
-            key={`thread-${index}`}
-            // style={{
-            //     borderWidth: 1,
-            //     borderColor: '#ccc',
-            //     borderRadius: 12,
-            // }}
-        >
-            <FeedList
-                posts={items}
-                onDelete={removePost}
-            />
+    const handleSubmit = data => {
+        addPost(data)
+        closeFeedModal()
+    }
+
+    const renderThreads = threads => (
+        <View style={{ gap: 7 }}>
+            {threads.map((items, index) => (
+                <FeedList
+                    key={`thread-${index}`}  
+                    posts={items}
+                    onDelete={removePost}
+                />
+            ))}
         </View>
     )
-
-    const renderThreads = threads => {
-        return (
-            <View style={{ gap: 7 }}>
-                {threads.map((thread, index) => renderThread(thread, index))}
-            </View>)
-    }
     
     return (
         <View style={{ flex: 1 }}>
 
-            <FeedHeader
-                setModal={setModal}
-            />
+            <FeedHeader setModal={setFeedModal} />
 
             {sortedThreads.length
                 ? renderThreads(sortedThreads)
@@ -108,8 +92,9 @@ export default () => {
             }
 
             <FeedModal
-                modal={modal}
-                closeModal={closeModal}
+                modal={feedModal}
+                onCancel={closeFeedModal}
+                onSubmit={handleSubmit}
             />
                 
         </View>

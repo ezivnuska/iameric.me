@@ -77,6 +77,7 @@ const FormField = ({ dirty, error, value, focused, label = null, multiline = fal
                             spellCheck={false}
                             style={{
                                 paddingHorizontal: 5,
+                                paddingVertical: 5,
                                 color: focused ? theme?.colors.inputTextFocused : theme?.colors.inputText,
                                 background: 'transparent',
                                 fontSize: 18,

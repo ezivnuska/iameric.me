@@ -32,6 +32,7 @@ export default ({ item, onDelete = null }) => {
     return (
         <View
             key={`entry-${item._id}`}
+            style={{ flexGrow: 0 }}
         >
 
             <View

@@ -20,17 +20,9 @@ import { getModifiedColor } from '@utils'
 export default ({ gameSize }) => {
 
 	const [level, setLevel] = useState(4)
-	const {
-		tiles,
-		setTiles,
-	} = usePlay()
 	
 	const [initialTiles, setInitialTiles] = useState(null)
 	const [gameStatus, setGameStatus] = useState('start')
-
-	// useEffect(() => {
-	// 	if (initialTiles) setTiles(initialTiles)
-	// }, [initialTiles])
 
 	const createInitialTiles = async () => {
 		const tileArray = []
@@ -50,7 +42,6 @@ export default ({ gameSize }) => {
 	}
 
 	useEffect(() => {
-		console.log('gameSize changed', gameSize)
 		if (gameSize) createInitialTiles()
 	}, [gameSize])
 

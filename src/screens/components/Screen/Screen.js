@@ -36,9 +36,6 @@ export default Screen = ({ title, children, secure = true, ...props }) => {
                 style={{
                     flexGrow: 1,
                     marginHorizontal: 5,
-                    // borderWidth: 1,
-                    // borderRadius: 6,
-                    // borderColor: '#aaa',
                 }}
                 contentContainerStyle={{
                     flex: 1,

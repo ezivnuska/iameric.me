@@ -1,11 +1,14 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { loadEntries } from '@utils/forum'
+import { loadEntries } from './utils'
 
 const initialState = {
     entries: [],
     error: null,
     forumLoaded: false,
     forumLoading: false,
+    forumModals: [],
+    setForumModal: () => {},
+    closeForumModal: () => {},
     addEntry: () => {},
     deleteEntry: () => {},
     setEntries: () => {},
@@ -57,13 +60,25 @@ export const ForumContextProvider = props => {
         setForumLoading: async payload => {
             dispatch({ type: 'SET_FORUM_LOADING', payload })
         },
+        closeForumModal: async () => {
+            dispatch({ type: 'CLOSE_FORUM_MODAL' })
+        },
+        setForumModal: async payload => {
+            dispatch({ type: 'SET_FORUM_MODAL', payload })
+        },
         updateEntry: async payload => {
             dispatch({ type: 'UPDATE_ENTRY', payload })
         },
     }), [state, dispatch])
 
     return  (
-        <ForumContext.Provider value={{ ...state, ...actions }}>
+        <ForumContext.Provider
+            value={{
+                ...state,
+                ...actions,
+                forumModal: state.forumModals[state.forumModals.length - 1],
+            }}
+        >
             {state.forumLoaded && props.children}
         </ForumContext.Provider>
     )
@@ -95,6 +110,21 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 entries: payload,
+            }
+            break
+        case 'SET_FORUM_MODAL':
+            return {
+                ...state,
+                forumModals: [
+                    ...state.forumModals,
+                    payload,
+                ],
+            }
+            break
+        case 'CLOSE_FORUM_MODAL':
+            return {
+                ...state,
+                forumModals: [],
             }
             break
         case 'UPDATE_ENTRY':

@@ -2,8 +2,9 @@ import React from 'react'
 import { FlatList } from 'react-native'
 import { FeedListItem } from './components'
 
-const FeedList = ({ posts, onDelete }) => (
+const FeedList = ({ posts, onDelete, ...props }) => (
     <FlatList
+        {...props}
         data={posts}
         listKey={() => 'posts'}
         keyExtractor={(item, index) => `${index}-post-${item._id}`}

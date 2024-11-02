@@ -6,14 +6,14 @@ import {
 import { PostForm } from './forms'
 import Modal from 'react-native-modal'
 
-const FeedModal = ({ modal, closeModal }) => {
+const FeedModal = ({ modal, onCancel, onSubmit }) => {
 
     return (
         <Modal
             isVisible={modal !== undefined}
             animationType='fade'
             transparent={true}
-            onRequestClose={() => closeModal()}
+            onRequestClose={onCancel}
             style={{
                 flex: 1,
                 margin: 0,
@@ -27,7 +27,7 @@ const FeedModal = ({ modal, closeModal }) => {
                 }}
             >
                 <Pressable
-                    onPress={closeModal}
+                    onPress={onCancel}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -47,7 +47,10 @@ const FeedModal = ({ modal, closeModal }) => {
                         zIndex: 100,
                     }}
                 >
-                    <PostForm />
+                    <PostForm
+                        onSubmit={onSubmit}
+                        onCancel={onCancel}
+                    />
 
                 </View>
             </View>

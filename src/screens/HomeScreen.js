@@ -90,11 +90,11 @@ export default props => {
             {...props}
             secure={false}
         >
-            <View style={{ flex: 1 }}>
-                <View style={{ flexGrow: 0 }}>
-                    <Intro />
-                </View>
+            <View style={{ flexGrow: 0 }}>
+                <Intro />
+            </View>
 
+            <View style={{ flexGrow: 1 }}>
                 <FatButtonNav
                     numCols={3}
                     onButtonPressed={navigateTo}

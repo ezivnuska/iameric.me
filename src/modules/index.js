@@ -11,9 +11,9 @@ import Map from './Map'
 import Modal from './Modal'
 import Notification from './Notification'
 import Play from './Play'
+import Resume from './Resume'
 import Simple from './Simple'
 import Socket from './Socket'
-import Work from './Work'
 
 export {
     Bipster,
@@ -28,7 +28,7 @@ export {
     Modal,
     Notification,
     Play,
+    Resume,
     Socket,
     Simple,
-    Work,
 }

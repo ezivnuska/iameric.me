@@ -9,8 +9,8 @@ const initialState = {
     feedLoading: false,
     addPost: () => {},
     deletePost: () => {},
-    closeModal: () => {},
-    setModal: () => {},
+    closeFeedModal: () => {},
+    setFeedModal: () => {},
     setPosts: () => {},
     setFeedLoading: () => {},
     updatePost: () => {},
@@ -35,16 +35,14 @@ export const FeedContextProvider = props => {
         const posts = await loadPosts()
         dispatch({ type: 'SET_FEED_LOADING', payload: false })
         
-        if (!posts) console.log('could not load posts')
+        if (!posts) console.log('could not load feed')
         else dispatch({ type: 'SET_POSTS', payload: posts })
 
         dispatch({ type: 'SET_FEED_LOADED' })
     }
     
     useEffect(() => {
-        // if (user) {
-            loadFeed()
-        // }
+        loadFeed()
     }, [])
 
     const actions = useMemo(() => ({
@@ -60,12 +58,12 @@ export const FeedContextProvider = props => {
         setFeedLoading: async payload => {
             dispatch({ type: 'SET_FEED_LOADING', payload })
         },
-        closeModal: () => {
-            dispatch({ type: 'CLOSE_MODAL' })
+        closeFeedModal: () => {
+            dispatch({ type: 'CLOSE_FEED_MODAL' })
         },
-        setModal: (type, data) => {
+        setFeedModal: (type, data) => {
             dispatch({
-                type: 'SET_MODAL',
+                type: 'SET_FEED_MODAL',
                 payload: { data, type },
             })
         },
@@ -79,7 +77,7 @@ export const FeedContextProvider = props => {
             value={{
                 ...state,
                 ...actions,
-                modal: state.modals[state.modals.length - 1],
+                feedModal: state.modals[state.modals.length - 1],
             }}
         >
             {state.feedLoaded && props.children}
@@ -108,7 +106,7 @@ const reducer = (state, action) => {
                 feedLoading: payload,
             }
             break
-        case 'SET_MODAL':
+        case 'SET_FEED_MODAL':
             return {
                 ...state,
                 modals: [
@@ -117,7 +115,7 @@ const reducer = (state, action) => {
                 ],
             }
             break
-        case 'CLOSE_MODAL':
+        case 'CLOSE_FEED_MODAL':
             return {
                 ...state,
                 modals: [],

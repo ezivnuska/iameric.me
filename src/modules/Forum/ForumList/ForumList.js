@@ -2,8 +2,9 @@ import React from 'react'
 import { FlatList } from 'react-native'
 import { ForumListItem } from './components'
 
-export default ({ entries, onDelete }) => (
+const ForumList = ({ entries, onDelete, ...props }) => (
     <FlatList
+        {...props}
         data={entries}
         listKey={() => 'entries'}
         keyExtractor={(item, index) => `${index}-entry-${item._id}`}
@@ -14,11 +15,15 @@ export default ({ entries, onDelete }) => (
             />
         )}
         showsVerticalScrollIndicator={false}
-        style={{ flex: 1 }}
+        // style={{ flex: 1 }}
         contentContainerStyle={{
             flex: 1,
+            justifyContent: 'flex-start',
             paddingHorizontal: 5,
+            // borderWidth: 1,
             // paddingBottom: 20,
         }}
     />
 )
+
+export default ForumList

@@ -4,21 +4,24 @@ import { ThemedText } from '@components'
 import {
     ForumHeader,
     ForumList,
-} from './components'
-import { useForum } from '@forum'
-import { useModal } from '@modal'
+    ForumModal,
+    useForum,
+} from '.'
 import { useSocket } from '@socket'
-import { deleteEntryWithId } from '@utils/forum'
+import { deleteEntryWithId } from './utils'
 
 export default () => {
 
     const {
+        forumModal,
+        closeForumModal,
+        setForumModal,
         addEntry,
         entries,
         deleteEntry,
         setForumLoading,
     } = useForum()
-    const { closeModal } = useModal()
+
     const { socket } = useSocket()
 
     const [ sortedThreads, setSortedThreads ] = useState([])
@@ -65,41 +68,48 @@ export default () => {
         setForumLoading(false)
         socket.emit('entry_deleted', id)
         deleteEntry(id)
-        closeModal()
+        closeForumModal()
     }
 
-    const renderThread = (items, index) => (
+    const handleSubmit = data => {
+        addEntry(data)
+        closeForumModal()
+    }
+
+    const renderThreads = threads => (
         <View
-            key={`thread-${index}`}
             style={{
-                borderWidth: 1,
-                borderColor: '#ccc',
-                borderRadius: 12,
+                flexGrow: 0,
+                // gap: 7,
             }}
         >
-            <ForumList
-                entries={items}
-                onDelete={removeEntry}
-            />
+            {threads.map((items, index) => (
+                <ForumList
+                    key={`thread-${index}`}
+                    entries={items}
+                    onDelete={removeEntry}
+                />
+            ))}
         </View>
     )
-
-    const renderThreads = threads => {
-        return (
-            <View style={{ gap: 7 }}>
-                {threads.map((thread, index) => renderThread(thread, index))}
-            </View>)
-    }
     
     return (
         <View style={{ flex: 1 }}>
 
-            <ForumHeader />
+            <ForumHeader setModal={setForumModal} />
 
-            {entries.length
-                ? renderThreads(sortedThreads)
-                : <ThemedText>No entries yet.</ThemedText>
-            }
+            <View style={{ flexGrow: 1 }}>
+                {entries.length
+                    ? renderThreads(sortedThreads)
+                    : <ThemedText>No entries yet.</ThemedText>
+                }
+            </View>
+
+            <ForumModal
+                modal={forumModal}
+                onCancel={closeForumModal}
+                onSubmit={handleSubmit}
+            />
                 
         </View>
     )
