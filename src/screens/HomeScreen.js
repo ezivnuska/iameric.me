@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, View } from 'react-native'
+import {
+    Pressable,
+    View,
+} from 'react-native'
 import { Screen } from './components'
-import { Heading, SimpleButton, ThemedText } from '@components'
+import {
+    FatButtonNav,
+    SimpleButton,
+    ThemedText,
+} from '@components'
 import { BipMap } from '@modules'
 import { useApp } from '@app'
 import { useModal } from '@modal'
@@ -69,29 +76,11 @@ export default props => {
         props.navigation.navigate('Home')
     }
 
-    const navigateToBips = () => {
+    const navigateTo = screen => {
         if (user) {
-            props.navigation.navigate('Bips', { screen: 'BipList' })
+            props.navigation.navigate(screen)
         } else {
-            setAuthRoute('Bips')
-            setModal('AUTH')
-        }
-    }
-
-    const navigateToFeed = () => {
-        if (user) {
-            props.navigation.navigate('Feed')
-        } else {
-            setAuthRoute('Feed')
-            setModal('AUTH')
-        }
-    }
-
-    const navigateToForum = () => {
-        if (user) {
-            props.navigation.navigate('Forum')
-        } else {
-            setAuthRoute('Forum')
+            setAuthRoute(screen)
             setModal('AUTH')
         }
     }
@@ -106,47 +95,10 @@ export default props => {
                     <Intro />
                 </View>
 
-                <View
-                    style={{
-                        flexGrow: 1,
-                        gap: 10,
-                    }}
-                >
-                    
-                    <SimpleButton
-                        label='Bipster'
-                        onPress={navigateToBips}
-                    />
-
-                    <SimpleButton
-                        label='Work'
-                        onPress={() => props.navigation.navigate('About', { screen: 'Work' })}
-                    />
-
-                    <SimpleButton
-                        label='Play'
-                        onPress={() => props.navigation.navigate('About', { screen: 'Play' })}
-                    />
-
-                    <SimpleButton
-                        label='Simple'
-                        onPress={() => props.navigation.navigate('Simple')}
-                    />
-
-                    <SimpleButton
-                        label='Forum'
-                        onPress={navigateToForum}
-                    />
-
-                    <SimpleButton
-                        label='Feed'
-                        onPress={navigateToFeed}
-                    />
-
-                </View>
-                {/* <View style={{ flex: 1 }}>
-                    <BipMap />
-                </View> */}
+                <FatButtonNav
+                    numCols={3}
+                    onButtonPressed={navigateTo}
+                />
             </View>
 
         </Screen>

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import {
     Image,
     Pressable,
@@ -12,6 +12,7 @@ import {
 import { useApp } from '@app'
 // import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
+// import { parser } from 'url-meta-scraper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -21,6 +22,23 @@ export default ({ item, onDelete = null }) => {
 
     const { user } = useApp()
     // const { setModal } = useModal()
+
+    // const fetchMeta = async () => {
+    //     // try {
+    //         // const response = await fetch('https://www.npmjs.com/package/url-metadata')
+    //         const url = 'https://www.npmjs.com/package/url-metadata'
+    //         // console.log('res', response)
+    //         const metadata = await parser(url)
+    //         // const metadata = await urlMetadata(url)
+    //         console.log('meta', metadata)
+    //         return metadata
+    //     // } catch (error) {
+    //     //     console.error('error', error)
+    //     // }
+    // }
+    // useEffect(() => {
+    //     fetchMeta()
+    // }, [])
 
     const getProfileImagePathFromUser = data => {
         return data.profileImage

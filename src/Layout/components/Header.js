@@ -54,9 +54,7 @@ export default ({ route }) => {
             <View style={{ flexGrow: 0 }}>
 
                 <Pressable
-                    onPress={() => {
-                        navigate(isCurrentRoute('Home') ? 'About' : 'Home')
-                    }}
+                    onPress={() => navigate('Home')}
                 >
 
                     <ThemedText bold style={{ fontSize: 24 }}>

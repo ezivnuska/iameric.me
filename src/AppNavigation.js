@@ -219,10 +219,17 @@ const AppStackScreen = () => {
             />
             
             <AppStack.Screen
-                name='About'
-                children={props => <AboutStackScreen {...props} />}
+                name='Work'
+                children={props => <WorkScreen {...props} />}
                 // component={AboutStackScreen}
-                options={{ title: 'About' }}
+                options={{ title: 'Work' }}
+            />
+
+            <AppStack.Screen
+                name='Play'
+                children={props => <PlayScreen {...props} />}
+                // component={AboutStackScreen}
+                options={{ title: 'Play' }}
             />
 
             <AppStack.Screen

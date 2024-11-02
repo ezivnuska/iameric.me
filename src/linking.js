@@ -28,16 +28,11 @@ const linking = {
             Mail: {
                 path: 'mail',
             },
-            About: {
-                path: 'about',
-                screens: {
-                    Work: {
-                        path: 'work',
-                    },
-                    Play: {
-                        path: 'play',
-                    },
-                },
+            Work: {
+                path: 'work',
+            },
+            Play: {
+                path: 'play',
             },
             Bips: {
                 path: 'bips',

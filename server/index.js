@@ -19,7 +19,12 @@ const sessionMiddleware = session({
 })
 
 const corsOptions = {
+	// origin: (origin, callback) => {
+	// 	// custom logic to determine the allowed origin
+	// 	callback(null, true);
+	//   },
 	origin: [
+		'*',
 		// 'wss://iameric.me',
 		'http://localhost:3000',
 		'http://localhost:4000',
@@ -28,10 +33,12 @@ const corsOptions = {
 	],
 	credentials: true,
 	methods: ['GET', 'POST'],
+	// allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
 }
 
 // Enable CORS
-app.use(cors(corsOptions))
+app.use(cors())
+// app.use(cors(corsOptions))
 
 // Set up express-session
 app.use(sessionMiddleware)

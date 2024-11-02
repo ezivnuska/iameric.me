@@ -4,6 +4,7 @@ import AddressView from './AddressView'
 import Cabinet from './Cabinet'
 import Checkbox from './Checkbox'
 import Counter from './Counter'
+import FatButtonNav from './FatButtonNav'
 import FormField from './FormField'
 import FormHeader from './FormHeader'
 import Heading from './Heading'
@@ -28,6 +29,7 @@ export {
     Cabinet,
     Checkbox,
     Counter,
+    FatButtonNav,
     FormField,
     FormHeader,
     Heading,

@@ -16,14 +16,9 @@ export default props => (
         <View style={{ flex: 1 }}>
 
             <Heading
-                title='About'
-                onBack={() => props.navigation.navigate('Bips', { screen: 'BipList' })}
-            >
-                <AboutNav
-                    type={'work'}
-                    onPress={() => props.navigation.navigate('About', { screen: 'Play' })}
-                />
-            </Heading>
+                title='Work'
+                // onBack={() => props.navigation.navigate('Bips', { screen: 'BipList' })}
+            />
 
             <Work />
 
