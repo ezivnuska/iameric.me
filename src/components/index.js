@@ -5,8 +5,9 @@ import Cabinet from './Cabinet'
 import Checkbox from './Checkbox'
 import Counter from './Counter'
 import FatButtonNav from './FatButtonNav'
-import FormField from './FormField'
-import FormHeader from './FormHeader'
+import Form from './Form'
+import FormField from './Form/components/FormField'
+import FormHeader from './Form/components/FormHeader'
 import Heading from './Heading'
 import IconButton from './IconButton'
 import ImageClone from './ImageClone'
@@ -30,6 +31,7 @@ export {
     Checkbox,
     Counter,
     FatButtonNav,
+    Form,
     FormField,
     FormHeader,
     Heading,

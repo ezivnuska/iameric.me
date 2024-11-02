@@ -7,9 +7,6 @@ import {
 } from '@components'
 import { useApp } from '@app'
 import { useForm } from '@form'
-import { useForum } from '@forum'
-import { useModal } from '@modal'
-import { useSocket } from '@socket'
 import {
     createEntry,
     getFields,
@@ -24,7 +21,6 @@ const FeedbackForm = ({ onCancel, onSubmit, data = null }) => {
     const initialState = { text: '' }
 
     const { user } = useApp()
-    const { socket } = useSocket()
 
     const {
         clearForm,
@@ -45,8 +41,6 @@ const FeedbackForm = ({ onCancel, onSubmit, data = null }) => {
         setFormReady,
         setFormValues,
     } = useForm()
-
-    const { addEntry } = useForum()
 
     const [initialValues, setInitialValues] = useState(null)
 
@@ -125,14 +119,11 @@ const FeedbackForm = ({ onCancel, onSubmit, data = null }) => {
         
         setFormLoading(true)
         const entry = await createEntry(newEntry)
-        console.log('entry created', entry)
         setFormLoading(false)
 
         if (!entry) console.log('Error saving entry')
         else {
             clearForm()
-            // onCancel()
-            socket.emit('new_entry', entry)
             onSubmit(entry)
         }
     }

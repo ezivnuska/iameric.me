@@ -3,10 +3,20 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { FeedbackForm } from './forms'
+// import { FormContextProvider } from '@modules/Form'
+import { Form } from '@components'
 import Modal from 'react-native-modal'
 
 const ForumModal = ({ modal, onCancel, onSubmit }) => {
+
+    const fields = [
+        {
+            label: 'Give Feedback',
+            name: 'text',
+            placeholder: 'tell us where it hurts...',
+            multiline: true,
+        },
+    ]
 
     return (
         <Modal
@@ -47,10 +57,21 @@ const ForumModal = ({ modal, onCancel, onSubmit }) => {
                         zIndex: 100,
                     }}
                 >
-                    <FeedbackForm
+                    {/* <FeedbackForm
+                        fields={fields}
                         onCancel={onCancel}
                         onSubmit={onSubmit}
-                    />
+                    /> */}
+
+                    {/* <FormContextProvider> */}
+                        <Form
+                            title='Give Feedback'
+                            fields={fields}
+                            onCancel={onCancel}
+                            onSubmit={onSubmit}
+                            // submitForm={submitForm}
+                        />
+                    {/* </FormContextProvider> */}
 
                 </View>
             </View>

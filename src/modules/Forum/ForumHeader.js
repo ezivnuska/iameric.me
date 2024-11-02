@@ -21,7 +21,7 @@ const ForumHeader = ({ setModal }) => (
 
         <IconButton
             name='add-circle-outline'
-            onPress={() => setModal('FEEDBACK')}
+            onPress={setModal}
             size={22}
         />
 

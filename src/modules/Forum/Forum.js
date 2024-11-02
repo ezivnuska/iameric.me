@@ -8,7 +8,10 @@ import {
     useForum,
 } from '.'
 import { useSocket } from '@socket'
-import { deleteEntryWithId } from './utils'
+import {
+    createEntry,
+    deleteEntryWithId,
+} from './utils'
 
 export default () => {
 
@@ -71,9 +74,12 @@ export default () => {
         closeForumModal()
     }
 
-    const handleSubmit = data => {
-        addEntry(data)
+    const handleSubmit = async data => {
+        const entry = await createEntry(data)
+        addEntry(entry)
+        socket.emit('new_entry', entry)
         closeForumModal()
+        return entry
     }
 
     const renderThreads = threads => (
@@ -92,11 +98,17 @@ export default () => {
             ))}
         </View>
     )
+
+    // const submitForm = async data => {
+    //     const entry = await createEntry(data)
+    //     console.log('entry created', entry)
+    //     addEntry(entry)
+    // }
     
     return (
         <View style={{ flex: 1 }}>
 
-            <ForumHeader setModal={setForumModal} />
+            <ForumHeader setModal={() => setForumModal('FEEDBACK')} />
 
             <View style={{ flexGrow: 1 }}>
                 {entries.length
@@ -109,6 +121,7 @@ export default () => {
                 modal={forumModal}
                 onCancel={closeForumModal}
                 onSubmit={handleSubmit}
+                // submitForm={submitForm}
             />
                 
         </View>

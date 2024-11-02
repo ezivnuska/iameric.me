@@ -88,7 +88,6 @@ const reducer = (state, action) => {
     const { payload, type } = action
     switch(type) {
         case 'ADD_ENTRY':
-            console.log('adding new entry in context', payload)
             return {
                 ...state,
                 entries: [ payload, ...state.entries ],

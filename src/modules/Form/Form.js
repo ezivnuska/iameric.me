@@ -1,36 +1,172 @@
-import React from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import {
-    AuthForm,
-    DestroyForm,
-    FeedbackForm,
-    // ImageDisplay,
-    ImageForm,
-    MessageForm,
-} from './forms'
+    FormField,
+    FormHeader,
+    SimpleButton,
+} from '@components'
+import { useApp } from '@app'
+import { useForm } from '@form'
+import {
+    // createPost,
+    getFields,
+    validateFields,
+} from './utils'
 
-export default ({ type, data = null }) => {
+const Form = ({ fields, onSubmit, onCancel }) => {
 
-    const renderForm = () => {
-        switch(type) {
-            case 'AUTH': return <AuthForm />; break
-            case 'DESTROY': return <DestroyForm />; break
-            case 'FEEDBACK': return <FeedbackForm />; break
-            case 'MESSAGE': return <MessageForm data={data} />; break
-            case 'IMAGE': return <ImageForm data={data} />; break
-            // case 'SHOWCASE': return <ImageDisplay data={data} />; break
-            default: throw new Error('No form type recognized')
+    const initialState = { text: '' }
+
+    const { user } = useApp()
+
+    const {
+        clearForm,
+        clearFormError,
+        focused,
+        formError,
+        formFields,
+        formLoading,
+        formReady,
+        getDirty,
+        getError,
+        getFocus,
+        initForm,
+        markDirty,
+        setFocus,
+        setFormError,
+        setFormLoading,
+        setFormReady,
+        setFormValues,
+    } = useForm()
+
+    const [initialValues, setInitialValues] = useState(null)
+
+    // const values = useMemo(() => formFields, [formFields])
+
+    useEffect(() => {
+        const init = async () => {
+            const fields = getFields(initialState)
+            setInitialValues(fields)
+        }
+        init()
+    }, [])
+    
+    useEffect(() => {
+        if (initialValues) initForm(initialValues)
+    }, [initialValues])
+
+    useEffect(() => {
+        if (formReady) validateFields(formFields, validate)
+    }, [text])
+
+    // unique
+    const validate = name => {
+        let isValid = true
+        switch (name) {
+            case 'text':
+                if (!text.length) {
+                    setFormError({ name, message: 'Form invalid.'})
+                    isValid = false
+                }
+                break
+            default:
+                // console.log('No field to validate')
+        }
+
+        if (isValid && getError(name)) {
+            clearFormError()
+            setFocus(0)
+        } else {
+            setFocus(name)
+        }
+
+        return isValid
+    }
+
+    const onChange = (key, value) => {
+        if (!getDirty(key)) markDirty(key)
+        setFormValues({ ...formFields, [key]: value })
+    }
+    
+    const onEnter = e => {
+		if (e.code === 'Enter') submitFormData()
+	}
+
+    const gatherFormData = () =>  {
+        const { _id } = user
+        return {
+            author: _id,
+            text,
         }
     }
 
-    return (
+    const submitFormData = async () => {
+        
+        if (formError) {
+			console.log(`Error in form field ${formError.name}: ${formError.message}`)
+            return
+		}
+
+        const data = gatherFormData()
+        
+        setFormLoading(true)
+        console.log('do form stuff with new data...', data)
+        const response = await createPost(data)
+        setFormLoading(false)
+        
+        if (!response) console.log('Error saving data')
+        else {
+            clearForm()
+            onSubmit(response)
+        }
+    }
+
+    const renderFields = fields => fields.map((field, index) => {
+        console.log('initi', initialValues)
+        const { label, multiline, name, placeholder } = field
+        return (
+            <FormField
+                key={`formfield-${index}-${name}`}
+                label={label}
+                // value={values[name] || ''}
+                error={getError(name)}
+                placeholder={placeholder}
+                textContentType='default'
+                keyboardType='default'
+                autoCapitalize='sentences'
+                // onChangeText={value => onChange(name, value)}
+                autoFocus={getFocus(name)}
+                onKeyPress={onEnter}
+                dirty={getDirty(name)}
+                multiline={multiline}
+            />
+        )
+    })
+
+    return focused !== null ? (
         <View
             style={{
-                paddingBottom: 10,
+                flex: 1,
+                paddingVertical: 10,
                 paddingHorizontal: 10,
+                backgroundColor: '#fff',
             }}
         >
-            {renderForm()}
+            <FormHeader
+                title='New Post'
+                close={onCancel}
+            />
+
+            {initialValues && renderFields(fields)}
+
+            <SimpleButton
+                label={formLoading ? 'Sending' : 'Send'}
+                disabled={formLoading || formError}
+                onPress={submitFormData}
+            />
+
         </View>
-    )
+    ) : null
 }
+
+export default Form

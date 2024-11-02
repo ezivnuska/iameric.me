@@ -29,7 +29,7 @@ export default () => {
             }}
         >
             <Pressable
-                onPress={() => setModal('@socketS')}
+                onPress={() => setModal('SOCKETS')}
                 style={{ flexGrow: 0 }}
             >
                 <ThemedText color='#777'>

@@ -1,21 +1,22 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import {
     FormField,
     FormHeader,
-    SimpleButton,
-} from '@components'
+} from './components'
+import { SimpleButton } from '@components'
 import { useApp } from '@app'
-import { useForm } from '@form'
 import {
-    createPost,
+    // FormContextProvider,
+    useForm,
+} from '@form'
+import {
+    // createPost,
     getFields,
     validateFields,
 } from './utils'
 
-const PostForm = ({ onSubmit, onCancel }) => {
-
-    const initialState = { text: '' }
+const Form = ({ fields, title, onSubmit, onCancel, submitForm }) => {
 
     const { user } = useApp()
 
@@ -32,6 +33,7 @@ const PostForm = ({ onSubmit, onCancel }) => {
         getFocus,
         initForm,
         markDirty,
+        resetForm,
         setFocus,
         setFormError,
         setFormLoading,
@@ -39,50 +41,32 @@ const PostForm = ({ onSubmit, onCancel }) => {
         setFormValues,
     } = useForm()
 
-    const [initialValues, setInitialValues] = useState(null)
-
-    const {
-        text,
-    } = useMemo(() => formFields, [formFields])
+    const initFields = () => {
+        let state = {}
+        fields.map(field => {
+            state[field.name] = field.value || ''
+        })
+        const fieldValues = getFields(state)
+        initForm(fieldValues)
+    }
 
     useEffect(() => {
-        const init = async () => {
-            const fields = getFields(initialState)
-            setInitialValues(fields)
-        }
-        init()
+        initFields()
+
+        return () => resetForm()
     }, [])
-    
-    useEffect(() => {
-        if (initialValues) initForm(initialValues)
-    }, [initialValues])
 
     useEffect(() => {
-        if (formReady) validateFields(formFields, validate)
-    }, [text])
-
-    const validate = name => {
-        let isValid = true
-        switch (name) {
-            case 'text':
-                if (!text.length) {
-                    setFormError({ name, message: 'Form invalid.'})
-                    isValid = false
-                }
-                break
-            default:
-                // console.log('No field to validate')
-        }
-
-        if (isValid && getError(name)) {
+        let invalidField = validateFields(formFields)
+        if (invalidField) {
+            const { name, index } = invalidField
+            setFormError({ name, message: `${name} field invalid.`})
+            setFocus(index)
+        } else {
             clearFormError()
             setFocus(0)
-        } else {
-            setFocus(name)
         }
-
-        return isValid
-    }
+    }, [formFields])
 
     const onChange = (key, value) => {
         if (!getDirty(key)) markDirty(key)
@@ -101,41 +85,39 @@ const PostForm = ({ onSubmit, onCancel }) => {
 		}
 
         const { _id } = user
-
-        let newPost = {
+        const data = {
             author: _id,
-            text,
+            ...formFields,
         }
         
         setFormLoading(true)
-        const post = await createPost(newPost)
+        const response = await onSubmit(data)
         setFormLoading(false)
         
-        if (!post) console.log('Error saving post')
-        else {
-            clearForm()
-            onSubmit(post)
-        }
+        if (!response) console.log('Error saving data')
+        else resetForm()
     }
 
-    const renderFields = () => (
-        <>
+    const renderFields = () => fields.map((field, index) => {
+        const { label, multiline, name, placeholder } = field
+        return (
             <FormField
-                label='Add Post'
-                value={text}
-                error={getError('text')}
-                placeholder='say something...'
+                key={`formfield-${index}-${name}`}
+                label={label}
+                value={formFields[name] || ''}
+                error={getError(name)}
+                placeholder={placeholder}
                 textContentType='default'
                 keyboardType='default'
                 autoCapitalize='sentences'
-                onChangeText={value => onChange('text', value)}
-                autoFocus={getFocus('text')}
+                onChange={value => onChange(name, value)}
+                autoFocus={getFocus(name)}
                 onKeyPress={onEnter}
-                dirty={getDirty('text')}
-                multiline
+                dirty={getDirty(name)}
+                multiline={multiline}
             />
-        </>
-    )
+        )
+    })
 
     return focused !== null ? (
         <View
@@ -147,11 +129,11 @@ const PostForm = ({ onSubmit, onCancel }) => {
             }}
         >
             <FormHeader
-                title='New Post'
+                title={title}
                 close={onCancel}
             />
 
-            {renderFields()}
+            {formReady && renderFields(formFields)}
 
             <SimpleButton
                 label={formLoading ? 'Sending' : 'Send'}
@@ -163,4 +145,4 @@ const PostForm = ({ onSubmit, onCancel }) => {
     ) : null
 }
 
-export default PostForm
+export default Form

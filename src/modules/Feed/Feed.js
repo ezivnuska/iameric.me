@@ -8,7 +8,10 @@ import {
     useFeed,
 } from '.'
 import { useSocket } from '@socket'
-import { deletePostWithId } from './utils'
+import {
+    createPost,
+    deletePostWithId,
+} from './utils'
 
 export default () => {
 
@@ -64,9 +67,12 @@ export default () => {
         closeFeedModal()
     }
 
-    const handleSubmit = data => {
-        addPost(data)
+    const handleSubmit = async data => {
+        const post = await createPost(data)
+        addPost(post)
+        socket.emit('new_post', post)
         closeFeedModal()
+        return post
     }
 
     const renderThreads = threads => (

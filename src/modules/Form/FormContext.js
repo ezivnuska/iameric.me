@@ -21,6 +21,7 @@ const initialState = {
     getFocus: () => {},
     initForm: () => {},
     markDirty: () => {},
+    resetForm: () => {},
     setFocus: () => {},
     setFormError: () => {},
     setFormLoading: () => {},
@@ -55,7 +56,9 @@ export const FormContextProvider = props => {
             } catch (e) {
                 console.log('Error:', e)
             }
+            dispatch({ type: 'SET_FORM_LOADED' })
         }
+        
         initState()
     }, [])
 
@@ -88,6 +91,10 @@ export const FormContextProvider = props => {
         markDirty: async payload => {
             dispatch({ type: 'MARK_DIRTY', payload })
         },
+        resetForm: () => {
+            // console.log('RESETTING FORM')
+            dispatch({ type: 'RESET_FORM' })
+        },
         setFocus: async payload => {
             dispatch({ type: 'SET_FOCUS', payload })
         },
@@ -101,13 +108,14 @@ export const FormContextProvider = props => {
             dispatch({ type: 'SET_FORM_READY', payload })
         },
         setFormValues: async payload => {
+            // console.log('setting form values', payload)
             dispatch({ type: 'SET_FORM_VALUES', payload })
         },
     }), [state, dispatch])
     
     return (
         <FormContext.Provider value={{ ...state, ...actions }}>
-            {props.children}
+            {state.formLoaded && props.children}
         </FormContext.Provider>
     )
 }
@@ -116,10 +124,26 @@ const reducer = (state, action) => {
     const { payload, type } = action
 
     switch(type) {
+        case 'SET_FORM_LOADED':
+            return {
+                ...state,
+                formLoaded: true,
+            }
+            break
         case 'CLEAR_FORM':
             return {
                 ...state,
                 focused: null,
+                formFields: { email: state.formFields.email },
+                formReady: false,
+                dirtyFields: [],
+            }
+            break
+        case 'RESET_FORM':
+            return {
+                ...state,
+                focused: 0,
+                formError: null,
                 formFields: { email: state.formFields.email },
                 formReady: false,
                 dirtyFields: [],
