@@ -110,7 +110,6 @@ export default () => {
                 modal={forumModal}
                 onCancel={closeForumModal}
                 onSubmit={handleSubmit}
-                // submitForm={submitForm}
             />
                 
         </View>

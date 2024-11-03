@@ -40,7 +40,7 @@ const FormFactory = ({ type, data }) => {
             case 'BIP': return <BipDetail data={data} />; break
             // case 'DESTROY': return <DestroyForm />; break
             // case 'POST': return <PostForm data={data} />; break
-            case 'FEEDBACK': return <FeedbackForm data={data} />; break
+            // case 'FEEDBACK': return <FeedbackForm data={data} />; break
             case 'IMAGE': return <ImageForm data={data} />; break
             case 'MESSAGE': return <MessageForm data={data} />; break
             case 'SETTINGS': return <SettingsForm />; break

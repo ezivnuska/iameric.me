@@ -146,7 +146,7 @@ const Form = ({ fields, onSubmit, onCancel }) => {
     return focused !== null ? (
         <View
             style={{
-                flex: 1,
+                flexGrow: 1,
                 paddingVertical: 10,
                 paddingHorizontal: 10,
                 backgroundColor: '#fff',

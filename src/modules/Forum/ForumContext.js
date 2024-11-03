@@ -63,8 +63,11 @@ export const ForumContextProvider = props => {
         closeForumModal: async () => {
             dispatch({ type: 'CLOSE_FORUM_MODAL' })
         },
-        setForumModal: async payload => {
-            dispatch({ type: 'SET_FORUM_MODAL', payload })
+        setForumModal: (type, data) => {
+            dispatch({
+                type: 'SET_FORUM_MODAL',
+                payload: { data, type },
+            })
         },
         updateEntry: async payload => {
             dispatch({ type: 'UPDATE_ENTRY', payload })

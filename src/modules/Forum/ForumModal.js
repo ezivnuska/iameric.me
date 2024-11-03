@@ -3,11 +3,13 @@ import {
     Pressable,
     View,
 } from 'react-native'
-// import { FormContextProvider } from '@modules/Form'
-import { Form } from '@components'
+import { Form, ThemedText } from '@components'
 import Modal from 'react-native-modal'
+import { useForum } from '@forum'
 
-const ForumModal = ({ modal, onCancel, onSubmit }) => {
+const ForumModal = ({ onCancel, onSubmit }) => {
+
+    const { forumModal } = useForum()
 
     const fields = [
         {
@@ -20,7 +22,7 @@ const ForumModal = ({ modal, onCancel, onSubmit }) => {
 
     return (
         <Modal
-            isVisible={modal !== undefined}
+            isVisible={forumModal !== undefined}
             animationType='fade'
             transparent={true}
             onRequestClose={onCancel}
@@ -57,21 +59,36 @@ const ForumModal = ({ modal, onCancel, onSubmit }) => {
                         zIndex: 100,
                     }}
                 >
-                    {/* <FeedbackForm
-                        fields={fields}
-                        onCancel={onCancel}
-                        onSubmit={onSubmit}
-                    /> */}
 
-                    {/* <FormContextProvider> */}
+                    {(forumModal && forumModal.data) && (
+                        <View
+                            style={{
+                                flexGrow: 0,
+                                flexBasis: 'auto',
+                                borderWidth: 1,
+                                paddingHorizontal: 10,
+                                paddingVertical: 3,
+                                backgroundColor: '#0cf',
+                            }}
+                        >
+                            <ThemedText>{forumModal.data.text}</ThemedText>
+                        </View>
+                    )}
+                    
+                    <View
+                        style={{
+                            flexGrow: 1,
+                            flexBasis: 'auto',
+                            borderWidth: 1,
+                        }}
+                    >
                         <Form
-                            title='Give Feedback'
+                            title={(forumModal && forumModal.data) ? 'Respond' : 'Give Feedback'}
                             fields={fields}
                             onCancel={onCancel}
                             onSubmit={onSubmit}
-                            // submitForm={submitForm}
                         />
-                    {/* </FormContextProvider> */}
+                    </View>
 
                 </View>
             </View>

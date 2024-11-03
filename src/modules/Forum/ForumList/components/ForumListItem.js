@@ -10,7 +10,7 @@ import {
     Time,
 } from '@components'
 import { useApp } from '@app'
-import { useModal } from '@modal'
+import { useForum } from '@forum'
 import { navigate } from '@utils/navigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -20,7 +20,7 @@ export default ({ item, onDelete = null }) => {
     const { author, createdAt, text } = item
 
     const { user } = useApp()
-    const { setModal } = useModal()
+    const { setForumModal } = useForum()
 
     const getProfileImagePathFromUser = data => {
         return data.profileImage
@@ -91,7 +91,7 @@ export default ({ item, onDelete = null }) => {
                     <IconButton
                         name='chatbox-ellipses-outline'
                         size={22}
-                        onPress={() => setModal('FEEDBACK', item)}
+                        onPress={() => setForumModal('FEEDBACK', item)}
                     />
                 
                     {user._id === item.author._id && (
