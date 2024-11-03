@@ -9,7 +9,7 @@ import {
 import {
     AuthForm,
     CaptionForm,
-    DestroyForm,
+    // DestroyForm,
     FeedbackForm,
     ImageForm,
     MessageForm,
@@ -29,7 +29,7 @@ const FormFactory = ({ type, data }) => {
 
     // const { dims } = useApp()
     // const { modal } = useModal()
-    console.log('type FORM', type)
+    // console.log('type FORM', type)
     
     const renderFormContent = () => {
         // const { type, data } = modal
@@ -38,7 +38,7 @@ const FormFactory = ({ type, data }) => {
             case 'CAPTION': return <CaptionForm data={data} />; break
             case 'CAPTURE': return <CameraView />; break
             case 'BIP': return <BipDetail data={data} />; break
-            case 'DESTROY': return <DestroyForm />; break
+            // case 'DESTROY': return <DestroyForm />; break
             // case 'POST': return <PostForm data={data} />; break
             case 'FEEDBACK': return <FeedbackForm data={data} />; break
             case 'IMAGE': return <ImageForm data={data} />; break

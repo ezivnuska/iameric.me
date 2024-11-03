@@ -3,11 +3,14 @@ import { Screen } from './components'
 import { Forum } from '@modules'
 import { ForumContextProvider } from '@forum'
     
-export default props => (
-    <Screen {...props}>
+const ForumScreen = props => (
+    <Screen secure {...props}>
+        
         <ForumContextProvider>
             <Forum />
         </ForumContextProvider>
         
     </Screen>
 )
+
+export default ForumScreen

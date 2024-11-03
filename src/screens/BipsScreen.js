@@ -76,7 +76,7 @@ export default props => {
     return (
         <Screen
             {...props}
-            secure={true}
+            secure
         >
             <View style={{ flex: 1 }}>
                 <Heading

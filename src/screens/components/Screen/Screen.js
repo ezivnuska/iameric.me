@@ -7,7 +7,7 @@ import { Footer } from './components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
 
-export default Screen = ({ title, children, secure = true, ...props }) => {
+export default Screen = ({ title, children, secure = false, ...props }) => {
 
     const { user } = useApp()
     const { clearModal } = useModal()
@@ -28,7 +28,12 @@ export default Screen = ({ title, children, secure = true, ...props }) => {
         if (!authorized) navigateHome()
     }, [user])
 
-    return authorized ? (
+    if (!authorized) {
+        console.log('not authorized')
+        return <View />
+    }
+
+    return (
         <View style={{ flex: 1 }}>
 
             <ScrollView
@@ -51,5 +56,5 @@ export default Screen = ({ title, children, secure = true, ...props }) => {
             </View>
 
         </View>
-    ) : null
+    )
 }

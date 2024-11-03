@@ -37,14 +37,13 @@ const checkForError = (name, value) => {
 const validateFields = fields => {
     let index = 0
     let validFields = {}
-    console.log('fields', fields)
     const keys = Object.keys(fields)
-    console.log('keys from fields', keys)
     let error = null
-    while (index < keys.length) {
-        const key = keys[index]
 
-        console.log('field', key, fields[key])
+    while (index < keys.length) {
+        
+        const key = keys[index]
+        
         // this is dirty. Fix it.
         if (key === 'confirmPassword' && validFields['password'] !== fields[key]) {
             error = {

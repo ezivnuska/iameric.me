@@ -10,21 +10,12 @@ export default props => {
     const { user } = useApp()
     
     return (
-        <Screen {...props}>
+        <Screen secure {...props}>
 
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'space-between',
-                }}
-            >
-
-                <UserHeader username={props.route.params?.username || user?.username} {...props} />
-                    
-                <View style={{ flexGrow: 1 }}>
-                    <Images />
-                </View>
-
+            <UserHeader username={props.route.params?.username || user?.username} {...props} />
+                
+            <View style={{ flexGrow: 1 }}>
+                <Images />
             </View>
 
         </Screen>

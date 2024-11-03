@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import {
     Image,
     Pressable,
@@ -12,12 +12,13 @@ import {
 import { useApp } from '@app'
 // import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
+// import { loadContactById } from '@utils/contacts'
 // import { parser } from 'url-meta-scraper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item, onDelete = null }) => {
-    
+    console.log('item', item)
     const { author, createdAt, text } = item
 
     const { user } = useApp()
@@ -47,6 +48,8 @@ export default ({ item, onDelete = null }) => {
 
     const imagePath = useMemo(() => getProfileImagePathFromUser(author), [author])
 
+    if (!author) return <View />
+    
     return (
         <View
             key={`post-${item._id}`}
@@ -66,33 +69,31 @@ export default ({ item, onDelete = null }) => {
                         navigate('Contact', { screen: 'Details', params: { username: author.username } })
                     }}
                     style={{
-                        flexGrow: 0,
-                        // borderRadius: 12,
-                        // overflow: 'hidden',
-                        // borderWidth: 1,
-                    }}
-                >
-                    <Image
-                        source={imagePath}
-                        style={{
-                            width: 24,
-                            height: 24,
-                        }}
-                    />
-                </Pressable>
-
-                <View
-                    style={{
                         flexDirection: 'row',
-                        // justifyContent: 'space-between',
-                        flexGrow: 1,
-                        gap: 10,
+                        flexGrow: 0,
                     }}
                 >
-                    <ThemedText>{author.username}</ThemedText>
-                    <Time time={createdAt} />
-                </View>
+                    {imagePath && (
+                        <Image
+                            source={imagePath}
+                            style={{
+                                width: 24,
+                                height: 24,
+                            }}
+                        />
+                    )}
 
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            flexGrow: 1,
+                            gap: 10,
+                        }}
+                    >
+                        <ThemedText>{author.username}</ThemedText>
+                        <Time time={createdAt} />
+                    </View>
+                </Pressable>
 
                 <View
                     style={{
@@ -105,13 +106,7 @@ export default ({ item, onDelete = null }) => {
                     }}
                 >
                     
-                    {/* <IconButton
-                        name='chatbox-ellipses-outline'
-                        size={22}
-                        onPress={() => setModal('FEEDBACK', item)}
-                    /> */}
-                
-                    {user._id === item.author._id && (
+                    {user._id === author._id && (
                         <IconButton
                             name='trash-outline'
                             size={22}
@@ -122,21 +117,22 @@ export default ({ item, onDelete = null }) => {
                 </View>
 
             </View>
+
             <View
                 style={{
                     marginLeft: 25,
-                    // paddingTop: 2,
-                    // paddingBottom: 7,
                     paddingHorizontal: 10,
                     backgroundColor: '#eee',
                     borderRadius: 12,
                     overflow: 'hidden',
                 }}
             >
-                <ThemedText
-                    style={{ lineHeight: 30 }}
-                >{text}</ThemedText>
+                <ThemedText style={{ lineHeight: 30 }}>
+                    {text}
+                </ThemedText>
+
             </View>
+            
         </View>
     )
 }

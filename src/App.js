@@ -7,7 +7,6 @@ import { ContactsContextProvider } from '@contacts'
 import { ImagesContextProvider } from '@images'
 import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
-import { MailContextProvider } from '@mail'
 import { ModalContextProvider } from '@modal'
 import { FormContextProvider } from '@form'
 import { compose as Compose } from '@utils'
@@ -35,20 +34,18 @@ export default () => {
                             <SocketContextProvider>
                             {/* <BipContextProvider> */}
                                 <ImagesContextProvider>
-                                    {/* <MailContextProvider> */}
-                                        {/* <SocketContextProvider> */}
-                                            <FormContextProvider>
-                                            {/* <Compose
-                                                components={[
-                                                    // ContactsContextProvider,
-                                                    // FormContextProvider,
-                                                ]}
-                                            > */}
-                                                <Layout />
-                                            {/* </Compose> */}
-                                            </FormContextProvider>
-                                        {/* </SocketContextProvider> */}
-                                    {/* </MailContextProvider> */}
+                                    {/* <SocketContextProvider> */}
+                                        <FormContextProvider>
+                                        {/* <Compose
+                                            components={[
+                                                // ContactsContextProvider,
+                                                // FormContextProvider,
+                                            ]}
+                                        > */}
+                                            <Layout />
+                                        {/* </Compose> */}
+                                        </FormContextProvider>
+                                    {/* </SocketContextProvider> */}
                                 </ImagesContextProvider>
                             {/* </BipContextProvider> */}
                             </SocketContextProvider>

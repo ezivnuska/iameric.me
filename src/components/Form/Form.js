@@ -63,17 +63,17 @@ const Form = ({
 
     useEffect(() => {
         if (formReady) {
-            console.log('form fields changed', formFields)
+            // console.log('form fields changed', formFields)
             if (formFields) {
                 const fieldNames = Object.keys(formFields)
-                console.log('mapping fieldNames', fieldNames)
+                // console.log('mapping fieldNames', fieldNames)
                 const dirtyValues = {}
                 fieldNames.map(fieldName => {
                     const isDirty = getDirty(fieldName)
                     if (isDirty) dirtyValues[fieldName] = formFields[fieldName]
                 })
 
-                console.log('dirtyValues', dirtyValues)
+                // console.log('dirtyValues', dirtyValues)
                 
                 let error = validateFields(dirtyValues)
                 
@@ -105,9 +105,12 @@ const Form = ({
            return
 		}
         
-        let data = { ...formFields}
-        
-        if (user) data.author = user._id
+        let data = {
+            ...formFields,
+            author: user?._id,
+        }
+        // console.log('submitting formFields', formFields)
+        // console.log('submitting form data', data)
         
         setFormLoading(true)
         const response = await onSubmit(data)
@@ -116,6 +119,7 @@ const Form = ({
         if (!response) console.log('Error submitting form data')
         else if (response.error) {
             console.log(`Form Error: ${response.name}: ${response.message}`)
+            setFormError(response)
         } else resetForm()
     }
 

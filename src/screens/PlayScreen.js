@@ -3,11 +3,8 @@ import { Screen } from './components'
 import { Heading } from '@components'
 import { Play } from '@modules'
 
-export default props => (
-    <Screen
-        {...props}
-        secure={false}
-    >
+const PlayScreen = props => (
+    <Screen {...props}>
 
         <Heading title='Play' />
         
@@ -15,3 +12,5 @@ export default props => (
 
     </Screen>
 )
+
+export default PlayScreen

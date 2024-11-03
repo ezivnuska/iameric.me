@@ -1,18 +1,14 @@
 import React from 'react'
-import { View } from 'react-native'
 import { Screen } from './components'
 import { Feed } from '@modules'
 import { FeedContextProvider } from '@feed'
     
 const FeedScreen = props => (
-    <Screen {...props}>
+    <Screen secure {...props}>
 
-        <View style={{ flexGrow: 1 }}>
-
-            <FeedContextProvider>
-                <Feed />
-            </FeedContextProvider>
-        </View>
+        <FeedContextProvider>
+            <Feed />
+        </FeedContextProvider>
         
     </Screen>
 )

@@ -34,12 +34,12 @@ const AuthForm = () => {
         const data = await signin(email, password)
         
         if (data.error) {
-            const { name, message } = data
-            const error = {
-                name,
-                message,
-            }
-            setFormError(error)
+            // const { name, message } = data
+            // const error = {
+            //     name,
+            //     message,
+            // }
+            // setFormError(error)
         } else if (data.user) {
             if (formError) clearFormError()
             await setItem('email', email)

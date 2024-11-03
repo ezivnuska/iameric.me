@@ -90,7 +90,7 @@ export default props => {
     return (
         <Screen
             {...props}
-            secure={true}
+            secure
             key={`bip-screen-${new Date()}`}
         >
     

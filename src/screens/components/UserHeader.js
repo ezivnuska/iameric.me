@@ -8,7 +8,7 @@ import {
     ThemedText,
 } from '@components'
 
-export default ({ username, ...props }) => {
+const UserHeader = ({ username, ...props }) => {
     
     return (
         <View
@@ -54,3 +54,5 @@ export default ({ username, ...props }) => {
         </View>
     )
 }
+
+export default UserHeader

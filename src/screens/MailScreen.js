@@ -1,26 +1,14 @@
 import React from 'react'
-import { View } from 'react-native'
 import { Screen } from './components'
 import { Mail } from '@modules'
+import { MailContextProvider } from '@mail'
 
 export default props => (
-    <Screen {...props}>
+    <Screen secure {...props}>
 
-        <View
-            style={{
-                flexGrow: 1,
-                justifyContent: 'space-between',
-                gap: 20,
-            }}
-        >
-
-            <View style={{ flexGrow: 1 }}>
-
-                <Mail />
-                
-            </View>
-
-        </View>
+        <MailContextProvider>
+            <Mail />
+        </MailContextProvider>
 
     </Screen>
 )

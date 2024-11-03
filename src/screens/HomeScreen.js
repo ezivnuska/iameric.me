@@ -86,10 +86,8 @@ export default props => {
     }
 
     return (
-        <Screen
-            {...props}
-            secure={false}
-        >
+        <Screen {...props}>
+            
             <View style={{ flexGrow: 0 }}>
                 <Intro />
             </View>

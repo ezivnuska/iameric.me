@@ -34,7 +34,7 @@ export default props => {
     }, [username])
 
     return (
-        <Screen {...props}>
+        <Screen secure {...props}>
             {contact
                 ? <Contact contact={contact} key={Date.now()} />
                 : <ActivityIndicator size='small' />

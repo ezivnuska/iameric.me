@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { loadPosts } from '@utils/feed'
+import { loadPosts } from './utils'
 
 const initialState = {
     modals: [],
