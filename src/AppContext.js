@@ -78,23 +78,15 @@ export const AppContextProvider = ({ children }) => {
         const token = await getStoredToken()
         
         if (token) {
-            console.log('found token.')
 
             // WE DON'T NEED TO VALIDATE TOKEN, YET
-            
             // FOR NOW WE'RE JUST FAKING IT
 
             // dispatch({ type: 'SET_TOKEN', payload})
             const user = await validateToken(token)
             
             if (user) {
-                console.log('token verified.')
-                
-                dispatch({
-                    type: 'SET_USER',
-                    payload: user,
-                })
-
+                dispatch({ type: 'SET_USER', payload: user })
             } else {
                 console.log('validation failed')
             }

@@ -18,6 +18,7 @@ import LoadingView from './LoadingView'
 import ModalHeader from './ModalHeader'
 import Slider from './Slider'
 import SimpleButton from './SimpleButton'
+import SocketDisplay from './SocketDisplay'
 import SplitScreen from './SplitScreen'
 import Switch from './Switch'
 import ThemedText from './ThemedText'
@@ -44,6 +45,7 @@ export {
     ModalHeader,
     Slider,
     SimpleButton,
+    SocketDisplay,
     SplitScreen,
     Switch,
     ThemedText,

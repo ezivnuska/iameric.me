@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import {
     ImageLoader,
+    SocketDisplay,
 } from '@components'
 import {
     AuthForm,
@@ -21,7 +22,6 @@ import {
 import {
     BipDetail,
     CameraView,
-    SocketDisplay,
     QuickStart,
 } from '.'
 
