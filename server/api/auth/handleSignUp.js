@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const createUser = require('./createUser')
 
 const handleSignUp = async (req, res) => {
-    const { email, password, username, fiction } = req.body
+    const { email, password, username } = req.body
     console.log('password', password)
     
     return bcrypt.genSalt(10, async (err, salt) => {
@@ -17,7 +17,7 @@ const handleSignUp = async (req, res) => {
                 console.log('problem with hash')
                 return res.status(200).json({ error: true, msg: 'Problem with hash.' })
             }
-            const user = await createUser(email, hash, username, fiction)
+            const user = await createUser(email, hash, username)
 
             if (!user) {
                 console.log('problem with user')

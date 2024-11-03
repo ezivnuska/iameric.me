@@ -1,7 +1,7 @@
 const createToken = require('./createToken')
 const User = require('../../models/User')
 
-const createUser = async (email, hashedPassword, username, fiction) => {
+const createUser = async (email, hashedPassword, username) => {
     
     let user = await User.findOne({ email })
     
@@ -9,7 +9,7 @@ const createUser = async (email, hashedPassword, username, fiction) => {
         console.log('user with that email already exists.')
         return null
     } else {
-        user = await User.create({ email, password: hashedPassword, username, fiction })
+        user = await User.create({ email, password: hashedPassword, username })
     }
 
     if (!user) {

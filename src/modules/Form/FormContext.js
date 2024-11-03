@@ -8,7 +8,7 @@ import React, {
 import { getItem } from '@utils/storage'
 
 const initialState = {
-    error: null,
+    formError: null,
     dirtyFields: [],
     focused: null,
     formFields: {},

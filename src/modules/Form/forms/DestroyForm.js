@@ -8,15 +8,13 @@ import {
 } from '@components'
 import {
     destroy,
-    getFields,
-    validateFields,
 } from './utils'
 import { useForm } from '../FormContext'
 import { navigate } from '@utils/navigation'
 import { useApp } from '@app'
 import { useSocket } from '@socket'
 
-const DestroyForm = () => {
+const DestroyForm = ({ onCancel }) => {
 
     const initialState = { username: '' }
 
@@ -145,7 +143,10 @@ const DestroyForm = () => {
     return (
         <View>
 
-            <FormHeader title='Delete Account' />
+            <FormHeader
+                title='Delete Account'
+                close={onCancel}
+            />
 
             <ThemedText style={{ marginBottom: 15 }}>
                 Enter username to permanently close account and delete all data.

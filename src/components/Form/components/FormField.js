@@ -7,7 +7,18 @@ import {
 import { ThemedText } from '@components'
 import { useApp } from '@app'
 
-const FormField = ({ name, dirty, error, value, onChange, focused, label = null, multiline = false, required = false, ...props }) => {
+const FormField = ({
+    name,
+    dirty,
+    error,
+    value,
+    onChange,
+    multiline,
+    focused,
+    label = null,
+    required = true,
+    ...props
+}) => {
 
     const { theme } = useApp()
 
@@ -75,29 +86,26 @@ const FormField = ({ name, dirty, error, value, onChange, focused, label = null,
                     }}
                 >
                     <TextInput
+                        {...props}
                         value={value || ''}
                         autoCorrect={false}
                         placeholderTextColor={focused ? theme?.colors.inputPlaceholderTextFocused : theme?.colors.inputPlaceholderText}
                         spellCheck={false}
+                        multiline={multiline}
                         onChangeText={onChange}
                         rows={multiline ? 4 : 1}
                         style={{
-                            // justifyContent: 'flex-start',
                             paddingHorizontal: 5,
                             paddingVertical: 5,
                             color: focused ? theme?.colors.inputTextFocused : theme?.colors.inputText,
                             background: 'transparent',
                             fontSize: 18,
                             lineHeight: multiline ? 25 : 40,
-                            // lineHeight: multiline ? 25 : 40,
                             maxWidth: '100%',
                             height: multiline ? 100 : 40,
                             flexWrap: 'wrap',
-                            // backgroundColor: 'pink',
-                            // maxWidth: 300,
                             textAlignVertical: 'top',
                         }}
-                        // {...props}
                     />
                 </View>
 

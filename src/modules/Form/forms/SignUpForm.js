@@ -47,7 +47,6 @@ const SignUpForm = () => {
         username: '',
         password: '',
         confirmPassword: '',
-        // fiction: false,
     }
 
     const {
@@ -87,7 +86,6 @@ const SignUpForm = () => {
         username,
         password,
         confirmPassword,
-        // fiction,
     } = useMemo(() => formFields, [formFields])
 
     useEffect(() => {
@@ -193,7 +191,6 @@ const SignUpForm = () => {
 
     const renderFields = () => (
         <>
-            {/* <PublicCheckbox checked={fiction} setChecked={value => onChange('fiction', value)} /> */}
             <FormField
                 label='Email'
                 value={email}

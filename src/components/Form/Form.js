@@ -6,17 +6,18 @@ import {
 } from './components'
 import { SimpleButton } from '@components'
 import { useApp } from '@app'
+import { useForm } from '@form'
 import {
-    // FormContextProvider,
-    useForm,
-} from '@form'
-import {
-    // createPost,
     getFields,
     validateFields,
 } from './utils'
 
-const Form = ({ fields, title, onSubmit, onCancel, submitForm }) => {
+const Form = ({
+    fields,
+    title,
+    onSubmit,
+    onCancel,
+}) => {
 
     const { user } = useApp()
 
@@ -51,20 +52,41 @@ const Form = ({ fields, title, onSubmit, onCancel, submitForm }) => {
     }
 
     useEffect(() => {
-        initFields()
+        // initFields()
 
         return () => resetForm()
     }, [])
 
     useEffect(() => {
-        let invalidField = validateFields(formFields)
-        if (invalidField) {
-            const { name, index } = invalidField
-            setFormError({ name, message: `${name} field invalid.`})
-            setFocus(index)
-        } else {
-            clearFormError()
-            setFocus(0)
+        if (!formReady) initFields()
+    }, [formReady])
+
+    useEffect(() => {
+        if (formReady) {
+            console.log('form fields changed', formFields)
+            if (formFields) {
+                const fieldNames = Object.keys(formFields)
+                console.log('mapping fieldNames', fieldNames)
+                const dirtyValues = {}
+                fieldNames.map(fieldName => {
+                    const isDirty = getDirty(fieldName)
+                    if (isDirty) dirtyValues[fieldName] = formFields[fieldName]
+                })
+
+                console.log('dirtyValues', dirtyValues)
+                
+                let error = validateFields(dirtyValues)
+                
+                if (error) {
+                    const { name, message, index } = error
+                    
+                    setFormError({ name, message })
+                    setFocus(index)
+                } else {
+                    clearFormError()
+                    setFocus(0)
+                }
+            }
         }
     }, [formFields])
 
@@ -77,45 +99,47 @@ const Form = ({ fields, title, onSubmit, onCancel, submitForm }) => {
 		if (e.code === 'Enter') submitFormData()
 	}
 
-    const submitFormData = async () => {
-        
-        if (formError) {
-			console.log(`Error in form field ${formError.name}: ${formError.message}`)
-            return
+   const submitFormData = async () => {
+       if (formError) {
+           console.log(`Error in form field ${formError.name}: ${formError.message}`)
+           return
 		}
-
-        const { _id } = user
-        const data = {
-            author: _id,
-            ...formFields,
-        }
+        
+        let data = { ...formFields}
+        
+        if (user) data.author = user._id
         
         setFormLoading(true)
         const response = await onSubmit(data)
         setFormLoading(false)
         
-        if (!response) console.log('Error saving data')
-        else resetForm()
+        if (!response) console.log('Error submitting form data')
+        else if (response.error) {
+            console.log(`Form Error: ${response.name}: ${response.message}`)
+        } else resetForm()
     }
 
     const renderFields = () => fields.map((field, index) => {
-        const { label, multiline, name, placeholder } = field
+        const { label, multiline, name, placeholder, type } = field
         return (
-            <FormField
+            <View
                 key={`formfield-${index}-${name}`}
-                label={label}
-                value={formFields[name] || ''}
-                error={getError(name)}
-                placeholder={placeholder}
-                textContentType='default'
-                keyboardType='default'
-                autoCapitalize='sentences'
-                onChange={value => onChange(name, value)}
-                autoFocus={getFocus(name)}
-                onKeyPress={onEnter}
-                dirty={getDirty(name)}
-                multiline={multiline}
-            />
+            >
+                <FormField
+                    label={label}
+                    value={formFields[name] || ''}
+                    error={getError(name)}
+                    placeholder={placeholder}
+                    secureTextEntry={type === 'password'}
+                    keyboardType='default'
+                    autoCapitalize='sentences'
+                    onChange={value => onChange(name, value)}
+                    autoFocus={getFocus(name)}
+                    onKeyPress={onEnter}
+                    dirty={getDirty(name)}
+                    multiline={multiline}
+                />
+            </View>
         )
     })
 

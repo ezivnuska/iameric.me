@@ -67,10 +67,6 @@ const UserSchema = new Schema({
         type: Schema.Types.Boolean,
         default: false,
     },
-    fiction: {
-        type: Schema.Types.Boolean,
-        default: false,
-    },
 },
 {
     timestamps: true,

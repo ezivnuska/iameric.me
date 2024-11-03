@@ -1,72 +1,79 @@
-import React from'react'
+import React, { useState } from'react'
 import { View } from'react-native'
 import {
+    DestroyForm,
+} from '.'
+import {
+    Cabinet,
+    Form,
     FormHeader,
     Heading,
     SimpleButton,
 } from '@components'
+import { useApp } from '@app'
 import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
+import { destroy } from './utils'
 
 const SettingsForm = () => {
     
-    const { closeModal, setModal } = useModal()
+    const { user } = useApp()
+    const { closeModal } = useModal()
     
     const handleSignout = () => {
         closeModal()
         navigate('Home', { signout: true })
     }
 
+    const handleDestroy = async () => {
+        const { id } = await destroy(user._id)
+        if (id) {
+            console.log('destroyed id', id)
+
+            // notifySocket('user_signed_out')
+            closeModal()
+        }
+    }
+
     return (
-        <View
-            style={{
-                flex: 1,
-            }}
-        >
+        <View style={{ flex: 1 }}>
             
-            <FormHeader title='Settings' />
+            <FormHeader
+                title='Settings'
+                close={closeModal}
+            />
 
             <View
                 style={{
-                    flex: 1,
-                    gap: 50,
-                    // justifyContent: 'space-evenly',
+                    flexGrow: 1,
+                    gap: 10,
                 }}
             >
 
-                <View
-                    // style={{
-                    //     flexDirection: 'row',
-                    //     justifyContent: 'space-evenly',
-                    // }}
+                <SimpleButton
+                    label={'Sign Out'}
+                    onPress={() => handleSignout()}
+                />
+
+                <Cabinet
+                    title='Close Account'
+                    closed
                 >
-                    <View style={{ flex: 1 }}>
-                        <Heading title='Sign Out' />
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <SimpleButton
-                            label={'Sign Out'}
-                            onPress={() => handleSignout()}
-                        />
-                    </View>
-                </View>
-                
-                <View
-                    // style={{
-                    //     flexDirection: 'row',
-                    //     justifyContent: 'space-evenly',
-                    // }}
-                >
-                    <View style={{ flex: 1 }}>
-                        <Heading title='Close Account' />
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <SimpleButton
-                            label='Close Account'
-                            onPress={() => setModal('DESTROY')}
-                        />
-                    </View>
-                </View>
+                    <Form
+                        fields={[
+                            {
+                                label: 'Enter Username',
+                                name: 'destroy',
+                                placeholder: 'username',
+                                multiline: false,
+                            },
+                        ]}
+                        title='Delete Account'
+                        // onCancel={closeModal}
+                        onSubmit={handleDestroy}
+                    />
+                    {/* <DestroyForm /> */}
+                </Cabinet>
 
             </View>
             

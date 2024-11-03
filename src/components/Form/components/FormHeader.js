@@ -34,16 +34,17 @@ const FormHeader = ({ title, close = null }) => {
                 {title}
             </ThemedText>
 
-            <Pressable 
-                onPress={handleClose}
-                disabled={close === null}
-            >
-                <Icon
-                    name={'close'}
-                    size={24}
-                    color={close !== null ? theme?.colors.textDefault : 'rgba(200, 200, 200, 0.5)'}
-                />
-            </Pressable>
+            {close && (
+                <Pressable 
+                    onPress={handleClose}
+                >
+                    <Icon
+                        name={'close'}
+                        size={24}
+                        color={theme?.colors.textDefault}
+                    />
+                </Pressable>
+            )}
         </View>
     )
 }

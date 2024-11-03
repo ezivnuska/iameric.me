@@ -83,12 +83,7 @@ export default () => {
     }
 
     const renderThreads = threads => (
-        <View
-            style={{
-                flexGrow: 0,
-                // gap: 7,
-            }}
-        >
+        <View style={{ flexGrow: 0 }}>
             {threads.map((items, index) => (
                 <ForumList
                     key={`thread-${index}`}
@@ -98,12 +93,6 @@ export default () => {
             ))}
         </View>
     )
-
-    // const submitForm = async data => {
-    //     const entry = await createEntry(data)
-    //     console.log('entry created', entry)
-    //     addEntry(entry)
-    // }
     
     return (
         <View style={{ flex: 1 }}>
