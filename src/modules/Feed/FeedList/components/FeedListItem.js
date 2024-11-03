@@ -18,7 +18,7 @@ import { navigate } from '@utils/navigation'
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item, onDelete = null }) => {
-    console.log('item', item)
+    
     const { author, createdAt, text } = item
 
     const { user } = useApp()
@@ -64,43 +64,48 @@ export default ({ item, onDelete = null }) => {
                     paddingVertical: 5,
                 }}
             >
-                <Pressable
-                    onPress={() => {
-                        navigate('Contact', { screen: 'Details', params: { username: author.username } })
-                    }}
+                <View
                     style={{
                         flexDirection: 'row',
                         flexGrow: 0,
+                        gap: 12,
                     }}
                 >
-                    {imagePath && (
-                        <Image
-                            source={imagePath}
-                            style={{
-                                width: 24,
-                                height: 24,
-                            }}
-                        />
-                    )}
-
-                    <View
+                    <Pressable
+                        onPress={() => {
+                            navigate('Contact', { screen: 'Details', params: { username: author.username } })
+                        }}
                         style={{
                             flexDirection: 'row',
-                            flexGrow: 1,
-                            gap: 10,
+                            flexGrow: 0,
+                            gap: 12,
                         }}
                     >
-                        <ThemedText>{author.username}</ThemedText>
-                        <Time time={createdAt} />
-                    </View>
-                </Pressable>
+                        {imagePath && (
+                            <View style={{ flexGrow: 0 }}>
+                                <Image
+                                    source={imagePath}
+                                    style={{
+                                        width: 24,
+                                        height: 24,
+                                    }}
+                                />
+                            </View>
+                        )}
+
+                        <ThemedText bold>{author.username}</ThemedText>
+                    </Pressable>
+
+                    <Time time={createdAt} />
+
+                </View>
 
                 <View
                     style={{
-                        flexGrow: 0,
+                        flexGrow: 1,
                         flexDirection: 'row',
-                        alignItems: 'flexStart',
-                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        justifyContent: 'flex-end',
                         flexWrap: 'wrap',
                         gap: 10,
                     }}

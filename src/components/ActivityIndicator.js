@@ -8,8 +8,7 @@ const ActivityIndicator = ({ size = 'large', color = 'tomato', ...props }) => (
         style={{
             flex: 1,
             flexDirection: 'row',
-            alignContent: 'center',
-            textAlign: 'center',
+            alignItems: 'center',
         }}
     >
         <Indicator
