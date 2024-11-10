@@ -4,8 +4,6 @@ import { ThemedText } from '@components'
 
 const Tile = ({ label, size, ...props }) => {
 
-    // useEffect(() => console.log('rendering tile', style), [style])
-    // console.log('dragging/direction', dragging, direction)
     return (
         <View
             style={[

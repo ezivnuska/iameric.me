@@ -48,8 +48,8 @@
       "@forms": [
         "./src/modules/Form/forms/index.js"
       ],
-      "@images/*": [
-        "./src/modules/Images/*"
+      "@images": [
+        "./src/modules/Images/index.js"
       ],
       "@layout": [
         "./src/Layout/index.js"
@@ -62,6 +62,9 @@
       ],
       "@styles": [
         "./src/styles/index.js"
+      ],
+      "@user": [
+        "./src/modules/User/index.js"
       ],
       "@utils": [
         "./src/utils/index.js"

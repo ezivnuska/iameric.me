@@ -5,17 +5,11 @@ import {
 } from 'react-native'
 import { ThemedText } from '@components'
 import { useApp } from '@app'
-import { useModal } from '@modal'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ModalHeader = ({ children, title, closeable = true, ...props }) => {
+const ModalHeader = ({ children, title, onClose = null, ...props }) => {
 
     const { theme } = useApp()
-    const { closeModal } = useModal()
-
-    const handleClose = () => {
-        closeModal()
-    }
 
     return (
         <View
@@ -46,13 +40,13 @@ const ModalHeader = ({ children, title, closeable = true, ...props }) => {
             </View>
 
             <Pressable 
-                onPress={handleClose}
-                diabled={!closeable}
+                onPress={onClose}
+                disabled={!onClose}
             >
                 <Icon
                     name={'close'}
                     size={24}
-                    color={closeable ? theme?.colors.textDefault : 'rgba(200, 200, 200, 0.5)'}
+                    color={onClose !== null ? theme?.colors.textDefault : 'rgba(200, 200, 200, 0.5)'}
                 />
             </Pressable>
         </View>

@@ -5,27 +5,46 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useApp } from '@app'
-import { useModal } from '@modal'
+import { useImages } from '@images'
+import { useUser } from '@user'
 import { ImageListItem } from './components'
+import { loadImages } from '@utils/images'
+import { ActivityIndicator } from '@components'
 
-const ImageList = ({ images, loading, upload = null }) => {
+const ImageList = ({ upload = null }) => {
 
     const { dims, theme } = useApp()
     
-    const { setModal } = useModal()
+    const {
+        images,
+        imagesLoading,
+        setImages,
+        setImagesLoading,
+        setImagesModal,
+        uploading,
+    } = useImages()
+
+    const {
+        user,
+    } = useUser()
 
     const imageGap = 4
 
-    const containerRef = useRef(null)
-
     const numImagesPerRow = 4
-    const [imageSize, setImageSize] = useState(0)
+    const [maxWidth, setMaxWidth] = useState(null)
+    const [imageSize, setImageSize] = useState(null)
+
+    const onLayout = e => {
+		if (e.nativeEvent.target.offsetParent) {
+			setMaxWidth(e.nativeEvent.target.offsetParent.clientWidth)
+		}
+	}
 
     useEffect(() => {
-        if (containerRef) {
-            setImageSize((containerRef.current.clientWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
+        if (maxWidth) {
+            setImageSize((maxWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
         }
-    }, [dims])
+    }, [maxWidth])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -43,7 +62,7 @@ const ImageList = ({ images, loading, upload = null }) => {
     
     return (
         <View
-            ref={containerRef}
+            onLayout={onLayout}
             style={{
                 flexDirection: 'row',
                 flexWrap: 'wrap',
@@ -52,25 +71,26 @@ const ImageList = ({ images, loading, upload = null }) => {
                 marginVertical: 7,
             }}
         >
-            {images.map((image, index) => (
-                <Pressable
-                    key={`image-${index}`}
-                    onPress={() => setModal('SHOWCASE', image)}
-                    style={[
-                        {
-                            width: imageSize,
-                            height: imageSize,
-                        },
-                        buttonStyle,
-                    ]}
-                >
-                    <ImageListItem image={image} size={imageSize} />
-                </Pressable>
-            ))}
+            {imageSize
+                ? images.map((image, index) => (
+                    <Pressable
+                        key={`image-${index}`}
+                        onPress={() => setImagesModal('SHOWCASE', image)}
+                        style={[
+                            {
+                                width: imageSize,
+                                height: imageSize,
+                            },
+                            buttonStyle,
+                        ]}
+                    >
+                        <ImageListItem image={image} size={imageSize} />
+                    </Pressable>
+                )) : <ActivityIndicator />}
             
             {upload && (
                 <Pressable
-                    key={`image-${images.length + (loading ? 1 : 0)}`}
+                    key={`image-${images.length + (uploading ? 1 : 0)}`}
                     onPress={upload}
                     style={[
                         {

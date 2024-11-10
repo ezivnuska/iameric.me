@@ -6,7 +6,7 @@ import React, {
     useReducer,
 } from 'react'
 import { ActivityIndicator } from 'react-native-paper'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useMail } from '@mail'
 import { useNotification } from '@notification'
 import socket from './socket'
@@ -30,7 +30,7 @@ export const useSocket = () => {
 
 export const SocketContextProvider = ({ children }) => {
 
-    const { reset, setUser, user } = useApp()
+    const { reset, setUser, user } = useUser()
     const { addMessage } = useMail()
 
     const { addNotification } = useNotification()
@@ -128,7 +128,7 @@ export const SocketContextProvider = ({ children }) => {
 
         if (!socket.connected) socket.connect()
 
-        dispatch({ type: '@socket_LOADED' })
+        dispatch({ type: 'SOCKET_LOADED' })
     }, [])
 
     // useEffect(() => {
@@ -166,7 +166,7 @@ const reducer = (state, action) => {
     const { payload, type } = action
     // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
-        case '@socket_LOADED':
+        case 'SOCKET_LOADED':
             return { ...state, socketLoaded: true }; break
         case 'SET_CONNECTIONS':
             return { ...state, connections: payload }; break

@@ -9,7 +9,7 @@ import {
     ThemedText,
     Time,
 } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 // import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
 // import { loadContactById } from '@utils/contacts'
@@ -19,10 +19,10 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item, onDelete = null }) => {
     
-    const { author, createdAt, text } = item
-
-    const { user } = useApp()
+    const { user } = useUser()
     // const { setModal } = useModal()
+
+    const { author } = item
 
     // const fetchMeta = async () => {
     //     // try {
@@ -41,14 +41,12 @@ export default ({ item, onDelete = null }) => {
     //     fetchMeta()
     // }, [])
 
-    const getProfileImagePathFromUser = data => {
-        return data.profileImage
-            ? `${IMAGE_PATH}/${data.username}/${data.profileImage.filename}`
+    const getProfileImagePathFromUser = () => {
+        return author && author.profileImage
+            ? `${IMAGE_PATH}/${author.username}/${author.profileImage.filename}`
             : `${IMAGE_PATH}/avatar-default-small.png`}
 
-    const imagePath = useMemo(() => getProfileImagePathFromUser(author), [author])
-
-    if (!author) return <View />
+    const imagePath = useMemo(() => getProfileImagePathFromUser(), [item])
     
     return (
         <View
@@ -71,32 +69,34 @@ export default ({ item, onDelete = null }) => {
                         gap: 12,
                     }}
                 >
-                    <Pressable
-                        onPress={() => {
-                            navigate('Contact', { screen: 'Details', params: { username: author.username } })
-                        }}
-                        style={{
-                            flexDirection: 'row',
-                            flexGrow: 0,
-                            gap: 12,
-                        }}
-                    >
-                        {imagePath && (
-                            <View style={{ flexGrow: 0 }}>
-                                <Image
-                                    source={imagePath}
-                                    style={{
-                                        width: 24,
-                                        height: 24,
-                                    }}
-                                />
-                            </View>
-                        )}
+                    {author ? (
+                        <Pressable
+                            onPress={() => {
+                                navigate('Contact', { screen: 'Details', params: { username: author.username } })
+                            }}
+                            style={{
+                                flexDirection: 'row',
+                                flexGrow: 0,
+                                gap: 12,
+                            }}
+                        >
+                            {imagePath && (
+                                <View style={{ flexGrow: 0 }}>
+                                    <Image
+                                        source={imagePath}
+                                        style={{
+                                            width: 24,
+                                            height: 24,
+                                        }}
+                                    />
+                                </View>
+                            )}
 
-                        <ThemedText bold>{author.username}</ThemedText>
-                    </Pressable>
+                            <ThemedText bold>{author.username}</ThemedText>
+                        </Pressable>
+                    ) : <ThemedText>Author not found</ThemedText>}
 
-                    <Time time={createdAt} />
+                    <Time time={item.createdAt} />
 
                 </View>
 
@@ -111,7 +111,7 @@ export default ({ item, onDelete = null }) => {
                     }}
                 >
                     
-                    {user._id === author._id && (
+                    {((author && user._id === author._id) || user.role === 'admin') && (
                         <IconButton
                             name='trash-outline'
                             size={22}
@@ -133,7 +133,7 @@ export default ({ item, onDelete = null }) => {
                 }}
             >
                 <ThemedText style={{ lineHeight: 30 }}>
-                    {text}
+                    {item.text}
                 </ThemedText>
 
             </View>

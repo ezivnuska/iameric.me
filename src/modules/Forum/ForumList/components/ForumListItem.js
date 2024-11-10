@@ -9,7 +9,7 @@ import {
     ThemedText,
     Time,
 } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useForum } from '@forum'
 import { navigate } from '@utils/navigation'
 
@@ -19,7 +19,7 @@ export default ({ item, onDelete = null }) => {
     
     const { author, createdAt, text } = item
 
-    const { user } = useApp()
+    const { user } = useUser()
     const { setForumModal } = useForum()
 
     const getProfileImagePathFromUser = data => {

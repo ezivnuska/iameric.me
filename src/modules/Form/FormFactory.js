@@ -4,35 +4,24 @@ import {
     View,
 } from 'react-native'
 import {
-    ImageLoader,
     SocketDisplay,
 } from '@components'
 import {
     AuthForm,
     CaptionForm,
-    // DestroyForm,
-    FeedbackForm,
     ImageForm,
     MessageForm,
-    // PostForm,
     SettingsForm,
 } from './forms'
-// import { useApp } from '@app'
-// import { useModal } from '@modal'
 import {
     BipDetail,
     CameraView,
-    QuickStart,
 } from '.'
 
-const FormFactory = ({ type, data }) => {
-
-    // const { dims } = useApp()
-    // const { modal } = useModal()
-    // console.log('type FORM', type)
+const FormFactory = ({ modal }) => {
     
     const renderFormContent = () => {
-        // const { type, data } = modal
+        const { type, data } = modal
         switch(type) {
             case 'AUTH': return <AuthForm />; break
             case 'CAPTION': return <CaptionForm data={data} />; break
@@ -44,9 +33,8 @@ const FormFactory = ({ type, data }) => {
             case 'IMAGE': return <ImageForm data={data} />; break
             case 'MESSAGE': return <MessageForm data={data} />; break
             case 'SETTINGS': return <SettingsForm />; break
-            case 'SHOWCASE': return <ImageLoader data={data} />; break
+            // case 'SHOWCASE': return <ImageLoader data={data} />; break
             case 'SOCKETS': return <SocketDisplay />; break
-            case 'QUICK': return <QuickStart />; break
             default: return null
         }
     }

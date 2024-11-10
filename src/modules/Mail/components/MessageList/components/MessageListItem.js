@@ -5,7 +5,7 @@ import {
     View,
 } from 'react-native'
 import { IconButton, ThemedText } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
 
@@ -13,7 +13,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 export default ({ item, onDelete = null }) => {
 
-    const { user } = useApp()
+    const { user } = useUser()
     const { setModal } = useModal()
 
     const getProfileImagePathFromUser = contact => {

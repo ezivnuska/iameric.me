@@ -12,7 +12,7 @@ import { ImageListItem } from './components'
 
 const ImageList = ({ images, disabled = false, small = false }) => {
 
-    const { dims, theme, user } = useApp()
+    const { dims, theme } = useApp()
     
     const { setModal } = useModal()
 

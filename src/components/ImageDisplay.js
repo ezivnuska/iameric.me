@@ -6,11 +6,13 @@ import {
 import {
     ActivityIndicator,
     IconButton,
+    ImageContainer,
     ModalHeader,
 } from '@components'
 import { useApp } from '@app'
 import { useImages } from '@images'
 import { useModal } from '@modal'
+import { useUser } from '@user'
 import {
     deleteImage,
     getMaxImageDims,
@@ -27,8 +29,11 @@ export default ({ data }) => {
     const {
         dims,
         setProfileImage,
-        user,
     } = useApp()
+
+    const {
+        user,
+    } = useUser()
 
     const {
         getImage,
@@ -142,7 +147,9 @@ export default ({ data }) => {
                             gap: 10,
                         }}
                     >
-                        <View
+
+                        {image && <ImageContainer image={image} />}
+                        {/* <View
                             ref={containerRef}
                             style={{
                                 flexGrow: 1,
@@ -162,7 +169,7 @@ export default ({ data }) => {
                                     }}
                                 />
                             )}
-                        </View>
+                        </View> */}
 
                         {userImage && (
                             <View

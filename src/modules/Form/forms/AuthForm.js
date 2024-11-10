@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Form, SimpleButton } from '@components'
-import { useApp } from '@app'
-import { useModal } from '@modal'
 import { useForm } from '@form'
+import { useModal } from '@modal'
 import { useSocket } from '@socket'
+import { useUser } from '@user'
 // import SignInForm from './SignInForm'
 // import SignUpForm from './SignUpForm'
 import { signin, signup } from './utils'
@@ -12,7 +12,7 @@ import { setItem, storeToken } from '@utils/storage'
 
 const AuthForm = () => {
     
-    const { setUser } = useApp()
+    const { setUser } = useUser()
     const {
         clearFormError,
         formError,

@@ -9,16 +9,19 @@ import AppNavigation from '../AppNavigation'
 import linking from '../linking'
 import { Modal } from '@modules'
 import { useApp } from '@app'
+import { useUser } from '@user'
 import { Notification } from '@modules'
 import navigationRef from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
 
-export default () => {
+const Layout = () => {
 
     const {
         dims,
         theme,
     } = useApp()
+
+    const { user } = useUser()
 
     const [currentRoute, setCurrentRoute] = useState(null)
 
@@ -67,7 +70,7 @@ export default () => {
                     >
 
                         <View style={ { flexGrow: 0 }}>
-                            <Header route={currentRoute} />
+                            <Header user={user} route={currentRoute} />
                         </View>
                         
                         <View
@@ -87,3 +90,5 @@ export default () => {
         </SafeAreaView>
     )
 }
+
+export default Layout

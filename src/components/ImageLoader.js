@@ -10,7 +10,7 @@ import {
 } from '@components'
 import { useApp } from '@app'
 import { useImages } from '@images'
-import { useModal } from '@modal'
+import { useUser } from '@user'
 import {
     deleteImage,
     getMaxImageDims,
@@ -20,27 +20,29 @@ import {
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ data }) => {
+const ImageLoader = ({ data }) => {
+
+    console.log('ImageLoader:data', data)
 
     const containerRef = useRef()
 
     const {
         dims,
-        setProfileImage,
-        user,
     } = useApp()
+    
+    const {
+        user,
+        setProfileImage,
+    } = useUser()
 
     const {
+        closeImagesModal,
         getImage,
         imagesLoading,
         removeImage,
         setImagesLoading,
+        setImagesModal,
     } = useImages()
-
-    const {
-        closeModal,
-        setModal,
-    } = useModal()
 
     const [image, setImage] = useState(null)
     const [imageDims, setImageDims] = useState(null)
@@ -92,7 +94,7 @@ export default ({ data }) => {
         if (deletedImage) {
             if (isProfileImage) setProfileImage(null)
             removeImage(deletedImage._id)
-            closeModal()
+            closeImagesModal()
         } else {
             console.log('Error deleting image.')   
         }
@@ -106,7 +108,7 @@ export default ({ data }) => {
         
         if (avatar) setProfileImage(avatar.profileImage)
 
-        closeModal()
+        closeImagesModal()
     }
 
     const removeAvatar = async () => {
@@ -117,11 +119,17 @@ export default ({ data }) => {
         
         setProfileImage(null)
 
-        closeModal()
+        closeImagesModal()
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: 'red',
+                paddingHorizontal: 10,
+            }}
+        >
             
             {image ? (
                 <View style={{ flex: 1 }}>
@@ -130,7 +138,7 @@ export default ({ data }) => {
                         {userImage && (
                             <IconButton
                                 name='create-outline'
-                                onPress={() => setModal('CAPTION', image)}
+                                onPress={() => setImagesModal('CAPTION', image)}
                                 size={20}
                             />
                         )}
@@ -197,3 +205,5 @@ export default ({ data }) => {
         </View>
     )
 }
+
+export default ImageLoader

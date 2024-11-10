@@ -5,7 +5,7 @@ import {
     FormHeader,
 } from './components'
 import { SimpleButton } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useForm } from '@form'
 import {
     getFields,
@@ -17,9 +17,10 @@ const Form = ({
     title,
     onSubmit,
     onCancel,
+    data = null,
 }) => {
 
-    const { user } = useApp()
+    const { user } = useUser()
 
     const {
         clearForm,
@@ -47,7 +48,9 @@ const Form = ({
         fields.map(field => {
             state[field.name] = field.value || ''
         })
-        const fieldValues = getFields(state)
+        
+        const fieldValues = getFields(state, data)
+        console.log('Field values', fieldValues)
         initForm(fieldValues)
     }
 
@@ -63,17 +66,15 @@ const Form = ({
 
     useEffect(() => {
         if (formReady) {
-            // console.log('form fields changed', formFields)
+            
             if (formFields) {
                 const fieldNames = Object.keys(formFields)
-                // console.log('mapping fieldNames', fieldNames)
+                
                 const dirtyValues = {}
                 fieldNames.map(fieldName => {
                     const isDirty = getDirty(fieldName)
                     if (isDirty) dirtyValues[fieldName] = formFields[fieldName]
                 })
-
-                // console.log('dirtyValues', dirtyValues)
                 
                 let error = validateFields(dirtyValues)
                 
@@ -91,6 +92,7 @@ const Form = ({
     }, [formFields])
 
     const onChange = (key, value) => {
+        // console.log('onChange', key, value)
         if (!getDirty(key)) markDirty(key)
         setFormValues({ ...formFields, [key]: value })
     }
@@ -105,18 +107,19 @@ const Form = ({
            return
 		}
         
-        let data = {
+        let formData = {
             ...formFields,
             author: user?._id,
+            // author: user?._id,
         }
         // console.log('submitting formFields', formFields)
-        // console.log('submitting form data', data)
+        // console.log('submitting form data', formData)
         
         setFormLoading(true)
-        const response = await onSubmit(data)
+        const response = await onSubmit(formData)
         setFormLoading(false)
-        
-        if (!response) console.log('Error submitting form data')
+        console.log('response from form', response)
+        if (!response) console.log('No response from data', formData)
         else if (response.error) {
             console.log(`Form Error: ${response.name}: ${response.message}`)
             setFormError(response)

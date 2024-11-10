@@ -10,14 +10,14 @@ import {
     Heading,
     SimpleButton,
 } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
 import { destroy } from './utils'
 
 const SettingsForm = () => {
     
-    const { user } = useApp()
+    const { user } = useUser()
     const { closeModal } = useModal()
     
     const handleSignout = () => {

@@ -1,26 +1,38 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Heading } from '@components'
-import { ImageList } from './components'
-import { useImages } from '@images'
-import { useModal } from '@modal'
+import {
+    ImageList,
+    ImagesModal,
+    UserHeader,
+    useImages,
+} from '.'
+import { useUser } from '@user'
 
-const Images = () => {
+const Images = props => {
 
-    const { images, uploading } = useImages()
-    const { setModal } = useModal()
+    const {
+        imagesModal,
+        closeImagesModal,
+        setImagesModal,
+    } = useImages()
+
+    const {
+        user,
+    } = useUser()
     
     return (
         <View>
 
-            <Heading title='Images' />
+            <UserHeader username={user.username} {...props} />
 
             <ImageList
-                images={images}
-                loading={uploading}
-                upload={() => setModal('IMAGE')}
+                upload={() => setImagesModal('IMAGE_UPLOAD')}
             />
 
+            <ImagesModal
+                modal={imagesModal}
+                onCancel={closeImagesModal}
+            />
         </View>
     )
 }

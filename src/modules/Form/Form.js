@@ -5,19 +5,17 @@ import {
     FormHeader,
     SimpleButton,
 } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useForm } from '@form'
 import {
     // createPost,
     getFields,
     validateFields,
-} from './utils'
+} from '@form'
 
-const Form = ({ fields, onSubmit, onCancel }) => {
+const Form = ({ initialState, fields, onSubmit, onCancel }) => {
 
-    const initialState = { text: '' }
-
-    const { user } = useApp()
+    const { user } = useUser()
 
     const {
         clearForm,

@@ -12,7 +12,7 @@ export default (toggle, visible, ...props) => (
     >
 
         <IconButton
-            name='@images-outline'
+            name='images-outline'
             onPress={toggle}
             disabled={visible}
             // onPress={() => props.navigation.navigate('@images')}

@@ -5,7 +5,7 @@ import {
     FormHeader,
     SimpleButton,
 } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useForm } from '@form'
 import {
     createEntry,
@@ -20,7 +20,7 @@ const FeedbackForm = ({ onCancel, onSubmit, data = null }) => {
 
     const initialState = { text: '' }
 
-    const { user } = useApp()
+    const { user } = useUser()
 
     const {
         clearForm,

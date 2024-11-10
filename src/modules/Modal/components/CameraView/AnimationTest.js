@@ -19,6 +19,7 @@ import {
 	Switch,
 } from '@components'
 import { useApp } from '@app'
+import { useUser } from '@user'
 import { useBips } from '@modules/Bipster'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
@@ -30,7 +31,8 @@ import EXIF from 'exif-js'
 
 export default () => {
 
-	const { dims, user } = useApp()
+	const { dims } = useApp()
+	const { user } = useUser()
 	const { addBip, setNewBip } = useBips()
 	const { closeModal } = useModal()
 	const { socket } = useSocket()

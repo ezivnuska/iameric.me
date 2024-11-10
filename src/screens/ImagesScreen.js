@@ -1,23 +1,13 @@
 import React from 'react'
-import { View } from 'react-native'
-import { UserHeader } from './components'
 import { Screen } from './components'
-import { Images } from '@modules'
-import { useApp } from '@app'
+import Images, { ImagesContextProvider } from '@images'
 
-export default props => {
+const ImagesScreen = props => (
+    <Screen secure {...props}>
+        <ImagesContextProvider>
+            <Images {...props} />
+        </ImagesContextProvider>
+    </Screen>
+)
 
-    const { user } = useApp()
-    
-    return (
-        <Screen secure {...props}>
-
-            <UserHeader username={props.route.params?.username || user?.username} {...props} />
-                
-            <View style={{ flexGrow: 1 }}>
-                <Images />
-            </View>
-
-        </Screen>
-    )
-}
+export default ImagesScreen

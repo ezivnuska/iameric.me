@@ -14,6 +14,7 @@ import Play from './Play'
 import Resume from './Resume'
 import Simple from './Simple'
 import Socket from './Socket'
+import User from './User'
 
 export {
     Bipster,
@@ -31,4 +32,5 @@ export {
     Resume,
     Socket,
     Simple,
+    User,
 }

@@ -10,7 +10,7 @@ import {
     Time,
 } from '@components'
 import { Map } from '@modules'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useModal } from '@modal'
 import { useNotification } from '@notification'
 import { uploadBipImage } from '@utils/images'
@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 export default ({ images, onBip, onSubmission, onRemove, setUploading }) => {
 
-    const { user } = useApp()
+    const { user } = useUser()
     const { closeModal } = useModal()
     const { addNotification } = useNotification()
 

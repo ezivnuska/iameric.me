@@ -4,7 +4,7 @@ import {
     ScrollView,
     View,
 } from 'react-native'
-import FormFactory from '@form'
+import ModalFactory from './ModalFactory'
 import Modal from 'react-native-modal'
 import { useApp } from '@app'
 import { useModal } from '@modal'
@@ -15,7 +15,7 @@ const ModalView = () => {
 
     // const isCamera = useMemo(() => (modal && modal.type === 'CAPTURE'), [modal])
 
-    return modal ? (
+    return (
         <Modal
             isVisible={modal !== undefined}
             animationType='fade'
@@ -55,14 +55,13 @@ const ModalView = () => {
                         zIndex: 100,
                     }}
                 >
-                    <FormFactory
-                        type={modal.type}
-                        data={modal.data}
-                    />
+                    {modal && (
+                        <ModalFactory modal={modal} />
+                    )}
                 </View>
             </View>
         </Modal>
-    ) : null
+    )
 }
 
 export default ModalView

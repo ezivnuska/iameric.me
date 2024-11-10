@@ -1,17 +1,21 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { loadImages } from '@utils/images'
 
 const initialState = {
     images: [],
+    imagesModals: [],
     error: null,
     imagesLoaded: false,
     imagesLoading: false,
     uploading: false,
     addImage: () => {},
     clearImages: () => {},
+    clearImagesModals: () => {},
+    closeImagesModal: () => {},
     removeImage: () => {},
     setImages: () => {},
+    setImagesModal: () => {},
     setImagesLoading: () => {},
     setUploading: () => {},
     updateImage: () => {},
@@ -29,7 +33,7 @@ export const useImages = () => {
 
 export const ImagesContextProvider = props => {
     
-    const { user } = useApp()
+    const { user } = useUser()
     const [state, dispatch] = useReducer(reducer, initialState)
     
     useEffect(() => {
@@ -55,12 +59,21 @@ export const ImagesContextProvider = props => {
         clearImages: () => {
             dispatch({ type: 'RESET' })
         },
+        clearImagesModals: () => {
+            dispatch({ type: 'CLEAR_IMAGES_MODALS' })
+        },
+        closeImagesModal: () => {
+            dispatch({ type: 'CLOSE_IMAGES_MODAL' })
+        },
         removeImage: payload => {
             dispatch({ type: 'REMOVE_IMAGE', payload })
         },
         setImages: payload => {
             dispatch({ type: 'SET_IMAGES', payload })
             if (!state.imagesLoaded) dispatch({ type: 'SET_IMAGES_LOADED' })
+        },
+        setImagesModal: (type, data) => {
+            dispatch({ type: 'SET_IMAGES_MODAL', payload: { type, data } })
         },
         setImagesLoading: payload => {
             dispatch({ type: 'SET_IMAGES_LOADING', payload })
@@ -79,9 +92,10 @@ export const ImagesContextProvider = props => {
                 ...state,
                 ...actions,
                 getImage,
+                imagesModal: state.imagesModals[state.imagesModals.length - 1],
             }}
         >
-            {props.children}
+            {state.imagesLoaded && props.children}
         </ImagesContext.Provider>
     )
 }
@@ -112,6 +126,27 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 images: payload,
+            }
+            break
+        case 'SET_IMAGES_MODAL':
+            return {
+                ...state,
+                imagesModals: [
+                    ...state.imagesModals,
+                    payload,
+                ],
+            }
+            break
+        case 'CLEAR_IMAGES_MODALS':
+            return {
+                ...state,
+                imagesModals: [],
+            }
+            break
+        case 'CLOSE_IMAGES_MODAL':
+            return {
+                ...state,
+                imagesModals: state.imagesModals.slice(0, state.imagesModals.length - 1),
             }
             break
         case 'ADD_IMAGE':

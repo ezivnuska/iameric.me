@@ -25,6 +25,11 @@ const checkForError = (name, value) => {
                 error = { name, message: 'Please confirm password.' }
             }
             break
+        case 'text':
+            if (!value.length) {
+                error = { name, message: 'Field cannot be blank.' }
+            }
+            break
         default:
             // console.log('No field to validate')
     }

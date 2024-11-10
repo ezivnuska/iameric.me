@@ -7,7 +7,7 @@ import {
 	ActivityIndicator,
 } from '@components'
 import { Camera, FlashMode } from 'expo-camera'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useBips } from '@modules/Bipster'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
@@ -20,7 +20,7 @@ import EXIF from 'exif-js'
 
 export default ({ disabled, onCapture, ...props }) => {
 
-	const { user } = useApp()
+	const { user } = useUser()
 	const { clearModal } = useModal()
 
 	const [ hasPermission, setHasPermission ] = useState(null)

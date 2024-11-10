@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { loadBips } from '@utils/bips'
 import { ActivityIndicator } from '@components'
 
@@ -31,7 +31,7 @@ export const useBips = () => {
 
 export const BipContextProvider = props => {
     
-    const { user } = useApp()
+    const { user } = useUser()
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const initBips = async () => {

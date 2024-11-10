@@ -1,8 +1,10 @@
 // common
 import ActivityIndicator from './ActivityIndicator'
+import AddCaptionButton from './AddCaptionButton'
 import AddressView from './AddressView'
 import Cabinet from './Cabinet'
 import Checkbox from './Checkbox'
+import ImageContainer from './ImageContainer'
 import Counter from './Counter'
 import FatButtonNav from './FatButtonNav'
 import Form from './Form'
@@ -16,6 +18,8 @@ import ImageLoader from './ImageLoader'
 import InfoMarker from './InfoMarker'
 import LoadingView from './LoadingView'
 import ModalHeader from './ModalHeader'
+import ProfileImage from './ProfileImage'
+import SetAvatarButton from './SetAvatarButton'
 import Slider from './Slider'
 import SimpleButton from './SimpleButton'
 import SocketDisplay from './SocketDisplay'
@@ -27,9 +31,11 @@ import Time from './Time'
 
 export {
     ActivityIndicator,
+    AddCaptionButton,
     AddressView,
     Cabinet,
     Checkbox,
+    ImageContainer,
     Counter,
     FatButtonNav,
     Form,
@@ -43,6 +49,8 @@ export {
     InfoMarker,
     LoadingView,
     ModalHeader,
+    ProfileImage,
+    SetAvatarButton,
     Slider,
     SimpleButton,
     SocketDisplay,

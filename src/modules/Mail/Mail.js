@@ -5,7 +5,7 @@ import {
     MailHeader,
     MessageList,
 } from './components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useMail } from '@mail'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
@@ -13,7 +13,7 @@ import { deleteMessageWithId } from '@utils/mail'
 
 export default () => {
 
-    const { user } = useApp()
+    const { user } = useUser()
 
     const {
         addMessage,

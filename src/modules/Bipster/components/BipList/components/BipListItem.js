@@ -10,7 +10,7 @@ import {
     ThumbList,
     Time,
 } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useBips } from '@modules/Bipster'
 import { useSocket } from '@socket'
 import { getBipImages } from '@utils/images'
@@ -19,7 +19,7 @@ import { getAddress } from '@utils/map'
 
 export default ({ item, onDeleted, onPressed, current = false }) => {
 
-    const { user } = useApp()
+    const { user } = useUser()
     const { setBipImages } = useBips()
     const { socket } = useSocket()
 

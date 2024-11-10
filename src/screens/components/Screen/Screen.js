@@ -4,12 +4,12 @@ import {
     View,
 } from 'react-native'
 import { Footer } from './components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useModal } from '@modal'
 
 export default Screen = ({ title, children, secure = false, ...props }) => {
 
-    const { user } = useApp()
+    const { user } = useUser()
     const { clearModal } = useModal()
 
     const authorized = useMemo(() => (!secure || user !== null), [secure, user])

@@ -7,8 +7,6 @@ import Icon from 'react-native-vector-icons/Ionicons'
 const IconButton = ({ disabled, name, onPress, color = null, size = 18, ...props }) => {
 
     const { theme } = useApp()
-    
-    const iconColor = color || theme?.colors.textDefault
 
     return (
         <Pressable
@@ -27,7 +25,7 @@ const IconButton = ({ disabled, name, onPress, color = null, size = 18, ...props
             <Icon
                 name={name}
                 size={size}
-                color={disabled ? 'tomato' : iconColor}
+                color={color || theme?.colors.textDefault}
             />
         </Pressable>
     )

@@ -29,6 +29,7 @@ export const ModalContextProvider = props => {
 
     const actions = useMemo(() => ({
         setModal: (type, data) => {
+            console.log('type, data', type, data)
             dispatch({
                 type: 'SET_MODAL',
                 payload: { data, type },
@@ -66,8 +67,6 @@ const reducer = (state, action) => {
         case 'SET_MODAL':
             return {
                 ...state,
-                type: payload?.type,
-                data: payload?.data,
                 modals: [
                     ...state.modals,
                     payload,

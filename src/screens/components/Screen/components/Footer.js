@@ -7,14 +7,14 @@ import {
     IconButton,
     ThemedText,
 } from '@components'
-import { useApp } from '@app'
-import { useModal } from '@modal'
+import { useUser } from '@user'
+import { useModal } from '@modal/ModalContext'
 import { useSocket } from '@socket'
 import { navigate } from '@utils/navigation'
 
 export default () => {
 
-    const { user } = useApp()
+    const { user } = useUser()
     const { setModal } = useModal()
     const { connections } = useSocket()
 
@@ -29,7 +29,10 @@ export default () => {
             }}
         >
             <Pressable
-                onPress={() => setModal('SOCKETS')}
+                onPress={() => {
+                    console.log('setting SOCKETS modal')
+                    setModal('SOCKETS')
+                }}
                 style={{ flexGrow: 0 }}
             >
                 <ThemedText color='#777'>

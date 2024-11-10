@@ -7,7 +7,7 @@ import {
     ThemedText,
 } from '@components'
 import EXIF from 'exif-js'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useModal } from '@modal'
 import { useImages } from '@images'
 import {
@@ -21,10 +21,14 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 const ImagePicker = ({ avatar = false }) => {
 
+    // const {
+    //     user,
+    //     setProfileImage,
+    // } = useApp()
     const {
         user,
         setProfileImage,
-    } = useApp()
+    } = useUser()
 
     const {
         addImage,

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
 import { loadMessages } from '@utils/mail'
-import { useApp } from '@app'
+import { useUser } from '@user'
 
 const initialState = {
     messages: [],
@@ -26,7 +26,7 @@ export const useMail = () => {
 
 export const MailContextProvider = props => {
 
-    const { user } = useApp()
+    const { user } = useUser()
     
     const [state, dispatch] = useReducer(reducer, initialState)
 

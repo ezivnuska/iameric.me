@@ -157,6 +157,7 @@ const reducer = (state, action) => {
             }
             break
         case 'INIT_FORM':
+            console.log('initForm', payload)
             return {
                 ...state,
                 formFields: payload,

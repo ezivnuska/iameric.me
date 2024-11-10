@@ -15,6 +15,7 @@ import {
 	ThemedText,
 } from '@components'
 import { useApp } from '@app'
+import { useUser } from '@user'
 import { useBips } from '@modules/Bipster'
 import { useModal } from '@modal'
 import {
@@ -26,7 +27,8 @@ import EXIF from 'exif-js'
 
 export default () => {
 
-  const { theme, user } = useApp()
+  const { theme } = useApp()
+  const { user } = useUser()
   const { addBip } = useBips()
   const { clearModal, closeModal } = useModal()
 

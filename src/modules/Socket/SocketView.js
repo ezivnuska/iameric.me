@@ -3,9 +3,11 @@ import { View } from 'react-native'
 import { ThemedText } from '@components'
 import { useSocket } from './SocketContext'
 import { useApp } from '@app'
+import { useUser } from '@user'
 
 export default () => {
-    const { user, theme } = useApp()
+    const { theme } = useApp()
+    const { user } = useUser()
     const {
         connections,
         socket,

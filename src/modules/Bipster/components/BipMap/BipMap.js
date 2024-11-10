@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { BipMarker } from './components'
 import { Map } from '@vis.gl/react-google-maps'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useBips } from '@modules/Bipster'
 import { useNotification } from '@notification'
 import { loadBips } from '@utils/bips'
 
 export default ({ onBipSelected = null, currentIndex = null }) => {
 
-    const { user } = useApp()
+    const { user } = useUser()
     const {
         bips,
         bipsLoading,

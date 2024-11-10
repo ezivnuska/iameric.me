@@ -11,14 +11,14 @@ import {
 } from './utils'
 import { useForm } from '../FormContext'
 import { navigate } from '@utils/navigation'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useSocket } from '@socket'
 
 const DestroyForm = ({ onCancel }) => {
 
     const initialState = { username: '' }
 
-    const { user } = useApp()
+    const { user } = useUser()
 
     const {
         clearForm,

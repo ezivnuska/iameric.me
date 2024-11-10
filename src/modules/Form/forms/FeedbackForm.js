@@ -5,7 +5,7 @@ import {
     FormHeader,
     SimpleButton,
 } from '@components'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useForm } from '@form'
 import { useForum } from '@forum'
 import { useModal } from '@modal'
@@ -20,7 +20,7 @@ const FeedbackForm = ({ data }) => {
 
     const initialState = { text: '' }
 
-    const { user } = useApp()
+    const { user } = useUser()
     const { socket } = useSocket()
 
     const {

@@ -10,7 +10,7 @@ import {
     ThemedText,
 } from '@components'
 import { BipMap } from '@modules'
-import { useApp } from '@app'
+import { useUser } from '@user'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signin, signout } from '@utils/auth'
@@ -19,7 +19,7 @@ import { cleanStorage, setItem, storeToken } from '@utils/storage'
 export default props => {
     const { params } = props.route
 
-    const { reset, user, setUser } = useApp()
+    const { reset, user, setUser } = useUser()
     const { clearModal, setModal } = useModal()
     const { notifySocket } = useSocket()
 

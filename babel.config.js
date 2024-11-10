@@ -55,6 +55,7 @@ module.exports = {
           '@screens':       './src/screens',
           '@sounds':        './sounds',
           '@styles':        './src/styles',
+          '@user':          './src/modules/User',
           '@utils':         './src/utils',
         },
       },
