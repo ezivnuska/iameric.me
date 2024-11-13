@@ -33,44 +33,18 @@ const FormField = ({
                 marginBottom: 10,
             }}
         >
-            <View
-                style={{
-                    flexGrow: 0,
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                }}
-            >
-            
-                <View style={{ flexGrow: 1 }}>
-
-                    {label && (
-                        <ThemedText
-                            style={{
-                                flexGrow: 0,
-                                color: theme?.colors.inputLabel,
-                            }}
-                        >
-                            {label}
-                        </ThemedText>
-                    )}
-
-                </View>
-
-                <View style={{ flexGrow: 0 }}>
-                    <Text
-                        style={{
-                            color: error ? '#f00' : dirty ? '#00f' : '#ccc',
-                            marginTop: 2,
-                            fontSize: 12,
-                            lineHeight: 16,
-                            textAlign: 'right',
-                        }}
-                    >
-                        {required ? error && dirty ? error : `*required` : ' '}
-                    </Text>
-                </View>
-
-            </View>
+            {label && (
+                <ThemedText
+                    bold
+                    size={18}
+                    style={{
+                        flexGrow: 0,
+                        color: theme?.colors.inputLabel,
+                    }}
+                >
+                    {label}
+                </ThemedText>
+            )}
 
             <View
                 style={{
@@ -95,7 +69,7 @@ const FormField = ({
                         onChangeText={onChange}
                         rows={multiline ? 4 : 1}
                         style={{
-                            paddingHorizontal: 5,
+                            paddingHorizontal: 10,
                             paddingVertical: 5,
                             color: focused ? theme?.colors.inputTextFocused : theme?.colors.inputText,
                             background: 'transparent',
@@ -105,11 +79,26 @@ const FormField = ({
                             height: multiline ? 100 : 40,
                             flexWrap: 'wrap',
                             textAlignVertical: 'top',
+                            backgroundColor: '#f7f7f7',
+                            // borderTopLeftRadius: 10,
+                            // borderTopRightRadius: 10,
                         }}
                     />
                 </View>
 
             </View>
+            
+            <Text
+                style={{
+                    color: error ? '#f00' : dirty ? '#00f' : '#ccc',
+                    marginTop: 2,
+                    fontSize: 14,
+                    lineHeight: 18,
+                    textAlign: 'right',
+                }}
+            >
+                {required ? error && dirty ? error : `*required` : ' '}
+            </Text>
 
         </View>
     )

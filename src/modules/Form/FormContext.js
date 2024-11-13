@@ -80,12 +80,14 @@ export const FormContextProvider = props => {
         },
         getFocus: payload => state.focused === payload,
         initForm: payload => {
+            const fields = {
+                ...payload,
+                ...state.formFields,
+            }
+            console.log('init form', fields)
             dispatch({
                 type: 'INIT_FORM',
-                payload: {
-                    ...payload,
-                    ...state.formFields,
-                },
+                payload: fields,
             })
         },
         markDirty: async payload => {
@@ -157,11 +159,11 @@ const reducer = (state, action) => {
             }
             break
         case 'INIT_FORM':
-            console.log('initForm', payload)
             return {
                 ...state,
                 formFields: payload,
-                dirtyFields: Object.keys(state.formFields),
+                dirtyFields: [],
+                // dirtyFields: Object.keys(state.formFields),
                 formReady: true,
             }
             break

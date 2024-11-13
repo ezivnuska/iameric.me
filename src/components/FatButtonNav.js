@@ -42,7 +42,7 @@ const FatButton = ({ label, size, onPress }) => (
     </Pressable>
 )
 
-const FatButtonNav = ({ onButtonPressed, numCols = 2 }) => {
+const FatButtonNav = ({ navigateTo, numCols = 2 }) => {
 
     const [maxWidth, setMaxWidth] = useState(null)
     const buttonSize = useMemo(() => maxWidth && maxWidth / numCols, [maxWidth])
@@ -67,40 +67,40 @@ const FatButtonNav = ({ onButtonPressed, numCols = 2 }) => {
                         flexWrap: 'wrap',
                     }}
                 >
-                    <FatButton
+                    {/* <FatButton
                         label='Bips'
                         size={buttonSize}
-                        onPress={() => onButtonPressed('Bips')}
-                    />
+                        onPress={() => navigateTo('Bips')}
+                    /> */}
 
                     <FatButton
                         label='Work'
                         size={buttonSize}
-                        onPress={() => onButtonPressed('Work')}
+                        onPress={() => navigateTo('Work')}
                     />
 
                     <FatButton
                         label='Play'
                         size={buttonSize}
-                        onPress={() => onButtonPressed('Play')}
+                        onPress={() => navigateTo('Play')}
                     />
 
                     <FatButton
                         label='Simple'
                         size={buttonSize}
-                        onPress={() => onButtonPressed('Simple')}
+                        onPress={() => navigateTo('Simple')}
                     />
 
                     <FatButton
                         label='Forum'
                         size={buttonSize}
-                        onPress={() => onButtonPressed('Forum')}
+                        onPress={() => navigateTo('Forum')}
                     />
 
                     <FatButton
                         label='Feed'
                         size={buttonSize}
-                        onPress={() => onButtonPressed('Feed')}
+                        onPress={() => navigateTo('Feed')}
                     />
 
                 </View>

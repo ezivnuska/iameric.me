@@ -3,15 +3,17 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { Form } from '@components'
-// import { FormContextProvider } from '@modules/Form'
+import {
+    Form,
+    ModalHeader,
+} from '@components'
 import Modal from 'react-native-modal'
 
 const FeedModal = ({ modal, onCancel, onSubmit }) => {
 
     const fields = [
         {
-            label: 'New Post',
+            // label: 'New Post',
             name: 'text',
             placeholder: 'say something...',
             multiline: true,
@@ -54,17 +56,21 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
                         width: '100%',
                         maxWidth: 400,
                         marginHorizontal: 'auto',
+                        backgroundColor: '#fff',
                         zIndex: 100,
                     }}
                 >
-                    {/* <FormContextProvider> */}
-                        <Form
-                            title='New Post'
-                            fields={fields}
-                            onCancel={onCancel}
-                            onSubmit={onSubmit}
-                        />
-                    {/* </FormContextProvider> */}
+                    <ModalHeader
+                        title='Create Post'
+                        onClose={onCancel}
+                    />
+
+                    <Form
+                        // title='New Post'
+                        fields={fields}
+                        onCancel={onCancel}
+                        onSubmit={onSubmit}
+                    />
 
                 </View>
             </View>

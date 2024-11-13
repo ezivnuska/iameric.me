@@ -131,13 +131,6 @@ export const SocketContextProvider = ({ children }) => {
         dispatch({ type: 'SOCKET_LOADED' })
     }, [])
 
-    // useEffect(() => {
-    //     if (user) {
-    //         socket.emit('connection_details', user)
-    //         addNotification(`you are signed in as ${user.username}`)
-    //     }
-    // }, [user])
-
     const actions = useMemo(() => ({
         notifySocket: async (eventName, ...args) => {
             socket.emit(eventName, ...args)
@@ -164,7 +157,6 @@ export const SocketContextProvider = ({ children }) => {
 
 const reducer = (state, action) => {
     const { payload, type } = action
-    // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
         case 'SOCKET_LOADED':
             return { ...state, socketLoaded: true }; break

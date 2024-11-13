@@ -1,11 +1,11 @@
 import React from 'react'
 import { View } from 'react-native'
 import { ThemedText } from '@components'
-import { useSocket } from './SocketContext'
+import { useSocket } from '.'
 import { useApp } from '@app'
 import { useUser } from '@user'
 
-export default () => {
+const SocketView = () => {
     const { theme } = useApp()
     const { user } = useUser()
     const {
@@ -106,3 +106,5 @@ export default () => {
         </View>
     )
 }
+
+export default SocketView

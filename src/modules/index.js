@@ -1,5 +1,6 @@
-
+import Auth from './Auth'
 import Bipster from './Bipster'
+import Caption from './Caption'
 import Contact from './Contact'
 import Contacts from './Contacts'
 import Feed from './Feed'
@@ -12,12 +13,15 @@ import Modal from './Modal'
 import Notification from './Notification'
 import Play from './Play'
 import Resume from './Resume'
+import Settings from './Settings'
 import Simple from './Simple'
 import Socket from './Socket'
 import User from './User'
 
 export {
+    Auth,
     Bipster,
+    Caption,
     Contact,
     Contacts,
     Feed,
@@ -30,6 +34,7 @@ export {
     Notification,
     Play,
     Resume,
+    Settings,
     Socket,
     Simple,
     User,

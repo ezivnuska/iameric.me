@@ -12,6 +12,7 @@ import FormField from './Form/components/FormField'
 import FormHeader from './Form/components/FormHeader'
 import Heading from './Heading'
 import IconButton from './IconButton'
+import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
 import ImageList from './ImageList'
 import ImageLoader from './ImageLoader'
@@ -28,6 +29,7 @@ import Switch from './Switch'
 import ThemedText from './ThemedText'
 import ThumbList from './ThumbList'
 import Time from './Time'
+import UserHeader from './UserHeader'
 
 export {
     ActivityIndicator,
@@ -43,6 +45,7 @@ export {
     FormHeader,
     Heading,
     IconButton,
+    IconButtonLarge,
     ImageClone,
     ImageList,
     ImageLoader,
@@ -59,4 +62,5 @@ export {
     ThemedText,
     ThumbList,
     Time,
+    UserHeader,
 }

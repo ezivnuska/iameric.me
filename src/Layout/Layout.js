@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import {
     SafeAreaView,
@@ -17,13 +17,13 @@ import { PaperProvider } from 'react-native-paper'
 const Layout = () => {
 
     const {
+        currentRoute,
+        setCurrentRoute,
         dims,
         theme,
     } = useApp()
 
     const { user } = useUser()
-
-    const [currentRoute, setCurrentRoute] = useState(null)
 
     return (
         <SafeAreaView

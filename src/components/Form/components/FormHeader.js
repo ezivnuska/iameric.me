@@ -29,7 +29,7 @@ const FormHeader = ({ title, close = null }) => {
         >
             <ThemedText
                 bold
-                size={20}
+                size={24}
             >
                 {title}
             </ThemedText>

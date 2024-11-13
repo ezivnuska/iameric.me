@@ -35,7 +35,7 @@ const Heading = ({ title, children = null, onBack = null }) => {
                     >
                         <Icon
                             name='chevron-back-sharp'
-                            size={18}
+                            size={36}
                             color={theme?.colors.textDefault || 'tomato'}
                         />
                     </Pressable>
@@ -43,7 +43,7 @@ const Heading = ({ title, children = null, onBack = null }) => {
 
                 <ThemedText
                     bold
-                    size={20}
+                    size={36}
                     color='tomato'
                     style={{ flexGrow: 1 }}
                 >

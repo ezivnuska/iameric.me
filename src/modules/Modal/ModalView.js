@@ -4,17 +4,43 @@ import {
     ScrollView,
     View,
 } from 'react-native'
-import ModalFactory from './ModalFactory'
+import { ModalHeader } from '@components'
+import {
+    Auth,
+    Caption,
+    Settings,
+    Socket,
+} from '@modules'
+import FormFactory from '@form'
 import Modal from 'react-native-modal'
-import { useApp } from '@app'
 import { useModal } from '@modal'
 
 const ModalView = () => {
     
     const { closeModal, modal } = useModal()
+    
+    const renderModalContent = () => {
+        const {type, data } = modal
+        switch(type) {
+            case 'AUTH': return <Auth />; break
+            case 'CAPTION': return <Caption data={data} />; break
+            case 'SETTINGS': return <Settings />; break
+            case 'SOCKETS': return <Socket />; break
+            default: return <FormFactory modal={modal} />
+        }
+    }
 
-    // const isCamera = useMemo(() => (modal && modal.type === 'CAPTURE'), [modal])
-
+    const renderModalHeader = type => {
+        let title
+        switch(type) {
+            case 'AUTH': title = 'Verify'; break
+            case 'CAPTION': title = 'Add/Edit Caption'; break
+            case 'SETTINGS': title = 'Settings'; break
+            case 'SOCKETS': title = 'Sockets'; break
+            default: title = ''
+        }
+        return <ModalHeader title={title} onClose={closeModal} />
+    }
     return (
         <Modal
             isVisible={modal !== undefined}
@@ -52,12 +78,20 @@ const ModalView = () => {
                         width: '100%',
                         maxWidth: 400,
                         marginHorizontal: 'auto',
+                        backgroundColor: '#fff',
                         zIndex: 100,
                     }}
                 >
-                    {modal && (
-                        <ModalFactory modal={modal} />
-                    )}
+                    {modal && renderModalHeader(modal.type)}
+                    <View
+                        style={{
+                            flex: 1,
+                            paddingBottom: 10,
+                            paddingHorizontal: 10,
+                        }}
+                    >
+                        {modal && renderModalContent(modal)}
+                    </View>
                 </View>
             </View>
         </Modal>

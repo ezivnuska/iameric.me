@@ -1,4 +1,4 @@
-import AuthForm from './AuthForm'
+// import AuthForm from '../../Auth/AuthView'
 import CaptionForm from './CaptionForm'
 // import DestroyForm from './DestroyForm'
 // import ImageForm from './ImageForm/ImageForm'
@@ -6,7 +6,7 @@ import MessageForm from './MessageForm'
 import SettingsForm from './SettingsForm'
 
 export {
-    AuthForm,
+    // AuthForm,
     CaptionForm,
     // DestroyForm,
     // ImageForm,

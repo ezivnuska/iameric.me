@@ -10,7 +10,7 @@ import { useForm } from '@form'
 import { useMail } from '@mail'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
-import { getFields, validateFields } from './utils'
+import { getFields, validateFields } from '../../Auth/utils'
 
 const MessageForm = ({ data }) => {
 

@@ -3,7 +3,6 @@ import ImageLoader from './ImageLoader'
 import ImageUploader from './ImageUploader'
 import Images from './Images'
 import ImagesModal from './ImagesModal'
-import UserHeader from './UserHeader'
 
 import {
     ImagesContextProvider,
@@ -19,5 +18,4 @@ export {
     ImagesContextProvider,
     ImagesModal,
     useImages,
-    UserHeader,
 }

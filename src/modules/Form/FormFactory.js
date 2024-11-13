@@ -3,15 +3,15 @@ import {
     // ScrollView,
     View,
 } from 'react-native'
+// import {
+//     SocketDisplay,
+// } from '@components'
 import {
-    SocketDisplay,
-} from '@components'
-import {
-    AuthForm,
-    CaptionForm,
+    // AuthForm,
+    // CaptionForm,
     ImageForm,
     MessageForm,
-    SettingsForm,
+    // SettingsForm,
 } from './forms'
 import {
     BipDetail,
@@ -23,8 +23,8 @@ const FormFactory = ({ modal }) => {
     const renderFormContent = () => {
         const { type, data } = modal
         switch(type) {
-            case 'AUTH': return <AuthForm />; break
-            case 'CAPTION': return <CaptionForm data={data} />; break
+            // case 'AUTH': return <AuthForm />; break
+            // case 'CAPTION': return <CaptionForm data={data} />; break
             case 'CAPTURE': return <CameraView />; break
             case 'BIP': return <BipDetail data={data} />; break
             // case 'DESTROY': return <DestroyForm />; break
@@ -32,13 +32,14 @@ const FormFactory = ({ modal }) => {
             // case 'FEEDBACK': return <FeedbackForm data={data} />; break
             case 'IMAGE': return <ImageForm data={data} />; break
             case 'MESSAGE': return <MessageForm data={data} />; break
-            case 'SETTINGS': return <SettingsForm />; break
+            // case 'SETTINGS': return <SettingsForm />; break
             // case 'SHOWCASE': return <ImageLoader data={data} />; break
-            case 'SOCKETS': return <SocketDisplay />; break
+            // case 'SOCKETS': return <SocketDisplay />; break
             default: return null
         }
     }
     
+    return renderFormContent()
     return (
         <View
             style={{

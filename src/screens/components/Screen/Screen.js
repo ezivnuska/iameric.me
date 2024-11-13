@@ -4,29 +4,24 @@ import {
     View,
 } from 'react-native'
 import { Footer } from './components'
+import { useApp } from '@app'
 import { useUser } from '@user'
-import { useModal } from '@modal'
 
 export default Screen = ({ title, children, secure = false, ...props }) => {
 
+    const { setAuthRoute } = useApp()
     const { user } = useUser()
-    const { clearModal } = useModal()
 
-    const authorized = useMemo(() => (!secure || user !== null), [secure, user])
+    const authorized = useMemo(() => (!secure || user !== null), [user, secure])
+    const routeName = useMemo(() => props.route.name, [props])
 
-    const navigateHome = () => {
-        clearModal()
-        console.log('not authorized. going home.')
-        props.navigation.navigate('Home')
-    }
 
     useEffect(() => {
-        if (!authorized) navigateHome()
-    }, [])
-
-    useEffect(() => {
-        if (!authorized) navigateHome()
-    }, [user])
+        if (!authorized) {
+            setAuthRoute(props.route.name)
+            props.navigation.navigate('Home')
+        }
+    }, [routeName])
 
     if (!authorized) {
         console.log('not authorized')

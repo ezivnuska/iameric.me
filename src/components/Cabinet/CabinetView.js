@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import {
     Pressable,
+    Text,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ children, closed = true, title = null }) => {
+export default ({ children, closed = true, title = null, color = 'tomato' }) => {
 
     const { theme } = useApp()
     
@@ -17,44 +17,42 @@ export default ({ children, closed = true, title = null }) => {
         <View
             style={{
                 background: '#eee',
-                marginVertical: 3,
                 borderRadius: 10,
                 overflow: 'hidden',
-                // borderBottomLeftRadius: 10,
-                // borderBottomRightRadius: 10,
             }}
         >
 
-            <View
+            <Pressable
+                onPress={() => setOpen(!open)}
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'space-between',
-                    alignContent: 'center',
-                    paddingHorizontal: 10,
-                    paddingVertical: 5,
-                    background: '#ccc',
+                    alignItems: 'center',
+                    paddingLeft: 20,
+                    paddingRight: 10,
+                    background: open ? 'rgba(255, 99, 71, 0.3)' : color,
+                    height: 40,
                 }}
             >
-                <Pressable
-                    onPress={() => setOpen(!open)}
-                    disabled={open}
-                    style={{ flexGrow: 1 }}
+                <Text
+                    style={{
+                        color: open ? color : '#fff',
+                        fontSize: 18,
+                        lineHeight: 40,
+                        letterSpacing: 0.5,
+                        fontWeight: 700,
+                    }}
                 >
-                    {title && <ThemedText bold size={18}>{title}</ThemedText>}
-                </Pressable>
+                    {title}
+                </Text>
 
-                <Pressable
-                    onPress={() => setOpen(!open)}
-                    style={{ flexGrow: 0 }}
-                >
-                    <Icon
-                        name={open ? 'chevron-up' : 'chevron-down'}
-                        size={24}
-                        color={theme?.colors.textDefault}
-                    />
-                </Pressable>
+                <Icon
+                    name={open ? 'chevron-up' : 'chevron-down'}
+                    size={24}
+                    color={'#fff' || theme?.colors.textDefault}
+                />
 
-            </View>
+            </Pressable>
             
             {open && <View style={{ padding: 10 }}>{children}</View>}
 

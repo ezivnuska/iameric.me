@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import {
-    IconButton,
+    IconButtonLarge,
     ThemedText,
 } from '@components'
 
@@ -15,14 +15,14 @@ const ForumHeader = ({ setModal }) => (
             marginBottom: 10,
         }}
     >
-        <ThemedText bold size={20}>
+        <ThemedText bold size={40}>
             Forum
         </ThemedText>
 
-        <IconButton
-            name='add-circle-outline'
+        <IconButtonLarge
+            name='add'
             onPress={setModal}
-            size={22}
+            size={36}
         />
 
     </View>

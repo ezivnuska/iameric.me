@@ -8,7 +8,7 @@ import {
 } from '@components'
 import {
     destroy,
-} from './utils'
+} from '../../Auth/utils'
 import { useForm } from '../FormContext'
 import { navigate } from '@utils/navigation'
 import { useUser } from '@user'

@@ -1,21 +1,16 @@
-import React, { useState } from'react'
+import React from'react'
 import { View } from'react-native'
-import {
-    DestroyForm,
-} from '.'
 import {
     Cabinet,
     Form,
-    FormHeader,
-    Heading,
     SimpleButton,
 } from '@components'
 import { useUser } from '@user'
 import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
-import { destroy } from '../../Auth/utils'
+import { destroy } from './utils'
 
-const SettingsForm = () => {
+const Settings = () => {
     
     const { user } = useUser()
     const { closeModal } = useModal()
@@ -37,11 +32,6 @@ const SettingsForm = () => {
 
     return (
         <View style={{ flex: 1 }}>
-            
-            <FormHeader
-                title='Settings'
-                close={closeModal}
-            />
 
             <View
                 style={{
@@ -81,4 +71,4 @@ const SettingsForm = () => {
     )
 }
 
-export default SettingsForm
+export default Settings

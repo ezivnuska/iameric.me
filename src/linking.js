@@ -9,12 +9,12 @@ const linking = {
                         path: '/:username',
                     },
                     ContactImages: {
-                        path: '@images',
+                        path: 'images',
                     },
                 },
             },
             Contacts: {
-                path: '@contacts',
+                path: 'contacts',
             },
             Feed: {
                 path: 'feed',

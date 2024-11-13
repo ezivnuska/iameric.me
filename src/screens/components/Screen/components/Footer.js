@@ -1,16 +1,14 @@
 import React from 'react'
+import { View } from 'react-native'
 import {
-    Pressable,
-    View,
-} from 'react-native'
-import {
-    IconButton,
-    ThemedText,
+    IconButtonLarge,
+    SimpleButton,
 } from '@components'
 import { useUser } from '@user'
-import { useModal } from '@modal/ModalContext'
+import { useModal } from '@modal'
 import { useSocket } from '@socket'
-import { navigate } from '@utils/navigation'
+
+const FOOTER_HEIGHT = 100
 
 export default () => {
 
@@ -25,36 +23,23 @@ export default () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingHorizontal: 10,
-                height: 40,
+                height: FOOTER_HEIGHT,
             }}
         >
-            <Pressable
+            <SimpleButton
+                label={`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
                 onPress={() => {
                     console.log('setting SOCKETS modal')
                     setModal('SOCKETS')
                 }}
-                style={{ flexGrow: 0 }}
-            >
-                <ThemedText color='#777'>
-                    {`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
-                </ThemedText>
-            </Pressable>
-
-            {/* <Pressable
-                onPress={() => navigate('Forum')}
-                style={{ flexGrow: 0 }}
-            >
-                <ThemedText color='#777'>
-                    Feedback
-                </ThemedText>
-            </Pressable> */}
+                // style={{ flexGrow: 0 }}
+            />
 
             {user && (
                 <View style={{ flexGrow: 0 }}>
-                    <IconButton
+                    <IconButtonLarge
                         name='settings-sharp'
-                        size={22}
-                        color='#777'
+                        size={FOOTER_HEIGHT / 3}
                         onPress={() => setModal('SETTINGS')}
                     />
                 </View>

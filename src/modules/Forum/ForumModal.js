@@ -3,7 +3,11 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { Form, ThemedText } from '@components'
+import {
+    Form,
+    ModalHeader,
+    ThemedText,
+} from '@components'
 import Modal from 'react-native-modal'
 import { useForum } from '@forum'
 
@@ -56,6 +60,7 @@ const ForumModal = ({ onCancel, onSubmit }) => {
                         width: '100%',
                         maxWidth: 400,
                         marginHorizontal: 'auto',
+                        backgroundColor: '#fff',
                         zIndex: 100,
                     }}
                 >
@@ -75,15 +80,14 @@ const ForumModal = ({ onCancel, onSubmit }) => {
                         </View>
                     )}
                     
-                    <View
-                        style={{
-                            flexGrow: 1,
-                            flexBasis: 'auto',
-                            borderWidth: 1,
-                        }}
-                    >
+                    <ModalHeader
+                        title={(forumModal && forumModal.data) ? 'Respond' : 'Give Feedback'}
+                        onClose={onCancel}
+                    />
+
+                    <View style={{ flexGrow: 1 }}>
                         <Form
-                            title={(forumModal && forumModal.data) ? 'Respond' : 'Give Feedback'}
+                            // title='Form'
                             fields={fields}
                             onCancel={onCancel}
                             onSubmit={onSubmit}

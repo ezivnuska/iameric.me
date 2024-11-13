@@ -19,7 +19,9 @@ const ModalHeader = ({ children, title, onClose = null, ...props }) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    paddingBottom: 5,
+                    paddingVertical: 15,
+                    paddingLeft: 10,
+                    paddingRight: 5,
                 },
                 props.style,
             ]}
@@ -31,7 +33,10 @@ const ModalHeader = ({ children, title, onClose = null, ...props }) => {
                     gap: 10,
                 }}
             >
-                <ThemedText bold size={20}>
+                <ThemedText
+                    bold
+                    size={36}
+                >
                     {title}
                 </ThemedText>
 
@@ -45,7 +50,7 @@ const ModalHeader = ({ children, title, onClose = null, ...props }) => {
             >
                 <Icon
                     name={'close'}
-                    size={24}
+                    size={40}
                     color={onClose !== null ? theme?.colors.textDefault : 'rgba(200, 200, 200, 0.5)'}
                 />
             </Pressable>

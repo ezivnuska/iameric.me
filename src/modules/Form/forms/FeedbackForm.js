@@ -10,7 +10,7 @@ import { useForm } from '@form'
 import { useForum } from '@forum'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
-import { getFields, validateFields } from './utils'
+import { getFields, validateFields } from '../../Auth/utils'
 import { createEntry } from '@utils/forum'
 
 const FeedbackForm = ({ data }) => {

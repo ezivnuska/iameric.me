@@ -3,9 +3,11 @@ import { View } from 'react-native'
 import {
     ImageList,
     ImagesModal,
-    UserHeader,
     useImages,
 } from '.'
+import {
+    UserHeader,
+} from '@components'
 import { useUser } from '@user'
 
 const Images = props => {

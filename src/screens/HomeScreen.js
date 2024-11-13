@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
+import React, { useEffect } from 'react'
+import { View } from 'react-native'
 import { Screen } from './components'
 import {
     FatButtonNav,
-    SimpleButton,
     ThemedText,
 } from '@components'
 import { BipMap } from '@modules'
+import { useApp } from '@app'
 import { useUser } from '@user'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signin, signout } from '@utils/auth'
 import { cleanStorage, setItem, storeToken } from '@utils/storage'
 
-export default props => {
+const HomeScreen = props => {
     const { params } = props.route
 
+    const { authRoute, setAuthRoute } = useApp()
     const { reset, user, setUser } = useUser()
     const { clearModal, setModal } = useModal()
     const { notifySocket } = useSocket()
-
-    const [ authRoute, setAuthRoute ] = useState(null)
 
     const handleSignin = async (email, password) => {
         const response = await signin(email, password)
@@ -54,12 +50,18 @@ export default props => {
     }, [params])
 
     useEffect(() => {
+        if (authRoute) {
+            console.log('AUTHORIZATION NEEDED FOR', authRoute)
+            setModal('AUTH')
+        }
+    }, [authRoute])
+
+    useEffect(() => {
         if (user) {
             if (authRoute) {
-                props.navigation.navigate(authRoute)
+                const routeName = authRoute
                 setAuthRoute(null)
-            } else {
-                // props.navigation.navigate('Bips')
+                props.navigation.navigate(routeName)
             }
         }
     }, [user])
@@ -76,15 +78,6 @@ export default props => {
         props.navigation.navigate('Home')
     }
 
-    const navigateTo = screen => {
-        if (user) {
-            props.navigation.navigate(screen)
-        } else {
-            setAuthRoute(screen)
-            setModal('AUTH')
-        }
-    }
-
     return (
         <Screen {...props}>
             
@@ -95,7 +88,7 @@ export default props => {
             <View style={{ flexGrow: 1 }}>
                 <FatButtonNav
                     numCols={3}
-                    onButtonPressed={navigateTo}
+                    navigateTo={props.navigation.navigate}
                 />
             </View>
 
@@ -118,14 +111,16 @@ const Intro = () => (
             <View style={{ flexGrow: 0, flexDirection: 'row', gap: 5 }}>
                 <ThemedText bold size={18}>I am</ThemedText>
                 <View style={{ flexGrow: 0, flexDirection: 'row' }}>
-                    <ThemedText bold size={18} color='tomato'>Eric</ThemedText>
+                    <ThemedText bold size={18} color='#777'>Eric</ThemedText>
                     <ThemedText bold size={18}>.</ThemedText>
                 </View>
             </View>
 
             <View style={{ flexGrow: 0 }}>
-                <ThemedText size={18}>Welcome to my project.</ThemedText>
+                <ThemedText size={18}>Welcome to my progress.</ThemedText>
             </View>
         </View>
     </View>
 )
+
+export default HomeScreen

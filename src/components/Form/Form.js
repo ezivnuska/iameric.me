@@ -68,15 +68,24 @@ const Form = ({
         if (formReady) {
             
             if (formFields) {
-                const fieldNames = Object.keys(formFields)
-                
-                const dirtyValues = {}
-                fieldNames.map(fieldName => {
-                    const isDirty = getDirty(fieldName)
-                    if (isDirty) dirtyValues[fieldName] = formFields[fieldName]
+                const requiredFieldNames = fields.map(({ name }) => name)
+                const savedFields = Object.keys(formFields)
+                console.log('fields', fields)
+                console.log('requiredFieldNames', requiredFieldNames)
+                console.log('formFields', formFields)
+                console.log('savedFields', savedFields)
+                let values = {}
+                requiredFieldNames.map(fieldName => {
+                    console.log('checking fieldName', fieldName)
+                    values[fieldName] = formFields[fieldName]
+                    // const isDirty = getDirty(fieldName)
+                    // if (isDirty) {
+                    //     console.log('fieldName is dirty', fieldName)
+                    //     dirtyFields[fieldName] = formFields[fieldName]
+                    // }
                 })
-                
-                let error = validateFields(dirtyValues)
+                console.log('dirtyValues', values)
+                let error = validateFields(values)
                 
                 if (error) {
                     const { name, message, index } = error
@@ -154,15 +163,11 @@ const Form = ({
         <View
             style={{
                 flex: 1,
-                paddingVertical: 10,
+                paddingBottom: 10,
                 paddingHorizontal: 10,
-                backgroundColor: '#fff',
             }}
         >
-            <FormHeader
-                title={title}
-                close={onCancel}
-            />
+            {title && <FormHeader title={title} />}
 
             {formReady && renderFields(formFields)}
 

@@ -15,7 +15,7 @@ import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-const HEADER_HEIGHT = 50
+const HEADER_HEIGHT = 100
 
 export default ({ user, route }) => {
 
@@ -23,13 +23,31 @@ export default ({ user, route }) => {
 
     const { setModal } = useModal()
 
-    const renderBrand = () => dims.width < 340 ? 'iam' : 'iameric'
+    const renderBrand = () => user ? (
+        <View
+            style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+            }}
+        >
+            <Pressable onPress={() => navigate('Home')}>
+                <ThemedText bold style={{ fontSize: 50, lineHeight: 60 }}>iam</ThemedText>
+            </Pressable>
+            <Pressable onPress={() => navigate('User', { screen: 'Profile' })}>
+                <ThemedText bold style={{ fontSize: 50, lineHeight: 60 }} color='tomato'>{user.username}</ThemedText>
+            </Pressable>
+        </View>
+    ) : (
+        <Pressable onPress={() => navigate('Home')}>
+            <ThemedText bold style={{ fontSize: 50, lineHeight: 60 }}>iameric</ThemedText>
+        </Pressable>
+    )
 
     return (
         <View
             style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                justifyContent: user ? 'flex-start' : 'space-between',
                 alignItems: 'center',
                 gap: 10,
                 height: HEADER_HEIGHT,
@@ -40,35 +58,26 @@ export default ({ user, route }) => {
                 marginHorizontal: 'auto',
             }}
         >
-            <View style={{ flexGrow: 0 }}>
-
-                <Pressable
-                    onPress={() => navigate('Home')}
-                >
-
-                    <ThemedText bold style={{ fontSize: 24 }}>
-                        {renderBrand()}
-                    </ThemedText>
-
-                </Pressable>
+            <View
+                style={{
+                    flexGrow: 0,
+                    flexShrink: 1,
+                }}
+            >
+                {renderBrand()}
 
             </View>
 
-            <View style={{ flexGrow: 0 }}>
+            <View
+                style={{
+                    flexGrow: 0,
+                    flexShrink: 0,
+                }}
+            >
 
                 {user ? (
-                    <Pressable
-                        onPress={() => navigate('User', { screen: 'Profile' })}
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                        }}
-                    >
-                        <ProfileImage user={user} size={24} />
-
-                        <ThemedText>{user.username}</ThemedText>
-                        
+                    <Pressable onPress={() => navigate('User', { screen: 'Profile' })}>
+                        <ProfileImage user={user} size={40} />
                     </Pressable>
                 ) : (
                     <SimpleButton

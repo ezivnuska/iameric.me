@@ -4,13 +4,15 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
 import {
-    UserHeader,
     UserImages,
     UserModal,
     useUser,
 } from '.'
+import {
+    ThemedText,
+    UserHeader,
+} from '@components'
 // import { ImagesContextProvider } from './UserImages'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'

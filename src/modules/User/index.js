@@ -2,7 +2,6 @@ import UserImageList from './UserImageList'
 import UserImageLoader from './UserImageLoader'
 import UserImageUploader from './UserImageUploader'
 import User from './User'
-import UserHeader from './UserHeader'
 // import UserImages from './UserImages'
 import UserModal from './UserModal'
 
@@ -16,7 +15,6 @@ export default User
 export {
     UserContextProvider,
     UserImageList,
-    UserHeader,
     // UserImages,
     UserImageLoader,
     UserImageUploader,

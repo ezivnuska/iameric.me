@@ -31,9 +31,13 @@ const CombinedDefaultTheme = merge(defaultTheme, light)
 const CombinedDarkTheme = merge(darkTheme, dark)
 
 const initialState = {
-    dark: false,
     appLoaded: false,
+    authRoute: null,
+    currentRoute: null,
+    dark: false,
     theme: CombinedDefaultTheme,
+    setAuthRoute: () => {},
+    setCurrentRoute: () => {},
     toggleTheme: () => {},
 }
 
@@ -77,6 +81,18 @@ export const AppContextProvider = ({ children }) => {
 
     const actions = useMemo(() => ({
         toggleTheme,
+        setAuthRoute: payload => {
+            dispatch({
+                type: 'SET_AUTH_ROUTE',
+                payload,
+            })
+        },
+        setCurrentRoute: payload => {
+            dispatch({
+                type: 'SET_CURRENT_ROUTE',
+                payload,
+            })
+        },
     }), [state, dispatch])
 
     return (
@@ -93,8 +109,8 @@ export const AppContextProvider = ({ children }) => {
 }
 
 const reducer = (state, action) => {
-    
-    switch(action.type) {
+    const { type, payload } = action
+    switch(type) {
         case 'APP_LOADED': return { ...state, appLoaded: true }; break
         case 'TOGGLE_THEME':
             return {
@@ -103,6 +119,18 @@ const reducer = (state, action) => {
                 theme: !state.dark
                 ? CombinedDarkTheme
                 : CombinedDefaultTheme,
+            }
+            break
+        case 'SET_AUTH_ROUTE':
+            return {
+                ...state,
+                authRoute: payload,
+            }
+            break
+        case 'SET_CURRENT_ROUTE':
+            return {
+                ...state,
+                currentRoute: payload,
             }
             break
         default: throw new Error()

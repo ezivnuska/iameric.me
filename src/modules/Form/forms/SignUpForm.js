@@ -10,7 +10,7 @@ import {
     isValidEmail,
     signup,
     validateFields,
-} from './utils'
+} from '../../Auth/utils'
 import { setItem, storeToken } from '@utils/storage'
 import { useApp } from '@app'
 import { useForm } from '../FormContext'
