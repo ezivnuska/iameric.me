@@ -1,5 +1,5 @@
-import CaptionForm from './CaptionForm'
+// import CaptionForm from './CaptionForm_old'
 
-export {
-    CaptionForm,
-}
+// export {
+//     CaptionForm,
+// }

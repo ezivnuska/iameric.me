@@ -8,7 +8,7 @@ import { AppContextProvider, useApp } from '@app'
 import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
 import { ModalContextProvider } from '@modal'
-import { FormContextProvider } from '@form'
+import { FormContextProvider } from './FormContext'
 import { UserContextProvider } from '@user'
 // import { compose as Compose } from '@utils'
 import { GOOGLE_MAPS_API_KEY } from '../config'
@@ -32,13 +32,13 @@ export default () => {
         <AppContextProvider>
             <UserContextProvider>
                 <Container>
-                    <APIProvider
+                    {/* <APIProvider
                         apiKey={apiKey}
                         version='weekly'
                         libraries={['marker', 'geocoding']}
                         onLoad={() => setMapsLoaded(true)}
-                    >
-                        {(mapsLoaded === true) ? (
+                    > */}
+                        {/* {(mapsLoaded === true) ? ( */}
                             <NotificationContextProvider>
                                 <FormContextProvider>
                                     <ModalContextProvider>
@@ -61,8 +61,8 @@ export default () => {
                                     </ModalContextProvider>
                                 </FormContextProvider>
                             </NotificationContextProvider>
-                        ) : <ActivityIndicator />}
-                    </APIProvider>
+                        {/* ) : <ActivityIndicator />} */}
+                    {/* </APIProvider> */}
                 </Container>
             </UserContextProvider>
         </AppContextProvider>

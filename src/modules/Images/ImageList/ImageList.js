@@ -20,7 +20,7 @@ const ImageList = ({ images }) => {
 
     const imageGap = 4
 
-    const numImagesPerRow = 4
+    const numImagesPerRow = 2
     const [maxWidth, setMaxWidth] = useState(null)
     const [imageSize, setImageSize] = useState(null)
 

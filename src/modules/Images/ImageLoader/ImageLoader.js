@@ -2,38 +2,42 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import {
     ActivityIndicator,
-    IconButton,
+    // IconButton,
     ImageContainer,
-    ModalHeader,
-    ThemedText,
+
+    ImageControlPanel,
+    // ModalHeader,
+    // ThemedText,
 } from '@components'
-import { useUser } from '@user'
+// import { useUser } from '@user'
+// import { Caption } from '@modules'
 import {
-    deleteImage,
+    // deleteImage,
     loadImage,
-    setAvatar,
-} from './utils'
-import { useImages } from './ImagesContext'
+    // setAvatar,
+} from '../utils'
+import { useImages } from '../ImagesContext'
+// import { ImageControlPanel } from './components'
 
 const ImageLoader = ({ data }) => {
     
     const {
-        closeImagesModal,
-        imagesLoading,
-        removeImage,
+        // closeImagesModal,
+        // imagesLoading,
+        // removeImage,
         setImagesLoading,
-        setImagesModal,
+        // setImagesModal,
     } = useImages()
 
-    const {
-        setProfileImage,
-        user,
-        userLoading,
-        setUserLoading,
-    } = useUser()
+    // const {
+    //     setProfileImage,
+    //     user,
+    //     userLoading,
+    //     setUserLoading,
+    // } = useUser()
 
     const [image, setImage] = useState(null)
-    const [isProfileImage, setIsProfileImage] = useState(null)
+    // const [isProfileImage, setIsProfileImage] = useState(null)
 
     const init = async id => {
         setImagesLoading(true)
@@ -46,49 +50,49 @@ const ImageLoader = ({ data }) => {
         if (data) init(data._id)
     }, [])
 
-    useEffect(() => {
-        setIsProfileImage(user.profileImage?._id === image?._id)
-    }, [image])
+    // useEffect(() => {
+    //     setIsProfileImage(user.profileImage?._id === image?._id)
+    // }, [image])
     
-    const handleDelete = async () => {
+    // const handleDelete = async () => {
 
-        if (process.env.NODE_ENV === 'development') return alert(`Can't delete in development`)
+    //     if (process.env.NODE_ENV === 'development') return alert(`Can't delete in development`)
 
-        setImagesLoading(true)
-        const deletedImage = await deleteImage(image._id, isProfileImage)
-        setImagesLoading(false)
+    //     setImagesLoading(true)
+    //     const deletedImage = await deleteImage(image._id, isProfileImage)
+    //     setImagesLoading(false)
         
-        if (deletedImage) {
-            removeImage(deletedImage._id)
-            closeImagesModal()
-        } else {
-            console.log('Error deleting image.')   
-        }
-    }
+    //     if (deletedImage) {
+    //         removeImage(deletedImage._id)
+    //         closeImagesModal()
+    //     } else {
+    //         console.log('Error deleting image.')   
+    //     }
+    // }
 
-    const makeAvatar = async () => {
+    // const makeAvatar = async () => {
 
-        setUserLoading(true)
-        const data = await setAvatar(user._id, image._id)
-        setUserLoading(false)
+    //     setUserLoading(true)
+    //     const data = await setAvatar(user._id, image._id)
+    //     setUserLoading(false)
 
-        if (data && data.profileImage) {
-            setProfileImage(data.profileImage)
+    //     if (data && data.profileImage) {
+    //         setProfileImage(data.profileImage)
     
-            setIsProfileImage(true)
-        }
-    }
+    //         setIsProfileImage(true)
+    //     }
+    // }
 
-    const removeAvatar = async () => {
+    // const removeAvatar = async () => {
 
-        setUserLoading(true)
-        await setAvatar(user._id)
-        setUserLoading(false)
+    //     setUserLoading(true)
+    //     await setAvatar(user._id)
+    //     setUserLoading(false)
 
-        setProfileImage(null)
+    //     setProfileImage(null)
 
-        setIsProfileImage(false)
-    }
+    //     setIsProfileImage(false)
+    // }
 
     return (
         <View
@@ -118,7 +122,10 @@ const ImageLoader = ({ data }) => {
 
                 </View>
 
-                <View
+            </View>
+                
+            {image && <ImageControlPanel image={image} />}
+                {/* <View
                     style={{
                         flexGrow: 0,
                         flexShrink: 0,
@@ -144,23 +151,14 @@ const ImageLoader = ({ data }) => {
                 </View>
 
             </View>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
-            >
-                <ThemedText>
-                    {image?.caption || 'Image Preview'}
-                </ThemedText>
+
+            <View style={{ paddingHorizontal: 10 }}>
+                <Caption data={image} />
+            </View> */}
+
+            {/* </View> */}
                 
-                <IconButton
-                    name='create-outline'
-                    onPress={() => setImagesModal('CAPTION', image)}
-                    disabled={!image}
-                    size={20}
-                />
-            </View>
+            {/* {image && <ImageControlPanel image={image} />} */}
         </View>
     )
 }

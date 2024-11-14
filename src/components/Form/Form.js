@@ -69,14 +69,14 @@ const Form = ({
             
             if (formFields) {
                 const requiredFieldNames = fields.map(({ name }) => name)
-                const savedFields = Object.keys(formFields)
-                console.log('fields', fields)
-                console.log('requiredFieldNames', requiredFieldNames)
-                console.log('formFields', formFields)
-                console.log('savedFields', savedFields)
+                // const savedFields = Object.keys(formFields)
+                // console.log('fields', fields)
+                // console.log('requiredFieldNames', requiredFieldNames)
+                // console.log('formFields', formFields)
+                // console.log('savedFields', savedFields)
                 let values = {}
                 requiredFieldNames.map(fieldName => {
-                    console.log('checking fieldName', fieldName)
+                    // console.log('checking fieldName', fieldName)
                     values[fieldName] = formFields[fieldName]
                     // const isDirty = getDirty(fieldName)
                     // if (isDirty) {
@@ -84,7 +84,7 @@ const Form = ({
                     //     dirtyFields[fieldName] = formFields[fieldName]
                     // }
                 })
-                console.log('dirtyValues', values)
+                // console.log('dirtyValues', values)
                 let error = validateFields(values)
                 
                 if (error) {
@@ -128,9 +128,9 @@ const Form = ({
         const response = await onSubmit(formData)
         setFormLoading(false)
 
-        console.log('form response', response)
+        // console.log('form response', response)
         
-        if (!response) console.log('No response from data', formData)
+        if (!response) console.log('formData response', response)
         else if (response.error) {
             console.log(`Form Error: ${response.name}: ${response.message}`)
             setFormError(response)
@@ -165,8 +165,8 @@ const Form = ({
         <View
             style={{
                 flex: 1,
-                paddingBottom: 10,
-                paddingHorizontal: 10,
+                // paddingBottom: 10,
+                // paddingHorizontal: 10,
             }}
         >
             {title && <FormHeader title={title} />}

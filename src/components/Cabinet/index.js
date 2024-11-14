@@ -1,3 +1,3 @@
-import CabinetView from './CabinetView'
+import Cabinet from './Cabinet'
 
-export default CabinetView
+export default Cabinet

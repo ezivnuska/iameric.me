@@ -8,7 +8,7 @@ const ImageListItem = ({ image, size }) => (
         // width={size}
         // height={size}
         source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
-        resizeMode='center'
+        resizeMode='cover'
         style={{
             width: size,//'100%',
             height: size,//'100%',

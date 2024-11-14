@@ -1,10 +1,7 @@
 import React from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
-import { ModalHeader } from '@components'
-import { CaptionForm } from '@forms'
+import { Pressable, ScrollView, View } from 'react-native'
+import { ActivityIndicator, ModalHeader } from '@components'
+import { CaptionForm } from './forms'
 import {
     ImageLoader,
     ImageUploader,
@@ -29,11 +26,35 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
             case 'SHOWCASE':
                 return <ImageLoader data={data} />
                 break
-            case 'CAPTION':
-                return <CaptionForm data={data} onCancel={onCancel} />
-                break
+            // case 'CAPTION':
+            //     return <CaptionForm data={data} onCancel={onCancel} />
+            //     break
             default:
         }
+    }
+
+    const renderModalHeader = () => {
+        const { type, data } = modal
+        let title = null
+        switch (type) {
+            case 'IMAGE_UPLOAD':
+                title = `Upload${uploading ? 'ing' : ''} Image`
+                break
+            case 'SHOWCASE':
+                title = 'Image Detail'
+                break
+            // case 'CAPTION':
+            //     title = 'Add/Edit Caption'
+            //     break
+            default:
+                //
+        }
+        return title ? (
+            <ModalHeader 
+                title={title}
+                onClose={onCancel}
+            />
+        ) : null
     }
 
     return (
@@ -65,7 +86,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                         zIndex: 1,
                     }}
                 />
-
+                
                 <View
                     style={{
                         flex: 1,
@@ -76,14 +97,30 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                         zIndex: 100,
                     }}
                 >
+                    {modal ? (
+                        <View style={{ flex: 1 }}>
 
-                    <ModalHeader 
-                        title={`Upload${uploading ? 'ing' : ''} Image`}
-                        onClose={onCancel}
-                    />
+                            {renderModalHeader()}
 
-                    {modal && renderContent()}
+                            <ScrollView
+                                style={{
+                                    flex: 1,
+                                }}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={{
+                                    flex: 1,
+                                }}
+                            >
+                                {/* <ModalHeader 
+                                    title={`Upload${uploading ? 'ing' : ''} Image`}
+                                    onClose={onCancel}
+                                /> */}
 
+                                {renderContent()}
+                            </ScrollView>
+
+                        </View>
+                    ) : <ActivityIndicator size='medium' />}
                 </View>
             </View>
         </Modal>

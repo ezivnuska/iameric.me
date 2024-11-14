@@ -43,11 +43,11 @@
         "src/modules/Socket/index.js"
       ],
       "@form": [
-        "./src/modules/Form/index.js"
+        "src/FormContext.js"
       ],
-      "@forms": [
-        "./src/modules/Form/forms/index.js"
-      ],
+      // "@forms": [
+      //   "src/modules/Form/forms_old/index.js"
+      // ],
       "@images": [
         "src/modules/Images_old/index.js"
       ],

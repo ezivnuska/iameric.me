@@ -3,6 +3,7 @@ import ActivityIndicator from './ActivityIndicator'
 import AddCaptionButton from './AddCaptionButton'
 import AddressView from './AddressView'
 import Cabinet from './Cabinet'
+import Caption from './Caption'
 import Checkbox from './Checkbox'
 import ImageContainer from './ImageContainer'
 import Counter from './Counter'
@@ -14,6 +15,7 @@ import Heading from './Heading'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
+import ImageControlPanel from './ImageControlPanel'
 import ImageList from './ImageList'
 import ImageLoader from './ImageLoader'
 import InfoMarker from './InfoMarker'
@@ -36,6 +38,7 @@ export {
     AddCaptionButton,
     AddressView,
     Cabinet,
+    Caption,
     Checkbox,
     ImageContainer,
     Counter,
@@ -47,6 +50,7 @@ export {
     IconButton,
     IconButtonLarge,
     ImageClone,
+    ImageControlPanel,
     ImageList,
     ImageLoader,
     InfoMarker,

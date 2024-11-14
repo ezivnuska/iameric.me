@@ -3,15 +3,18 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { CaptionForm } from '@forms'
 import {
     useUser,
     UserImageDisplay,
     UserImageUploader,
 } from '.'
+import { ModalHeader } from '@components'
+import { useImages } from '@images'
 import Modal from 'react-native-modal'
 
 const UserModal = ({ onSubmit = null }) => {
+
+    const { uploading } = useImages()
     const {
         closeUserModal,
         // user,
@@ -28,11 +31,34 @@ const UserModal = ({ onSubmit = null }) => {
             case 'SHOWCASE':
                 return <UserImageDisplay data={data} />
                 break
-            case 'CAPTION':
-                return <CaptionForm data={data} onCancel={onCancel} />
-                break
+            // case 'CAPTION':
+            //     return <CaptionForm data={data} onCancel={onCancel} />
+            //     break
             default:
         }
+    }
+
+    const renderModalHeader = () => {
+        const { type, data } = userModal
+        let title = null
+        switch (type) {
+            case 'IMAGE_UPLOAD':
+                title = `Upload${uploading ? 'ing' : ''} Image`
+                break
+            case 'SHOWCASE':
+                title = 'Showcase!'
+                break
+            // case 'CAPTION':
+            //     return <CaptionForm data={data} onCancel={onCancel} />
+            //     break
+            default:
+        }
+        return (
+            <ModalHeader 
+                title={title}
+                onClose={closeUserModal}
+            />
+        )
     }
 
     return (
@@ -71,9 +97,11 @@ const UserModal = ({ onSubmit = null }) => {
                         width: '100%',
                         maxWidth: 400,
                         marginHorizontal: 'auto',
+                        backgroundColor: '#fff',
                         zIndex: 100,
                     }}
                 >
+                    {userModal && renderModalHeader()}
 
                     {userModal && renderContent()}
 

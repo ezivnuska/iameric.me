@@ -9,7 +9,7 @@ import {
     ImagePicker,
 } from './components'
 import { useForm } from '@form'
-import { useUser } from '../'
+import { useUser } from '..'
 
 const UserImageUploader = ({ data, removeImage, source = null }) => {
 
@@ -27,11 +27,6 @@ const UserImageUploader = ({ data, removeImage, source = null }) => {
                 paddingHorizontal: 10,
             }}
         >
-
-            <ModalHeader 
-                title={`Upload${uploading ? 'ing' : ''} Image`}
-                onClose={closeUserModal}
-            />
 
             <View
                 style={{

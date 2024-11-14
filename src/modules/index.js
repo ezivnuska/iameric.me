@@ -4,7 +4,7 @@ import Caption from './Caption'
 import Contact from './Contact'
 import Contacts from './Contacts'
 import Feed from './Feed'
-import Form from './Form'
+// import Form from './Form_'
 import Forum from './Forum'
 import Images from './Images'
 import Mail from './Mail'
@@ -25,7 +25,7 @@ export {
     Contact,
     Contacts,
     Feed,
-    Form,
+    // Form,
     Forum,
     Images,
     Mail,

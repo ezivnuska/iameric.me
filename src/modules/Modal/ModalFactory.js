@@ -1,29 +1,12 @@
 import React from 'react'
 import {
-    // ScrollView,
     View,
 } from 'react-native'
-import {
-    // ImageLoader,
-    // SocketDisplay,
-} from '@components'
 import {
     Auth,
     Socket,
 } from '@modules'
 import FormFactory from '@form'
-import {
-    // AuthForm,
-    // CaptionForm,
-    // // DestroyForm,
-    // FeedbackForm,
-    // ImageForm,
-    // MessageForm,
-    // PostForm,
-    // SettingsForm,
-} from '@forms'
-// import { useApp } from '@app'
-// import { useModal } from '@modal'
 import {
     BipDetail,
     CameraView,
@@ -34,10 +17,6 @@ const ModalFactory = ({ modal }) => {
     const { type, data } = modal
 
     console.log('ModalFactory:type/data', type, data)
-
-    // const { dims } = useApp()
-    // const { modal } = useModal()
-    // console.log('type FORM', type)
     
     const renderModalContent = () => {
         switch(type) {

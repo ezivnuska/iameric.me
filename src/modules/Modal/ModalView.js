@@ -21,20 +21,22 @@ const ModalView = () => {
     
     const renderModalContent = () => {
         const {type, data } = modal
+        // console.log('ModalView', type, data)
         switch(type) {
             case 'AUTH': return <Auth />; break
-            case 'CAPTION': return <Caption data={data} />; break
             case 'SETTINGS': return <Settings />; break
             case 'SOCKETS': return <Socket />; break
-            default: return <FormFactory modal={modal} />
+            default: {
+                console.log('Ouch', type)
+                return <FormFactory modal={modal} />
+            }
         }
     }
 
     const renderModalHeader = type => {
         let title
         switch(type) {
-            case 'AUTH': title = 'Verify'; break
-            case 'CAPTION': title = 'Add/Edit Caption'; break
+            case 'AUTH': title = 'Who are You?'; break
             case 'SETTINGS': title = 'Settings'; break
             case 'SOCKETS': title = 'Sockets'; break
             default: title = ''
@@ -72,27 +74,29 @@ const ModalView = () => {
                     }}
                 />
 
-                <View
-                    style={{
-                        flex: 1,
-                        width: '100%',
-                        maxWidth: 400,
-                        marginHorizontal: 'auto',
-                        backgroundColor: '#fff',
-                        zIndex: 100,
-                    }}
-                >
-                    {modal && renderModalHeader(modal.type)}
+                {modal && (
                     <View
                         style={{
                             flex: 1,
-                            paddingBottom: 10,
-                            paddingHorizontal: 10,
+                            width: '100%',
+                            maxWidth: 400,
+                            marginHorizontal: 'auto',
+                            backgroundColor: '#fff',
+                            zIndex: 100,
                         }}
                     >
-                        {modal && renderModalContent(modal)}
+                        {renderModalHeader(modal.type)}
+                        <View
+                            style={{
+                                flex: 1,
+                                paddingBottom: 10,
+                                paddingHorizontal: 10,
+                            }}
+                        >
+                            {renderModalContent()}
+                        </View>
                     </View>
-                </View>
+                )}
             </View>
         </Modal>
     )

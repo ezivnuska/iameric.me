@@ -6,11 +6,11 @@ import {
     SimpleButton,
 } from '@components'
 import { useUser } from '@user'
-import { useForm } from '@form'
 import {
     // createPost,
     getFields,
     validateFields,
+    useForm,
 } from '@form'
 
 const Form = ({ initialState, fields, onSubmit, onCancel }) => {

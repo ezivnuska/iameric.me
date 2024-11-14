@@ -1,5 +1,5 @@
 import ImageList from './ImageList'
-import ImageLoader from './ImageLoader'
+import ImageLoader from './ImageLoader/ImageLoader'
 import ImageUploader from './ImageUploader'
 import Images from './Images'
 import ImagesModal from './ImagesModal'

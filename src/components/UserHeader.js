@@ -7,12 +7,16 @@ import {
     IconButtonLarge,
     ThemedText,
 } from '@components'
-import { useApp } from '@app'
+// import { useApp } from '@app'
 import navigationRef from '@utils/navigation'
 
-const UserHeader = () => {
+const UserHeader = ({ route }) => {
 
-    const { currentRoute } = useApp()
+    // const { currentRoute } = useApp()
+
+    // useEffect(() => {
+    //     console.log('route', route)
+    // }, [])
 
     return (
         <View
@@ -27,13 +31,13 @@ const UserHeader = () => {
         >
             <Pressable
                 onPress={() => navigationRef.navigate('Profile')}
-                disabled={currentRoute?.name === 'Profile'}
+                disabled={route.name === 'Profile'}
                 style={{ flexGrow: 0 }}
             >
                 <ThemedText
                     bold
                     size={36}
-                    color={currentRoute?.name === 'Profile' ? '#000' : 'tomato'}
+                    color={route.name === 'Profile' ? '#000' : 'tomato'}
                 >
                     Profile
                 </ThemedText>
@@ -43,7 +47,7 @@ const UserHeader = () => {
                 name='images'
                 size={24}
                 onPress={() => navigationRef.navigate('Images')}
-                disabled={currentRoute?.name === 'Images'}
+                disabled={route.name === 'Images'}
             />
     
         </View>

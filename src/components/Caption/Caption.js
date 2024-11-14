@@ -1,12 +1,15 @@
 import React from 'react'
-import { Form } from '@components'
+import { Cabinet, Form } from '@components'
 import { useForm } from '@form'
 import { useImages } from '@images'
 import { setCaption } from '@utils/images'
 
-const CaptionView = ({ data = {}, onCancel = null }) => {
+const Caption = ({ data = {}, onCancel = null }) => {
 
-    const { updateImage } = useImages()
+    const {
+        updateImage,
+        closeImagesModal,
+    } = useImages()
 
     const {
         clearForm,
@@ -30,27 +33,27 @@ const CaptionView = ({ data = {}, onCancel = null }) => {
         else {
             updateImage(image)
             clearForm()
-            onCancel()
+            closeImagesModal()
             return image
         }
     }
 
     return (
         <Form
-            title='Add/Edit Caption'
+            // title={`${data?.caption ? 'Edit' : 'Add'} Caption`}
             data={data}
             fields={[
                 {
-                    label: 'New Caption',
+                    label: `${data?.caption ? 'Edit' : 'Add'} Caption`,
                     name: 'caption',
                     placeholder: 'new caption...',
                     multiline: false,
                 }
             ]}
-            onCancel={onCancel}
+            onCancel={closeImagesModal}
             onSubmit={handleSubmit}
         />
     )
 }
 
-export default CaptionView
+export default Caption

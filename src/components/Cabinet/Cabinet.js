@@ -7,7 +7,7 @@ import {
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-export default ({ children, closed = true, title = null, color = 'tomato' }) => {
+const Cabinet = ({ children, closed = true, title = null, color = null, transparent = false }) => {
 
     const { theme } = useApp()
     
@@ -16,7 +16,11 @@ export default ({ children, closed = true, title = null, color = 'tomato' }) => 
     return (
         <View
             style={{
-                background: '#eee',
+                backgroundColor: transparent
+                    ? 'transparent'
+                    : color
+                        ? color
+                        : 'tomato',
                 borderRadius: 10,
                 overflow: 'hidden',
             }}
@@ -28,15 +32,23 @@ export default ({ children, closed = true, title = null, color = 'tomato' }) => 
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    paddingLeft: 20,
-                    paddingRight: 10,
-                    background: open ? 'rgba(255, 99, 71, 0.3)' : color,
+                    paddingLeft: transparent ? 0 : 20,
+                    paddingRight: transparent ? 0 : 10,
+                    backgroundColor: transparent
+                        ? 'transparent'
+                        : open
+                            ? 'rgba(255, 99, 71, 0.3)'
+                            : color,
                     height: 40,
                 }}
             >
                 <Text
                     style={{
-                        color: open ? color : '#fff',
+                        color: (color && transparent)
+                            ? color
+                            : open
+                                ? '#000'
+                                : 'tomato',
                         fontSize: 18,
                         lineHeight: 40,
                         letterSpacing: 0.5,
@@ -49,7 +61,8 @@ export default ({ children, closed = true, title = null, color = 'tomato' }) => 
                 <Icon
                     name={open ? 'chevron-up' : 'chevron-down'}
                     size={24}
-                    color={'#fff' || theme?.colors.textDefault}
+                    color={'pink' || theme?.colors.textDefault}
+                    // color={'#fff' || theme?.colors.textDefault}
                 />
 
             </Pressable>
@@ -59,3 +72,5 @@ export default ({ children, closed = true, title = null, color = 'tomato' }) => 
         </View>
     )
 }
+
+export default Cabinet

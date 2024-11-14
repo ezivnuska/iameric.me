@@ -1,10 +1,11 @@
 import React from 'react'
 import { Form } from '@components'
 import { useForm } from '@form'
+import { useUser } from '@user'
 import { useImages } from '@images'
 import { setCaption } from '@utils/images'
 
-const CaptionForm = ({ data }) => {
+const Caption = ({ data }) => {
 
     const initialState = { text: data?.caption || '' }
     
@@ -32,10 +33,10 @@ const CaptionForm = ({ data }) => {
 
     const {
         // imagesModal,
-        clearImagesModals,
-        closeImagesModal,
-        setImagesModal,
-    } = useImages()
+        clearUserModals,
+        closeUserModal,
+        setUserModal,
+    } = useUser()
 
     // const [initialValues, setInitialValues] = useState(null)
 
@@ -108,8 +109,9 @@ const CaptionForm = ({ data }) => {
         else {
             updateImage(image)
             clearForm()
-            clearImagesModals()
-            setImagesModal('SHOWCASE', image)
+            // clearUserModals()
+            closeUserModal()
+            // setUserModal('SHOWCASE', image)
         }
     }
 
@@ -124,11 +126,11 @@ const CaptionForm = ({ data }) => {
                     multiline: false,
                 }
             ]}
-            onCancel={closeImagesModal}
+            onCancel={closeUserModal}
             onSubmit={handleSubmit}
             data={initialState}
         />
     )
 }
 
-export default CaptionForm
+export default Caption

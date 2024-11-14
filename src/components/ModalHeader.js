@@ -40,7 +40,7 @@ const ModalHeader = ({ children, title, onClose = null, ...props }) => {
                     {title}
                 </ThemedText>
 
-                {children && children}
+                {children}
 
             </View>
 

@@ -4,7 +4,7 @@ import { Pressable, View } from 'react-native'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const IconButtonLarge = ({ disabled, name, onPress, color = '#fff', size = 18, ...props }) => {
+const IconButtonLarge = ({ disabled, name, onPress, color = null, size = 18, transparent = false, ...props }) => {
 
     const { theme } = useApp()
 
@@ -22,7 +22,14 @@ const IconButtonLarge = ({ disabled, name, onPress, color = '#fff', size = 18, .
                     width: 40,
                     borderRadius: 10,
                     overflow: 'hidden',
-                    backgroundColor: disabled ? 'rgba(255, 99, 71, 0.3)' : 'tomato',
+                    backgroundColor: transparent
+                        ? 'transparent'
+                        : disabled
+                            ? '#000'
+                            : color
+                                ? color
+                                : 'tomato',
+                                // :'rgba(255, 99, 71, 0.3)'
                 },
                 props.style,
             ]}
@@ -30,7 +37,7 @@ const IconButtonLarge = ({ disabled, name, onPress, color = '#fff', size = 18, .
             <Icon
                 name={name}
                 size={size}
-                color={disabled ? 'tomato' : '#fff'}
+                color={(color && transparent) ? color : '#fff'}
                 style={{
                     paddingLeft: 1,
                     marginHorizontal: 'auto',
