@@ -85,7 +85,12 @@ const ForumModal = ({ onCancel, onSubmit }) => {
                         onClose={onCancel}
                     />
 
-                    <View style={{ flexGrow: 1 }}>
+                    <View
+                        style={{
+                            flexGrow: 1,
+                            paddingHorizontal: 10,
+                        }}
+                    >
                         <Form
                             // title='Form'
                             fields={fields}

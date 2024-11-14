@@ -1,10 +1,8 @@
 import Auth from './Auth'
 import Bipster from './Bipster'
-import Caption from './Caption'
 import Contact from './Contact'
 import Contacts from './Contacts'
 import Feed from './Feed'
-// import Form from './Form_'
 import Forum from './Forum'
 import Images from './Images'
 import Mail from './Mail'
@@ -21,11 +19,9 @@ import User from './User'
 export {
     Auth,
     Bipster,
-    Caption,
     Contact,
     Contacts,
     Feed,
-    // Form,
     Forum,
     Images,
     Mail,

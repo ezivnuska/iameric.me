@@ -1,4 +1,3 @@
-import UserImageDisplay from './UserImageDisplay'
 import UserImageUploader from './UserImageUploader'
 import Profile from './Profile'
 import User from './User'
@@ -14,7 +13,6 @@ export default User
 export {
     Profile,
     UserContextProvider,
-    UserImageDisplay,
     UserImageUploader,
     UserModal,
     useUser,

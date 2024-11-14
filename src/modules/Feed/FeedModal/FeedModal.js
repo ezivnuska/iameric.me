@@ -65,13 +65,21 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
                         onClose={onCancel}
                     />
 
-                    <Form
-                        // title='New Post'
-                        fields={fields}
-                        onCancel={onCancel}
-                        onSubmit={onSubmit}
-                    />
 
+                    <View
+                        style={{
+                            flexGrow: 1,
+                            paddingHorizontal: 10,
+                        }}
+                    >
+                        <Form
+                            // title='New Post'
+                            fields={fields}
+                            onCancel={onCancel}
+                            onSubmit={onSubmit}
+                        />
+
+                    </View>
                 </View>
             </View>
         </Modal>

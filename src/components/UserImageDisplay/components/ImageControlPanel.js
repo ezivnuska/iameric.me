@@ -87,16 +87,16 @@ const ImageControlPanel = props => {
                 <IconButtonLarge
                     name={'happy-sharp'}
                     size={32}
-                    color={isProfileImage ? 'tomato' : null}
-                    onPress={isProfileImage ? removeAvatar : makeAvatar}
+                    color={!isProfileImage ? 'tomato' : null}
+                    onPress={!isProfileImage ? removeAvatar : makeAvatar}
                     disabled={userLoading}
-                    transparent={isProfileImage}
+                    transparent={!isProfileImage}
                 />
 
                 <IconButtonLarge
                     name='trash-sharp'
                     size={32}
-                    color='red'
+                    // color='red'
                     onPress={handleDelete}
                     disabled={imagesLoading}
                     transparent

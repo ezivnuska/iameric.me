@@ -5,14 +5,20 @@ import {
     Text,
 } from 'react-native'
 
-const SimpleButton = ({ disabled, label, onPress, transparent = false, color = '#fff', ...props }) => {
+const SimpleButton = ({ disabled, label, onPress, transparent = false, color = null, ...props }) => {
     return (
         <Pressable
             disabled={disabled}
             onPress={onPress}
             style={{
                 height: 40,
-                backgroundColor: transparent ? 'transparent' : disabled ? '#ccc' : 'tomato',
+                backgroundColor: transparent
+                    ? 'transparent'
+                    : disabled
+                        ? '#ccc'
+                        : color
+                            ? color
+                            : 'tomato',
                 borderRadius: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -23,7 +29,9 @@ const SimpleButton = ({ disabled, label, onPress, transparent = false, color = '
             <Text
                 style={{
                     flex: 1,
-                    color: transparent ? color : disabled ? '#ccc' : '#fff',
+                    color: transparent
+                        ? color
+                        : '#fff',
                     fontSize: 18,
                     lineHeight: 40,
                     letterSpacing: 0.5,

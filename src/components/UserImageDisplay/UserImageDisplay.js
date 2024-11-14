@@ -14,7 +14,7 @@ import {
     // deleteImage,
     loadImage,
     // setAvatar,
-} from '../utils'
+} from '@utils/images'
 import { useImages } from '@images'
 // import { ImageControlPanel } from './components'
 

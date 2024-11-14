@@ -1,9 +1,13 @@
 import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
-import { ActivityIndicator, ModalHeader } from '@components'
-import { CaptionForm } from './forms'
 import {
-    ImageLoader,
+    ActivityIndicator,
+    ModalHeader,
+    UserImageDisplay,
+} from '@components'
+// import { CaptionForm } from './forms'
+import {
+    // ImageLoader,
     ImageUploader,
     useImages,
 } from '.'
@@ -24,7 +28,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                 return <ImageUploader data={data} />
                 break
             case 'SHOWCASE':
-                return <ImageLoader data={data} />
+                return <UserImageDisplay data={data} />
                 break
             // case 'CAPTION':
             //     return <CaptionForm data={data} onCancel={onCancel} />

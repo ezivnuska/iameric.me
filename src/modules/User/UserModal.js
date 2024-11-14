@@ -5,10 +5,12 @@ import {
 } from 'react-native'
 import {
     useUser,
-    UserImageDisplay,
     UserImageUploader,
 } from '.'
-import { ModalHeader } from '@components'
+import {
+    ModalHeader,
+    UserImageDisplay,
+} from '@components'
 import { useImages } from '@images'
 import Modal from 'react-native-modal'
 
