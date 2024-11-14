@@ -5,32 +5,19 @@ import {
     ImagesModal,
     useImages,
 } from '.'
-import {
-    UserHeader,
-} from '@components'
-import { useUser } from '@user'
 
-const Images = props => {
+const Images = () => {
 
     const {
+        images,
         imagesModal,
         closeImagesModal,
-        setImagesModal,
     } = useImages()
-
-    const {
-        user,
-    } = useUser()
     
     return (
         <View>
-
-            <UserHeader username={user.username} {...props} />
-
-            <ImageList
-                upload={() => setImagesModal('IMAGE_UPLOAD')}
-            />
-
+            <ImageList images={images} />
+    
             <ImagesModal
                 modal={imagesModal}
                 onCancel={closeImagesModal}

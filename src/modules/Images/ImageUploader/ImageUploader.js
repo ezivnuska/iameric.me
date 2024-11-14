@@ -2,7 +2,6 @@ import React from 'react'
 import { View } from 'react-native'
 import {
     ImageClone,
-    ModalHeader,
     SimpleButton,
 } from '@components'
 import {
@@ -23,15 +22,9 @@ const UserImageUploader = ({ data, removeImage, source = null }) => {
         <View
             style={{
                 flex: 1,
-                backgroundColor: '#fff',
                 paddingHorizontal: 10,
             }}
         >
-
-            <ModalHeader 
-                title={`Upload${uploading ? 'ing' : ''} Image`}
-                onClose={closeImagesModal}
-            />
 
             <View
                 style={{
@@ -58,8 +51,14 @@ const UserImageUploader = ({ data, removeImage, source = null }) => {
                         />
                     </>
                 )}
-                    
-                <ImagePicker avatar={data ? data.avatar : false} />
+                
+                <View
+                    style={{
+                        flex: 1,
+                    }}
+                >
+                    <ImagePicker avatar={data ? data.avatar : false} />
+                </View>
 
             </View>
 

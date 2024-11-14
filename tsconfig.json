@@ -49,7 +49,7 @@
         "./src/modules/Form/forms/index.js"
       ],
       "@images": [
-        "./src/modules/Images/index.js"
+        "src/modules/Images_old/index.js"
       ],
       "@layout": [
         "./src/Layout/index.js"

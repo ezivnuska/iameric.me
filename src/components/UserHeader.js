@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Pressable,
     View,
@@ -7,39 +7,47 @@ import {
     IconButtonLarge,
     ThemedText,
 } from '@components'
+import { useApp } from '@app'
+import navigationRef from '@utils/navigation'
 
-const UserHeader = ({ username, ...props }) => (
-    <View
-        style={{
-            flexGrow: 0,
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 10,
-            marginBottom: 10,
-        }}
-    >
-        <Pressable
-            onPress={() => props.navigation.navigate('Profile')}
-            disabled={props.route.name === 'Profile'}
-            style={{ flexGrow: 0 }}
+const UserHeader = () => {
+
+    const { currentRoute } = useApp()
+
+    return (
+        <View
+            style={{
+                flexGrow: 0,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 10,
+                marginBottom: 10,
+                paddingHorizontal: 10,
+            }}
         >
-            <ThemedText
-                bold
-                size={36}
-                color={props.route.name === 'Profile' ? '#000' : 'tomato'}
+            <Pressable
+                onPress={() => navigationRef.navigate('Profile')}
+                disabled={currentRoute?.name === 'Profile'}
+                style={{ flexGrow: 0 }}
             >
-                Profile
-            </ThemedText>
-        </Pressable>
-
-        <IconButtonLarge
-            name='images'
-            size={24}
-            onPress={() => props.navigation.navigate('Images')}
-            disabled={props.route.name === 'Images'}
-        />
-
-    </View>
-)
+                <ThemedText
+                    bold
+                    size={36}
+                    color={currentRoute?.name === 'Profile' ? '#000' : 'tomato'}
+                >
+                    Profile
+                </ThemedText>
+            </Pressable>
+    
+            <IconButtonLarge
+                name='images'
+                size={24}
+                onPress={() => navigationRef.navigate('Images')}
+                disabled={currentRoute?.name === 'Images'}
+            />
+    
+        </View>
+    )
+}
 
 export default UserHeader

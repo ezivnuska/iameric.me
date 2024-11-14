@@ -47,6 +47,7 @@ const ImagePicker = ({ avatar = false }) => {
     const [timer, setTimer] = useState(null)
     const [avatarCheckbox, setAvatarCheckbox] = useState(avatar)
     const [imageDims, setImageDims] = useState(null)
+    const [showSelectButton, setShowSelectButton] = useState(false)
     
     useEffect(() => {
         const init = async () => {
@@ -69,8 +70,11 @@ const ImagePicker = ({ avatar = false }) => {
     
     const openSelector = async () => {
         const uri = await openFileSelector()
+        console.log('uri from file selector', uri)
         if (uri) {
             handleSelectedImage(uri)
+        } else {
+            setShowSelectButton(true)
         }
     }
 
@@ -234,6 +238,8 @@ const ImagePicker = ({ avatar = false }) => {
             </View>
 
         </View>
+    ) : showSelectButton ? (
+        <ActivityIndicator size='medium' />
     ) : (
         <SimpleButton
             label='Select Image'

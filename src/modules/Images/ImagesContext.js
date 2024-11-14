@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
+import { loadImages } from './utils'
 import { useUser } from '@user'
-import { loadImages } from '@utils/images'
 
 const initialState = {
     images: [],
@@ -31,24 +31,28 @@ export const useImages = () => {
     return context
 }
 
-export const ImagesContextProvider = props => {
+export const ImagesContextProvider = ({ children }) => {
     
     const { user } = useUser()
     const [state, dispatch] = useReducer(reducer, initialState)
     
     useEffect(() => {
+        
         const initImages = async () => {
+
             dispatch({type: 'SET_IMAGES_LOADING', payload: true })
             const items = await loadImages(user._id)
             dispatch({type: 'SET_IMAGES_LOADING', payload: false })
+
             dispatch({type: 'SET_IMAGES', payload: items })
 
             dispatch({type: 'SET_IMAGES_LOADED' })
         }
-        
+
         if (user) initImages()
-        
+            
     }, [user])
+
 
     const getImage = id => state.images.filter(image => image._id === id)[0] || null
 
@@ -95,7 +99,7 @@ export const ImagesContextProvider = props => {
                 imagesModal: state.imagesModals[state.imagesModals.length - 1],
             }}
         >
-            {state.imagesLoaded && props.children}
+            {state.imagesLoaded && children}
         </ImagesContext.Provider>
     )
 }

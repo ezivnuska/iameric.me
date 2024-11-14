@@ -1,32 +1,22 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     Pressable,
     View,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useApp } from '@app'
-import { useImages } from '@images'
-import { useUser } from '@user'
+import { useImages } from '..'
 import { ImageListItem } from './components'
-import { loadImages } from '@utils/images'
 import { ActivityIndicator } from '@components'
 
-const ImageList = ({ upload = null }) => {
+const ImageList = ({ images }) => {
 
-    const { dims, theme } = useApp()
+    const { theme } = useApp()
     
     const {
-        images,
-        imagesLoading,
-        setImages,
-        setImagesLoading,
         setImagesModal,
         uploading,
     } = useImages()
-
-    const {
-        user,
-    } = useUser()
 
     const imageGap = 4
 
@@ -45,6 +35,10 @@ const ImageList = ({ upload = null }) => {
             setImageSize((maxWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
         }
     }, [maxWidth])
+
+    // useEffect(() => {
+    //     console.log('ImageList', images)
+    // }, [images])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -88,28 +82,26 @@ const ImageList = ({ upload = null }) => {
                     </Pressable>
                 )) : <ActivityIndicator />}
             
-            {upload && (
-                <Pressable
-                    key={`image-${images.length + (uploading ? 1 : 0)}`}
-                    onPress={upload}
-                    style={[
-                        {
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: imageSize,
-                            height: imageSize,
-                        },
-                        buttonStyle,
-                    ]}
-                >
-                    <Icon
-                        name='add-outline'
-                        size={32}
-                        color={theme?.colors.textDefault}
-                    />
+            <Pressable
+                key={`image-${images.length + (uploading ? 1 : 0)}`}
+                onPress={() => setImagesModal('IMAGE_UPLOAD')}
+                style={[
+                    {
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        width: imageSize,
+                        height: imageSize,
+                    },
+                    buttonStyle,
+                ]}
+            >
+                <Icon
+                    name='add-outline'
+                    size={32}
+                    color={theme?.colors.textDefault}
+                />
 
-                </Pressable>
-            )}
+            </Pressable>
 
         </View>
     )

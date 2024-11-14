@@ -3,14 +3,22 @@ import {
     Pressable,
     View,
 } from 'react-native'
+import { ModalHeader } from '@components'
 import { CaptionForm } from '@forms'
 import {
     ImageLoader,
     ImageUploader,
+    useImages,
 } from '.'
 import Modal from 'react-native-modal'
 
 const ImagesModal = ({ modal, onCancel, onSubmit }) => {
+
+    const {
+        // closeImagesModal,
+        // imagesModal,
+        uploading,
+    } = useImages()
 
     const renderContent = () => {
         const { type, data } = modal
@@ -64,9 +72,15 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                         width: '100%',
                         maxWidth: 400,
                         marginHorizontal: 'auto',
+                        backgroundColor: '#fff',
                         zIndex: 100,
                     }}
                 >
+
+                    <ModalHeader 
+                        title={`Upload${uploading ? 'ing' : ''} Image`}
+                        onClose={onCancel}
+                    />
 
                     {modal && renderContent()}
 

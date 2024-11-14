@@ -127,7 +127,9 @@ const Form = ({
         setFormLoading(true)
         const response = await onSubmit(formData)
         setFormLoading(false)
-        console.log('response from form', response)
+
+        console.log('form response', response)
+        
         if (!response) console.log('No response from data', formData)
         else if (response.error) {
             console.log(`Form Error: ${response.name}: ${response.message}`)

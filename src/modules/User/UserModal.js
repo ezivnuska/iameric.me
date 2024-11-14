@@ -5,21 +5,28 @@ import {
 } from 'react-native'
 import { CaptionForm } from '@forms'
 import {
-    UserImageLoader,
+    useUser,
+    UserImageDisplay,
     UserImageUploader,
 } from '.'
 import Modal from 'react-native-modal'
 
-const UserModal = ({ modal, onCancel, onSubmit }) => {
+const UserModal = ({ onSubmit = null }) => {
+    const {
+        closeUserModal,
+        // user,
+        userModal,
+        // setUserModal,
+    } = useUser()
 
     const renderContent = () => {
-        const { type, data } = modal
+        const { type, data } = userModal
         switch (type) {
             case 'IMAGE_UPLOAD':
                 return <UserImageUploader data={data} />
                 break
             case 'SHOWCASE':
-                return <UserImageLoader data={data} />
+                return <UserImageDisplay data={data} />
                 break
             case 'CAPTION':
                 return <CaptionForm data={data} onCancel={onCancel} />
@@ -30,10 +37,10 @@ const UserModal = ({ modal, onCancel, onSubmit }) => {
 
     return (
         <Modal
-            isVisible={modal !== undefined}
+            isVisible={userModal !== undefined}
             animationType='fade'
             transparent={true}
-            onRequestClose={onCancel}
+            onRequestClose={closeUserModal}
             style={{
                 flex: 1,
                 margin: 0,
@@ -47,7 +54,7 @@ const UserModal = ({ modal, onCancel, onSubmit }) => {
                 }}
             >
                 <Pressable
-                    onPress={onCancel}
+                    onPress={closeUserModal}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -68,7 +75,7 @@ const UserModal = ({ modal, onCancel, onSubmit }) => {
                     }}
                 >
 
-                    {modal && renderContent()}
+                    {userModal && renderContent()}
 
                 </View>
             </View>

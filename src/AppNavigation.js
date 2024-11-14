@@ -16,6 +16,8 @@ import {
     SimpleScreen,
     WorkScreen,
 } from '@screens'
+import { UserHeader } from '@components'
+import { UserNavigator } from './navigators'
 
 const BipStack = createNativeStackNavigator()
 const BipStackScreen = () => {
@@ -53,41 +55,49 @@ const BipStackScreen = () => {
     )
 }
 
-const UserStack = createNativeStackNavigator()
-const UserStackScreen = () => {
+// const UserStackScreen = UserNavigator()
+// const UserStackScreen = () => {
 
-    return (
-        <UserStack.Navigator
-            initialRouteName='Profile'
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
+//     return (
+//         <UserStack.Navigator
+//             initialRouteName='Profile'
+//             screenOptions={{
+//                 headerShown: false,
+//                 header: ({ navigation, route }) => {
+//                     return (
+//                         <UserHeader
+//                             route={route}
+//                             navigation={navigation}
+//                         />
+//                     )
+//                 }
+//             }}
+//         >
 
-            <UserStack.Screen
-                name='Profile'
-                children={props => <ProfileScreen {...props} />}
-                // component={ProfileScreen}
-                options={{ title: 'Profile' }}
-            />
+//             <UserStack.Screen
+//                 name='Profile'
+//                 children={props => <ProfileScreen {...props} />}
+//                 // component={ProfileScreen}
+//                 options={{ title: 'Profile' }}
+//             />
 
-            <UserStack.Screen
-                name='Images'
-                children={props => <ImagesScreen {...props} />}
-                // component={ImagesScreen}
-                options={{ title: 'Images' }}
-            />
+//             <UserStack.Screen
+//                 name='Images'
+//                 children={props => <ImagesScreen {...props} />}
+//                 // component={ImagesScreen}
+//                 options={{ title: 'Images' }}
+//             />
 
-            <UserStack.Screen
-                name='Map'
-                children={props => <MapScreen {...props} />}
-                // component={MapScreen}
-                options={{ title: 'Map' }}
-            />
+//             <UserStack.Screen
+//                 name='Map'
+//                 children={props => <MapScreen {...props} />}
+//                 // component={MapScreen}
+//                 options={{ title: 'Map' }}
+//             />
 
-        </UserStack.Navigator>
-    )
-}
+//         </UserStack.Navigator>
+//     )
+// }
 
 
 const AboutStack = createNativeStackNavigator()
@@ -185,8 +195,8 @@ const AppStackScreen = () => {
 
             <AppStack.Screen
                 name='User'
-                children={props => <UserStackScreen {...props} />}
-                // component={ProfileScreen}
+                // children={props => <UserNavigator {...props} />}
+                component={UserNavigator}
                 options={{ title: 'Profile' }}
             />
 

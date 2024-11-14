@@ -5,6 +5,7 @@ import {
     IconButton,
     ImageContainer,
     ModalHeader,
+    ThemedText,
 } from '@components'
 import { useUser } from '@user'
 import {
@@ -94,21 +95,8 @@ const ImageLoader = ({ data }) => {
             style={{
                 flex: 1,
                 backgroundColor: '#fff',
-                paddingHorizontal: 10,
             }}
         >
-
-            <ModalHeader
-                title={image?.caption || 'Image Preview'}
-                onClose={closeImagesModal}
-            >
-                <IconButton
-                    name='create-outline'
-                    onPress={() => setImagesModal('CAPTION', image)}
-                    disabled={!image}
-                    size={20}
-                />
-            </ModalHeader>
             
             <View
                 style={{
@@ -155,6 +143,23 @@ const ImageLoader = ({ data }) => {
                     
                 </View>
 
+            </View>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    gap: 10,
+                }}
+            >
+                <ThemedText>
+                    {image?.caption || 'Image Preview'}
+                </ThemedText>
+                
+                <IconButton
+                    name='create-outline'
+                    onPress={() => setImagesModal('CAPTION', image)}
+                    disabled={!image}
+                    size={20}
+                />
             </View>
         </View>
     )
