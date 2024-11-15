@@ -138,7 +138,7 @@ const Form = ({
     }
 
     const renderFields = () => fields.map((field, index) => {
-        const { label, multiline, name, placeholder, type } = field
+        const { label, multiline, name, placeholder, type, answer } = field
         return (
             <View
                 key={`formfield-${index}-${name}`}

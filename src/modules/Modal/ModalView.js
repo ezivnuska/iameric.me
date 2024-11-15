@@ -28,7 +28,7 @@ const ModalView = () => {
             case 'SOCKETS': return <Socket />; break
             default: {
                 console.log('Ouch', type)
-                return <FormFactory modal={modal} />
+                // return <FormFactory modal={modal} />
             }
         }
     }

@@ -34,8 +34,8 @@ const getImageData = async (image, srcOrientation, maxWidth = 400) => {
 
 const handleImageData = async (userId, imageElement, srcOrientation = null) => {
     // console.log('imageElement----->', imageElement)
-    const imageData = await getImageData(imageElement, srcOrientation, 400)
-    const thumbData = await getImageData(imageElement, srcOrientation, 100)
+    const imageData = await getImageData(imageElement, srcOrientation, 600)
+    const thumbData = await getImageData(imageElement, srcOrientation, 200)
     const filename = `${userId}-${Date.now()}.png`
 
     return {

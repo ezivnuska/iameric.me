@@ -56,7 +56,7 @@ const FormField = ({
                     style={{
                         background: focused ? theme?.colors.inputBackgroundFocused : theme?.colors.inputBackground,
                         borderBottomWidth: 1,
-                        borderBottomColor: dirty ? error ? '#f00' : '#1f1' : '#00f'
+                        borderBottomColor: error ? '#f00' : dirty ? '#1f1' : '#fff'
                     }}
                 >
                     <TextInput

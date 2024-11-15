@@ -26,6 +26,7 @@ const checkForError = (name, value) => {
             }
             break
         case 'text':
+        case 'destroy':
             if (!value.length) {
                 error = { name, message: 'Field cannot be blank.' }
             }

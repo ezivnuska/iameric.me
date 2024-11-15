@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import {
     Checkbox,
+    IconButtonLarge,
     ImageClone,
     SimpleButton,
     ThemedText,
 } from '@components'
 import EXIF from 'exif-js'
 import { useUser } from '@user'
-import { useModal } from '@modal'
+// import { useModal } from '@modal'
 import { useImages } from '@images'
 import {
     getMaxImageDims,
@@ -35,9 +36,10 @@ const ImagePicker = ({ avatar = false }) => {
         addImage,
         setUploading,
         uploading,
+        closeImagesModal,
     } = useImages()
 
-    const { closeModal } = useModal()
+    // const { closeModal } = useModal()
 
     const containerRef = useRef()
 
@@ -70,7 +72,6 @@ const ImagePicker = ({ avatar = false }) => {
     
     const openSelector = async () => {
         const uri = await openFileSelector()
-        console.log('uri from file selector', uri)
         if (uri) {
             handleSelectedImage(uri)
         } else {
@@ -122,7 +123,7 @@ const ImagePicker = ({ avatar = false }) => {
             if (avatarCheckbox) setProfileImage(image)
         }
 
-        closeModal()
+        closeImagesModal()
     }
 
     const onSubmit = async () => {
@@ -140,6 +141,89 @@ const ImagePicker = ({ avatar = false }) => {
     }
 
     if (uploading) return <ActivityIndicator size='medium' />
+
+    const renderControls = () => {
+        return (
+            <View>
+                <Checkbox
+                    label='Make profile image'
+                    onChange={value => setAvatarCheckbox(value)}
+                    value={avatar}
+                />
+
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        gap: 10,
+                    }}
+                >
+                    <IconButtonLarge
+                        label='Upload'
+                        name='thumbs-up-sharp'
+                        onPress={onSubmit}
+                        disabled={uploading}
+                    />
+                    <IconButtonLarge
+                        label='Select'
+                        name='thumbs-down'
+                        onPress={handleNewSelection}
+                        disabled={uploading}
+                    />
+                    {/* <Pressable
+                        onPress={onSubmit}
+                        disabled={uploading}
+                        style={{
+                            flex: 1,
+                            borderRadius: 12,
+                            overflow: 'hidden',
+                            backgroundColor: 'tomato',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: 10,
+                            height: 40,
+                        }}
+                    >
+                        <Icon
+                            name='thumbs-up-sharp'
+                            size={20}
+                            color='#fff'
+                            style={{ padding: 3 }}
+                        />
+                        <ThemedText color='#fff' size={20} bold>Upload</ThemedText>
+                    </Pressable>
+
+                    <Pressable
+                        onPress={handleNewSelection}
+                        disabled={uploading}
+                        style={{
+                            flex: 1,
+                            borderRadius: 12,
+                            overflow: 'hidden',
+                            backgroundColor: '#aaa',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            // borderWidth: 1,
+                            // borderColor: '#aaa',
+                            gap: 10,
+                            height: 40,
+                        }}
+                    >
+                        <Icon
+                            name='thumbs-down'
+                            size={20}
+                            color='#fff'
+                            style={{ padding: 3 }}
+                        />
+                        <ThemedText color='#fff' size={20} bold>Change</ThemedText>
+                    </Pressable> */}
+                </View>
+            </View>
+        )
+    }
     
     return preview ? (
         <View
@@ -169,72 +253,8 @@ const ImagePicker = ({ avatar = false }) => {
                     />
                 )}
 
-                <Checkbox
-                    label='Make profile image'
-                    onChange={value => setAvatarCheckbox(value)}
-                    value={avatar}
-                />
-
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly',
-                        gap: 10,
-                    }}
-                >
-                    <Pressable
-                        onPress={onSubmit}
-                        disabled={uploading}
-                        style={{
-                            flex: 1,
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                            backgroundColor: 'tomato',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: 10,
-                            height: 40,
-                        }}
-                    >
-                        <Icon
-                            name='thumbs-up-sharp'
-                            size={20}
-                            color='#fff'
-                            style={{ padding: 3 }}
-                        />
-                        <ThemedText color='#fff' size={20} bold>Upload</ThemedText>
-                    </Pressable>
+                {renderControls()}
     
-                    <Pressable
-                        onPress={handleNewSelection}
-                        disabled={uploading}
-                        style={{
-                            flex: 1,
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                            backgroundColor: '#aaa',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            // borderWidth: 1,
-                            // borderColor: '#aaa',
-                            gap: 10,
-                            height: 40,
-                        }}
-                    >
-                        <Icon
-                            name='thumbs-down'
-                            size={20}
-                            color='#fff'
-                            style={{ padding: 3 }}
-                        />
-                        <ThemedText color='#fff' size={20} bold>Change</ThemedText>
-                    </Pressable>
-    
-                </View>
-
             </View>
 
         </View>

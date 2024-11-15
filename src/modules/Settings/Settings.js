@@ -47,20 +47,22 @@ const Settings = () => {
 
                 <Cabinet
                     title='Close Account'
+                    transparent
                     closed
                 >
                     <Form
+                        // title='Delete Account'
                         fields={[
                             {
                                 label: 'Enter Username',
                                 name: 'destroy',
                                 placeholder: 'username',
                                 multiline: false,
+                                answer: user.username,
                             },
                         ]}
-                        title='Delete Account'
-                        // onCancel={closeModal}
                         onSubmit={handleDestroy}
+                        // onCancel={closeModal}
                     />
                     {/* <DestroyForm /> */}
                 </Cabinet>

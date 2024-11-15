@@ -11,7 +11,7 @@ const SimpleButton = ({ disabled, label, onPress, transparent = false, color = n
             disabled={disabled}
             onPress={onPress}
             style={{
-                height: 40,
+                height: 50,
                 backgroundColor: transparent
                     ? 'transparent'
                     : disabled
@@ -33,7 +33,7 @@ const SimpleButton = ({ disabled, label, onPress, transparent = false, color = n
                         ? color
                         : '#fff',
                     fontSize: 18,
-                    lineHeight: 40,
+                    lineHeight: 50,
                     letterSpacing: 0.5,
                     fontWeight: 700,
                     textAlign: 'center',

@@ -16,8 +16,6 @@ import Modal from 'react-native-modal'
 const ImagesModal = ({ modal, onCancel, onSubmit }) => {
 
     const {
-        // closeImagesModal,
-        // imagesModal,
         uploading,
     } = useImages()
 
@@ -30,9 +28,6 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
             case 'SHOWCASE':
                 return <UserImageDisplay data={data} />
                 break
-            // case 'CAPTION':
-            //     return <CaptionForm data={data} onCancel={onCancel} />
-            //     break
             default:
         }
     }
@@ -47,11 +42,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
             case 'SHOWCASE':
                 title = 'Image Detail'
                 break
-            // case 'CAPTION':
-            //     title = 'Add/Edit Caption'
-            //     break
             default:
-                //
         }
         return title ? (
             <ModalHeader 
