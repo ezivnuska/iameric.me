@@ -20,7 +20,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                 return <ImagePicker />
                 break
             case 'SHOWCASE':
-                return <UserImageDisplay data={data} />
+                return <UserImageDisplay data={data} onClose={onCancel} />
                 break
             default:
         }

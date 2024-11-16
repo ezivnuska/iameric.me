@@ -15,11 +15,10 @@ import Animated, {
 } from 'react-native-reanimated'
 import LinearGradient from 'react-native-web-linear-gradient'
 
-const UserImageDisplay = ({ data }) => {
+const UserImageDisplay = ({ data, onClose }) => {
 
     const {
         setImagesLoading,
-        closeImagesModal,
     } = useImages()
 
     const [image, setImage] = useState(null)
@@ -106,7 +105,7 @@ const UserImageDisplay = ({ data }) => {
                         >
                             <IconButtonLarge
                                 name='close'
-                                onPress={closeImagesModal}
+                                onPress={onClose}
                                 size={40}
                                 color='#fff'
                                 transparent

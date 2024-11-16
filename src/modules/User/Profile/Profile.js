@@ -28,7 +28,7 @@ const Profile = props => {
 
             <Pressable
                 onPress={() => {
-                    if (user && user.profileImage) {
+                    if (user.profileImage) {
                         setUserModal('SHOWCASE', user.profileImage)
                     } else {
                         setUserModal('IMAGE', { avatar: true })

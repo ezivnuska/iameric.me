@@ -4,71 +4,55 @@ import {
     View,
 } from 'react-native'
 import {
-    useUser,
     UserImageUploader,
 } from '.'
 import {
     ModalHeader,
     UserImageDisplay,
 } from '@components'
-import { useImages } from '@images'
 import Modal from 'react-native-modal'
 
-const UserModal = ({ onSubmit = null }) => {
-
-    const { uploading } = useImages()
-    const {
-        closeUserModal,
-        // user,
-        userModal,
-        // setUserModal,
-    } = useUser()
+const UserModal = ({ modal, onCancel, onSubmit = null }) => {
 
     const renderContent = () => {
-        const { type, data } = userModal
+        const { type, data } = modal
         switch (type) {
             case 'IMAGE_UPLOAD':
                 return <UserImageUploader data={data} />
                 break
             case 'SHOWCASE':
-                return <UserImageDisplay data={data} />
+                return <UserImageDisplay data={data} onClose={onCancel} />
                 break
-            // case 'CAPTION':
-            //     return <CaptionForm data={data} onCancel={onCancel} />
-            //     break
             default:
         }
     }
 
     const renderModalHeader = () => {
-        const { type, data } = userModal
+        const { type, data } = modal
         let title = null
         switch (type) {
             case 'IMAGE_UPLOAD':
-                title = `Upload${uploading ? 'ing' : ''} Image`
+                title = 'Upload Image'
                 break
             case 'SHOWCASE':
-                title = 'Showcase!'
+                // title = 'Showcase!'
                 break
-            // case 'CAPTION':
-            //     return <CaptionForm data={data} onCancel={onCancel} />
-            //     break
             default:
         }
-        return (
+        return title ? (
             <ModalHeader 
                 title={title}
-                onClose={closeUserModal}
+                onClose={onCancel}
             />
-        )
+        ) : null
     }
 
     return (
         <Modal
-            isVisible={userModal !== undefined}
+            isVisible={modal !== undefined}
             animationType='fade'
             transparent={true}
-            onRequestClose={closeUserModal}
+            onRequestClose={onCancel}
             style={{
                 flex: 1,
                 margin: 0,
@@ -82,7 +66,7 @@ const UserModal = ({ onSubmit = null }) => {
                 }}
             >
                 <Pressable
-                    onPress={closeUserModal}
+                    onPress={onCancel}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -103,9 +87,9 @@ const UserModal = ({ onSubmit = null }) => {
                         zIndex: 100,
                     }}
                 >
-                    {userModal && renderModalHeader()}
+                    {modal && renderModalHeader()}
 
-                    {userModal && renderContent()}
+                    {modal && renderContent()}
 
                 </View>
             </View>

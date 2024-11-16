@@ -16,7 +16,7 @@ import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
 import ImageList from './ImageList'
-import ImageLoader from './ImageLoader'
+// import ImageLoader from './ImageLoader'
 import InfoMarker from './InfoMarker'
 import LoadingView from './LoadingView'
 import ModalHeader from './ModalHeader'
@@ -51,7 +51,7 @@ export {
     IconButtonLarge,
     ImageClone,
     ImageList,
-    ImageLoader,
+    // ImageLoader,
     InfoMarker,
     LoadingView,
     ModalHeader,
