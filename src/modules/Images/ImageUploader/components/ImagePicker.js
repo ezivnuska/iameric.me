@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import {
+    ActivityIndicator,
     Checkbox,
     IconButtonLarge,
     ImageClone,
@@ -17,7 +18,6 @@ import {
     openFileSelector,
     uploadImage,
 } from '@utils/images'
-import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const ImagePicker = ({ avatar = false }) => {
@@ -39,27 +39,18 @@ const ImagePicker = ({ avatar = false }) => {
         closeImagesModal,
     } = useImages()
 
-    // const { closeModal } = useModal()
-
     const containerRef = useRef()
 
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
-    const [ready, setReady] = useState(false)
-    const [timer, setTimer] = useState(null)
     const [avatarCheckbox, setAvatarCheckbox] = useState(avatar)
     const [imageDims, setImageDims] = useState(null)
     const [showSelectButton, setShowSelectButton] = useState(false)
     
+    let timer = null
+
     useEffect(() => {
-        const init = async () => {
-            setTimer(setInterval(() => {
-                setReady(true)
-                setTimer(null)
-            }, 2000))
-            await openSelector()
-        }
-        init()
+        openSelector()
     }, [])
 
     useEffect(() => {
@@ -69,14 +60,22 @@ const ImagePicker = ({ avatar = false }) => {
         }
 
     }, [containerRef, preview])
+
+    const stopTimer = () => {
+        clearInterval(timer)
+        timer = null
+        setShowSelectButton(true)
+    }
+
+    const startTimer = () => {
+        timer = setInterval(stopTimer, 5000)
+    }
     
     const openSelector = async () => {
+        setShowSelectButton(false)
+        startTimer()
         const uri = await openFileSelector()
-        if (uri) {
-            handleSelectedImage(uri)
-        } else {
-            setShowSelectButton(true)
-        }
+        if (uri) handleSelectedImage(uri)
     }
 
     const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
@@ -105,10 +104,12 @@ const ImagePicker = ({ avatar = false }) => {
         if (payload) {
             const { uri, height, width } = payload.imageData
             setPreview({ uri, height, width })
-        } else if (preview) {
-            setPreview(null)
         }
     }, [payload])
+
+    useEffect(() => {
+        if (!uploading && preview) setPreview(null)
+    }, [uploading])
 
     const handleUpload = async imageData => {
         if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
@@ -140,11 +141,16 @@ const ImagePicker = ({ avatar = false }) => {
         openSelector()
     }
 
-    if (uploading) return <ActivityIndicator size='medium' />
-
     const renderControls = () => {
         return (
-            <View>
+            <View
+                style={{
+                    // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    paddingVertical: 10,
+                    paddingHorizontal: 10,
+                }}
+            >
+
                 <Checkbox
                     label='Make profile image'
                     onChange={value => setAvatarCheckbox(value)}
@@ -159,113 +165,72 @@ const ImagePicker = ({ avatar = false }) => {
                         gap: 10,
                     }}
                 >
+
                     <IconButtonLarge
                         label='Upload'
                         name='thumbs-up-sharp'
                         onPress={onSubmit}
                         disabled={uploading}
                     />
+
                     <IconButtonLarge
-                        label='Select'
+                        label='Change'
                         name='thumbs-down'
                         onPress={handleNewSelection}
                         disabled={uploading}
                     />
-                    {/* <Pressable
-                        onPress={onSubmit}
-                        disabled={uploading}
-                        style={{
-                            flex: 1,
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                            backgroundColor: 'tomato',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: 10,
-                            height: 40,
-                        }}
-                    >
-                        <Icon
-                            name='thumbs-up-sharp'
-                            size={20}
-                            color='#fff'
-                            style={{ padding: 3 }}
-                        />
-                        <ThemedText color='#fff' size={20} bold>Upload</ThemedText>
-                    </Pressable>
 
-                    <Pressable
-                        onPress={handleNewSelection}
-                        disabled={uploading}
-                        style={{
-                            flex: 1,
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                            backgroundColor: '#aaa',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            // borderWidth: 1,
-                            // borderColor: '#aaa',
-                            gap: 10,
-                            height: 40,
-                        }}
-                    >
-                        <Icon
-                            name='thumbs-down'
-                            size={20}
-                            color='#fff'
-                            style={{ padding: 3 }}
-                        />
-                        <ThemedText color='#fff' size={20} bold>Change</ThemedText>
-                    </Pressable> */}
                 </View>
             </View>
         )
     }
     
-    return preview ? (
+    return (
         <View
+            ref={containerRef}
             style={{
                 flex: 1,
                 flexDirection: 'row',
-                gap: 10,
             }}
         >
-            <View
-                ref={containerRef}
-                style={{
-                    gap: 10,
-                    flexGrow: 1,
-                }}
-            >
-                {imageDims && (
-                    <ImageClone
-                        source={{ uri: preview.uri }}
-                        width={imageDims.width}
-                        height={imageDims.height}
-                        style={{
-                            borderWidth: 1,
-                            width: imageDims.width,
-                            height: imageDims.height,
-                        }}
-                    />
-                )}
+            {(preview && imageDims) ? (
+                <View style={{ flex: 1 }}>
 
-                {renderControls()}
-    
-            </View>
+                    <View style={{ backgroundColor: '#000' }}>
+                        <ImageClone
+                            source={{ uri: preview.uri }}
+                            width={imageDims.width}
+                            height={imageDims.height}
+                            style={{
+                                width: imageDims.width,
+                                height: imageDims.height,
+                                opacity: uploading ? 0.5 : 1,
+                                marginHorizontal: 'auto',
+                            }}
+                        />
+                    </View>
 
+                    {renderControls()}
+
+                </View>
+            ) : (
+                <View
+                    style={{
+                        flex: 1,
+                        paddingHorizontal: 10,
+                        gap: 50,
+                    }}
+                >
+                    {showSelectButton ? (
+                        <SimpleButton
+                            label='Select Image'
+                            onPress={openSelector}
+                            disabled={uploading}
+                        />
+                    ) : <ActivityIndicator size='medium' label='Select Image' />}
+                </View>
+            )}
         </View>
-    ) : showSelectButton ? (
-        <ActivityIndicator size='medium' />
-    ) : (
-        <SimpleButton
-            label='Select Image'
-            onPress={openSelector}
-            disabled={uploading || !ready}
-        />
     )
 }
 

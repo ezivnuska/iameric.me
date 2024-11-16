@@ -20,7 +20,7 @@ const openImageSelector = async () => {
         allowsEditing: false,
         quality: 1,
     })
-    console.log('data from image selector', data)
+    
     if (!data || data.canceled) console.log('image selection cancelled')
     else return data.assets[0].uri
     return null

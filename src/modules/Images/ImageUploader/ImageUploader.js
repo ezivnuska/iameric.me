@@ -22,45 +22,33 @@ const UserImageUploader = ({ data, removeImage, source = null }) => {
         <View
             style={{
                 flex: 1,
-                paddingHorizontal: 10,
+                flexDirection: 'row',
             }}
         >
+            {source ? (
+                <View style={{ flex: 1 }}>
+                    <ImageClone
+                        source={source}
+                        width={200}
+                        height='auto'
+                        style={{
+                            width: 200,
+                            height: 'auto',
+                            // resizeMode: 'stretch',
+                        }}
+                    />
 
-            <View
-                style={{
-                    flexDirection: 'row',
-                }}
-            >
-                {source && (
-                    <>
-                        <ImageClone
-                            source={source}
-                            width={200}
-                            height='auto'
-                            style={{
-                                width: 200,
-                                height: 'auto',
-                                // resizeMode: 'stretch',
-                            }}
-                        />
-
-                        <SimpleButton
-                            label='Delete'
-                            onPress={removeImage}
-                            disabled={formLoading}
-                        />
-                    </>
-                )}
-                
-                <View
-                    style={{
-                        flex: 1,
-                    }}
-                >
-                    <ImagePicker avatar={data ? data.avatar : false} />
+                    <SimpleButton
+                        label='Delete'
+                        onPress={removeImage}
+                        disabled={formLoading}
+                    />
                 </View>
-
-            </View>
+            ) : (
+                <View style={{ flex: 1 }}>
+                    <ImagePicker avatar={data?.avatar} />
+                </View>
+            )}
 
         </View>
     )

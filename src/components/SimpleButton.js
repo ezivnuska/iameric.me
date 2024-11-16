@@ -32,7 +32,7 @@ const SimpleButton = ({ disabled, label, onPress, transparent = false, color = n
                     color: transparent
                         ? color
                         : '#fff',
-                    fontSize: 18,
+                    fontSize: 24,
                     lineHeight: 50,
                     letterSpacing: 0.5,
                     fontWeight: 700,

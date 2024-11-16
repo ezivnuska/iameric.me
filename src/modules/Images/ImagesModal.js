@@ -70,6 +70,11 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                     position: 'relative',
                 }}
             >
+                {/*
+                    background button absolutely
+                    positioned to fill screen
+                */}
+                
                 <Pressable
                     onPress={onCancel}
                     style={{
@@ -106,11 +111,6 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                                     flex: 1,
                                 }}
                             >
-                                {/* <ModalHeader 
-                                    title={`Upload${uploading ? 'ing' : ''} Image`}
-                                    onClose={onCancel}
-                                /> */}
-
                                 {renderContent()}
                             </ScrollView>
 

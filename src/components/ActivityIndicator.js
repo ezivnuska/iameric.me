@@ -1,8 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
+import { ThemedText } from '@components'
 import { ActivityIndicator as Indicator } from 'react-native-paper'
 
-const ActivityIndicator = ({ size = 'large', color = 'tomato', ...props }) => (
+const ActivityIndicator = ({ size = 'large', color = 'tomato', label = null, ...props }) => (
     <View
         {...props}
         style={{
@@ -11,11 +12,22 @@ const ActivityIndicator = ({ size = 'large', color = 'tomato', ...props }) => (
             alignItems: 'center',
         }}
     >
-        <Indicator
-            size={size}
-            color={color}
-            style={{ marginHorizontal: 'auto' }}
-        />
+        <View
+            style={{
+                gap: 10,
+                marginHorizontal: 'auto',
+            }}
+        >
+            {label && (
+                <ThemedText color={color} size={24}>{label}</ThemedText>
+            )}
+
+            <Indicator
+                size={size}
+                color={color}
+                style={{ marginHorizontal: 'auto' }}
+            />
+        </View>
     </View>
 )
 

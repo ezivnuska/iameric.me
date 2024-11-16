@@ -38,16 +38,14 @@ const Cabinet = ({
                     paddingLeft: transparent ? 0 : 20,
                     paddingRight: transparent ? 0 : 10,
                     height: 50,
-                    backgroundColor: transparent
-                        ? 'transparent'
-                        : open
-                            ? 'rgba(255, 99, 71, 0.3)'
-                            : '#fff',
+                    backgroundColor: !transparent
+                        ? 'tomato'
+                        : 'transparent'
                 }}
             >
                 <Text
                     style={{
-                        fontSize: 18,
+                        fontSize: 24,
                         lineHeight: 50,
                         letterSpacing: 0.5,
                         fontWeight: 700,
