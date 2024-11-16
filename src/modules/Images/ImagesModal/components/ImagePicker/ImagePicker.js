@@ -1,24 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Pressable, View } from 'react-native'
+import { View } from 'react-native'
 import {
     ActivityIndicator,
     Checkbox,
     IconButtonLarge,
     ImageClone,
     SimpleButton,
-    ThemedText,
 } from '@components'
 import EXIF from 'exif-js'
 import { useUser } from '@user'
-// import { useModal } from '@modal'
 import { useImages } from '@images'
 import {
     getMaxImageDims,
     handleImageData,
     openFileSelector,
     uploadImage,
-} from '@utils/images'
-import Icon from 'react-native-vector-icons/Ionicons'
+} from './utils'
 
 const ImagePicker = () => {
 

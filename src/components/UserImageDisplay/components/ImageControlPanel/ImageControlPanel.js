@@ -2,9 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import {
     Caption,
+} from './components'
+import {
     IconButton,
     IconButtonLarge,
-    ThemedText,
     Time,
 } from '@components'
 import { useImages } from '@images'
@@ -34,6 +35,10 @@ const ImageControlPanel = props => {
     useEffect(() => {
         if (image) setIsProfileImage(user.profileImage?._id === image?._id)
     }, [image])
+
+    useEffect(() => {
+        if (image) setIsProfileImage(user.profileImage?._id === image?._id)
+    }, [active])
     
     const handleDelete = async () => {
 
@@ -76,6 +81,7 @@ const ImageControlPanel = props => {
     }
 
     const handleAvatar = () => {
+        if (active) setActive(null)
         if (isProfileImage) removeAvatar()
         else makeAvatar()
     }

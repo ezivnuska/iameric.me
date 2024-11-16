@@ -1,9 +1,16 @@
 import React from 'react'
 import { Screen } from './components'
-import { Contacts } from '@modules'
+import Contacts, { ContactsContextProvider } from '@contacts'
 
-export default props => (
-    <Screen secure {...props}>
-        <Contacts {...props} />
+const ContactsScreen = props => (
+    <Screen
+        {...props}
+        secure
+    >
+        <ContactsContextProvider>
+            <Contacts {...props} />
+        </ContactsContextProvider>
     </Screen>
 )
+
+export default ContactsScreen

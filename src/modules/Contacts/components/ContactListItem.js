@@ -16,7 +16,7 @@ import { navigate } from '@utils/navigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-export default ({ item }) => {
+const ContactListItem = ({ item }) => {
     
     const { theme } = useApp()
     const { setModal } = useModal()
@@ -43,6 +43,7 @@ export default ({ item }) => {
             }}
         >
             <Pressable
+                disabled
                 onPress={() => navigate('Contact', { screen: 'Details', params: { username: item.username } })}
                 style={[
                     {
@@ -97,10 +98,12 @@ export default ({ item }) => {
 
             </Pressable>
 
-            <IconButton
-                name='@mail-outline'
+            {/* <IconButton
+                name='mail-outline'
                 onPress={() => setModal('MESSAGE', item)}
-            />
+            /> */}
         </View>
     )
 }
+
+export default ContactListItem

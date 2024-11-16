@@ -22,7 +22,7 @@ export default ({ contactId }) => {
     return (
         <View>
 
-            <Heading title='@images' />
+            <Heading title='Images' />
 
             {images ? (
                 <ImageList

@@ -7,7 +7,7 @@ import { ThemedText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const Heading = ({ title, children = null, onBack = null }) => {
+const Heading = ({ title, children = null, color = null, onBack = null }) => {
     
     const { theme } = useApp()
 
@@ -44,8 +44,7 @@ const Heading = ({ title, children = null, onBack = null }) => {
                 <ThemedText
                     bold
                     size={36}
-                    color='tomato'
-                    style={{ flexGrow: 1 }}
+                    color={color || theme?.colors.textDefault}
                 >
                     {title}
                 </ThemedText>

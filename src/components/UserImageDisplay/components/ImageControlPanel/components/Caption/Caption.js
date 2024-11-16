@@ -25,13 +25,14 @@ const Caption = ({
     } = useForm()
 
     const [editing, setEditing] = useState(false)
+    const [captionText, setCaptionText] = useState(data.caption)
 
     useEffect(() => {
         onChange(editing ? 'caption' : null)
     }, [editing])
 
     useEffect(() => {
-        if (!active) setEditing(false)
+        if (!active && editing) setEditing(false)
     }, [active])
 
     const handleSubmit = async () => {
@@ -49,7 +50,9 @@ const Caption = ({
         else {
             updateImage(image)
             clearForm()
-            closeImagesModal()
+            setCaptionText(image.caption)
+            setEditing(false)
+            // closeImagesModal()
             return image
         }
     }
@@ -90,7 +93,7 @@ const Caption = ({
                             marginBottom: 10,
                         }}
                     >
-                        <ThemedText size={18} color='#fff'>{editing ? 'Edit caption' : data.caption || 'No description'}</ThemedText>
+                        <ThemedText size={18} color='#fff'>{editing ? 'Edit caption' : captionText || 'No description'}</ThemedText>
                         <IconButton
                             name={editing ? 'close' : 'create-outline'}
                             size={24}

@@ -2,18 +2,13 @@ import React, { useState } from 'react'
 import { View } from 'react-native'
 import Layout from '@layout'
 import { AppContextProvider, useApp } from '@app'
-// import { BipContextProvider } from '@modules/Bipster'
-// import { ContactsContextProvider } from '@contacts'
-// import { ImagesContextProvider } from '@images'
 import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
 import { ModalContextProvider } from '@modal'
 import { FormContextProvider } from './FormContext'
 import { UserContextProvider } from '@user'
-// import { compose as Compose } from '@utils'
 import { GOOGLE_MAPS_API_KEY } from '../config'
 import { APIProvider } from '@vis.gl/react-google-maps'
-import { ActivityIndicator } from '@components'
 
 const Container = ({ children }) => {
     const { dims } = useApp()
@@ -24,8 +19,7 @@ const Container = ({ children }) => {
     )
 }
 
-export default () => {
-    // console.log('process.env', process.env)
+const App = () => {
     const apiKey = process.env.GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY
     const [ mapsLoaded, setMapsLoaded ] = useState(false)
     return (
@@ -43,20 +37,9 @@ export default () => {
                                 <FormContextProvider>
                                     <ModalContextProvider>
                                         <SocketContextProvider>
-                                        {/* <BipContextProvider> */}
-                                            {/* <ImagesContextProvider> */}
-                                                {/* <SocketContextProvider> */}
-                                                    {/* <Compose
-                                                        components={[
-                                                            // ContactsContextProvider,
-                                                            // FormContextProvider,
-                                                        ]}
-                                                    > */}
-                                                        <Layout />
-                                                    {/* </Compose> */}
-                                                {/* </SocketContextProvider> */}
-                                            {/* </ImagesContextProvider> */}
-                                        {/* </BipContextProvider> */}
+                                        
+                                                <Layout />
+                                                        
                                         </SocketContextProvider>
                                     </ModalContextProvider>
                                 </FormContextProvider>
@@ -68,3 +51,5 @@ export default () => {
         </AppContextProvider>
     )
 }
+
+export default App

@@ -71,8 +71,8 @@ const UserImageDisplay = ({ data, onClose }) => {
                         onPress={handleControls}
                         style={{
                             flex: 1,
-                            flexDirection: 'row',
-                            alignItems: 'center',
+                            // flexDirection: 'row',
+                            // alignItems: 'center',
                             zIndex: 1,
                         }}
                     >
