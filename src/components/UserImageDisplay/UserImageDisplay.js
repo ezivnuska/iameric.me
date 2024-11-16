@@ -1,42 +1,38 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { Pressable, View } from 'react-native'
 import {
     ActivityIndicator,
-    // IconButton,
+    IconButtonLarge,
     ImageContainer,
-    ImageControlPanel,
-    // ModalHeader,
-    // ThemedText,
 } from '@components'
-// import { useUser } from '@user'
-// import { Caption } from '@modules'
-import {
-    // deleteImage,
-    loadImage,
-    // setAvatar,
-} from '@utils/images'
+import { ImageControlPanel } from './components'
+import { loadImage } from '@utils/images'
 import { useImages } from '@images'
-// import { ImageControlPanel } from './components'
+import Animated, {
+	Easing,
+	useAnimatedStyle,
+	useSharedValue,
+	// withDecay,
+	withSpring,
+	withTiming,
+} from 'react-native-reanimated'
 
 const UserImageDisplay = ({ data }) => {
     
     const {
-        // closeImagesModal,
-        // imagesLoading,
-        // removeImage,
         setImagesLoading,
-        // setImagesModal,
+        closeImagesModal,
     } = useImages()
 
-    // const {
-    //     setProfileImage,
-    //     user,
-    //     userLoading,
-    //     setUserLoading,
-    // } = useUser()
-
     const [image, setImage] = useState(null)
-    // const [isProfileImage, setIsProfileImage] = useState(null)
+
+    const [controlsVisible, setControlsVisible] = useState(null)
+
+    const controlOpacity = useSharedValue(1)
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        opacity: controlOpacity.value,
+    }))
 
     const init = async id => {
         setImagesLoading(true)
@@ -49,117 +45,67 @@ const UserImageDisplay = ({ data }) => {
         if (data) init(data._id)
     }, [])
 
-    // useEffect(() => {
-    //     setIsProfileImage(user.profileImage?._id === image?._id)
-    // }, [image])
-    
-    // const handleDelete = async () => {
+    useEffect(() => {
+        if (controlsVisible !== null) controlOpacity.value = withTiming(controlsVisible ? 0 : 1, { duration: 500 })
+    }, [controlsVisible])
 
-    //     if (process.env.NODE_ENV === 'development') return alert(`Can't delete in development`)
-
-    //     setImagesLoading(true)
-    //     const deletedImage = await deleteImage(image._id, isProfileImage)
-    //     setImagesLoading(false)
-        
-    //     if (deletedImage) {
-    //         removeImage(deletedImage._id)
-    //         closeImagesModal()
-    //     } else {
-    //         console.log('Error deleting image.')   
-    //     }
+    // const animate = value => {
+    //     Animated.timing(opacity, {
+    //         toValue: value,
+    //         duration: 3000,
+    //         useNativeDriver: true,
+    //     }).start()
     // }
 
-    // const makeAvatar = async () => {
+    const handleControls = () => {
+        setControlsVisible(!controlsVisible)
+    }
 
-    //     setUserLoading(true)
-    //     const data = await setAvatar(user._id, image._id)
-    //     setUserLoading(false)
-
-    //     if (data && data.profileImage) {
-    //         setProfileImage(data.profileImage)
-    
-    //         setIsProfileImage(true)
-    //     }
-    // }
-
-    // const removeAvatar = async () => {
-
-    //     setUserLoading(true)
-    //     await setAvatar(user._id)
-    //     setUserLoading(false)
-
-    //     setProfileImage(null)
-
-    //     setIsProfileImage(false)
-    // }
-
-    return (
+    return image ? (
         <View
             style={{
                 flex: 1,
-                backgroundColor: '#fff',
+                position: 'relative',
             }}
         >
-            
-            <View
-                style={{
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
+            <Pressable
+                style={{ flex: 1 }}
+                onPress={handleControls}
             >
-                <View
-                    style={{
-                        flexGrow: 1,
-                        flexShrink: 1,
-                    }}
-                >
-                    {
-                        image
-                        ? <ImageContainer image={image} />
-                        : <ActivityIndicator />
-                    }
+                <ImageContainer image={image} />
+            </Pressable>
+            
+            <Animated.View
+                style={[{
+                    position: 'absolute',
+                    top: 10,
+                    right: 10,
+                }, animatedStyle]}
+            >
+                <IconButtonLarge
+                    name='close'
+                    onPress={closeImagesModal}
+                    size={40}
+                    color='tomato'
+                    transparent
+                />
+            </Animated.View>
 
-                </View>
-
-            </View>
-                
-            {image && <ImageControlPanel image={image} />}
-                {/* <View
-                    style={{
-                        flexGrow: 0,
-                        flexShrink: 0,
-                        gap: 10,
-                    }}
-                >
-
-                    <IconButton
-                        name={'image-sharp'}
-                        color={isProfileImage ? 'red' : null}
-                        onPress={isProfileImage ? removeAvatar : makeAvatar}
-                        disabled={userLoading}
-                        style={{ padding: 3 }}
-                    />
-
-                    <IconButton
-                        name='trash-sharp'
-                        onPress={handleDelete}
-                        disabled={imagesLoading}
-                        style={{ padding: 3 }}
-                    />
-                    
-                </View>
-
-            </View>
-
-            <View style={{ paddingHorizontal: 10 }}>
-                <Caption data={image} />
-            </View> */}
-
-            {/* </View> */}
-                
-            {/* {image && <ImageControlPanel image={image} />} */}
+            <Animated.View
+                style={[{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 100,
+                    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+                }, animatedStyle]}
+            >
+                <ImageControlPanel image={image} />
+            </Animated.View>
+            
         </View>
-    )
+    ) : <ActivityIndicator />
 }
 
 export default UserImageDisplay

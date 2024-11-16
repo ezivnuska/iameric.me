@@ -1,22 +1,32 @@
 import React from 'react'
 import { View } from 'react-native'
 import {
-    ImageList,
     ImagesModal,
     useImages,
 } from '.'
+import {
+    ImageList,
+} from './components'
 
 const Images = () => {
 
     const {
         images,
         imagesModal,
+        uploading,
         closeImagesModal,
+        setImagesModal,
     } = useImages()
     
     return (
-        <View>
-            <ImageList images={images} />
+        <View
+            style={{ flex: 1 }}
+        >
+            <ImageList
+                images={images}
+                onPress={(type, data) => setImagesModal(type, data)}
+                uploading={uploading}
+            />
     
             <ImagesModal
                 modal={imagesModal}

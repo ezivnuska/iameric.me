@@ -5,25 +5,19 @@ import {
     ModalHeader,
     UserImageDisplay,
 } from '@components'
-// import { CaptionForm } from './forms'
-import {
-    // ImageLoader,
-    ImageUploader,
-    useImages,
-} from '.'
+import { ImagePicker } from './components'
+import { useApp } from '@app'
 import Modal from 'react-native-modal'
 
 const ImagesModal = ({ modal, onCancel, onSubmit }) => {
 
-    const {
-        uploading,
-    } = useImages()
+    const { dims } = useApp()
 
     const renderContent = () => {
         const { type, data } = modal
         switch (type) {
             case 'IMAGE_UPLOAD':
-                return <ImageUploader data={data} />
+                return <ImagePicker />
                 break
             case 'SHOWCASE':
                 return <UserImageDisplay data={data} />
@@ -37,19 +31,20 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
         let title = null
         switch (type) {
             case 'IMAGE_UPLOAD':
-                title = `Upload${uploading ? 'ing' : ''} Image`
+                title = 'Upload Image'
                 break
             case 'SHOWCASE':
-                title = 'Image Detail'
+                // title = 'Image Detail'
                 break
             default:
         }
-        return title ? (
-            <ModalHeader 
+        return title && (
+            <ModalHeader
                 title={title}
                 onClose={onCancel}
+                color='#fff'
             />
-        ) : null
+        )
     }
 
     return (
@@ -93,7 +88,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                         width: '100%',
                         maxWidth: 400,
                         marginHorizontal: 'auto',
-                        backgroundColor: '#fff',
+                        backgroundColor: '#000',
                         zIndex: 100,
                     }}
                 >
@@ -105,6 +100,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                             <ScrollView
                                 style={{
                                     flex: 1,
+                                    zIndex: 1,
                                 }}
                                 showsVerticalScrollIndicator={false}
                                 contentContainerStyle={{

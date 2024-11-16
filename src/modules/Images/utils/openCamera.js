@@ -26,11 +26,11 @@ const launchCamera = async () => {
     } else return null
 }
 
-export default async () => {
+const openCamera = async () => {
     let uri = await launchCamera()
     // if (Platform.OS === 'web') uri = await openImageSelector()
     // else uri = await openImagePickerAsync()
     return uri
 }
 
-// export default openFileSelector
+export default openCamera

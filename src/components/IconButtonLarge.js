@@ -8,7 +8,7 @@ const IconButtonLarge = ({
     disabled,
     onPress,
     name,
-    color = null,
+    color = 'tomato',
     label = null,
     size = 18,
     transparent = false,
@@ -31,13 +31,11 @@ const IconButtonLarge = ({
                 paddingVertical: 5,
                 paddingHorizontal: label ? 10 : 0,
                 backgroundColor: transparent
-                ? 'transparent'
-                : disabled
-                ? '#000'
-                : color
-                ? color
-                : 'tomato',
-                // :'rgba(255, 99, 71, 0.3)'// tomato
+                    ? 'transparent'
+                    : disabled
+                        ? '#aaa'
+                        : color,
+                        // :'rgba(255, 99, 71, 0.3)'// tomato
             },
             props.style,
         ]}
@@ -45,7 +43,12 @@ const IconButtonLarge = ({
         <Icon
             name={name}
             size={size}
-            color={(color && transparent) ? color : '#fff'}
+            color={transparent
+                ? disabled
+                    ? '#fff'
+                    : color
+                : '#fff'
+            }
             style={{
                 paddingLeft: 1,
                 marginHorizontal: 'auto',
@@ -53,7 +56,15 @@ const IconButtonLarge = ({
         />
 
         {label && (
-            <ThemedText color='#fff' bold>
+            <ThemedText
+                bold
+                color={transparent
+                    ? disabled
+                        ? '#fff'
+                        : color
+                    : '#fff'
+                }
+            >
                 {label}
             </ThemedText>
         )}

@@ -7,7 +7,7 @@ import { ThemedText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ModalHeader = ({ children, title, onClose = null, ...props }) => {
+const ModalHeader = ({ children, title, color = null, onClose = null, ...props }) => {
 
     const { theme } = useApp()
 
@@ -36,6 +36,7 @@ const ModalHeader = ({ children, title, onClose = null, ...props }) => {
                 <ThemedText
                     bold
                     size={36}
+                    color={color || theme?.colors.textDefault}
                 >
                     {title}
                 </ThemedText>
@@ -51,7 +52,7 @@ const ModalHeader = ({ children, title, onClose = null, ...props }) => {
                 <Icon
                     name={'close'}
                     size={40}
-                    color={onClose !== null ? theme?.colors.textDefault : 'rgba(200, 200, 200, 0.5)'}
+                    color={color || theme?.colors.textDefault}
                 />
             </Pressable>
         </View>

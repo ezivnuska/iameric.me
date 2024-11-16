@@ -49,11 +49,11 @@ const openImagePickerAsync = async () => {
     } else return null
 }
 
-export default async () => {
+const openFileSelector = async () => {
     let uri = null
     if (Platform.OS === 'web') uri = await openImageSelector()
     else uri = await openImagePickerAsync()
     return uri
 }
 
-// export default openFileSelector
+export default openFileSelector

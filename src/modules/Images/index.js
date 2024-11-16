@@ -1,7 +1,6 @@
-import ImageList from './ImageList'
-import ImageUploader from './ImageUploader'
+// import ImageList from './ImageList'
 import Images from './Images'
-import ImagesModal from './ImagesModal'
+import ImagesModal from './ImagesModal/ImagesModal'
 
 import {
     ImagesContextProvider,
@@ -11,8 +10,7 @@ import {
 export default Images
 
 export {
-    ImageList,
-    ImageUploader,
+    // ImageList,
     ImagesContextProvider,
     ImagesModal,
     useImages,

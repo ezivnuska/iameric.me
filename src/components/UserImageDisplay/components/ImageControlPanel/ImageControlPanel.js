@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { Caption, IconButtonLarge } from '@components'
+import { Caption, Checkbox, IconButtonLarge } from '@components'
 import { useImages } from '@images'
-import { deleteImage, setAvatar } from '../../utils'
+import { deleteImage, setAvatar } from './utils'
 import { useUser } from '@user'
 
 const ImageControlPanel = props => {
@@ -68,6 +68,11 @@ const ImageControlPanel = props => {
         setIsProfileImage(false)
     }
 
+    const handleAvatar = () => {
+        if (isProfileImage) removeAvatar()
+        else makeAvatar()
+    }
+
     return (
         <View
             style={{
@@ -84,11 +89,12 @@ const ImageControlPanel = props => {
                     gap: 10,
                 }}
             >
+
                 <IconButtonLarge
-                    name={'happy-sharp'}
+                    name='happy-sharp'
                     size={32}
-                    color={!isProfileImage ? 'tomato' : null}
-                    onPress={!isProfileImage ? removeAvatar : makeAvatar}
+                    color={!isProfileImage ? '#fff' : 'rgba(255, 255, 255, 0.5)'}
+                    onPress={handleAvatar}
                     disabled={userLoading}
                     transparent={!isProfileImage}
                 />
@@ -96,7 +102,7 @@ const ImageControlPanel = props => {
                 <IconButtonLarge
                     name='trash-sharp'
                     size={32}
-                    // color='red'
+                    color='#fff'
                     onPress={handleDelete}
                     disabled={imagesLoading}
                     transparent

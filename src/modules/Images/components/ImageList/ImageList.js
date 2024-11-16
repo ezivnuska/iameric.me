@@ -5,22 +5,16 @@ import {
 } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { useApp } from '@app'
-import { useImages } from '..'
 import { ImageListItem } from './components'
 import { ActivityIndicator } from '@components'
 
-const ImageList = ({ images }) => {
+const ImageList = ({ images, onPress, uploading }) => {
 
     const { theme } = useApp()
-    
-    const {
-        setImagesModal,
-        uploading,
-    } = useImages()
 
-    const imageGap = 4
+    const imageGap = 10
 
-    const numImagesPerRow = 2
+    const numImagesPerRow = 3
     const [maxWidth, setMaxWidth] = useState(null)
     const [imageSize, setImageSize] = useState(null)
 
@@ -35,10 +29,6 @@ const ImageList = ({ images }) => {
             setImageSize((maxWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
         }
     }, [maxWidth])
-
-    // useEffect(() => {
-    //     console.log('ImageList', images)
-    // }, [images])
 
     const buttonStyle = {
         borderWidth: 1,
@@ -69,7 +59,7 @@ const ImageList = ({ images }) => {
                 ? images.map((image, index) => (
                     <Pressable
                         key={`image-${index}`}
-                        onPress={() => setImagesModal('SHOWCASE', image)}
+                        onPress={() => onPress('SHOWCASE', image)}
                         style={[
                             {
                                 width: imageSize,
@@ -84,7 +74,7 @@ const ImageList = ({ images }) => {
             
             <Pressable
                 key={`image-${images.length + (uploading ? 1 : 0)}`}
-                onPress={() => setImagesModal('IMAGE_UPLOAD')}
+                onPress={() => onPress('IMAGE_UPLOAD')}
                 style={[
                     {
                         justifyContent: 'center',

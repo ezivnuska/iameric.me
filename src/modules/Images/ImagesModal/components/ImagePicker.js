@@ -20,12 +20,7 @@ import {
 } from '@utils/images'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ImagePicker = ({ avatar = false }) => {
-
-    // const {
-    //     user,
-    //     setProfileImage,
-    // } = useApp()
+const ImagePicker = () => {
 
     const {
         user,
@@ -43,7 +38,7 @@ const ImagePicker = ({ avatar = false }) => {
 
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
-    const [avatarCheckbox, setAvatarCheckbox] = useState(avatar)
+    const [avatarCheckbox, setAvatarCheckbox] = useState(!user.profileImage)
     const [imageDims, setImageDims] = useState(null)
     const [showSelectButton, setShowSelectButton] = useState(false)
     
@@ -154,7 +149,7 @@ const ImagePicker = ({ avatar = false }) => {
                 <Checkbox
                     label='Make profile image'
                     onChange={value => setAvatarCheckbox(value)}
-                    value={avatar}
+                    value={avatarCheckbox}
                 />
 
                 <View

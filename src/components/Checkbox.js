@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
 import { ThemedText } from'@components'
-import { useApp } from'@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const Checkbox = ({ label, onChange, value = false }) => {
-
-    const { theme } = useApp()
+const Checkbox = ({ label, onChange, value = false, disabled = false }) => {
 
     const [checked, setChecked] = useState(value)
     
@@ -25,11 +22,16 @@ const Checkbox = ({ label, onChange, value = false }) => {
         >
             <Icon
                 name={checked ? 'radio-button-on' : 'radio-button-off'}
-                size={22}
-                color={checked ? 'tomato' : theme?.colors.textDefault}
+                size={32}
+                color={disabled ? '#ccc' : 'tomato'}
             />
 
-            <ThemedText>{label}</ThemedText>
+            <ThemedText
+                size={24}
+                color={disabled ? '#ccc' : 'tomato'}
+            >
+                {label}
+            </ThemedText>
         </Pressable>
     )
 }
