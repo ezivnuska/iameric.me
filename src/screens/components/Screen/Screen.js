@@ -6,8 +6,9 @@ import {
 import { Footer } from './components'
 import { useApp } from '@app'
 import { useUser } from '@user'
+import { Heading } from '@components'
 
-export default Screen = ({ title, children, secure = false, ...props }) => {
+const Screen = ({ children, title = null, secure = false, ...props }) => {
 
     const { setAuthRoute } = useApp()
     const { user } = useUser()
@@ -31,6 +32,12 @@ export default Screen = ({ title, children, secure = false, ...props }) => {
     return (
         <View style={{ flex: 1 }}>
 
+            {title && (
+                <Heading
+                    title={title}
+                    style={{ paddingHorizontal: 10 }}
+                />
+            )}
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{
@@ -53,3 +60,5 @@ export default Screen = ({ title, children, secure = false, ...props }) => {
         </View>
     )
 }
+
+export default Screen

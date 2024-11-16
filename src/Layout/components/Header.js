@@ -15,7 +15,7 @@ import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-const HEADER_HEIGHT = 100
+const HEADER_HEIGHT = 60
 
 export default ({ user, route }) => {
 
@@ -47,8 +47,10 @@ export default ({ user, route }) => {
         <View
             style={{
                 flexDirection: 'row',
-                justifyContent: user ? 'flex-start' : 'space-between',
-                alignItems: 'center',
+                // justifyContent: user ? 'flex-start' : 'space-between',
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                // alignItems: 'center',
                 gap: 10,
                 height: HEADER_HEIGHT,
                 width: '100%',
@@ -56,6 +58,7 @@ export default ({ user, route }) => {
                 maxWidth: 400,
                 paddingHorizontal: 10,
                 marginHorizontal: 'auto',
+                overflow: 'visible',
             }}
         >
             <View
@@ -75,16 +78,20 @@ export default ({ user, route }) => {
                 }}
             >
 
-                {user ? (
-                    <Pressable onPress={() => navigate('User', { screen: 'Profile' })}>
-                        <ProfileImage user={user} size={40} />
-                    </Pressable>
-                ) : (
-                    <SimpleButton
-                        label='Sign In'
-                        onPress={() => setModal('AUTH')}
-                    />
-                )}
+                <View style={{ paddingTop: 5 }}>
+                    {user ? (
+                        <Pressable
+                            onPress={() => navigate('User', { screen: 'Profile' })}
+                        >
+                            <ProfileImage user={user} size={100} />
+                        </Pressable>
+                    ) : (
+                        <SimpleButton
+                            label='Sign In'
+                            onPress={() => setModal('AUTH')}
+                        />
+                    )}
+                </View>
             </View>
 
         </View>

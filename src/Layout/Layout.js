@@ -69,7 +69,7 @@ const Layout = () => {
                         }}
                     >
 
-                        <View style={ { flexGrow: 0 }}>
+                        <View style={ { flexGrow: 0, zIndex: 1000 }}>
                             <Header user={user} route={currentRoute} />
                         </View>
                         
@@ -79,6 +79,7 @@ const Layout = () => {
                                 width: '100%',
                                 maxWidth: 400,
                                 marginHorizontal: 'auto',
+                                zIndex: 100,
                             }}
                         >
                             <AppNavigation />

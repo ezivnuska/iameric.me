@@ -1,12 +1,15 @@
 import React from 'react'
 import { Screen } from './components'
-import { Heading } from '@components'
+// import { Heading } from '@components'
 import { Play } from '@modules'
 
 const PlayScreen = props => (
-    <Screen {...props}>
+    <Screen
+        {...props}
+        title='Play'
+    >
 
-        <Heading title='Play' />
+        {/* <Heading title='Play' /> */}
         
         <Play />
 

@@ -7,18 +7,21 @@ import { ThemedText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const Heading = ({ title, children = null, color = null, onBack = null }) => {
+const Heading = ({ title, children = null, color = null, onBack = null, ...props }) => {
     
     const { theme } = useApp()
 
     return (
         <View
-            style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 10,
-                marginBottom: 10,
-            }}
+            style={[
+                {
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10,
+                    marginBottom: 10,
+                },
+                props.style,
+            ]}
         >
             <View
                 style={{
