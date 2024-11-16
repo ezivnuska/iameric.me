@@ -31,20 +31,21 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
         let title = null
         switch (type) {
             case 'IMAGE_UPLOAD':
-                title = 'Upload Image'
+                // title = 'Upload Image'
                 break
             case 'SHOWCASE':
                 // title = 'Image Detail'
                 break
             default:
         }
-        return title && (
+        return title ? (
             <ModalHeader
                 title={title}
                 onClose={onCancel}
-                color='#fff'
+                // color='#fff'
+                color='blue'
             />
-        )
+        ) : null
     }
 
     return (
@@ -88,7 +89,8 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                         width: '100%',
                         maxWidth: 400,
                         marginHorizontal: 'auto',
-                        backgroundColor: '#000',
+                        // backgroundColor: '#000',
+                        // backgroundColor: 'orange',
                         zIndex: 100,
                     }}
                 >
@@ -103,9 +105,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                                     zIndex: 1,
                                 }}
                                 showsVerticalScrollIndicator={false}
-                                contentContainerStyle={{
-                                    flex: 1,
-                                }}
+                                contentContainerStyle={{ flex: 1 }}
                             >
                                 {renderContent()}
                             </ScrollView>

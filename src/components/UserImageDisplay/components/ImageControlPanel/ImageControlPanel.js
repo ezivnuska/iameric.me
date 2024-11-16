@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { Caption, Checkbox, IconButtonLarge } from '@components'
+import {
+    Caption,
+    IconButton,
+    IconButtonLarge,
+    ThemedText,
+    Time,
+} from '@components'
 import { useImages } from '@images'
 import { deleteImage, setAvatar } from './utils'
 import { useUser } from '@user'
@@ -23,6 +29,7 @@ const ImageControlPanel = props => {
 
     const [image, setImage] = useState(props.image)
     const [isProfileImage, setIsProfileImage] = useState(null)
+    const [active, setActive] = useState(null)
 
     useEffect(() => {
         if (image) setIsProfileImage(user.profileImage?._id === image?._id)
@@ -73,6 +80,48 @@ const ImageControlPanel = props => {
         else makeAvatar()
     }
 
+    const renderTimeDisplay = () => {
+        return (
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: 10,
+                }}
+            >
+                <Time
+                    time={image.createdAt}
+                    color='#fff'
+                    prefix='Uploaded '
+                />
+
+                <IconButton
+                    name='trash-outline'
+                    size={24}
+                    color='#fff'
+                    onPress={handleDelete}
+                    disabled={imagesLoading || active}
+                />
+                
+            </View>
+        )
+    }
+
+    const renderProfileOption = () => {
+        return (
+            <IconButtonLarge
+                label={`${!isProfileImage ? 'make' : 'remove'} profile image`}
+                name='happy-sharp'
+                size={32}
+                color='#fff'
+                onPress={handleAvatar}
+                disabled={userLoading || active}
+                transparent
+            />
+        )
+    }
+
     return (
         <View
             style={{
@@ -83,33 +132,17 @@ const ImageControlPanel = props => {
                 paddingVertical: 10,
             }}
         >
-            <View
-                style={{
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
-            >
-
-                <IconButtonLarge
-                    name='happy-sharp'
-                    size={32}
-                    color={!isProfileImage ? '#fff' : 'rgba(255, 255, 255, 0.5)'}
-                    onPress={handleAvatar}
-                    disabled={userLoading}
-                    transparent={!isProfileImage}
-                />
-
-                <IconButtonLarge
-                    name='trash-sharp'
-                    size={32}
-                    color='#fff'
-                    onPress={handleDelete}
-                    disabled={imagesLoading}
-                    transparent
-                />
-            </View>
         
-            <Caption data={image} />
+            <Caption
+                data={image}
+                onChange={setActive}
+                active={active === 'caption'}
+            />
+
+            {renderTimeDisplay()}
+
+            {renderProfileOption()}
+            
         </View>
     )
 }

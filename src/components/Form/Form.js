@@ -17,6 +17,7 @@ const Form = ({
     title,
     onSubmit,
     onCancel,
+    color = null,
     data = null,
 }) => {
 
@@ -153,7 +154,7 @@ const Form = ({
                     autoCapitalize='sentences'
                     onChange={value => onChange(name, value)}
                     autoFocus={getFocus(name)}
-                    onKeyPress={onEnter}
+                    onKeyPress={!multiline && onEnter}
                     dirty={getDirty(name)}
                     multiline={multiline}
                 />
@@ -169,7 +170,7 @@ const Form = ({
                 // paddingHorizontal: 10,
             }}
         >
-            {title && <FormHeader title={title} />}
+            {title && <FormHeader title={title} color={color} />}
 
             {formReady && renderFields(formFields)}
 

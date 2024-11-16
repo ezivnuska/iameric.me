@@ -18,6 +18,7 @@ const IconButton = ({ disabled, name, onPress, color = null, size = 18, ...props
                     flexDirection: 'row',
                     alignItems: 'center',
                     height: size + 4,
+                    opacity: disabled ? 0.3 : 1,
                 },
                 props.style,
             ]}

@@ -8,7 +8,7 @@ import { useApp } from '@app'
 import { useForm } from '@form'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const FormHeader = ({ title, close = null }) => {
+const FormHeader = ({ title, close = null, color = '#000' }) => {
 
     const { theme } = useApp()
     const { clearForm } = useForm()
@@ -30,6 +30,7 @@ const FormHeader = ({ title, close = null }) => {
             <ThemedText
                 bold
                 size={24}
+                color={color}
             >
                 {title}
             </ThemedText>

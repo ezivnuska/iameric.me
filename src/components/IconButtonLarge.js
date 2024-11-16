@@ -21,6 +21,7 @@ const IconButtonLarge = ({
             {
                 flexGrow: 0,
                 flexDirection: 'row',
+                // justifyContent: 'flex-start',
                 gap: 10,
                 alignContent: 'center',
                 alignItems: 'center',
@@ -29,13 +30,12 @@ const IconButtonLarge = ({
                 borderRadius: 10,
                 overflow: 'hidden',
                 paddingVertical: 5,
-                paddingHorizontal: label ? 10 : 0,
+                paddingHorizontal: label ? transparent ? 0 : 10 : 0,
                 backgroundColor: transparent
                     ? 'transparent'
-                    : disabled
-                        ? '#aaa'
-                        : color,
+                    : color,
                         // :'rgba(255, 99, 71, 0.3)'// tomato
+                opacity: disabled ? 0.5 : 1,
             },
             props.style,
         ]}
@@ -50,6 +50,7 @@ const IconButtonLarge = ({
                 : '#fff'
             }
             style={{
+                flexGrow: 0,
                 paddingLeft: 1,
                 marginHorizontal: 'auto',
             }}
@@ -64,6 +65,9 @@ const IconButtonLarge = ({
                         : color
                     : '#fff'
                 }
+                style={{
+                    flexGrow: 1,
+                }}
             >
                 {label}
             </ThemedText>

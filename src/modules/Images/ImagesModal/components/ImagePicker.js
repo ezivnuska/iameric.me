@@ -186,6 +186,8 @@ const ImagePicker = () => {
             style={{
                 flex: 1,
                 flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: '#fff',
             }}
         >
             {(preview && imageDims) ? (
@@ -217,11 +219,24 @@ const ImagePicker = () => {
                     }}
                 >
                     {showSelectButton ? (
-                        <SimpleButton
-                            label='Select Image'
-                            onPress={openSelector}
-                            disabled={uploading}
-                        />
+                        <View
+                            style={{
+                                gap: 10,
+                            }}
+                        >
+                            <SimpleButton
+                                label='Select Image'
+                                onPress={openSelector}
+                                disabled={uploading}
+                            />
+                            <SimpleButton
+                                label='Cancel'
+                                onPress={closeImagesModal}
+                                disabled={uploading}
+                                color='tomato'
+                                transparent
+                            />
+                        </View>
                     ) : <ActivityIndicator size='medium' label='Select Image' />}
                 </View>
             )}

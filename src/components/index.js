@@ -15,7 +15,6 @@ import Heading from './Heading'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
-import ImageControlPanel from './ImageControlPanel'
 import ImageList from './ImageList'
 import ImageLoader from './ImageLoader'
 import InfoMarker from './InfoMarker'
@@ -51,7 +50,6 @@ export {
     IconButton,
     IconButtonLarge,
     ImageClone,
-    ImageControlPanel,
     ImageList,
     ImageLoader,
     InfoMarker,

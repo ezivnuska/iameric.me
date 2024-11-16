@@ -12,7 +12,7 @@ const ImageList = ({ images, onPress, uploading }) => {
 
     const { theme } = useApp()
 
-    const imageGap = 10
+    const imageGap = 5
 
     const numImagesPerRow = 3
     const [maxWidth, setMaxWidth] = useState(null)

@@ -117,7 +117,7 @@ const CaptionForm = ({ data }) => {
 
     return (
         <Form
-            title='Edit Caption'
+            // title='Edit Caption'
             fields={[
                 {
                     label: 'New Caption',

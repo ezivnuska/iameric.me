@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Image, ScrollView, View } from 'react-native'
 import { getMaxImageDims } from '@utils/images'
 import { useApp } from '@app'
@@ -9,25 +9,10 @@ const ImageContainer = ({ image }) => {
 
     const { dims } = useApp()
 
-    // const [maxWidth, setMaxWidth] = useState(null)
     const [maxHeight, setMaxHeight] = useState(null)
     const [imageDims, setImageDims] = useState(null)
 
     const uri = useMemo(() => `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
-
-    // useEffect(() => {
-    //     console.log('imageDims', imageDims)
-    // }, [imageDims])
-
-    useEffect(() => {
-        // console.log('maxWidth', maxWidth)
-        console.log('maxHeight', maxHeight)
-        // if (!imageDims) setImageDims(getMaxImageDims(image.width, image.height, maxWidth))
-    }, [maxHeight])
-
-    // useEffect(() => {
-    //     if (!imageDims) setImageDims(getMaxImageDims(image.width, image.height, maxWidth))
-    // }, [maxWidth, maxHeight])
 
     const onLayout = e => {
         if (e.nativeEvent.target.offsetParent) {
@@ -47,11 +32,7 @@ const ImageContainer = ({ image }) => {
                 <ScrollView
                     style={{ height: maxHeight }}
                     showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}
+                    contentContainerStyle={{ flex: 1 }}
                 >
                     <Image
                         source={{ uri }}
