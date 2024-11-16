@@ -84,7 +84,7 @@ export const FormContextProvider = props => {
                 ...payload,
                 ...state.formFields,
             }
-            console.log('init form', fields)
+            // console.log('init form', fields)
             dispatch({
                 type: 'INIT_FORM',
                 payload: fields,

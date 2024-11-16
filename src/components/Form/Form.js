@@ -51,7 +51,7 @@ const Form = ({
         })
         
         const fieldValues = getFields(state, data)
-        console.log('Field values', fieldValues)
+        // console.log('Field values', fieldValues)
         initForm(fieldValues)
     }
 
