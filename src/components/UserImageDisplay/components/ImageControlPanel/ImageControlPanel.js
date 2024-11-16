@@ -125,8 +125,10 @@ const ImageControlPanel = props => {
     return (
         <View
             style={{
-                flexGrow: 0,
-                flexShrink: 0,
+                flex: 1,
+                // flexBasis: 'auto',
+                // flexGrow: 1,
+                // flexShrink: 0,
                 gap: 10,
                 paddingHorizontal: 10,
                 paddingVertical: 10,
@@ -142,7 +144,7 @@ const ImageControlPanel = props => {
             {renderTimeDisplay()}
 
             {renderProfileOption()}
-            
+
         </View>
     )
 }

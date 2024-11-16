@@ -1,11 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Image, ScrollView, View } from 'react-native'
 import { getMaxImageDims } from '@utils/images'
 import { useApp } from '@app'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const ImageContainer = ({ image }) => {
+const ImageContainer = ({ image, onLayoutChange }) => {
 
     const { dims } = useApp()
 
@@ -15,22 +15,32 @@ const ImageContainer = ({ image }) => {
     const uri = useMemo(() => `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
 
     const onLayout = e => {
-        if (e.nativeEvent.target.offsetParent) {
+        // if (e.nativeEvent.target.offsetParent) {
             const parentWidth = e.nativeEvent.target.offsetParent.clientWidth
             setMaxHeight(e.nativeEvent.target.offsetParent.clientHeight)
-            const imageDims = getMaxImageDims(image.width, image.height, parentWidth)
-            setImageDims(imageDims)
-        }
+            const dimensions = getMaxImageDims(image.width, image.height, parentWidth)
+            setImageDims(dimensions)
+        // }
     }
+
+    // useEffect(() => {
+    //     if (imageDims) {
+    //         console.log('maxHeight', maxHeight)
+    //         // const dimensions = getMaxImageDims(image.width, image.height, parentWidth)
+    //         // setImageDims(dimensions)
+    //         // onLayoutChange(imageDims.height)
+    //     }
+    // }, [imageDims])
 
     return dims && (
         <View
             onLayout={onLayout}
-            style={{ height: maxHeight }}
+            // style={{ height: maxHeight }}
+            style={{ flex: 1 }}
         >
-            {maxHeight && (
+            {imageDims && (
                 <ScrollView
-                    style={{ height: maxHeight }}
+                    style={{ flex: 1 }}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flex: 1 }}
                 >

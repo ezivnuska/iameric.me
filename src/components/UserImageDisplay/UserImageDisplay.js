@@ -16,7 +16,7 @@ import Animated, {
 import LinearGradient from 'react-native-web-linear-gradient'
 
 const UserImageDisplay = ({ data }) => {
-    
+
     const {
         setImagesLoading,
         closeImagesModal,
@@ -24,7 +24,6 @@ const UserImageDisplay = ({ data }) => {
 
     const [image, setImage] = useState(null)
 
-    const [maxHeight, setMaxHeight] = useState(null)
     const [controlsVisible, setControlsVisible] = useState(true)
 
     const controlOpacity = useSharedValue(1)
@@ -53,13 +52,6 @@ const UserImageDisplay = ({ data }) => {
         }
     }
 
-    const onLayout = e => {
-        if (e.nativeEvent.target.offsetParent) {
-            const parentHeight = e.nativeEvent.target.offsetParent.clientHeight
-            setMaxHeight(parentHeight)
-        }
-    }
-
     return (
         <View
             style={{
@@ -70,19 +62,24 @@ const UserImageDisplay = ({ data }) => {
 
             {image ? (
                 <View
-                    onLayout={onLayout}
                     style={{
                         flex: 1,
                         position: 'relative',
                     }}
                 >
+
                     <Pressable
-                        style={{ flex: 1 }}
                         onPress={handleControls}
+                        style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            zIndex: 1,
+                        }}
                     >
                         <ImageContainer image={image} />
                     </Pressable>
-                    
+
                     <Animated.View
                         style={[{
                             position: 'absolute',
@@ -90,51 +87,43 @@ const UserImageDisplay = ({ data }) => {
                             left: 0,
                             right: 0,
                             display: controlsVisible ? 'block' : 'none',
-                            // paddingHorizontal: 10,
+                            zIndex: 100,
                         }, animatedStyle]}
                     >
                         <LinearGradient
                             colors={[
-                                'rgba(0, 0, 0, 0.2)',
-                                'rgba(0, 0, 0, 0.05)',
+                                'rgba(0, 0, 0, 0.5)',
+                                'rgba(0, 0, 0, 0.25)',
+                                'rgba(0, 0, 0, 0.1)',
                                 'rgba(0, 0, 0, 0.0)',
                             ]}
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'flex-end',
+                                paddingHorizontal: 10,
+                                paddingVertical: 15,
+                            }}
                         >
-                            <View
-                                style={{
-                                    flexDirection: 'row',
-                                    justifyContent: 'flex-end',
-                                    paddingHorizontal: 10,
-                                    paddingVertical: 15,
-                                }}
-                            >
-                                <IconButtonLarge
-                                    name='close'
-                                    onPress={closeImagesModal}
-                                    size={40}
-                                    color='#fff'
-                                    transparent
-                                />
-                            </View>
+                            <IconButtonLarge
+                                name='close'
+                                onPress={closeImagesModal}
+                                size={40}
+                                color='#fff'
+                                transparent
+                            />
                         </LinearGradient>
-                        
                     </Animated.View>
 
                     <Animated.View
-                        style={[
-                            {
-                                backgroundColor: 'rgba(0, 0, 0, 0.6)',
-                                paddingVertical: 10,
-                                display: controlsVisible ? 'block' : 'none',
-                            }, {
-                                position: 'absolute',
-                                bottom: 0,
-                                left: 0,
-                                right: 0,
-                                zIndex: 100,
-                            },
-                            animatedStyle,
-                        ]}
+                        style={[{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            display: controlsVisible ? 'block' : 'none',
+                            zIndex: 101,
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        }, animatedStyle]}
                     >
                         <ImageControlPanel image={image} />
                     </Animated.View>
