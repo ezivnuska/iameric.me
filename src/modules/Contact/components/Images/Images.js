@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { Heading } from '@components'
-import { ImageList } from './components'
-import { useModal } from '@modal'
+import { ActivityIndicator, Heading, ImageList } from '@components'
+import { useContact } from '@contact'
 import { loadImages } from './utils'
-import { ActivityIndicator } from 'react-native-paper'
 
-export default ({ contactId }) => {
+const Images = ({ contactId }) => {
+
+    const { setContactModal } = useContact()
+
     const [images, setImages] = useState(null)
 
     const fetchImages = async () => {
@@ -27,9 +28,12 @@ export default ({ contactId }) => {
             {images ? (
                 <ImageList
                     images={images}
+                    onPress={(type, data) => setContactModal(type, data)}
                 />
             ) : <ActivityIndicator size='small' />}
 
         </View>
     )
 }
+
+export default Images

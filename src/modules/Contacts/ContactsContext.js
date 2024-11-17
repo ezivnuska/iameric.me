@@ -29,20 +29,22 @@ export const ContactsContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
+    const initLoading = async () => {
+        dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
+        const users = await loadContacts()
+        dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })
+
+        if (!users) console.log('could not load contacts')
+        else dispatch({ type: 'SET_CONTACTS', payload: users })
+        
+        dispatch({ type: 'SET_CONTACTS_LOADED' })
+    }
+
     useEffect(() => {
 
-        const init = async () => {
-            dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
-            const users = await loadContacts()
-            dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })
-
-            if (!users) console.log('could not load contacts')
-            else dispatch({ type: 'SET_CONTACTS', payload: users })
-            
-            dispatch({ type: 'SET_CONTACTS_LOADED' })
-        }
         
-        init()
+        
+        // init()
 
     }, [])
 
@@ -75,9 +77,10 @@ export const ContactsContextProvider = props => {
                 ...state,
                 ...actions,
                 getContact,
+                initLoading,
             }}
         >
-            {state.contactsLoaded && props.children}
+            {props.children}
         </ContactsContext.Provider>
     )
 }

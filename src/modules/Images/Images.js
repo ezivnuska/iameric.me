@@ -6,7 +6,7 @@ import {
 } from '.'
 import {
     ImageList,
-} from './components'
+} from '@components'
 
 const Images = () => {
 

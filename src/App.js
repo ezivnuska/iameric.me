@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View } from 'react-native'
 import Layout from '@layout'
 import { AppContextProvider, useApp } from '@app'
+import { ContactsContextProvider } from '@contacts'
 import { SocketContextProvider } from '@socket'
 import { NotificationContextProvider } from '@notification'
 import { ModalContextProvider } from '@modal'
@@ -37,9 +38,11 @@ const App = () => {
                                 <FormContextProvider>
                                     <ModalContextProvider>
                                         <SocketContextProvider>
+                                            <ContactsContextProvider>
                                         
                                                 <Layout />
                                                         
+                                            </ContactsContextProvider>
                                         </SocketContextProvider>
                                     </ModalContextProvider>
                                 </FormContextProvider>

@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { ThemedText } from '@components'
+import { ThemedText, ScreenHeader } from '@components'
 import {
-    FeedHeader,
     FeedList,
     FeedModal,
     useFeed,
@@ -90,7 +89,10 @@ export default () => {
     return (
         <View style={{ flex: 1 }}>
 
-            <FeedHeader setModal={() => setFeedModal('POST')} />
+            <ScreenHeader
+                label='Feed'
+                setModal={() => setFeedModal('POST')}
+            />
 
             {sortedThreads.length
                 ? renderThreads(sortedThreads)

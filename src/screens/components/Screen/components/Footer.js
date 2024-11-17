@@ -8,7 +8,7 @@ import { useUser } from '@user'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 
-const FOOTER_HEIGHT = 100
+const FOOTER_HEIGHT = 60
 
 export default () => {
 
@@ -39,7 +39,7 @@ export default () => {
                 <View style={{ flexGrow: 0 }}>
                     <IconButtonLarge
                         name='settings-sharp'
-                        size={FOOTER_HEIGHT / 3}
+                        size={24}
                         onPress={() => setModal('SETTINGS')}
                     />
                 </View>

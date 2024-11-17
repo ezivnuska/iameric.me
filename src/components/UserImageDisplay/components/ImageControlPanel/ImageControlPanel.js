@@ -1,18 +1,19 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { View } from 'react-native'
-import {
-    Caption,
-} from './components'
+import { Caption } from './components'
 import {
     IconButton,
     IconButtonLarge,
+    ProfileImage,
+    ThemedText,
     Time,
 } from '@components'
 import { useImages } from '@images'
-import { deleteImage, setAvatar } from './utils'
 import { useUser } from '@user'
+import { setAvatar } from './utils'
+import { deleteImage } from '@utils/images'
 
-const ImageControlPanel = props => {
+const ImageControlPanel = ({ image }) => {
 
     const {
         closeImagesModal,
@@ -28,17 +29,11 @@ const ImageControlPanel = props => {
         setUserLoading,
     } = useUser()
 
-    const [image, setImage] = useState(props.image)
-    const [isProfileImage, setIsProfileImage] = useState(null)
     const [active, setActive] = useState(null)
-
-    useEffect(() => {
-        if (image) setIsProfileImage(user.profileImage?._id === image?._id)
-    }, [image])
-
-    useEffect(() => {
-        if (image) setIsProfileImage(user.profileImage?._id === image?._id)
-    }, [active])
+    
+    const loading = useMemo(() => userLoading || imagesLoading, [userLoading, imagesLoading])
+    const profileImage = useMemo(() => user && user.profileImage, [user])
+    const isProfileImage = useMemo(() => profileImage && profileImage._id === image._id, [profileImage])
     
     const handleDelete = async () => {
 
@@ -47,12 +42,12 @@ const ImageControlPanel = props => {
         setImagesLoading(true)
         const deletedImage = await deleteImage(image._id, isProfileImage)
         setImagesLoading(false)
-        
-        if (deletedImage) {
+
+        if (!deletedImage) console.log('Error deleting image.')
+        else {
+            if (isProfileImage) setProfileImage(null)
             removeImage(deletedImage._id)
             closeImagesModal()
-        } else {
-            console.log('Error deleting image.')   
         }
     }
 
@@ -64,8 +59,6 @@ const ImageControlPanel = props => {
 
         if (data && data.profileImage) {
             setProfileImage(data.profileImage)
-    
-            setIsProfileImage(true)
         }
     }
 
@@ -76,42 +69,12 @@ const ImageControlPanel = props => {
         setUserLoading(false)
 
         setProfileImage(null)
-
-        setIsProfileImage(false)
     }
 
     const handleAvatar = () => {
         if (active) setActive(null)
         if (isProfileImage) removeAvatar()
         else makeAvatar()
-    }
-
-    const renderTimeDisplay = () => {
-        return (
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: 10,
-                }}
-            >
-                <Time
-                    time={image.createdAt}
-                    color='#fff'
-                    prefix='Uploaded '
-                />
-
-                <IconButton
-                    name='trash-outline'
-                    size={24}
-                    color='#fff'
-                    onPress={handleDelete}
-                    disabled={imagesLoading || active}
-                />
-                
-            </View>
-        )
     }
 
     const renderProfileOption = () => {
@@ -122,7 +85,7 @@ const ImageControlPanel = props => {
                 size={32}
                 color='#fff'
                 onPress={handleAvatar}
-                disabled={userLoading || active}
+                disabled={imagesLoading || active}
                 transparent
             />
         )
@@ -132,22 +95,58 @@ const ImageControlPanel = props => {
         <View
             style={{
                 flex: 1,
-                // flexBasis: 'auto',
-                // flexGrow: 1,
-                // flexShrink: 0,
                 gap: 10,
+                height: '50%',
                 paddingHorizontal: 10,
                 paddingVertical: 10,
             }}
         >
+            
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'flex-end',
+                    gap: 10,
+                }}
+            >
+                <ProfileImage
+                    user={user}
+                    size={50}
+                />
+
+                <View style={{ flexGrow: 1 }}>
+                    <ThemedText
+                        size={20}
+                        color='#fff'
+                        bold
+                        style={{ lineHeight: 25 }}
+                    >
+                        {user.username}
+                    </ThemedText>
+
+                    <Time
+                        time={image.createdAt}
+                        color='#fff'
+                        prefix='Uploaded '
+                        style={{ lineHeight: 25 }}
+                    />
+                </View>
+
+                <IconButton
+                    name='trash-outline'
+                    size={24}
+                    color='#fff'
+                    onPress={handleDelete}
+                    disabled={imagesLoading}
+                />
+
+            </View>
         
             <Caption
                 data={image}
                 onChange={setActive}
                 active={active === 'caption'}
             />
-
-            {renderTimeDisplay()}
 
             {renderProfileOption()}
 

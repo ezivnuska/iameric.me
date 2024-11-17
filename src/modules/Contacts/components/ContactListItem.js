@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react'
 import {
-    Image,
     Pressable,
     View,
 } from 'react-native'
 import {
-    IconButton,
+    ProfileImage,
     ThemedText,
 } from '@components'
 import { useApp } from '@app'
@@ -14,20 +13,12 @@ import { useSocket } from '@socket'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { navigate } from '@utils/navigation'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const ContactListItem = ({ item }) => {
+const ContactListItem = ({ item, ...props }) => {
     
     const { theme } = useApp()
     const { setModal } = useModal()
     const { connections } = useSocket()
-
-    const getProfileImagePathFromUser = user => {
-        return user.profileImage
-            ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
-            : `${IMAGE_PATH}/avatar-default-small.png`}
-
-    const imagePath = useMemo(() => getProfileImagePathFromUser(item), [item])
 
     const isConnected = useMemo(() => {
         const connectedIds = connections.map(c => c.userId)
@@ -36,6 +27,8 @@ const ContactListItem = ({ item }) => {
 
     return (
         <View
+            {...props}
+            // key={`contact-${item._id}`}
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -43,46 +36,30 @@ const ContactListItem = ({ item }) => {
             }}
         >
             <Pressable
-                disabled
-                onPress={() => navigate('Contact', { screen: 'Details', params: { username: item.username } })}
-                style={[
-                    {
-                        flexBasis: 'auto',
-                        flexGrow: 0,
-                        flexShrink: 0,
-                        flexDirection: 'row',
-                        justifyContent: 'flex-start',
-                        alignItems: 'center',
-                        gap: 10,
-                        flexWrap: 'nowrap',
-                        paddingVertical: 5,
-                    },
-                    // props.style,
-                ]}
+                onPress={() => {
+                    navigate('Contact', {
+                        screen: 'Details',
+                        params: {
+                            username: item.username,
+                        }
+                    })
+                }}
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    flexGrow: 1,
+                    flexShrink: 0,
+                    gap: 10,
+                }}
             >
-                <View
-                    style={{
-                        flexGrow: 0,
-                        borderRadius: 12,
-                        height: 24,
-                        overflow: 'hidden',
-                        borderWidth: 1,
-                        borderColor: '#777',
-                    }}
-                >
-                    <Image
-                        resizeMode='cover'
-                        style={{
-                            width: 24,
-                            height: 24,
-                        }}
-                        source={imagePath}
-                    />
-                </View>
+                <ProfileImage
+                    user={item}
+                    size={50}
+                />
 
                 <Icon
                     name={isConnected ? 'ellipse' : 'ellipse-outline'}
-                    size={18}
+                    size={30}
                     color={isConnected ? theme?.colors.statusOn : theme?.colors.statusOff}
                 />
 
@@ -94,7 +71,13 @@ const ContactListItem = ({ item }) => {
                     />
                 )} */}
                 
-                <ThemedText>{item.username || `Guest-${String(item.socketId).substring(item.socketId.length - 3)}`}</ThemedText>
+                <ThemedText
+                    size={24}
+                    bold={isConnected}
+                    style={{ lineHeight: 50 }}
+                >
+                    {item.username || `Guest-${String(item.socketId).substring(item.socketId.length - 3)}`}
+                </ThemedText>
 
             </Pressable>
 

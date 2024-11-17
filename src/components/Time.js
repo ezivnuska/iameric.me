@@ -1,5 +1,4 @@
 import React from 'react'
-import { View } from 'react-native'
 import { ThemedText } from '@components'
 import {
     format,
@@ -8,16 +7,25 @@ import {
     subDays,
 } from 'date-fns'
 
-const Time = ({ time = null, color = '#444', prefix = '', suffix = '' }) => {
+const Time = ({
+    time = null,
+    size = 16,
+    color = '#444',
+    prefix = '',
+    suffix = '',
+    ...props
+}) => {
     return (
-        <View>
-            <ThemedText color={color} size={16}>
-                {time
-                    ? `${prefix}${formatRelative(new Date(time), new Date())}${suffix}`
-                    : 'Now'
-                }
-            </ThemedText>
-        </View>
+        <ThemedText
+            color={color}
+            size={size}
+            style={props.style}
+        >
+            {time
+                ? `${prefix}${formatRelative(new Date(time), new Date())}${suffix}`
+                : 'Now'
+            }
+        </ThemedText>
     )
 }
 

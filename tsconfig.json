@@ -18,6 +18,9 @@
       "@components": [
         "./src/components/index.js"
       ],
+      "@contact": [
+        "./src/modules/Contact/index.js"
+      ],
       "@contacts": [
         "./src/modules/Contacts/index.js"
       ],

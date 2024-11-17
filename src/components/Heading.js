@@ -3,7 +3,7 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
+import { ThemedText } from '.'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 

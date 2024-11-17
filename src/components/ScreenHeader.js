@@ -5,7 +5,7 @@ import {
     ThemedText,
 } from '@components'
 
-const FeedHeader = ({ setModal }) => (
+const ScreenHeader = ({ label, setModal = null }) => (
     <View
         style={{
             flexGrow: 0,
@@ -15,17 +15,20 @@ const FeedHeader = ({ setModal }) => (
             marginBottom: 10,
         }}
     >
-        <ThemedText bold size={40}>
-            Feed
+        <ThemedText bold size={32}>
+            {label}
         </ThemedText>
 
-        <IconButtonLarge
-            name='add'
-            onPress={setModal}
-            size={36}
-        />
+        {setModal !== null && (
+            <IconButtonLarge
+                name='create-outline'
+                onPress={setModal}
+                size={36}
+                transparent
+            />
+        )}
 
     </View>
 )
 
-export default FeedHeader
+export default ScreenHeader

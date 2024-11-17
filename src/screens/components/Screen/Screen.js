@@ -6,16 +6,14 @@ import {
 import { Footer } from './components'
 import { useApp } from '@app'
 import { useUser } from '@user'
-import { Heading } from '@components'
 
-const Screen = ({ children, title = null, secure = false, ...props }) => {
+const Screen = ({ children, secure = false, ...props }) => {
 
     const { setAuthRoute } = useApp()
     const { user } = useUser()
 
     const authorized = useMemo(() => (!secure || user !== null), [user, secure])
     const routeName = useMemo(() => props.route.name, [props])
-
 
     useEffect(() => {
         if (!authorized) {
@@ -32,23 +30,10 @@ const Screen = ({ children, title = null, secure = false, ...props }) => {
     return (
         <View style={{ flex: 1 }}>
 
-            {title && (
-                <Heading
-                    title={title}
-                    style={{ paddingHorizontal: 10 }}
-                />
-            )}
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                style={{
-                    flexGrow: 1,
-                    marginHorizontal: 5,
-                }}
-                contentContainerStyle={{
-                    flex: 1,
-                    paddingHorizontal: 5,
-                    width: '100%',
-                }}
+                style={{ flexGrow: 1 }}
+                contentContainerStyle={{ flex: 1, width: '100%' }}
             >
                 {children}
             </ScrollView>

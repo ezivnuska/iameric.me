@@ -1,6 +1,5 @@
-import UserImageUploader from './UserImageUploader'
-import Profile from './Profile'
 import User from './User'
+import UserImageUploader from './UserImageUploader'
 import UserModal from './UserModal'
 
 import {
@@ -11,7 +10,6 @@ import {
 export default User
 
 export {
-    Profile,
     UserContextProvider,
     UserImageUploader,
     UserModal,

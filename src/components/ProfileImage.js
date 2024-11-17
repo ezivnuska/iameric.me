@@ -14,7 +14,7 @@ const ProfileImage = ({ user, size = 'auto' }) => {
     
     const [source, setSource] = useState(null)
 
-    const profileImage = useMemo(() => user && user.profileImage, [user])
+    const profileImage = useMemo(() => user?.profileImage, [user])
 
     useEffect(() => {
         
@@ -25,9 +25,10 @@ const ProfileImage = ({ user, size = 'auto' }) => {
         setSource(imageSource)
     }, [profileImage])
 
-    return source ? (
+    return (
         <View
             style={{
+                flexGrow: 0,
                 width: size,
                 height: size,
                 borderRadius: 8,
@@ -36,16 +37,18 @@ const ProfileImage = ({ user, size = 'auto' }) => {
                 overflow: 'hidden',
             }}
         >
-            <Image
-                source={source}
-                resizeMode='cover'
-                style={{
-                    width: size,
-                    height: size,
-                }}
-            />
+            {source ? (
+                <Image
+                    source={source}
+                    resizeMode='cover'
+                    style={{
+                        width: size,
+                        height: size,
+                    }}
+                />
+            ) : <ActivityIndicator />}
         </View>
-    ) : <ActivityIndicator />
+    )
 }
 
 export default ProfileImage

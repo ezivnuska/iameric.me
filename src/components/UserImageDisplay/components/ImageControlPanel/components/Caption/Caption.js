@@ -57,23 +57,6 @@ const Caption = ({
         }
     }
 
-    const renderForm = () => (
-        <Form
-            // title={`${data?.caption ? 'Edit' : 'Add'} Caption`}
-            data={data}
-            fields={[
-                {
-                    label: `${data?.caption ? 'Edit' : 'Add'} Caption`,
-                    name: 'caption',
-                    placeholder: 'new caption...',
-                    multiline: false,
-                }
-            ]}
-            onCancel={closeImagesModal}
-            onSubmit={handleSubmit}
-        />
-    )
-
     return (
         <View>
             <View
@@ -85,21 +68,31 @@ const Caption = ({
                 }}
             >
                 <View style={{ flexGrow: 1 }}>
+
                     <View
                         style={{
                             flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
+                            // justifyContent: 'space-between',
+                            alignItems: 'center',
                             marginBottom: 10,
                         }}
                     >
-                        <ThemedText size={18} color='#fff'>{editing ? 'Edit caption' : captionText || 'No description'}</ThemedText>
+                        <ThemedText
+                            size={18}
+                            color='#fff'
+                            style={{ flexGrow: 1 }}
+                        >
+                            {captionText}
+
+                        </ThemedText>
+
                         <IconButton
                             name={editing ? 'close' : 'create-outline'}
                             size={24}
                             color={'#fff'}
                             onPress={() => setEditing(!editing)}
                         />
+
                     </View>
 
                     {editing && (

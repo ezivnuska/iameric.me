@@ -39,6 +39,7 @@ module.exports = {
           '@app':           './src/AppContext',
           '@bips':          './src/modules/Bipster',
           '@components':    './src/components',
+          '@contact':       './src/modules/Contact',
           '@contacts':      './src/modules/Contacts',
           '@feed':          './src/modules/Feed',
           '@forum':         './src/modules/Forum',

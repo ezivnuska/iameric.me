@@ -1,28 +1,26 @@
 import React, { useEffect, useState, useMemo } from 'react'
 import {
-    Image,
     Pressable,
     View,
 } from 'react-native'
 import {
     IconButton,
+    ProfileImage,
     ThemedText,
     Time,
 } from '@components'
 import { useUser } from '@user'
-// import { useModal } from '@modal'
+import { useFeed } from '@feed'
 import { navigate } from '@utils/navigation'
 // import { loadContactById } from '@utils/contacts'
 // import { parser } from 'url-meta-scraper'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-
-export default ({ item, onDelete = null }) => {
+const FeedListItem = ({ item, onDelete = null }) => {
     
     const { user } = useUser()
-    // const { setModal } = useModal()
+    const { feedLoading } = useFeed()
 
-    const { author } = item
+    const { author } = useMemo(() => item, [item])
 
     // const fetchMeta = async () => {
     //     // try {
@@ -40,104 +38,106 @@ export default ({ item, onDelete = null }) => {
     // useEffect(() => {
     //     fetchMeta()
     // }, [])
-
-    const getProfileImagePathFromUser = () => {
-        return author && author.profileImage
-            ? `${IMAGE_PATH}/${author.username}/${author.profileImage.filename}`
-            : `${IMAGE_PATH}/avatar-default-small.png`}
-
-    const imagePath = useMemo(() => getProfileImagePathFromUser(), [item])
     
     return (
         <View
             key={`post-${item._id}`}
+            style={{ gap: 10 }}
         >
 
             <View
                 style={{
                     flexDirection: 'row',
                     alignItems: 'flex-start',
-                    alignContent: 'center',
-                    gap: 10,
-                    paddingVertical: 5,
+                    gap: 8,
                 }}
             >
                 <View
                     style={{
                         flexDirection: 'row',
-                        flexGrow: 0,
-                        gap: 12,
+                        alignItems: 'flex-start',
+                        flexGrow: 1,
+                        flexShrink: 1,
+                        gap: 7,
+                        flexWrap: 'wrap',
                     }}
                 >
-                    {author ? (
-                        <Pressable
-                            onPress={() => {
-                                navigate('Contact', { screen: 'Details', params: { username: author.username } })
-                            }}
+                    <Pressable
+                        onPress={() => {
+                            navigate('Contact', { screen: 'Details', params: { username: author.username } })
+                        }}
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'flex-start',
+                            flexGrow: 1,
+                            flexShrink: 0,
+                            gap: 10,
+                        }}
+                    >
+                        <ProfileImage
+                            user={author}
+                            size={50}
+                        />
+
+                        <View
                             style={{
                                 flexDirection: 'row',
-                                flexGrow: 0,
-                                gap: 12,
+                                alignItems: 'flex-end',
+                                flexGrow: 1,
+                                gap: 10,
                             }}
                         >
-                            {imagePath && (
-                                <View style={{ flexGrow: 0 }}>
-                                    <Image
-                                        source={imagePath}
-                                        style={{
-                                            width: 24,
-                                            height: 24,
-                                        }}
-                                    />
-                                </View>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexGrow: 1,
+                                }}
+                            >
+                                <ThemedText
+                                    size={20}
+                                    bold
+                                    style={{ lineHeight: 25 }}
+                                >
+                                    {author.username}
+                                </ThemedText>
+
+                                <Time
+                                    time={item.createdAt}
+                                    size={20}
+                                    style={{ lineHeight: 25 }}
+                                />
+
+                            </View>
+
+                            {(user._id === author._id || user.role === 'admin') && (
+                                <IconButton
+                                    name='trash-outline'
+                                    disabled={feedLoading}
+                                    onPress={() => onDelete(item._id)}
+                                    color='#000'
+                                    size={26}
+                                />
                             )}
 
-                            <ThemedText bold>{author.username}</ThemedText>
-                        </Pressable>
-                    ) : <ThemedText>Author not found</ThemedText>}
+                        </View>
 
-                    <Time time={item.createdAt} />
-
-                </View>
-
-                <View
-                    style={{
-                        flexGrow: 1,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        flexWrap: 'wrap',
-                        gap: 10,
-                    }}
-                >
-                    
-                    {((author && user._id === author._id) || user.role === 'admin') && (
-                        <IconButton
-                            name='trash-outline'
-                            size={22}
-                            onPress={() => onDelete(item._id)}
-                        />
-                    )}
+                    </Pressable>
 
                 </View>
 
             </View>
 
-            <View
+            <ThemedText
+                size={24}
                 style={{
-                    marginLeft: 25,
-                    paddingHorizontal: 10,
-                    backgroundColor: '#eee',
-                    borderRadius: 12,
-                    overflow: 'hidden',
+                    lineHeight: 30,
                 }}
             >
-                <ThemedText style={{ lineHeight: 30 }}>
-                    {item.text}
-                </ThemedText>
-
-            </View>
+                {item.text}
+            </ThemedText>
             
         </View>
     )
 }
+
+export default FeedListItem

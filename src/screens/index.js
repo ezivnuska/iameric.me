@@ -11,7 +11,6 @@ import MapScreen from './MapScreen'
 import PlayScreen from './PlayScreen'
 import ProfileScreen from './ProfileScreen'
 import SimpleScreen from './SimpleScreen'
-import UserScreen from './UserScreen'
 import WorkScreen from './WorkScreen'
 
 export {
@@ -28,6 +27,5 @@ export {
     PlayScreen,
     ProfileScreen,
     SimpleScreen,
-    UserScreen,
     WorkScreen,
 }

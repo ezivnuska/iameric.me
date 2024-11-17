@@ -1,15 +1,13 @@
 import React from 'react'
 import { Screen } from './components'
-import Contacts, { ContactsContextProvider } from '@contacts'
+import Contacts from '@contacts'
 
 const ContactsScreen = props => (
     <Screen
         {...props}
         secure
     >
-        <ContactsContextProvider>
-            <Contacts {...props} />
-        </ContactsContextProvider>
+        <Contacts {...props} />
     </Screen>
 )
 

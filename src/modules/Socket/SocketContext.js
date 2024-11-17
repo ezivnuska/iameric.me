@@ -67,7 +67,7 @@ export const SocketContextProvider = ({ children }) => {
         console.log(message)
         if (socket.active) {
             // temporary failure, the socket will automatically try to reconnect
-            console.log('@socket still active. reconnecting...')
+            console.log('socket still active. reconnecting...')
         } else {
             // the connection was denied by the server
             // in that case, `socket.connect()` must be manually called in order to reconnect

@@ -1,21 +1,19 @@
 import React from 'react'
 import { Image } from 'react-native'
-import { IMAGE_PATH } from '../../../../config'
 
-const ImageListItem = ({ path, size }) => {
-    const assetPath = process.env.IMAGE_PATH || IMAGE_PATH
-    return (
-        <Image
-            width={size}
-            height={size}
-            source={{ uri: `${assetPath}/${path}` }}
-            resizeMode='cover'
-            style={{
-                width: size,
-                height: size,
-            }}
-        />
-    )
-}
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+
+const ImageListItem = ({ image, size }) => (
+    <Image
+        // width={size}
+        // height={size}
+        source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
+        resizeMode='cover'
+        style={{
+            width: size,//'100%',
+            height: size,//'100%',
+        }}
+    />
+)
 
 export default ImageListItem

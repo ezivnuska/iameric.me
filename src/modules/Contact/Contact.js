@@ -1,52 +1,52 @@
 import React from 'react'
-import {
-    Image,
-    Pressable,
-    View,
-} from 'react-native'
-import {
-    ContactHeader,
-    Images,
-} from './components'
-import { useApp } from '@app'
-import { useModal } from '@modal'
+import { Pressable, View } from 'react-native'
+import { Images } from './components'
+import { ActivityIndicator, ProfileImage, ScreenHeader } from '@components'
+import { ContactModal, useContact } from '.'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+const Contact = () => {
 
-export default ({ contact }) => {
+    const {
+        contact,
+        closeContactModal,
+        contactModal,
+        contactLoading,
+        setContactModal,
+    } = useContact()
 
-    const { theme } = useApp()
-    const { setModal } = useModal()
-
-    const source = contact && contact.profileImage
-        ? `${IMAGE_PATH}/${contact.username}/${contact.profileImage.filename}`
-        : `${IMAGE_PATH}/avatar-default.png`
-
-    return contact ? (
-        <View>
-            
-            <ContactHeader title={contact.username} />
-
-            <Pressable
-                onPress={() => setModal('SHOWCASE', contact.profileImage)}
-                disabled={!contact.profileImage}
+    return contactLoading
+        ? <ActivityIndicator size='medium' />
+        : (
+            <View
+                key={`contact-details-${Date.now()}`}
+                style={{ flex: 1 }}
             >
-                <Image
-                    source={source}
-                    resizeMode='cover'
-                    style={{
-                        width: 100,
-                        height: 100,
-                        borderWidth: 1,
-                        borderColor: theme?.colors.textDefault,
-                    }}
+                
+                <ScreenHeader
+                    label={contact.username}
                 />
-            </Pressable>
-            
-            <View style={{ marginVertical: 20 }}>
-                <Images contactId={contact._id} />
-            </View>
 
-        </View>
-    ) : null
+                <Pressable
+                    onPress={() => setContactModal('SHOWCASE', contact.profileImage)}
+                    disabled={!contact.profileImage}
+                >
+                    <ProfileImage
+                        user={contact}
+                        size={100}
+                    />
+                </Pressable>
+                
+                <View style={{ marginVertical: 20 }}>
+                    <Images contactId={contact._id} />
+                </View>
+                
+                <ContactModal
+                    modal={contactModal}
+                    onCancel={closeContactModal}
+                />
+
+            </View>
+        )
 }
+
+export default Contact

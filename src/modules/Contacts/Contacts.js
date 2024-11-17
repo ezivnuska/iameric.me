@@ -1,35 +1,56 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, Heading } from '@components'
-import { ContactListItem, ContactsHeader } from './components'
+import { ActivityIndicator, ScreenHeader, ThemedText } from '@components'
+import { ContactListItem } from './components'
 import { useUser } from '@user'
 import { useContacts } from '@contacts'
 
 const Contacts = props => {
 
-    const { user } = useUser()
     const {
         contacts,
         contactsLoading,
+        contactsLoaded,
+        initLoading,
     } = useContacts()
 
-    return !contactsLoading ? (
+    const { user } = useUser()
+
+    useEffect(() => {
+        if (!contactsLoaded && !contactsLoading) {
+            initLoading()
+        }
+    }, [])
+
+    return (
         <View
             {...props}
             style={{ flex: 1 }}
         >
-            <View>
-                <Heading
-                    title='Contacts'
-                />
+            <ScreenHeader label='Contacts' />
 
-                {contacts.map((contact, index) => {
-                    if (user && user._id !== contact._id) return <ContactListItem item={contact} key={`contact-${index}`} />
-                    else return null
-                })}
-            </View>
+            {(!contactsLoaded || contactsLoading)
+                ? <ActivityIndicator size='medium' />
+                : (
+                    <View style={{ gap: 10 }}>
+
+                        {contacts.length ? contacts.map((contact, index) => {
+                            if (user && user._id !== contact._id) {
+                                return (
+                                    <ContactListItem
+                                        key={`contact-${index}`}
+                                        item={contact}
+                                    />
+                                )
+                            }
+                            else return null
+                        }) : <ThemedText>No contacts to show</ThemedText>}
+
+                    </View>
+            )}
+
         </View>
-    ) : <ActivityIndicator size='medium' />
+    )
 }
 
 export default Contacts

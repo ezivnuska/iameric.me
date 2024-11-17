@@ -6,8 +6,8 @@ import Checkbox from './Checkbox'
 import ImageContainer from './ImageContainer'
 import Counter from './Counter'
 import Form from './Form'
-import FormField from './Form/components/FormField'
-import FormHeader from './Form/components/FormHeader'
+// import FormField from './Form/components/FormField'
+// import FormHeader from './Form/components/FormHeader'
 import Heading from './Heading'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
@@ -16,8 +16,10 @@ import ImageList from './ImageList'
 import InfoMarker from './InfoMarker'
 import ModalHeader from './ModalHeader'
 import ProfileImage from './ProfileImage'
-import Slider from './Slider'
+import ScreenHeader from './ScreenHeader'
+import SharedImage from './SharedImage'
 import SimpleButton from './SimpleButton'
+import Slider from './Slider'
 import SocketDisplay from './SocketDisplay'
 import SplitScreen from './SplitScreen'
 import Switch from './Switch'
@@ -35,8 +37,8 @@ export {
     ImageContainer,
     Counter,
     Form,
-    FormField,
-    FormHeader,
+    // FormField,
+    // FormHeader,
     Heading,
     IconButton,
     IconButtonLarge,
@@ -45,8 +47,10 @@ export {
     InfoMarker,
     ModalHeader,
     ProfileImage,
-    Slider,
+    ScreenHeader,
+    SharedImage,
     SimpleButton,
+    Slider,
     SocketDisplay,
     SplitScreen,
     Switch,
