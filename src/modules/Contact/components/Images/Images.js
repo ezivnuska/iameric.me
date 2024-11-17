@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { ActivityIndicator, Heading, ImageList } from '@components'
 import { useContact } from '@contact'
-import { loadImages } from './utils'
+import { loadImages } from '@utils/images'
 
 const Images = ({ contactId }) => {
 

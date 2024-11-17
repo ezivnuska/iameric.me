@@ -42,7 +42,7 @@ const Header = ({ user, route }) => {
         <View
             style={{
                 flexDirection: 'row',
-                justifyContent: 'flex-start',
+                justifyContent: user ? 'flex-start' : 'space-between',
                 alignItems: 'center',
                 gap: 10,
                 height: HEADER_HEIGHT,

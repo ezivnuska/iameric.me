@@ -8,7 +8,6 @@ import {
 } from '@components'
 import EXIF from 'exif-js'
 import { useUser } from '@user'
-import { useModal } from '@modal'
 import { useImages } from '@images'
 import {
     getMaxImageDims,
@@ -19,12 +18,7 @@ import {
 import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ImagePicker = ({ avatar = false }) => {
-
-    // const {
-    //     user,
-    //     setProfileImage,
-    // } = useApp()
+const ImagePicker = ({ avatar = false, onComplete = null }) => {
 
     const {
         user,
@@ -36,8 +30,6 @@ const ImagePicker = ({ avatar = false }) => {
         setUploading,
         uploading,
     } = useImages()
-
-    const { closeModal } = useModal()
 
     const containerRef = useRef()
 
@@ -118,7 +110,7 @@ const ImagePicker = ({ avatar = false }) => {
             if (avatarCheckbox) setProfileImage(image)
         }
 
-        closeModal()
+        onComplete()
     }
 
     const onSubmit = async () => {

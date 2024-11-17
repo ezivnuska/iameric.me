@@ -23,7 +23,7 @@ const User = props => {
                     if (user.profileImage) {
                         setUserModal('SHOWCASE', user.profileImage)
                     } else {
-                        setUserModal('IMAGE', { avatar: true })
+                        setUserModal('IMAGE_UPLOAD', { avatar: true })
                     }
                 }}
                 style={{

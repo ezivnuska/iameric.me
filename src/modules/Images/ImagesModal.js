@@ -2,16 +2,13 @@ import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
 import {
     ActivityIndicator,
+    ImagePicker,
     ModalHeader,
     UserImageDisplay,
 } from '@components'
-import { ImagePicker } from './components'
-import { useApp } from '@app'
 import Modal from 'react-native-modal'
 
 const ImagesModal = ({ modal, onCancel, onSubmit }) => {
-
-    const { dims } = useApp()
 
     const renderContent = () => {
         const { type, data } = modal
@@ -31,7 +28,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
         let title = null
         switch (type) {
             case 'IMAGE_UPLOAD':
-                // title = 'Upload Image'
+                title = 'Upload Image'
                 break
             case 'SHOWCASE':
                 // title = 'Image Detail'

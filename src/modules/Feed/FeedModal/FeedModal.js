@@ -1,19 +1,12 @@
 import React from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
-import {
-    Form,
-    ModalHeader,
-} from '@components'
+import { Pressable, View } from 'react-native'
+import { Form, ModalHeader } from '@components'
 import Modal from 'react-native-modal'
 
 const FeedModal = ({ modal, onCancel, onSubmit }) => {
 
     const fields = [
         {
-            // label: 'New Post',
             name: 'text',
             placeholder: 'say something...',
             multiline: true,
@@ -73,7 +66,6 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
                         }}
                     >
                         <Form
-                            // title='New Post'
                             fields={fields}
                             onCancel={onCancel}
                             onSubmit={onSubmit}

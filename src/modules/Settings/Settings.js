@@ -1,76 +1,44 @@
 import React from'react'
 import { View } from'react-native'
-import {
-    Cabinet,
-    Form,
-    SimpleButton,
-} from '@components'
-import { useUser } from '@user'
-import { useModal } from '@modal'
+import { Cabinet, Form, SimpleButton } from '@components'
 import { navigate } from '@utils/navigation'
-import { destroy } from './utils'
 
-const Settings = () => {
-    
-    const { user } = useUser()
-    const { closeModal } = useModal()
-    
-    const handleSignout = () => {
-        closeModal()
-        navigate('Home', { signout: true })
-    }
+const Settings = () => (
+    <View style={{ flex: 1 }}>
 
-    const handleDestroy = async () => {
-        const { id } = await destroy(user._id)
-        if (id) {
-            console.log('destroyed id', id)
+        <View
+            style={{
+                flexGrow: 1,
+                gap: 10,
+            }}
+        >
 
-            // notifySocket('user_signed_out')
-            closeModal()
-        }
-    }
+            <SimpleButton
+                label={'Sign Out'}
+                onPress={() => navigate('Home', { signout: true })}
+            />
 
-    return (
-        <View style={{ flex: 1 }}>
-
-            <View
-                style={{
-                    flexGrow: 1,
-                    gap: 10,
-                }}
+            <Cabinet
+                title='Close Account'
+                transparent
+                closed
             >
-
-                <SimpleButton
-                    label={'Sign Out'}
-                    onPress={() => handleSignout()}
+                <Form
+                    fields={[
+                        {
+                            label: 'Enter Username',
+                            name: 'destroy',
+                            placeholder: 'username',
+                            multiline: false,
+                        },
+                    ]}
+                    onSubmit={() => navigate('Home', { destroy: true })}
                 />
+            </Cabinet>
 
-                <Cabinet
-                    title='Close Account'
-                    transparent
-                    closed
-                >
-                    <Form
-                        // title='Delete Account'
-                        fields={[
-                            {
-                                label: 'Enter Username',
-                                name: 'destroy',
-                                placeholder: 'username',
-                                multiline: false,
-                                answer: user.username,
-                            },
-                        ]}
-                        onSubmit={handleDestroy}
-                        // onCancel={closeModal}
-                    />
-                    {/* <DestroyForm /> */}
-                </Cabinet>
-
-            </View>
-            
         </View>
-    )
-}
+        
+    </View>
+)
 
 export default Settings

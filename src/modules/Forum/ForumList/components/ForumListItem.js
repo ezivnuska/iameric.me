@@ -27,6 +27,7 @@ const ForumListItem = ({ item, onDelete = null }) => {
             style={{
                 flexGrow: 0,
                 marginBottom: 20,
+                gap: 5,
             }}
         >
 
@@ -34,7 +35,6 @@ const ForumListItem = ({ item, onDelete = null }) => {
                 style={{
                     flexDirection: 'row',
                     alignItems: 'flex-start',
-                    // gap: 8,
                 }}
             >
                 <View
@@ -67,7 +67,7 @@ const ForumListItem = ({ item, onDelete = null }) => {
                         <View
                             style={{
                                 flexDirection: 'row',
-                                alignItems: 'flex-start',
+                                alignItems: 'flex-end',
                                 flexGrow: 1,
                                 gap: 10,
                             }}
@@ -95,11 +95,11 @@ const ForumListItem = ({ item, onDelete = null }) => {
                             </View>
                             
                             <View>
-                                <IconButton
+                                {/* <IconButton
                                     name='chatbox-ellipses-outline'
                                     size={25}
                                     onPress={() => setForumModal('FEEDBACK', item)}
-                                />
+                                /> */}
 
                                 {(user._id === author._id || user.role === 'admin') && (
                                     <IconButton

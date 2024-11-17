@@ -12,15 +12,11 @@ import {
 import { useUser } from '@user'
 import { useFeed } from '@feed'
 import { navigate } from '@utils/navigation'
-// import { loadContactById } from '@utils/contacts'
-// import { parser } from 'url-meta-scraper'
 
 const FeedListItem = ({ item, onDelete = null }) => {
     
     const { user } = useUser()
     const { feedLoading } = useFeed()
-
-    const { author } = useMemo(() => item, [item])
 
     // const fetchMeta = async () => {
     //     // try {
@@ -64,7 +60,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                 >
                     <Pressable
                         onPress={() => {
-                            navigate('Contact', { screen: 'Details', params: { username: author.username } })
+                            navigate('Contact', { screen: 'Details', params: { username: item.author.username } })
                         }}
                         style={{
                             flexDirection: 'row',
@@ -75,7 +71,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                         }}
                     >
                         <ProfileImage
-                            user={author}
+                            user={item.author}
                             size={50}
                         />
 
@@ -98,7 +94,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                                     bold
                                     style={{ lineHeight: 25 }}
                                 >
-                                    {author.username}
+                                    {item.author.username}
                                 </ThemedText>
 
                                 <Time
@@ -109,7 +105,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
 
                             </View>
 
-                            {(user._id === author._id || user.role === 'admin') && (
+                            {(user._id === item.author._id || user.role === 'admin') && (
                                 <IconButton
                                     name='trash-outline'
                                     disabled={feedLoading}

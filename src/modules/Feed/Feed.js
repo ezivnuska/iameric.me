@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { ThemedText, ScreenHeader } from '@components'
 import {
     FeedList,
     FeedModal,
     useFeed,
 } from '.'
+import { ThemedText, ScreenHeader } from '@components'
 import { useSocket } from '@socket'
 import {
     createPost,
@@ -97,7 +97,14 @@ export default () => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 {sortedThreads.length
                     ? renderThreads(sortedThreads)
-                    : <ThemedText>No posts yet.</ThemedText>
+                    : (
+                        <ThemedText
+                            size={24}
+                            style={{ lineHeight: 30 }}
+                        >
+                            No posts yet.
+                        </ThemedText>
+                    )
                 }
             </View>
 

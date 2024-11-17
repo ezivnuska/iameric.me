@@ -106,7 +106,14 @@ export default () => {
                 <View style={{ flexGrow: 1 }}>
                     {entries.length
                         ? renderThreads(sortedThreads)
-                        : <ThemedText>No entries yet.</ThemedText>
+                        : (
+                            <ThemedText
+                                size={24}
+                                style={{ lineHeight: 30 }}
+                            >
+                                No entries yet.
+                            </ThemedText>
+                        )
                     }
                 </View>
             </View>

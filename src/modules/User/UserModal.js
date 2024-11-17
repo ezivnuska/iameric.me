@@ -1,15 +1,6 @@
 import React from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
-import {
-    UserImageUploader,
-} from '.'
-import {
-    ModalHeader,
-    UserImageDisplay,
-} from '@components'
+import { Pressable, View } from 'react-native'
+import { ImagePicker, ModalHeader, UserImageDisplay } from '@components'
 import Modal from 'react-native-modal'
 
 const UserModal = ({ modal, onCancel, onSubmit = null }) => {
@@ -18,7 +9,7 @@ const UserModal = ({ modal, onCancel, onSubmit = null }) => {
         const { type, data } = modal
         switch (type) {
             case 'IMAGE_UPLOAD':
-                return <UserImageUploader data={data} />
+                return <ImagePicker avatar={data.avatar} onComplete={onCancel} />
                 break
             case 'SHOWCASE':
                 return <UserImageDisplay data={data} onClose={onCancel} />

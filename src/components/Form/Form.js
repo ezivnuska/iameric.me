@@ -1,16 +1,10 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import {
-    FormField,
-    FormHeader,
-} from './components'
+import { FormField, FormHeader } from './components'
 import { SimpleButton } from '@components'
 import { useUser } from '@user'
 import { useForm } from '@form'
-import {
-    getFields,
-    validateFields,
-} from './utils'
+import { getFields, validateFields } from './utils'
 
 const Form = ({
     fields,
@@ -139,7 +133,7 @@ const Form = ({
     }
 
     const renderFields = () => fields.map((field, index) => {
-        const { label, multiline, name, placeholder, type, answer } = field
+        const { label, multiline, name, placeholder, type, autoCapitalize } = field
         return (
             <View
                 key={`formfield-${index}-${name}`}
@@ -151,7 +145,7 @@ const Form = ({
                     placeholder={placeholder}
                     secureTextEntry={type === 'password'}
                     keyboardType='default'
-                    autoCapitalize='sentences'
+                    autoCapitalize={autoCapitalize || 'sentences'}
                     onChange={value => onChange(name, value)}
                     autoFocus={getFocus(name)}
                     onKeyPress={!multiline && onEnter}

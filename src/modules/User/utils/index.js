@@ -7,7 +7,6 @@ import openCamera from './openCamera'
 import openFileSelector from './openFileSelector'
 import setCaption from './setCaption'
 import uploadBipImage from './uploadBipImage'
-import uploadImage from './uploadImage'
 
 export {
     getBipImages,
@@ -19,5 +18,4 @@ export {
     openFileSelector,
     setCaption,
     uploadBipImage,
-    uploadImage,
 }

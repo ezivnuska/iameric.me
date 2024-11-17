@@ -13,6 +13,7 @@ import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
 import ImageList from './ImageList'
+import ImagePicker from './ImagePicker'
 import InfoMarker from './InfoMarker'
 import ModalHeader from './ModalHeader'
 import ProfileImage from './ProfileImage'
@@ -44,6 +45,7 @@ export {
     IconButtonLarge,
     ImageClone,
     ImageList,
+    ImagePicker,
     InfoMarker,
     ModalHeader,
     ProfileImage,

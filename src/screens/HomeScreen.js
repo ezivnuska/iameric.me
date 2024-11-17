@@ -15,6 +15,7 @@ import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { signin, signout } from '@utils/auth'
 import { cleanStorage, setItem, storeToken } from '@utils/storage'
+import { destroy } from '@utils'
 
 const HomeScreen = props => {
     const { params } = props.route
@@ -47,7 +48,7 @@ const HomeScreen = props => {
             } else if (params.signout) {
                 handleSignout()
             } else if (params.destroy) {
-                clearModal()
+                handleDestroy()
             }
         }
     }, [params])
@@ -74,6 +75,19 @@ const HomeScreen = props => {
             const userId = user._id
             await signout(userId)
             notifySocket('user_signed_out', userId)
+            cleanStorage()
+            reset()
+            clearModal()
+        }
+        props.navigation.navigate('Home')
+    }
+
+    const handleDestroy = async () => {
+        if (params.destroy && user) {
+            const userId = user._id
+            await signout(userId)
+            const { id } = await destroy(userId)
+            notifySocket('user_signed_out', id)
             cleanStorage()
             reset()
             clearModal()
@@ -118,7 +132,7 @@ const FatButton = ({ label, size, onPress }) => (
                 justifyContent: 'center',
                 alignItems: 'center',
                 margin: 1,
-                backgroundColor: '#393',
+                backgroundColor: 'tomato',
                 // borderWidth: 1,
                 // borderColor: '#303',
                 borderRadius: 4,
