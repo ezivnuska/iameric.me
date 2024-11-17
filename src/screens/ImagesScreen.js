@@ -8,7 +8,7 @@ import Images, {
 const ImagesScreen = props => (
     <Screen secure {...props}>
 
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, paddingHorizontal: 10 }}>
 
             <ImagesContextProvider>
                 <Images {...props} />

@@ -13,6 +13,7 @@ const ScreenHeader = ({ label, setModal = null }) => (
             alignItems: 'center',
             gap: 10,
             marginBottom: 10,
+            paddingHorizontal: 10,
         }}
     >
         <ThemedText bold size={32}>
@@ -23,7 +24,7 @@ const ScreenHeader = ({ label, setModal = null }) => (
             <IconButtonLarge
                 name='create-outline'
                 onPress={setModal}
-                size={36}
+                size={32}
                 transparent
             />
         )}

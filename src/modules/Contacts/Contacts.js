@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ScreenHeader, ThemedText } from '@components'
+import { ActivityIndicator, ThemedText } from '@components'
 import { ContactListItem } from './components'
 import { useUser } from '@user'
 import { useContacts } from '@contacts'
@@ -23,11 +23,7 @@ const Contacts = props => {
     }, [])
 
     return (
-        <View
-            {...props}
-            style={{ flex: 1 }}
-        >
-            <ScreenHeader label='Contacts' />
+        <View {...props} style={{ flex: 1 }}>
 
             {(!contactsLoaded || contactsLoading)
                 ? <ActivityIndicator size='medium' />

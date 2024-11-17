@@ -94,10 +94,12 @@ export default () => {
                 setModal={() => setFeedModal('POST')}
             />
 
-            {sortedThreads.length
-                ? renderThreads(sortedThreads)
-                : <ThemedText>No posts yet.</ThemedText>
-            }
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+                {sortedThreads.length
+                    ? renderThreads(sortedThreads)
+                    : <ThemedText>No posts yet.</ThemedText>
+                }
+            </View>
 
             <FeedModal
                 modal={feedModal}

@@ -76,7 +76,7 @@ const BulletedList = ({ items, listKey }) => (
     </View>
 )
 
-export default ({ section, onPress, visible = false, ...props }) => {
+const Job = ({ section, onPress, visible = false, ...props }) => {
     const { company, city, start, end, title } = section
     
     const { theme } = useApp()
@@ -138,3 +138,5 @@ export default ({ section, onPress, visible = false, ...props }) => {
         </Pressable>
     )
 }
+
+export default Job

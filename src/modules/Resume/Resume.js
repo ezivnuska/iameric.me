@@ -142,4 +142,6 @@ const jobs = [
     }
 ]
 
-export default () => <JobList jobs={jobs} />
+const Resume = () => <JobList jobs={jobs} />
+
+export default Resume

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ThemedText } from '@components'
+import { ScreenHeader, ThemedText } from '@components'
 import {
-    ForumHeader,
     ForumList,
     ForumModal,
     useForum,
@@ -97,13 +96,19 @@ export default () => {
     return (
         <View style={{ flex: 1 }}>
 
-            <ForumHeader setModal={() => setForumModal('FEEDBACK')} />
+            <ScreenHeader
+                label={'Forum'}
+                setModal={() => setForumModal('FEEDBACK')}
+            />
 
-            <View style={{ flexGrow: 1 }}>
-                {entries.length
-                    ? renderThreads(sortedThreads)
-                    : <ThemedText>No entries yet.</ThemedText>
-                }
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+            
+                <View style={{ flexGrow: 1 }}>
+                    {entries.length
+                        ? renderThreads(sortedThreads)
+                        : <ThemedText>No entries yet.</ThemedText>
+                    }
+                </View>
             </View>
 
             <ForumModal

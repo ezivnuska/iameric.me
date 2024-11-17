@@ -56,7 +56,10 @@ export const PlayContextProvider = props => {
         // do something?
         return () => {
             console.log('unmounting')
-            clearInterval(ticker)
+            if (ticker) {
+                clearInterval(ticker)
+                ticker = undefined
+            }
         }
     }, [])
 

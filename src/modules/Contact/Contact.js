@@ -26,18 +26,20 @@ const Contact = () => {
                     label={contact.username}
                 />
 
-                <Pressable
-                    onPress={() => setContactModal('SHOWCASE', contact.profileImage)}
-                    disabled={!contact.profileImage}
-                >
-                    <ProfileImage
-                        user={contact}
-                        size={100}
-                    />
-                </Pressable>
-                
-                <View style={{ marginVertical: 20 }}>
-                    <Images contactId={contact._id} />
+                <View style={{ paddingHorizontal: 10 }}>
+                    <Pressable
+                        onPress={() => setContactModal('SHOWCASE', contact.profileImage)}
+                        disabled={!contact.profileImage}
+                    >
+                        <ProfileImage
+                            user={contact}
+                            size={100}
+                        />
+                    </Pressable>
+                    
+                    <View style={{ marginVertical: 20 }}>
+                        <Images contactId={contact._id} />
+                    </View>
                 </View>
                 
                 <ContactModal

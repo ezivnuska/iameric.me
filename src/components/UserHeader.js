@@ -1,22 +1,9 @@
-import React, { useEffect } from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
-import {
-    IconButtonLarge,
-    ThemedText,
-} from '@components'
-// import { useApp } from '@app'
+import React from 'react'
+import { Pressable, View } from 'react-native'
+import { IconButtonLarge, ThemedText } from '@components'
 import navigationRef from '@utils/navigation'
 
 const UserHeader = ({ route }) => {
-
-    // const { currentRoute } = useApp()
-
-    // useEffect(() => {
-    //     console.log('route', route)
-    // }, [])
 
     return (
         <View
@@ -26,7 +13,7 @@ const UserHeader = ({ route }) => {
                 alignItems: 'center',
                 gap: 10,
                 marginBottom: 10,
-                // paddingHorizontal: 10,
+                paddingHorizontal: 10,
             }}
         >
             <Pressable

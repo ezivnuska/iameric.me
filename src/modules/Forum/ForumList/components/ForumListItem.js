@@ -1,11 +1,8 @@
-import React, { useMemo } from 'react'
-import {
-    Image,
-    Pressable,
-    View,
-} from 'react-native'
+import React from 'react'
+import { Pressable, View } from 'react-native'
 import {
     IconButton,
+    ProfileImage,
     ThemedText,
     Time,
 } from '@components'
@@ -13,107 +10,125 @@ import { useUser } from '@user'
 import { useForum } from '@forum'
 import { navigate } from '@utils/navigation'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-
-export default ({ item, onDelete = null }) => {
+const ForumListItem = ({ item, onDelete = null }) => {
     
-    const { author, createdAt, text } = item
+    const { _id, author, createdAt, text } = item
+
+    const {
+        forumLoading,
+        setForumModal,
+    } = useForum()
 
     const { user } = useUser()
-    const { setForumModal } = useForum()
-
-    const getProfileImagePathFromUser = data => {
-        return data.profileImage
-            ? `${IMAGE_PATH}/${data.username}/${data.profileImage.filename}`
-            : `${IMAGE_PATH}/avatar-default-small.png`}
-
-    const imagePath = useMemo(() => getProfileImagePathFromUser(author), [author])
 
     return (
         <View
-            key={`entry-${item._id}`}
-            style={{ flexGrow: 0 }}
+            key={`entry-${_id}`}
+            style={{
+                flexGrow: 0,
+                marginBottom: 20,
+            }}
         >
 
             <View
                 style={{
                     flexDirection: 'row',
                     alignItems: 'flex-start',
-                    alignContent: 'center',
-                    gap: 10,
-                    paddingVertical: 5,
+                    // gap: 8,
                 }}
             >
-                <Pressable
-                    onPress={() => {
-                        navigate('Contact', { screen: 'Details', params: { username: author.username } })
-                    }}
-                    style={{
-                        flexGrow: 0,
-                        borderRadius: 12,
-                        overflow: 'hidden',
-                        borderWidth: 1,
-                    }}
-                >
-                    <Image
-                        source={imagePath}
-                        style={{
-                            width: 24,
-                            height: 24,
-                        }}
-                    />
-                </Pressable>
-
                 <View
                     style={{
                         flexDirection: 'row',
-                        // justifyContent: 'space-between',
+                        alignItems: 'flex-start',
                         flexGrow: 1,
-                        gap: 10,
-                    }}
-                >
-                    <ThemedText>{author.username}</ThemedText>
-                    <Time time={createdAt} />
-                </View>
-
-
-                <View
-                    style={{
-                        flexGrow: 0,
-                        flexDirection: 'row',
-                        alignItems: 'flexStart',
-                        justifyContent: 'space-between',
+                        flexShrink: 1,
+                        gap: 7,
                         flexWrap: 'wrap',
-                        gap: 10,
                     }}
                 >
-                    
-                    <IconButton
-                        name='chatbox-ellipses-outline'
-                        size={22}
-                        onPress={() => setForumModal('FEEDBACK', item)}
-                    />
-                
-                    {user._id === item.author._id && (
-                        <IconButton
-                            name='trash-outline'
-                            size={22}
-                            onPress={() => onDelete(item._id)}
+                    <Pressable
+                        onPress={() => {
+                            navigate('Contact', { screen: 'Details', params: { username: author.username } })
+                        }}
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'flex-start',
+                            flexGrow: 1,
+                            flexShrink: 0,
+                            gap: 10,
+                        }}
+                    >
+                        <ProfileImage
+                            user={author}
+                            size={50}
                         />
-                    )}
+
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'flex-start',
+                                flexGrow: 1,
+                                gap: 10,
+                            }}
+                        >
+                            <View
+                                style={{
+                                    flex: 1,
+                                    flexGrow: 1,
+                                }}
+                            >
+                                <ThemedText
+                                    size={20}
+                                    bold
+                                    style={{ lineHeight: 25 }}
+                                >
+                                    {author.username}
+                                </ThemedText>
+
+                                <Time
+                                    time={createdAt}
+                                    size={20}
+                                    style={{ lineHeight: 25 }}
+                                />
+
+                            </View>
+                            
+                            <View>
+                                <IconButton
+                                    name='chatbox-ellipses-outline'
+                                    size={25}
+                                    onPress={() => setForumModal('FEEDBACK', item)}
+                                />
+
+                                {(user._id === author._id || user.role === 'admin') && (
+                                    <IconButton
+                                        name='trash-outline'
+                                        disabled={forumLoading}
+                                        onPress={() => onDelete(_id)}
+                                        color='#000'
+                                        size={25}
+                                    />
+                                )}
+                            </View>
+
+                        </View>
+
+                    </Pressable>
 
                 </View>
 
             </View>
-            <View
-                style={{
-                    paddingLeft: 37,
-                    paddingTop: 2,
-                    paddingBottom: 7,
-                }}
+
+            <ThemedText
+                size={24}
+                style={{ lineHeight: 30 }}
             >
-                <ThemedText style={{ lineHeight: 24 }}>{text}</ThemedText>
-            </View>
+                {text}
+            </ThemedText>
+
         </View>
     )
 }
+
+export default ForumListItem

@@ -84,15 +84,19 @@ const HomeScreen = props => {
     return (
         <Screen {...props}>
             
-            <View style={{ flexGrow: 0 }}>
-                <Intro />
-            </View>
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
 
-            <View style={{ flexGrow: 1 }}>
-                <FatButtonNav
-                    numCols={3}
-                    navigateTo={props.navigation.navigate}
-                />
+                <View style={{ flexGrow: 0 }}>
+                    <Intro />
+                </View>
+
+                <View style={{ flexGrow: 1 }}>
+                    <FatButtonNav
+                        numCols={3}
+                        navigateTo={props.navigation.navigate}
+                    />
+                </View>
+                
             </View>
 
         </Screen>

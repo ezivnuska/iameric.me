@@ -1,12 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
-import {
-    ImagesModal,
-    useImages,
-} from '.'
-import {
-    ImageList,
-} from '@components'
+import { ImagesModal, useImages } from '.'
+import { ImageList } from '@components'
 
 const Images = () => {
 
@@ -20,12 +15,15 @@ const Images = () => {
     
     return (
         <View
-            style={{ flex: 1 }}
+            style={{
+                flex: 1,
+            }}
         >
             <ImageList
                 images={images}
                 onPress={(type, data) => setImagesModal(type, data)}
                 uploading={uploading}
+                allowUpload
             />
     
             <ImagesModal

@@ -1,7 +1,6 @@
 import getBipImages from './getBipImages'
 import getMaxImageDims from './getMaxImageDims'
 import handleBipImageData from './handleBipImageData'
-import handleImageData from './handleImageData'
 import loadImage from './loadImage'
 import loadImages from './loadImages'
 import openCamera from './openCamera'
@@ -14,7 +13,6 @@ export {
     getBipImages,
     getMaxImageDims,
     handleBipImageData,
-    handleImageData,
     loadImage,
     loadImages,
     openCamera,

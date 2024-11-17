@@ -12,10 +12,12 @@ import { useUser } from '@user'
 import { useImages } from '@images'
 import {
     getMaxImageDims,
-    handleImageData,
     openFileSelector,
     uploadImage,
 } from './utils'
+import {
+    handleImageData,
+} from '@utils/images'
 
 const ImagePicker = () => {
 

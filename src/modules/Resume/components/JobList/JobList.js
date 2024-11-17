@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View } from 'react-native'
 import { Job } from './components'
 
-export default ({ jobs }) => {
+const JobList = ({ jobs }) => {
     const [visible, setVisible] = useState(null)
 
     const handleSelection = index => {
@@ -22,8 +22,10 @@ export default ({ jobs }) => {
     ))
 
     return (
-        <View style={{ gap: 1 }}>
+        <View style={{ gap: 1, paddingHorizontal: 10 }}>
             {jobs.length && renderJobs()}
         </View>
     )
 }
+
+export default JobList

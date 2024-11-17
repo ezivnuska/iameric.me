@@ -16,7 +16,7 @@ const User = props => {
     } = useUser()
 
     return (
-        <View {...props} style={{ flex: 1 }}>
+        <View {...props} style={{ flex: 1, paddingHorizontal: 10 }}>
 
             <Pressable
                 onPress={() => {

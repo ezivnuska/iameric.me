@@ -58,7 +58,7 @@ const ForumModal = ({ onCancel, onSubmit }) => {
                     style={{
                         flex: 1,
                         width: '100%',
-                        maxWidth: 400,
+                        maxWidth: 375,
                         marginHorizontal: 'auto',
                         backgroundColor: '#fff',
                         zIndex: 100,

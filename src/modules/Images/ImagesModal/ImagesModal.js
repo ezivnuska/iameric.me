@@ -87,7 +87,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                     style={{
                         flex: 1,
                         width: '100%',
-                        maxWidth: 400,
+                        maxWidth: 375,
                         marginHorizontal: 'auto',
                         // backgroundColor: '#000',
                         // backgroundColor: 'orange',
