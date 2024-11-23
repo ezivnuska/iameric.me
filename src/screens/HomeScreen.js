@@ -6,6 +6,9 @@ import {
 } from 'react-native'
 import { Screen } from './components'
 import {
+    IconButton,
+    IconButtonLarge,
+    SimpleButton,
     ThemedText,
 } from '@components'
 import { BipMap } from '@modules'
@@ -104,11 +107,51 @@ const HomeScreen = props => {
                     <Intro />
                 </View>
 
-                <View style={{ flexGrow: 1 }}>
-                    <FatButtonNav
+                <View
+                    style={{
+                        flexGrow: 1,
+                        gap: 15,
+                        // justifyContent: 'space-evenly',
+                    }}
+                >
+
+                    <IconButtonLarge
+                        name='people-outline'
+                        label='Users'
+                        onPress={() => props.navigation.navigate('Contacts')}
+                    />
+
+                    <IconButtonLarge
+                        name='build-outline'
+                        label='Work'
+                        onPress={() => props.navigation.navigate('Work')}
+                    />
+
+                    <IconButtonLarge
+                        name='list-outline'
+                        label='Feed'
+                        onPress={() => props.navigation.navigate('Feed')}
+                    />
+
+                    {/* <SimpleButton
+                        label='Play'
+                        onPress={() => navigateTo('Play')}
+                    /> */}
+
+                    {/* <SimpleButton
+                        label='Simple'
+                        onPress={() => navigateTo('Simple')}
+                    /> */}
+
+                    {/* <SimpleButton
+                        label='Forum'
+                        onPress={() => navigateTo('Forum')}
+                    /> */}
+
+                    {/* <FatButtonNav
                         numCols={3}
                         navigateTo={props.navigation.navigate}
-                    />
+                    /> */}
                 </View>
                 
             </View>
