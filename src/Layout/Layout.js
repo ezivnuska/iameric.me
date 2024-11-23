@@ -9,6 +9,7 @@ import AppNavigation from '../AppNavigation'
 import linking from '../linking'
 import { Modal } from '@modules'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 import { useUser } from '@user'
 import { Notification } from '@modules'
 import navigationRef from '@utils/navigation'
@@ -18,10 +19,15 @@ const Layout = () => {
 
     const {
         currentRoute,
-        setCurrentRoute,
         dims,
         theme,
+        setCurrentRoute,
     } = useApp()
+
+    const {
+        modal,
+        closeModal,
+    } = useModal()
 
     const { user } = useUser()
 
@@ -57,7 +63,10 @@ const Layout = () => {
                     onReady={() => setCurrentRoute(navigationRef.getCurrentRoute())}
                     // fallback={<FallbackScreen />} // not working or used, necessary as of yet
                 >
-                    <Modal />
+                    <Modal
+                        modal={modal}
+                        onClose={closeModal}
+                    />
                     
                     <View
                         style={{

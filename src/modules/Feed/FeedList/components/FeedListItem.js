@@ -38,7 +38,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
     return (
         <View
             key={`post-${item._id}`}
-            style={{ gap: 10 }}
+            style={{ gap: 20 }}
         >
 
             <View

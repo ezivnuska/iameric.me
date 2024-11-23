@@ -1,54 +1,59 @@
 import React from 'react'
-import {
-    Pressable,
-    ScrollView,
-    View,
-} from 'react-native'
-import { ModalHeader } from '@components'
-import {
-    Auth,
-    Caption,
-    Settings,
-    Socket,
-} from '@modules'
-// import FormFactory from '@form'
+import { Pressable, ScrollView, View } from 'react-native'
+import { ModalHeader, ThemedText } from '@components'
+import { Auth, Settings, Socket } from '@modules'
 import Modal from 'react-native-modal'
-import { useModal } from '@modal'
+import Icon from 'react-native-vector-icons/Ionicons'
+import LinearGradient from 'react-native-web-linear-gradient'
 
-const ModalView = () => {
-    
-    const { closeModal, modal } = useModal()
+const ModalView = ({ modal, onClose }) => {
     
     const renderModalContent = () => {
         const {type, data } = modal
-        // console.log('ModalView', type, data)
         switch(type) {
             case 'AUTH': return <Auth />; break
             case 'SETTINGS': return <Settings />; break
             case 'SOCKETS': return <Socket />; break
             default: {
                 console.log('Ouch', type)
-                // return <FormFactory modal={modal} />
             }
         }
     }
 
-    const renderModalHeader = type => {
+    const renderHeader = () => {
         let title
-        switch(type) {
+        switch(modal.type) {
             case 'AUTH': title = 'Who are You?'; break
             case 'SETTINGS': title = 'Settings'; break
             case 'SOCKETS': title = 'Sockets'; break
             default: title = ''
         }
-        return <ModalHeader title={title} onClose={closeModal} />
+        return title
+            ? (
+                <View
+                    style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 15,
+                        zIndex: 50,
+                    }}
+                >
+                    <ThemedText
+                        bold
+                        size={24}
+                        color='#fff'
+                    >
+                        {title}
+                    </ThemedText>
+                </View>
+            )
+            : null
     }
     return (
         <Modal
             isVisible={modal !== undefined}
             animationType='fade'
             transparent={true}
-            onRequestClose={closeModal}
+            onRequestClose={onClose}
             style={{
                 flex: 1,
                 margin: 0,
@@ -63,7 +68,7 @@ const ModalView = () => {
                 }}
             >
                 <Pressable
-                    onPress={closeModal}
+                    onPress={onClose}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -74,30 +79,86 @@ const ModalView = () => {
                     }}
                 />
 
-                {modal && (
-                    <View
-                        style={{
-                            flex: 1,
-                            width: '100%',
-                            maxWidth: 400,
-                            marginHorizontal: 'auto',
-                            backgroundColor: '#fff',
-                            zIndex: 100,
-                        }}
-                    >
-                        {renderModalHeader(modal.type)}
-                        
+                <View
+                    style={{
+                        flex: 1,
+                        width: '100%',
+                        maxWidth: 400,
+                        marginHorizontal: 'auto',
+                        backgroundColor: '#fff',
+                        zIndex: 100,
+                    }}
+                >
+
+                    {modal && (
                         <View
                             style={{
                                 flex: 1,
-                                paddingBottom: 10,
-                                paddingHorizontal: 10,
+                                width: '100%',
+                                // paddingBottom: 10,
+                                // paddingHorizontal: 10,
+                                position: 'relative',
+                                zIndex: 10,
                             }}
                         >
-                            {renderModalContent()}
+                            <LinearGradient
+                                colors={[
+                                    // 'rgba(0, 0, 0, 1.0)',
+                                    'rgba(0, 0, 0, 0.9)',
+                                    'rgba(0, 0, 0, 0.6)',
+                                    'rgba(0, 0, 0, 0.3)',
+                                    'rgba(0, 0, 0, 0.1)',
+                                    'rgba(0, 0, 0, 0.0)',
+                                ]}
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    left: 0,
+                                    height: 70,
+                                    zIndex: 50,
+                                }}
+                            >
+                                {renderHeader()}
+                            </LinearGradient>
+
+                            <Pressable
+                                onPress={onClose}
+                                style={{
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 5,
+                                    position: 'absolute',
+                                    top: 0,
+                                    // left: 0,
+                                    right: 0,
+                                    zIndex: 100,
+                                }}
+                            >
+                                <Icon
+                                    name={'close'}
+                                    size={40}
+                                    color='#fff'
+                                />
+                            </Pressable>
+
+                            <ScrollView
+                                style={{
+                                    flex: 1,
+                                    zIndex: 1,
+                                }}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={{
+                                    flex: 1,
+                                    paddingVertical: 70,
+                                    paddingHorizontal: 10,
+                                }}
+                            >
+                                {renderModalContent()}
+
+                            </ScrollView>
                         </View>
-                    </View>
-                )}
+                    )}
+                </View>
             </View>
         </Modal>
     )

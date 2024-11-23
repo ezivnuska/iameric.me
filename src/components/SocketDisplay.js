@@ -8,10 +8,10 @@ const SocketDisplay = () => {
     const { closeModal } = useModal()
     return (
         <View>
-            <ModalHeader
+            {/* <ModalHeader
                 title={'Sockets'}
                 onClose={closeModal}
-            />
+            /> */}
             <Socket />
         </View>
     )

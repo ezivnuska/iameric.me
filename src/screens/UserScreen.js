@@ -1,9 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { View } from 'react-native'
 import { Screen } from './components'
-import User, { UserModal } from '@user'
-import Images from '@images'
+import { ActivityIndicator, ImageList } from '@components'
+import User, { UserModal, useUser } from '@user'
 
 const UserScreen = props => {
+
+    const {
+        images,
+        imagesLoaded,
+        imagesLoading,
+        uploading,
+        user,
+        userModal,
+        closeUserModal,
+        initImages,
+        setUserModal,
+    } = useUser()
+
+    useEffect(() => {
+        if (!imagesLoaded) initImages(user._id)
+    }, [])
 
     const renderContent = route => {
         switch (route.name)  {
@@ -11,7 +28,23 @@ const UserScreen = props => {
                 return <User {...props} />
                 break
             case 'Images':
-                return <Images {...props} />
+                return (
+                    <View
+                        style={{
+                            flex: 1,
+                            marginHorizontal: 10,
+                        }}
+                    >
+                        {imagesLoaded ? (
+                            <ImageList
+                                images={images}
+                                onPress={(type, data) => setUserModal(type, data)}
+                                uploading={uploading}
+                                upload={() => setUserModal('IMAGE_UPLOAD')}
+                            />
+                        ) : <ActivityIndicator size='medium' label='Loading Images...' />}
+                    </View>
+                )
                 break
             default:
         }
@@ -22,7 +55,10 @@ const UserScreen = props => {
 
             {renderContent(props.route)}
 
-            <UserModal />
+            <UserModal
+                modal={userModal}
+                onClose={closeUserModal}
+            />
 
         </Screen>
     )

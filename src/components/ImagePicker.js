@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { ActivityIndicator, Checkbox, ImageClone, SimpleButton, ThemedText } from '@components'
+import { ActivityIndicator, Checkbox, IconButtonLarge, ImageClone, ImageContainer, ProfileImage, SimpleButton, ThemedText } from '@components'
 import { useUser } from '@user'
 import {
     getMaxImageDims,
@@ -8,8 +8,14 @@ import {
     openFileSelector,
     uploadImage,
 } from '@utils/images'
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from 'react-native-reanimated'
 import Icon from 'react-native-vector-icons/Ionicons'
 import EXIF from 'exif-js'
+import LinearGradient from 'react-native-web-linear-gradient'
 
 const ImagePicker = ({ avatar = false, onComplete = null }) => {
 
@@ -32,6 +38,8 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     let timer = null
 
     const startTimer = () => {
+        setReady(false)
+        openSelector()
         timer = setInterval(() => stopTimer, 2000)
     }
 
@@ -43,18 +51,29 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     useEffect(() => {
         const init = async () => {
             startTimer()
-            await openSelector()
         }
         init()
+        // openSelector()
+        return () => setUploading(false)
     }, [])
 
     useEffect(() => {
         if (preview && containerRef.current) {
             const maxWidth = containerRef.current.clientWidth
             setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
+        } else {
+            setReady(false)
         }
 
     }, [containerRef, preview])
+
+    const [controlsVisible, setControlsVisible] = useState(true)
+
+    const controlOpacity = useSharedValue(1)
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        opacity: controlOpacity.value,
+    }))
     
     const openSelector = async () => {
         const uri = await openFileSelector()
@@ -91,6 +110,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
             setPreview({ uri, height, width })
         } else if (preview) {
             setPreview(null)
+            onComplete()
         }
     }, [payload])
 
@@ -108,7 +128,6 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
         }
         
         setPayload(null)
-        onComplete()
     }
 
     const onSubmit = async () => {
@@ -124,8 +143,17 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
         openSelector()
     }
 
+    const handleControls = () => {
+        if (controlsVisible) {
+            controlOpacity.value = withTiming(0, { duration: 500 }, () => setControlsVisible(false))
+        } else {
+            setControlsVisible(true)
+            controlOpacity.value = withTiming(1, { duration: 500 })
+        }
+    }
+
     const renderControls = () => (
-        <View style={{ padding: 10 }}>
+        <View style={{ padding: 10, zIndex: 100 }}>
 
             {avatar && (
                 <Checkbox
@@ -201,8 +229,8 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
         <View
             style={{
                 flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
+                // flexDirection: 'row',
+                // alignItems: 'center',
                 gap: 10,
             }}
         >
@@ -217,8 +245,8 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                     <View
                         style={{
                             flex: 1,
-                            flexDirection: 'row',
-                            alignItems: 'center',
+                            // flexDirection: 'row',
+                            // alignItems: 'center',
                             width: '100%',
                             position: 'relative',
                         }}
@@ -237,7 +265,10 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                                     zIndex: 100,
                                 }}
                             >
-                                <ActivityIndicator size='medium' />
+                                <ActivityIndicator
+                                    size='medium'
+                                    label={`Uploading...\nDo not close window.`}
+                                />
                             </View>
                         )}
 
@@ -245,31 +276,125 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                             <View
                                 style={{
                                     flex: 1,
-                                    zIndex: 10,
+                                    position: 'relative',
                                 }}
                             >
-                                <View
+            
+                                <Pressable
+                                    onPress={handleControls}
                                     style={{
+                                        flex: 1,
                                         flexDirection: 'row',
                                         alignItems: 'center',
                                         justifyContent: 'center',
-                                        zIndex: 10,
+                                        zIndex: 1,
                                     }}
                                 >
-                                    <ImageClone
-                                        source={{ uri: preview.uri }}
-                                        width={imageDims.width}
-                                        height={imageDims.height}
+                                        <ImageClone
+                                            source={{ uri: preview.uri }}
+                                            width={imageDims.width}
+                                            height={imageDims.height}
+                                            style={{
+                                                borderWidth: 1,
+                                                width: imageDims.width,
+                                                height: imageDims.height,
+                                            }}
+                                        />
+                                    {/* <ImageContainer image={preview} /> */}
+                                </Pressable>
+            
+                                <Animated.View
+                                    style={[{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        display: controlsVisible ? 'block' : 'none',
+                                        zIndex: 100,
+                                    }, animatedStyle]}
+                                >
+                                    <LinearGradient
+                                        colors={[
+                                            'rgba(0, 0, 0, 1.0)',
+                                            'rgba(0, 0, 0, 0.6)',
+                                            'rgba(0, 0, 0, 0.3)',
+                                            'rgba(0, 0, 0, 0.1)',
+                                            'rgba(0, 0, 0, 0.0)',
+                                        ]}
                                         style={{
-                                            borderWidth: 1,
-                                            width: imageDims.width,
-                                            height: imageDims.height,
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            right: 0,
+                                            height: 100,
+                                            zIndex: 50,
                                         }}
                                     />
-                                </View>
-
-                                {renderControls()}
+            
+                                    <IconButtonLarge
+                                        name='close'
+                                        onPress={onComplete}
+                                        size={40}
+                                        color='#fff'
+                                        transparent
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            right: 0,
+                                            zIndex: 100,
+                                        }}
+                                    />
+            
+                                </Animated.View>
+            
+                                <Animated.View
+                                    style={[{
+                                        position: 'absolute',
+                                        bottom: 0,
+                                        left: 0,
+                                        right: 0,
+                                        display: controlsVisible ? 'block' : 'none',
+                                        zIndex: 101,
+                                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                                    }, animatedStyle]}
+                                >
+                                    {renderControls()}
+                                    {/* <ImageControlPanel
+                                        image={image}
+                                        onClose={onClose}
+                                    /> */}
+                                </Animated.View>
+                                
                             </View>
+                            // <View
+                            //     style={{
+                            //         flex: 1,
+                            //         flexShrink: 1,
+                            //         zIndex: 10,
+                            //     }}
+                            // >
+                            //     <View
+                            //         style={{
+                            //             flexDirection: 'row',
+                            //             alignItems: 'center',
+                            //             justifyContent: 'center',
+                            //             zIndex: 10,
+                            //         }}
+                            //     >
+                            //         <ImageClone
+                            //             source={{ uri: preview.uri }}
+                            //             width={imageDims.width}
+                            //             height={imageDims.height}
+                            //             style={{
+                            //                 borderWidth: 1,
+                            //                 width: imageDims.width,
+                            //                 height: imageDims.height,
+                            //             }}
+                            //         />
+                            //     </View>
+
+                            //     {renderControls()}
+                            // </View>
                         ) : (        
                             <SimpleButton
                                 label='Select Image'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ThemedText } from '@components'
+import { Heading, ThemedText } from '@components'
 import { useSocket } from '.'
 import { useApp } from '@app'
 import { useUser } from '@user'
@@ -61,7 +61,7 @@ const SocketView = () => {
     )
 
     return (
-        <View>
+        <View style={{ flex: 1 }}>
 
             {renderHeading()}
 

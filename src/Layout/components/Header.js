@@ -11,7 +11,7 @@ import {
 import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
 
-const HEADER_HEIGHT = 60
+const HEADER_HEIGHT = 100
 
 const Header = ({ user, route }) => {
 
@@ -23,12 +23,17 @@ const Header = ({ user, route }) => {
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexWrap: 'wrap',
+                gap: 10
             }}
         >
             <Pressable onPress={() => navigate('Home')}>
                 <ThemedText bold style={{ fontSize: 50, lineHeight: 60 }}>iam</ThemedText>
             </Pressable>
-            <Pressable onPress={() => navigate('User', { screen: 'Profile' })}>
+            <Pressable
+                onPress={() => navigate('User', { screen: 'Profile' })}
+                style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
+            >
+                {user && <ProfileImage user={user} size={50} />}
                 <ThemedText bold style={{ fontSize: 50, lineHeight: 60 }} color='tomato'>{user.username}</ThemedText>
             </Pressable>
         </View>
@@ -64,13 +69,7 @@ const Header = ({ user, route }) => {
 
             </View>
 
-            {user ? (
-                <Pressable
-                    onPress={() => navigate('User', { screen: 'Profile' })}
-                >
-                    <ProfileImage user={user} size={40} />
-                </Pressable>
-            ) : (
+            {!user && (
                 <SimpleButton
                     label='Sign In'
                     onPress={() => setModal('AUTH')}

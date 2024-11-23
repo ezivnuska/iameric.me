@@ -11,7 +11,7 @@ const ImageContainer = ({ image }) => {
 
     const [imageDims, setImageDims] = useState(null)
 
-    const uri = useMemo(() => `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
+    const uri = useMemo(() => image.user ? `${IMAGE_PATH}/${image.user.username}/${image.filename}` : null, [image])
 
     const onLayout = e => {
         const parentWidth = e.nativeEvent.target.offsetParent.clientWidth
@@ -30,15 +30,17 @@ const ImageContainer = ({ image }) => {
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{ flex: 1 }}
                 >
-                    <Image
-                        source={{ uri }}
-                        resizeMode='contain'
-                        style={{
-                            width: imageDims.width,
-                            height: imageDims.height,
-                            marginHorizontal: 'auto',
-                        }}
-                    />
+                    {uri && (
+                        <Image
+                            source={{ uri }}
+                            resizeMode='contain'
+                            style={{
+                                width: imageDims.width,
+                                height: imageDims.height,
+                                marginHorizontal: 'auto',
+                            }}
+                        />
+                    )}
                 </ScrollView>
             )}
         </View>

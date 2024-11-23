@@ -4,7 +4,7 @@ import Contact from './Contact'
 import Contacts from './Contacts'
 import Feed from './Feed'
 import Forum from './Forum'
-import Images from './Images'
+// import Images from './Images'
 import Mail from './Mail'
 import Map from './Map'
 import Modal from './Modal'
@@ -23,7 +23,7 @@ export {
     Contacts,
     Feed,
     Forum,
-    Images,
+    // Images,
     Mail,
     Map,
     Modal,

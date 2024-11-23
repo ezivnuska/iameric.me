@@ -37,9 +37,6 @@ const Contact = () => {
                         />
                     </Pressable>
                     
-                    {/* <View style={{ marginVertical: 20 }}>
-                        <Images contactId={contact._id} />
-                    </View> */}
                 </View>
                 
                 <ContactModal
