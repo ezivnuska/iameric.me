@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import {
-    Checkbox,
-    ImageClone,
-    SimpleButton,
-    ThemedText,
-} from '@components'
-import EXIF from 'exif-js'
+import { Checkbox, ImageClone, SimpleButton, ThemedText } from '@components'
 import { useUser } from '@user'
 import { useImages } from '@images'
 import {
@@ -15,8 +9,8 @@ import {
     openFileSelector,
     uploadImage,
 } from '@utils/images'
-import { ActivityIndicator } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import EXIF from 'exif-js'
 
 const ImagePicker = ({ avatar = false, onComplete = null }) => {
 
@@ -36,16 +30,23 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
     const [ready, setReady] = useState(false)
-    const [timer, setTimer] = useState(null)
-    const [avatarCheckbox, setAvatarCheckbox] = useState(avatar)
+    const [avatarCheckbox, setAvatarCheckbox] = useState(!avatar)
     const [imageDims, setImageDims] = useState(null)
     
+    let timer
+
+    const startTimer = () => {
+        timer = setInterval(() => stopTimer, 2000)
+    }
+
+    const stopTimer = () => {
+        setReady(true)
+        timer = undefined
+    }
+
     useEffect(() => {
         const init = async () => {
-            setTimer(setInterval(() => {
-                setReady(true)
-                setTimer(null)
-            }, 2000))
+            startTimer()
             await openSelector()
         }
         init()
@@ -109,7 +110,8 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
             addImage(image)
             if (avatarCheckbox) setProfileImage(image)
         }
-
+        
+        setPayload(null)
         onComplete()
     }
 
@@ -118,7 +120,6 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
         else {
             const { imageData, thumbData, userId } = payload
             handleUpload({ imageData, thumbData, userId })
-            setPayload(null)
         }
     }
 
@@ -127,13 +128,85 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
         openSelector()
     }
 
-    if (uploading) return <ActivityIndicator size='medium' />
+    const renderControls = () => (
+        <View style={{ padding: 10 }}>
+
+            {avatar && (
+                <Checkbox
+                    label='Make profile image'
+                    onChange={value => setAvatarCheckbox(value)}
+                    value={avatar}
+                />
+            )}
+
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                    gap: 10,
+                }}
+            >
+                <Pressable
+                    onPress={onSubmit}
+                    disabled={uploading}
+                    style={{
+                        flex: 1,
+                        borderRadius: 12,
+                        overflow: 'hidden',
+                        backgroundColor: uploading ? '#ccc' : 'tomato',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: 10,
+                        height: 40,
+                    }}
+                >
+                    <Icon
+                        name='thumbs-up-sharp'
+                        size={20}
+                        color='#fff'
+                        style={{ padding: 3 }}
+                    />
+                    <ThemedText color='#fff' size={20} bold>Upload</ThemedText>
+                </Pressable>
+
+                <Pressable
+                    onPress={handleNewSelection}
+                    disabled={uploading}
+                    style={{
+                        flex: 1,
+                        borderRadius: 12,
+                        overflow: 'hidden',
+                        backgroundColor: uploading ? '#ccc' : '#aaa',
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        // borderWidth: 1,
+                        // borderColor: '#aaa',
+                        gap: 10,
+                        height: 40,
+                    }}
+                >
+                    <Icon
+                        name='thumbs-down'
+                        size={20}
+                        color='#fff'
+                        style={{ padding: 3 }}
+                    />
+                    <ThemedText color='#fff' size={20} bold>Change</ThemedText>
+                </Pressable>
+
+            </View>
+        </View>
+    )
     
-    return preview ? (
+    return (
         <View
             style={{
                 flex: 1,
                 flexDirection: 'row',
+                alignItems: 'center',
                 gap: 10,
             }}
         >
@@ -145,93 +218,58 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                 }}
             >
                 {imageDims && (
-                    <ImageClone
-                        source={{ uri: preview.uri }}
-                        width={imageDims.width}
-                        height={imageDims.height}
+                    <View
                         style={{
-                            borderWidth: 1,
-                            width: imageDims.width,
-                            height: imageDims.height,
+                            flex: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            width: '100%',
+                            position: 'relative',
                         }}
-                    />
+                    >
+                        
+                        {preview ? (
+                            <View
+                                style={{
+                                    flex: 1,
+                                    zIndex: 10,
+                                }}
+                            >
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        zIndex: 10,
+                                    }}
+                                >
+                                    <ImageClone
+                                        source={{ uri: preview.uri }}
+                                        width={imageDims.width}
+                                        height={imageDims.height}
+                                        style={{
+                                            borderWidth: 1,
+                                            width: imageDims.width,
+                                            height: imageDims.height,
+                                        }}
+                                    />
+                                </View>
+
+                                {renderControls()}
+                            </View>
+                        ) : (        
+                            <SimpleButton
+                                label='Select Image'
+                                onPress={openSelector}
+                                disabled={uploading || !ready}
+                            />
+                        )}
+                    </View>
                 )}
-
-                <Checkbox
-                    label='Make profile image'
-                    onChange={value => setAvatarCheckbox(value)}
-                    value={avatar}
-                />
-
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly',
-                        gap: 10,
-                    }}
-                >
-                    <Pressable
-                        onPress={onSubmit}
-                        disabled={uploading}
-                        style={{
-                            flex: 1,
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                            backgroundColor: 'tomato',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: 10,
-                            height: 40,
-                        }}
-                    >
-                        <Icon
-                            name='thumbs-up-sharp'
-                            size={20}
-                            color='#fff'
-                            style={{ padding: 3 }}
-                        />
-                        <ThemedText color='#fff' size={20} bold>Upload</ThemedText>
-                    </Pressable>
-    
-                    <Pressable
-                        onPress={handleNewSelection}
-                        disabled={uploading}
-                        style={{
-                            flex: 1,
-                            borderRadius: 12,
-                            overflow: 'hidden',
-                            backgroundColor: '#aaa',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            // borderWidth: 1,
-                            // borderColor: '#aaa',
-                            gap: 10,
-                            height: 40,
-                        }}
-                    >
-                        <Icon
-                            name='thumbs-down'
-                            size={20}
-                            color='#fff'
-                            style={{ padding: 3 }}
-                        />
-                        <ThemedText color='#fff' size={20} bold>Change</ThemedText>
-                    </Pressable>
-    
-                </View>
 
             </View>
 
         </View>
-    ) : (
-        <SimpleButton
-            label='Select Image'
-            onPress={openSelector}
-            disabled={uploading || !ready}
-        />
     )
 }
 

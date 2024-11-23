@@ -1,20 +1,18 @@
 import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
-import {
-    ActivityIndicator,
-    ImagePicker,
-    ModalHeader,
-    UserImageDisplay,
-} from '@components'
+import { ActivityIndicator, ImagePicker, ModalHeader, UserImageDisplay } from '@components'
+import { useImages } from '@images'
 import Modal from 'react-native-modal'
 
-const ImagesModal = ({ modal, onCancel, onSubmit }) => {
+const ImagesModal = ({ modal, onCancel, onSubmit = null }) => {
+
+    const { uploading } = useImages()
 
     const renderContent = () => {
         const { type, data } = modal
         switch (type) {
             case 'IMAGE_UPLOAD':
-                return <ImagePicker />
+                return <ImagePicker avatar onComplete={onCancel} />
                 break
             case 'SHOWCASE':
                 return <UserImageDisplay data={data} onClose={onCancel} />
@@ -39,8 +37,6 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
             <ModalHeader
                 title={title}
                 onClose={onCancel}
-                // color='#fff'
-                color='blue'
             />
         ) : null
     }
@@ -56,6 +52,11 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                 margin: 0,
             }}
         >
+            {/*
+                background button absolutely
+                positioned to fill screen
+            */}
+
             <View
                 style={{
                     flex: 1,
@@ -63,11 +64,7 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                     position: 'relative',
                 }}
             >
-                {/*
-                    background button absolutely
-                    positioned to fill screen
-                */}
-                
+            
                 <Pressable
                     onPress={onCancel}
                     style={{
@@ -84,15 +81,36 @@ const ImagesModal = ({ modal, onCancel, onSubmit }) => {
                     style={{
                         flex: 1,
                         width: '100%',
-                        maxWidth: 375,
+                        maxWidth: 400,
                         marginHorizontal: 'auto',
-                        // backgroundColor: '#000',
-                        // backgroundColor: 'orange',
+                        backgroundColor: '#fff',
                         zIndex: 100,
                     }}
                 >
+
+                    {uploading && (
+                        <View
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                zIndex: 100,
+                            }}
+                        >
+                            <ActivityIndicator size='medium' />
+                        </View>
+                    )}
+
                     {modal ? (
-                        <View style={{ flex: 1 }}>
+                        <View
+                            style={{
+                                flex: 1,
+                                zIndex: 100,
+                            }}
+                        >
 
                             {renderModalHeader()}
 

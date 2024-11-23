@@ -73,6 +73,7 @@ const UserImageDisplay = ({ data, onClose }) => {
                             flex: 1,
                             // flexDirection: 'row',
                             // alignItems: 'center',
+                            justifyContent: 'center',
                             zIndex: 1,
                         }}
                     >

@@ -23,7 +23,7 @@ const Images = () => {
                 images={images}
                 onPress={(type, data) => setImagesModal(type, data)}
                 uploading={uploading}
-                allowUpload
+                upload={() => setImagesModal('IMAGE_UPLOAD')}
             />
     
             <ImagesModal

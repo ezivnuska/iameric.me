@@ -5,7 +5,7 @@ import { ActivityIndicator } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ImageList = ({ images, onPress, uploading = null, allowUpload = false }) => {
+const ImageList = ({ images, onPress, uploading = null, upload = false }) => {
 
     const { theme } = useApp()
 
@@ -71,10 +71,10 @@ const ImageList = ({ images, onPress, uploading = null, allowUpload = false }) =
                 : <ActivityIndicator size='medium' />
             }
             
-            {allowUpload && (
+            {upload && (
                 <Pressable
                     key={`image-${images.length + (uploading ? 1 : 0)}`}
-                    onPress={() => onPress('IMAGE_UPLOAD')}
+                    onPress={upload}
                     style={[
                         {
                             justifyContent: 'center',

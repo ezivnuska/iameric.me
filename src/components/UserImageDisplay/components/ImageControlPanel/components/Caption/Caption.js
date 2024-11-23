@@ -72,17 +72,18 @@ const Caption = ({
                     <View
                         style={{
                             flexDirection: 'row',
-                            // justifyContent: 'space-between',
+                            // justifyContent: captionText ? 'space-between' : 'flex-start',
                             alignItems: 'center',
                             marginBottom: 10,
+                            gap: 10,
                         }}
                     >
                         <ThemedText
                             size={18}
                             color='#fff'
-                            style={{ flexGrow: 1 }}
+                            style={{ flexGrow: captionText ? 1 : 0 }}
                         >
-                            {captionText}
+                            {captionText || 'Add a caption'}
 
                         </ThemedText>
 
