@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import { Form, IconButton, ThemedText } from '@components'
 import { useForm } from '@form'
 import { useImages } from '@images'
+import { useUser } from '@user'
 import { setCaption } from '@utils/images'
 
 const Caption = ({
@@ -11,6 +12,10 @@ const Caption = ({
     onChange = null,
     active = null,
 }) => {
+
+    const {
+        closeUserModal,
+    } = useUser()
 
     const {
         updateImage,
@@ -106,7 +111,7 @@ const Caption = ({
                                     multiline: true,
                                 }
                             ]}
-                            onCancel={closeImagesModal}
+                            onCancel={closeUserModal}
                             onSubmit={handleSubmit}
                         />
                     )} 

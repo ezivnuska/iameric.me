@@ -1,19 +1,25 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ImagesModal, useImages } from '.'
+import {
+    // ImagesModal,
+    useImages,
+} from '.'
 import { ImageList, UserHeader } from '@components'
 import { useUser } from '@user'
 
 const Images = props => {
 
-    const { user } = useUser()
+    const {
+        user,
+        userModal,
+        // closeUserModal,
+        setUserModal,
+    } = useUser()
 
     const {
         images,
-        imagesModal,
+        // imagesModal,
         uploading,
-        closeImagesModal,
-        setImagesModal,
     } = useImages()
     
     return (
@@ -26,15 +32,15 @@ const Images = props => {
             
             <ImageList
                 images={images}
-                onPress={(type, data) => setImagesModal(type, data)}
+                onPress={(type, data) => setUserModal(type, data)}
                 uploading={uploading}
-                upload={() => setImagesModal('IMAGE_UPLOAD')}
+                upload={() => setUserModal('IMAGE_UPLOAD')}
             />
     
-            <ImagesModal
+            {/* <ImagesModal
                 modal={imagesModal}
-                onCancel={closeImagesModal}
-            />
+                onCancel={closeUserModal}
+            /> */}
         </View>
     )
 }
