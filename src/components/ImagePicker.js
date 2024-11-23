@@ -33,6 +33,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     const [payload, setPayload] = useState(null)
     const [ready, setReady] = useState(false)
     const [avatarCheckbox, setAvatarCheckbox] = useState(!avatar)
+    const [maxWidth, setMaxWidth] = useState(null)
     const [imageDims, setImageDims] = useState(null)
     
     let timer = null
@@ -40,7 +41,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     const startTimer = () => {
         setReady(false)
         openSelector()
-        timer = setInterval(() => stopTimer, 2000)
+        timer = setInterval(stopTimer, 2000)
     }
 
     const stopTimer = () => {
@@ -49,23 +50,26 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     }
 
     useEffect(() => {
-        const init = async () => {
-            startTimer()
-        }
-        init()
-        // openSelector()
-        return () => setUploading(false)
+        startTimer()
     }, [])
 
-    useEffect(() => {
-        if (preview && containerRef.current) {
-            const maxWidth = containerRef.current.clientWidth
-            setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
-        } else {
-            setReady(false)
-        }
+    // useEffect(() => {
+    //     if (preview && containerRef.current) {
+    //         const maxWidth = containerRef.current.clientWidth
+    //         setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
+    //     }
 
-    }, [containerRef, preview])
+    // }, [containerRef, preview])
+
+    const onLayout = e => {
+        setMaxWidth(e.nativeEvent.target.offsetParent.clientWidth)
+    }
+
+    useEffect(() => {
+        if (preview) {
+            setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
+        }
+    }, [preview])
 
     const [controlsVisible, setControlsVisible] = useState(true)
 
@@ -109,7 +113,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
             const { uri, height, width } = payload.imageData
             setPreview({ uri, height, width })
         } else if (preview) {
-            setPreview(null)
+            if (preview) setPreview(null)
             onComplete()
         }
     }, [payload])
@@ -235,13 +239,13 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
             }}
         >
             <View
-                ref={containerRef}
+                onLayout={onLayout}
                 style={{
                     gap: 10,
                     flexGrow: 1,
                 }}
             >
-                {imageDims && (
+                {preview && (
                     <View
                         style={{
                             flex: 1,
@@ -252,7 +256,6 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                         }}
                     >
                         
-
                         {uploading && (
                             <View
                                 style={{
@@ -272,7 +275,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                             </View>
                         )}
 
-                        {preview ? (
+                        {imageDims ? (
                             <View
                                 style={{
                                     flex: 1,
@@ -339,8 +342,8 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                                         transparent
                                         style={{
                                             position: 'absolute',
-                                            top: 0,
-                                            right: 0,
+                                            top: 5,
+                                            right: 5,
                                             zIndex: 100,
                                         }}
                                     />
@@ -395,13 +398,21 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
 
                             //     {renderControls()}
                             // </View>
-                        ) : (        
-                            <SimpleButton
-                                label='Select Image'
-                                onPress={openSelector}
-                                disabled={uploading || !ready}
-                            />
-                        )}
+                        ) : ready
+                            ? (
+                                <View style={{ flex: 1, paddingHorizontal: 10 }}>
+                                    <SimpleButton
+                                        label='Select Image'
+                                        onPress={openSelector}
+                                        disabled={uploading}
+                                    />
+                                </View>
+                            )
+                            : (
+                                <View style={{ flex: 1 }}>
+                                    <ActivityIndicator size='medium' label='Waiting for selection...' />
+                                </View>
+                            )}
                     </View>
                 )}
 
