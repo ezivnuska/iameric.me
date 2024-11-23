@@ -47,6 +47,7 @@ export const ImagesContextProvider = ({ children }) => {
             dispatch({type: 'SET_IMAGES', payload: items })
 
             dispatch({type: 'SET_IMAGES_LOADED' })
+            console.log('IMAGES LOADED')
         }
 
         if (user) initImages()

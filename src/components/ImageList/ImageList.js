@@ -45,6 +45,7 @@ const ImageList = ({ images, onPress, uploading = null, upload = false }) => {
         <View
             onLayout={onLayout}
             style={{
+                // justifyContent: 'flex-start',
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 gap: imageGap,

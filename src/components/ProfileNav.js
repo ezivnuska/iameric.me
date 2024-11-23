@@ -3,17 +3,17 @@ import { Pressable, View } from 'react-native'
 import { IconButtonLarge, ThemedText } from '@components'
 import navigationRef from '@utils/navigation'
 
-const UserHeader = ({ user, route }) => {
+const ProfileNav = ({ user, route }) => {
 
     return (
         <View
             style={{
                 flexGrow: 0,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
+                // flexDirection: 'row',
+                // alignItems: 'center',
                 gap: 10,
-                marginBottom: 10,
+                // marginBottom: 10,
+                // paddingHorizontal: 10,
             }}
         >
             <Pressable
@@ -30,18 +30,16 @@ const UserHeader = ({ user, route }) => {
                 </ThemedText>
             </Pressable>
     
-            {/* <IconButtonLarge
-                label='Images'
+            <IconButtonLarge
                 name='images'
+                label='Images'
                 size={24}
-                color='#000'
-                transparent={route.name === 'Images'}
                 onPress={() => navigationRef.navigate('Images')}
                 disabled={route.name === 'Images'}
-            /> */}
+            />
     
         </View>
     )
 }
 
-export default UserHeader
+export default ProfileNav

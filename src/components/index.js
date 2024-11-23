@@ -17,6 +17,7 @@ import ImagePicker from './ImagePicker'
 import InfoMarker from './InfoMarker'
 import ModalHeader from './ModalHeader'
 import ProfileImage from './ProfileImage'
+import ProfileNav from './ProfileNav'
 import ScreenHeader from './ScreenHeader'
 import SharedImage from './SharedImage'
 import SimpleButton from './SimpleButton'
@@ -49,6 +50,7 @@ export {
     InfoMarker,
     ModalHeader,
     ProfileImage,
+    ProfileNav,
     ScreenHeader,
     SharedImage,
     SimpleButton,

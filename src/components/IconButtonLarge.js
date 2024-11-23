@@ -35,7 +35,7 @@ const IconButtonLarge = ({
                     ? 'transparent'
                     : color,
                         // :'rgba(255, 99, 71, 0.3)'// tomato
-                opacity: disabled ? 0.5 : 1,
+                // opacity: disabled ? 0.5 : 1,
             },
             props.style,
         ]}
@@ -45,7 +45,7 @@ const IconButtonLarge = ({
             size={size}
             color={transparent
                 ? disabled
-                    ? '#fff'
+                    ? '#000'
                     : color
                 : '#fff'
             }
@@ -61,7 +61,7 @@ const IconButtonLarge = ({
                 bold
                 color={transparent
                     ? disabled
-                        ? '#fff'
+                        ? '#000'
                         : color
                     : '#fff'
                 }

@@ -60,7 +60,7 @@ export const UserContextProvider = ({ children }) => {
         }
         
         dispatch({ type: 'USER_LOADED' })
-        console.log('user loaded')
+        console.log('USER LOADED')
     }
 
     useEffect(() => {

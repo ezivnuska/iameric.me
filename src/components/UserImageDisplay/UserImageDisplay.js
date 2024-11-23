@@ -71,8 +71,8 @@ const UserImageDisplay = ({ data, onClose }) => {
                         onPress={handleControls}
                         style={{
                             flex: 1,
-                            // flexDirection: 'row',
-                            // alignItems: 'center',
+                            flexDirection: 'row',
+                            alignItems: 'center',
                             justifyContent: 'center',
                             zIndex: 1,
                         }}
@@ -125,7 +125,10 @@ const UserImageDisplay = ({ data, onClose }) => {
                             backgroundColor: 'rgba(0, 0, 0, 0.7)',
                         }, animatedStyle]}
                     >
-                        <ImageControlPanel image={image} />
+                        <ImageControlPanel
+                            image={image}
+                            onClose={onClose}
+                        />
                     </Animated.View>
                     
                 </View>

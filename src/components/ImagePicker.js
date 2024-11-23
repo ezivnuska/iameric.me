@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { Checkbox, ImageClone, SimpleButton, ThemedText } from '@components'
+import { ActivityIndicator, Checkbox, ImageClone, SimpleButton, ThemedText } from '@components'
 import { useUser } from '@user'
 import { useImages } from '@images'
 import {
@@ -33,7 +33,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     const [avatarCheckbox, setAvatarCheckbox] = useState(!avatar)
     const [imageDims, setImageDims] = useState(null)
     
-    let timer
+    let timer = null
 
     const startTimer = () => {
         timer = setInterval(() => stopTimer, 2000)
@@ -228,6 +228,23 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                         }}
                     >
                         
+
+                        {uploading && (
+                            <View
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                                    zIndex: 100,
+                                }}
+                            >
+                                <ActivityIndicator size='medium' />
+                            </View>
+                        )}
+
                         {preview ? (
                             <View
                                 style={{

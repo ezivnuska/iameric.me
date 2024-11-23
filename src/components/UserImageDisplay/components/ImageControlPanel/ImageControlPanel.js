@@ -13,10 +13,9 @@ import { useUser } from '@user'
 import { setAvatar } from './utils'
 import { deleteImage } from '@utils/images'
 
-const ImageControlPanel = ({ image }) => {
+const ImageControlPanel = ({ image, onClose }) => {
 
     const {
-        closeImagesModal,
         imagesLoading,
         removeImage,
         setImagesLoading,
@@ -47,7 +46,7 @@ const ImageControlPanel = ({ image }) => {
         else {
             if (isProfileImage) setProfileImage(null)
             removeImage(deletedImage._id)
-            closeImagesModal()
+            onClose()
         }
     }
 
