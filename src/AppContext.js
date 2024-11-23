@@ -34,6 +34,7 @@ const initialState = {
     appLoaded: false,
     authRoute: null,
     currentRoute: null,
+    lastRoute: null,
     dark: false,
     theme: CombinedDefaultTheme,
     setAuthRoute: () => {},
@@ -131,6 +132,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 currentRoute: payload,
+                lastRoute: state.currentRoute,
             }
             break
         default: throw new Error()

@@ -15,6 +15,7 @@ import ImageList from './ImageList'
 import ImagePicker from './ImagePicker'
 import InfoMarker from './InfoMarker'
 import ModalHeader from './ModalHeader'
+import Nav from './Nav'
 import ProfileImage from './ProfileImage'
 import ProfileNav from './ProfileNav'
 import ScreenHeader from './ScreenHeader'
@@ -46,6 +47,7 @@ export {
     ImagePicker,
     InfoMarker,
     ModalHeader,
+    Nav,
     ProfileImage,
     ProfileNav,
     ScreenHeader,
