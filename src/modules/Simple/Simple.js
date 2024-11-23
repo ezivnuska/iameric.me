@@ -136,6 +136,7 @@ export default Simple = () => {
 
 const styles = StyleSheet.create({
     container: {
+        margin: 10,
         padding: 10,
         // backgroundColor: '#efe',
         borderWidth: 1,
