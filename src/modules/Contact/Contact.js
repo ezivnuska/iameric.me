@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native'
 import { ActivityIndicator, ProfileImage, ScreenHeader } from '@components'
 import { ContactModal, useContact } from '.'
 
-const Contact = () => {
+const Contact = props => {
 
     const {
         contact,
@@ -36,7 +36,7 @@ const Contact = () => {
                             size={100}
                         />
                     </Pressable>
-                    
+
                 </View>
                 
                 <ContactModal

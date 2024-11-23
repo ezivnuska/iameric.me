@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { useApp } from '@app'
 import { IconButtonLarge } from '.'
@@ -7,9 +7,14 @@ const Nav = props => {
     
     const { currentRoute, lastRoute } = useApp()
 
+    // useEffect(() => {
+    //     console.log('current', currentRoute)
+    //     console.log('last', lastRoute)
+    // }, [])
+
     return (
         <View style={{ paddingHorizontal: 10 }}>
-            {(lastRoute && lastRoute.name !== currentRoute.name) && (
+            {(lastRoute && currentRoute.name !== 'Profile') && (
                 <IconButtonLarge
                     label={lastRoute.name}
                     name='chevron-back-sharp'
