@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { ActivityIndicator, Checkbox, ImageClone, SimpleButton, ThemedText } from '@components'
 import { useUser } from '@user'
-import { useImages } from '@images'
 import {
     getMaxImageDims,
     handleImageData,
@@ -17,13 +16,10 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     const {
         user,
         setProfileImage,
-    } = useUser()
-
-    const {
         addImage,
         setUploading,
         uploading,
-    } = useImages()
+    } = useUser()
 
     const containerRef = useRef()
 

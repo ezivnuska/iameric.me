@@ -110,7 +110,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                                     name='trash-outline'
                                     disabled={feedLoading}
                                     onPress={() => onDelete(item._id)}
-                                    color='#000'
+                                    color={user.role === 'admin' ? 'purple' : '#000'}
                                     size={26}
                                 />
                             )}

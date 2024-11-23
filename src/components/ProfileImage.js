@@ -46,7 +46,7 @@ const ProfileImage = ({ user, size = 'auto' }) => {
                         height: size,
                     }}
                 />
-            ) : <ActivityIndicator />}
+            ) : <ActivityIndicator size='medium' />}
         </View>
     )
 }

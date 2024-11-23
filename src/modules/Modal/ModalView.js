@@ -11,7 +11,7 @@ import {
     Settings,
     Socket,
 } from '@modules'
-import FormFactory from '@form'
+// import FormFactory from '@form'
 import Modal from 'react-native-modal'
 import { useModal } from '@modal'
 
@@ -79,13 +79,14 @@ const ModalView = () => {
                         style={{
                             flex: 1,
                             width: '100%',
-                            maxWidth: 375,
+                            maxWidth: 400,
                             marginHorizontal: 'auto',
                             backgroundColor: '#fff',
                             zIndex: 100,
                         }}
                     >
                         {renderModalHeader(modal.type)}
+                        
                         <View
                             style={{
                                 flex: 1,

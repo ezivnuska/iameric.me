@@ -1,8 +1,8 @@
 import {
-    ImagesScreen,
-    ProfileScreen,
+    // ImagesScreen,
+    UserScreen,
 } from '@screens'
-import { UserHeader } from '@components'
+// import { UserHeader } from '@components'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const UserNavigator = () => {
@@ -20,15 +20,15 @@ const UserNavigator = () => {
 
             <UserStack.Screen
                 name='Profile'
-                // children={props => <ProfileScreen {...props} />}
-                component={ProfileScreen}
+                // children={props => <UserScreen {...props} />}
+                component={UserScreen}
                 options={{ title: 'Profile' }}
             />
 
             <UserStack.Screen
                 name='Images'
-                // children={props => <ImagesScreen {...props} />}
-                component={ImagesScreen}
+                // children={props => <UserScreen {...props} />}
+                component={UserScreen}
                 options={{ title: 'Images' }}
             />
 

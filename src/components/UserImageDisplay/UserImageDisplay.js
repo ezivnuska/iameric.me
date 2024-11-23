@@ -4,10 +4,13 @@ import {
     ActivityIndicator,
     IconButtonLarge,
     ImageContainer,
+    ProfileImage,
+    ThemedText,
+    Time,
 } from '@components'
 import { ImageControlPanel } from './components'
 import { loadImage } from '@utils/images'
-import { useImages } from '@images'
+import { useUser } from '@user'
 import Animated, {
 	useAnimatedStyle,
 	useSharedValue,
@@ -19,7 +22,8 @@ const UserImageDisplay = ({ data, onClose }) => {
 
     const {
         setImagesLoading,
-    } = useImages()
+        user,
+    } = useUser()
 
     const [image, setImage] = useState(null)
 
@@ -92,18 +96,50 @@ const UserImageDisplay = ({ data, onClose }) => {
                     >
                         <LinearGradient
                             colors={[
+                                'rgba(0, 0, 0, 1.0)',
                                 'rgba(0, 0, 0, 0.5)',
-                                'rgba(0, 0, 0, 0.25)',
-                                'rgba(0, 0, 0, 0.1)',
-                                'rgba(0, 0, 0, 0.0)',
                             ]}
                             style={{
                                 flexDirection: 'row',
-                                justifyContent: 'flex-end',
                                 paddingHorizontal: 10,
-                                paddingVertical: 15,
+                                paddingVertical: 20,
                             }}
                         >
+                            <View
+                                style={{
+                                    flexGrow: 1,
+                                    flexDirection: 'row',
+                                    alignItems: 'flex-end',
+                                    gap: 10,
+                                }}
+                            >
+                                <ProfileImage
+                                    user={user}
+                                    size={50}
+                                />
+
+                                <View style={{ flexGrow: 1 }}>
+
+                                    <ThemedText
+                                        size={20}
+                                        color='#fff'
+                                        bold
+                                        style={{ lineHeight: 25 }}
+                                    >
+                                        {user.username}
+                                    </ThemedText>
+
+                                    <Time
+                                        time={image.createdAt}
+                                        color='#fff'
+                                        prefix='Uploaded '
+                                        style={{ lineHeight: 25 }}
+                                    />
+
+                                </View>
+
+                            </View>
+
                             <IconButtonLarge
                                 name='close'
                                 onPress={onClose}
@@ -111,7 +147,9 @@ const UserImageDisplay = ({ data, onClose }) => {
                                 color='#fff'
                                 transparent
                             />
+
                         </LinearGradient>
+
                     </Animated.View>
 
                     <Animated.View

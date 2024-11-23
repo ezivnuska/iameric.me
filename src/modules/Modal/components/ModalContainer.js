@@ -20,7 +20,7 @@ export default ({ children, onRequestClose, fullscreen = false, transparent = fa
             contentContainerStyle={{
                 flex: 1,
                 width: '100%',
-                maxWidth: 375,
+                maxWidth: 400,
                 marginHorizontal: 'auto',
                 padding: 10,
             }}

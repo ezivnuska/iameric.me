@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { UserModal, useUser } from '.'
+import { useUser } from '.'
 import { ProfileImage, ProfileNav, ThemedText } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -36,7 +36,7 @@ const User = props => {
                         if (user.profileImage) {
                             setUserModal('SHOWCASE', user.profileImage)
                         } else {
-                            setUserModal('IMAGE_UPLOAD', { avatar: true })
+                            setUserModal('IMAGE_UPLOAD')
                         }
                     }}
                     style={{
@@ -83,12 +83,9 @@ const User = props => {
                 </Pressable>
 
                 <ProfileNav user={user} route={props.route} />
+                
             </View>
 
-            <UserModal
-                modal={userModal}
-                onCancel={closeUserModal}
-            />
         </View>
     )
 }

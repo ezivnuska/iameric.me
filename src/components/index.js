@@ -3,11 +3,10 @@ import ActivityIndicator from './ActivityIndicator'
 import AddressView from './AddressView'
 import Cabinet from './Cabinet'
 import Checkbox from './Checkbox'
+import ContactImageDisplay from './ContactImageDisplay'
 import ImageContainer from './ImageContainer'
 import Counter from './Counter'
 import Form from './Form'
-// import FormField from './Form/components/FormField'
-// import FormHeader from './Form/components/FormHeader'
 import Heading from './Heading'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
@@ -19,7 +18,6 @@ import ModalHeader from './ModalHeader'
 import ProfileImage from './ProfileImage'
 import ProfileNav from './ProfileNav'
 import ScreenHeader from './ScreenHeader'
-import SharedImage from './SharedImage'
 import SimpleButton from './SimpleButton'
 import Slider from './Slider'
 import SocketDisplay from './SocketDisplay'
@@ -36,11 +34,10 @@ export {
     AddressView,
     Cabinet,
     Checkbox,
+    ContactImageDisplay,
     ImageContainer,
     Counter,
     Form,
-    // FormField,
-    // FormHeader,
     Heading,
     IconButton,
     IconButtonLarge,
@@ -52,7 +49,6 @@ export {
     ProfileImage,
     ProfileNav,
     ScreenHeader,
-    SharedImage,
     SimpleButton,
     Slider,
     SocketDisplay,

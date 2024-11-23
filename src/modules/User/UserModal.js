@@ -2,24 +2,31 @@ import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
 import { ActivityIndicator, ImagePicker, ModalHeader, UserImageDisplay } from '@components'
 import Modal from 'react-native-modal'
+import { useUser } from '.'
 
-const UserModal = ({ modal, onCancel, onSubmit = null }) => {
+const UserModal = ({ onSubmit = null }) => {
+
+    const {
+        userModal,
+        closeUserModal,
+    } = useUser()
 
     const renderContent = () => {
-        const { type, data } = modal
+        const { type, data } = userModal
         switch (type) {
             case 'IMAGE_UPLOAD':
-                return <ImagePicker onComplete={onCancel} />
+                return <ImagePicker onComplete={closeUserModal} />
+                // return <ImagePicker onComplete={onCancel} />
                 break
             case 'SHOWCASE':
-                return <UserImageDisplay data={data} onClose={onCancel} />
+                return <UserImageDisplay data={data} onClose={closeUserModal} />
                 break
             default:
         }
     }
 
     const renderModalHeader = () => {
-        const { type, data } = modal
+        const { type, data } = userModal
         let title = null
         switch (type) {
             case 'IMAGE_UPLOAD':
@@ -33,17 +40,17 @@ const UserModal = ({ modal, onCancel, onSubmit = null }) => {
         return title ? (
             <ModalHeader 
                 title={title}
-                onClose={onCancel}
+                onClose={closeUserModal}
             />
         ) : null
     }
 
     return (
         <Modal
-            isVisible={modal !== undefined}
+            isVisible={userModal !== undefined}
             animationType='fade'
             transparent={true}
-            onRequestClose={onCancel}
+            onRequestClose={closeUserModal}
             style={{
                 flex: 1,
                 margin: 0,
@@ -62,7 +69,7 @@ const UserModal = ({ modal, onCancel, onSubmit = null }) => {
                 }}
             >
                 <Pressable
-                    onPress={onCancel}
+                    onPress={closeUserModal}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -84,7 +91,7 @@ const UserModal = ({ modal, onCancel, onSubmit = null }) => {
                     }}
                 >
 
-                    {modal ? (
+                    {userModal ? (
                         <View
                             style={{
                                 flex: 1,

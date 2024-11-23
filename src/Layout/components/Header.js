@@ -48,7 +48,7 @@ const Header = ({ user, route }) => {
                 height: HEADER_HEIGHT,
                 width: '100%',
                 minWidth: 300,
-                maxWidth: 375,
+                maxWidth: 400,
                 marginHorizontal: 'auto',
                 overflow: 'visible',
                 paddingHorizontal: 10,

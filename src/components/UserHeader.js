@@ -14,6 +14,7 @@ const UserHeader = ({ user, route }) => {
                 alignItems: 'center',
                 gap: 10,
                 marginBottom: 10,
+                paddingHorizontal: 10,
             }}
         >
             <Pressable

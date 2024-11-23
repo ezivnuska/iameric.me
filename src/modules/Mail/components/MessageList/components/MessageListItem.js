@@ -80,6 +80,7 @@ export default ({ item, onDelete = null }) => {
                     <IconButton
                         name='trash-outline'
                         size={22}
+                        color={user.role === 'admin' ? 'purple' : '#000'}
                         onPress={onDelete}
                     />
                 )}

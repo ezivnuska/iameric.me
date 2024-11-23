@@ -117,12 +117,13 @@ const reducer = (state, action) => {
             return { ...state, contactLoading: payload }
             break
         case 'UPDATE_CONTACT':
+            const { _id, ...data } = payload
             return {
                 ...state,
                 contacts: state.contacts.length
                     ? state.contacts.map(contact => {
-                        if (contact._id === payload._id) {
-                            return { ...contact, ...payload }
+                        if (contact._id === _id) {
+                            return { ...contact, ...data }
                         }
                         return contact
                     })

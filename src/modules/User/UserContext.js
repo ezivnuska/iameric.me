@@ -7,18 +7,36 @@ import React, {
 } from 'react'
 import { getItem, getStoredToken, setItem } from '@utils/storage'
 import { validateToken } from '@utils/auth'
+import { loadImages } from '@utils/images'
 
 const initialState = {
     userModals: [],
     user: null,
     userLoaded: false,
     userLoading: false,
+    
+    // merged from images context
+    images: [],
+    error: null,
+    imagesLoaded: false,
+    imagesLoading: false,
+    uploading: false,
+
     closeUserModal: () => {},
     setUser: () => {},
     setUserModal: () => {},
     setProfileImage: () => {},
     setUserLoading: () => {},
     updateUser: () => {},
+
+    // merged from images context
+    addImage: () => {},
+    clearImages: () => {},
+    removeImage: () => {},
+    setImages: () => {},
+    setImagesLoading: () => {},
+    setUploading: () => {},
+    updateImage: () => {},
 }
 
 export const UserContext = createContext(initialState)
@@ -38,13 +56,13 @@ export const UserContextProvider = ({ children }) => {
         const token = await getStoredToken()
         
         if (token) {
-            console.log('found token')
+            // console.log('found token')
             // WE DON'T NEED TO VALIDATE TOKEN, YET
             // FOR NOW WE'RE JUST FAKING IT
 
             // dispatch({ type: 'SET_TOKEN', payload})
             const user = await validateToken(token)
-            console.log('token user', user)
+            
             
             if (user) {
                 dispatch({ type: 'SET_USER', payload: user })
@@ -60,19 +78,28 @@ export const UserContextProvider = ({ children }) => {
         }
         
         dispatch({ type: 'USER_LOADED' })
-        console.log('USER LOADED')
     }
 
     useEffect(() => {
         init()
     }, [])
 
+    const initImages = async userId => {
+
+        dispatch({type: 'SET_IMAGES_LOADING', payload: true })
+        const items = await loadImages(userId)
+        dispatch({type: 'SET_IMAGES_LOADING', payload: false })
+
+        dispatch({type: 'SET_IMAGES', payload: items })
+
+        dispatch({type: 'SET_IMAGES_LOADED' })
+    }
+
     const reset = () => {
         dispatch({ type: 'RESET' })
     }
 
     const setUser = payload => {
-        console.log('setting user', payload)
         dispatch({ type: 'SET_USER', payload })
     }
 
@@ -101,6 +128,7 @@ export const UserContextProvider = ({ children }) => {
     }
 
     const actions = useMemo(() => ({
+        initImages,
         closeUserModal,
         setUserModal,
         reset,
@@ -108,6 +136,28 @@ export const UserContextProvider = ({ children }) => {
         setUserLoading,
         setUser,
         updateUser,
+        addImage: payload => {
+            dispatch({ type: 'ADD_IMAGE', payload })
+        },
+        clearImages: () => {
+            dispatch({ type: 'RESET' })
+        },
+        removeImage: payload => {
+            dispatch({ type: 'REMOVE_IMAGE', payload })
+        },
+        setImages: payload => {
+            dispatch({ type: 'SET_IMAGES', payload })
+            if (!state.imagesLoaded) dispatch({ type: 'SET_IMAGES_LOADED' })
+        },
+        setImagesLoading: payload => {
+            dispatch({ type: 'SET_IMAGES_LOADING', payload })
+        },
+        setUploading: payload => {
+            dispatch({ type: 'SET_UPLOADING', payload })
+        },
+        updateImage: payload => {
+            dispatch({ type: 'UPDATE_IMAGE', payload })
+        },
     }), [state, dispatch])
 
     return (
@@ -168,6 +218,54 @@ const reducer = (state, action) => {
                     ...state.user,
                     payload,
                 },
+            }
+            break
+        // merged from images context
+        case 'SET_IMAGES_LOADING':
+            return {
+                ...state,
+                imagesLoading: payload,
+            }
+            break
+        case 'SET_IMAGES_LOADED':
+            return {
+                ...state,
+                imagesLoaded: true,
+            }
+            break
+        case 'REMOVE_IMAGE':
+            const images = state.images.filter(image => image._id !== payload)
+            return {
+                ...state,
+                images,
+            }
+            break
+        case 'SET_IMAGES':
+            return {
+                ...state,
+                images: payload,
+            }
+            break
+        case 'ADD_IMAGE':
+            return {
+                ...state,
+                images: [ ...state.images, payload ],
+            }
+            break
+        case 'SET_UPLOADING':
+            return { ...state, uploading: payload }
+            break
+        case 'RESET':
+            return {
+                ...state,
+                images: [],
+                imagesLoaded: false,
+            }
+            break
+        case 'UPDATE_IMAGE':
+            return {
+                ...state,
+                images: state.images.map(image => image._id === payload._id ? payload : image),
             }
             break
         default: throw new Error()

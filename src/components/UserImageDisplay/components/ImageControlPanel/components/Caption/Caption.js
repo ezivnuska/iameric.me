@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Form, IconButton, ThemedText } from '@components'
 import { useForm } from '@form'
-import { useImages } from '@images'
 import { useUser } from '@user'
 import { setCaption } from '@utils/images'
 
@@ -15,12 +14,8 @@ const Caption = ({
 
     const {
         closeUserModal,
-    } = useUser()
-
-    const {
         updateImage,
-        closeImagesModal,
-    } = useImages()
+    } = useUser()
 
     const {
         clearForm,

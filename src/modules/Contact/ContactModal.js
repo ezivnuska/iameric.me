@@ -1,15 +1,16 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { ModalHeader, SharedImage } from '@components'
+import { ContactImageDisplay, ModalHeader, SharedImage } from '@components'
 import Modal from 'react-native-modal'
 
-const ContactModal = ({ modal, onCancel, onSubmit = null }) => {
+const ContactModal = ({ user, modal, onClose, onSubmit = null }) => {
 
     const renderContent = () => {
         const { type, data } = modal
         switch (type) {
             case 'SHOWCASE':
-                return <SharedImage data={data} onClose={onCancel} />
+                return <ContactImageDisplay data={data} user={user} onClose={onClose} />
+                //<SharedImage data={data} onClose={onClose} />
                 break
             default:
         }
@@ -27,7 +28,7 @@ const ContactModal = ({ modal, onCancel, onSubmit = null }) => {
         return title ? (
             <ModalHeader 
                 title={title}
-                onClose={onCancel}
+                onClose={onClose}
             />
         ) : null
     }
@@ -37,7 +38,7 @@ const ContactModal = ({ modal, onCancel, onSubmit = null }) => {
             isVisible={modal !== undefined}
             animationType='fade'
             transparent={true}
-            onRequestClose={onCancel}
+            onRequestClose={onClose}
             style={{
                 flex: 1,
                 margin: 0,
@@ -51,7 +52,7 @@ const ContactModal = ({ modal, onCancel, onSubmit = null }) => {
                 }}
             >
                 <Pressable
-                    onPress={onCancel}
+                    onPress={onClose}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -66,7 +67,7 @@ const ContactModal = ({ modal, onCancel, onSubmit = null }) => {
                     style={{
                         flex: 1,
                         width: '100%',
-                        maxWidth: 375,
+                        maxWidth: 400,
                         marginHorizontal: 'auto',
                         backgroundColor: '#fff',
                         zIndex: 100,

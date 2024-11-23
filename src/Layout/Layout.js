@@ -77,7 +77,7 @@ const Layout = () => {
                             style={{
                                 flexGrow: 1,
                                 width: '100%',
-                                maxWidth: 375,
+                                maxWidth: 400,
                                 marginHorizontal: 'auto',
                                 zIndex: 100,
                             }}

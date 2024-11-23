@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { SharedImageControlPanel } from './components'
-import { ActivityIndicator, IconButtonLarge, ImageContainer } from '@components'
-import { useApp } from '@app'
-import { useContact } from '@contact'
-import { useImages } from '@images'
+import {
+    ActivityIndicator,
+    IconButtonLarge,
+    ImageContainer,
+    ProfileImage,
+    ThemedText,
+    Time,
+} from '@components'
+import { ImageControlPanel } from './components'
 import { loadImage } from '@utils/images'
 import Animated, {
 	useAnimatedStyle,
@@ -13,11 +17,9 @@ import Animated, {
 } from 'react-native-reanimated'
 import LinearGradient from 'react-native-web-linear-gradient'
 
-const SharedImage = ({ data, onClose }) => {
+const ContactImageDisplay = ({ data, user, onClose }) => {
 
-    const { dims } = useApp()
-    const { contact } = useContact()
-    const { setImagesLoading } = useImages()
+    const [imageLoading, setImageLoading] = useState(false)
 
     const [image, setImage] = useState(null)
 
@@ -30,10 +32,11 @@ const SharedImage = ({ data, onClose }) => {
     }))
 
     const init = async id => {
-        setImagesLoading(true)
-        const image = await loadImage(id)
-        setImagesLoading(false)
-        if (image) setImage(image)
+        setImageLoading(true)
+        const loadedImage = await loadImage(id)
+        setImageLoading(false)
+        
+        if (loadedImage) setImage(loadedImage)
     }
 
     useEffect(() => {
@@ -67,7 +70,13 @@ const SharedImage = ({ data, onClose }) => {
 
                     <Pressable
                         onPress={handleControls}
-                        style={{ flex: 1, zIndex: 1 }}
+                        style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            zIndex: 1,
+                        }}
                     >
                         <ImageContainer image={image} />
                     </Pressable>
@@ -84,18 +93,50 @@ const SharedImage = ({ data, onClose }) => {
                     >
                         <LinearGradient
                             colors={[
-                                'rgba(0, 0, 0, 0.5)',
-                                'rgba(0, 0, 0, 0.25)',
-                                'rgba(0, 0, 0, 0.1)',
-                                'rgba(0, 0, 0, 0.0)',
+                                'rgba(0, 0, 0, 1.0)',
+                                'rgba(0, 0, 0, 0.6)',
                             ]}
                             style={{
                                 flexDirection: 'row',
-                                justifyContent: 'flex-end',
                                 paddingHorizontal: 10,
-                                paddingVertical: 15,
+                                paddingVertical: 20,
                             }}
                         >
+                            <View
+                                style={{
+                                    flexGrow: 1,
+                                    flexDirection: 'row',
+                                    alignItems: 'flex-end',
+                                    gap: 10,
+                                }}
+                            >
+                                <ProfileImage
+                                    user={user}
+                                    size={50}
+                                />
+
+                                <View style={{ flexGrow: 1 }}>
+
+                                    <ThemedText
+                                        size={20}
+                                        color='#fff'
+                                        bold
+                                        style={{ lineHeight: 25 }}
+                                    >
+                                        {user.username}
+                                    </ThemedText>
+
+                                    <Time
+                                        time={image.createdAt}
+                                        color='#fff'
+                                        prefix='Uploaded '
+                                        style={{ lineHeight: 25 }}
+                                    />
+
+                                </View>
+
+                            </View>
+
                             <IconButtonLarge
                                 name='close'
                                 onPress={onClose}
@@ -103,7 +144,9 @@ const SharedImage = ({ data, onClose }) => {
                                 color='#fff'
                                 transparent
                             />
+
                         </LinearGradient>
+
                     </Animated.View>
 
                     <Animated.View
@@ -114,15 +157,24 @@ const SharedImage = ({ data, onClose }) => {
                             right: 0,
                             display: controlsVisible ? 'block' : 'none',
                             zIndex: 101,
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            height: dims.height / 2,
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
                         }, animatedStyle]}
                     >
-                        <SharedImageControlPanel
-                            image={image}
-                            user={contact}
-                        />
-
+                        <LinearGradient
+                            colors={[
+                                'rgba(0, 0, 0, 0.6)',
+                                'rgba(0, 0, 0, 1.0)',
+                            ]}
+                            style={{
+                                paddingHorizontal: 10,
+                                paddingVertical: 20,
+                            }}
+                        >
+                            <ImageControlPanel
+                                image={image}
+                                onClose={onClose}
+                            />
+                        </LinearGradient>
                     </Animated.View>
                     
                 </View>
@@ -131,4 +183,4 @@ const SharedImage = ({ data, onClose }) => {
     )
 }
 
-export default SharedImage
+export default ContactImageDisplay

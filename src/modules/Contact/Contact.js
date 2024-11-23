@@ -1,6 +1,5 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { Images } from './components'
 import { ActivityIndicator, ProfileImage, ScreenHeader } from '@components'
 import { ContactModal, useContact } from '.'
 
@@ -8,15 +7,16 @@ const Contact = () => {
 
     const {
         contact,
-        closeContactModal,
-        contactModal,
         contactLoading,
+        contactModal,
+        closeContactModal,
         setContactModal,
     } = useContact()
 
-    return contactLoading
-        ? <ActivityIndicator size='medium' />
-        : (
+    if (contactLoading) return <ActivityIndicator size='medium' label='Loading Contact...' />
+
+    return contact
+        ? (
             <View
                 key={`contact-details-${Date.now()}`}
                 style={{ flex: 1 }}
@@ -37,18 +37,19 @@ const Contact = () => {
                         />
                     </Pressable>
                     
-                    <View style={{ marginVertical: 20 }}>
+                    {/* <View style={{ marginVertical: 20 }}>
                         <Images contactId={contact._id} />
-                    </View>
+                    </View> */}
                 </View>
                 
                 <ContactModal
+                    user={contact}
                     modal={contactModal}
-                    onCancel={closeContactModal}
+                    onClose={closeContactModal}
                 />
 
             </View>
-        )
+        ) : null
 }
 
 export default Contact

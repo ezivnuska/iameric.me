@@ -2,14 +2,11 @@ import React from 'react'
 import { Form } from '@components'
 import { useForm } from '@form'
 import { useUser } from '@user'
-import { useImages } from '@images'
 import { setCaption } from '@utils/images'
 
 const CaptionForm = ({ data }) => {
 
     const initialState = { text: data?.caption || '' }
-    
-    const { updateImage } = useImages()
 
     const {
         clearForm,
@@ -32,65 +29,11 @@ const CaptionForm = ({ data }) => {
     } = useForm()
 
     const {
-        // imagesModal,
         clearUserModals,
         closeUserModal,
         setUserModal,
+        updateImage,
     } = useUser()
-
-    // const [initialValues, setInitialValues] = useState(null)
-
-    // const {
-    //     text,
-    // } = useMemo(() => formFields, [formFields])
-
-    // useEffect(() => {
-    //     const init = async () => {
-    //         const fields = await getFields(initialState, data)
-    //         setInitialValues(fields)
-    //     }
-    //     init()
-    // }, [])
-    
-    // useEffect(() => {
-    //     if (initialValues) initForm(initialValues)
-    // }, [initialValues])
-
-    // useEffect(() => {
-    //     if (formReady) validateFields(formFields)
-    // }, [formFields])
-
-    // const validate = name => {
-    //     let isValid = true
-    //     switch (name) {
-    //         case 'text':
-    //             if (!text.length) {
-    //                 setFormError({ name, message: 'caption invalid.'})
-    //                 isValid = false
-    //             }
-    //             break
-    //         default:
-    //             // console.log('No field to validate')
-    //     }
-
-    //     if (isValid && getError(name)) {
-    //         clearFormError()
-    //         setFocus(0)
-    //     } else {
-    //         setFocus(name)
-    //     }
-
-    //     return isValid
-    // }
-
-    // const onChange = (key, value) => {
-    //     if (!getDirty(key)) markDirty(key)
-    //     setFormValues({ ...formFields, [key]: value })
-    // }
-    
-    // const onEnter = e => {
-	// 	if (e.code === 'Enter') submitFormData()
-	// }
 
     const handleSubmit = async () => {
         

@@ -1,26 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import {
-    // ImagesModal,
-    useImages,
-} from '.'
-import { ImageList, UserHeader } from '@components'
+import { ActivityIndicator, ImageList, UserHeader } from '@components'
 import { useUser } from '@user'
 
 const Images = props => {
 
     const {
+        images,
+        imagesLoaded,
+        imagesLoading,
+        initImages,
+        uploading,
         user,
-        userModal,
-        // closeUserModal,
         setUserModal,
     } = useUser()
 
-    const {
-        images,
-        // imagesModal,
-        uploading,
-    } = useImages()
+    useEffect(() => {
+        if (!imagesLoaded && !imagesLoading) initImages(user._id)
+    }, [])
     
     return (
         <View
@@ -30,17 +27,21 @@ const Images = props => {
         >
             <UserHeader user={user} route={props.route} />
             
-            <ImageList
-                images={images}
-                onPress={(type, data) => setUserModal(type, data)}
-                uploading={uploading}
-                upload={() => setUserModal('IMAGE_UPLOAD')}
-            />
-    
-            {/* <ImagesModal
-                modal={imagesModal}
-                onCancel={closeUserModal}
-            /> */}
+            <View
+                style={{
+                    flex: 1,
+                    marginHorizontal: 10,
+                }}
+            >
+                {imagesLoaded ? (
+                    <ImageList
+                        images={images}
+                        onPress={(type, data) => setUserModal(type, data)}
+                        uploading={uploading}
+                        upload={() => setUserModal('IMAGE_UPLOAD')}
+                    />
+                ) : <ActivityIndicator size='medium' label='Loading Images...' />}
+            </View>
         </View>
     )
 }

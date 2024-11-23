@@ -156,7 +156,7 @@ export default ({ item, onDeleted, onPressed, current = false }) => {
                         <IconButton
                             name='close-sharp'
                             size={20}
-                            color='tomato'
+                            color='purple'
                             onPress={() => deleteAndRemoveBip(item._id)}
                             disabled={loading}
                         />

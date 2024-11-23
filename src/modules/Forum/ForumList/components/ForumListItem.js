@@ -106,7 +106,7 @@ const ForumListItem = ({ item, onDelete = null }) => {
                                         name='trash-outline'
                                         disabled={forumLoading}
                                         onPress={() => onDelete(_id)}
-                                        color='#000'
+                                        color={user.role === 'admin' ? 'purple' : '#000'}
                                         size={25}
                                     />
                                 )}

@@ -1,36 +1,24 @@
 import React, { useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { Caption } from './components'
-import {
-    IconButton,
-    IconButtonLarge,
-    ProfileImage,
-    ThemedText,
-    Time,
-} from '@components'
-import { useImages } from '@images'
+import { IconButton, IconButtonLarge } from '@components'
 import { useUser } from '@user'
 import { setAvatar } from './utils'
 import { deleteImage } from '@utils/images'
 
 const ImageControlPanel = ({ image, onClose }) => {
-
-    const {
-        imagesLoading,
-        removeImage,
-        setImagesLoading,
-    } = useImages()
-
+    
     const {
         setProfileImage,
         user,
-        userLoading,
         setUserLoading,
+        imagesLoading,
+        removeImage,
+        setImagesLoading,
     } = useUser()
 
     const [active, setActive] = useState(null)
     
-    const loading = useMemo(() => userLoading || imagesLoading, [userLoading, imagesLoading])
     const profileImage = useMemo(() => user && user.profileImage, [user])
     const isProfileImage = useMemo(() => profileImage && profileImage._id === image._id, [profileImage])
     
@@ -100,35 +88,22 @@ const ImageControlPanel = ({ image, onClose }) => {
                 paddingVertical: 10,
             }}
         >
-            
+        
+            <Caption
+                data={image}
+                onChange={setActive}
+                active={active === 'caption'}
+            />
+
             <View
                 style={{
                     flexDirection: 'row',
-                    alignItems: 'flex-end',
+                    alignItems: 'center',
                     gap: 10,
                 }}
             >
-                <ProfileImage
-                    user={user}
-                    size={50}
-                />
-
                 <View style={{ flexGrow: 1 }}>
-                    <ThemedText
-                        size={20}
-                        color='#fff'
-                        bold
-                        style={{ lineHeight: 25 }}
-                    >
-                        {user.username}
-                    </ThemedText>
-
-                    <Time
-                        time={image.createdAt}
-                        color='#fff'
-                        prefix='Uploaded '
-                        style={{ lineHeight: 25 }}
-                    />
+                    {renderProfileOption()}
                 </View>
 
                 <IconButton
@@ -138,16 +113,7 @@ const ImageControlPanel = ({ image, onClose }) => {
                     onPress={handleDelete}
                     disabled={imagesLoading}
                 />
-
             </View>
-        
-            <Caption
-                data={image}
-                onChange={setActive}
-                active={active === 'caption'}
-            />
-
-            {renderProfileOption()}
 
         </View>
     )
