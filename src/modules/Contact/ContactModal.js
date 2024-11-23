@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { ContactImageDisplay, ModalHeader, SharedImage } from '@components'
+import { ContactImageDisplay, ModalHeader } from '@components'
 import Modal from 'react-native-modal'
 
 const ContactModal = ({ user, modal, onClose, onSubmit = null }) => {
@@ -10,7 +10,6 @@ const ContactModal = ({ user, modal, onClose, onSubmit = null }) => {
         switch (type) {
             case 'SHOWCASE':
                 return <ContactImageDisplay data={data} user={user} onClose={onClose} />
-                //<SharedImage data={data} onClose={onClose} />
                 break
             default:
         }
