@@ -79,7 +79,9 @@ const User = props => {
                     
                 </Pressable>
 
-                <ProfileNav {...props} />
+                <View style={{ flexGrow: 1 }}>
+                    <ProfileNav {...props} />
+                </View>
                 
             </View>
 
