@@ -36,7 +36,7 @@ export default ({ item, onDelete = null }) => {
             }}
         >
             <Pressable
-                onPress={() => navigate('Contact', { screen: 'Details', params: { username: otherUser().username } })}
+                onPress={() => navigate('Contacts', { screen: 'Contact', params: { username: otherUser().username } })}
                 style={{
                     flexGrow: 0,
                     borderRadius: 12,

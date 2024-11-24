@@ -1,22 +1,29 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { ContactImageDisplay, ModalHeader } from '@components'
+import { useContacts } from '@contacts'
 import Modal from 'react-native-modal'
 
-const ContactModal = ({ user, modal, onClose, onSubmit = null }) => {
+const ContactsModal = () => {
+
+    const {
+        contact,
+        contactModal,
+        closeContactModal,
+    } = useContacts()
 
     const renderContent = () => {
-        const { type, data } = modal
+        const { type, data } = contactModal
         switch (type) {
             case 'SHOWCASE':
-                return <ContactImageDisplay data={data} user={user} onClose={onClose} />
+                return <ContactImageDisplay data={data} user={contact} onClose={closeContactModal} />
                 break
             default:
         }
     }
 
     const renderModalHeader = () => {
-        const { type, data } = modal
+        const { type, data } = contactModal
         let title = null
         switch (type) {
             case 'SHOWCASE':
@@ -27,21 +34,18 @@ const ContactModal = ({ user, modal, onClose, onSubmit = null }) => {
         return title ? (
             <ModalHeader 
                 title={title}
-                onClose={onClose}
+                onClose={closeContactModal}
             />
         ) : null
     }
 
     return (
         <Modal
-            isVisible={modal !== undefined}
+            isVisible={contactModal !== undefined}
             animationType='fade'
             transparent={true}
-            onRequestClose={onClose}
-            style={{
-                flex: 1,
-                margin: 0,
-            }}
+            onRequestClose={closeContactModal}
+            style={{ flex: 1, margin: 0 }}
         >
             <View
                 style={{
@@ -51,7 +55,7 @@ const ContactModal = ({ user, modal, onClose, onSubmit = null }) => {
                 }}
             >
                 <Pressable
-                    onPress={onClose}
+                    onPress={closeContactModal}
                     style={{
                         position: 'absolute',
                         top: 0,
@@ -72,9 +76,9 @@ const ContactModal = ({ user, modal, onClose, onSubmit = null }) => {
                         zIndex: 100,
                     }}
                 >
-                    {modal && renderModalHeader()}
+                    {contactModal && renderModalHeader()}
 
-                    {modal && renderContent()}
+                    {contactModal && renderContent()}
 
                 </View>
             </View>
@@ -82,4 +86,4 @@ const ContactModal = ({ user, modal, onClose, onSubmit = null }) => {
     )
 }
 
-export default ContactModal
+export default ContactsModal

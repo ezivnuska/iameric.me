@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { Screen } from './components'
-import { ActivityIndicator, ImageList, Nav } from '@components'
+import { ActivityIndicator, ImageList } from '@components'
 import User, { UserModal, useUser } from '@user'
 
 const UserScreen = props => {
@@ -52,8 +52,7 @@ const UserScreen = props => {
     
     return (
         <Screen {...props} secure>
-
-            <Nav {...props} />
+            
             {renderContent(props.route)}
 
             <UserModal

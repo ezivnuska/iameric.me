@@ -22,7 +22,7 @@ const IconButtonLarge = ({
                 flexGrow: 0,
                 flexDirection: 'row',
                 // justifyContent: 'flex-start',
-                gap: 10,
+                gap: 2,
                 alignContent: 'center',
                 alignItems: 'center',
                 height: 40,
@@ -52,7 +52,7 @@ const IconButtonLarge = ({
             style={{
                 flexGrow: 0,
                 paddingLeft: 1,
-                marginHorizontal: 'auto',
+                marginHorizontal: label ? 0 : 'auto',
             }}
         />
 

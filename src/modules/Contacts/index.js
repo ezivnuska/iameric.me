@@ -1,4 +1,5 @@
 import Contacts from './Contacts'
+import ContactsModal from './ContactsModal'
 import {
     ContactsContextProvider,
     useContacts,
@@ -8,5 +9,6 @@ export default Contacts
 
 export {
     ContactsContextProvider,
+    ContactsModal,
     useContacts,
 }

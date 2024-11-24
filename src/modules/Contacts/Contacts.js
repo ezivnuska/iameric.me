@@ -11,14 +11,14 @@ const Contacts = props => {
         contacts,
         contactsLoading,
         contactsLoaded,
-        initLoading,
+        initContacts,
     } = useContacts()
 
     const { user } = useUser()
 
     useEffect(() => {
         if (!contactsLoaded && !contactsLoading) {
-            initLoading()
+            initContacts()
         }
     }, [])
 

@@ -11,8 +11,6 @@ const User = props => {
     const {
         user,
         setUserModal,
-        userModal,
-        closeUserModal,
     } = useUser()
 
     return (
@@ -21,7 +19,6 @@ const User = props => {
             style={{
                 flex: 1,
                 paddingHorizontal: 10,
-                paddingVertical: 10,
             }}
         >
             <View
@@ -82,7 +79,7 @@ const User = props => {
                     
                 </Pressable>
 
-                <ProfileNav user={user} route={props.route} />
+                <ProfileNav {...props} />
                 
             </View>
 

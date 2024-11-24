@@ -1,14 +1,25 @@
-import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { loadContacts } from '@utils/contacts'
-// import { useApp } from '@app'
+import React, { createContext, useContext, useMemo, useReducer } from 'react'
+import { loadContact, loadContacts } from '@utils/contacts'
+import { loadImages } from '@utils/images'
 
 const initialState = {
+    contact: null,
     contacts: [],
+    contactLoaded: false,
+    contactLoading: false,
+    contactImagesLoaded: false,
+    contactImagesLoading: false,
+    contactModals: [],
     contactsLoaded: false,
     contactLoading: false,
     contactsLoading: false,
     addContact: () => {},
+    clearContactModals: () => {},
+    closeContactModal: () => {},
     removeContact: () => {},
+    setContact: () => {},
+    setContactLoading: () => {},
+    setContactModal: () => {},
     setContacts: () => {},
     setContactsLoaded: () => {},
     setContactsLoading: () => {},
@@ -29,7 +40,7 @@ export const ContactsContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const initLoading = async () => {
+    const initContacts = async () => {
         dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
         const users = await loadContacts()
         dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })
@@ -40,22 +51,56 @@ export const ContactsContextProvider = props => {
         dispatch({ type: 'SET_CONTACTS_LOADED' })
     }
 
-    useEffect(() => {
+    const initContact = async username => {
 
+        dispatch({ type: 'SET_CONTACT_LOADING', payload: true })
+        const user = await loadContact(username, true)
+        dispatch({ type: 'SET_CONTACT_LOADING', payload: false })
         
+        if (!user) console.log('could not load contact')
+        else {
+            dispatch({ type: 'SET_CONTACT', payload: user })
+            dispatch({ type: 'UPDATE_CONTACT', payload: user })
+        }
+        dispatch({ type: 'SET_CONTACT_LOADED' })
+        dispatch({ type: 'SET_CONTACT_IMAGES_LOADED' })
+    }
+
+    const initContactImages = async userId => {
+
+        dispatch({ type: 'SET_CONTACT_IMAGES_LOADING', payload: true })
+        const images = await loadImages(userId)
+        dispatch({ type: 'SET_CONTACT_IMAGES_LOADING', payload: false })
         
-        // init()
+        dispatch({ type: 'UPDATE_CONTACT_IMAGES', payload: { _id: userId, images } })
 
-    }, [])
+        dispatch({ type: 'SET_CONTACT_IMAGES_LOADED' })
+    }
 
-    const getContact = payload => state.contacts.filter(contact => contact.username === payload)[0]
+    const getContact = username => state.contacts.filter(contact => contact.username === username)[0]
 
     const actions = useMemo(() => ({
+        getContact,
+        initContact,
+        initContacts,
+        initContactImages,
         addContact: async payload => {
             dispatch({ type: 'ADD_CONTACT', payload })
         },
+        clearContactModals: () => {
+            dispatch({ type: 'CLEAR_CONTACT_MODALS' })
+        },
+        closeContactModal: () => {
+            dispatch({ type: 'CLOSE_CONTACT_MODAL' })
+        },
         removeContact: async payload => {
             dispatch({ type: 'REMOVE_CONTACT', payload })
+        },
+        setContactModal: (type, data) => {
+            dispatch({ type: 'SET_CONTACT_MODAL', payload: { type, data } })
+        },
+        setContactLoading: async payload => {
+            dispatch({ type: 'SET_CONTACT_LOADING', payload })
         },
         setContacts: async payload => {
             dispatch({ type: 'SET_CONTACTS', payload })
@@ -76,8 +121,7 @@ export const ContactsContextProvider = props => {
             value={{
                 ...state,
                 ...actions,
-                getContact,
-                initLoading,
+                contactModal: state.contactModals[state.contactModals.length - 1],
             }}
         >
             {props.children}
@@ -119,7 +163,54 @@ const reducer = (state, action) => {
                         }
                         return contact
                     })
-                    : [payload]
+                    : [payload],
+            }
+            break
+        case 'UPDATE_CONTACT_IMAGES':
+            return {
+                ...state,
+                contacts: state.contacts.length
+                    ? state.contacts.map(contact => contact._id === payload._id ? ({ ...contact, images: payload.images }) : contact)
+                    : [payload],
+            }
+            break
+        case 'CLEAR_CONTACT_MODALS':
+            return {
+                ...state,
+                contactModals: [],
+            }
+            break
+        case 'CLOSE_CONTACT_MODAL':
+            return {
+                ...state,
+                contactModals:  state.contactModals.slice(0, state.contactModals.length - 1),
+            }
+            break
+        case 'SET_CONTACT':
+            return { ...state, contact: payload }
+            break
+        case 'SET_CONTACT_MODAL':
+            return {
+                ...state,
+                contactModals: [ ...state.contactModals, payload ],
+            }
+            break
+        case 'SET_CONTACT_LOADED':
+            return { ...state, contactLoaded: true }
+            break
+        case 'SET_CONTACT_LOADING':
+            return { ...state, contactLoading: payload }
+            break
+        case 'SET_CONTACT_IMAGES_LOADING':
+            return {
+                ...state,
+                contactImagesLoading: payload,
+            }
+            break
+        case 'SET_CONTACT_IMAGES_LOADED':
+            return {
+                ...state,
+                contactImagesLoaded: true,
             }
             break
         default:

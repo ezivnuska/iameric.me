@@ -37,12 +37,7 @@ const ContactListItem = ({ item, ...props }) => {
         >
             <Pressable
                 onPress={() => {
-                    navigate('Contact', {
-                        screen: 'Details',
-                        params: {
-                            username: item.username,
-                        }
-                    })
+                    navigate('Contact', { username: item.username })
                 }}
                 style={{
                     flexDirection: 'row',

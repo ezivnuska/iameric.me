@@ -45,7 +45,6 @@ const ImageList = ({ images, onPress, uploading = null, upload = false }) => {
         <View
             onLayout={onLayout}
             style={{
-                // justifyContent: 'flex-start',
                 flexDirection: 'row',
                 flexWrap: 'wrap',
                 gap: imageGap,
@@ -53,7 +52,7 @@ const ImageList = ({ images, onPress, uploading = null, upload = false }) => {
                 marginVertical: 7,
             }}
         >
-            {imageSize
+            {(imageSize && images)
                 ? images.map((image, index) => (
                     <Pressable
                         key={`image-${index}`}

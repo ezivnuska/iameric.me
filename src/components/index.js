@@ -4,13 +4,15 @@ import AddressView from './AddressView'
 import Cabinet from './Cabinet'
 import Checkbox from './Checkbox'
 import ContactImageDisplay from './ContactImageDisplay'
-import ImageContainer from './ImageContainer'
+import Contact from './Contact'
+import ContactImages from './ContactImages'
 import Counter from './Counter'
 import Form from './Form'
 import Heading from './Heading'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
+import ImageContainer from './ImageContainer'
 import ImageList from './ImageList'
 import ImagePicker from './ImagePicker'
 import InfoMarker from './InfoMarker'
@@ -36,6 +38,8 @@ export {
     Cabinet,
     Checkbox,
     ContactImageDisplay,
+    Contact,
+    ContactImages,
     ImageContainer,
     Counter,
     Form,

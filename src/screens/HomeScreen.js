@@ -1,17 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import {
-    Pressable,
-    Text,
-    View,
-} from 'react-native'
+import { Pressable, Text, View } from 'react-native'
 import { Screen } from './components'
-import {
-    IconButton,
-    IconButtonLarge,
-    SimpleButton,
-    ThemedText,
-} from '@components'
-import { BipMap } from '@modules'
+import { IconButtonLarge, ThemedText } from '@components'
+// import { BipMap } from '@modules'
 import { useApp } from '@app'
 import { useUser } from '@user'
 import { useModal } from '@modal'
@@ -30,8 +21,7 @@ const HomeScreen = props => {
 
     const handleSignin = async (email, password) => {
         const response = await signin(email, password)
-        if (!response) console.log('could not sign in user with params')
-        else {
+        if (response) {
             setItem('email', response.email)
             storeToken(response.token)
             setUser(response)
@@ -40,6 +30,7 @@ const HomeScreen = props => {
                 username: response.username,
             })
         }
+        else console.log('could not sign in user with params')
     }
 
     useEffect(() => {
@@ -57,15 +48,15 @@ const HomeScreen = props => {
     }, [params])
 
     useEffect(() => {
-        if (authRoute) {
-            console.log('AUTHORIZATION NEEDED FOR', authRoute)
-            setModal('AUTH')
-        }
+        console.log('authRoute', authRoute)
+        if (authRoute) setModal('AUTH')
     }, [authRoute])
 
     useEffect(() => {
         if (user) {
+            console.log('user', user)
             if (authRoute) {
+                console.log('authRoute', authRoute)
                 const routeName = authRoute
                 setAuthRoute(null)
                 props.navigation.navigate(routeName)
@@ -111,7 +102,6 @@ const HomeScreen = props => {
                     style={{
                         flexGrow: 1,
                         gap: 15,
-                        // justifyContent: 'space-evenly',
                     }}
                 >
 
@@ -133,25 +123,6 @@ const HomeScreen = props => {
                         onPress={() => props.navigation.navigate('Feed')}
                     />
 
-                    {/* <SimpleButton
-                        label='Play'
-                        onPress={() => navigateTo('Play')}
-                    /> */}
-
-                    {/* <SimpleButton
-                        label='Simple'
-                        onPress={() => navigateTo('Simple')}
-                    /> */}
-
-                    {/* <SimpleButton
-                        label='Forum'
-                        onPress={() => navigateTo('Forum')}
-                    /> */}
-
-                    {/* <FatButtonNav
-                        numCols={3}
-                        navigateTo={props.navigation.navigate}
-                    /> */}
                 </View>
                 
             </View>
@@ -274,7 +245,8 @@ const FatButtonNav = ({ navigateTo, numCols = 2 }) => {
 const Intro = () => (
     <View
         style={{
-            marginVertical: 10,
+            // marginVertical: 10,
+            marginBottom: 10,
         }}
     >
         <View

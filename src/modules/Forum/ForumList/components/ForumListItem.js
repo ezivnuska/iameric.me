@@ -49,7 +49,7 @@ const ForumListItem = ({ item, onDelete = null }) => {
                 >
                     <Pressable
                         onPress={() => {
-                            navigate('Contact', { screen: 'Details', params: { username: author.username } })
+                            navigate('Contacts', { screen: 'Contact', params: { username: author.username } })
                         }}
                         style={{
                             flexDirection: 'row',

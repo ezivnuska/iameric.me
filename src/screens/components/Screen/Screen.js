@@ -1,15 +1,14 @@
 import React, { useEffect, useMemo } from 'react'
-import {
-    ScrollView,
-    View,
-} from 'react-native'
+import { ScrollView, View } from 'react-native'
 import { Footer } from './components'
 import { useApp } from '@app'
+import { useModal } from '@modal'
 import { useUser } from '@user'
 
 const Screen = ({ children, secure = false, ...props }) => {
 
     const { setAuthRoute } = useApp()
+    const { modal, setModal } = useModal()
     const { user } = useUser()
 
     const authorized = useMemo(() => (!secure || user !== null), [user, secure])
@@ -17,15 +16,19 @@ const Screen = ({ children, secure = false, ...props }) => {
 
     useEffect(() => {
         if (!authorized) {
+            console.log('props.route', props.route)
             setAuthRoute(props.route.name)
-            props.navigation.navigate('Home')
+            console.log('not authorized for route', routeName)
+            if (props.route.name !== 'Home') props.navigation.navigate('Home')
+            else setModal('AUTH')
         }
     }, [routeName])
 
-    if (!authorized) {
-        console.log('not authorized')
-        return <View />
-    }
+    // useEffect(() => {
+    //     if (!modal) setAuthRoute(secure ? props.route.name : null)
+    // }, [modal])
+
+    if (!authorized) return <View />
 
     return (
         <View style={{ flex: 1 }}>

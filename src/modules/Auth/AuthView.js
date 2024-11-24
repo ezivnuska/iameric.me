@@ -36,7 +36,7 @@ const AuthView = () => {
     }, [user])
 
     const handleModalClose = () => {
-        if (authRoute) setAuthRoute(null)
+        // if (authRoute) setAuthRoute(null)
         resetForm()
         closeModal()
     }

@@ -1,30 +1,38 @@
-import React, { useEffect } from 'react'
-import { View } from 'react-native'
-import { useApp } from '@app'
-import { IconButtonLarge } from '.'
+import React from 'react'
+import { Pressable, View } from 'react-native'
+import { ThemedText } from '.'
 
-const Nav = props => {
-    
-    const { currentRoute, lastRoute } = useApp()
+const Nav = ({ root, navigation, route }) => (
+    <View
+        style={{
+            marginBottom: 20,
+            paddingHorizontal: 10,
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 10,
+        }}
+    >
+        {(route.name !== root) && (
+            <Pressable
+                onPress={() => navigation.navigate(root, route.params)}
+                style={{
+                    paddingRight: 10,
+                    borderRightWidth: 1,
+                    borderRightColor: '#ccc',
+                }}
+            >
+                <ThemedText bold color='tomato'>
+                    {root}
+                </ThemedText>
 
-    // useEffect(() => {
-    //     console.log('current', currentRoute)
-    //     console.log('last', lastRoute)
-    // }, [])
+            </Pressable>
+        )}
 
-    return (
-        <View style={{ paddingHorizontal: 10 }}>
-            {(lastRoute && currentRoute.name !== 'Profile') && (
-                <IconButtonLarge
-                    label={lastRoute.name}
-                    name='chevron-back-sharp'
-                    onPress={() => props.navigation.navigate(lastRoute.name)}
-                    color='#000'
-                    transparent
-                />
-            )}
-        </View>
-    )
-}
+        <ThemedText bold>
+            {route.name}
+        </ThemedText>
+
+    </View>
+)
 
 export default Nav

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { IconButton, ThemedText } from '@components'
-import { useContact } from '@contact'
+import { useContacts } from '@contacts'
 import { useUser } from '@user'
 import { deleteImage } from '@utils/images'
 
@@ -13,7 +13,7 @@ const ImageControlPanel = ({ image, onClose }) => {
         contact,
         removeImage,
         updateContact,
-    } = useContact()
+    } = useContacts()
 
     const [imageLoading, setImageLoading] = useState(false)
     

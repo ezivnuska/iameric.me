@@ -38,7 +38,10 @@ const FeedListItem = ({ item, onDelete = null }) => {
     return (
         <View
             key={`post-${item._id}`}
-            style={{ gap: 20 }}
+            style={{
+                marginBottom: 20,
+                gap: 10,
+            }}
         >
 
             <View
@@ -60,7 +63,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                 >
                     <Pressable
                         onPress={() => {
-                            navigate('Contact', { screen: 'Details', params: { username: item.author.username } })
+                            navigate('Contacts', { screen: 'Contact', params: { username: item.author.username } })
                         }}
                         style={{
                             flexDirection: 'row',
@@ -125,9 +128,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
 
             <ThemedText
                 size={24}
-                style={{
-                    lineHeight: 30,
-                }}
+                style={{ lineHeight: 30 }}
             >
                 {item.text}
             </ThemedText>

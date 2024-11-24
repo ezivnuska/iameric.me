@@ -3,19 +3,19 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     BipScreen,
     BipsScreen,
-    ContactScreen,
-    ContactsScreen,
     FeedScreen,
     ForumScreen,
     HomeScreen,
-    ImagesScreen,
     MapScreen,
     MailScreen,
     PlayScreen,
     SimpleScreen,
     WorkScreen,
 } from '@screens'
-import { UserNavigator } from './navigators'
+import {
+    ContactsNavigator,
+    UserNavigator,
+} from './navigators'
 
 const BipStack = createNativeStackNavigator()
 const BipStackScreen = () => {
@@ -86,34 +86,35 @@ const AboutStackScreen = () => {
     )
 }
 
-const ContactStack = createNativeStackNavigator()
-const ContactStackScreen = () => {
+// const ContactStack = createNativeStackNavigator()
+// const ContactStackScreen = () => {
 
-    return (
-        <ContactStack.Navigator
-            initialRouteName='Details'
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
+//     return (
+//         <ContactStack.Navigator
+//             initialRouteName='Details'
+//             screenOptions={{
+//                 headerShown: true,
+//                 header: props => <Nav root='Details' {...props} />
+//             }}
+//         >
 
-            <ContactStack.Screen
-                name='Details'
-                children={props => <ContactScreen {...props} />}
-                // component={ContactScreen}
-                options={{ title: 'Contact' }}
-            />
+//             <ContactStack.Screen
+//                 name='Details'
+//                 children={props => <ContactScreen {...props} />}
+//                 // component={ContactScreen}
+//                 options={{ title: 'Contact' }}
+//             />
 
-            <ContactStack.Screen
-                name='ContactImages'
-                children={props => <ImagesScreen {...props} />}
-                // component={ImagesScreen}
-                options={{ title: 'Images' }}
-            />
+//             <ContactStack.Screen
+//                 name='ContactImages'
+//                 children={props => <ImagesScreen {...props} />}
+//                 // component={ImagesScreen}
+//                 options={{ title: 'Images' }}
+//             />
 
-        </ContactStack.Navigator>
-    )
-}
+//         </ContactStack.Navigator>
+//     )
+// }
 
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
@@ -133,17 +134,17 @@ const AppStackScreen = () => {
                 options={{ title: 'Home' }}
             />
 
-            <AppStack.Screen
+            {/* <AppStack.Screen
                 name='Contact'
-                children={props => <ContactStackScreen {...props} />}
-                // component={ContactsScreen}
+                // children={props => <ContactNavigator {...props} />}
+                component={ContactNavigator}
                 options={{ title: 'Contact' }}
-            />
+            /> */}
 
             <AppStack.Screen
                 name='Contacts'
-                children={props => <ContactsScreen {...props} />}
-                // component={ContactsScreen}
+                // children={props => <ContactsNavigator {...props} />}
+                component={ContactsNavigator}
                 options={{ title: 'Contacts' }}
             />
 
@@ -153,13 +154,6 @@ const AppStackScreen = () => {
                 component={UserNavigator}
                 options={{ title: 'Profile' }}
             />
-
-            {/* <AppStack.Screen
-                name='Images'
-                children={props => <ImagesScreen {...props} />}
-                // component={ImagesScreen}
-                options={{ title: 'Images' }}
-            /> */}
 
             <AppStack.Screen
                 name='Feed'

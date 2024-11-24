@@ -3,9 +3,7 @@ import {
     Image,
     View,
 } from 'react-native'
-// import { Screen } from './components'
 import {
-    Heading,
     ThemedText,
     Time,
 } from '@components'
@@ -21,35 +19,16 @@ export default ({ data }) => {
 
     const { getBip } = useBips()
     
-    const [ address, setAddress ] = useState(null)
     const [ bip, setBip ] = useState(data)
     const [ bipLoading, setBipLoading ] = useState(false)
     const [ images, setImages ] = useState(null)
-    const [ loadingAddress, setLoadingAddress ] = useState(false)
     const [ loadingImages, setLoadingImages ] = useState(false)
 
     useEffect(() => {
         if (bip) {
             fetchBipImages(bip._id)
-            // if (!address) {
-                // if (bip.location) {
-                    // console.log('bip', bip)
-                //     const { latitude, longitude } = bip.location
-                //     // fetchAddress(bip.location)
-                // }
-            // }
         }
     }, [bip])
-    
-    const fetchAddress = async location => {
-        const { latitude, longitude } = location
-        setLoadingAddress(true)
-        const results = await getAddress({ lat: latitude, lng: longitude })
-        setLoadingAddress(false)
-        if (results) {
-            setAddress(results)
-        }
-    }
 
     const fetchBipImages = async bipId => {
         setLoadingImages(true)
@@ -75,12 +54,6 @@ export default ({ data }) => {
         setBip(data)
     }
 
-    // const renderMap = coords => {
-    //     const { latitude, longitude } = coords
-    //     const latlng = { lat: latitude, lng: longitude }
-    //     return <Map coords={latlng} nomap />
-    // }
-
     return (
         <View
             style={{
@@ -95,11 +68,6 @@ export default ({ data }) => {
                         <View
                             style={{ flexGrow: 1 }}
                         >
-
-                            {/* <Heading
-                                title={bip.user.username}
-                                onBack={navigateBack}
-                            /> */}
                             
                             {bip.location && <Map coords={bip.location} nomap />}
                             
