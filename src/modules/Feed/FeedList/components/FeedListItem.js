@@ -1,14 +1,6 @@
-import React, { useEffect, useState, useMemo } from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
-import {
-    IconButton,
-    ProfileImage,
-    ThemedText,
-    Time,
-} from '@components'
+import React, { useEffect } from 'react'
+import { Pressable, View } from 'react-native'
+import { IconButton, ProfileImage, ThemedText, Time } from '@components'
 import { useUser } from '@user'
 import { useFeed } from '@feed'
 import { navigate } from '@utils/navigation'
@@ -38,10 +30,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
     return (
         <View
             key={`post-${item._id}`}
-            style={{
-                marginBottom: 20,
-                gap: 10,
-            }}
+            style={{ marginBottom: 20, gap: 10 }}
         >
 
             <View
@@ -63,7 +52,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                 >
                     <Pressable
                         onPress={() => {
-                            navigate('Contacts', { screen: 'Contact', params: { username: item.author.username } })
+                            navigate('Contacts', { screen: 'Contact', params: { username: item.author?.username } })
                         }}
                         style={{
                             flexDirection: 'row',
@@ -86,19 +75,17 @@ const FeedListItem = ({ item, onDelete = null }) => {
                                 gap: 10,
                             }}
                         >
-                            <View
-                                style={{
-                                    flex: 1,
-                                    flexGrow: 1,
-                                }}
-                            >
-                                <ThemedText
-                                    size={20}
-                                    bold
-                                    style={{ lineHeight: 25 }}
-                                >
-                                    {item.author.username}
-                                </ThemedText>
+                            <View style={{ flex: 1, flexGrow: 1 }}>
+
+                                {item.author?.username && (
+                                    <ThemedText
+                                        size={20}
+                                        bold
+                                        style={{ lineHeight: 25 }}
+                                    >
+                                        {item.author.username}
+                                    </ThemedText>
+                                )}
 
                                 <Time
                                     time={item.createdAt}
@@ -108,7 +95,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
 
                             </View>
 
-                            {(user._id === item.author._id || user.role === 'admin') && (
+                            {(user._id === item.author?._id || user.role === 'admin') && (
                                 <IconButton
                                     name='trash-outline'
                                     disabled={feedLoading}

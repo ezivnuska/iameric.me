@@ -111,7 +111,7 @@ const AuthView = () => {
                             name: 'email',
                             placeholder: 'email...',
                             multiline: false,
-                            autoCapaitalize: 'none',
+                            autoCapitalize: 'none',
                         },
                         {
                             label: 'Username',
@@ -146,6 +146,7 @@ const AuthView = () => {
                             name: 'email',
                             placeholder: 'email',
                             multiline: false,
+                            autoCapitalize: 'none',
                         },
                         {
                             label: 'Password',

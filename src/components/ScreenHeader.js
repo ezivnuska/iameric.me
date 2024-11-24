@@ -1,9 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import {
-    IconButtonLarge,
-    ThemedText,
-} from '@components'
+import { IconButtonLarge, ThemedText } from '@components'
 
 const ScreenHeader = ({ label, setModal = null }) => (
     <View
@@ -12,7 +9,7 @@ const ScreenHeader = ({ label, setModal = null }) => (
             flexDirection: 'row',
             alignItems: 'center',
             gap: 10,
-            marginBottom: 10,
+            marginBottom: 15,
             paddingHorizontal: 10,
         }}
     >

@@ -3,6 +3,8 @@ import { Pressable, View } from 'react-native'
 import { ActivityIndicator, ProfileImage, ProfileNav } from '@components'
 import { useContacts } from '@contacts'
 
+const PROFILE_IMAGE_SIZE = 150
+
 const Contact = props => {
 
     const {
@@ -36,7 +38,7 @@ const Contact = props => {
             >
                 <ProfileImage
                     user={contact}
-                    size={100}
+                    size={PROFILE_IMAGE_SIZE}
                 />
 
                 <ProfileNav contact={contact} {...props} />
