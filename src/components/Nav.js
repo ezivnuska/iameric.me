@@ -28,9 +28,36 @@ const Nav = ({ root, navigation, route }) => (
             </Pressable>
         )}
 
-        <ThemedText bold>
-            {route.name}
-        </ThemedText>
+        {route.name === 'Contact' && (
+            <ThemedText bold>
+                {route.params.username}
+            </ThemedText>
+        )}
+
+        {route.name === 'Images' && route.params?.username
+            && (
+                <Pressable
+                    onPress={() => navigation.navigate('Contact', route.params)}
+                    disabled={route.name === 'Contact'}
+                    style={{
+                        paddingRight: 10,
+                        borderRightWidth: 1,
+                        borderRightColor: '#ccc',
+                    }}
+                >
+                    <ThemedText bold color='tomato'>
+                        {route.params.username}
+                    </ThemedText>
+
+                </Pressable>
+            )
+        }
+
+        {route.name === 'Images' && (
+            <ThemedText bold>
+                Images
+            </ThemedText>
+        )}
 
     </View>
 )

@@ -24,7 +24,7 @@ const User = props => {
             <View
                 style={{
                     flexDirection: 'row',
-                    gap: 10,
+                    gap: 20,
                 }}
             >
 
