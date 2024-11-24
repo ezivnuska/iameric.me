@@ -14,7 +14,7 @@ const linking = {
             //     },
             // },
             Contacts: {
-                path: 'contacts',
+                path: 'users',
                 screens: {
                     Contact: {
                         path: ':username',
@@ -22,8 +22,8 @@ const linking = {
                     Images: {
                         path: ':username/images',
                     },
-                    Contacts: {
-                        path: 'all',
+                    Users: {
+                        path: '',
                     },
                 },
             },

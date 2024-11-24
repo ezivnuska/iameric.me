@@ -12,7 +12,7 @@ import {
     deleteEntryWithId,
 } from './utils'
 
-export default () => {
+const Forum = () => {
 
     const {
         forumModal,
@@ -127,3 +127,5 @@ export default () => {
         </View>
     )
 }
+
+export default Forum

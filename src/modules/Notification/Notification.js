@@ -1,4 +1,6 @@
 import React from 'react'
 import { NotificationList } from './components'
 
-export default () => <NotificationList />
+const Notification = () => <NotificationList />
+
+export default Notification

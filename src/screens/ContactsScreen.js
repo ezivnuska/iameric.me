@@ -7,8 +7,9 @@ import Contacts, { ContactsModal } from '@contacts'
 const ContactsScreen = props => {
 
     const renderContent = () => {
+        console.log('props.route.name', props.route.name)
         switch (props.route.name) {
-            case 'Contacts': return <Contacts {...props} />
+            case 'Users': return <Contacts {...props} />
             case 'Contact': return <Contact {...props} />
             case 'Images': return <ContactImages {...props} />
             default:

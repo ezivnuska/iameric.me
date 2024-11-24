@@ -8,7 +8,6 @@ import Contact from './Contact'
 import ContactImages from './ContactImages'
 import Counter from './Counter'
 import Form from './Form'
-import Heading from './Heading'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
@@ -43,7 +42,6 @@ export {
     ImageContainer,
     Counter,
     Form,
-    Heading,
     IconButton,
     IconButtonLarge,
     ImageClone,

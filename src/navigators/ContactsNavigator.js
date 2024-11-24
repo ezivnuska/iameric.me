@@ -7,16 +7,16 @@ const ContactsNavigator = () => {
     const ContactStack = createNativeStackNavigator()
     return (
         <ContactStack.Navigator
-            initialRouteName='Contacts'
+            initialRouteName='Users'
             screenOptions={{
                 headerShown: true,
-                header: props => <Nav root='Contacts' {...props} />
+                header: props => <Nav root='Users' {...props} />
             }}
         >
             <ContactStack.Screen
-                name='Contacts'
+                name='Users'
                 component={ContactsScreen}
-                options={{ title: 'Contacts' }}
+                options={{ title: 'Users' }}
             />
 
             <ContactStack.Screen
@@ -24,6 +24,13 @@ const ContactsNavigator = () => {
                 // children={props => <ContactsScreen {...props} />}
                 component={ContactsScreen}
                 options={{ title: 'Images' }}
+            />
+
+            <ContactStack.Screen
+                name='Contact'
+                // children={props => <ContactsScreen {...props} />}
+                component={ContactsScreen}
+                options={{ title: 'User' }}
             />
 
         </ContactStack.Navigator>

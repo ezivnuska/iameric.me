@@ -7,7 +7,7 @@ import {
     View,
 } from 'react-native'
 
-export default Simple = () => {
+const Simple = () => {
 
     // create string var to store textinput value in state
     const [inputValue, setInputValue] = useState('')
@@ -239,3 +239,5 @@ const styles = StyleSheet.create({
         paddingVertical: 7,
     },
 })
+
+export default Simple

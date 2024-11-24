@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import {
-    Image,
-    View,
-} from 'react-native'
+import { Image, View } from 'react-native'
 import { Screen } from './components'
-import {
-    Heading,
-    ThemedText,
-    Time,
-} from '@components'
+import { ThemedText, Time } from '@components'
 import { Map } from '@modules'
 import { useBips } from '@modules/Bipster'
 import { loadBip } from '@utils/bips'
 import { getBipImages } from '@utils/images'
-import { getAddress } from '@utils/map'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -23,35 +15,14 @@ export default props => {
 
     const { getBip } = useBips()
     
-    const [ address, setAddress ] = useState(null)
     const [ bip, setBip ] = useState(null)
     const [ bipLoading, setBipLoading ] = useState(false)
     const [ images, setImages ] = useState(null)
-    const [ loadingAddress, setLoadingAddress ] = useState(false)
     const [ loadingImages, setLoadingImages ] = useState(false)
 
     useEffect(() => {
-        if (bip) {
-            fetchBipImages(bip._id)
-            // if (!address) {
-                // if (bip.location) {
-                    // console.log('bip', bip)
-                //     const { latitude, longitude } = bip.location
-                //     // fetchAddress(bip.location)
-                // }
-            // }
-        }
+        if (bip) fetchBipImages(bip._id)
     }, [bip])
-    
-    const fetchAddress = async location => {
-        const { latitude, longitude } = location
-        setLoadingAddress(true)
-        const results = await getAddress({ lat: latitude, lng: longitude })
-        setLoadingAddress(false)
-        if (results) {
-            setAddress(results)
-        }
-    }
 
     const fetchBipImages = async bipId => {
         setLoadingImages(true)
@@ -77,16 +48,6 @@ export default props => {
         setBip(data)
     }
 
-    const navigateBack = () => {
-        props.navigation.navigate('Bips', { screen: 'BipList' })
-    }
-
-    // const renderMap = coords => {
-    //     const { latitude, longitude } = coords
-    //     const latlng = { lat: latitude, lng: longitude }
-    //     return <Map coords={latlng} nomap />
-    // }
-
     return (
         <Screen
             {...props}
@@ -94,52 +55,21 @@ export default props => {
             key={`bip-screen-${new Date()}`}
         >
     
-            <View
-                style={{
-                    flexGrow: 1,
-                    // borderWidth: 1,
-                    // borderColor: 'red'
-                }}
-            >
+            <View style={{ flexGrow: 1 }}>
 
                 {bipLoading
                     ? <ThemedText>Loading bip...</ThemedText>
                     : bip
                         ? (
-                            <View
-                                style={{
-                                    flexGrow: 1,
-                                    gap: 5,
-                                    // borderWidth: 1,
-                                    // borderColor: 'blue',
-                                }}
-                            >
-
-                                <Heading
-                                    title={bip.user.username}
-                                    onBack={navigateBack}
-                                />
+                            <View style={{ flexGrow: 1, gap: 5 }}>
                                 
                                 {bip.location && <Map coords={bip.location} nomap />}
                                 
-                                <View
-                                    style={{
-                                        flexGrow: 0,
-                                        // borderWidth: 1,
-                                        // borderColor: 'orange',
-                                    }}
-                                >
+                                <View style={{ flexGrow: 0 }}>
                                     <Time time={bip.createdAt} />
                                 </View>
 
-                                <View
-                                    style={{
-                                        flexGrow: 1,
-                                        overflow: 'hidden',
-                                        // borderWidth: 1,
-                                        // borderColor: 'green',
-                                    }}
-                                >
+                                <View style={{ flexGrow: 1, overflow: 'hidden' }}>
                                 
                                     {loadingImages
                                         ? <ThemedText>Loading Images...</ThemedText>
@@ -158,8 +88,6 @@ export default props => {
                                                                 source={{
                                                                     uri: `${IMAGE_PATH}/${image.path}/${image.filename}`
                                                                 }}
-                                                                // height={image.height}
-                                                                // width={image.width}
                                                                 resizeMethod='scale'
                                                                 resizeMode='cover'
                                                                 style={{

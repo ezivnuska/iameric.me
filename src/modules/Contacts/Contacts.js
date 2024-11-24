@@ -5,7 +5,7 @@ import { ContactListItem } from './components'
 import { useUser } from '@user'
 import { useContacts } from '@contacts'
 
-const Contacts = props => {
+const Contacts = ({ navigation }) => {
 
     const {
         contacts,
@@ -16,34 +16,29 @@ const Contacts = props => {
 
     const { user } = useUser()
 
+    const renderContacts = () => {
+        const array = contacts.filter(contact => contact._id !== user._id)
+        return array.length ? array.map((c, i) => (
+            <ContactListItem
+                onPress={username => navigation.navigate('Contact', { username })}
+                key={`contact-${i}`}
+                item={c}
+            />
+        )) : <ThemedText>No users to show.</ThemedText>
+    }
+
     useEffect(() => {
         if (!contactsLoaded && !contactsLoading) {
             initContacts()
         }
     }, [])
 
+    if (contactsLoading) return <ActivityIndicator size='medium' />
+
     return (
-        <View {...props} style={{ flex: 1 }}>
+        <View style={{ flex: 1, gap: 10 }}>
 
-            {(!contactsLoaded || contactsLoading)
-                ? <ActivityIndicator size='medium' />
-                : (
-                    <View style={{ gap: 10 }}>
-
-                        {contacts.length ? contacts.map((contact, index) => {
-                            if (user && user._id !== contact._id) {
-                                return (
-                                    <ContactListItem
-                                        key={`contact-${index}`}
-                                        item={contact}
-                                    />
-                                )
-                            }
-                            else return null
-                        }) : <ThemedText>No contacts to show</ThemedText>}
-
-                    </View>
-            )}
+            {renderContacts()}
 
         </View>
     )

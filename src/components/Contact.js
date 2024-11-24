@@ -7,7 +7,6 @@ const Contact = props => {
 
     const {
         contact,
-        contactLoaded,
         contactLoading,
         initContact,
         setContactModal,

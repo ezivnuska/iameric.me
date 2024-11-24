@@ -86,36 +86,6 @@ const AboutStackScreen = () => {
     )
 }
 
-// const ContactStack = createNativeStackNavigator()
-// const ContactStackScreen = () => {
-
-//     return (
-//         <ContactStack.Navigator
-//             initialRouteName='Details'
-//             screenOptions={{
-//                 headerShown: true,
-//                 header: props => <Nav root='Details' {...props} />
-//             }}
-//         >
-
-//             <ContactStack.Screen
-//                 name='Details'
-//                 children={props => <ContactScreen {...props} />}
-//                 // component={ContactScreen}
-//                 options={{ title: 'Contact' }}
-//             />
-
-//             <ContactStack.Screen
-//                 name='ContactImages'
-//                 children={props => <ImagesScreen {...props} />}
-//                 // component={ImagesScreen}
-//                 options={{ title: 'Images' }}
-//             />
-
-//         </ContactStack.Navigator>
-//     )
-// }
-
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
 
@@ -145,7 +115,7 @@ const AppStackScreen = () => {
                 name='Contacts'
                 // children={props => <ContactsNavigator {...props} />}
                 component={ContactsNavigator}
-                options={{ title: 'Contacts' }}
+                options={{ title: 'Users' }}
             />
 
             <AppStack.Screen

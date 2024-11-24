@@ -12,7 +12,7 @@ import {
     deletePostWithId,
 } from './utils'
 
-export default () => {
+const Feed = () => {
 
     const {
         feedModal,
@@ -117,3 +117,5 @@ export default () => {
         </View>
     )
 }
+
+export default Feed

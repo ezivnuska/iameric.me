@@ -11,10 +11,9 @@ import { useApp } from '@app'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { navigate } from '@utils/navigation'
 
 
-const ContactListItem = ({ item, ...props }) => {
+const ContactListItem = ({ item, onPress, ...props }) => {
     
     const { theme } = useApp()
     const { setModal } = useModal()
@@ -28,7 +27,7 @@ const ContactListItem = ({ item, ...props }) => {
     return (
         <View
             {...props}
-            // key={`contact-${item._id}`}
+            key={`contact-${item._id}`}
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -36,9 +35,8 @@ const ContactListItem = ({ item, ...props }) => {
             }}
         >
             <Pressable
-                onPress={() => {
-                    navigate('Contact', { username: item.username })
-                }}
+                // onPress={() => navigate('Contact', { username: item.username })}
+                onPress={() => onPress(item.username)}
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
