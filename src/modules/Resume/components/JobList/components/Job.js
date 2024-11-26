@@ -1,15 +1,18 @@
-import React from 'react'
-import {
-    Pressable,
-    View,
-} from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Pressable, View } from 'react-native'
 import { ThemedText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
+import Animated, {
+    interpolate,
+	useAnimatedStyle,
+	useSharedValue,
+	withTiming,
+} from 'react-native-reanimated'
 
-const Company = ({ name }) => (
+const Company = ({ name, open }) => (
     <View>
-        <ThemedText bold size={18}>{name}</ThemedText>
+        <ThemedText bold size={18} color='#fff'>{name}</ThemedText>
     </View>
 )
 
@@ -80,22 +83,44 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
     const { company, city, start, end, title } = section
     
     const { theme } = useApp()
+
+    const [containerHeight, setContainerHeight] = useState(null)
+    const [backgroundColor, setBackgroundColor] = useState('tomato')
+
+    const anim = useSharedValue(0)
+
+    const animatedStyle = useAnimatedStyle(() => ({
+        height: interpolate(anim.value, [0, 1], [0, containerHeight || 300]),
+        opacity: interpolate(anim.value, [0, 1], [0, 1]),
+    }))
+
+    const backgroundColorAnim = useAnimatedStyle(() => ({ backgroundColor }))
+    
+    useEffect(() => {
+        setBackgroundColor(visible ? withTiming('black') : withTiming('tomato'))
+        anim.value = withTiming(visible ? 1 : 0, { duration: 250 })
+    }, [visible])
+
+    const onLayout = e => {
+        setContainerHeight(e.nativeEvent.layout.height)
+    }
+
     return (
         <Pressable
             onPress={onPress}
             key={`job-${props.key}`}
         >
-            <View
-                style={{
+            <Animated.View
+                style={[{
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 10,
-                    background: '#eee',
+                    backgroundColor: '#eee',
                     borderRadius: 6,
                     paddingHorizontal: 7,
                     paddingVertical: 3,
                     marginBottom: 5,
-                }}
+                }, backgroundColorAnim]}
             >
                 <View
                     style={{
@@ -113,13 +138,13 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
                     <Icon
                         name={visible ? 'chevron-up' : 'chevron-down'}
                         size={18}
-                        color={theme?.colors.textDefault}
+                        color='#fff'
                     />
                 </View>
-            </View>
+            </Animated.View>
             
-            {visible && (
-                <>
+            <Animated.View style={animatedStyle}>
+                <View onLayout={onLayout}>
                     <View
                         style={{
                             flexDirection: 'row',
@@ -133,8 +158,10 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
                     </View>
 
                     <BulletedList items={section.bullets} listKey={props.key} />
-                </>
-            )}
+                </View>
+
+            </Animated.View>
+
         </Pressable>
     )
 }

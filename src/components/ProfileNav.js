@@ -17,7 +17,8 @@ const ProfileNav = ({ navigation, contact = null }) => {
             <IconButtonLarge
                 name='images'
                 label='Images'
-                size={24}
+                size={34}
+                transparent
                 onPress={() => {
                     const nextParams = contact ? { username: contact.username } : null
                     navigation.navigate('Images', nextParams)}

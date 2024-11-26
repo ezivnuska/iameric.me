@@ -22,7 +22,7 @@ const IconButtonLarge = ({
                 flexGrow: 0,
                 flexDirection: 'row',
                 // justifyContent: 'flex-start',
-                gap: 2,
+                gap: 10,
                 alignContent: 'center',
                 alignItems: 'center',
                 height: 40,

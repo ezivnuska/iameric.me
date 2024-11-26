@@ -4,7 +4,7 @@ import { useUser } from '.'
 import { ProfileImage, ProfileNav, ThemedText } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const PROFILE_IMAGE_SIZE = 150
+const PROFILE_IMAGE_SIZE = 100
 
 const User = props => {
 
