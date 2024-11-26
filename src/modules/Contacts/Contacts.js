@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ThemedText } from '@components'
+import { ActivityIndicator, DefaultText } from '@components'
 import { ContactListItem } from './components'
 import { useUser } from '@user'
 import { useContacts } from '@contacts'
@@ -24,7 +24,7 @@ const Contacts = ({ navigation }) => {
                 key={`contact-${i}`}
                 item={c}
             />
-        )) : <ThemedText>No users to show.</ThemedText>
+        )) : <DefaultText>No users to show.</DefaultText>
     }
 
     useEffect(() => {

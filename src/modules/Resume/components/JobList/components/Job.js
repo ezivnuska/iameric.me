@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { ThemedText } from '@components'
+import { DefaultText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Animated, {
@@ -12,19 +12,19 @@ import Animated, {
 
 const Company = ({ name, open }) => (
     <View>
-        <ThemedText bold size={18} color='#fff'>{name}</ThemedText>
+        <DefaultText bold size={18} color='#fff'>{name}</DefaultText>
     </View>
 )
 
 const Title = ({ title }) => (
     <View>
-        <ThemedText color='tomato' size={18}>{title}</ThemedText>
+        <DefaultText color='tomato' size={18}>{title}</DefaultText>
     </View>
 )
 
 const City = ({ city }) => (
     <View>
-        <ThemedText size={18} color='#777'>{city}</ThemedText>
+        <DefaultText size={18} color='#777'>{city}</DefaultText>
     </View>
 )
 
@@ -32,7 +32,7 @@ const Time = ({ start, end }) => {
     const string = start === end ? start : `${start}-${end.substring(2)}`
     return (
         <View>
-            <ThemedText size={18} color='#777'>{string}</ThemedText>
+            <DefaultText size={18} color='#777'>{string}</DefaultText>
         </View>
     )
 }
@@ -56,7 +56,7 @@ const BulletListItem = ({ text, ...props }) => (
         </View>
 
         <View style={{ flexShrink: 1 }}>
-            <ThemedText>{text}</ThemedText>
+            <DefaultText>{text}</DefaultText>
         </View>
     </View>
 )

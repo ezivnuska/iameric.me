@@ -4,7 +4,7 @@ import {
     TextInput,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
+import { DefaultText } from '@components'
 import { useApp } from '@app'
 
 const FormField = ({
@@ -34,7 +34,7 @@ const FormField = ({
             }}
         >
             {label && (
-                <ThemedText
+                <DefaultText
                     bold
                     size={18}
                     style={{
@@ -43,7 +43,7 @@ const FormField = ({
                     }}
                 >
                     {label}
-                </ThemedText>
+                </DefaultText>
             )}
 
             <View

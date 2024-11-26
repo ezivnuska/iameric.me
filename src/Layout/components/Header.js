@@ -6,7 +6,7 @@ import {
 import {
     ProfileImage,
     SimpleButton,
-    ThemedText,
+    DefaultText,
 } from '@components'
 import { useModal } from '@modal'
 import { navigate } from '@utils/navigation'
@@ -27,14 +27,14 @@ const Header = ({ user, route }) => {
             }}
         >
             <Pressable onPress={() => navigate('Home')}>
-                <ThemedText bold style={{ fontSize: 50, lineHeight: 60 }}>iam</ThemedText>
+                <DefaultText bold style={{ fontSize: 50, lineHeight: 60 }}>iam</DefaultText>
             </Pressable>
 
             <Pressable
                 onPress={() => navigate('User', { screen: 'Profile' })}
                 style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
             >
-                <ThemedText bold style={{ fontSize: 50, lineHeight: 60 }} color='tomato'>{user.username}</ThemedText>
+                <DefaultText bold style={{ fontSize: 50, lineHeight: 60 }} color='tomato'>{user.username}</DefaultText>
 
                 {user && <ProfileImage user={user} size={40} />}
 
@@ -46,8 +46,8 @@ const Header = ({ user, route }) => {
             onPress={() => navigate('Home')}
             style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}
         >
-            <ThemedText bold color='#000' style={{ fontSize: 50, lineHeight: 60 }}>iam</ThemedText>
-            <ThemedText bold color='#999' style={{ fontSize: 50, lineHeight: 60 }}>eric</ThemedText>
+            <DefaultText bold color='#000' style={{ fontSize: 50, lineHeight: 60 }}>iam</DefaultText>
+            <DefaultText bold color='#999' style={{ fontSize: 50, lineHeight: 60 }}>eric</DefaultText>
         </Pressable>
     )
 

@@ -5,7 +5,7 @@ import {
     FeedModal,
     useFeed,
 } from '.'
-import { ThemedText, ScreenHeader } from '@components'
+import { DefaultText, ScreenHeader } from '@components'
 import { useSocket } from '@socket'
 import {
     createPost,
@@ -98,12 +98,12 @@ const Feed = () => {
                 {sortedThreads.length
                     ? renderThreads(sortedThreads)
                     : (
-                        <ThemedText
+                        <DefaultText
                             size={24}
                             style={{ lineHeight: 30 }}
                         >
                             No posts yet.
-                        </ThemedText>
+                        </DefaultText>
                     )
                 }
             </View>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { Screen } from './components'
-import { IconButtonLarge, ThemedText } from '@components'
+import { IconButtonLarge, DefaultText } from '@components'
 // import { BipMap } from '@modules'
 import { useApp } from '@app'
 import { useUser } from '@user'
@@ -135,17 +135,17 @@ const Intro = () => (
             
             <View style={{ flexGrow: 0, flexDirection: 'row', gap: 5 }}>
                 
-                <ThemedText bold size={18}>I am</ThemedText>
+                <DefaultText bold size={18}>I am</DefaultText>
                 
                 <View style={{ flexGrow: 0, flexDirection: 'row' }}>
-                    <ThemedText bold size={18} color='#777'>Eric</ThemedText>
-                    <ThemedText bold size={18}>.</ThemedText>
+                    <DefaultText bold size={18} color='#777'>Eric</DefaultText>
+                    <DefaultText bold size={18}>.</DefaultText>
                 </View>
 
             </View>
 
             <View style={{ flexGrow: 0 }}>
-                <ThemedText size={18}>Welcome to my progress.</ThemedText>
+                <DefaultText size={18}>Welcome to my progress.</DefaultText>
             </View>
         </View>
 

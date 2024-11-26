@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
-import { ThemedText } from'@components'
+import { DefaultText } from'@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const Checkbox = ({ label, onChange, value = false, disabled = false }) => {
@@ -26,12 +26,12 @@ const Checkbox = ({ label, onChange, value = false, disabled = false }) => {
                 color={disabled ? '#ccc' : 'tomato'}
             />
 
-            <ThemedText
+            <DefaultText
                 size={24}
                 color={disabled ? '#ccc' : 'tomato'}
             >
                 {label}
-            </ThemedText>
+            </DefaultText>
         </Pressable>
     )
 }

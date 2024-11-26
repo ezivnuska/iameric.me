@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from 'react-native'
 import { useApp } from '@app'
 
-const ThemedText = ({ children, bold = false, color = null, size = 16, align = 'left', ...props }) => {
+const DefaultText = ({ children, bold = false, color = null, size = 16, align = 'left', ...props }) => {
     
     const { theme } = useApp()
     
@@ -25,4 +25,4 @@ const ThemedText = ({ children, bold = false, color = null, size = 16, align = '
     )
 }
 
-export default ThemedText
+export default DefaultText

@@ -5,7 +5,7 @@ import {
     IconButtonLarge,
     ImageContainer,
     ProfileImage,
-    ThemedText,
+    DefaultText,
     Time,
 } from '@components'
 import { ImageControlPanel } from './components'
@@ -117,14 +117,14 @@ const ContactImageDisplay = ({ data, user, onClose }) => {
 
                                 <View style={{ flexGrow: 1 }}>
 
-                                    <ThemedText
+                                    <DefaultText
                                         size={20}
                                         color='#fff'
                                         bold
                                         style={{ lineHeight: 25 }}
                                     >
                                         {user.username}
-                                    </ThemedText>
+                                    </DefaultText>
 
                                     <Time
                                         time={image.createdAt}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { useUser } from '.'
-import { ProfileImage, ProfileNav, ThemedText } from '@components'
+import { ProfileImage, ProfileNav, DefaultText } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const PROFILE_IMAGE_SIZE = 100
@@ -63,14 +63,14 @@ const User = props => {
                                     style={{ marginHorizontal: 'auto' }}
                                 />
 
-                                <ThemedText
+                                <DefaultText
                                     color='#fff'
                                     size={20}
                                     align='center'
                                     bold
                                 >
                                     Add Avatar
-                                </ThemedText>
+                                </DefaultText>
 
                             </View>
 

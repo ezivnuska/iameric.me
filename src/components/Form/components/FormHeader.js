@@ -3,7 +3,7 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
+import { DefaultText } from '@components'
 import { useApp } from '@app'
 import { useForm } from '@form'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -27,13 +27,13 @@ const FormHeader = ({ title, close = null, color = '#000' }) => {
                 paddingBottom: 10,
             }}
         >
-            <ThemedText
+            <DefaultText
                 bold
                 size={24}
                 color={color}
             >
                 {title}
-            </ThemedText>
+            </DefaultText>
 
             {close && (
                 <Pressable 

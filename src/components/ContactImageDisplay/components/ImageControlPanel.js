@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { IconButton, ThemedText } from '@components'
+import { IconButton, DefaultText } from '@components'
 import { useContacts } from '@contacts'
 import { useUser } from '@user'
 import { deleteImage } from '@utils/images'
@@ -59,12 +59,12 @@ const ImageControlPanel = ({ image, onClose }) => {
         >
 
             <View style={{ flexGrow: 1 }}>
-                <ThemedText
+                <DefaultText
                     size={20}
                     color='#fff'
                 >
                     {image.caption}
-                </ThemedText>
+                </DefaultText>
             </View>
 
             {(user.role === 'admin') && (

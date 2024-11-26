@@ -1,5 +1,5 @@
 import React from 'react'
-import { ThemedText } from '@components'
+import { DefaultText } from '@components'
 import {
     format,
     formatDistance,
@@ -16,7 +16,7 @@ const Time = ({
     ...props
 }) => {
     return (
-        <ThemedText
+        <DefaultText
             color={color}
             size={size}
             style={props.style}
@@ -25,7 +25,7 @@ const Time = ({
                 ? `${prefix}${formatRelative(new Date(time), new Date())}${suffix}`
                 : 'Now'
             }
-        </ThemedText>
+        </DefaultText>
     )
 }
 

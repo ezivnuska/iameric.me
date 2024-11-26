@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
-import { ThemedText } from '@components'
+import { DefaultText } from '@components'
 import { Auth, Settings, Socket } from '@modules'
 import Modal from 'react-native-modal'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -37,13 +37,13 @@ const ModalView = ({ modal, onClose }) => {
                         zIndex: 50,
                     }}
                 >
-                    <ThemedText
+                    <DefaultText
                         bold
                         size={24}
                         color='#fff'
                     >
                         {title}
-                    </ThemedText>
+                    </DefaultText>
                 </View>
             )
             : null

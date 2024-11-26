@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { Form, IconButton, ThemedText } from '@components'
+import { Form, IconButton, DefaultText } from '@components'
 import { useForm } from '@form'
 import { useUser } from '@user'
 import { setCaption } from '@utils/images'
@@ -78,14 +78,14 @@ const Caption = ({
                             gap: 10,
                         }}
                     >
-                        <ThemedText
+                        <DefaultText
                             size={18}
                             color='#fff'
                             style={{ flexGrow: captionText ? 1 : 0 }}
                         >
                             {captionText || 'Add a caption'}
 
-                        </ThemedText>
+                        </DefaultText>
 
                         <IconButton
                             name={editing ? 'close' : 'create-outline'}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { IconButtonLarge, ThemedText } from '@components'
+import { IconButtonLarge, DefaultText } from '@components'
 
 const ScreenHeader = ({ label, setModal = null }) => (
     <View
@@ -13,9 +13,9 @@ const ScreenHeader = ({ label, setModal = null }) => (
             paddingHorizontal: 10,
         }}
     >
-        <ThemedText bold size={32}>
+        <DefaultText bold size={32}>
             {label}
-        </ThemedText>
+        </DefaultText>
 
         {setModal !== null && (
             <IconButtonLarge

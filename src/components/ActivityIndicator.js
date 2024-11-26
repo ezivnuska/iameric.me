@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ThemedText } from '@components'
+import { DefaultText } from '@components'
 import { ActivityIndicator as Indicator } from 'react-native-paper'
 
 const ActivityIndicator = ({ size = 'large', color = 'tomato', label = null, ...props }) => (
@@ -19,7 +19,7 @@ const ActivityIndicator = ({ size = 'large', color = 'tomato', label = null, ...
             }}
         >
             {label && (
-                <ThemedText color={color} size={24}>{label}</ThemedText>
+                <DefaultText color={color} size={24}>{label}</DefaultText>
             )}
 
             <Indicator

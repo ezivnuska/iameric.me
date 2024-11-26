@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Heading, ThemedText } from '@components'
+import { Heading, DefaultText } from '@components'
 import { useSocket } from '.'
 import { useApp } from '@app'
 import { useUser } from '@user'
@@ -42,9 +42,9 @@ const SocketView = () => {
                     flexShrink: 0,
                 }}
             >
-                <ThemedText size={16}>
+                <DefaultText size={16}>
                     {`${connections.length || 'No'} connection${connections.length !== 1 ? `s` : ''}`}
-                </ThemedText>
+                </DefaultText>
             </View>
 
             <View
@@ -53,9 +53,9 @@ const SocketView = () => {
                     textAlign: 'right',
                 }}
             >
-                <ThemedText>
+                <DefaultText>
                     {`Connected as ${getDisplayName()}`}
-                </ThemedText>
+                </DefaultText>
             </View>
         </View>
     )
@@ -92,13 +92,13 @@ const SocketView = () => {
                                 gap: 10,
                             }}
                         >
-                            <ThemedText
+                            <DefaultText
                                 color={isConnection(conn.socketId) ? 'tomato' : theme?.colors.textDefault}
                                 bold={isConnection(conn.socketId) ? true : false}
                                 size={16}
                             >
                                 {conn.username ? conn.username : getShortId(conn.socketId)}
-                            </ThemedText>
+                            </DefaultText>
                         </View>
                     ))}
                 </View>

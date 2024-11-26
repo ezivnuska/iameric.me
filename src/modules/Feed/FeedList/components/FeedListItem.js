@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Pressable, View } from 'react-native'
-import { IconButton, ProfileImage, ThemedText, Time } from '@components'
+import { IconButton, ProfileImage, DefaultText, Time } from '@components'
 import { useUser } from '@user'
 import { useFeed } from '@feed'
 import { navigate } from '@utils/navigation'
@@ -78,13 +78,13 @@ const FeedListItem = ({ item, onDelete = null }) => {
                             <View style={{ flex: 1, flexGrow: 1 }}>
 
                                 {item.author?.username && (
-                                    <ThemedText
+                                    <DefaultText
                                         size={20}
                                         bold
                                         style={{ lineHeight: 25 }}
                                     >
                                         {item.author.username}
-                                    </ThemedText>
+                                    </DefaultText>
                                 )}
 
                                 <Time
@@ -113,12 +113,12 @@ const FeedListItem = ({ item, onDelete = null }) => {
 
             </View>
 
-            <ThemedText
+            <DefaultText
                 size={24}
                 style={{ lineHeight: 30 }}
             >
                 {item.text}
-            </ThemedText>
+            </DefaultText>
             
         </View>
     )

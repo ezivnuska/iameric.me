@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { ActivityIndicator, Checkbox, IconButtonLarge, ImageClone, ImageContainer, ProfileImage, SimpleButton, ThemedText } from '@components'
+import { ActivityIndicator, Checkbox, IconButtonLarge, ImageClone, ImageContainer, ProfileImage, SimpleButton, DefaultText } from '@components'
 import { useUser } from '@user'
 import {
     getMaxImageDims,
@@ -196,7 +196,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                         color='#fff'
                         style={{ padding: 3 }}
                     />
-                    <ThemedText color='#fff' size={20} bold>Upload</ThemedText>
+                    <DefaultText color='#fff' size={20} bold>Upload</DefaultText>
                 </Pressable>
 
                 <Pressable
@@ -222,7 +222,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                         color='#fff'
                         style={{ padding: 3 }}
                     />
-                    <ThemedText color='#fff' size={20} bold>Change</ThemedText>
+                    <DefaultText color='#fff' size={20} bold>Change</DefaultText>
                 </Pressable>
 
             </View>

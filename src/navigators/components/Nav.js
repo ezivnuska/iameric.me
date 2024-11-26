@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { ThemedText } from '.'
+import { DefaultText } from '@components'
 
 const Nav = ({ root, navigation, route }) => (
     <View
@@ -21,17 +21,17 @@ const Nav = ({ root, navigation, route }) => (
                     borderRightColor: '#ccc',
                 }}
             >
-                <ThemedText bold color='tomato'>
+                <DefaultText bold color='tomato'>
                     {root}
-                </ThemedText>
+                </DefaultText>
 
             </Pressable>
         )}
 
         {route.name === 'Contact' && (
-            <ThemedText bold>
+            <DefaultText bold>
                 {route.params.username}
-            </ThemedText>
+            </DefaultText>
         )}
 
         {route.name === 'Images' && route.params?.username
@@ -45,18 +45,18 @@ const Nav = ({ root, navigation, route }) => (
                         borderRightColor: '#ccc',
                     }}
                 >
-                    <ThemedText bold color='tomato'>
+                    <DefaultText bold color='tomato'>
                         {route.params.username}
-                    </ThemedText>
+                    </DefaultText>
 
                 </Pressable>
             )
         }
 
         {route.name === 'Images' && (
-            <ThemedText bold>
+            <DefaultText bold>
                 Images
-            </ThemedText>
+            </DefaultText>
         )}
 
     </View>

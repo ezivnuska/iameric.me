@@ -3,7 +3,7 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { ThemedText } from '@components'
+import { DefaultText } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -33,13 +33,13 @@ const ModalHeader = ({ children, title, color = null, onClose = null, ...props }
                     gap: 10,
                 }}
             >
-                <ThemedText
+                <DefaultText
                     bold
                     size={36}
                     color={color || theme?.colors.textDefault}
                 >
                     {title}
-                </ThemedText>
+                </DefaultText>
 
                 {children}
 

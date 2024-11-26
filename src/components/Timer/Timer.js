@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
     IconButton,
-    ThemedText,
+    DefaultText,
 } from '@components'
 
 const Timer = ({ status, onGameStart, onGameEnd }) => {
@@ -86,15 +86,15 @@ const Timer = ({ status, onGameStart, onGameEnd }) => {
             }}
         >
             <View>
-                <ThemedText>{status}</ThemedText>
+                <DefaultText>{status}</DefaultText>
             </View>
             <View>
-                <ThemedText
+                <DefaultText
                     size={24}
                     bold
                 >
                     {timerText}
-                </ThemedText>
+                </DefaultText>
             </View>
             <View>
                 <IconButton

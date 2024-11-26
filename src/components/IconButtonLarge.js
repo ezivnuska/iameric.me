@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { Pressable } from 'react-native'
-import { ThemedText } from '@components'
+import { DefaultText } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const IconButtonLarge = ({
@@ -57,7 +57,7 @@ const IconButtonLarge = ({
         />
 
         {label && (
-            <ThemedText
+            <DefaultText
                 bold
                 color={transparent
                     ? disabled
@@ -70,7 +70,7 @@ const IconButtonLarge = ({
                 }}
             >
                 {label}
-            </ThemedText>
+            </DefaultText>
         )}
     </Pressable>
 )

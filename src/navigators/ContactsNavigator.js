@@ -1,5 +1,5 @@
 import { ContactsScreen } from '@screens'
-import { Nav } from '@components'
+import { Nav } from './components'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 

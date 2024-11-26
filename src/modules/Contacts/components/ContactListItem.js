@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import {
     ProfileImage,
-    ThemedText,
+    DefaultText,
 } from '@components'
 import { useApp } from '@app'
 import { useModal } from '@modal'
@@ -64,13 +64,13 @@ const ContactListItem = ({ item, onPress, ...props }) => {
                     />
                 )} */}
                 
-                <ThemedText
+                <DefaultText
                     size={24}
                     bold={isConnected}
                     style={{ lineHeight: 50 }}
                 >
                     {item.username || `Guest-${String(item.socketId).substring(item.socketId.length - 3)}`}
-                </ThemedText>
+                </DefaultText>
 
             </Pressable>
 
