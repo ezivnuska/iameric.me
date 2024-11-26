@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
-import { ModalHeader, ThemedText } from '@components'
+import { ThemedText } from '@components'
 import { Auth, Settings, Socket } from '@modules'
 import Modal from 'react-native-modal'
 import Icon from 'react-native-vector-icons/Ionicons'

@@ -21,3 +21,4 @@ yarn-error.log
 yarn.lock
 assets/
 /src-backup
+/src/*/**/NOT_IN_USE

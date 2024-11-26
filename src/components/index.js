@@ -28,7 +28,6 @@ import Switch from './Switch'
 import ThemedText from './ThemedText'
 import ThumbList from './ThumbList'
 import Time from './Time'
-import UserHeader from './UserHeader'
 import UserImageDisplay from './UserImageDisplay'
 
 export {
@@ -61,6 +60,5 @@ export {
     ThemedText,
     ThumbList,
     Time,
-    UserHeader,
     UserImageDisplay,
 }

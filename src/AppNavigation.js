@@ -1,15 +1,15 @@
 import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
-    BipScreen,
-    BipsScreen,
+    // BipScreen,
+    // BipsScreen,
     FeedScreen,
-    ForumScreen,
+    // ForumScreen,
     HomeScreen,
-    MapScreen,
-    MailScreen,
-    PlayScreen,
-    SimpleScreen,
+    // MapScreen,
+    // MailScreen,
+    // PlayScreen,
+    // SimpleScreen,
     WorkScreen,
 } from '@screens'
 import {
@@ -17,74 +17,74 @@ import {
     UserNavigator,
 } from './navigators'
 
-const BipStack = createNativeStackNavigator()
-const BipStackScreen = () => {
+// const BipStack = createNativeStackNavigator()
+// const BipStackScreen = () => {
 
-    return (
-        <BipStack.Navigator
-            initialRouteName='BipList'
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
+//     return (
+//         <BipStack.Navigator
+//             initialRouteName='BipList'
+//             screenOptions={{
+//                 headerShown: false,
+//             }}
+//         >
 
-            <BipStack.Screen
-                name='BipList'
-                children={props => <BipsScreen {...props} />}
-                // component={BipsScreen}
-                options={{ title: 'Bips' }}
-            />
+//             <BipStack.Screen
+//                 name='BipList'
+//                 children={props => <BipsScreen {...props} />}
+//                 // component={BipsScreen}
+//                 options={{ title: 'Bips' }}
+//             />
 
-            <BipStack.Screen
-                name='Bip'
-                children={props => <BipScreen {...props} />}
-                // component={BipScreen}
-                options={{ title: 'Bip' }}
-            />
+//             <BipStack.Screen
+//                 name='Bip'
+//                 children={props => <BipScreen {...props} />}
+//                 // component={BipScreen}
+//                 options={{ title: 'Bip' }}
+//             />
 
-            {/* <BipStack.Screen
-                name='BipMap'
-                children={props => <MapScreen {...props} />}
-                // component={MapScreen}
-                options={{ title: 'Map' }}
-            /> */}
+//             {/* <BipStack.Screen
+//                 name='BipMap'
+//                 children={props => <MapScreen {...props} />}
+//                 // component={MapScreen}
+//                 options={{ title: 'Map' }}
+//             /> */}
 
-        </BipStack.Navigator>
-    )
-}
+//         </BipStack.Navigator>
+//     )
+// }
 
 
-const AboutStack = createNativeStackNavigator()
-const AboutStackScreen = () => {
+// const AboutStack = createNativeStackNavigator()
+// const AboutStackScreen = () => {
 
-    return (
-        <AboutStack.Navigator
-            initialRouteName='Work'
-            screenOptions={{
-                headerShown: false,
-            }}
-        >
+//     return (
+//         <AboutStack.Navigator
+//             initialRouteName='Work'
+//             screenOptions={{
+//                 headerShown: false,
+//             }}
+//         >
 
-            <AboutStack.Screen
-                name='Work'
-                children={props => <WorkScreen {...props} />}
-                // component={WorkScreen}
-                options={{ title: 'Work' }}
-            />
+//             <AboutStack.Screen
+//                 name='Work'
+//                 children={props => <WorkScreen {...props} />}
+//                 // component={WorkScreen}
+//                 options={{ title: 'Work' }}
+//             />
 
-            <AboutStack.Screen
-                name='Play'
-                children={props => <PlayScreen {...props} />}
-                // component={PlayScreen}
-                options={{
-                    title: 'Play',
-                    gestureEnabled: false,
-                }}
-            />
+//             <AboutStack.Screen
+//                 name='Play'
+//                 children={props => <PlayScreen {...props} />}
+//                 // component={PlayScreen}
+//                 options={{
+//                     title: 'Play',
+//                     gestureEnabled: false,
+//                 }}
+//             />
 
-        </AboutStack.Navigator>
-    )
-}
+//         </AboutStack.Navigator>
+//     )
+// }
 
 const AppStack = createNativeStackNavigator()
 const AppStackScreen = () => {
@@ -132,19 +132,19 @@ const AppStackScreen = () => {
                 options={{ title: 'Feed' }}
             />
 
-            <AppStack.Screen
+            {/* <AppStack.Screen
                 name='Forum'
                 children={props => <ForumScreen {...props} />}
                 // component={ForumScreen}
                 options={{ title: 'Forum' }}
-            />
+            /> */}
 
-            <AppStack.Screen
+            {/* <AppStack.Screen
                 name='Mail'
                 children={props => <MailScreen {...props} />}
                 // component={MailScreen}
                 options={{ title: 'Mail' }}
-            />
+            /> */}
             
             <AppStack.Screen
                 name='Work'
@@ -153,26 +153,26 @@ const AppStackScreen = () => {
                 options={{ title: 'Work' }}
             />
 
-            <AppStack.Screen
+            {/* <AppStack.Screen
                 name='Play'
                 children={props => <PlayScreen {...props} />}
                 // component={AboutStackScreen}
                 options={{ title: 'Play' }}
-            />
+            /> */}
 
-            <AppStack.Screen
+            {/* <AppStack.Screen
                 name='Bips'
                 children={props => <BipStackScreen {...props} />}
                 // component={BipStackScreen}
                 options={{ title: 'Bips' }}
-            />
+            /> */}
 
-            <AppStack.Screen
+            {/* <AppStack.Screen
                 name='Simple'
                 children={props => <SimpleScreen {...props} />}
                 // component={SimpleScreen}
                 options={{ title: 'Simple' }}
-            />
+            /> */}
 
         </AppStack.Navigator>
     )

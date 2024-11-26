@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import { ActivityIndicator } from 'react-native-paper'
 import { useUser } from '@user'
-import { useMail } from '@mail'
+// import { useMail } from '@mail'
 import { useNotification } from '@notification'
 import socket from './socket'
 
@@ -31,7 +31,7 @@ export const useSocket = () => {
 export const SocketContextProvider = ({ children }) => {
 
     const { reset, setUser, user } = useUser()
-    const { addMessage } = useMail()
+    // const { addMessage } = useMail()
 
     const { addNotification } = useNotification()
 
