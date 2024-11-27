@@ -17,7 +17,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import EXIF from 'exif-js'
 import LinearGradient from 'react-native-web-linear-gradient'
 
-const ImagePicker = ({ avatar = false, onComplete = null }) => {
+const ImagePicker = ({ onClose, avatar = false }) => {
 
     const {
         user,
@@ -27,7 +27,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
         uploading,
     } = useUser()
 
-    const containerRef = useRef()
+    // const containerRef = useRef()
 
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
@@ -38,20 +38,23 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     
     let timer = null
 
-    const startTimer = () => {
-        setReady(false)
-        openSelector()
-        timer = setInterval(stopTimer, 2000)
-    }
+    // const startTimer = () => {
+    //     setReady(false)
+    //     timer = setInterval(stopTimer, 2000)
+    // }
 
-    const stopTimer = () => {
-        setReady(true)
-        timer = undefined
-    }
+    // const stopTimer = () => {
+    //     setReady(true)
+    //     timer = undefined
+    // }
 
-    useEffect(() => {
-        startTimer()
-    }, [])
+    // useEffect(() => {
+    //     // console.log('ready', ready)
+    //     console.log('payload', payload)
+    //     console.log('preview', preview)
+    //     openSelector()
+    //     // startTimer()
+    // }, [])
 
     // useEffect(() => {
     //     if (preview && containerRef.current) {
@@ -60,6 +63,10 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     //     }
 
     // }, [containerRef, preview])
+
+    // useEffect(() => {
+    //     startTimer()
+    // }, [])
 
     const onLayout = e => {
         setMaxWidth(e.nativeEvent.target.offsetParent.clientWidth)
@@ -78,9 +85,15 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
     const animatedStyle = useAnimatedStyle(() => ({
         opacity: controlOpacity.value,
     }))
+
+    useEffect(() => {
+        if (!uploading) openSelector()
+    }, [])
     
     const openSelector = async () => {
+        console.log('open selector')
         const uri = await openFileSelector()
+        console.log('selector complete')
         if (uri) {
             handleSelectedImage(uri)
         }
@@ -103,26 +116,31 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
         image.onload = async () => {
             const data = await handleImageData(id, image, exif)
             if (!data) console.log('error loading image')
-            else setPayload(data)
+            else handleUpload(data)
         }
         image.src = src
     }
 
-    useEffect(() => {
-        if (payload) {
-            const { uri, height, width } = payload.imageData
-            setPreview({ uri, height, width })
-        } else if (preview) {
-            if (preview) setPreview(null)
-            onComplete()
-        }
-    }, [payload])
+    // useEffect(() => {
+    //     if (payload) {
+    //         const { uri, height, width } = payload.imageData
+    //         setPreview({ uri, height, width })
 
-    const handleUpload = async imageData => {
+    //         // onSelection(payload)
+    //     } else if (preview) {
+    //         setPreview(null)
+    //         onClose()
+    //     }
+    // }, [payload])
+
+    const handleUpload = async payload => {
         if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
         
+        const { imageData, thumbData, userId } = payload
+        const data = { imageData, thumbData, userId }
         setUploading(true)
-        const image = await uploadImage({ ...imageData, avatar: avatarCheckbox })
+        const image = await uploadImage({ ...data })
+        // const image = await uploadImage({ ...data, avatar: avatarCheckbox })
         setUploading(false)
         
         if (!image) console.log('error uploading image')
@@ -130,8 +148,9 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
             addImage(image)
             if (avatarCheckbox) setProfileImage(image)
         }
+        onClose()
         
-        setPayload(null)
+        // setPayload(null)
     }
 
     const onSubmit = async () => {
@@ -229,6 +248,8 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
         </View>
     )
     
+    if (uploading) return <ActivityIndicator size='medium' label='Uploading...' color='#fff' />
+
     return (
         <View
             style={{
@@ -241,11 +262,14 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
             <View
                 onLayout={onLayout}
                 style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                     gap: 10,
                     flexGrow: 1,
                 }}
             >
-                {preview && (
+                {preview ? (
                     <View
                         style={{
                             flex: 1,
@@ -336,7 +360,7 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
             
                                     <IconButtonLarge
                                         name='close'
-                                        onPress={onComplete}
+                                        onPress={onClose}
                                         size={40}
                                         color='#fff'
                                         transparent
@@ -369,50 +393,28 @@ const ImagePicker = ({ avatar = false, onComplete = null }) => {
                                 </Animated.View>
                                 
                             </View>
-                            // <View
-                            //     style={{
-                            //         flex: 1,
-                            //         flexShrink: 1,
-                            //         zIndex: 10,
-                            //     }}
-                            // >
-                            //     <View
-                            //         style={{
-                            //             flexDirection: 'row',
-                            //             alignItems: 'center',
-                            //             justifyContent: 'center',
-                            //             zIndex: 10,
-                            //         }}
-                            //     >
-                            //         <ImageClone
-                            //             source={{ uri: preview.uri }}
-                            //             width={imageDims.width}
-                            //             height={imageDims.height}
-                            //             style={{
-                            //                 borderWidth: 1,
-                            //                 width: imageDims.width,
-                            //                 height: imageDims.height,
-                            //             }}
-                            //         />
-                            //     </View>
-
-                            //     {renderControls()}
-                            // </View>
-                        ) : ready
-                            ? (
-                                <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                                    <SimpleButton
-                                        label='Select Image'
-                                        onPress={openSelector}
-                                        disabled={uploading}
-                                    />
-                                </View>
-                            )
-                            : (
-                                <View style={{ flex: 1 }}>
-                                    <ActivityIndicator size='medium' label='Waiting for selection...' />
-                                </View>
-                            )}
+                        ) : (
+                            <View style={{ flex: 1 }}>
+                                <ActivityIndicator
+                                    size='medium'
+                                />
+                            </View>
+                        )}
+                    </View>
+                ) : (
+                    <View style={{ flex: 1, gap: 10, paddingHorizontal: 10 }}>
+                        <SimpleButton
+                            label='Select Image'
+                            onPress={openSelector}
+                            disabled={uploading}
+                        />
+                        <SimpleButton
+                            label='Cancel'
+                            onPress={onClose}
+                            disabled={uploading}
+                            color='#fff'
+                            transparent
+                        />
                     </View>
                 )}
 

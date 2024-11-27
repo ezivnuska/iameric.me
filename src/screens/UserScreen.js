@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { Screen } from './components'
-import { ActivityIndicator, ImageList } from '@components'
+import { ActivityIndicator, Images, ImageList } from '@components'
 import User, { UserModal, useUser } from '@user'
 
 const UserScreen = props => {
@@ -14,6 +14,7 @@ const UserScreen = props => {
         user,
         userModal,
         closeUserModal,
+        clearUserModals,
         initImages,
         setUserModal,
     } = useUser()
@@ -36,11 +37,12 @@ const UserScreen = props => {
                         }}
                     >
                         {imagesLoaded ? (
-                            <ImageList
+                            <Images
                                 images={images}
                                 onPress={(type, data) => setUserModal(type, data)}
                                 uploading={uploading}
                                 upload={() => setUserModal('IMAGE_UPLOAD')}
+                                type={route.params?.type}
                             />
                         ) : <ActivityIndicator size='medium' label='Loading Images...' />}
                     </View>
@@ -57,7 +59,7 @@ const UserScreen = props => {
 
             <UserModal
                 modal={userModal}
-                onClose={closeUserModal}
+                onClose={clearUserModals}
             />
 
         </Screen>

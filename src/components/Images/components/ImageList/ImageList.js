@@ -46,7 +46,7 @@ const ImageList = ({ images, onPress, uploading = null, upload = false }) => {
             style={{
                 // flexDirection: 'row',
                 // flexWrap: 'wrap',
-                // gap: 20,
+                gap: imageGap,
                 width: '100%',
                 marginVertical: 7,
             }}
@@ -57,11 +57,10 @@ const ImageList = ({ images, onPress, uploading = null, upload = false }) => {
                         key={`image-${index}`}
                         onPress={() => onPress('SHOWCASE', image)}
                         style={[
-                            {
-                                // marginBottom: 20,
-                                // width: image.width * (image.width / maxWidth),
-                                // height: image.height * (image.width / maxWidth),
-                            },
+                            // {
+                            //     width: image.width * (image.width / maxWidth),
+                            //     height: image.height * (image.width / maxWidth),
+                            // },
                             buttonStyle,
                         ]}
                     >

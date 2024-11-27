@@ -1,57 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Pressable, View } from 'react-native'
-import { Form, ImagePickerMini, ModalHeader, SimpleButton } from '@components'
+import { Form, ModalHeader } from '@components'
 import Modal from 'react-native-modal'
-import { useUser } from '@user'
-import { uploadImage } from '@utils/images'
 
 const FeedModal = ({ modal, onCancel, onSubmit }) => {
 
     const fields = [
         {
             name: 'text',
-            placeholder: 'share something...',
+            placeholder: 'say something...',
             multiline: true,
         },
     ]
-
-    const { setUploading } = useUser()
-
-    const [imageData, setImageData] = useState(null)
-
-    const handleUpload = async () => {
-        
-        if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
-        
-        setUploading(true)
-        const image = await uploadImage({ ...imageData })
-        setUploading(false)
-        
-        if (image) return image
-        else {
-            console.log('error uploading image')
-            return null
-        }
-    }
-
-    const handleSubmit = async data => {
-        let postData = data
-        console.log('postData', postData)
-        if (imageData) {
-            console.log('imageData', imageData)
-            const image = await handleUpload()
-            console.log('image', image)
-            if (image) {
-                postData = {
-                    ...postData,
-                    images: [image._id],
-                }
-            }
-        }
-        
-        console.log('postData', postData)
-        onSubmit(postData)
-    }
 
     return (
         <Modal
@@ -108,10 +68,9 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
                         <Form
                             fields={fields}
                             onCancel={onCancel}
-                            onSubmit={handleSubmit}
+                            onSubmit={onSubmit}
                         />
-                        
-                        <ImagePickerMini onSelection={setImageData} />
+
                     </View>
                 </View>
             </View>

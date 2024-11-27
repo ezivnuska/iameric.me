@@ -15,6 +15,10 @@ const PostSchema = new Schema({
     threadId: {
         type: Schema.Types.String,
     },
+    images: {
+        type: Schema.Types.ObjectId,
+        ref: 'UserImage',
+    }
 },
 {
     timestamps: true,

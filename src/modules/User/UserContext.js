@@ -23,6 +23,7 @@ const initialState = {
     uploading: false,
 
     closeUserModal: () => {},
+    clearUserModals: () => {},
     setUser: () => {},
     setUserModal: () => {},
     setProfileImage: () => {},
@@ -103,6 +104,10 @@ export const UserContextProvider = ({ children }) => {
         dispatch({ type: 'SET_USER', payload })
     }
 
+    const clearUserModals = () => {
+        dispatch({ type: 'CLEAR_USER_MODALS' })
+    }
+
     const closeUserModal = () => {
         dispatch({ type: 'CLOSE_USER_MODAL' })
     }
@@ -129,6 +134,7 @@ export const UserContextProvider = ({ children }) => {
 
     const actions = useMemo(() => ({
         initImages,
+        clearUserModals,
         closeUserModal,
         setUserModal,
         reset,
@@ -194,6 +200,12 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 userLoading: payload,
+            }
+            break
+        case 'CLEAR_USER_MODALS':
+            return {
+                ...state,
+                userModals:  [],
             }
             break
         case 'CLOSE_USER_MODAL':

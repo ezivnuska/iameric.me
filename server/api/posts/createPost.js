@@ -3,10 +3,10 @@ const Post = require('../../models/Post')
 const createPost = async (req, res) => {
     
     // pull values from request body
-    const { author, text, threadId } = req.body
+    const { author, images, text, threadId } = req.body
 
     // create a new mongo Post doc
-    const newPost = await Post.create({ author, text })
+    const newPost = await Post.create({ author, text, images })
 
     // if error, notify console
     if (!newPost) console.log('Problem creating Post.')

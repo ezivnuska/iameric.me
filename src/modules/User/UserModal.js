@@ -1,25 +1,15 @@
 import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
-import { ActivityIndicator, ImagePicker,
-    // ModalHeader,
-    UserImageDisplay } from '@components'
-// import { useUser } from '.'
+import { ActivityIndicator, FileSelector, ImagePicker, UserImageDisplay } from '@components'
 import Modal from 'react-native-modal'
-import Icon from 'react-native-vector-icons/Ionicons'
-import LinearGradient from 'react-native-web-linear-gradient'
 
 const UserModal = ({ modal, onClose, onSubmit = null }) => {
-
-    // const {
-    //     userModal,
-    //     closeUserModal,
-    // } = useUser()
 
     const renderContent = () => {
         const { type, data } = modal
         switch (type) {
             case 'IMAGE_UPLOAD':
-                return <ImagePicker onComplete={onClose} />
+                return <ImagePicker key={`picker-${Date.now()}`} onClose={onClose} />
                 break
             case 'SHOWCASE':
                 return <UserImageDisplay data={data} onClose={onClose} />
@@ -27,26 +17,6 @@ const UserModal = ({ modal, onClose, onSubmit = null }) => {
             default:
         }
     }
-
-    // const renderModalHeader = () => {
-    //     const { type, data } = modal
-    //     let title = null
-    //     switch (type) {
-    //         case 'IMAGE_UPLOAD':
-    //             // title = 'Upload Image'
-    //             break
-    //         case 'SHOWCASE':
-    //             // title = 'Showcase!'
-    //             break
-    //         default:
-    //     }
-    //     return title ? (
-    //         <ModalHeader 
-    //             title={title}
-    //             onClose={onClose}
-    //         />
-    //     ) : null
-    // }
 
     return (
         <Modal
@@ -89,7 +59,7 @@ const UserModal = ({ modal, onClose, onSubmit = null }) => {
                         width: '100%',
                         maxWidth: 400,
                         marginHorizontal: 'auto',
-                        backgroundColor: '#fff',
+                        backgroundColor: '#000',
                         zIndex: 100,
                     }}
                 >
@@ -102,43 +72,6 @@ const UserModal = ({ modal, onClose, onSubmit = null }) => {
                                 position: 'relative',
                             }}
                         >
-                            {/* {renderModalHeader()} */}
-                            {/* <LinearGradient
-                                colors={[
-                                    // 'rgba(0, 0, 0, 1.0)',
-                                    'rgba(0, 0, 0, 0.9)',
-                                    'rgba(0, 0, 0, 0.6)',
-                                    'rgba(0, 0, 0, 0.3)',
-                                    'rgba(0, 0, 0, 0.1)',
-                                    'rgba(0, 0, 0, 0.0)',
-                                ]}
-                                style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 0,
-                                    left: 0,
-                                    height: 100,
-                                    zIndex: 50,
-                                }}
-                            />
-
-                            <Pressable
-                                onPress={onClose}
-                                style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 0,
-                                    zIndex: 100,
-                                    paddingVertical: 10,
-                                    paddingHorizontal: 5,
-                                }}
-                            >
-                                <Icon
-                                    name={'close'}
-                                    size={40}
-                                    color='#fff'
-                                />
-                            </Pressable> */}
 
                             <ScrollView
                                 style={{

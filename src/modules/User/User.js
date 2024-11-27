@@ -10,6 +10,7 @@ const User = props => {
 
     const {
         user,
+        clearUserModals,
         setUserModal,
     } = useUser()
 
@@ -30,6 +31,7 @@ const User = props => {
 
                 <Pressable
                     onPress={() => {
+                        // clearUserModals()
                         if (user.profileImage) {
                             setUserModal('SHOWCASE', user.profileImage)
                         } else {
@@ -51,28 +53,17 @@ const User = props => {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 width: '100%',
-                                backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                                backgroundColor: 'rgba(255, 99, 71, 1)',
                             }}
                         >
-                            <View>
-
-                                <Icon
-                                    name='add-sharp'
-                                    size={50}
-                                    color='#fff'
-                                    style={{ marginHorizontal: 'auto' }}
-                                />
-
-                                <DefaultText
-                                    color='#fff'
-                                    size={20}
-                                    align='center'
-                                    bold
-                                >
-                                    Add Avatar
-                                </DefaultText>
-
-                            </View>
+                            <DefaultText
+                                color='#fff'
+                                size={20}
+                                align='center'
+                                bold
+                            >
+                                {`Add\nAvatar`}
+                            </DefaultText>
 
                         </View>
                     ) : <ProfileImage user={user} size={PROFILE_IMAGE_SIZE} />}

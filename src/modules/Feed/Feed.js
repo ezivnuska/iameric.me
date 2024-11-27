@@ -68,8 +68,10 @@ const Feed = () => {
 
     const handleSubmit = async data => {
         const post = await createPost(data)
-        addPost(post)
-        socket.emit('new_post', post)
+        if (post) {
+            addPost(post)
+            socket.emit('new_post', post)
+        }
         closeFeedModal()
         return post
     }
