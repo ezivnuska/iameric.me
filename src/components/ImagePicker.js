@@ -116,22 +116,24 @@ const ImagePicker = ({ onClose, avatar = false }) => {
         image.onload = async () => {
             const data = await handleImageData(id, image, exif)
             if (!data) console.log('error loading image')
-            else handleUpload(data)
+            else {
+                setPayload(data)
+            }
         }
         image.src = src
     }
 
-    // useEffect(() => {
-    //     if (payload) {
-    //         const { uri, height, width } = payload.imageData
-    //         setPreview({ uri, height, width })
-
-    //         // onSelection(payload)
-    //     } else if (preview) {
-    //         setPreview(null)
-    //         onClose()
-    //     }
-    // }, [payload])
+    useEffect(() => {
+        if (payload) {
+            const { uri, height, width } = payload.imageData
+            setPreview({ uri, height, width })
+            // handleUpload({ imageData, thumbData, userId })
+            // onSelection(payload)
+        }
+        //  else if (preview) {
+        //     setPreview(null)
+        // }
+    }, [payload])
 
     const handleUpload = async payload => {
         if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
@@ -148,107 +150,113 @@ const ImagePicker = ({ onClose, avatar = false }) => {
             addImage(image)
             if (avatarCheckbox) setProfileImage(image)
         }
+
+        // setPayload(null)
         onClose()
         
-        // setPayload(null)
     }
 
-    const onSubmit = async () => {
-        if (!payload) console.log('no image data to submit.')
-        else {
-            const { imageData, thumbData, userId } = payload
-            handleUpload({ imageData, thumbData, userId })
-        }
-    }
+    // const onSubmit = async () => {
+    //     if (!payload) console.log('no image data to submit.')
+    //     else {
+    //         const { imageData, thumbData, userId } = payload
+    //         handleUpload({ imageData, thumbData, userId })
+    //     }
+    // }
 
-    const handleNewSelection = () => {
-        setPreview(null)
-        openSelector()
-    }
+    // const handleNewSelection = () => {
+    //     setPreview(null)
+    //     openSelector()
+    // }
 
-    const handleControls = () => {
-        if (controlsVisible) {
-            controlOpacity.value = withTiming(0, { duration: 500 }, () => setControlsVisible(false))
-        } else {
-            setControlsVisible(true)
-            controlOpacity.value = withTiming(1, { duration: 500 })
-        }
-    }
+    // const handleControls = () => {
+    //     if (controlsVisible) {
+    //         controlOpacity.value = withTiming(0, { duration: 500 }, () => setControlsVisible(false))
+    //     } else {
+    //         setControlsVisible(true)
+    //         controlOpacity.value = withTiming(1, { duration: 500 })
+    //     }
+    // }
 
-    const renderControls = () => (
-        <View style={{ padding: 10, zIndex: 100 }}>
+    // const renderControls = () => (
+    //     <View style={{ padding: 10, zIndex: 100 }}>
 
-            {avatar && (
-                <Checkbox
-                    label='Make profile image'
-                    onChange={value => setAvatarCheckbox(value)}
-                    value={avatar}
-                />
-            )}
+    //         {avatar && (
+    //             <Checkbox
+    //                 label='Make profile image'
+    //                 onChange={value => setAvatarCheckbox(value)}
+    //                 value={avatar}
+    //             />
+    //         )}
 
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    gap: 10,
-                }}
-            >
-                <Pressable
-                    onPress={onSubmit}
-                    disabled={uploading}
-                    style={{
-                        flex: 1,
-                        borderRadius: 12,
-                        overflow: 'hidden',
-                        backgroundColor: uploading ? '#ccc' : 'tomato',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        gap: 10,
-                        height: 40,
-                    }}
-                >
-                    <Icon
-                        name='thumbs-up-sharp'
-                        size={20}
-                        color='#fff'
-                        style={{ padding: 3 }}
-                    />
-                    <DefaultText color='#fff' size={20} bold>Upload</DefaultText>
-                </Pressable>
+    //         <View
+    //             style={{
+    //                 flex: 1,
+    //                 flexDirection: 'row',
+    //                 justifyContent: 'space-evenly',
+    //                 gap: 10,
+    //             }}
+    //         >
+    //             <Pressable
+    //                 onPress={onSubmit}
+    //                 disabled={uploading}
+    //                 style={{
+    //                     flex: 1,
+    //                     borderRadius: 12,
+    //                     overflow: 'hidden',
+    //                     backgroundColor: uploading ? '#ccc' : 'tomato',
+    //                     flexDirection: 'row',
+    //                     justifyContent: 'center',
+    //                     alignItems: 'center',
+    //                     gap: 10,
+    //                     height: 40,
+    //                 }}
+    //             >
+    //                 <Icon
+    //                     name='thumbs-up-sharp'
+    //                     size={20}
+    //                     color='#fff'
+    //                     style={{ padding: 3 }}
+    //                 />
+    //                 <DefaultText color='#fff' size={20} bold>Upload</DefaultText>
+    //             </Pressable>
 
-                <Pressable
-                    onPress={handleNewSelection}
-                    disabled={uploading}
-                    style={{
-                        flex: 1,
-                        borderRadius: 12,
-                        overflow: 'hidden',
-                        backgroundColor: uploading ? '#ccc' : '#aaa',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        // borderWidth: 1,
-                        // borderColor: '#aaa',
-                        gap: 10,
-                        height: 40,
-                    }}
-                >
-                    <Icon
-                        name='thumbs-down'
-                        size={20}
-                        color='#fff'
-                        style={{ padding: 3 }}
-                    />
-                    <DefaultText color='#fff' size={20} bold>Change</DefaultText>
-                </Pressable>
+    //             <Pressable
+    //                 onPress={handleNewSelection}
+    //                 disabled={uploading}
+    //                 style={{
+    //                     flex: 1,
+    //                     borderRadius: 12,
+    //                     overflow: 'hidden',
+    //                     backgroundColor: uploading ? '#ccc' : '#aaa',
+    //                     flexDirection: 'row',
+    //                     justifyContent: 'center',
+    //                     alignItems: 'center',
+    //                     // borderWidth: 1,
+    //                     // borderColor: '#aaa',
+    //                     gap: 10,
+    //                     height: 40,
+    //                 }}
+    //             >
+    //                 <Icon
+    //                     name='thumbs-down'
+    //                     size={20}
+    //                     color='#fff'
+    //                     style={{ padding: 3 }}
+    //                 />
+    //                 <DefaultText color='#fff' size={20} bold>Change</DefaultText>
+    //             </Pressable>
 
-            </View>
-        </View>
-    )
+    //         </View>
+    //     </View>
+    // )
     
-    if (uploading) return <ActivityIndicator size='medium' label='Uploading...' color='#fff' />
+    // if (uploading) return <ActivityIndicator size='medium' label='Uploading...' color='#fff' />
+
+    const onPreviewLoaded = () => {
+        const { imageData, thumbData, userId } = payload
+        handleUpload({ imageData, thumbData, userId })
+    }
 
     return (
         <View
@@ -269,154 +277,100 @@ const ImagePicker = ({ onClose, avatar = false }) => {
                     flexGrow: 1,
                 }}
             >
-                {preview ? (
+                        
+                {/* {uploading && (
                     <View
                         style={{
-                            flex: 1,
-                            // flexDirection: 'row',
-                            // alignItems: 'center',
-                            width: '100%',
-                            position: 'relative',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            zIndex: 100,
                         }}
                     >
-                        
-                        {uploading && (
-                            <View
-                                style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    right: 0,
-                                    bottom: 0,
-                                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                    zIndex: 100,
-                                }}
-                            >
-                                <ActivityIndicator
-                                    size='medium'
-                                    label={`Uploading...\nDo not close window.`}
-                                />
-                            </View>
-                        )}
+                        <ActivityIndicator
+                            size='medium'
+                            label={`Uploading...\nDo not close window.`}
+                        />
+                    </View>
+                )} */}
 
-                        {imageDims ? (
+                {imageDims ? (
+                    <View style={{ flex: 1 }}>
+
+                        {preview ? (
                             <View
                                 style={{
                                     flex: 1,
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
                                     position: 'relative',
                                 }}
                             >
-            
-                                <Pressable
-                                    onPress={handleControls}
-                                    style={{
-                                        flex: 1,
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        zIndex: 1,
-                                    }}
-                                >
-                                        <ImageClone
-                                            source={{ uri: preview.uri }}
-                                            width={imageDims.width}
-                                            height={imageDims.height}
-                                            style={{
-                                                borderWidth: 1,
-                                                width: imageDims.width,
-                                                height: imageDims.height,
-                                            }}
-                                        />
-                                    {/* <ImageContainer image={preview} /> */}
-                                </Pressable>
-            
-                                <Animated.View
-                                    style={[{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        display: controlsVisible ? 'block' : 'none',
-                                        zIndex: 100,
-                                    }, animatedStyle]}
-                                >
-                                    <LinearGradient
-                                        colors={[
-                                            'rgba(0, 0, 0, 1.0)',
-                                            'rgba(0, 0, 0, 0.6)',
-                                            'rgba(0, 0, 0, 0.3)',
-                                            'rgba(0, 0, 0, 0.1)',
-                                            'rgba(0, 0, 0, 0.0)',
-                                        ]}
+
+                                {uploading && (
+                                    <View
                                         style={{
                                             position: 'absolute',
                                             top: 0,
                                             left: 0,
                                             right: 0,
-                                            height: 100,
-                                            zIndex: 50,
-                                        }}
-                                    />
-            
-                                    <IconButtonLarge
-                                        name='close'
-                                        onPress={onClose}
-                                        size={40}
-                                        color='#fff'
-                                        transparent
-                                        style={{
-                                            position: 'absolute',
-                                            top: 5,
-                                            right: 5,
+                                            bottom: 0,
+                                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
                                             zIndex: 100,
                                         }}
-                                    />
-            
-                                </Animated.View>
-            
-                                <Animated.View
-                                    style={[{
-                                        position: 'absolute',
-                                        bottom: 0,
-                                        left: 0,
-                                        right: 0,
-                                        display: controlsVisible ? 'block' : 'none',
-                                        zIndex: 101,
-                                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                                    }, animatedStyle]}
-                                >
-                                    {renderControls()}
-                                    {/* <ImageControlPanel
-                                        image={image}
-                                        onClose={onClose}
-                                    /> */}
-                                </Animated.View>
-                                
+                                    >
+                                        <ActivityIndicator
+                                            size='medium'
+                                            label={`Uploading...\nDo not close window.`}
+                                        />
+                                    </View>
+                                )}
+
+                                <ImageClone
+                                    onLayout={onPreviewLoaded}
+                                    source={{ uri: preview.uri }}
+                                    width={imageDims.width}
+                                    height={imageDims.height}
+                                    style={{
+                                        borderWidth: 1,
+                                        width: imageDims.width,
+                                        height: imageDims.height,
+                                        zIndex: 10,
+                                    }}
+                                />
+
                             </View>
                         ) : (
-                            <View style={{ flex: 1 }}>
-                                <ActivityIndicator
-                                    size='medium'
+                            <View
+                                style={{
+                                    flex: 1,
+                                    paddingHorizontal: 10,
+                                    gap: 10,
+                                }}
+                            >
+
+                                <SimpleButton
+                                    label='Select Image'
+                                    onPress={openSelector}
+                                    disabled={uploading}
                                 />
+
+                                <SimpleButton
+                                    label='Cancel'
+                                    onPress={onClose}
+                                    disabled={uploading}
+                                    color='#fff'
+                                    transparent
+                                />
+
                             </View>
                         )}
                     </View>
-                ) : (
-                    <View style={{ flex: 1, gap: 10, paddingHorizontal: 10 }}>
-                        <SimpleButton
-                            label='Select Image'
-                            onPress={openSelector}
-                            disabled={uploading}
-                        />
-                        <SimpleButton
-                            label='Cancel'
-                            onPress={onClose}
-                            disabled={uploading}
-                            color='#fff'
-                            transparent
-                        />
-                    </View>
-                )}
+                ) : <ActivityIndicator size='medium' color='tomato' />}
 
             </View>
 

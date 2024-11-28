@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ImageList } from '@components'
+import { ActivityIndicator, ImageGrid, ImageList } from '@components'
 import { useContacts } from '@contacts'
 
-const ContactImages = props => {
+const ContactImages = ({ type = 'grid', ...props }) => {
 
     const {
         contact,
@@ -39,18 +39,26 @@ const ContactImages = props => {
     return (
         <View style={{ flex: 1 }}>
 
-            {contactImagesLoaded ? (
-                <ImageList
-                    images={contactImages}
-                    onPress={(type, data) => setContactModal(type, data)}
-                />
-            ) : (
-                <ActivityIndicator
-                    size='medium'
-                    label='Loading Contact Images...'
-                    color='#fff'
-                />
-            )}
+            {!contactImagesLoaded
+                ? (
+                    <ActivityIndicator
+                        size='medium'
+                        label='Loading Contact Images...'
+                        color='#fff'
+                    />
+                )
+                : type === 'list'
+                    ? (
+                        <ImageList
+                            images={contactImages}
+                            onPress={(type, data) => setContactModal(type, data)}
+                        />
+                    ) : (
+                        <ImageGrid
+                            images={contactImages}
+                            onPress={(type, data) => setContactModal(type, data)}
+                        />
+                    )}
         </View>
     )
 }

@@ -1,9 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import {
-    IconButtonLarge,
-    SimpleButton,
-} from '@components'
+import { IconButtonLarge, SimpleButton } from '@components'
 import { useUser } from '@user'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'

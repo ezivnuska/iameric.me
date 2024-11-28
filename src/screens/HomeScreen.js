@@ -129,7 +129,7 @@ const HomeScreen = props => {
 }
 
 const Intro = () => (
-    <View style={{ marginBottom: 10 }}>
+    <View style={{ marginBottom: 20 }}>
 
         <View style={{ flexDirection: 'row', gap: 7 }}>
             

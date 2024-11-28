@@ -5,7 +5,7 @@ import { DefaultText, IconButton } from '@components'
 const Nav = ({ root, navigation, route }) => (
     <View
         style={{
-            marginBottom: 20,
+            // marginBottom: 20,
             paddingHorizontal: 10,
             flexDirection: 'row',
             justifyContent: route.name === 'Images' ? 'space-between' : 'flex-start',
@@ -17,7 +17,7 @@ const Nav = ({ root, navigation, route }) => (
         <View
             style={{
                 marginBottom: 20,
-                paddingHorizontal: 10,
+                // paddingHorizontal: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 10,
@@ -32,7 +32,11 @@ const Nav = ({ root, navigation, route }) => (
                         borderRightColor: '#ccc',
                     }}
                 >
-                    <DefaultText bold color='tomato'>
+                    <DefaultText
+                        size={20}
+                        color='tomato'
+                        bold
+                    >
                         {root}
                     </DefaultText>
 
@@ -40,7 +44,10 @@ const Nav = ({ root, navigation, route }) => (
             )}
 
             {route.name === 'Contact' && (
-                <DefaultText bold>
+                <DefaultText
+                    size={20}
+                    bold
+                >
                     {route.params.username}
                 </DefaultText>
             )}
@@ -56,7 +63,11 @@ const Nav = ({ root, navigation, route }) => (
                             borderRightColor: '#ccc',
                         }}
                     >
-                        <DefaultText bold color='tomato'>
+                        <DefaultText
+                            size={20}
+                            color='tomato'
+                            bold
+                        >
                             {route.params.username}
                         </DefaultText>
 
@@ -65,7 +76,10 @@ const Nav = ({ root, navigation, route }) => (
             }
 
             {route.name === 'Images' && (
-                <DefaultText bold>
+                <DefaultText
+                    size={20}
+                    bold
+                >
                     Images
                 </DefaultText>
             )}
@@ -76,22 +90,24 @@ const Nav = ({ root, navigation, route }) => (
             <View
                 style={{
                     marginBottom: 20,
-                    paddingHorizontal: 10,
+                    // paddingHorizontal: 10,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    gap: 10,
+                    gap: 15,
                 }}
             >
                 <IconButton
                     name='grid-outline'
                     onPress={() => navigation.navigate('Images', { ...route.params, type: 'grid' })}
                     color={route.params?.type && route.params.type !== 'grid' ? 'tomato' : '#000'}
+                    size={20}
                 />
 
                 <IconButton
                     name='menu-outline'
                     onPress={() => navigation.navigate('Images', { ...route.params, type: 'list' })}
                     color={!route.params?.type || route.params.type !== 'list' ? 'tomato' : '#000'}
+                    size={20}
                 />
             </View>
         )}

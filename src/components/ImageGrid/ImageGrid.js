@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { ImageListItem } from './components'
+import { ImageGridItem } from './components'
 import { ActivityIndicator } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ImageGrid = ({ images, onPress, uploading = null, upload = false }) => {
+const ImageGrid = ({ images, onPress, uploading = null, upload = null }) => {
 
     const { theme } = useApp()
 
@@ -65,7 +65,7 @@ const ImageGrid = ({ images, onPress, uploading = null, upload = false }) => {
                             buttonStyle,
                         ]}
                     >
-                        <ImageListItem image={image} size={imageSize} />
+                        <ImageGridItem image={image} size={imageSize} />
                     </Pressable>
                 ))
                 : <ActivityIndicator size='medium' />
