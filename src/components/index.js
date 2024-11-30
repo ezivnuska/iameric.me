@@ -17,6 +17,7 @@ import ImageGrid from './ImageGrid'
 import ImageList from './ImageList'
 import ImagePicker from './ImagePicker'
 import ImagePickerMini from './ImagePickerMini'
+import ImagePreview from './ImagePreview'
 import Images from './Images'
 // import InfoMarker from './NOT_IN_USE/InfoMarker'
 import ModalHeader from './ModalHeader'
@@ -50,6 +51,7 @@ export {
     ImageList,
     ImagePicker,
     ImagePickerMini,
+    ImagePreview,
     Images,
     // InfoMarker,
     ModalHeader,

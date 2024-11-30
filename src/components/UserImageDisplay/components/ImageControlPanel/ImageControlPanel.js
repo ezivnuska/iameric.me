@@ -64,20 +64,6 @@ const ImageControlPanel = ({ image, onClose }) => {
         else makeAvatar()
     }
 
-    const renderProfileOption = () => {
-        return (
-            <IconButtonLarge
-                label={`${!isProfileImage ? 'make' : 'remove'} profile image`}
-                name='happy-sharp'
-                size={32}
-                color='#fff'
-                onPress={handleAvatar}
-                disabled={imagesLoading || active}
-                transparent
-            />
-        )
-    }
-
     return (
         <View
             style={{
@@ -98,13 +84,20 @@ const ImageControlPanel = ({ image, onClose }) => {
             <View
                 style={{
                     flexDirection: 'row',
+                    justifyContent: 'space-between',
                     alignItems: 'center',
                     gap: 10,
                 }}
             >
-                <View style={{ flexGrow: 1 }}>
-                    {renderProfileOption()}
-                </View>
+                <IconButtonLarge
+                    label={`${!isProfileImage ? 'make' : 'remove'} profile image`}
+                    name='happy-sharp'
+                    size={32}
+                    color='#fff'
+                    onPress={handleAvatar}
+                    disabled={imagesLoading || active}
+                    transparent
+                />
 
                 <IconButton
                     name='trash-outline'

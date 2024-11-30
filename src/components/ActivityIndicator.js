@@ -19,7 +19,13 @@ const ActivityIndicator = ({ size = 'large', color = 'tomato', label = null, ...
             }}
         >
             {label && (
-                <DefaultText color={color} size={24}>{label}</DefaultText>
+                <DefaultText
+                    color={color}
+                    size={24}
+                    align='center'
+                >
+                    {label}
+                </DefaultText>
             )}
 
             <Indicator

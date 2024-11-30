@@ -26,14 +26,15 @@ const uploadImage = async (req, res) => {
     
     const { image } = await saveUserImage(user._id, filename, height, width, location)
     
-    if (!image) console.log('Error saving UserImage to User Images')
-    else {
+    if (image) {
         if (avatar) {
             user.profileImage = image._id
             await user.save()
         }
         return res.status(200).json({ image })
     }
+    
+    console.log('Error saving UserImage to User Images')
     return res.status(200).json(null)
 }
 

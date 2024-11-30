@@ -50,22 +50,20 @@ const ImageControlPanel = ({ image, onClose }) => {
             style={{
                 flex: 1,
                 flexDirection: 'row',
-                // alignItems: 'center',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 gap: 10,
-                // height: '50%',
-                paddingHorizontal: 10,
-                paddingVertical: 20,
+                // paddingHorizontal: 10,
+                // paddingVertical: 20,
             }}
         >
 
-            <View style={{ flexGrow: 1 }}>
-                <DefaultText
-                    size={20}
-                    color='#fff'
-                >
-                    {image.caption}
-                </DefaultText>
-            </View>
+            <DefaultText
+                size={20}
+                color='#fff'
+            >
+                {image.caption}
+            </DefaultText>
 
             {(user.role === 'admin') && (
                 <IconButton

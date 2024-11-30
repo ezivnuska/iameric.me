@@ -17,12 +17,13 @@ const Screen = ({ children, secure = false, ...props }) => {
     useEffect(() => {
         if (!authorized) {
             console.log('not authorized for route', routeName)
-            if (props.route.name !== 'Home') {
-                setAuthRoute(props.route.name)
+            if (routeName !== 'Home') {
+                console.log('routeName', routeName)
+                setAuthRoute(routeName)
                 props.navigation.navigate('Home')
             } else setModal('AUTH')
         }
-    }, [routeName])
+    }, [authorized, routeName])
 
     if (!authorized) return <View />
 

@@ -20,17 +20,24 @@ const openImageSelector = async () => {
         allowsEditing: false,
         quality: 1,
     })
+
     
-    if (!data || data.canceled) console.log('image selection cancelled')
-    else return data.assets[0].uri
-    return null
+    if (!data) {
+        console.log('no image selected')
+    } else if (data.canceled) {
+        console.log('image selection canceled')
+    } else {
+        return data.assets[0].uri
+    }
+
+    return false
 }
 
 const openImagePickerAsync = async () => {
     let permissionResult = await requestMediaLibraryPermissionsAsync()
     if (permissionResult.granted === false) {
         alert('Permission to access camera roll is required!')
-        return null
+        return false
     }
 
     let pickerResult = await launchImageLibraryAsync({
@@ -38,6 +45,8 @@ const openImagePickerAsync = async () => {
         quality: 1,
     })
     
+    console.log('pickerResult', pickerResult)
+
     if (!pickerResult.canceled) {
         const uploadResult = await uploadAsync('/api/upload/avatar', pickerResult.uri, {
             httpMethod: 'POST',
@@ -45,14 +54,24 @@ const openImagePickerAsync = async () => {
             fieldName: 'file'
         })
 
-        return uploadResult.assets[0].uri
-    } else return null
+        if (uploadResult) {
+            return uploadResult?.assets[0].uri
+        }
+    }
+    return false
 }
 
 const openFileSelector = async () => {
-    let uri = null
-    if (Platform.OS === 'web') uri = await openImageSelector()
-    else uri = await openImagePickerAsync()
+    let uri = false
+    console.log('Platform.OS:', Platform.OS)
+    if (Platform.OS === 'web') {
+        console.log('opening ImageSelector')
+        uri = await openImageSelector()
+    } else {
+        console.log('opening ImagePickerAsync')
+        uri = await openImagePickerAsync()
+    }
+    
     return uri
 }
 

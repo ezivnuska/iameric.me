@@ -41,7 +41,7 @@ const UserScreen = props => {
                                 images={images}
                                 onPress={(type, data) => setUserModal(type, data)}
                                 uploading={uploading}
-                                upload={() => setUserModal('IMAGE_UPLOAD')}
+                                upload={() => setUserModal('IMAGE_UPLOAD', { avatar: true })}
                                 type={route.params?.type}
                             />
                         ) : <ActivityIndicator size='medium' label='Loading Images...' />}

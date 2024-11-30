@@ -9,7 +9,7 @@ const UserModal = ({ modal, onClose, onSubmit = null }) => {
         const { type, data } = modal
         switch (type) {
             case 'IMAGE_UPLOAD':
-                return <ImagePicker key={`picker-${Date.now()}`} onClose={onClose} />
+                return <ImagePicker onClose={onClose} data={data} />//key={`picker-${Date.now()}`}
                 break
             case 'SHOWCASE':
                 return <UserImageDisplay data={data} onClose={onClose} />
