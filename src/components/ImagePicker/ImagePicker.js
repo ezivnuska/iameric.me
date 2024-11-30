@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, SimpleButton, ImagePreview, DefaultText } from '@components'
+import { SimpleButton } from '@components'
+import { ImagePreview } from './components'
 import { useUser } from '@user'
 import {
     getMaxImageDims,
