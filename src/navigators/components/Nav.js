@@ -98,15 +98,15 @@ const Nav = ({ root, navigation, route }) => (
             >
                 <IconButton
                     name='grid-outline'
-                    onPress={() => navigation.navigate('Images', { ...route.params, type: 'grid' })}
-                    color={route.params?.type && route.params.type !== 'grid' ? 'tomato' : '#000'}
+                    onPress={() => navigation.navigate('Images', { ...route.params, list: false })}
+                    color={route.params?.list ? 'tomato' : '#000'}
                     size={20}
                 />
 
                 <IconButton
                     name='menu-outline'
-                    onPress={() => navigation.navigate('Images', { ...route.params, type: 'list' })}
-                    color={!route.params?.type || route.params.type !== 'list' ? 'tomato' : '#000'}
+                    onPress={() => navigation.navigate('Images', { ...route.params, list: true })}
+                    color={!route.params?.list ? 'tomato' : '#000'}
                     size={20}
                 />
             </View>

@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import { ImageList, ImageGrid } from './components'
+import { ImageList, ImageGrid } from '@components'
 
-const Images = ({ images, onPress, upload, uploading, type = 'grid' }) => {
+const Images = ({ images, onPress, upload, uploading, list = false }) => {
     
     return (
         <View>
-            <View>
+            <ImageGrid
+                images={images}
+                onPress={onPress}
+                uploading={uploading}
+                upload={upload}
+            />
+            {/* <View>
                 {type === 'list'
                     ? (
                         <ImageList
@@ -21,9 +27,10 @@ const Images = ({ images, onPress, upload, uploading, type = 'grid' }) => {
                             onPress={onPress}
                             uploading={uploading}
                             upload={upload}
+                            type={type === 'grid' ? 'grid' : 'list'}
                         />
                     )}
-            </View>
+            </View> */}
         </View>
     )
 }

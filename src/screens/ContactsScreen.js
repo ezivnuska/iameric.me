@@ -10,7 +10,7 @@ const ContactsScreen = props => {
         switch (props.route.name) {
             case 'Users': return <Contacts {...props} />
             case 'Contact': return <Contact key={`contact-profile-${Date.now()}`} {...props} />
-            case 'Images': return <ContactImages type={props.route.params?.type} {...props} />
+            case 'Images': return <ContactImages key={`contact-images-${Date.now()}`} list={props.route.params?.list} {...props} />
             default:
                 console.log('Could not render contact screen content')
                 return null

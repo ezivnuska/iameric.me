@@ -18,7 +18,6 @@ const Screen = ({ children, secure = false, ...props }) => {
         if (!authorized) {
             console.log('not authorized for route', routeName)
             if (routeName !== 'Home') {
-                console.log('routeName', routeName)
                 setAuthRoute(routeName)
                 props.navigation.navigate('Home')
             } else setModal('AUTH')

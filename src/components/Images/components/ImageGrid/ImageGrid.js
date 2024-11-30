@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { ImageGridItem } from './components'
+import { ImageGridItem, ImageListItem } from './components'
 import { ActivityIndicator } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ImageGrid = ({ images, onPress, uploading = null, upload = false }) => {
+const ImageGrid = ({ images, onPress, type = null, uploading = null, upload = false }) => {
 
     const { theme } = useApp()
 
-    const numImagesPerRow = 3
+    const numImagesPerRow = type === 'grid' ? 3 : 1
     const imageGap = 0
 
     const [maxWidth, setMaxWidth] = useState(null)
-    const [imageSize, setImageSize] = useState(null)
+    // const [imageSize, setImageSize] = useState(null)
+
+    const imageSize = useMemo(() => maxWidth && (maxWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
 
     const onLayout = e => {
 		if (e.nativeEvent.target.offsetParent) {
@@ -22,9 +24,9 @@ const ImageGrid = ({ images, onPress, uploading = null, upload = false }) => {
 	}
 
     useEffect(() => {
-        if (maxWidth) {
-            setImageSize((maxWidth - (imageGap * (numImagesPerRow - 1)) - numImagesPerRow * 2) / numImagesPerRow)
-        }
+        // if (maxWidth && type === 'grid') {
+        //     setImageSize()
+        // }
     }, [maxWidth])
 
     const buttonStyle = {
@@ -45,27 +47,30 @@ const ImageGrid = ({ images, onPress, uploading = null, upload = false }) => {
         <View
             onLayout={onLayout}
             style={{
-                flexDirection: 'row',
-                flexWrap: 'wrap',
+                flexDirection: type === 'grid' ? 'row' : 'col',
+                flexWrap: type === 'grid' ? 'wrap' : 'no-wrap',
                 gap: imageGap,
                 width: '100%',
                 marginVertical: 7,
             }}
         >
-            {(imageSize && images)
+            {imageSize
                 ? images.map((image, index) => (
                     <Pressable
                         key={`image-${index}`}
                         onPress={() => onPress('SHOWCASE', image)}
                         style={[
                             {
-                                width: imageSize,
-                                height: imageSize,
+                                width: type === 'grid' ? imageSize : 'auto',
+                                height: type === 'grid' ? imageSize : 'auto',
                             },
                             buttonStyle,
                         ]}
                     >
-                        <ImageGridItem image={image} size={imageSize} />
+                        {type === 'grid'
+                            ? <ImageGridItem image={image} size={imageSize} />
+                            : <ImageListItem image={image} scale={maxWidth / image.width} />
+                        }
                     </Pressable>
                 ))
                 : <ActivityIndicator size='medium' />
