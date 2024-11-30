@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ImageGrid } from '@components'
+import { ActivityIndicator, ImageList } from '@components'
 import { useContacts } from '@contacts'
 
 const ContactImages = ({ list = false, ...props }) => {
@@ -41,7 +41,7 @@ const ContactImages = ({ list = false, ...props }) => {
                     />
                 )
                 : (
-                    <ImageGrid
+                    <ImageList
                         images={contactImages}
                         onPress={(type, data) => setContactModal(type, data)}
                         list={list}

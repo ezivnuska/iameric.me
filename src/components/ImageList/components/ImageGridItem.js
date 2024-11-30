@@ -3,7 +3,7 @@ import { Image } from 'react-native'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const ImageGridItem = ({ image, size }) => (
+const ImageListItem = ({ image, size }) => (
     <Image
         // width={size}
         // height={size}
@@ -16,4 +16,4 @@ const ImageGridItem = ({ image, size }) => (
     />
 )
 
-export default ImageGridItem
+export default ImageListItem

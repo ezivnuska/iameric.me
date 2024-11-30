@@ -21,7 +21,6 @@ const ProfileNav = ({ navigation, contact = null }) => {
                 transparent
                 onPress={() => {
                     const nextParams = contact ? { username: contact.username } : null
-                    console.log('navigating to', nextParams)
                     navigation.navigate('Images', nextParams)}
                 }
             />

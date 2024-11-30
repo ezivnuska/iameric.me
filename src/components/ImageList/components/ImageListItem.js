@@ -9,7 +9,7 @@ const ImageListItem = ({ image, scale }) => {
     return (
         <Image
             source={{ uri: `${IMAGE_PATH}/${image.user.username}${width <= 200 ? `/thumb` : ''}/${image.filename}` }}
-            // resizeMode='cover'
+            resizeMode='cover'
             style={{
                 width,
                 height,
