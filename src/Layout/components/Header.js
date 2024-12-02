@@ -9,7 +9,7 @@ import {
     DefaultText,
 } from '@components'
 import { useModal } from '@modal'
-import { navigate } from '@utils/navigation'
+import { navigate, navigateToRootScreen } from '@utils/navigation'
 
 const HEADER_HEIGHT = 70
 
@@ -31,7 +31,7 @@ const Header = ({ user, route }) => {
             </Pressable>
 
             <Pressable
-                onPress={() => navigate('User', { screen: 'Profile' })}
+                onPress={() => navigate('User')}
                 style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}
             >
                 <DefaultText bold style={{ fontSize: 50, lineHeight: 60 }} color='tomato'>{user.username}</DefaultText>

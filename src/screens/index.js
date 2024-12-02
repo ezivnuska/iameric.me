@@ -1,5 +1,6 @@
 // import BipScreen from './BipScreen'
 // import BipsScreen from './BipsScreen'
+import ContactScreen from './ContactScreen'
 import ContactsScreen from './ContactsScreen'
 import FeedScreen from './FeedScreen'
 // import ForumScreen from './ForumScreen'
@@ -14,6 +15,7 @@ import WorkScreen from './WorkScreen'
 export {
     // BipScreen,
     // BipsScreen,
+    ContactScreen,
     ContactsScreen,
     FeedScreen,
     // ForumScreen,

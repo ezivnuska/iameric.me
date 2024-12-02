@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ImageClone } from '.'
+import { ActivityIndicator, ImageClone } from '@components'
 
 const ImagePreview = ({ uri, height, width, onLoad, progress, uploading }) => {
     

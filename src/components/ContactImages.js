@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ImageList } from '@components'
+import { ActivityIndicator, DefaultText, ImageList } from '@components'
 import { useContacts } from '@contacts'
 
 const ContactImages = ({ list = false, ...props }) => {
@@ -9,44 +9,47 @@ const ContactImages = ({ list = false, ...props }) => {
         contact,
         contactLoaded,
         contactLoading,
-        contacts,
-        contactsLoaded,
-        contactsLoading,
-        contactImagesLoaded,
+        // contactImagesLoaded,
         contactImagesLoading,
         initContact,
-        initContacts,
-        getContact,
         setContactModal,
     } = useContacts()
 
-    const profile = useMemo(() => contact && getContact(contact.username), [contact])
-    const contactImages = useMemo(() => profile && profile.images, [profile])
-
     useEffect(() => {
-        if (!profile && !contactLoaded && !contactLoading) {
-            initContact(props.route.params.username)
+        if (!contact || !contactLoaded && !contactLoading) {
+            initContact(props.route.params?.username)
         }
     }, [])
 
     return (
         <View style={{ flex: 1 }}>
 
-            {!contactImagesLoaded
-                ? (
-                    <ActivityIndicator
-                        size='medium'
-                        label='Loading Contact Images...'
-                        color='#fff'
-                    />
-                )
-                : (
-                    <ImageList
-                        images={contactImages}
-                        onPress={(type, data) => setContactModal(type, data)}
-                        list={list}
-                    />
-                )}
+            {
+                contactImagesLoading
+                    ? (
+                        <ActivityIndicator
+                            size='medium'
+                            label='Loading Contact Images...'
+                            color='#fff'
+                        />
+                    )
+                    : contact
+                        ? contact.images?.length
+                            ? (
+                                <ImageList
+                                    images={contact.images}
+                                    onPress={(type, data) => setContactModal(type, data)}
+                                    list={list}
+                                />
+                            )
+                            : (
+                                <DefaultText>
+                                    No images to show.
+                                </DefaultText>
+                            )
+                        : null
+                }
+
             </View>
     )
 }

@@ -26,6 +26,7 @@ const {
   getNumberOfOnlineUsers,
   getAllVendors,
   getVendors,
+  getUserAndImageIds,
   getUserById,
   getUserByUsername,
   getUserAndImagesById,
@@ -131,6 +132,7 @@ router.post(   '/location',               setLocation)
 // users
 router.get(    '/user/id/:id',             getUserById)
 router.get(    '/user/:username',          getUserByUsername)
+router.get(    '/user/:username/images',   getUserAndImageIds)
 router.get(    '/user/full/:id',           getUserAndImagesById)
 router.get(    '/user/details/:id',        getUserDetailsById)
 router.get(    '/users',                   getUsers)

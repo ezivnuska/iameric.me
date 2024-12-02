@@ -1,9 +1,6 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import {
-    SafeAreaView,
-    View,
-} from 'react-native'
+import { SafeAreaView, View } from 'react-native'
 import { Header } from './components'
 import AppNavigation from '../AppNavigation'
 import linking from '../linking'
@@ -78,7 +75,7 @@ const Layout = () => {
                         }}
                     >
 
-                        <View style={ { flexGrow: 0, zIndex: 1000 }}>
+                        <View style={{ flexGrow: 0, zIndex: 1000 }}>
                             <Header user={user} route={currentRoute} />
                         </View>
                         

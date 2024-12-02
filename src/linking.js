@@ -2,25 +2,14 @@ const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
-            // Contact: {
-            //     path: 'contact',
-            //     screens: {
-            //         Details: {
-            //             path: '/:username',
-            //         },
-            //         ContactImages: {
-            //             path: '/:username/images',
-            //         },
-            //     },
-            // },
             Contacts: {
                 path: 'users',
                 screens: {
                     Contact: {
-                        path: ':username',
+                        path: '/:username',
                     },
                     Images: {
-                        path: ':username/images',
+                        path: '/:username/images',
                     },
                     Users: {
                         path: '',

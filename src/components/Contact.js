@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Pressable, View } from 'react-native'
-import { ActivityIndicator, ProfileImage, ProfileNav } from '@components'
+import { ActivityIndicator, DefaultText, IconButtonLarge, ProfileImage } from '@components'
 import { useContacts } from '@contacts'
 
 const PROFILE_IMAGE_SIZE = 100
@@ -15,37 +15,57 @@ const Contact = props => {
     } = useContacts()
 
     useEffect(() => {
-        if (!contact || contact.username !== props.route.params.username) {
+        if (!contact || contact.username !== props.route.params?.username) {
             initContact(props.route.params.username)
         }
     }, [contact])
 
-    if (contactLoading) return <ActivityIndicator size='medium' label='Loading Contact...' />
+    return contactLoading
+        ? <ActivityIndicator size='medium' label='Loading Contact...' />
+        : contact
+            ? (
+                <View
+                    key={`contact-details-${Date.now()}`}
+                    style={{ flex: 1 }}
+                >
 
-    return contact && (
-        <View
-            key={`contact-details-${Date.now()}`}
-            style={{ flex: 1 }}
-        >
+                    <Pressable
+                        onPress={() => setContactModal('SHOWCASE', contact.profileImage)}
+                        disabled={!contact.profileImage}
+                        style={{
+                            flexDirection: 'row',
+                            gap: 20,
+                        }}
+                    >
+                        <ProfileImage
+                            user={contact}
+                            size={PROFILE_IMAGE_SIZE}
+                        />
 
-            <Pressable
-                onPress={() => setContactModal('SHOWCASE', contact.profileImage)}
-                disabled={!contact.profileImage}
-                style={{
-                    flexDirection: 'row',
-                    gap: 20,
-                }}
-            >
-                <ProfileImage
-                    user={contact}
-                    size={PROFILE_IMAGE_SIZE}
-                />
+                        <View style={{ flexGrow: 0, gap: 10 }}>
 
-                <ProfileNav contact={contact} {...props} />
-            </Pressable>
+                            <DefaultText bold size={36}>
+                                {contact.username}
+                            </DefaultText>
 
-        </View>
-    )
+                            {
+                                contact.images.length > 0 && (
+                                    <IconButtonLarge
+                                        name='images'
+                                        label='Images'
+                                        size={34}
+                                        transparent
+                                        onPress={() => props.navigation.navigate('Images', { username: contact.username })}
+                                    />
+                                )
+                            }
+
+                        </View>
+                    </Pressable>
+
+                </View>
+            )
+            : <DefaultText>User not found.</DefaultText>
 }
 
 export default Contact

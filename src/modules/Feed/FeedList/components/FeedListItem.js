@@ -52,7 +52,10 @@ const FeedListItem = ({ item, onDelete = null }) => {
                 >
                     <Pressable
                         onPress={() => {
-                            navigate('Contacts', { screen: 'Contact', params: { username: item.author?.username } })
+                            navigate('Users', {
+                                screen: 'Contact',
+                                params: { username: item.author?.username },
+                            })
                         }}
                         style={{
                             flexDirection: 'row',

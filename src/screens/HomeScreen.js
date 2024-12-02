@@ -105,7 +105,7 @@ const HomeScreen = props => {
                     <IconButtonLarge
                         name='people-outline'
                         label='Users'
-                        onPress={() => props.navigation.navigate('Contacts', { screen: 'Users' })}
+                        onPress={() => props.navigation.navigate('Contacts')}
                     />
 
                     <IconButtonLarge

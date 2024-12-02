@@ -2,7 +2,6 @@ import React from 'react'
 import { Pressable, View } from 'react-native'
 import { useUser } from '.'
 import { ProfileImage, ProfileNav, DefaultText } from '@components'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 const PROFILE_IMAGE_SIZE = 100
 
@@ -35,7 +34,7 @@ const User = props => {
                         if (user.profileImage) {
                             setUserModal('SHOWCASE', user.profileImage)
                         } else {
-                            setUserModal('IMAGE_UPLOAD')
+                            setUserModal('IMAGE_UPLOAD', { avatar: true })
                         }
                     }}
                     style={{

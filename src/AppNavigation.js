@@ -115,7 +115,7 @@ const AppStackScreen = () => {
                 name='Contacts'
                 // children={props => <ContactsNavigator {...props} />}
                 component={ContactsNavigator}
-                options={{ title: 'Users' }}
+                options={{ title: 'Contacts' }}
             />
 
             <AppStack.Screen

@@ -1,39 +1,41 @@
-import { ContactsScreen } from '@screens'
-import { Nav } from './components'
+import { ContactScreen, ContactsScreen } from '@screens'
+import { NavBar } from './components'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-
 const ContactsNavigator = () => {
-    const ContactStack = createNativeStackNavigator()
+
+    const ContactsStack = createNativeStackNavigator()
+    
     return (
-        <ContactStack.Navigator
+        <ContactsStack.Navigator
             initialRouteName='Users'
             screenOptions={{
+                // headerShown: false,
                 headerShown: true,
-                header: props => <Nav root='Users' {...props} />
+                header: props => <NavBar root='Users' {...props} />
             }}
         >
-            <ContactStack.Screen
+            <ContactsStack.Screen
                 name='Users'
                 component={ContactsScreen}
                 options={{ title: 'Users' }}
             />
 
-            <ContactStack.Screen
+            <ContactsStack.Screen
+                name='Contact'
+                // children={props => <ContactNavigator {...props} />}
+                component={ContactScreen}
+                options={{ title: 'Contact' }}
+            />
+
+            <ContactsStack.Screen
                 name='Images'
-                // children={props => <ContactsScreen {...props} />}
-                component={ContactsScreen}
+                // component={ContactScreen}
+                children={props => <ContactScreen {...props} />}
                 options={{ title: 'Images' }}
             />
 
-            <ContactStack.Screen
-                name='Contact'
-                // children={props => <ContactsScreen {...props} />}
-                component={ContactsScreen}
-                options={{ title: 'User' }}
-            />
-
-        </ContactStack.Navigator>
+        </ContactsStack.Navigator>
     )
 }
 

@@ -23,7 +23,7 @@ const ImagePicker = ({ onClose, avatar = false }) => {
 
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
-    const [avatarCheckbox, setAvatarCheckbox] = useState(!avatar)
+    const [avatarCheckbox, setAvatarCheckbox] = useState(avatar)
     const [maxWidth, setMaxWidth] = useState(null)
     const [imageDims, setImageDims] = useState(null)
     const [uploadProgress, setUploadProgress] = useState(null)
@@ -109,7 +109,6 @@ const ImagePicker = ({ onClose, avatar = false }) => {
     }
 
     const onPreviewLoaded = () => {
-        console.log('preview loaded')
         const { imageData, thumbData, userId } = payload
         handleUpload({ imageData, thumbData, userId })
     }

@@ -52,7 +52,6 @@ export const ContactsContextProvider = props => {
     }
 
     const initContact = async username => {
-
         dispatch({ type: 'SET_CONTACT_LOADING', payload: true })
         const user = await loadContact(username, true)
         dispatch({ type: 'SET_CONTACT_LOADING', payload: false })

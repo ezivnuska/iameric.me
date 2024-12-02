@@ -1,8 +1,5 @@
-import {
-    // ImagesScreen,
-    UserScreen,
-} from '@screens'
-import { Nav } from './components'
+import { UserScreen } from '@screens'
+import { NavBar } from './components'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const UserNavigator = () => {
@@ -14,7 +11,7 @@ const UserNavigator = () => {
             initialRouteName='Profile'
             screenOptions={{
                 headerShown: true,
-                header: props => <Nav root='Profile' {...props} />,
+                header: props => <NavBar root='Profile' {...props} />,
             }}
         >
 

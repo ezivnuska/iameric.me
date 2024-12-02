@@ -1,19 +1,20 @@
-import { createNavigationContainerRef } from '@react-navigation/native'
+import {
+    createNavigationContainerRef,
+    CommonActions,
+} from '@react-navigation/native'
 
 const navigationRef = createNavigationContainerRef()
 
-export const navigate = async (nextRoute, params) => {
+export const navigate = (nextRoute, params) => {
     if (navigationRef.isReady()) {
-        if (params) navigationRef.navigate(nextRoute, params)
-        else navigationRef.navigate(nextRoute)
-        return
+        if (params) navigationRef.dispatch(CommonActions.navigate(nextRoute, params))
+        else navigationRef.dispatch(CommonActions.navigate(nextRoute))
     }
 }
 
-export const getCurrentRoute = async () => {
+export const getCurrentRoute = () => {
     if (navigationRef.isReady()) {
-        const route = await navigationRef.getCurrentRoute()
-        return route
+        return navigationRef.getCurrentRoute()
     }
 }
 

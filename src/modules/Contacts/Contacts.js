@@ -16,16 +16,24 @@ const Contacts = ({ navigation }) => {
 
     const { user } = useUser()
 
-    const renderContacts = () => {
-        const array = contacts.filter(contact => contact._id !== user._id)
-        return array.length ? array.map((c, i) => (
-            <ContactListItem
-                onPress={username => navigation.navigate('Contact', { username })}
-                key={`contact-${i}`}
-                item={c}
-            />
-        )) : <DefaultText>No users to show.</DefaultText>
-    }
+    const renderContacts = () => (
+        <View style={{ flex: 1, gap: 10 }}>
+            {
+                contacts.length
+                    ? contacts.map((contact, index) => contact._id !== user._id
+                        ? (
+                            <ContactListItem
+                                onPress={username => navigation.navigate('Contact', { username })}
+                                key={`contact-${index}`}
+                                item={contact}
+                            />
+                        )
+                        : null
+                    )
+                    : <DefaultText>No users to show.</DefaultText>
+            }
+        </View>
+    )
 
     useEffect(() => {
         if (!contactsLoaded && !contactsLoading) {
@@ -33,15 +41,13 @@ const Contacts = ({ navigation }) => {
         }
     }, [])
 
-    if (contactsLoading) return <ActivityIndicator size='medium' />
-
-    return (
-        <View style={{ flex: 1, gap: 10 }}>
-
-            {renderContacts()}
-
-        </View>
-    )
+    return contactsLoading
+        ? <ActivityIndicator size='medium' />
+        : (
+            <View style={{ flex: 1 }}>
+                {renderContacts()}
+            </View>
+        )
 }
 
 export default Contacts
