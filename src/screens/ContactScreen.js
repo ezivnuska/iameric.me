@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { Screen } from './components'
 import { Contact, ContactImages } from '@components'
-import { ContactsModal } from '@contacts'
+import { ContactsModal, useContacts } from '@contacts'
 
 const ContactScreen = props => {
+    
+    const { setContact } = useContacts()
+
+    useEffect(() => {
+        return () => {
+            console.log('resetting contact')
+            setContact(null)
+        }
+    })
 
     const renderContent = () => {
         

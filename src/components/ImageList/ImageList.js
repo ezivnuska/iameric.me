@@ -5,7 +5,7 @@ import { ActivityIndicator } from '@components'
 import { useApp } from '@app'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const ImageList = ({ images, onPress, list = 'grid', uploading = null, upload = false }) => {
+const ImageList = ({ images, onPress, list = false, uploading = null, upload = false }) => {
 
     const { theme } = useApp()
 

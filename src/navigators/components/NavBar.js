@@ -1,8 +1,11 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { DefaultText, IconButton } from '@components'
+import { useUser } from '@user'
 
 const NavBar = ({ root, navigation, route }) => {
+
+    const { user } = useUser()
 
     return (
         <View
@@ -33,14 +36,14 @@ const NavBar = ({ root, navigation, route }) => {
                         color={route.name !== root ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                         bold
                     >
-                        {root}
+                        {root === 'Profile' ? user.username : root}
                     </DefaultText>
 
                 </Pressable>
 
                 {/* if Contact screen... */}
 
-                {route.name === 'Contact' && (
+                {(route.name === 'Contact') && (
                     <View
                         style={{
                             paddingHorizontal: 10,
@@ -54,14 +57,14 @@ const NavBar = ({ root, navigation, route }) => {
                             color='rgba(0, 0, 0, 0.75)'
                             
                         >
-                            {route.params?.username || 'Contact'}
+                            {route.params?.username || user.username}
                         </DefaultText>
                     </View>
                 )}
 
                 {/* if Images screen... */}
 
-                {route.name === 'Images' && (
+                {(route.params?.username && route.name === 'Images') && (
                     <Pressable
                         onPress={() => navigation.navigate('Contact', { username: route.params?.username })}
                         disabled={route.name === 'Contact'}
@@ -76,7 +79,7 @@ const NavBar = ({ root, navigation, route }) => {
                             color={route.name === 'Contact' ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
                             bold
                         >
-                            {route.params?.username || 'Contact'}
+                            {route.params?.username}
                         </DefaultText>
 
                     </Pressable>
