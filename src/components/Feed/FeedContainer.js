@@ -1,18 +1,12 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import {
-    FeedList,
-    FeedModal,
-    useFeed,
-} from '.'
+import { FeedList, FeedNavBar } from './components'
+import { FeedModal, useFeed } from '.'
 import { DefaultText, ScreenHeader } from '@components'
 import { useSocket } from '@socket'
-import {
-    createPost,
-    deletePostWithId,
-} from './utils'
+import { createPost, deletePostWithId } from './utils'
 
-const Feed = () => {
+const Feed = props => {
 
     const {
         feedModal,
@@ -93,17 +87,19 @@ const Feed = () => {
     )
     
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            style={{
+                flex: 1,
+                paddingHorizontal: 10,
+                gap: 10,
+            }}
+        >
 
-            <ScreenHeader
-                label='Feed'
-                setModal={() => setFeedModal('POST')}
-            />
+            <FeedNavBar {...props} />
 
             <View
                 style={{
-                    flex: 1,
-                    paddingHorizontal: 10,
+                    flexGrow: 1,
                 }}
             >
                 {sortedThreads.length

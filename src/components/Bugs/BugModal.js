@@ -96,6 +96,7 @@ const BugModal = ({ modal, onCancel, onSubmit }) => {
                             flexGrow: 1,
                             paddingHorizontal: 10,
                             paddingVertical: 10,
+                            gap: 10,
                         }}
                     >
 

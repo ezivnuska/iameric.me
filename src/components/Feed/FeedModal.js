@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { Form, ImagePickerMini, ModalHeader, SimpleButton } from '@components'
+import { Form, ImagePickerMini, ModalHeader } from '@components'
 import Modal from 'react-native-modal'
 import { useApp } from '@app'
 import { useUser } from '@user'
@@ -101,20 +101,17 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
                         zIndex: 100,
                     }}
                 >
-                    <ModalHeader
-                        title='Create Post'
-                        onClose={onCancel}
-                    />
-
 
                     <View
                         style={{
                             flexGrow: 1,
                             paddingHorizontal: 10,
                             paddingVertical: 10,
+                            gap: 10,
                         }}
                     >
                         <Form
+                            title='Add Post'
                             fields={fields}
                             onCancel={onCancel}
                             onSubmit={handleSubmit}

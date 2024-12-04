@@ -1,5 +1,4 @@
-import Feed from './Feed'
-import FeedList from './FeedList'
+import FeedContainer from './FeedContainer'
 import FeedModal from './FeedModal'
 
 import {
@@ -7,11 +6,10 @@ import {
     useFeed,
 } from './FeedContext'
 
-export default Feed
+export default FeedContainer
 
 export {
     FeedContextProvider,
-    FeedList,
     FeedModal,
     useFeed,
 }

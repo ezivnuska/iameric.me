@@ -88,30 +88,29 @@ const BugContainer = props => {
     )
     
     return (
-        <View style={{ flex: 1, paddingHorizontal: 10 }}>
+        <View
+            style={{
+                flex: 1,
+                paddingHorizontal: 10,
+                gap: 10,
+            }}
+        >
 
-            <BugNavBar {...props} style={{ marginBottom: 10 }} />
-            {/* <ScreenHeader
-                label={'Bugs'}
-                setModal={() => setBugModal('BUG')}
-            /> */}
-
-            {/* <View style={{ flex: 1, paddingHorizontal: 10 }}> */}
+            <BugNavBar {...props} />
             
-                <View style={{ flexGrow: 1 }}>
-                    {bugs.length
-                        ? renderThreads(sortedThreads)
-                        : (
-                            <DefaultText
-                                size={24}
-                                style={{ lineHeight: 30 }}
-                            >
-                                No bugs to squash.
-                            </DefaultText>
-                        )
-                    }
-                </View>
-            {/* </View> */}
+            <View style={{ flexGrow: 1 }}>
+                {bugs.length
+                    ? renderThreads(sortedThreads)
+                    : (
+                        <DefaultText
+                            size={24}
+                            style={{ lineHeight: 30 }}
+                        >
+                            No bugs to squash.
+                        </DefaultText>
+                    )
+                }
+            </View>
 
             <BugModal
                 modal={bugModal}

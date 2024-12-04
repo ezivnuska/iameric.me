@@ -1,13 +1,12 @@
 import React from 'react'
 import { Screen } from './components'
-import { Feed } from '@modules'
-import { FeedContextProvider } from '@feed'
+import Feed, { FeedContextProvider } from '@components/Feed'
     
 const FeedScreen = props => (
     <Screen secure {...props}>
 
         <FeedContextProvider>
-            <Feed />
+            <Feed {...props} />
         </FeedContextProvider>
         
     </Screen>

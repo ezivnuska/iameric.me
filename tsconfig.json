@@ -22,7 +22,7 @@
         "./src/modules/Contacts/index.js"
       ],
       "@feed": [
-        "./src/modules/Feed/index.js"
+        "src/components/Feed/index.js"
       ],
       "@mail": [
         "./src/modules/Mail/index.js"

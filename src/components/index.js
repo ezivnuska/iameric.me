@@ -9,6 +9,7 @@ import Contact from './Contact'
 import ContactImages from './ContactImages'
 // import Counter from './Counter'
 import DefaultText from './DefaultText'
+import Feed from './Feed'
 import Form from './Form'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
@@ -19,6 +20,7 @@ import ImagePicker from './ImagePicker/ImagePicker'
 import ImagePickerMini from './ImagePickerMini'
 // import InfoMarker from './InfoMarker'
 import ModalHeader from './ModalHeader'
+import Resume from './Resume'
 import ProfileImage from './ProfileImage'
 import ProfileNav from './ProfileNav'
 import ScreenHeader from './ScreenHeader'
@@ -43,6 +45,7 @@ export {
     ContactImages,
     ImageContainer,
     // Counter,
+    Feed,
     Form,
     IconButton,
     IconButtonLarge,
@@ -54,6 +57,7 @@ export {
     ModalHeader,
     ProfileImage,
     ProfileNav,
+    Resume,
     Settings,
     ScreenHeader,
     SimpleButton,

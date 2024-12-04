@@ -1,7 +1,7 @@
 import React from 'react'
 import { Screen } from './components'
 import { ScreenHeader } from '@components'
-import Resume from '@modules/Resume'
+import Resume from '@components/Resume'
 
 const WorkScreen = props => (
     <Screen {...props}>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { IconButton, ProfileImage, DefaultText, Time } from '@components'
 import { useUser } from '@user'
-import { useFeed } from '@feed'
+import { useFeed } from 'src/components/Feed'
 import { navigate } from '@utils/navigation'
 
 const FeedListItem = ({ item, onDelete = null }) => {
