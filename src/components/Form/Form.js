@@ -7,8 +7,8 @@ import { useForm } from '@form'
 import { getFields, validateFields } from './utils'
 
 const Form = ({
-    fields,
     title,
+    fields,
     onSubmit,
     onCancel,
     color = null,

@@ -29,14 +29,15 @@ const UserScreen = props => {
                 return <User {...props} />
                 break
             case 'Images':
-                return (
-                    <View
-                        style={{
-                            flex: 1,
-                            marginHorizontal: 10,
-                        }}
-                    >
-                        {imagesLoaded ? (
+                return imagesLoading
+                    ? <ActivityIndicator label='Loading Images...' size='medium' />
+                    : imagesLoaded && (
+                        <View
+                            style={{
+                                flex: 1,
+                                marginHorizontal: 10,
+                            }}
+                        >
                             <ImageList
                                 images={images}
                                 onPress={(type, data) => setUserModal(type, data)}
@@ -44,9 +45,8 @@ const UserScreen = props => {
                                 upload={() => setUserModal('IMAGE_UPLOAD')}
                                 list={route.params?.list}
                             />
-                        ) : <ActivityIndicator size='medium' label='Loading Images...' />}
-                    </View>
-                )
+                        </View>
+                    )
                 break
             default:
         }

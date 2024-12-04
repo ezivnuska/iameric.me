@@ -36,7 +36,7 @@ const NavBar = ({ root, navigation, route }) => {
                         color={route.name !== root ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                         bold
                     >
-                        {root === 'Profile' ? user.username : root}
+                        {root === 'Profile' ? user?.username : root}
                     </DefaultText>
 
                 </Pressable>
@@ -57,7 +57,7 @@ const NavBar = ({ root, navigation, route }) => {
                             color='rgba(0, 0, 0, 0.75)'
                             
                         >
-                            {route.params?.username || user.username}
+                            {route.params?.username || user?.username}
                         </DefaultText>
                     </View>
                 )}

@@ -9,7 +9,7 @@ import {
     DefaultText,
 } from '@components'
 import { useModal } from '@modal'
-import { navigate, navigateToRootScreen } from '@utils/navigation'
+import { navigate } from '@utils/navigation'
 
 const HEADER_HEIGHT = 70
 

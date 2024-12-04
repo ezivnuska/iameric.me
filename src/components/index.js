@@ -21,6 +21,7 @@ import ModalHeader from './ModalHeader'
 import ProfileImage from './ProfileImage'
 import ProfileNav from './ProfileNav'
 import ScreenHeader from './ScreenHeader'
+import Settings from './Settings'
 import SimpleButton from './SimpleButton'
 // import Slider from './Slider'
 import SocketDisplay from './SocketDisplay'
@@ -51,6 +52,7 @@ export {
     ModalHeader,
     ProfileImage,
     ProfileNav,
+    Settings,
     ScreenHeader,
     SimpleButton,
     // Slider,

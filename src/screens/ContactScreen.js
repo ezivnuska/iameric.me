@@ -8,12 +8,12 @@ const ContactScreen = props => {
     
     const { setContact } = useContacts()
 
-    useEffect(() => {
-        return () => {
-            console.log('resetting contact')
-            setContact(null)
-        }
-    })
+    // useEffect(() => {
+    //     return () => {
+    //         console.log('resetting contact')
+    //         setContact(null)
+    //     }
+    // })
 
     const renderContent = () => {
         

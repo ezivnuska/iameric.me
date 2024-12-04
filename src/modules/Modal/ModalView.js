@@ -1,49 +1,80 @@
 import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
-import { DefaultText } from '@components'
-import { Auth, Settings, Socket } from '@modules'
+import { DefaultText, Settings } from '@components'
+import { Auth, Socket } from '@modules'
+import { useApp } from '@app'
 import Modal from 'react-native-modal'
 import Icon from 'react-native-vector-icons/Ionicons'
 import LinearGradient from 'react-native-web-linear-gradient'
 
 const ModalView = ({ modal, onClose }) => {
+
+    const { dims } = useApp()
     
     const renderModalContent = () => {
         const {type, data } = modal
+        let content = null
         switch(type) {
-            case 'AUTH': return <Auth />; break
-            case 'SETTINGS': return <Settings />; break
-            case 'SOCKETS': return <Socket />; break
+            case 'AUTH': content = <Auth />; break
+            case 'SETTINGS': content = <Settings />; break
+            case 'SOCKETS': content = <Socket />; break
             default: {
                 console.log('Ouch', type)
             }
         }
+        return content && (
+            <ScrollView
+                style={{
+                    flex: 1,
+                    zIndex: 1,
+                }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    flex: 1,
+                    paddingVertical: 10,
+                    paddingHorizontal: 10,
+                }}
+            >
+                {content}
+            </ScrollView>
+        )
     }
 
     const renderHeader = () => {
-        let title
+        let title = null
         switch(modal.type) {
-            case 'AUTH': title = 'Who are You?'; break
+            // case 'AUTH': title = 'Log In'; break
             case 'SETTINGS': title = 'Settings'; break
             case 'SOCKETS': title = 'Sockets'; break
-            default: title = ''
+            default:
         }
         return title
             ? (
                 <View
                     style={{
-                        paddingHorizontal: 10,
-                        paddingVertical: 15,
-                        zIndex: 50,
+                        // position: 'absolute',
+                        // top: 0,
+                        // right: 0,
+                        // left: 0,
+                        // height: 70,
+                        // zIndex: 50,
                     }}
                 >
-                    <DefaultText
-                        bold
-                        size={24}
-                        color='#fff'
+                    <View
+                        style={{
+                            paddingHorizontal: 10,
+                            paddingVertical: 10,
+                            zIndex: 50,
+                        }}
                     >
-                        {title}
-                    </DefaultText>
+                        <DefaultText
+                            bold
+                            size={24}
+                            // color='#fff'
+                        >
+                            {title}
+                        </DefaultText>
+                    </View>
                 </View>
             )
             : null
@@ -51,11 +82,13 @@ const ModalView = ({ modal, onClose }) => {
     return (
         <Modal
             isVisible={modal !== undefined}
+            deviceWidth={dims.width}
+            deviceHeight={dims.height}
             animationType='fade'
             transparent={true}
             onRequestClose={onClose}
             style={{
-                flex: 1,
+                // flex: 1,
                 margin: 0,
             }}
         >
@@ -63,6 +96,8 @@ const ModalView = ({ modal, onClose }) => {
             <View
                 style={{
                     flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                     width: '100%',
                     position: 'relative',
                 }}
@@ -81,11 +116,14 @@ const ModalView = ({ modal, onClose }) => {
 
                 <View
                     style={{
-                        flex: 1,
-                        width: '100%',
-                        maxWidth: 400,
+                        // flex: 1,
+                        width: '92%',
+                        maxWidth: 380,
                         marginHorizontal: 'auto',
+                        // marginBottom: '25%',
                         backgroundColor: '#fff',
+                        borderRadius: 10,
+                        overflow: 'hidden',
                         zIndex: 100,
                     }}
                 >
@@ -101,7 +139,7 @@ const ModalView = ({ modal, onClose }) => {
                                 zIndex: 10,
                             }}
                         >
-                            <LinearGradient
+                            {/* <LinearGradient
                                 colors={[
                                     // 'rgba(0, 0, 0, 1.0)',
                                     'rgba(0, 0, 0, 0.9)',
@@ -118,47 +156,36 @@ const ModalView = ({ modal, onClose }) => {
                                     height: 70,
                                     zIndex: 50,
                                 }}
-                            >
-                                {renderHeader()}
-                            </LinearGradient>
+                                >
+                            </LinearGradient> */}
+                            
+                            {renderHeader()}    
 
                             <Pressable
                                 onPress={onClose}
                                 style={{
-                                    paddingVertical: 10,
-                                    paddingHorizontal: 5,
                                     position: 'absolute',
                                     top: 0,
                                     // left: 0,
                                     right: 0,
                                     zIndex: 100,
+                                    paddingVertical: 10,
+                                    paddingHorizontal: 5,
                                 }}
                             >
                                 <Icon
                                     name={'close'}
-                                    size={40}
-                                    color='#fff'
+                                    size={36}
+                                    // color='#fff'
                                 />
                             </Pressable>
 
-                            <ScrollView
-                                style={{
-                                    flex: 1,
-                                    zIndex: 1,
-                                }}
-                                showsVerticalScrollIndicator={false}
-                                contentContainerStyle={{
-                                    flex: 1,
-                                    paddingVertical: 70,
-                                    paddingHorizontal: 10,
-                                }}
-                            >
-                                {renderModalContent()}
+                            {renderModalContent()}
 
-                            </ScrollView>
                         </View>
                     )}
                 </View>
+
             </View>
         </Modal>
     )

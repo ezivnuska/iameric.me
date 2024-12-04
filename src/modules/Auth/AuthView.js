@@ -22,12 +22,16 @@ const AuthView = () => {
     } = useForm()
     const { closeModal } = useModal()
     const { notifySocket } = useSocket()
+    
+    const [formType, setFormType] = useState('in')
 
-    const [showSignUp, setShowSignUp] = useState(false)
+    const toggleFormType = () => {
+        setFormType(formType === 'in' ? 'up' : 'in')
+    }
 
     useEffect(() => {
         if (formReady) resetForm()
-    }, [showSignUp])
+    }, [formType])
 
     useEffect(() => {
         if (user) {
@@ -102,9 +106,9 @@ const AuthView = () => {
     return (
         <View style={{ gap: 10 }}>
             
-            {showSignUp ? (
+            {formType === 'up' ? (
                 <Form
-                    tile='Join'
+                    title='Sign Up'
                     fields={[
                         {
                             label: 'Email',
@@ -139,7 +143,7 @@ const AuthView = () => {
                 />
             ) : (
                 <Form
-                    title='Log In'
+                    title='Sign In'
                     fields={[
                         {
                             label: 'Email',
@@ -162,8 +166,8 @@ const AuthView = () => {
             )}
 
             <SimpleButton
-                label={showSignUp ? 'Sign In' : 'Sign Up'}
-                onPress={() => setShowSignUp(!showSignUp)}
+                label={formType === 'up' ? 'Sign In' : 'Sign Up'}
+                onPress={toggleFormType}
                 color='tomato'
             />
 

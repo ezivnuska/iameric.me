@@ -9,7 +9,6 @@ import Modal from './Modal'
 import Notification from './Notification'
 // import Play from './Play'
 import Resume from './Resume'
-import Settings from './Settings'
 // import Simple from './Simple'
 import Socket from './Socket'
 import User from './User'
@@ -26,7 +25,6 @@ export {
     Notification,
     // Play,
     Resume,
-    Settings,
     Socket,
     // Simple,
     User,
