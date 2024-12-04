@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { IconButton, ProfileImage, DefaultText, Time } from '@components'
 import { useUser } from '@user'
@@ -9,6 +9,8 @@ const FeedListItem = ({ item, onDelete = null }) => {
     
     const { user } = useUser()
     const { feedLoading } = useFeed()
+
+    const [disabled, setDisabled] = useState(false)
 
     // const fetchMeta = async () => {
     //     // try {
@@ -26,11 +28,26 @@ const FeedListItem = ({ item, onDelete = null }) => {
     // useEffect(() => {
     //     fetchMeta()
     // }, [])
+
+    useEffect(() => {
+        if (!feedLoading && disabled) setDisabled(false)
+        // else if (feedLoading && !disabled) setDisabled(true)
+    }, [feedLoading])
+
+    const handleDelete = id => {
+        setDisabled(true)
+        onDelete(id)
+    }
     
     return (
         <View
             key={`post-${item._id}`}
-            style={{ marginBottom: 20, gap: 10 }}
+            style={{
+                marginBottom: 20,
+                gap: 10,
+                borderwidth: 1,
+                borderStyle: 'dotted',
+            }}
         >
 
             <View
@@ -101,8 +118,8 @@ const FeedListItem = ({ item, onDelete = null }) => {
                             {(user._id === item.author?._id || user.role === 'admin') && (
                                 <IconButton
                                     name='trash-outline'
-                                    disabled={feedLoading}
-                                    onPress={() => onDelete(item._id)}
+                                    disabled={disabled}
+                                    onPress={() => handleDelete(item._id)}
                                     color={user.role === 'admin' ? 'purple' : '#000'}
                                     size={26}
                                 />

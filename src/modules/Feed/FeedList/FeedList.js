@@ -1,27 +1,23 @@
 import React from 'react'
-import { FlatList } from 'react-native'
+import { View } from 'react-native'
 import { FeedListItem } from './components'
 
 const FeedList = ({ posts, onDelete, ...props }) => (
-    <FlatList
+    <View
         {...props}
-        data={posts}
-        listKey={() => 'posts'}
-        keyExtractor={(item, index) => `${index}-post-${item._id}`}
-        renderItem={({ item }) => (
+        style={{
+            flexBasis: 'auto',
+            gap: 10,
+        }}
+    >
+        {posts.map((post, index) => (
             <FeedListItem
-                item={item}
+                key={`thread-item-${index}`}
+                item={post}
                 onDelete={onDelete}
             />
-        )}
-        showsVerticalScrollIndicator={false}
-        style={{ flex: 1 }}
-        contentContainerStyle={{
-            flex: 1,
-            // paddingHorizontal: 5,
-            // paddingBottom: 20,
-        }}
-    />
+        ))}
+    </View>
 )
 
 export default FeedList

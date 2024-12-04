@@ -77,7 +77,11 @@ const Feed = () => {
     }
 
     const renderThreads = threads => (
-        <View style={{ gap: 7 }}>
+        <View
+            style={{
+                gap: 10,
+            }}
+        >
             {threads.map((items, index) => (
                 <FeedList
                     key={`thread-${index}`}  
@@ -96,7 +100,12 @@ const Feed = () => {
                 setModal={() => setFeedModal('POST')}
             />
 
-            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+            <View
+                style={{
+                    flex: 1,
+                    paddingHorizontal: 10,
+                }}
+            >
                 {sortedThreads.length
                     ? renderThreads(sortedThreads)
                     : (
