@@ -2,7 +2,8 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaView, View } from 'react-native'
 import { Header } from './components'
-import AppNavigation from '../AppNavigation'
+// import AppNavigation from '../AppNavigation'
+import { AppNavigator } from '../navigators'
 import linking from '../linking'
 import { Modal } from '@modules'
 import { useApp } from '@app'
@@ -88,7 +89,7 @@ const Layout = () => {
                                 zIndex: 100,
                             }}
                         >
-                            <AppNavigation />
+                            <AppNavigator />
                         </View>
 
                     </View>

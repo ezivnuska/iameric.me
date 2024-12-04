@@ -3,14 +3,13 @@ import { Pressable, View } from 'react-native'
 import { ImageGridItem, ImageListItem } from './components'
 import { ActivityIndicator } from '@components'
 import { useApp } from '@app'
-import Icon from 'react-native-vector-icons/Ionicons'
 
 const ImageList = ({ images, onPress, list = false, uploading = null, upload = false }) => {
 
     const { theme } = useApp()
 
-    const numImagesPerRow = list ? 1 : 3
-    const imageGap = 0
+    const numImagesPerRow = list ? 1 : 2
+    const imageGap = useMemo(() => list ? 20 : 5, [list])
 
     const [maxWidth, setMaxWidth] = useState(null)
 
@@ -39,58 +38,37 @@ const ImageList = ({ images, onPress, list = false, uploading = null, upload = f
     return (
         <View
             onLayout={onLayout}
-            style={{
-                flexDirection: !list ? 'row' : 'col',
-                flexWrap: !list ? 'wrap' : 'no-wrap',
-                gap: imageGap,
-                width: '100%',
-                marginVertical: 7,
-            }}
         >
-            {imageSize
-                ? images.map((image, index) => (
-                    <Pressable
-                        key={`image-${index}`}
-                        onPress={() => onPress('SHOWCASE', image)}
-                        style={[
-                            {
-                                width: !list ? imageSize : 'auto',
-                                height: !list ? imageSize : 'auto',
-                            },
-                            buttonStyle,
-                        ]}
-                    >
-                        {!list
-                            ? <ImageGridItem image={image} size={imageSize} />
-                            : <ImageListItem image={image} scale={maxWidth / image.width} />
-                        }
-                    </Pressable>
-                ))
-                : <ActivityIndicator size='medium' />
-            }
-            
-            {upload && (
-                <Pressable
-                    key={`image-${images.length + (uploading ? 1 : 0)}`}
-                    onPress={upload}
-                    style={[
-                        {
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: imageSize,
-                            height: imageSize,
-                        },
-                        buttonStyle,
-                    ]}
-                >
-                    <Icon
-                        name='add-outline'
-                        size={32}
-                        color={theme?.colors.textDefault}
-                    />
-
-                </Pressable>
-            )}
+            {imageSize ? (
+                <View
+                    style={{
+                        flexDirection: !list ? 'row' : 'col',
+                        flexWrap: !list ? 'wrap' : 'no-wrap',
+                        gap: imageGap,
+                        width: '100%',
+                        marginVertical: 7,
+                    }}
+                >   
+                    {images.map((image, index) => (
+                        <Pressable
+                            key={`image-${index}`}
+                            onPress={() => onPress('SHOWCASE', image)}
+                            style={[
+                                {
+                                    width: !list ? imageSize : 'auto',
+                                    height: !list ? imageSize : 'auto',
+                                },
+                                buttonStyle,
+                            ]}
+                        >
+                            {!list
+                                ? <ImageGridItem image={image} size={imageSize} />
+                                : <ImageListItem image={image} scale={maxWidth / image.width} />
+                            }
+                        </Pressable>
+                    ))}
+                </View>
+            ) : <ActivityIndicator size='medium' />}
 
         </View>
     )

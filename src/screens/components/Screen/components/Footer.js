@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { View } from 'react-native'
 import { IconButtonLarge, SimpleButton } from '@components'
 import { useUser } from '@user'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
+import navigationRef from 'src/utils/navigation'
 
-const FOOTER_HEIGHT = 60
+const FOOTER_HEIGHT = 50
 
-export default () => {
+const Footer = ({ route }) => {
 
     const { user } = useUser()
     const { setModal } = useModal()
     const { connections } = useSocket()
+
+    const disableBug = useMemo(() => route.name === 'Bugs', [route])
 
     return (
         <View
@@ -25,22 +28,37 @@ export default () => {
         >
             <SimpleButton
                 label={`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
-                onPress={() => {
-                    console.log('setting SOCKETS modal')
-                    setModal('SOCKETS')
-                }}
-                // style={{ flexGrow: 0 }}
+                onPress={() => setModal('SOCKETS')}
+                color='tomato'
+                transparent
             />
 
             {user && (
-                <View style={{ flexGrow: 0 }}>
+                <View
+                    style={{
+                        flexGrow: 0,
+                        flexDirection: 'row',
+                        gap: 10,
+                    }}
+                >
+                    <IconButtonLarge
+                        name='bug'
+                        size={24}
+                        onPress={() => navigationRef.navigate('Bugs')}
+                        disabled={disableBug}
+                        transparent
+                    />
+
                     <IconButtonLarge
                         name='settings-sharp'
                         size={24}
                         onPress={() => setModal('SETTINGS')}
+                        transparent
                     />
                 </View>
             )}
         </View>
     )
 }
+
+export default Footer

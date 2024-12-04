@@ -3,8 +3,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import {
     // BipScreen,
     // BipsScreen,
+    BugScreen,
     FeedScreen,
-    // ForumScreen,
     HomeScreen,
     // MapScreen,
     // MailScreen,
@@ -12,10 +12,7 @@ import {
     // SimpleScreen,
     WorkScreen,
 } from '@screens'
-import {
-    ContactsNavigator,
-    UserNavigator,
-} from './navigators'
+import { AppNavigator, ContactsNavigator, UserNavigator } from './navigators'
 
 // const BipStack = createNativeStackNavigator()
 // const BipStackScreen = () => {
@@ -93,7 +90,8 @@ const AppStackScreen = () => {
         <AppStack.Navigator
             initialRouteName='Home'
             screenOptions={{
-                headerShown: false,
+                headerShown: true,
+                header: props => <BugNavBar {...props} />
             }}
         >
 
@@ -103,13 +101,6 @@ const AppStackScreen = () => {
                 // component={HomeScreen}
                 options={{ title: 'Home' }}
             />
-
-            {/* <AppStack.Screen
-                name='Contact'
-                // children={props => <ContactNavigator {...props} />}
-                component={ContactNavigator}
-                options={{ title: 'Contact' }}
-            /> */}
 
             <AppStack.Screen
                 name='Contacts'
@@ -132,12 +123,12 @@ const AppStackScreen = () => {
                 options={{ title: 'Feed' }}
             />
 
-            {/* <AppStack.Screen
-                name='Forum'
-                children={props => <ForumScreen {...props} />}
-                // component={ForumScreen}
-                options={{ title: 'Forum' }}
-            /> */}
+            <AppStack.Screen
+                name='Bugs'
+                children={props => <BugScreen {...props} />}
+                // component={BugScreen}
+                options={{ title: 'Bugs' }}
+            />
 
             {/* <AppStack.Screen
                 name='Mail'

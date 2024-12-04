@@ -1,20 +1,13 @@
 import React, { useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { Form, ImagePickerMini, ModalHeader, SimpleButton } from '@components'
-import Modal from 'react-native-modal'
+// import { ImagePickerMini } from '@components'
 import { useApp } from '@app'
 import { useUser } from '@user'
 import { uploadImage } from '@utils/images'
+import { BugForm } from './components'
+import Modal from 'react-native-modal'
 
-const FeedModal = ({ modal, onCancel, onSubmit }) => {
-
-    const fields = [
-        {
-            name: 'text',
-            placeholder: 'share something...',
-            multiline: true,
-        },
-    ]
+const BugModal = ({ modal, onCancel, onSubmit }) => {
 
     const { dims } = useApp()
     const { setUploading } = useUser()
@@ -37,22 +30,22 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
     }
 
     const handleSubmit = async data => {
-        let postData = data
-        console.log('postData', postData)
+        let bugData = data
         if (imageData) {
             console.log('imageData', imageData)
             const image = await handleUpload()
             console.log('image', image)
             if (image) {
-                postData = {
-                    ...postData,
+                bugData = {
+                    ...bugData,
                     images: [image._id],
                 }
             }
         }
+
+        console.log('bugData', bugData)
         
-        console.log('postData', postData)
-        onSubmit(postData)
+        onSubmit(bugData)
     }
 
     return (
@@ -63,10 +56,7 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
             animationType='fade'
             transparent={true}
             onRequestClose={onCancel}
-            style={{
-                // flex: 1,
-                margin: 0,
-            }}
+            // style={{ margin: 0 }}
         >
             <View
                 style={{
@@ -91,7 +81,6 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
 
                 <View
                     style={{
-                        // flex: 1,
                         width: '92%',
                         maxWidth: 380,
                         marginHorizontal: 'auto',
@@ -101,11 +90,6 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
                         zIndex: 100,
                     }}
                 >
-                    <ModalHeader
-                        title='Create Post'
-                        onClose={onCancel}
-                    />
-
 
                     <View
                         style={{
@@ -114,18 +98,19 @@ const FeedModal = ({ modal, onCancel, onSubmit }) => {
                             paddingVertical: 10,
                         }}
                     >
-                        <Form
-                            fields={fields}
+
+                        <BugForm
                             onCancel={onCancel}
                             onSubmit={handleSubmit}
                         />
                         
-                        <ImagePickerMini onSelection={setImageData} />
+                        {/* <ImagePickerMini onSelection={setImageData} /> */}
                     </View>
+
                 </View>
             </View>
         </Modal>
     )
 }
 
-export default FeedModal
+export default BugModal

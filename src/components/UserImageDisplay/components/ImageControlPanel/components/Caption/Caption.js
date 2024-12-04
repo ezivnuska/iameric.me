@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Form, IconButton, DefaultText } from '@components'
-import { useForm } from '@form'
+import { useForm } from '@components/Form'
 import { useUser } from '@user'
 import { setCaption } from '@utils/images'
 

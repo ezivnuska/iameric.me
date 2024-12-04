@@ -2,7 +2,6 @@ import Auth from './Auth'
 // import Bipster from './Bipster'
 import Contacts from './Contacts'
 import Feed from './Feed'
-// import Forum from './Forum'
 // import Mail from './Mail'
 // import Map from './Map'
 import Modal from './Modal'
@@ -18,7 +17,6 @@ export {
     // Bipster,
     Contacts,
     Feed,
-    // Forum,
     // Mail,
     // Map,
     Modal,

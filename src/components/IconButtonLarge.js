@@ -45,7 +45,7 @@ const IconButtonLarge = ({
             size={size}
             color={transparent
                 ? disabled
-                    ? '#000'
+                    ? 'rgba(0, 0, 0, 0.5)'
                     : color
                 : '#fff'
             }
@@ -61,7 +61,7 @@ const IconButtonLarge = ({
                 bold
                 color={transparent
                     ? disabled
-                        ? '#000'
+                        ? 'rgba(0, 0, 0, 0.5)'
                         : color
                     : '#fff'
                 }

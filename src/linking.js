@@ -2,6 +2,20 @@ const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
+            Bips: {
+                path: 'bips',
+                screens: {
+                    BipList: {
+                        path: '',
+                    },
+                    Bip: {
+                        path: 'bip/:id',
+                    },
+                }
+            },
+            Bugs: {
+                path: 'bugs',
+            },
             Contacts: {
                 path: 'users',
                 screens: {
@@ -19,9 +33,6 @@ const linking = {
             Feed: {
                 path: 'feed',
             },
-            Forum: {
-                path: 'forum',
-            },
             Home: {
                 path: '',
             },
@@ -33,17 +44,6 @@ const linking = {
             },
             Play: {
                 path: 'play',
-            },
-            Bips: {
-                path: 'bips',
-                screens: {
-                    BipList: {
-                        path: '',
-                    },
-                    Bip: {
-                        path: 'bip/:id',
-                    },
-                }
             },
             Simple: {
                 path: 'simple',

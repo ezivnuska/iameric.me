@@ -32,11 +32,11 @@ export const FeedContextProvider = props => {
 
     const loadFeed = async () => {
         dispatch({ type: 'SET_FEED_LOADING', payload: true })
-        const posts = await loadPosts()
+        const payload = await loadPosts()
         dispatch({ type: 'SET_FEED_LOADING', payload: false })
         
-        if (!posts) console.log('could not load feed')
-        else dispatch({ type: 'SET_POSTS', payload: posts })
+        if (!payload) console.log('could not load posts')
+        else dispatch({ type: 'SET_POSTS', payload })
 
         dispatch({ type: 'SET_FEED_LOADED' })
     }

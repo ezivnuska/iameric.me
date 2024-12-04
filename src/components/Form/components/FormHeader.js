@@ -4,8 +4,8 @@ import {
     View,
 } from 'react-native'
 import { DefaultText } from '@components'
+import { useForm } from '../'
 import { useApp } from '@app'
-import { useForm } from '@form'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const FormHeader = ({ title, close = null, color = '#000' }) => {

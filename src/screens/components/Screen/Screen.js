@@ -38,7 +38,7 @@ const Screen = ({ children, secure = false, ...props }) => {
             </ScrollView>
 
             <View style={{ flexGrow: 0 }}>
-                <Footer />
+                <Footer {...props} />
             </View>
 
         </View>

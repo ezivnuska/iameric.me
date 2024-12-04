@@ -5,7 +5,7 @@ import React, {
     useMemo,
     useReducer,
 } from 'react'
-import { getItem } from './utils/storage'
+import { getItem } from '@utils/storage'
 
 const initialState = {
     formError: null,

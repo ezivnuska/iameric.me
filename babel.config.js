@@ -41,7 +41,6 @@ module.exports = {
           '@components':    './src/components',
           '@contacts':      './src/modules/Contacts',
           '@feed':          './src/modules/Feed',
-          '@forum':         './src/modules/Forum',
           '@mail':          './src/modules/Mail',
           '@modal':         './src/modules/Modal',
           '@notification':  './src/modules/Notification',

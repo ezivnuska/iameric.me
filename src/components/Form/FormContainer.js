@@ -3,10 +3,10 @@ import { View } from 'react-native'
 import { FormField, FormHeader } from './components'
 import { SimpleButton } from '@components'
 import { useUser } from '@user'
-import { useForm } from '@form'
+import { useForm } from '.'
 import { getFields, validateFields } from './utils'
 
-const Form = ({
+const FormContainer = ({
     title,
     fields,
     onSubmit,
@@ -147,11 +147,15 @@ const Form = ({
         <View
             style={{
                 flex: 1,
-                // paddingBottom: 10,
-                // paddingHorizontal: 10,
             }}
         >
-            {title && <FormHeader title={title} color={color} />}
+            {title && (
+                <FormHeader
+                    title={title}
+                    color={color}
+                    close={onCancel}
+                />
+            )}
 
             {formReady && renderFields(formFields)}
 
@@ -165,4 +169,4 @@ const Form = ({
     ) : null
 }
 
-export default Form
+export default FormContainer

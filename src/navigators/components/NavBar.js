@@ -5,7 +5,11 @@ import { useUser } from '@user'
 
 const NavBar = ({ root, navigation, route }) => {
 
-    const { user } = useUser()
+    const {
+        uploading,
+        user,
+        setUserModal,
+    } = useUser()
 
     return (
         <View
@@ -32,7 +36,7 @@ const NavBar = ({ root, navigation, route }) => {
                     style={{ paddingRight: 10 }}
                 >
                     <DefaultText
-                        size={20}
+                        size={24}
                         color={route.name !== root ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                         bold
                     >
@@ -48,11 +52,11 @@ const NavBar = ({ root, navigation, route }) => {
                         style={{
                             paddingHorizontal: 10,
                             borderLeftWidth: 1,
-                            borderLeftColor: 'rgba(0, 0, 0, 0.74)',
+                            borderLeftColor: 'rgba(0, 0, 0, 0.5)',
                         }}
                     >
                         <DefaultText
-                            size={20}
+                            size={24}
                             bold
                             color='rgba(0, 0, 0, 0.75)'
                             
@@ -71,11 +75,11 @@ const NavBar = ({ root, navigation, route }) => {
                         style={{
                             paddingHorizontal: 10,
                             borderLeftWidth: 1,
-                            borderLeftColor: 'rgba(0, 0, 0, 0.74)',
+                            borderLeftColor: 'rgba(0, 0, 0, 0.5)',
                         }}
                     >
                         <DefaultText
-                            size={20}
+                            size={24}
                             color={route.name === 'Contact' ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
                             bold
                         >
@@ -90,11 +94,11 @@ const NavBar = ({ root, navigation, route }) => {
                         style={{
                             paddingHorizontal: 10,
                             borderLeftWidth: 1,
-                            borderLeftColor: 'rgba(0, 0, 0, 0.74)',
+                            borderLeftColor: 'rgba(0, 0, 0, 0.5)',
                         }}
                     >
                         <DefaultText
-                            size={20}
+                            size={24}
                             bold
                             color='rgba(0, 0, 0, 0.75)'
                         >
@@ -110,10 +114,25 @@ const NavBar = ({ root, navigation, route }) => {
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        height: 40,
-                        gap: 15,
+                        // height: 40,
+                        // gap: 15,
                     }}
                 >
+                    {root === 'Profile' && (
+                        <IconButton
+                            name='add-outline'
+                            onPress={() => setUserModal('IMAGE_UPLOAD')}
+                            color={!uploading ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
+                            size={28}
+                            disabled={uploading}
+                            style={{
+                                paddingHorizontal: 5,
+                                borderRightWidth: 1,
+                                borderRightColor: 'rgba(0, 0, 0, 0.5)',
+                            }}
+                        />
+                    )}
+
                     <IconButton
                         name='grid-outline'
                         onPress={() => navigation.navigate('Images', {
@@ -123,6 +142,9 @@ const NavBar = ({ root, navigation, route }) => {
                         color={route.params?.list ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                         size={22}
                         disabled={!route.params?.list}
+                        style={{
+                            paddingHorizontal: 10,
+                        }}
                     />
 
                     <IconButton
@@ -134,7 +156,11 @@ const NavBar = ({ root, navigation, route }) => {
                         color={route.params?.list ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
                         size={30}
                         disabled={route.params?.list}
-                        style={{ paddingTop: 3 }}
+                        // style={{
+                        //     paddingLeft: 10,
+                        //     borderLeftWidth: 1,
+                        //     borderLeftColor: 'rgba(0, 0, 0, 0.75)',
+                        // }}
                     />
                 </View>
             )}

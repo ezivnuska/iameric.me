@@ -24,9 +24,6 @@
       "@feed": [
         "./src/modules/Feed/index.js"
       ],
-      "@forum": [
-        "./src/modules/Forum/index.js"
-      ],
       "@mail": [
         "./src/modules/Mail/index.js"
       ],

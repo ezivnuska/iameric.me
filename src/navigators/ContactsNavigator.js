@@ -23,15 +23,15 @@ const ContactsNavigator = () => {
 
             <ContactsStack.Screen
                 name='Contact'
-                // children={props => <ContactNavigator {...props} />}
+                // children={props => <ContactScreen {...props} />}
                 component={ContactScreen}
                 options={{ title: 'Contact' }}
             />
 
             <ContactsStack.Screen
                 name='Images'
-                // component={ContactScreen}
-                children={props => <ContactScreen {...props} />}
+                component={ContactScreen}
+                // children={props => <ContactScreen {...props} />}
                 options={{ title: 'Images' }}
             />
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Form, SimpleButton } from '@components'
-import { useApp } from '@app'
-import { useForm } from '@form'
+// import { useApp } from '@app'
+import { useForm } from '@components/Form'
 import { useModal } from '@modal'
 import { useSocket } from '@socket'
 import { useUser } from '@user'
@@ -11,7 +11,7 @@ import { setItem, storeToken } from '@utils/storage'
 
 const AuthView = () => {
     
-    const { authRoute, setAuthRoute } = useApp()
+    // const { authRoute, setAuthRoute } = useApp()
     const { user, setUser } = useUser()
     const {
         clearFormError,

@@ -7,8 +7,20 @@ const navigationRef = createNavigationContainerRef()
 
 export const navigate = (nextRoute, params) => {
     if (navigationRef.isReady()) {
-        if (params) navigationRef.dispatch(CommonActions.navigate(nextRoute, params))
-        else navigationRef.dispatch(CommonActions.navigate(nextRoute))
+        navigationRef.dispatch(CommonActions.navigate(nextRoute, params || null))
+        
+        // navigationRef.dispatch((state) => {
+        //     // Remove all the screens after `Profile`
+        //     // const index = state.routes.findIndex((r) => r.name === 'Profile');
+        //     // const routes = state.routes.slice(0, index + 1);
+          
+        //     return CommonActions.reset({
+        //         ...state,
+        //         index: 0,
+        //     })
+        // })
+          
+          
     }
 }
 

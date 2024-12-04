@@ -1,12 +1,13 @@
 // common
 import ActivityIndicator from './ActivityIndicator'
-// import AddressView from './NOT_IN_USE/AddressView'
+// import AddressView from './AddressView'
+import Bugs from './Bugs'
 import Cabinet from './Cabinet'
 import Checkbox from './Checkbox'
 import ContactImageDisplay from './ContactImageDisplay'
 import Contact from './Contact'
 import ContactImages from './ContactImages'
-// import Counter from './NOT_IN_USE/Counter'
+// import Counter from './Counter'
 import DefaultText from './DefaultText'
 import Form from './Form'
 import IconButton from './IconButton'
@@ -16,7 +17,7 @@ import ImageContainer from './ImageContainer'
 import ImageList from './ImageList'
 import ImagePicker from './ImagePicker/ImagePicker'
 import ImagePickerMini from './ImagePickerMini'
-// import InfoMarker from './NOT_IN_USE/InfoMarker'
+// import InfoMarker from './InfoMarker'
 import ModalHeader from './ModalHeader'
 import ProfileImage from './ProfileImage'
 import ProfileNav from './ProfileNav'
@@ -34,6 +35,7 @@ import UserImageDisplay from './UserImageDisplay'
 export {
     ActivityIndicator,
     // AddressView,
+    Bugs,
     Cabinet,
     Checkbox,
     ContactImageDisplay,

@@ -3,7 +3,7 @@
 import ContactScreen from './ContactScreen'
 import ContactsScreen from './ContactsScreen'
 import FeedScreen from './FeedScreen'
-// import ForumScreen from './ForumScreen'
+import BugScreen from './BugScreen'
 import HomeScreen from './HomeScreen'
 // import MailScreen from './MailScreen'
 // import MapScreen from './MapScreen'
@@ -18,7 +18,7 @@ export {
     ContactScreen,
     ContactsScreen,
     FeedScreen,
-    // ForumScreen,
+    BugScreen,
     HomeScreen,
     // MapScreen,
     // MailScreen,

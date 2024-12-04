@@ -1,9 +1,9 @@
-import ContactNavigator from './ContactNavigator'
+import AppNavigator from './AppNavigator'
 import ContactsNavigator from './ContactsNavigator'
 import UserNavigator from './UserNavigator'
 
 export {
-    ContactNavigator,
+    AppNavigator,
     ContactsNavigator,
     UserNavigator,
 }
