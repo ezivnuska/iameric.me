@@ -67,7 +67,7 @@ const Caption = ({
                     gap: 10,
                 }}
             >
-                <View style={{ flexGrow: 1 }}>
+                <View style={{ flexGrow: 0 }}>
 
                     <View
                         style={{

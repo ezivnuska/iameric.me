@@ -14,7 +14,7 @@ const UserScreen = props => {
         user,
         userModal,
         closeUserModal,
-        clearUserModals,
+        // clearUserModals,
         initImages,
         setUserModal,
     } = useUser()
@@ -59,7 +59,7 @@ const UserScreen = props => {
 
             <UserModal
                 modal={userModal}
-                onClose={clearUserModals}
+                onClose={closeUserModal}
             />
 
         </Screen>
