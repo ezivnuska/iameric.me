@@ -4,7 +4,7 @@ import {
     View,
 } from 'react-native'
 import { DefaultText } from '@components'
-import { useApp } from '@app'
+import { useApp } from '@context'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const ModalHeader = ({ children, title, color = null, onClose = null, ...props }) => {

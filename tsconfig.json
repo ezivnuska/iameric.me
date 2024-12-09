@@ -10,50 +10,50 @@
         "./sounds/*"
       ],
       "@app": [
-        "src/AppContext.js"
+        "./src/context/AppContext.js"
       ],
-      "@bips": [
-        "src/modules/BipList/index.js"
-      ],
+      // "@bips": [
+      //   "src/modules_old/BipList/index.js"
+      // ],
       "@components": [
         "./src/components/index.js"
       ],
-      "@contacts": [
-        "./src/modules/Contacts/index.js"
+      "@context": [
+        "./src/context/index.js"
       ],
       "@feed": [
-        "src/components/Feed/index.js"
+        "./src/context/FeedContext.js"
       ],
-      "@mail": [
-        "./src/modules/Mail/index.js"
-      ],
+      // "@mail": [
+      //   "src/modules_old/Mail/index.js"
+      // ],
       "@modal": [
-        "./src/modules/Modal/index.js"
+        "./src/context/ModalContext.js"
       ],
       "@notification": [
-        "./src/modules/Notification/index.js"
+        "./src/context/NotificationContext.js"
       ],
-      "@play": [
-        "./src/modules/Play/index.js"
-      ],
+      // "@play": [
+      //   "src/modules_old/Play/index.js"
+      // ],
       "@socket": [
-        "src/modules/Socket/index.js"
+        "src/context/SocketContext.js"
       ],
-      "@form": [
-        "src/FormContext.js"
-      ],
+      // "@form": [
+      //   "src/context/index.js"
+      // ],
       // "@forms": [
       //   "src/modules/Form/forms_old/index.js"
       // ],
-      "@images": [
-        "src/modules/Images_old/index.js"
-      ],
+      // "@images": [
+      //   "src/modules/Images/index.js"
+      // ],
       "@layout": [
         "./src/Layout/index.js"
       ],
-      "@modules": [
-        "./src/modules/index.js"
-      ],
+      // "@modules": [
+      //   "src/modules_old/index.js"
+      // ],
       "@screens": [
         "./src/screens/index.js"
       ],
@@ -61,7 +61,7 @@
         "./src/styles/index.js"
       ],
       "@user": [
-        "./src/modules/User/index.js"
+        "./src/context/UserContext.js"
       ],
       "@utils": [
         "./src/utils/index.js"

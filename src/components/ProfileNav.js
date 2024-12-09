@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { IconButtonLarge, DefaultText } from '@components'
-import { useUser } from '@user'
+import { useUser } from '@context'
 
 const ProfileNav = ({ navigation, contact = null }) => {
 

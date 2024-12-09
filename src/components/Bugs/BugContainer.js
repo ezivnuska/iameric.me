@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ScreenHeader, DefaultText } from '@components'
+import { ScreenHeader, DefaultText } from '..'
 import { BugList, BugNavBar } from './components'
-import { BugModal, useBugs } from '.'
-import { useSocket } from '@socket'
-import { createEntry, deleteEntryWithId } from './utils'
+import { useBugs, useModal, useSocket } from '@context'
+import { createEntry, deleteEntryWithId } from '@utils/bugs'
 
 const BugContainer = props => {
 
@@ -12,12 +11,9 @@ const BugContainer = props => {
         addBug,
         deleteBug,
         bugs,
-        bugModal,
-        closeBugModal,
-        setBugModal,
         setBugsLoading,
     } = useBugs()
-
+    const { setModal, closeModal } = useModal()
     const { socket } = useSocket()
 
     const [ sortedThreads, setSortedThreads ] = useState([])
@@ -64,16 +60,16 @@ const BugContainer = props => {
         setBugsLoading(false)
         socket.emit('entry_deleted', id)
         deleteBug(id)
-        closeBugModal()
+        closeModal()
     }
 
-    const handleSubmit = async data => {
-        const bug = await createEntry(data)
-        addBug(bug)
-        socket.emit('new_entry', bug)
-        closeBugModal()
-        // return bug
-    }
+    // const handleSubmit = async data => {
+    //     const bug = await createEntry(data)
+    //     addBug(bug)
+    //     socket.emit('new_entry', bug)
+    //     closeModal()
+    //     // return bug
+    // }
 
     const renderThreads = threads => (
         <View style={{ flexGrow: 0 }}>
@@ -112,11 +108,11 @@ const BugContainer = props => {
                 }
             </View>
 
-            <BugModal
+            {/* <BugModal
                 modal={bugModal}
                 onCancel={closeBugModal}
                 onSubmit={handleSubmit}
-            />
+            /> */}
                 
         </View>
     )

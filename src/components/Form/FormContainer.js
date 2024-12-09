@@ -2,8 +2,7 @@ import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { FormField, FormHeader } from './components'
 import { SimpleButton } from '@components'
-import { useUser } from '@user'
-import { useForm } from '.'
+import { useForm, useUser } from '@context'
 import { getFields, validateFields } from './utils'
 
 const FormContainer = ({

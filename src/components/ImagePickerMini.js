@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { ActivityIndicator, Checkbox, IconButtonLarge, ImageClone, ImageContainer, ProfileImage, SimpleButton, DefaultText } from '@components'
-import { useUser } from '@user'
+import { useUser } from '@context'
 import {
     getMaxImageDims,
     handleImageData,

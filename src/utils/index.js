@@ -1,17 +1,20 @@
 import * as auth from './auth'
-import compose from './compose'
+import * as bugs from './bugs'
 import * as contacts from './contacts'
-import getModifiedColor from './getModifiedColor'
-import destroy from './destroy'
 // import * as forum from '../modules'
 import * as images from './images'
 import * as map from './map'
 import * as mail from './mail'
-import navigation from './navigation'
 import * as storage from './storage'
+
+import compose from './compose'
+import getModifiedColor from './getModifiedColor'
+import destroy from './destroy'
+import navigation from './navigation'
 
 export {
     auth,
+    bugs,
     compose,
     contacts,
     destroy,

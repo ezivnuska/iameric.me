@@ -1,6 +1,6 @@
 import React from 'react'
-import { Screen } from './components'
-import Bugs, { BugContextProvider } from '@components/Bugs'
+import { Bugs, Screen } from '@components'
+import { BugContextProvider } from '@context'
     
 const BugScreen = props => (
     <Screen secure {...props}>

@@ -1,2 +1,2 @@
-import ImagePicker from 'ImagePicker'
+import ImagePicker from './ImagePicker'
 export default ImagePicker

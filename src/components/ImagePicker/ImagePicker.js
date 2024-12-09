@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { SimpleButton } from '@components'
 import { ImagePreview } from './components'
-import { useUser } from '@user'
+import { useModal, useUser } from '@context'
 import {
     getMaxImageDims,
     handleImageData,
@@ -11,7 +11,7 @@ import {
 } from '@utils/images'
 import EXIF from 'exif-js'
 
-const ImagePicker = ({ onClose, avatar = false }) => {
+const ImagePicker = ({ data }) => {
 
     const {
         user,
@@ -20,20 +20,23 @@ const ImagePicker = ({ onClose, avatar = false }) => {
         setUploading,
         uploading,
     } = useUser()
+    const { closeModal } = useModal()
 
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
-    const [avatarCheckbox, setAvatarCheckbox] = useState(avatar)
+    const [avatarCheckbox, setAvatarCheckbox] = useState(data?.avatar)
     const [maxWidth, setMaxWidth] = useState(null)
     const [imageDims, setImageDims] = useState(null)
     const [uploadProgress, setUploadProgress] = useState(null)
 
     const onLayout = e => {
+        console.log('onLayout')
         setMaxWidth(e.nativeEvent.target.offsetParent.clientWidth)
     }
 
     useEffect(() => {
-        // openSelector()
+        console.log('selector')
+        openSelector()
     }, [])
 
     useEffect(() => {
@@ -104,7 +107,7 @@ const ImagePicker = ({ onClose, avatar = false }) => {
         } else {
             addImage(image)
             if (avatarCheckbox) setProfileImage(image)
-            onClose()
+            closeModal()
         }
     }
 
@@ -164,7 +167,7 @@ const ImagePicker = ({ onClose, avatar = false }) => {
 
                         <SimpleButton
                             label='Cancel'
-                            onPress={onClose}
+                            onPress={closeModal}
                             disabled={uploading}
                             color='#fff'
                             transparent

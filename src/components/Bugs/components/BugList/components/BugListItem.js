@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { IconButton, ProfileImage, DefaultText, Time } from '@components'
-import { useUser } from '@user'
-import { useBugs } from '@components/Bugs'
+import { useBugs, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
 const BugListItem = ({ item, onDelete = null }) => {
@@ -62,7 +61,7 @@ const BugListItem = ({ item, onDelete = null }) => {
                         }}
                     >
                         <ProfileImage
-                            user={item.author}
+                            contact={item.author}
                             size={50}
                         />
 

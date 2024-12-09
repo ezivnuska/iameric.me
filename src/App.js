@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import Layout from '@layout'
-import { AppContextProvider, useApp } from '@app'
-import { ContactsContextProvider } from '@contacts'
-import { SocketContextProvider } from '@socket'
-import { NotificationContextProvider } from '@notification'
-import { ModalContextProvider } from '@modal'
-import { FormContextProvider } from '@components/Form'
-import { UserContextProvider } from '@user'
+import Layout from './Layout'
+import {
+    AppContextProvider,
+    ContactsContextProvider,
+    FormContextProvider,
+    ModalContextProvider,
+    NotificationContextProvider,
+    SocketContextProvider,
+    useApp,
+    UserContextProvider,
+} from './context'
 import { GOOGLE_MAPS_API_KEY } from '../config'
 import { APIProvider } from '@vis.gl/react-google-maps'
 

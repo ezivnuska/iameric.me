@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { IconButton, ProfileImage, DefaultText, Time } from '@components'
-import { useUser } from '@user'
-import { useFeed } from 'src/components/Feed'
+import { useFeed, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
 const FeedListItem = ({ item, onDelete = null }) => {
@@ -83,7 +82,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                         }}
                     >
                         <ProfileImage
-                            user={item.author}
+                            contact={item.author}
                             size={50}
                         />
 

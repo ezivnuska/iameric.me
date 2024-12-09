@@ -1,11 +1,7 @@
 import React, { useState } from 'react'
-import {
-    Text,
-    TextInput,
-    View,
-} from 'react-native'
+import { Text, TextInput, View } from 'react-native'
 import { DefaultText } from '@components'
-import { useApp } from '@app'
+import { useApp } from '@context'
 
 const FormField = ({
     name,
@@ -23,7 +19,7 @@ const FormField = ({
     const { theme } = useApp()
 
     useState(() => {
-        if (error) console.log('error:', error)
+        if (dirty && error) console.log('error:', error)
     }, [error])
 
     return (

@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { Form, ImagePickerMini, ModalHeader } from '@components'
 import Modal from 'react-native-modal'
-import { useApp } from '@app'
-import { useUser } from '@user'
+import { useApp } from '@context'
+import { useUser } from '@context'
 import { uploadImage } from '@utils/images'
 
 const FeedModal = ({ modal, onCancel, onSubmit }) => {

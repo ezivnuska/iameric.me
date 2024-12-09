@@ -1,12 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View } from 'react-native'
-import { Screen } from './components'
-import { Contact, ContactImages } from '@components'
-import { ContactsModal, useContacts } from '@contacts'
+import { Contact, ContactImages, Screen } from '@components'
+// import { useContacts } from '@context'
 
 const ContactScreen = props => {
     
-    const { setContact } = useContacts()
+    // const { setContact } = useContacts()
 
     // useEffect(() => {
     //     return () => {
@@ -44,7 +43,7 @@ const ContactScreen = props => {
                 {renderContent()}
             </View>
 
-            <ContactsModal />
+            {/* <ContactsModal /> */}
         </Screen>
     )
 }

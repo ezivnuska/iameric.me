@@ -2,9 +2,9 @@ import React, { useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { ImageGridItem, ImageListItem } from './components'
 import { ActivityIndicator } from '@components'
-import { useApp } from '@app'
+import { useApp } from '@context'
 
-const ImageList = ({ images, onPress, list = false, uploading = null, upload = false }) => {
+const ImageList = ({ images, onPress, list = false, ...props }) => {
 
     const { theme } = useApp()
 
@@ -37,6 +37,7 @@ const ImageList = ({ images, onPress, list = false, uploading = null, upload = f
     
     return (
         <View
+            {...props}
             onLayout={onLayout}
         >
             {imageSize ? (

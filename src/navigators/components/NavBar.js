@@ -1,15 +1,14 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { DefaultText, IconButton } from '@components'
-import { useUser } from '@user'
+import { useModal } from '@context'
+import { useUser } from '@context'
 
 const NavBar = ({ root, navigation, route }) => {
 
-    const {
-        uploading,
-        user,
-        setUserModal,
-    } = useUser()
+    const { uploading, user } = useUser()
+
+    const { setModal } = useModal()
 
     return (
         <View
@@ -121,7 +120,7 @@ const NavBar = ({ root, navigation, route }) => {
                     {root === 'Profile' && (
                         <IconButton
                             name='add-outline'
-                            onPress={() => setUserModal('IMAGE_UPLOAD')}
+                            onPress={() => setModal('IMAGE_UPLOAD')}
                             color={!uploading ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                             size={28}
                             disabled={uploading}

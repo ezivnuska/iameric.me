@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { DefaultText, IconButton } from '@components'
-import { useFeed } from '@components/Feed'
+import { useFeed } from '@context'
 import { navigate } from '@utils/navigation'
 
 const FeedNavBar = ({ route, ...props }) => {

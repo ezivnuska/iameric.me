@@ -1,22 +1,20 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
 import { FeedList, FeedNavBar } from './components'
-import { FeedModal, useFeed } from '.'
-import { DefaultText, ScreenHeader } from '@components'
-import { useSocket } from '@socket'
+import { useFeed, useModal, useSocket } from '@context'
+import { DefaultText } from '@components'
 import { createPost, deletePostWithId } from './utils'
 
-const Feed = props => {
+const FeedContainer = props => {
 
     const {
-        feedModal,
-        closeFeedModal,
-        setFeedModal,
         addPost,
         posts,
         deletePost,
         setFeedLoading,
     } = useFeed()
+
+    const { closeModal } = useModal()
     
     const { socket } = useSocket()
 
@@ -57,7 +55,7 @@ const Feed = props => {
         setFeedLoading(false)
         socket.emit('post_deleted', id)
         deletePost(id)
-        closeFeedModal()
+        closeModal()
     }
 
     const handleSubmit = async data => {
@@ -66,7 +64,7 @@ const Feed = props => {
             addPost(post)
             socket.emit('new_post', post)
         }
-        closeFeedModal()
+        closeModal()
         return post
     }
 
@@ -114,15 +112,9 @@ const Feed = props => {
                     )
                 }
             </View>
-
-            <FeedModal
-                modal={feedModal}
-                onCancel={closeFeedModal}
-                onSubmit={handleSubmit}
-            />
                 
         </View>
     )
 }
 
-export default Feed
+export default FeedContainer
