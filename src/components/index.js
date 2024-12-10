@@ -5,7 +5,7 @@ import AuthForm from './AuthForm'
 import BugForm from './BugForm'
 import Bugs from './Bugs'
 import Cabinet from './Cabinet'
-import Checkbox from './Checkbox/Checkbox'
+import Checkbox from './Checkbox'
 import Contact from './Contact'
 // import ContactImage from './ContactImage'
 import ContactImages from './ContactImages'
@@ -15,9 +15,9 @@ import DefaultText from './DefaultText'
 import Feed from './Feed'
 import Footer from './Footer'
 import Form from './Form'
-import Header from './Header'
-import IconButton from './IconButton/IconButton'
-import IconButtonLarge from './IconButtonLarge/IconButtonLarge'
+import MainHeader from './MainHeader'
+import IconButton from './IconButton'
+import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
 import ImageDisplay from './ImageDisplay'
 import ImageList from './ImageList'
@@ -29,7 +29,7 @@ import ModalView from './ModalView'
 import ModalHeader from './ModalHeader'
 import Notification from './Notification'
 import Resume from './Resume'
-import ProfileImage from './ProfileImage/ProfileImage'
+import ProfileImage from './ProfileImage'
 import ProfileNav from './ProfileNav'
 import Screen from './Screen'
 import ScreenHeader from './ScreenHeader'
@@ -61,7 +61,7 @@ export {
     Feed,
     Footer,
     Form,
-    Header,
+    MainHeader,
     IconButton,
     IconButtonLarge,
     ImageClone,

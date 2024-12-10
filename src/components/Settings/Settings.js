@@ -1,6 +1,6 @@
 import React from'react'
 import { View } from'react-native'
-import { Cabinet, Form, SimpleButton } from '.'
+import { Cabinet, Form, SimpleButton } from '@components'
 import { navigate } from '@utils/navigation'
 
 const Settings = () => (

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { View } from 'react-native'
-import { IconButtonLarge, SimpleButton } from '.'
+import { IconButtonLarge, SimpleButton } from '..'
 import { useModal, useSocket, useUser } from '@context'
 import navigationRef from '@utils/navigation'
 

@@ -1,12 +1,12 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { ProfileImage, SimpleButton, DefaultText } from '.'
+import { ProfileImage, SimpleButton, DefaultText } from '..'
 import { useModal } from '@context'
 import { navigate } from '@utils/navigation'
 
 const HEADER_HEIGHT = 70
 
-const Header = ({ user, route }) => {
+const MainHeader = ({ user, route }) => {
 
     const { setModal } = useModal()
 
@@ -81,4 +81,4 @@ const Header = ({ user, route }) => {
     )
 }
 
-export default Header
+export default MainHeader

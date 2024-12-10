@@ -4,7 +4,7 @@ import { SafeAreaView, View } from 'react-native'
 // import AppNavigation from '../AppNavigation'
 import { AppNavigator } from '../navigators'
 import linking from '../linking'
-import { Header, ModalView, Notification } from '@components'
+import { MainHeader, ModalView, Notification } from '@components'
 import { useApp, useModal, useUser } from '@context'
 import navigationRef from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
@@ -73,7 +73,7 @@ const Layout = () => {
                     >
 
                         <View style={{ flexGrow: 0, zIndex: 1000 }}>
-                            <Header user={user} route={currentRoute} />
+                            <MainHeader user={user} route={currentRoute} />
                         </View>
                         
                         <View
