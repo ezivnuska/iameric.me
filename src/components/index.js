@@ -25,8 +25,7 @@ import ImageMax from './ImageMax'
 import ImagePicker from './ImagePicker'
 import ImagePickerMini from './ImagePickerMini'
 // import InfoMarker from './InfoMarker'
-import ModalView from './ModalView'
-import ModalHeader from './ModalHeader'
+import ModalFactory from './ModalFactory'
 import Notification from './Notification'
 import Resume from './Resume'
 import ProfileImage from './ProfileImage'
@@ -39,11 +38,12 @@ import SimpleButton from './SimpleButton'
 import Socket from './Socket'
 import SplitScreen from './SplitScreen'
 import Switch from './Switch'
+import TextCopy from './TextCopy'
+import TextHeading from './TextHeading'
+import TextPressable from './TextPressable'
 import ThumbList from './ThumbList'
 import Time from './Time'
 import User from './User'
-// import UserImage from './NOT_IN_USE/UserImage'
-// import UserImageDisplay from './NOT_IN_USE/UserImageDisplay'
 
 export {
     ActivityIndicator,
@@ -58,10 +58,10 @@ export {
     ContactImages,
     ContactsList,
     // Counter,
+    DefaultText,
     Feed,
     Footer,
     Form,
-    MainHeader,
     IconButton,
     IconButtonLarge,
     ImageClone,
@@ -71,8 +71,8 @@ export {
     ImagePicker,
     ImagePickerMini,
     // InfoMarker,
-    ModalView,
-    ModalHeader,
+    MainHeader,
+    ModalFactory,
     Notification,
     ProfileImage,
     ProfileNav,
@@ -85,10 +85,10 @@ export {
     Socket,
     SplitScreen,
     Switch,
-    DefaultText,
+    TextCopy,
+    TextHeading,
+    TextPressable,
     ThumbList,
     Time,
     User,
-    // UserImage,
-    // UserImageDisplay,
 }

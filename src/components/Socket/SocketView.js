@@ -1,28 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
-import { Heading, DefaultText } from '..'
-import { useApp, useSocket, useUser } from '@context'
+import { DefaultText } from '@components'
+import { useApp } from '@context'
 
-const SocketView = () => {
-    const { theme } = useApp()
-    const { user } = useUser()
-    const {
-        connections,
-        socket,
-    } = useSocket()
-    
-    const getShortId = id => {
-        if (!id) return ''
-        const prefix = '-'
-        const last = id.substring(id.length - 3)
-        return `Guest${prefix}${last}`
-    }
-
-    const isConnection = id => id === socket.id
-
-    const getDisplayName = () => {
-        return user ? user.username : getShortId(socket.id)
-    }
+const SocketView = ({ connected, connections, username }) => {
 
     const renderHeading = () => (
         <View
@@ -52,7 +33,7 @@ const SocketView = () => {
                 }}
             >
                 <DefaultText>
-                    {`Connected as ${getDisplayName()}`}
+                    {`Connected as ${username}`}
                 </DefaultText>
             </View>
         </View>
@@ -65,12 +46,11 @@ const SocketView = () => {
 
             <View
                 style={{
-                    
                     paddingHorizontal: 12,
                     paddingVertical: 10,
                     borderRadius: 10,
                     borderWidth: 1,
-                    borderColor: theme?.colors.border,
+                    borderColor: '#000',
                 }}
             >
 
@@ -91,11 +71,11 @@ const SocketView = () => {
                             }}
                         >
                             <DefaultText
-                                color={isConnection(conn.socketId) ? 'tomato' : theme?.colors.textDefault}
-                                bold={isConnection(conn.socketId) ? true : false}
+                                color={connected ? 'tomato' : theme?.colors.textDefault}
+                                bold={connected ? true : false}
                                 size={16}
                             >
-                                {conn.username ? conn.username : getShortId(conn.socketId)}
+                                {conn?.username || username}
                             </DefaultText>
                         </View>
                     ))}

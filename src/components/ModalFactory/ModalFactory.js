@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
 import { AuthForm, BugForm, DefaultText, ImagePicker, ImageDisplay, Settings, Socket } from '@components'
-import { ModalContainer } from './components'
+import { ModalContainer, ModalHeader } from './components'
 import { useApp } from '@context'
 import Modal from 'react-native-modal'
 
@@ -16,6 +16,7 @@ const ModalFactory = ({ modal, onClose }) => {
         const { type, data } = modal
         let content = null
         let fullscreen = false
+        let title = null
         
         switch(type) {
             case 'AUTH': content = <AuthForm />; break
@@ -29,15 +30,19 @@ const ModalFactory = ({ modal, onClose }) => {
                 content = <ImageDisplay data={data} />
                 fullscreen = true
                 break
-            case 'SOCKETS': content = <Socket />; break
+            case 'SOCKETS':
+                content = <Socket />
+                title = 'Connected Users'
+                break
             default: console.log('Modal not found', type)
         }
         
         return (
             <ModalContainer
-                fullscree={fullscreen}
+                fullscreen={fullscreen}
                 onClose={onClose}
             >
+                {title && <ModalHeader title={title} onClose={onClose} />}
                 {content}
             </ModalContainer>
         )

@@ -1,2 +1,2 @@
-import ImagePicker from './ImagePicker'
-export default ImagePicker
+import ImagePickerContainer from './ImagePickerContainer'
+export default ImagePickerContainer

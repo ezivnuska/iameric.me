@@ -10,20 +10,18 @@ const JobList = ({ jobs }) => {
         else setVisible(index)
     }
 
-    const renderJobs = () => jobs.map((section, index) => (
-        <Job
-            section={section}
-            index={index}
-            onPress={() => handleSelection(index)}
-            disabled={index === visible}
-            visible={index === visible}
-            key={`section-${index}`}
-        />
-    ))
-
     return (
         <View style={{ gap: 1, paddingHorizontal: 10 }}>
-            {jobs.length && renderJobs()}
+            {jobs.length && jobs.map((section, index) => (
+                <Job
+                    section={section}
+                    index={index}
+                    onPress={() => handleSelection(index)}
+                    disabled={index === visible}
+                    visible={index === visible}
+                    key={`section-${index}`}
+                />
+            ))}
         </View>
     )
 }

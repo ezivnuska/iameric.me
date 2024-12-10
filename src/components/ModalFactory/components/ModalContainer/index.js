@@ -1,5 +1,3 @@
 import ModalContainer from './ModalContainer'
 
-export {
-    ModalContainer,
-}
+export default ModalContainer

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 import { useApp } from '@context'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Animated, {
@@ -12,7 +13,8 @@ import Animated, {
 
 const Company = ({ name, open }) => (
     <View>
-        <DefaultText bold size={18} color='#fff'>{name}</DefaultText>
+        <TextCopy size={18} color='#fff' bold>{name}</TextCopy>
+        {/* <DefaultText bold size={18} color='#fff'>{name}</DefaultText> */}
     </View>
 )
 
@@ -24,7 +26,7 @@ const Title = ({ title }) => (
 
 const City = ({ city }) => (
     <View>
-        <DefaultText size={18} color='#777'>{city}</DefaultText>
+        <TextCopy size={18} color='#777'>{city}</TextCopy>
     </View>
 )
 
@@ -56,7 +58,7 @@ const BulletListItem = ({ text, ...props }) => (
         </View>
 
         <View style={{ flexShrink: 1 }}>
-            <DefaultText>{text}</DefaultText>
+            <TextCopy>{text}</TextCopy>
         </View>
     </View>
 )

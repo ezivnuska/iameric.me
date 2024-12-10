@@ -1,10 +1,9 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaView, View } from 'react-native'
-// import AppNavigation from '../AppNavigation'
 import { AppNavigator } from '../navigators'
 import linking from '../linking'
-import { MainHeader, ModalView, Notification } from '@components'
+import { MainHeader, ModalFactory, Notification } from '@components'
 import { useApp, useModal, useUser } from '@context'
 import navigationRef from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
@@ -57,7 +56,7 @@ const Layout = () => {
                     onReady={() => setCurrentRoute(navigationRef.getCurrentRoute())}
                     // fallback={<FallbackScreen />} // not working or used, necessary as of yet
                 >
-                    <ModalView
+                    <ModalFactory
                         modal={modal}
                         onClose={closeModal}
                     />

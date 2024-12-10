@@ -1,11 +1,11 @@
 import React from 'react'
-import { Screen, ScreenHeader } from '@components'
+import { Screen, TextHeading } from '@components'
 import Resume from '@components/Resume'
 
 const WorkScreen = props => (
     <Screen {...props}>
 
-        <ScreenHeader label='Work' />
+        <TextHeading>Work</TextHeading>
 
         <Resume />
 

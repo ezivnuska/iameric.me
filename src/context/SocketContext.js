@@ -8,10 +8,23 @@ import React, {
 import { ActivityIndicator } from 'react-native-paper'
 import { useNotification, useUser } from '@context'
 // import { useMail } from '@mail'
-import socket from '../socket'
+// import socket from '../socket'
+
+import { io } from 'socket.io-client'
+
+const path = process.env.NODE_ENV === 'production' ? undefined : `http://localhost:${4000}`
+
+const socket = io(path, {
+    transports: ['websocket'],
+    upgrade: false,
+    // multiplex: false,
+    autoConnect: false,
+    reconnection: false,
+})
 
 const initialState = {
     connections: [],
+    connectionsLoading: true,
     socket: null,
     socketLoaded: false,
     socketLoading: false,
@@ -54,6 +67,7 @@ export const SocketContextProvider = ({ children }) => {
         if (user) {
 
             // notify server of user details
+            dispatch({ type: 'SET_CONNECTIONS_LOADING', payload: false })
 
             socket.emit('user_connected', {
                 userId: user._id,
@@ -134,6 +148,9 @@ export const SocketContextProvider = ({ children }) => {
         notifySocket: async (eventName, ...args) => {
             socket.emit(eventName, ...args)
         },
+        setConnectionsLoading: payload => {
+            dispatch('SET_CONNECTIONS_LOADING', payload)
+        },
     }), [state, dispatch])
     
     return (
@@ -161,6 +178,8 @@ const reducer = (state, action) => {
             return { ...state, socketLoaded: true }; break
         case 'SET_CONNECTIONS':
             return { ...state, connections: payload }; break
+        case 'SET_CONNECTIONS_LOADING':
+            return { ...state, connectionsLoading: payload }; break
         default:
             throw new Error()
     }

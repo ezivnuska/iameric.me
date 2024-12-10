@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { View } from 'react-native'
-import { IconButtonLarge, SimpleButton } from '..'
+import { ActivityIndicator, IconButtonLarge, SimpleButton } from '@components'
 import { useModal, useSocket, useUser } from '@context'
 import navigationRef from '@utils/navigation'
 
@@ -10,7 +10,10 @@ const Footer = ({ route }) => {
 
     const { user } = useUser()
     const { setModal } = useModal()
-    const { connections } = useSocket()
+    const {
+        connections,
+        connectionsLoading,
+    } = useSocket()
 
     const disableBug = useMemo(() => route.name === 'Bugs', [route])
 
@@ -20,16 +23,20 @@ const Footer = ({ route }) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingHorizontal: 10,
+                // paddingHorizontal: 10,
                 height: FOOTER_HEIGHT,
             }}
         >
-            <SimpleButton
-                label={`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
-                onPress={() => setModal('SOCKETS')}
-                color='tomato'
-                transparent
-            />
+            {connectionsLoading ? (
+                <ActivityIndicator size='small' />
+            ) : (
+                <SimpleButton
+                    label={`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
+                    onPress={() => setModal('SOCKETS')}
+                    color='tomato'
+                    transparent
+                />
+            )}
 
             {user && (
                 <View

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Pressable, View } from 'react-native'
+import { View } from 'react-native'
 // import { ImagePickerMini } from '@components'
 import { useApp, useModal, useUser } from '@context'
 import { uploadImage } from '@utils/images'
 import { createEntry } from '@utils/bugs'
-import BugForm from './BugFormView'
+import BugFormView from './BugFormView'
 
 const BugFormContainer = () => {
 
@@ -53,7 +53,7 @@ const BugFormContainer = () => {
 
     return (
         <View>
-            <BugForm
+            <BugFormView
                 onCancel={closeModal}
                 onSubmit={handleSubmit}
             />
