@@ -1,5 +1,4 @@
 import React from 'react'
-import { View } from 'react-native'
 import { Contact, ContactImages, Screen } from '@components'
 
 const ContactScreen = props => {
@@ -31,13 +30,12 @@ const ContactScreen = props => {
     }
 
     return (
-        <Screen secure {...props}>
-
-            <View style={{ paddingHorizontal: 10 }}>
-
-                {renderContent()}
-                
-            </View>
+        <Screen
+            secure
+            full={props.route.name === 'Images' && props.route.params?.list}
+            {...props}
+        >
+            {renderContent()}
         </Screen>
     )
 }

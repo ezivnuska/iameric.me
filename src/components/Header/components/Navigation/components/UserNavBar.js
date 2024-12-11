@@ -18,7 +18,6 @@ const UserNavBar = ({ route }) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingRight: 10,
-                gap: 10,
             }}
         >
             <View

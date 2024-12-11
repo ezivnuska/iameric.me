@@ -50,7 +50,6 @@ const MainHeader = ({ user, landscape = false }) => {
     return (
         <View
             style={{
-                marginBottom: landscape ? 0 : 10,
                 paddingHorizontal: 10,
                 flexDirection: 'row',
                 justifyContent: 'flex-start',

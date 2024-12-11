@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, TextCopy, ImageList } from '@components'
+import { ActivityIndicator, TextCopy } from '@components'
 import { useModal, useUser } from '@context'
 import ContactImagesView from './ContactImagesView'
 
@@ -10,8 +10,6 @@ const ContactImagesContainer = ({ list = false, ...props }) => {
     const {
         userDetails,
         userDetailsLoading,
-        // contactImagesLoaded,
-        // contactImagesLoading,
         initUserDetails,
     } = useUser()
 
@@ -27,7 +25,6 @@ const ContactImagesContainer = ({ list = false, ...props }) => {
         <View style={{ flex: 1 }}>
 
             {
-                // contactImagesLoading
                 !images
                     ? (
                         <ActivityIndicator

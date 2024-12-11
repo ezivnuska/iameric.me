@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
 // import { ImagePickerMini } from '@components'
-import { useApp, useModal, useUser } from '@context'
+import { useBugs, useModal, useSocket, useUser } from '@context'
 import { uploadImage } from '@utils/images'
 import { createEntry } from '@utils/bugs'
 import BugFormView from './BugFormView'
 
 const BugFormContainer = () => {
 
-    const { dims } = useApp()
+    const { addBug } = useBugs()
     const { closeModal } = useModal()
+    const { socket } = useSocket()
     const { setUploading } = useUser()
 
     const [imageData, setImageData] = useState(null)
@@ -31,24 +32,26 @@ const BugFormContainer = () => {
 
     const handleSubmit = async data => {
         let bugData = data
-        if (imageData) {
-            console.log('imageData', imageData)
-            const image = await handleUpload()
-            console.log('image', image)
-            if (image) {
-                bugData = {
-                    ...bugData,
-                    images: [image._id],
-                }
-            }
-        }
-
-        console.log('bugData', bugData)
+        // if (imageData) {
+        //     console.log('imageData', imageData)
+        //     const image = await handleUpload()
+        //     console.log('image', image)
+        //     if (image) {
+        //         bugData = {
+        //             ...bugData,
+        //             images: [image._id],
+        //         }
+        //     }
+        // }
         
-        const bug = await createEntry(data)
+        const bug = await createEntry(bugData)
+
         addBug(bug)
+
         socket.emit('new_entry', bug)
         closeModal()
+
+        return bug
     }
 
     return (

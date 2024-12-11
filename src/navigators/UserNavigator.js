@@ -27,7 +27,10 @@ const UserNavigator = () => {
                 name='Images'
                 // children={props => <UserScreen {...props} />}
                 component={ContactScreen}
-                options={{ title: 'Images' }}
+                options={{
+                    title: 'Images',
+                    gestureEnabled: false,// not working, so far, only tested in brave
+                }}
             />
 
             {/* <UserStack.Screen

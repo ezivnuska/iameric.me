@@ -1,58 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
 import { TextCopy } from '@components'
-import { BugList } from './components'
+import { BugView } from './components'
 import { useBugs, useModal, useSocket } from '@context'
 import { deleteEntryWithId } from '@utils/bugs'
 
 const BugContainer = props => {
 
     const {
+        bugs,
         addBug,
         deleteBug,
-        bugs,
         setBugsLoading,
     } = useBugs()
-    const { setModal, closeModal } = useModal()
-    const { socket } = useSocket()
 
-    const [ sortedThreads, setSortedThreads ] = useState([])
+    const { closeModal } = useModal()
+    const { socket } = useSocket()
 
     useEffect(() => {
         socket.on('new_entry', addBug)
         socket.on('deleted_entry', deleteBug)
     }, [])
-
-    useEffect(() => {
-        if (bugs) {
-            const threads = getSortedThreads()
-            setSortedThreads(threads)
-        }
-    }, [bugs])
-
-    const getThreadIds = () => {
-        let ids = []
-        bugs.map(bug => {
-            if (ids.indexOf(bug._id) < 0) {
-                ids.push(bug._id)
-            }
-        })
-        return ids
-    }
-
-    const getSortedThreads = () => {
-        const threadIds = getThreadIds()
-        const threads = []
-        threadIds.map(threadId => {
-
-            const thread = bugs.filter(bug => (bug.threadId && bug.threadId === threadId) || (!bug.threadId && bug._id === threadId))
-            
-            if (thread.length) {
-                threads.push(thread.reverse())
-            }
-        })
-        return threads
-    }
 
     const removeBug = async id => {
 
@@ -65,20 +33,6 @@ const BugContainer = props => {
         
         closeModal()
     }
-
-    // const renderThreads = threads => (
-    //     <View style={{ flexGrow: 0 }}>
-
-    //         {threads.map((items, index) => (
-    //             <BugList
-    //                 key={`thread-${index}`}
-    //                 bugs={items}
-    //                 onDelete={removeBug}
-    //             />
-    //         ))}
-
-    //     </View>
-    // )
     
     return (
         <View
@@ -89,33 +43,29 @@ const BugContainer = props => {
             }}
         >
             
-            <View style={{ flexGrow: 1 }}>
+            {bugs.length > 0
+                ? (
+                    <View style={{ flexGrow: 1 }}>
 
-                {bugs.length
-                    ? sortedThreads.map((items, index) => (
-                        <BugList
-                            key={`thread-${index}`}
-                            bugs={items}
-                            onDelete={removeBug}
-                        />
-                    ))
-                    // ? renderThreads(sortedThreads)
-                    : (
-                        <TextCopy
-                            size={24}
-                            style={{ lineHeight: 30 }}
-                        >
-                            No bugs to squash.
-                        </TextCopy>
-                    )
-                }
-            </View>
+                        {bugs.map((bug, index) => (
+                            <BugView
+                                key={`bug-${index}`}
+                                item={bug}
+                                onDelete={removeBug}
+                            />
+                        ))}
 
-            {/* <BugModal
-                modal={bugModal}
-                onCancel={closeBugModal}
-                onSubmit={handleSubmit}
-            /> */}
+                    </View>
+                )
+                : (
+                    <TextCopy
+                        size={24}
+                        style={{ lineHeight: 30 }}
+                    >
+                        No bugs to squash.
+                    </TextCopy>
+                )
+            }
                 
         </View>
     )

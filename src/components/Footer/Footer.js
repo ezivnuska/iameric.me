@@ -21,9 +21,10 @@ const Footer = ({ landscape, route }) => {
                 alignItems: 'center',
                 width: '100%',
                 minWidth: 300,
-                maxWidth: landscape ? '100%' : 400,
-                marginHorizontal: landscape ? 0 : 'auto',
+                maxWidth: landscape ? '90%' : 400,
+                marginHorizontal: 'auto',
                 paddingLeft: landscape ? 5 : 0,
+                paddingVertical: landscape ? 5 : 0,
             }}
         >
             <View

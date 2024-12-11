@@ -30,7 +30,7 @@ const ContactContainer = props => {
                     showContact={() => props.navigation.navigate('Images', { username: userDetails.username })}
                 />
             )
-            : <TextCopy>User not found.</TextCopy>
+            : <TextCopy style={{ paddingHorizontal: 10 }}>Looking for user details...</TextCopy>
 }
 
 export default ContactContainer
