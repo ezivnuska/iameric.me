@@ -2,16 +2,13 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 import { loadEntries } from '@utils/bugs'
 
 const initialState = {
-    // modals: [],
     bugs: [],
     error: null,
     bugsLoaded: false,
     bugsLoading: false,
     addBug: () => {},
-    // closeBugModal: () => {},
     deleteBug: () => {},
     setBugs: () => {},
-    // setBugModal: () => {},
     setBugsLoading: () => {},
     updateBug: () => {},
 }
@@ -77,7 +74,6 @@ export const BugContextProvider = ({ children }) => {
             value={{
                 ...state,
                 ...actions,
-                // bugModal: state.modals[state.modals.length - 1],
             }}
         >
             {state.bugsLoaded && children}
@@ -112,21 +108,6 @@ const reducer = (state, action) => {
                 bugs: payload,
             }
             break
-        // case 'SET_BUG_MODAL':
-        //     return {
-        //         ...state,
-        //         modals: [
-        //             ...state.modals,
-        //             payload,
-        //         ],
-        //     }
-        //     break
-        // case 'CLOSE_BUG_MODAL':
-        //     return {
-        //         ...state,
-        //         modals: [],
-        //     }
-        //     break
         case 'UPDATE_BUG':
             const bugs = state.bugs.map(bug => {
                 if (bug._id === payload._id) return payload

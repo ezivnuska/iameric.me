@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { useModal, useUser } from '@context'
-import { ProfileImage, ProfileNav, DefaultText } from '@components'
+import { ProfileImage, ProfileNav, TextCopy } from '@components'
 
 const PROFILE_IMAGE_SIZE = 100
 
@@ -52,14 +52,14 @@ const UserContainer = props => {
                         }}
                     >
                         {!user.profileImage ? (
-                            <DefaultText
+                            <TextCopy
                                 color='#fff'
                                 size={20}
                                 align='center'
                                 bold
                             >
                                 {`Add\nAvatar`}
-                            </DefaultText>
+                            </TextCopy>
 
                         ) : <ProfileImage size={PROFILE_IMAGE_SIZE} />}
                     </View>

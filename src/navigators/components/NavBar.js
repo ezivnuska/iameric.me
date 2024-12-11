@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { DefaultText, IconButton } from '@components'
+import { TextCopy, IconButton } from '@components'
 import { useModal } from '@context'
 import { useUser } from '@context'
 
@@ -34,13 +34,13 @@ const NavBar = ({ root, navigation, route }) => {
                     disabled={route.name === root}
                     style={{ paddingRight: 10 }}
                 >
-                    <DefaultText
+                    <TextCopy
                         size={24}
                         color={route.name !== root ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                         bold
                     >
                         {root === 'Profile' ? user?.username : root}
-                    </DefaultText>
+                    </TextCopy>
 
                 </Pressable>
 
@@ -54,14 +54,14 @@ const NavBar = ({ root, navigation, route }) => {
                             borderLeftColor: 'rgba(0, 0, 0, 0.5)',
                         }}
                     >
-                        <DefaultText
+                        <TextCopy
                             size={24}
                             bold
                             color='rgba(0, 0, 0, 0.75)'
                             
                         >
                             {route.params?.username || user?.username}
-                        </DefaultText>
+                        </TextCopy>
                     </View>
                 )}
 
@@ -69,21 +69,21 @@ const NavBar = ({ root, navigation, route }) => {
 
                 {(route.params?.username && route.name === 'Images') && (
                     <Pressable
-                        onPress={() => navigation.navigate('Contact', { username: route.params?.username })}
-                        disabled={route.name === 'Contact'}
+                        onPress={() => navigation.navigate('User', { username: route.params?.username })}
+                        disabled={route.name === 'Profile'}
                         style={{
                             paddingHorizontal: 10,
                             borderLeftWidth: 1,
                             borderLeftColor: 'rgba(0, 0, 0, 0.5)',
                         }}
                     >
-                        <DefaultText
+                        <TextCopy
                             size={24}
                             color={route.name === 'Contact' ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
                             bold
                         >
                             {route.params?.username}
-                        </DefaultText>
+                        </TextCopy>
 
                     </Pressable>
                 )}
@@ -96,13 +96,13 @@ const NavBar = ({ root, navigation, route }) => {
                             borderLeftColor: 'rgba(0, 0, 0, 0.5)',
                         }}
                     >
-                        <DefaultText
+                        <TextCopy
                             size={24}
                             bold
                             color='rgba(0, 0, 0, 0.75)'
                         >
                             Images
-                        </DefaultText>
+                        </TextCopy>
                     </View>
                 )}
 

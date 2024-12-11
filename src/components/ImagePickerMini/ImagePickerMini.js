@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { ActivityIndicator, Checkbox, IconButtonLarge, ImageClone, ImageContainer, ProfileImage, SimpleButton, DefaultText } from '@components'
+import { ActivityIndicator, Checkbox, IconButtonLarge, ImageClone, ImageContainer, ProfileImage, SimpleButton, TextCopy } from '@components'
 import { useUser } from '@context'
 import {
     getMaxImageDims,
@@ -65,7 +65,7 @@ const ImagePickerMini = ({ onSelection, avatar = false }) => {
     }
 
     useEffect(() => {
-        console.log('payload', payload)
+        
         if (payload) {
             
             const { uri, height, width } = payload.imageData

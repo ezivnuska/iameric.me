@@ -1,6 +1,6 @@
 import React from 'react'
-import { Pressable, ScrollView, View } from 'react-native'
-import { AuthForm, BugForm, DefaultText, ImagePicker, ImageDisplay, Settings, Socket } from '@components'
+import { ScrollView } from 'react-native'
+import { AuthForm, BugForm, TextCopy, ImagePicker, ImageDisplay, Settings, Socket, PostForm } from '@components'
 import { ModalContainer, ModalHeader } from './components'
 import { useApp } from '@context'
 import Modal from 'react-native-modal'
@@ -11,7 +11,7 @@ const ModalFactory = ({ modal, onClose }) => {
 
     const renderModalContent = () => {
 
-        if (!modal) return <DefaultText>Could not find modal content</DefaultText>
+        if (!modal) return <TextCopy>Could not find modal content</TextCopy>
         
         const { type, data } = modal
         let content = null
@@ -25,14 +25,21 @@ const ModalFactory = ({ modal, onClose }) => {
                 content = <ImagePicker data={data} />
                 fullscreen = true
                 break
-            case 'SETTINGS': content = <Settings />; break
+            case 'FEEDBACK':
+                content = <PostForm data={data} />
+                // fullscreen = true
+                break
+            case 'SETTINGS':
+                title = 'Settings'
+                content = <Settings />
+                break
             case 'SHOWCASE':
                 content = <ImageDisplay data={data} />
                 fullscreen = true
                 break
             case 'SOCKETS':
-                content = <Socket />
                 title = 'Connected Users'
+                content = <Socket />
                 break
             default: console.log('Modal not found', type)
         }

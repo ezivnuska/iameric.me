@@ -59,7 +59,6 @@ const ModalContainer = ({ children, onClose, fullscreen = false }) => {
                                 flexGrow: 1,
                                 paddingHorizontal: fullscreen ? 0 : 10,
                                 paddingVertical: 10,
-                                paddingTop: 5,
                             }}
                         >
                             {children}

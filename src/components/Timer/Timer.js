@@ -4,7 +4,7 @@ import {
 } from 'react-native'
 import {
     IconButton,
-    DefaultText,
+    TextCopy,
 } from '@components'
 
 const Timer = ({ status, onGameStart, onGameEnd }) => {
@@ -86,15 +86,15 @@ const Timer = ({ status, onGameStart, onGameEnd }) => {
             }}
         >
             <View>
-                <DefaultText>{status}</DefaultText>
+                <TextCopy>{status}</TextCopy>
             </View>
             <View>
-                <DefaultText
+                <TextCopy
                     size={24}
                     bold
                 >
                     {timerText}
-                </DefaultText>
+                </TextCopy>
             </View>
             <View>
                 <IconButton

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, View } from 'react-native'
-import { useApp, useContacts, useUser } from '@context'
+import { useApp, useUser } from '@context'
 import { loadImage } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -9,7 +9,7 @@ const ProfileImage = ({ contact = null, size = 'auto' }) => {
 
     const { theme } = useApp()
     const { updateUser, user } = useUser()
-    const { updateContact } = useContacts()
+    // const { updateContact } = useContacts()
     
     const [fetching, setFetching] = useState(false)
     const [source, setSource] = useState(null)

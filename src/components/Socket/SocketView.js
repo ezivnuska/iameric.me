@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 import { useApp } from '@context'
 
 const SocketView = ({ connected, connections, username }) => {
@@ -21,9 +21,9 @@ const SocketView = ({ connected, connections, username }) => {
                     flexShrink: 0,
                 }}
             >
-                <DefaultText size={16}>
+                <TextCopy size={16}>
                     {`${connections.length || 'No'} connection${connections.length !== 1 ? `s` : ''}`}
-                </DefaultText>
+                </TextCopy>
             </View>
 
             <View
@@ -32,9 +32,9 @@ const SocketView = ({ connected, connections, username }) => {
                     textAlign: 'right',
                 }}
             >
-                <DefaultText>
+                <TextCopy>
                     {`Connected as ${username}`}
-                </DefaultText>
+                </TextCopy>
             </View>
         </View>
     )
@@ -70,13 +70,13 @@ const SocketView = ({ connected, connections, username }) => {
                                 gap: 10,
                             }}
                         >
-                            <DefaultText
+                            <TextCopy
                                 color={connected ? 'tomato' : theme?.colors.textDefault}
                                 bold={connected ? true : false}
                                 size={16}
                             >
                                 {conn?.username || username}
-                            </DefaultText>
+                            </TextCopy>
                         </View>
                     ))}
                 </View>

@@ -2,33 +2,19 @@ const linking = {
     prefixes: ['https://iameric.me'],
     config: {
         screens: {
-            Bips: {
-                path: 'bips',
-                screens: {
-                    BipList: {
-                        path: '',
-                    },
-                    Bip: {
-                        path: 'bip/:id',
-                    },
-                }
-            },
+            // Bips: {
+            //     path: 'bips',
+            //     screens: {
+            //         BipList: {
+            //             path: '',
+            //         },
+            //         Bip: {
+            //             path: 'bip/:id',
+            //         },
+            //     }
+            // },
             Bugs: {
                 path: 'bugs',
-            },
-            Contacts: {
-                path: 'users',
-                screens: {
-                    Contact: {
-                        path: '/:username',
-                    },
-                    Images: {
-                        path: '/:username/images',
-                    },
-                    Users: {
-                        path: '',
-                    },
-                },
             },
             Feed: {
                 path: 'feed',
@@ -38,9 +24,6 @@ const linking = {
             },
             Mail: {
                 path: 'mail',
-            },
-            Work: {
-                path: 'work',
             },
             Play: {
                 path: 'play',
@@ -52,18 +35,35 @@ const linking = {
                 path: 'user',
                 screens: {
                     Profile: {
-                        path: 'profile',
+                        path: '/:username',
                     },
                     Images: {
-                        path: 'images',
+                        path: '/:username/images',
                     },
-                    Map: {
-                        path: 'map',
-                    },
+                    // Map: {
+                        //     path: 'map',
+                        // },
                 },
+            },
+            Users: {
+                path: 'users',
+                    // screens: {
+                    //     List: {
+                    //         path: '',
+                    //     },
+                    //     Profile: {
+                    //         path: '/:username',
+                    //     },
+                    //     Images: {
+                    //         path: '/:username/images',
+                    //     },
+                    // },
+            },
+            Work: {
+                path: 'work',
             },
         },
     },
 }
-
+                    
 export default linking

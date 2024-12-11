@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { Form, IconButton, IconButtonLarge, DefaultText } from '@components'
+import { Form, IconButton, IconButtonLarge, TextCopy } from '@components'
 import { useForm, useUser } from '@context'
 import { setCaption } from '@utils/images'
 
@@ -102,7 +102,7 @@ const Caption = ({
                                     }}
                                 >
                                     <View style={{ flex: 9 }}>
-                                        <DefaultText color='#ccc'>Original:</DefaultText>
+                                        <TextCopy color='#ccc'>Original:</TextCopy>
                                     </View>
                                 
                                     <View
@@ -147,9 +147,9 @@ const Caption = ({
                                         paddingVertical: 5,
                                     }}
                                 >
-                                    <DefaultText size={18} color='#fff'>
+                                    <TextCopy size={18} color='#fff'>
                                         {captionText}
-                                    </DefaultText>
+                                    </TextCopy>
                                 </View>
                                 
                                 {!editing && (
@@ -210,7 +210,7 @@ const Caption = ({
                 >
                     <View style={{ flex: 9, gap: 10 }}>
                         
-                        <DefaultText color='#ccc'>Edited:</DefaultText>
+                        <TextCopy color='#ccc'>Edited:</TextCopy>
                         
                         <Form
                             data={data}

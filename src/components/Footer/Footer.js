@@ -1,49 +1,52 @@
 import React, { useMemo } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, IconButtonLarge, SimpleButton } from '@components'
+import { IconButtonLarge, TextCopy, TextPressable } from '@components'
 import { useModal, useSocket, useUser } from '@context'
 import navigationRef from '@utils/navigation'
 
-const FOOTER_HEIGHT = 50
-
-const Footer = ({ route }) => {
+const Footer = ({ landscape, route }) => {
 
     const { user } = useUser()
     const { setModal } = useModal()
-    const {
-        connections,
-        connectionsLoading,
-    } = useSocket()
+    const { connections, connectionsLoading } = useSocket()
 
     const disableBug = useMemo(() => route.name === 'Bugs', [route])
 
     return (
         <View
             style={{
+                flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                // paddingHorizontal: 10,
-                height: FOOTER_HEIGHT,
+                width: '100%',
+                minWidth: 300,
+                maxWidth: landscape ? '100%' : 400,
+                marginHorizontal: landscape ? 0 : 'auto',
+                paddingLeft: landscape ? 5 : 0,
             }}
         >
-            {connectionsLoading ? (
-                <ActivityIndicator size='small' />
-            ) : (
-                <SimpleButton
-                    label={`${connections.length || 'No'} viewer${connections.length !== 1 ? `s` : ''}`}
-                    onPress={() => setModal('SOCKETS')}
-                    color='tomato'
-                    transparent
-                />
-            )}
+            <View
+                style={{ paddingHorizontal: 10 }}
+            >
+                {connectionsLoading ? (
+                    <TextCopy color='#ccc'>
+                        Connectiong to socket...
+                    </TextCopy>
+                ) : (
+                    <TextPressable
+                        onPress={() => setModal('SOCKETS')}
+                    >
+                        {`${connections.length} user${connections.length !== 1 ? `s` : ''} connected`}
+                    </TextPressable>
+                )}
+            </View>
 
             {user && (
                 <View
                     style={{
                         flexGrow: 0,
                         flexDirection: 'row',
-                        gap: 10,
                     }}
                 >
                     <IconButtonLarge

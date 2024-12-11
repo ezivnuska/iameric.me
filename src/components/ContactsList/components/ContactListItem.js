@@ -5,7 +5,7 @@ import {
 } from 'react-native'
 import {
     ProfileImage,
-    DefaultText,
+    TextCopy,
 } from '@components'
 import { useApp, useModal, useSocket } from '@context'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -33,7 +33,7 @@ const ContactListItem = ({ item, onPress, ...props }) => {
             }}
         >
             <Pressable
-                // onPress={() => navigate('Contact', { username: item.username })}
+                // onPress={() => navigate('User', { username: item.username })}
                 onPress={() => onPress(item.username)}
                 style={{
                     flexDirection: 'row',
@@ -62,13 +62,13 @@ const ContactListItem = ({ item, onPress, ...props }) => {
                     />
                 )} */}
                 
-                <DefaultText
+                <TextCopy
                     size={24}
                     bold={isConnected}
                     style={{ lineHeight: 50 }}
                 >
                     {item.username || `Guest-${String(item.socketId).substring(item.socketId.length - 3)}`}
-                </DefaultText>
+                </TextCopy>
 
             </Pressable>
 

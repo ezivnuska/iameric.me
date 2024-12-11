@@ -1,36 +1,36 @@
 import React, { useEffect } from 'react'
 import ContactView from './ContactView'
-import { ActivityIndicator, DefaultText } from '@components'
-import { useContacts, useModal } from '@context'
+import { ActivityIndicator, TextCopy } from '@components'
+import { useModal, useUser } from '@context'
 
 const ContactContainer = props => {
 
     const {
-        contact,
-        contactLoading,
-        initContact,
-    } = useContacts()
+        userDetails,
+        userDetailsLoading,
+        initUserDetails,
+    } = useUser()
     
     const { setModal } = useModal()
 
     useEffect(() => {
-        if (!contact || contact.username !== props.route.params?.username) {
-            initContact(props.route.params.username)
+        if (!userDetails || userDetails.username !== props.route.params?.username) {
+            initUserDetails(props.route.params.username)
         }
-    }, [contact])
+    }, [userDetails])
 
-    return contactLoading
-        ? <ActivityIndicator size='medium' label='Loading Contact...' />
-        : contact
+    return userDetailsLoading
+        ? <ActivityIndicator size='medium' label='Loading User...' />
+        : userDetails
             ? (
                 <ContactView
                     {...props}
-                    contact={contact}
-                    showImage={() => setModal('SHOWCASE', contact.profileImage)}
-                    showContact={() => props.navigation.navigate('Images', { username: contact.username })}
+                    contact={userDetails}
+                    showImage={() => setModal('SHOWCASE', userDetails.profileImage)}
+                    showContact={() => props.navigation.navigate('Images', { username: userDetails.username })}
                 />
             )
-            : <DefaultText>User not found.</DefaultText>
+            : <TextCopy>User not found.</TextCopy>
 }
 
 export default ContactContainer

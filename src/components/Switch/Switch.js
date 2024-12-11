@@ -5,7 +5,7 @@ import {
     Pressable,
     View,
 } from 'react-native'
-import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 
 const Switch = () => {
     const [ state, setState ] = useState(false)
@@ -27,13 +27,13 @@ const Switch = () => {
     const renderLabel = (label, active) => {
         console.log('active', active)
         return (
-            <DefaultText
+            <TextCopy
                 align='center'
                 style={{ flex: 1 }}
                 color={active ?  '#000' : '#fff'}
             >
                 {label}
-            </DefaultText>
+            </TextCopy>
         )
     }
 

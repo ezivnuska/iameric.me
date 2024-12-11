@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { IconButton, ProfileImage, DefaultText, Time } from '@components'
+import { IconButton, ProfileImage, TextCopy, Time } from '@components'
 import { useBugs, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
@@ -49,9 +49,7 @@ const BugListItem = ({ item, onDelete = null }) => {
                     }}
                 >
                     <Pressable
-                        onPress={() => {
-                            navigate('Contacts', { screen: 'Contact', params: { username: item.author.username } })
-                        }}
+                        onPress={() => navigate('User', { screen: 'Profile', params: { username: item.author.username } })}
                         style={{
                             flexDirection: 'row',
                             alignItems: 'flex-start',
@@ -79,13 +77,13 @@ const BugListItem = ({ item, onDelete = null }) => {
                                     flexGrow: 1,
                                 }}
                             >
-                                <DefaultText
+                                <TextCopy
                                     size={20}
                                     bold
                                     style={{ lineHeight: 25 }}
                                 >
                                     {item.author.username}
-                                </DefaultText>
+                                </TextCopy>
 
                                 <Time
                                     time={item.createdAt}
@@ -113,12 +111,12 @@ const BugListItem = ({ item, onDelete = null }) => {
 
             </View>
 
-            <DefaultText
+            <TextCopy
                 size={24}
                 style={{ lineHeight: 30 }}
             >
                 {item.text}
-            </DefaultText>
+            </TextCopy>
 
         </View>
     )

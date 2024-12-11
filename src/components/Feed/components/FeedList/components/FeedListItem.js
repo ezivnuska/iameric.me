@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { IconButton, ProfileImage, DefaultText, Time } from '@components'
+import { IconButton, ProfileImage, TextCopy, Time } from '@components'
 import { useFeed, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
@@ -67,12 +67,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                     }}
                 >
                     <Pressable
-                        onPress={() => {
-                            navigate('Users', {
-                                screen: 'Contact',
-                                params: { username: item.author?.username },
-                            })
-                        }}
+                        onPress={() => navigate('Profile', { username: item.author?.username })}
                         style={{
                             flexDirection: 'row',
                             alignItems: 'flex-start',
@@ -97,13 +92,13 @@ const FeedListItem = ({ item, onDelete = null }) => {
                             <View style={{ flex: 1, flexGrow: 1 }}>
 
                                 {item.author?.username && (
-                                    <DefaultText
+                                    <TextCopy
                                         size={20}
                                         bold
                                         style={{ lineHeight: 25 }}
                                     >
                                         {item.author.username}
-                                    </DefaultText>
+                                    </TextCopy>
                                 )}
 
                                 <Time
@@ -132,12 +127,12 @@ const FeedListItem = ({ item, onDelete = null }) => {
 
             </View>
 
-            <DefaultText
+            <TextCopy
                 size={24}
                 style={{ lineHeight: 30 }}
             >
                 {item.text}
-            </DefaultText>
+            </TextCopy>
             
         </View>
     )

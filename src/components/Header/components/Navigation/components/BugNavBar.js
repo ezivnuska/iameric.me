@@ -1,67 +1,72 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { DefaultText, IconButton } from '@components'
-import { useFeed } from '@context'
+import { TextCopy, IconButton } from '@components'
+import { useModal } from '@context'
 import { navigate } from '@utils/navigation'
 
-const FeedNavBar = ({ route, ...props }) => {
+const BugNavBar = ({ route }) => {
 
-    const { setFeedModal } = useFeed()
+    const { setModal } = useModal()
 
     return (
         <View
             style={{
+                flex: 1,
+                width: '100%',
+                flexGrow: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                paddingHorizontal: 10,
                 height: 50,
                 gap: 10,
-                ...props.style,
             }}
         >
             <View
                 style={{
+                    flex: 1,
                     flexDirection: 'row',
+                    justifyContent: 'flex-start',
                     alignItems: 'center',
+                    // gap: 10,
                 }}
             >
                 <Pressable
                     onPress={() => navigate('Home')}
                     disabled={route.name === 'Home'}
-                    style={{ paddingRight: 10 }}
+                    style={{
+                        paddingRight: 10,
+                        borderRightWidth: 1,
+                        borderRightColor: 'rgba(0, 0, 0, 0.5)',
+                    }}
                 >
-                    <DefaultText
+                    <TextCopy
                         size={24}
                         color={route.name !== 'Home' ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                         bold
                     >
                         Home
-                    </DefaultText>
+                    </TextCopy>
 
                 </Pressable>
                 
-                <View
-                    style={{
-                        paddingHorizontal: 10,
-                        borderLeftWidth: 1,
-                        borderLeftColor: 'rgba(0, 0, 0, 0.5)',
-                    }}
-                >
-                    <DefaultText
+                <View style={{ paddingHorizontal: 10 }}>
+                    <TextCopy
                         size={24}
                         bold
                         color='rgba(0, 0, 0, 0.75)'
                         
                     >
-                        Feed
-                    </DefaultText>
+                        Bugs
+                    </TextCopy>
                 </View>
+                
             </View>
 
 
             <IconButton
                 name='create-outline'
-                onPress={() => setFeedModal('FEEDBACK')}
+                onPress={() => setModal('BUG')}
                 size={28}
                 color='tomato'
                 transparent
@@ -70,4 +75,4 @@ const FeedNavBar = ({ route, ...props }) => {
         </View>
     )
 }
-export default FeedNavBar
+export default BugNavBar

@@ -9,17 +9,13 @@ const initialState = {
     contactLoading: false,
     contactImagesLoaded: false,
     contactImagesLoading: false,
-    contactModals: [],
     contactsLoaded: false,
     contactLoading: false,
     contactsLoading: false,
     addContact: () => {},
-    clearContactModals: () => {},
-    closeContactModal: () => {},
     removeContact: () => {},
     setContact: () => {},
     setContactLoading: () => {},
-    setContactModal: () => {},
     setContacts: () => {},
     setContactsLoaded: () => {},
     setContactsLoading: () => {},
@@ -41,6 +37,7 @@ export const ContactsContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const initContacts = async () => {
+
         dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
         const users = await loadContacts()
         dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })
@@ -52,6 +49,7 @@ export const ContactsContextProvider = props => {
     }
 
     const initContact = async username => {
+
         dispatch({ type: 'SET_CONTACT_LOADING', payload: true })
         const user = await loadContact(username, true)
         dispatch({ type: 'SET_CONTACT_LOADING', payload: false })
@@ -74,17 +72,8 @@ export const ContactsContextProvider = props => {
         addContact: async payload => {
             dispatch({ type: 'ADD_CONTACT', payload })
         },
-        clearContactModals: () => {
-            dispatch({ type: 'CLEAR_CONTACT_MODALS' })
-        },
-        closeContactModal: () => {
-            dispatch({ type: 'CLOSE_CONTACT_MODAL' })
-        },
         removeContact: async payload => {
             dispatch({ type: 'REMOVE_CONTACT', payload })
-        },
-        setContactModal: (type, data) => {
-            dispatch({ type: 'SET_CONTACT_MODAL', payload: { type, data } })
         },
         setContactLoading: async payload => {
             dispatch({ type: 'SET_CONTACT_LOADING', payload })
@@ -108,7 +97,6 @@ export const ContactsContextProvider = props => {
             value={{
                 ...state,
                 ...actions,
-                contactModal: state.contactModals[state.contactModals.length - 1],
             }}
         >
             {props.children}
@@ -161,26 +149,8 @@ const reducer = (state, action) => {
                     : [payload],
             }
             break
-        case 'CLEAR_CONTACT_MODALS':
-            return {
-                ...state,
-                contactModals: [],
-            }
-            break
-        case 'CLOSE_CONTACT_MODAL':
-            return {
-                ...state,
-                contactModals:  state.contactModals.slice(0, state.contactModals.length - 1),
-            }
-            break
         case 'SET_CONTACT':
             return { ...state, contact: payload }
-            break
-        case 'SET_CONTACT_MODAL':
-            return {
-                ...state,
-                contactModals: [ ...state.contactModals, payload ],
-            }
             break
         case 'SET_CONTACT_LOADED':
             return { ...state, contactLoaded: true }

@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import Layout from './Layout'
 import {
     AppContextProvider,
-    ContactsContextProvider,
+    // ContactsContextProvider,
     FormContextProvider,
     ModalContextProvider,
     NotificationContextProvider,
@@ -17,7 +17,7 @@ import { APIProvider } from '@vis.gl/react-google-maps'
 const Container = ({ children }) => {
     const { dims } = useApp()
     return (
-        <View style={{ height: dims.height, borderWidth: 1 }}>
+        <View style={{ height: dims.height }}>
             {children}
         </View>
     )
@@ -41,11 +41,11 @@ const App = () => {
                                 <FormContextProvider>
                                     <ModalContextProvider>
                                         <SocketContextProvider>
-                                            <ContactsContextProvider>
+                                            {/* <ContactsContextProvider> */}
                                         
                                                 <Layout />
                                                         
-                                            </ContactsContextProvider>
+                                            {/* </ContactsContextProvider> */}
                                         </SocketContextProvider>
                                     </ModalContextProvider>
                                 </FormContextProvider>

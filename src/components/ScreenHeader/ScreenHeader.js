@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { IconButtonLarge, DefaultText } from '@components'
+import { IconButtonLarge, TextCopy } from '@components'
 
 const ScreenHeader = ({ label, setModal = null }) => (
     <View
@@ -13,9 +13,9 @@ const ScreenHeader = ({ label, setModal = null }) => (
             paddingHorizontal: 10,
         }}
     >
-        <DefaultText bold size={32}>
+        <TextCopy bold size={32}>
             {label}
-        </DefaultText>
+        </TextCopy>
 
         {setModal !== null && (
             <IconButtonLarge

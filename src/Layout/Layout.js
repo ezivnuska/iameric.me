@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaView, View } from 'react-native'
 import { AppNavigator } from '../navigators'
 import linking from '../linking'
-import { MainHeader, ModalFactory, Notification } from '@components'
+import { Footer, Header, ModalFactory, Notification } from '@components'
 import { useApp, useModal, useUser } from '@context'
 import navigationRef from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
@@ -13,6 +13,7 @@ const Layout = () => {
     const {
         currentRoute,
         dims,
+        landscape,
         theme,
         setCurrentRoute,
     } = useApp()
@@ -71,8 +72,17 @@ const Layout = () => {
                         }}
                     >
 
-                        <View style={{ flexGrow: 0, zIndex: 1000 }}>
-                            <MainHeader user={user} route={currentRoute} />
+                        <View
+                            style={{
+                                flexGrow: 0,
+                                zIndex: 1000,
+                            }}
+                        >
+                            <Header
+                                landscape={landscape}
+                                user={user}
+                                route={currentRoute}
+                            />
                         </View>
                         
                         <View
@@ -85,7 +95,17 @@ const Layout = () => {
                             }}
                         >
                             <AppNavigator />
+
                         </View>
+
+                        {currentRoute && (
+                            <View style={{ flexGrow: 0, zIndex: 2000 }}>
+                                <Footer
+                                    landscape={landscape}
+                                    route={currentRoute}
+                                />
+                            </View>
+                        )}
 
                     </View>
                 </NavigationContainer>

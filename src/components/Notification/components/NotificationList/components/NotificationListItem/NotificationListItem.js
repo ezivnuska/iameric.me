@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable } from 'react-native'
-import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 
 export default ({ text, onPress }) => (
     <Pressable
@@ -12,6 +12,6 @@ export default ({ text, onPress }) => (
             background: 'rgba(0, 200, 0, 0.8)',
         }}
     >
-        <DefaultText bold color='#000'>{text}</DefaultText>
+        <TextCopy bold color='#000'>{text}</TextCopy>
     </Pressable>
 )

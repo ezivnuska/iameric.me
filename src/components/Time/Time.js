@@ -1,5 +1,5 @@
 import React from 'react'
-import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 import {
     format,
     formatDistance,
@@ -16,7 +16,7 @@ const Time = ({
     ...props
 }) => {
     return (
-        <DefaultText
+        <TextCopy
             color={color}
             size={size}
             style={props.style}
@@ -25,7 +25,7 @@ const Time = ({
                 ? `${prefix}${formatRelative(new Date(time), new Date())}${suffix}`
                 : 'Now'
             }
-        </DefaultText>
+        </TextCopy>
     )
 }
 

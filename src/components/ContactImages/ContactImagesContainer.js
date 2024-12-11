@@ -1,28 +1,25 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, DefaultText, ImageList } from '@components'
-import { useContacts, useModal } from '@context'
+import { ActivityIndicator, TextCopy, ImageList } from '@components'
+import { useModal, useUser } from '@context'
 import ContactImagesView from './ContactImagesView'
 
 const ContactImagesContainer = ({ list = false, ...props }) => {
 
-    const {
-        contact,
-        contactLoaded,
-        contactLoading,
-        // contactImagesLoaded,
-        contactImagesLoading,
-        initContact,
-        // setContactModal,
-    } = useContacts()
-
     const { setModal } = useModal()
+    const {
+        userDetails,
+        userDetailsLoading,
+        // contactImagesLoaded,
+        // contactImagesLoading,
+        initUserDetails,
+    } = useUser()
 
-    const images = useMemo(() => contact && contact.images, [contact])
+    const images = useMemo(() => userDetails && userDetails.images, [userDetails])
 
     useEffect(() => {
-        if (!contact || !contactLoaded && !contactLoading) {
-            initContact(props.route.params?.username)
+        if (!userDetails || !userDetailsLoading) {
+            initUserDetails(props.route.params?.username)
         }
     }, [])
 
@@ -30,15 +27,16 @@ const ContactImagesContainer = ({ list = false, ...props }) => {
         <View style={{ flex: 1 }}>
 
             {
-                contactImagesLoading
+                // contactImagesLoading
+                !images
                     ? (
                         <ActivityIndicator
                             size='medium'
-                            label='Loading Contact Images...'
+                            label='Loading User Images...'
                             color='#fff'
                         />
                     )
-                    : images?.length
+                    : images.length
                         ? (
                             <ContactImagesView
                                 images={images}
@@ -47,9 +45,9 @@ const ContactImagesContainer = ({ list = false, ...props }) => {
                             />
                         )
                         : (
-                            <DefaultText>
+                            <TextCopy>
                                 No images to show.
-                            </DefaultText>
+                            </TextCopy>
                         )
                 }
 

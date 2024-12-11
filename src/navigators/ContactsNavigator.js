@@ -8,24 +8,24 @@ const ContactsNavigator = () => {
     
     return (
         <ContactsStack.Navigator
-            initialRouteName='Users'
+            initialRouteName='List'
             screenOptions={{
-                // headerShown: false,
-                headerShown: true,
-                header: props => <NavBar root='Users' {...props} />
+                headerShown: false,
+                // headerShown: true,
+                // header: props => <NavBar root='Users' {...props} />
             }}
         >
             <ContactsStack.Screen
-                name='Users'
+                name='List'
                 component={ContactsScreen}
                 options={{ title: 'Users' }}
             />
 
             <ContactsStack.Screen
-                name='Contact'
+                name='Profile'
                 // children={props => <ContactScreen {...props} />}
                 component={ContactScreen}
-                options={{ title: 'Contact' }}
+                options={{ title: 'Profile' }}
             />
 
             <ContactsStack.Screen

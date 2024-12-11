@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { IconButtonLarge, DefaultText, Screen } from '@components'
+import { IconButtonLarge, TextCopy, Screen } from '@components'
 // import { BipMap } from '@modules'
 import { useApp, useUser, useModal, useSocket } from '@context'
 import { signin, signout } from '@utils/auth'
@@ -101,7 +101,7 @@ const HomeScreen = props => {
                     <IconButtonLarge
                         name='people-outline'
                         label='Users'
-                        onPress={() => props.navigation.navigate('Contacts')}
+                        onPress={() => props.navigation.navigate('Users')}
                     />
 
                     <IconButtonLarge
@@ -131,17 +131,17 @@ const Intro = () => (
             
             <View style={{ flexGrow: 0, flexDirection: 'row', gap: 5 }}>
                 
-                <DefaultText bold size={18}>I am</DefaultText>
+                <TextCopy bold size={18}>I am</TextCopy>
                 
                 <View style={{ flexGrow: 0, flexDirection: 'row' }}>
-                    <DefaultText bold size={18} color='#777'>Eric</DefaultText>
-                    <DefaultText bold size={18}>.</DefaultText>
+                    <TextCopy bold size={18} color='#777'>Eric</TextCopy>
+                    <TextCopy bold size={18}>.</TextCopy>
                 </View>
 
             </View>
 
             <View style={{ flexGrow: 0 }}>
-                <DefaultText size={18}>Welcome to my progress.</DefaultText>
+                <TextCopy size={18}>Welcome to my progress.</TextCopy>
             </View>
         </View>
 

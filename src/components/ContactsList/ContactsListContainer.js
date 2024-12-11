@@ -1,32 +1,41 @@
 import React, { useEffect, useMemo } from 'react'
 import ContactsListView from './ContactsListView'
 import { ActivityIndicator } from '@components'
-import { useContacts, useUser } from '@context'
+import {
+    // useContacts,
+    useUser,
+} from '@context'
 
 const ContactsListContainer = props => {
 
+    // const {
+    //     contacts,
+    //     contactsLoading,
+    //     contactsLoaded,
+    //     initContacts,
+    //     setContact,
+    // } = useContacts()
+
     const {
-        contacts,
-        contactsLoading,
-        contactsLoaded,
-        initContacts,
-        setContact,
-    } = useContacts()
+        initUsers,
+        user,
+        users,
+        usersLoaded,
+        usersLoading,
+    } = useUser()
 
-    const { user } = useUser()
-
-    const otherUsers = useMemo(() => contactsLoaded && contacts.filter(c => c._id !== user._id), [contacts, contactsLoaded])
+    // const otherUsers = useMemo(() => usersLoaded && users.filter(u => u._id !== user._id), [users, usersLoaded])
 
     useEffect(() => {
         // console.log('contacts screen')
-        if (!contactsLoaded && !contactsLoading) initContacts()
+        if (!usersLoaded && !usersLoading) initUsers()
         // return () => setContact(null)
     }, [])
 
-    const onPress = username => props.navigation.navigate('Contact', { username })
+    const onPress = username => props.navigation.navigate('User', { screen: 'Profile', params: { username } })
 
-    return otherUsers?.length
-        ? <ContactsListView contacts={otherUsers} onPress={onPress} />
+    return users?.length
+        ? <ContactsListView contacts={users} onPress={onPress} />
         : <ActivityIndicator size='medium' />
 }
 

@@ -7,13 +7,26 @@ import React, {
 } from 'react'
 import { getItem, getStoredToken, setItem } from '@utils/storage'
 import { validateToken } from '@utils/auth'
+import { loadContact, loadContacts } from '@utils/contacts'
 import { loadImages } from '@utils/images'
 
 const initialState = {
-    userModals: [],
     user: null,
+    userDetails: null,
+    users: [],
     userLoaded: false,
     userLoading: false,
+    usersLoaded: false,
+    usersLoading: false,
+    userDetailsLoading: false,
+
+    addUser: () => {},
+    removeUser: () => {},
+    setUserDetails: () => {},
+    setUserDetailsLoading: () => {},
+    setUsers: () => {},
+    setUsersLoaded: () => {},
+    setUsersLoading: () => {},
     
     // merged from images context
     images: [],
@@ -22,10 +35,7 @@ const initialState = {
     imagesLoading: false,
     uploading: false,
 
-    closeUserModal: () => {},
-    clearUserModals: () => {},
     setUser: () => {},
-    setUserModal: () => {},
     setProfileImage: () => {},
     setUserLoading: () => {},
     updateUser: () => {},
@@ -51,6 +61,10 @@ export const useUser = () => {
 export const UserContextProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
+
+    useEffect(() => {
+        init()
+    }, [])
 
     const init = async () => {
 
@@ -81,9 +95,33 @@ export const UserContextProvider = ({ children }) => {
         dispatch({ type: 'USER_LOADED' })
     }
 
-    useEffect(() => {
-        init()
-    }, [])
+    const initUsers = async () => {
+        console.log('init users')
+        dispatch({ type: 'SET_USERS_LOADING', payload: true })
+        const users = await loadContacts()
+        dispatch({ type: 'SET_USERS_LOADING', payload: false })
+        
+        console.log('users', users)
+        if (!users) console.log('could not load users')
+        else dispatch({ type: 'SET_USERS', payload: users })
+        
+        dispatch({ type: 'SET_USERS_LOADED' })
+    }
+
+    const initUserDetails = async username => {
+
+        dispatch({ type: 'SET_USER_DETAILS_LOADING', payload: true })
+        const user = await loadContact(username, true)
+        dispatch({ type: 'SET_USER_DETAILS_LOADING', payload: false })
+        
+        if (!user) console.log('could not load user details')
+        else {
+            dispatch({ type: 'SET_USER_DETAILS', payload: user })
+            dispatch({ type: 'UPDATE_USER', payload: user })
+        }
+        // dispatch({ type: 'SET_USER_DETAILS_LOADED' })
+        // dispatch({ type: 'SET_CONTACT_IMAGES_LOADED' })
+    }
 
     const initImages = async userId => {
 
@@ -104,22 +142,13 @@ export const UserContextProvider = ({ children }) => {
         dispatch({ type: 'SET_USER', payload })
     }
 
-    const clearUserModals = () => {
-        dispatch({ type: 'CLEAR_USER_MODALS' })
+    const setUserDetails = payload => {
+        dispatch({ type: 'SET_USER_DETAILS', payload })
     }
-
-    const closeUserModal = () => {
-        dispatch({ type: 'CLOSE_USER_MODAL' })
-    }
-
     const setUserLoading = payload => {
         dispatch({ type: 'SET_USER_LOADING', payload })
     }
 
-    const setUserModal = (type, data) => {
-        dispatch({ type: 'SET_USER_MODAL', payload: { type, data } })
-    }
-    
     const setProfileImage = payload => {
         dispatch({ type: 'SET_PROFILE_IMAGE', payload })
     }
@@ -134,11 +163,11 @@ export const UserContextProvider = ({ children }) => {
 
     const actions = useMemo(() => ({
         initImages,
-        clearUserModals,
-        closeUserModal,
-        setUserModal,
+        initUsers,
+        initUserDetails,
         reset,
         setProfileImage,
+        setUserDetails,
         setUserLoading,
         setUser,
         updateUser,
@@ -148,8 +177,8 @@ export const UserContextProvider = ({ children }) => {
         clearImages: () => {
             dispatch({ type: 'RESET' })
         },
-        removeImage: payload => {
-            dispatch({ type: 'REMOVE_IMAGE', payload })
+        removeImage: (userId, imageId) => {
+            dispatch({ type: 'REMOVE_IMAGE', payload: { userId, imageId } })
         },
         setImages: payload => {
             dispatch({ type: 'SET_IMAGES', payload })
@@ -170,7 +199,6 @@ export const UserContextProvider = ({ children }) => {
         <UserContext.Provider
             value={{
                 ...state,
-                userModal: state.userModals[state.userModals.length - 1],
                 ...actions,
             }}
         >
@@ -181,7 +209,6 @@ export const UserContextProvider = ({ children }) => {
 
 const reducer = (state, action) => {
     const { payload, type } = action
-    // console.log(`${type}${payload ? `: ${payload}` : ``}`)
     switch(type) {
         case 'RESET': return { ...state, user: null }; break
         case 'USER_LOADED': return { ...state, userLoaded: true }; break
@@ -195,41 +222,62 @@ const reducer = (state, action) => {
             }
             break
         case 'SET_TOKEN': return { ...state, token: payload }; break
-        case 'SET_USER': return { ...state, user: payload }; break
+        case 'SET_USER':
+            return {
+                ...state,
+                user: payload,
+                users: [payload],
+            }
+            break
+        case 'SET_USERS':
+            return {
+                ...state,
+                users: payload,
+            }
+            break
+        case 'SET_USER_DETAILS':
+            return {
+                ...state,
+                userDetails: payload,
+            }
+            break
         case 'SET_USER_LOADING':
             return {
                 ...state,
                 userLoading: payload,
             }
             break
-        case 'CLEAR_USER_MODALS':
+        case 'SET_USERS_LOADED':
             return {
                 ...state,
-                userModals:  [],
+                usersLoaded: payload,
             }
             break
-        case 'CLOSE_USER_MODAL':
+        case 'SET_USERS_LOADING':
             return {
                 ...state,
-                userModals:  state.userModals.slice(0, state.userModals.length - 1),
+                usersLoading: payload,
             }
             break
-        case 'SET_USER_MODAL':
+        case 'SET_USER_DETAILS_LOADING':
             return {
                 ...state,
-                userModals: [
-                    ...state.userModals,
-                    payload,
-                ],
+                userDetailsLoading: payload,
             }
             break
         case 'UPDATE_USER':
             return {
                 ...state,
-                user: {
+                users: state.users.map(user => {
+                    if (user._id === payload._id) {
+                        return { ...user, ...payload }
+                    }
+                    return user
+                }),
+                user: state.user._id === payload._id ? {
                     ...state.user,
                     ...payload,
-                },
+                } : state.user,
             }
             break
         // merged from images context
@@ -246,10 +294,23 @@ const reducer = (state, action) => {
             }
             break
         case 'REMOVE_IMAGE':
-            const images = state.images.filter(image => image._id !== payload)
+            const { userId, imageId } = payload
+            const updatedUsers = users.map((user, index) => {
+                if (user._id === userId) {
+                    return {
+                        ...user,
+                        images: user.images.filter(img => img._id !== imageId),
+                    }
+                } else return user
+            })
+            // const images = state.images.filter(image => image._id !== payload)
             return {
                 ...state,
-                images,
+                user: state.user._id === userId ? {
+                    ...state.user,
+                    images: state.user.images.filter(img => img._id !== imageId),
+                } : state.user,
+                users: updatedUsers,
             }
             break
         case 'SET_IMAGES':

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const ModalHeader = ({ children, title, color = '#000', onClose = null, ...props }) => (
@@ -11,6 +11,7 @@ const ModalHeader = ({ children, title, color = '#000', onClose = null, ...props
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
+                marginBottom: 10,
                 // paddingVertical: 15,
                 // paddingLeft: 10,
                 // paddingRight: 5,
@@ -25,13 +26,13 @@ const ModalHeader = ({ children, title, color = '#000', onClose = null, ...props
                 gap: 10,
             }}
         >
-            <DefaultText
+            <TextCopy
                 bold
                 size={26}
                 color={color}
             >
                 {title}
-            </DefaultText>
+            </TextCopy>
 
             {children}
 

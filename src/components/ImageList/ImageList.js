@@ -6,9 +6,9 @@ import { useApp } from '@context'
 
 const ImageList = ({ images, onPress, list = false, ...props }) => {
 
-    const { theme } = useApp()
+    const { landscape, theme } = useApp()
 
-    const numImagesPerRow = list ? 1 : 2
+    const numImagesPerRow = list || landscape ? 1 : 2
     const imageGap = useMemo(() => list ? 20 : 5, [list])
 
     const [maxWidth, setMaxWidth] = useState(null)
@@ -43,8 +43,8 @@ const ImageList = ({ images, onPress, list = false, ...props }) => {
             {imageSize ? (
                 <View
                     style={{
-                        flexDirection: !list ? 'row' : 'col',
-                        flexWrap: !list ? 'wrap' : 'no-wrap',
+                        flexDirection: !list || landscape ? 'row' : 'column',
+                        flexWrap: !list && !landscape ? 'wrap' : 'no-wrap',
                         gap: imageGap,
                         width: '100%',
                         marginVertical: 7,
@@ -62,7 +62,7 @@ const ImageList = ({ images, onPress, list = false, ...props }) => {
                                 buttonStyle,
                             ]}
                         >
-                            {!list
+                            {!list && !landscape
                                 ? <ImageGridItem image={image} size={imageSize} />
                                 : <ImageListItem image={image} scale={maxWidth / image.width} />
                             }

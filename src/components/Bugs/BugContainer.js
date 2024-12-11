@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ScreenHeader, DefaultText } from '..'
-import { BugList, BugNavBar } from './components'
+import { TextCopy } from '@components'
+import { BugList } from './components'
 import { useBugs, useModal, useSocket } from '@context'
-import { createEntry, deleteEntryWithId } from '@utils/bugs'
+import { deleteEntryWithId } from '@utils/bugs'
 
 const BugContainer = props => {
 
@@ -55,33 +55,30 @@ const BugContainer = props => {
     }
 
     const removeBug = async id => {
+
         setBugsLoading(true)
         await deleteEntryWithId(id)
         setBugsLoading(false)
-        socket.emit('entry_deleted', id)
+        
         deleteBug(id)
+        socket.emit('entry_deleted', id)
+        
         closeModal()
     }
 
-    // const handleSubmit = async data => {
-    //     const bug = await createEntry(data)
-    //     addBug(bug)
-    //     socket.emit('new_entry', bug)
-    //     closeModal()
-    //     // return bug
-    // }
+    // const renderThreads = threads => (
+    //     <View style={{ flexGrow: 0 }}>
 
-    const renderThreads = threads => (
-        <View style={{ flexGrow: 0 }}>
-            {threads.map((items, index) => (
-                <BugList
-                    key={`thread-${index}`}
-                    bugs={items}
-                    onDelete={removeBug}
-                />
-            ))}
-        </View>
-    )
+    //         {threads.map((items, index) => (
+    //             <BugList
+    //                 key={`thread-${index}`}
+    //                 bugs={items}
+    //                 onDelete={removeBug}
+    //             />
+    //         ))}
+
+    //     </View>
+    // )
     
     return (
         <View
@@ -91,19 +88,25 @@ const BugContainer = props => {
                 gap: 10,
             }}
         >
-
-            <BugNavBar {...props} />
             
             <View style={{ flexGrow: 1 }}>
+
                 {bugs.length
-                    ? renderThreads(sortedThreads)
+                    ? sortedThreads.map((items, index) => (
+                        <BugList
+                            key={`thread-${index}`}
+                            bugs={items}
+                            onDelete={removeBug}
+                        />
+                    ))
+                    // ? renderThreads(sortedThreads)
                     : (
-                        <DefaultText
+                        <TextCopy
                             size={24}
                             style={{ lineHeight: 30 }}
                         >
                             No bugs to squash.
-                        </DefaultText>
+                        </TextCopy>
                     )
                 }
             </View>

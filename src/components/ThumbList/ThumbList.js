@@ -4,7 +4,7 @@ import {
     Image,
 } from 'react-native'
 // import { ThumbListItem } from './components'
-import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 import { IMAGE_PATH } from '@config'
 
 const ThumbList = ({ children, images, bipId = null, disabled = false, small = false }) => {
@@ -75,7 +75,7 @@ const ThumbList = ({ children, images, bipId = null, disabled = false, small = f
                         {children
                             ? children
                             : (
-                                <DefaultText
+                                <TextCopy
                                     size={imageSize * 0.6}
                                     color='#fff'
                                     align='center'
@@ -85,7 +85,7 @@ const ThumbList = ({ children, images, bipId = null, disabled = false, small = f
                                     }}
                                 >
                                     {images.length}
-                                </DefaultText>
+                                </TextCopy>
                             )
                         }
                     </View>
@@ -108,7 +108,7 @@ const ThumbList = ({ children, images, bipId = null, disabled = false, small = f
                     </View>
                 )
                 : (
-                    <DefaultText
+                    <TextCopy
                         size={imageSize * 0.6}
                         color='#fff'
                         align='center'
@@ -123,7 +123,7 @@ const ThumbList = ({ children, images, bipId = null, disabled = false, small = f
                         }}
                     >
                         {images.length}
-                    </DefaultText>
+                    </TextCopy>
                 )
             } */}
 

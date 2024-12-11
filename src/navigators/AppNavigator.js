@@ -1,8 +1,8 @@
-import { ContactScreen, ContactsScreen } from '@screens'
 import {
     // BipScreen,
     // BipsScreen,
     BugScreen,
+    ContactsScreen,
     FeedScreen,
     HomeScreen,
     // MapScreen,
@@ -11,7 +11,7 @@ import {
     // SimpleScreen,
     WorkScreen,
 } from '@screens'
-import { ContactsNavigator, UserNavigator } from '.'
+import { UserNavigator } from '.'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const AppNavigator = () => {
@@ -28,16 +28,16 @@ const AppNavigator = () => {
 
             <AppStack.Screen
                 name='Home'
-                children={props => <HomeScreen {...props} />}
-                // component={HomeScreen}
+                // children={props => <HomeScreen {...props} />}
+                component={HomeScreen}
                 options={{ title: 'Home' }}
             />
 
             <AppStack.Screen
-                name='Contacts'
+                name='Users'
                 // children={props => <ContactsNavigator {...props} />}
-                component={ContactsNavigator}
-                options={{ title: 'Contacts' }}
+                component={ContactsScreen}
+                options={{ title: 'Users' }}
             />
 
             <AppStack.Screen

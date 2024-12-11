@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { IconButtonLarge, ProfileImage, DefaultText, Time } from '@components'
+import { IconButtonLarge, ProfileImage, TextCopy, Time } from '@components'
 import LinearGradient from 'react-native-web-linear-gradient'
 
 const ImageOverlayHeader = ({ image, onClose, ...props }) => {
@@ -37,14 +37,14 @@ const ImageOverlayHeader = ({ image, onClose, ...props }) => {
 
                 <View style={{ flexGrow: 1 }}>
 
-                    <DefaultText
+                    <TextCopy
                         size={20}
                         color='#fff'
                         bold
                         style={{ lineHeight: 25 }}
                     >
                         {image.user.username}
-                    </DefaultText>
+                    </TextCopy>
 
                     <Time
                         time={image.createdAt}

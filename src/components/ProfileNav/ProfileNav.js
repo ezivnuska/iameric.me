@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { IconButtonLarge, DefaultText } from '@components'
+import { IconButtonLarge, TextCopy } from '@components'
 import { useUser } from '@context'
 
 const ProfileNav = ({ navigation, contact = null }) => {
@@ -10,9 +10,9 @@ const ProfileNav = ({ navigation, contact = null }) => {
     return (
         <View style={{ flexGrow: 0, gap: 10 }}>
 
-            <DefaultText bold size={36}>
+            <TextCopy bold size={36}>
                 {contact?.username || user.username}
-            </DefaultText>
+            </TextCopy>
     
             <IconButtonLarge
                 name='images'

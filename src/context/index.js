@@ -6,12 +6,12 @@ import { ModalContextProvider, useModal } from './ModalContext'
 import { UserContextProvider, useUser } from './UserContext'
 import { NotificationContextProvider, useNotification } from './NotificationContext'
 import { SocketContextProvider, useSocket } from './SocketContext'
-import { ContactsContextProvider, useContacts } from './ContactsContext'
+// import { ContactsContextProvider, useContacts } from './ContactsContext'
 
 export {
     AppContextProvider,
     BugContextProvider,
-    ContactsContextProvider,
+    // ContactsContextProvider,
     FeedContextProvider,
     FormContextProvider,
     NotificationContextProvider,
@@ -20,7 +20,7 @@ export {
     SocketContextProvider,
     useApp,
     useBugs,
-    useContacts,
+    // useContacts,
     useFeed,
     useForm,
     useModal,

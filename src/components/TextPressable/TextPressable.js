@@ -1,17 +1,14 @@
 import React from 'react'
 import { Pressable, Text } from 'react-native'
-import { useApp } from '@context'
 
 const TextPressable = ({
     onPress,
     bold = false,
-    color = null,
+    color = 'tomato',
     size = 16,
     align = 'left',
     ...props
 }) => {
-    
-    const { theme } = useApp()
     
     return (
         <Pressable
@@ -26,7 +23,7 @@ const TextPressable = ({
                         width: '100%',
                         fontSize: size,
                         fontWeight: bold ? 700 : 400,
-                        color: color || theme?.colors.textDefault,
+                        color,
                         lineHeight: size + 10,
                         textAlign: align,
                     },

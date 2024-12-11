@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import ImageDisplayView from './ImageDisplayView'
 import { ActivityIndicator } from '@components'
-import { useContacts, useModal, useUser } from '@context'
+import { useModal, useUser } from '@context'
 import { deleteImage, loadImage } from '@utils/images'
 
 const ImageDisplayContainer = ({ data }) => {
 
-    const {
-        contact,
-        removeImage,
-        updateContact,
-    } = useContacts()
     const { closeModal } = useModal()
-    const { user } = useUser()
+    const {
+        user,
+        userDetails,
+        removeImage,
+        updateUser,
+    } = useUser()
 
     const [imageLoading, setImageLoading] = useState(false)
     const [image, setImage] = useState(null)
@@ -46,9 +46,9 @@ const ImageDisplayContainer = ({ data }) => {
 
         if (!deletedImage) console.log('Error deleting image.')
         else {
-            removeImage(deletedImage._id)
+            removeImage(userDetails._id, deletedImage._id)
 
-            if (isProfileImage) updateContact({ _id: contact._id, profileImage: null })
+            if (isProfileImage) updateUser({ _id: userDetails._id, profileImage: null })
 
             onClose()
         }

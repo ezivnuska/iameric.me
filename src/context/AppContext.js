@@ -56,6 +56,8 @@ export const AppContextProvider = ({ children }) => {
 
     const dims = useWindowDimensions()
 
+    const landscape = useMemo(() => dims && dims.width > dims.height, [dims])
+
     const [fontsLoaded] = useFonts({
         'Ionicons': Ionicons,
     })
@@ -101,6 +103,7 @@ export const AppContextProvider = ({ children }) => {
             value={{
                 ...state, // stuff from initial state
                 dims, // anything extra...
+                landscape,
                 ...actions,
             }}
         >

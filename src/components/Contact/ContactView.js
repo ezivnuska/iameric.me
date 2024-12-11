@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { DefaultText, IconButtonLarge, ProfileImage } from '@components'
+import { TextCopy, IconButtonLarge, ProfileImage } from '@components'
 
 const PROFILE_IMAGE_SIZE = 100
 
@@ -25,9 +25,9 @@ const ContactView = ({ contact, showImage, showContact }) => (
 
             <View style={{ flexGrow: 0, gap: 10 }}>
 
-                <DefaultText bold size={36}>
+                <TextCopy bold size={36}>
                     {contact.username}
-                </DefaultText>
+                </TextCopy>
 
                 {
                     contact.images.length > 0 && (

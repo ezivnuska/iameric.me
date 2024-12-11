@@ -1,21 +1,19 @@
 import React, { useEffect, useMemo } from 'react'
 import { View } from 'react-native'
-import { FeedList, FeedNavBar } from './components'
+import { FeedList } from './components'
 import { useFeed, useModal, useSocket } from '@context'
-import { DefaultText } from '@components'
-import { createPost, deletePostWithId } from './utils'
+import { TextCopy } from '@components'
+import { deletePostWithId } from './utils'
 
 const FeedContainer = props => {
 
     const {
-        addPost,
         posts,
+        addPost,
         deletePost,
         setFeedLoading,
     } = useFeed()
-
     const { closeModal } = useModal()
-    
     const { socket } = useSocket()
 
     const getThreadIds = () => {
@@ -29,8 +27,10 @@ const FeedContainer = props => {
     }
 
     const getSortedThreads = () => {
+
         const threadIds = getThreadIds()
         const threads = []
+        
         threadIds.map(threadId => {
 
             const thread = posts.filter(post => (post.threadId && post.threadId === threadId) || (!post.threadId && post._id === threadId))
@@ -39,6 +39,7 @@ const FeedContainer = props => {
                 threads.push(thread.reverse())
             }
         })
+
         return threads
     }
 
@@ -50,67 +51,36 @@ const FeedContainer = props => {
     }, [])
 
     const removePost = async id => {
+
         setFeedLoading(true)
         await deletePostWithId(id)
         setFeedLoading(false)
+        
         socket.emit('post_deleted', id)
+
         deletePost(id)
         closeModal()
     }
-
-    const handleSubmit = async data => {
-        const post = await createPost(data)
-        if (post) {
-            addPost(post)
-            socket.emit('new_post', post)
-        }
-        closeModal()
-        return post
-    }
-
-    const renderThreads = threads => (
-        <View
-            style={{
-                gap: 10,
-            }}
-        >
-            {threads.map((items, index) => (
-                <FeedList
-                    key={`thread-${index}`}  
-                    posts={items}
-                    onDelete={removePost}
-                />
-            ))}
-        </View>
-    )
     
     return (
-        <View
-            style={{
-                flex: 1,
-                paddingHorizontal: 10,
-                gap: 10,
-            }}
-        >
+        <View style={{ flex: 1 }}>
 
-            <FeedNavBar {...props} />
+            {/* <FeedNavBar {...props} /> */}
 
-            <View
-                style={{
-                    flexGrow: 1,
-                }}
-            >
-                {sortedThreads.length
-                    ? renderThreads(sortedThreads)
-                    : (
-                        <DefaultText
-                            size={24}
-                            style={{ lineHeight: 30 }}
-                        >
-                            No posts yet.
-                        </DefaultText>
-                    )
+            <View style={{ gap: 10, paddingHorizontal: 10 }}>
+                
+                {
+                    sortedThreads.length
+                        ? sortedThreads.map((items, index) => (
+                            <FeedList
+                                key={`thread-${index}`}  
+                                posts={items}
+                                onDelete={removePost}
+                            />
+                        ))
+                        : <TextCopy> No posts yet.</TextCopy>
                 }
+
             </View>
                 
         </View>

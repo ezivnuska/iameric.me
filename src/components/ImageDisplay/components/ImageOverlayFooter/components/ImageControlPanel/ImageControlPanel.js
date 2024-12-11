@@ -35,7 +35,7 @@ const ImageControlPanel = ({ image, onClose }) => {
         else {
             if (isProfileImage) setProfileImage(null)
 
-            removeImage(deletedImage._id)
+            removeImage(image.user._id, deletedImage._id)
 
             onClose()
         }

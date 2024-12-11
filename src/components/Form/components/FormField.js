@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Text, TextInput, View } from 'react-native'
-import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 import { useApp } from '@context'
 
 const FormField = ({
@@ -30,7 +30,7 @@ const FormField = ({
             }}
         >
             {label && (
-                <DefaultText
+                <TextCopy
                     bold
                     size={18}
                     style={{
@@ -39,7 +39,7 @@ const FormField = ({
                     }}
                 >
                     {label}
-                </DefaultText>
+                </TextCopy>
             )}
 
             <View

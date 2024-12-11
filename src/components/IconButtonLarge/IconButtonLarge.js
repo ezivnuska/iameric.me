@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { Pressable } from 'react-native'
-import { DefaultText } from '@components'
+import { TextCopy } from '@components'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const IconButtonLarge = ({
@@ -52,7 +52,7 @@ const IconButtonLarge = ({
         />
 
         {label && (
-            <DefaultText
+            <TextCopy
                 bold
                 color={transparent
                     ? disabled
@@ -65,7 +65,7 @@ const IconButtonLarge = ({
                 }}
             >
                 {label}
-            </DefaultText>
+            </TextCopy>
         )}
     </Pressable>
 )

@@ -2,15 +2,12 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 import { loadPosts } from '@utils/feed'
 
 const initialState = {
-    modals: [],
     posts: [],
     error: null,
     feedLoaded: false,
     feedLoading: false,
     addPost: () => {},
     deletePost: () => {},
-    closeFeedModal: () => {},
-    setFeedModal: () => {},
     setPosts: () => {},
     setFeedLoading: () => {},
     updatePost: () => {},
@@ -31,6 +28,7 @@ export const FeedContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const loadFeed = async () => {
+
         dispatch({ type: 'SET_FEED_LOADING', payload: true })
         const payload = await loadPosts()
         dispatch({ type: 'SET_FEED_LOADING', payload: false })
@@ -58,15 +56,6 @@ export const FeedContextProvider = props => {
         setFeedLoading: async payload => {
             dispatch({ type: 'SET_FEED_LOADING', payload })
         },
-        closeFeedModal: () => {
-            dispatch({ type: 'CLOSE_FEED_MODAL' })
-        },
-        setFeedModal: (type, data) => {
-            dispatch({
-                type: 'SET_FEED_MODAL',
-                payload: { data, type },
-            })
-        },
         updatePost: async payload => {
             dispatch({ type: 'UPDATE_POST', payload })
         },
@@ -77,7 +66,6 @@ export const FeedContextProvider = props => {
             value={{
                 ...state,
                 ...actions,
-                feedModal: state.modals[state.modals.length - 1],
             }}
         >
             {state.feedLoaded && props.children}
@@ -104,21 +92,6 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 feedLoading: payload,
-            }
-            break
-        case 'SET_FEED_MODAL':
-            return {
-                ...state,
-                modals: [
-                    ...state.modals,
-                    payload,
-                ],
-            }
-            break
-        case 'CLOSE_FEED_MODAL':
-            return {
-                ...state,
-                modals: [],
             }
             break
         case 'SET_POSTS':
