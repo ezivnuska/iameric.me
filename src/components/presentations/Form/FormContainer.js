@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { FormField, FormHeader, SimpleButton } from './components'
+import { FormField, FormHeader } from './components'
+import { SimpleButton } from '@components'
 import { useForm, useUser } from '@context'
 import { getFields, validateFields } from './utils'
 

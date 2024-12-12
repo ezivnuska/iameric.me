@@ -28,7 +28,7 @@ const BugListItem = ({ item, onDelete = null }) => {
             style={{
                 flexGrow: 0,
                 marginBottom: 20,
-                gap: 5,
+                gap: 10,
             }}
         >
 
@@ -112,7 +112,7 @@ const BugListItem = ({ item, onDelete = null }) => {
             </View>
 
             <TextCopy
-                size={24}
+                size={20}
                 style={{ lineHeight: 30 }}
             >
                 {item.text}

@@ -1,7 +1,11 @@
-import MainHeader from './MainHeader'
-import Navigation from './Navigation'
+import Brand from './Brand'
+import BugNavBar from './BugNavBar'
+import FeedNavBar from './FeedNavBar'
+import UserNavBar from './UserNavBar'
 
 export {
-    MainHeader,
-    Navigation,
+    Brand,
+    BugNavBar,
+    FeedNavBar,
+    UserNavBar,
 }

@@ -41,7 +41,7 @@ const BugContainer = () => {
         <View
             style={{
                 flex: 1,
-                paddingHorizontal: 10,
+                // paddingHorizontal: 10,
                 gap: 10,
             }}
         >

@@ -4,31 +4,26 @@ import { TextCopy, IconButton } from '@components'
 import { useModal } from '@context'
 import { navigate } from '@utils/navigation'
 
-const BugNavBar = ({ route }) => {
+const BugNavBar = ({ landscape, route, size }) => {
 
     const { setModal } = useModal()
 
     return (
         <View
             style={{
-                flex: 1,
-                width: '100%',
-                flexGrow: 1,
+                flexGrow: 0,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                paddingHorizontal: 10,
-                height: 50,
+                // paddingRight: 10,
                 gap: 10,
             }}
         >
             <View
                 style={{
-                    flex: 1,
+                    flexGrow: landscape ? 0 : 1,
                     flexDirection: 'row',
-                    justifyContent: 'flex-start',
                     alignItems: 'center',
-                    // gap: 10,
                 }}
             >
                 <Pressable
@@ -41,7 +36,7 @@ const BugNavBar = ({ route }) => {
                     }}
                 >
                     <TextCopy
-                        size={24}
+                        size={size}
                         color={route.name !== 'Home' ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                         bold
                     >
@@ -52,7 +47,7 @@ const BugNavBar = ({ route }) => {
                 
                 <View style={{ paddingHorizontal: 10 }}>
                     <TextCopy
-                        size={24}
+                        size={size}
                         bold
                         color='rgba(0, 0, 0, 0.75)'
                         

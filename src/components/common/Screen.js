@@ -32,21 +32,19 @@ const Screen = ({
         <View style={{ flex: 1 }}>
 
             <ScrollView
-                horizontal={landscape}
+                // horizontal={landscape}
                 showsVerticalScrollIndicator={false}
                 style={{ flexGrow: 1 }}
-                contentContainerStyle={{ flex: 1 }}
+                contentContainerStyle={{
+                    // flex: 1,
+                    width: '100%',
+                    maxWidth: (landscape && !full) ? '90%' : null,
+                    marginHorizontal: 'auto',
+                    paddingHorizontal: 10,
+                    paddingVertical: 10,
+                }}
             >
-                <View
-                    style={{
-                        flex: 1,
-                        width: '100%',
-                        maxWidth: (landscape && !full) ? '90%' : null,
-                        marginHorizontal: 'auto',
-                    }}
-                >
-                    {children}
-                </View>
+                {children}
             </ScrollView>
 
         </View>

@@ -4,7 +4,7 @@ import { TextCopy, IconButton } from '@components'
 import { useModal, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
-const UserNavBar = ({ route, size }) => {
+const UserNavBar = ({ landscape, route, size }) => {
 
     const { uploading, user } = useUser()
     const { setModal } = useModal()
@@ -15,10 +15,12 @@ const UserNavBar = ({ route, size }) => {
         <View
             style={{
                 flexDirection: 'row',
-                justifyContent: 'space-between',
+                // justifyContent: landscape ? 'space-between' : 'flex-start',
+                justifyContent: landscape ? 'space-between' : 'space-between',
                 alignItems: 'center',
-                paddingRight: 10,
+                // paddingRight: 10,
                 gap: 10,
+                // background: 'blue',
             }}
         >
             <View
@@ -26,6 +28,7 @@ const UserNavBar = ({ route, size }) => {
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
+                    // background: 'red',
                 }}
             >
                 {!isCurrentUser && (
@@ -33,7 +36,7 @@ const UserNavBar = ({ route, size }) => {
                         onPress={() => navigate('Users')}
                         disabled={route.name === 'Users'}
                         style={{
-                            paddingHorizontal: 10,
+                            paddingRight: 10,
                             borderRightWidth: 1,
                             borderRightColor: 'rgba(0, 0, 0, 0.5)',
                         }}
@@ -92,6 +95,8 @@ const UserNavBar = ({ route, size }) => {
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
+                        background: 'yellow',
+                        gap: 10,
                     }}
                 >
                     {isCurrentUser && (
@@ -101,11 +106,6 @@ const UserNavBar = ({ route, size }) => {
                             color={!uploading ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                             size={28}
                             disabled={uploading}
-                            style={{
-                                paddingHorizontal: 5,
-                                borderRightWidth: 1,
-                                borderRightColor: 'rgba(0, 0, 0, 0.5)',
-                            }}
                         />
                     )}
 
@@ -118,9 +118,6 @@ const UserNavBar = ({ route, size }) => {
                         color={route.params?.list ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                         size={22}
                         disabled={!route.params?.list}
-                        style={{
-                            paddingHorizontal: 10,
-                        }}
                     />
 
                     <IconButton
@@ -138,4 +135,5 @@ const UserNavBar = ({ route, size }) => {
         </View>
     )
 }
+
 export default UserNavBar

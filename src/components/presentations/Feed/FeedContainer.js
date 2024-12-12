@@ -67,7 +67,12 @@ const FeedContainer = props => {
 
             {/* <FeedNavBar {...props} /> */}
 
-            <View style={{ gap: 10, paddingHorizontal: 10 }}>
+            <View
+                style={{
+                    gap: 10,
+                    // paddingHorizontal: 10,
+                }}
+            >
                 
                 {
                     sortedThreads.length

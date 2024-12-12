@@ -112,7 +112,7 @@ const BugView = ({ item, onDelete = null }) => {
             </View>
 
             <TextCopy
-                size={24}
+                size={20}
                 style={{ lineHeight: 30 }}
             >
                 {item.text}
