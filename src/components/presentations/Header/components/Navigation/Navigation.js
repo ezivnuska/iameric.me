@@ -1,11 +1,12 @@
 import React from 'react'
+import { View } from 'react-native'
 import {
     BugNavBar,
     FeedNavBar,
     UserNavBar,
 } from './components'
 
-const Navigation = ({ route }) => {
+const Navigation = ({ route, size, ...props }) => {
     
     let content = null
     
@@ -20,13 +21,17 @@ const Navigation = ({ route }) => {
 
         case 'Profile':
         case 'Images':
-            content = <UserNavBar route={route} />
+            content = <UserNavBar route={route} size={size} />
             break
             
         default: return null
     }
 
-    return content
+    return (
+        <View {...props}>
+            {content}
+        </View>
+    )
 }
 
 export default Navigation

@@ -4,7 +4,7 @@ import { TextCopy, IconButton } from '@components'
 import { useModal, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
-const UserNavBar = ({ route }) => {
+const UserNavBar = ({ route, size }) => {
 
     const { uploading, user } = useUser()
     const { setModal } = useModal()
@@ -18,6 +18,7 @@ const UserNavBar = ({ route }) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingRight: 10,
+                gap: 10,
             }}
         >
             <View
@@ -38,7 +39,7 @@ const UserNavBar = ({ route }) => {
                         }}
                     >
                         <TextCopy
-                            size={24}
+                            size={size}
                             color={route.name !== 'Users' ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
                             bold
                         >
@@ -54,7 +55,7 @@ const UserNavBar = ({ route }) => {
                     style={{ paddingHorizontal: 10 }}
                 >
                     <TextCopy
-                        size={24}
+                        size={size}
                         color={route.name === 'Profile' ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
                         bold
                     >
@@ -63,24 +64,28 @@ const UserNavBar = ({ route }) => {
 
                 </Pressable>
 
-                {route.name === 'Images' && (
-                    <View
-                        style={{
-                            paddingHorizontal: 10,
-                            borderLeftWidth: 1,
-                            borderLeftColor: 'rgba(0, 0, 0, 0.5)',
-                        }}
+                <Pressable
+                    onPress={() => navigate('Images', { username: route.params?.username })}
+                    disabled={route.name === 'Images'}
+                    style={{
+                        paddingLeft: 10,
+                        borderLeftWidth: 1,
+                        borderLeftColor: 'rgba(0, 0, 0, 0.5)',
+                    }}
+                >
+                    <TextCopy
+                        size={size}
+                        color={route.name === 'Images' ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
+                        bold
                     >
-                        <TextCopy
-                            size={24}
-                            bold
-                            color='rgba(0, 0, 0, 0.75)'
-                        >
-                            Images
-                        </TextCopy>
-                    </View>
-                )}
+                        Images
+                    </TextCopy>
+
+                </Pressable>
+                
             </View>
+
+            {/* image controls */}
 
             {route.name === 'Images' && (
                 <View

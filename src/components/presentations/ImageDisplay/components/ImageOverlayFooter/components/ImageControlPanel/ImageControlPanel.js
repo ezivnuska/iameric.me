@@ -49,7 +49,7 @@ const ImageControlPanel = ({ image, onClose }) => {
 
         if (data && data.profileImage) {
             setProfileImage(data.profileImage)
-            updateUser({ profileImage: data.profileImage })
+            updateUser({ ...user, profileImage: data.profileImage })
         }
     }
 

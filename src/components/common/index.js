@@ -2,7 +2,7 @@
 
 import ActivityIndicator from './ActivityIndicator'
 // import AddressView from './AddressView'
-// import AdminButton from './AdminButton'
+import AdminButton from './AdminButton'
 import Cabinet from './Cabinet'
 import Checkbox from './Checkbox'
 // import Counter from './Counter'
@@ -11,7 +11,7 @@ import IconButtonLarge from './IconButtonLarge'
 import ImageClone from './ImageClone'
 import ImageMax from './ImageMax'
 // import InfoMarker from './InfoMarker'
-import ProfileNav from './ProfileNav'
+// import ProfileNav from './ProfileNav'
 import Screen from './Screen'
 import Settings from './Settings'
 import SimpleButton from './SimpleButton'
@@ -27,7 +27,7 @@ import Time from './Time'
 export {
     ActivityIndicator,
     // AddressView,
-    // AdminButton,
+    AdminButton,
     Cabinet,
     Checkbox,
     // ContactImage,
@@ -37,7 +37,7 @@ export {
     ImageClone,
     ImageMax,
     // InfoMarker,
-    ProfileNav,
+    // ProfileNav,
     Settings,
     Screen,
     SimpleButton,

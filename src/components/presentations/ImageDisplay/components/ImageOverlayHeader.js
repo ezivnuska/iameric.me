@@ -13,7 +13,7 @@ const ImageOverlayHeader = ({ image, onClose, ...props }) => {
                 'rgba(0, 0, 0, 0.7)',
             ]}
             style={{
-                paddingHorizontal: 10,
+                paddingLeft: 10,
                 paddingVertical: 10,
                 paddingBottom: 20,
                 flexDirection: 'row',
@@ -31,7 +31,7 @@ const ImageOverlayHeader = ({ image, onClose, ...props }) => {
                 }}
             >
                 <ProfileImage
-                    contact={image.user}
+                    user={image.user}
                     size={50}
                 />
 

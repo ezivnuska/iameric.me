@@ -1,10 +1,17 @@
 import React from 'react'
 import { View } from 'react-native'
 import { ImageControlPanel } from './components'
-import { IconButton, TextCopy } from '@components'
+import { AdminButton, TextCopy } from '@components'
 import LinearGradient from 'react-native-web-linear-gradient'
 
-const ImageOverlayFooter = ({ disabled, image, onClose, onDelete, owner, admin = false, props }) => {
+const ImageOverlayFooter = ({
+    disabled,
+    image,
+    onClose,
+    onDelete,
+    owner,
+    ...props
+}) => {
 
     return (
         <LinearGradient
@@ -44,15 +51,13 @@ const ImageOverlayFooter = ({ disabled, image, onClose, onDelete, owner, admin =
                             </TextCopy>
                         )}
 
-                        {admin && (
-                            <IconButton
-                                name='trash-outline'
-                                size={24}
-                                color='purple'
-                                onPress={onDelete}
-                                disabled={disabled}
-                            />
-                        )}
+                        <AdminButton
+                            name='trash-outline'
+                            size={24}
+                            onPress={onDelete}
+                            disabled={disabled}
+                            transparent
+                        />
 
                     </View>
                 )

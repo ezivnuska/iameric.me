@@ -20,6 +20,7 @@ const initialState = {
     usersLoading: false,
     userDetailsLoading: false,
 
+    getUser: () => {},
     addUser: () => {},
     removeUser: () => {},
     setUserDetails: () => {},
@@ -170,6 +171,7 @@ export const UserContextProvider = ({ children }) => {
         setUserLoading,
         setUser,
         updateUser,
+        getUser: id => state.users.filter(user => user._id === id)[0],
         addImage: payload => {
             dispatch({ type: 'ADD_IMAGE', payload })
         },
@@ -269,14 +271,13 @@ const reducer = (state, action) => {
                 ...state,
                 users: state.users.map(user => {
                     if (user._id === payload._id) {
-                        return { ...user, ...payload }
+                        return payload
                     }
                     return user
                 }),
-                user: state.user._id === payload._id ? {
-                    ...state.user,
-                    ...payload,
-                } : state.user,
+                user: state.user._id === payload._id
+                    ? payload
+                    : state.user,
             }
             break
         // merged from images context

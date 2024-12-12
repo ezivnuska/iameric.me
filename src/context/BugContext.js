@@ -8,6 +8,7 @@ const initialState = {
     bugsLoading: false,
     addBug: () => {},
     deleteBug: () => {},
+    loadBugs: () => {},
     setBugs: () => {},
     setBugsLoading: () => {},
     updateBug: () => {},
@@ -39,10 +40,11 @@ export const BugContextProvider = ({ children }) => {
     }
     
     useEffect(() => {
-        loadBugs()
+        // loadBugs()
     }, [])
 
     const actions = useMemo(() => ({
+        loadBugs,
         addBug: payload => {
             dispatch({ type: 'ADD_BUG', payload })
         },
@@ -76,7 +78,7 @@ export const BugContextProvider = ({ children }) => {
                 ...actions,
             }}
         >
-            {state.bugsLoaded && children}
+            {children}
         </BugContext.Provider>
     )
 }

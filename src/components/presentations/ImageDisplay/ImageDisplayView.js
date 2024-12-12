@@ -5,7 +5,12 @@ import { ImageMax } from '@components'
 import { useModal, useUser } from '@context'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
-const ImageDisplayView = ({ disabled, image, onClose, onDelete, admin = false }) => {
+const ImageDisplayView = ({
+    disabled,
+    image,
+    onClose,
+    onDelete,
+}) => {
 
     const { closeModal } = useModal()
     const { user } = useUser()
@@ -81,7 +86,6 @@ const ImageDisplayView = ({ disabled, image, onClose, onDelete, admin = false })
                     onClose={closeModal}
                     onDelete={onDelete}
                     owner={user._id === image.user._id}
-                    admin={admin}
                 />
             </Animated.View>
                 

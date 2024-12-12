@@ -1,16 +1,17 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { BugView } from './components'
 import { TextCopy } from '@components'
 import { useBugs, useModal, useSocket } from '@context'
 import { deleteEntryWithId } from '@utils/bugs'
 
-const BugContainer = props => {
+const BugContainer = () => {
 
     const {
         bugs,
         addBug,
         deleteBug,
+        loadBugs,
         setBugsLoading,
     } = useBugs()
 
@@ -18,6 +19,8 @@ const BugContainer = props => {
     const { socket } = useSocket()
 
     useEffect(() => {
+        loadBugs()
+
         socket.on('new_entry', addBug)
         socket.on('deleted_entry', deleteBug)
     }, [])

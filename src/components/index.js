@@ -5,13 +5,13 @@ import * as presentations from './presentations'
 
 import {
     ActivityIndicator,
+    AdminButton,
     Cabinet,
     Checkbox,
     IconButton,
     IconButtonLarge,
     ImageClone,
     ImageMax,
-    ProfileNav,
     Screen,
     Settings,
     SimpleButton,
@@ -54,13 +54,13 @@ export {
     // common
     
     ActivityIndicator,
+    AdminButton,
     Cabinet,
     Checkbox,
     IconButton,
     IconButtonLarge,
     ImageClone,
     ImageMax,
-    ProfileNav,
     Settings,
     Screen,
     SimpleButton,

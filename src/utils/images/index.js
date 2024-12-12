@@ -1,5 +1,6 @@
 import deleteImage from './deleteImage'
 import getBipImages from './getBipImages'
+import getImageOwner from './getImageOwner'
 import getMaxImageDims from './getMaxImageDims'
 import handleBipImageData from './handleBipImageData'
 import handleImageData from './handleImageData'
@@ -14,6 +15,7 @@ import uploadImage from './uploadImage'
 export {
     deleteImage,
     getBipImages,
+    getImageOwner,
     getMaxImageDims,
     handleBipImageData,
     handleImageData,

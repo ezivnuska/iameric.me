@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { IconButtonLarge, TextCopy, Screen } from '@components'
-// import { BipMap } from '@modules'
+import { TextCopy, Screen } from '@components'
 import { useApp, useUser, useModal, useSocket } from '@context'
 import { signin, signout } from '@utils/auth'
 import { cleanStorage, setItem, storeToken } from '@utils/storage'
@@ -14,6 +13,8 @@ const HomeScreen = props => {
     const { reset, user, setUser } = useUser()
     const { clearModal, setModal } = useModal()
     const { notifySocket } = useSocket()
+
+    // SUPER UGLY
 
     const handleSignin = async (email, password) => {
         const response = await signin(email, password)
@@ -88,64 +89,15 @@ const HomeScreen = props => {
             <View style={{ flex: 1, paddingHorizontal: 10 }}>
 
                 <View style={{ flexGrow: 0 }}>
-                    <Intro />
+                    
                 </View>
 
-                <View
-                    style={{
-                        flexGrow: 1,
-                        gap: 15,
-                    }}
-                >
-
-                    <IconButtonLarge
-                        name='people-outline'
-                        label='Users'
-                        onPress={() => props.navigation.navigate('Users')}
-                    />
-
-                    <IconButtonLarge
-                        name='build-outline'
-                        label='Work'
-                        onPress={() => props.navigation.navigate('Work')}
-                    />
-
-                    <IconButtonLarge
-                        name='list-outline'
-                        label='Feed'
-                        onPress={() => props.navigation.navigate('Feed')}
-                    />
-
-                </View>
+                <View style={{ flexGrow: 1 }} />
                 
             </View>
 
         </Screen>
     )
 }
-
-const Intro = () => (
-    <View style={{ marginBottom: 20 }}>
-
-        <View style={{ flexDirection: 'row', gap: 7 }}>
-            
-            <View style={{ flexGrow: 0, flexDirection: 'row', gap: 5 }}>
-                
-                <TextCopy bold size={18}>I am</TextCopy>
-                
-                <View style={{ flexGrow: 0, flexDirection: 'row' }}>
-                    <TextCopy bold size={18} color='#777'>Eric</TextCopy>
-                    <TextCopy bold size={18}>.</TextCopy>
-                </View>
-
-            </View>
-
-            <View style={{ flexGrow: 0 }}>
-                <TextCopy size={18}>Welcome to my progress.</TextCopy>
-            </View>
-        </View>
-
-    </View>
-)
 
 export default HomeScreen

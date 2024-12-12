@@ -5,24 +5,24 @@ import { loadImage } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const ProfileImage = ({ contact = null, size = 'auto' }) => {
+const ProfileImage = ({ user, size = 'auto' }) => {
 
     const { theme } = useApp()
-    const { updateUser, user } = useUser()
+    const { updateUser } = useUser()
     // const { updateContact } = useContacts()
     
     const [fetching, setFetching] = useState(false)
     const [source, setSource] = useState(null)
     
-    const [currentUser, setCurrentUser] = useState(contact || user)
+    // const [currentUser, setCurrentUser] = useState(contact || user)
 
     useEffect(() => {
         let imageSource = `${IMAGE_PATH}/avatar-default.png`
-        if (currentUser?.profileImage) {
-            if (typeof currentUser.profileImage === 'string') {
-                fetchImage(currentUser.profileImage)
+        if (user?.profileImage) {
+            if (typeof user.profileImage === 'string') {
+                fetchImage(user.profileImage)
             } else {
-                imageSource = `${IMAGE_PATH}/${currentUser.username}/${currentUser.profileImage.filename}`
+                imageSource = `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`
                 setSource(imageSource)
             }
         } else {
@@ -41,9 +41,9 @@ const ProfileImage = ({ contact = null, size = 'auto' }) => {
             //     console.log('updating contact')
             //     updateContact({ _id: contact._id, profileImage: img })
             // } else {
-            //     updateUser({ profileImage: img })
+                updateUser({ ...user, profileImage: img })
             // }
-            imageSource = `${IMAGE_PATH}/${currentUser?.username}/${img.filename}`
+            imageSource = `${IMAGE_PATH}/${user?.username}/${img.filename}`
             setSource(imageSource)
         }
     }

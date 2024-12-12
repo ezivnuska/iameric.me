@@ -1,6 +1,6 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { IconButtonLarge, ProfileImage, TextCopy } from '@components'
+import { ProfileImage } from '@components'
 
 const PROFILE_IMAGE_SIZE = 100
 
@@ -19,29 +19,9 @@ const ContactView = ({ contact, showImage, showContact }) => (
             }}
         >
             <ProfileImage
-                contact={contact}
+                user={contact}
                 size={PROFILE_IMAGE_SIZE}
             />
-
-            <View style={{ flexGrow: 0, gap: 10 }}>
-
-                <TextCopy bold size={36}>
-                    {contact.username}
-                </TextCopy>
-
-                {
-                    contact.images.length > 0 && (
-                        <IconButtonLarge
-                            name='images'
-                            label='Images'
-                            size={34}
-                            transparent
-                            onPress={showContact}
-                        />
-                    )
-                }
-
-            </View>
         </Pressable>
 
     </View>

@@ -37,7 +37,7 @@ const ContactListItem = ({ item, onPress, ...props }) => {
                 }}
             >
                 <ProfileImage
-                    contact={item}
+                    user={item}
                     size={50}
                 />
 
