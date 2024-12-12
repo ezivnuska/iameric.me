@@ -19,7 +19,7 @@ const TextHeading = ({
             lineHeight: size + 10,
             textAlign: align,
             marginBottom: 15,
-            paddingHorizontal: 10,
+            // paddingHorizontal: 10,
         }}
     >
         {props.children || 'Heading'}

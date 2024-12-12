@@ -68,7 +68,7 @@ const Header = ({ landscape, user, route }) => {
                     // background: 'red',
                 }}
             >
-                <Brand user={user} size={size} />
+                <Brand user={user} size={30} />
                 {/* <MainHeader
                     landscape={landscape}
                     route={route}
@@ -133,7 +133,11 @@ const Header = ({ landscape, user, route }) => {
 
             </View>
 
-            {!landscape && renderNav()}
+            {!landscape && (
+                <View style={{ marginVertical: 5 }}>
+                    {renderNav()}
+                </View>
+            )}
 
         </View>
     )

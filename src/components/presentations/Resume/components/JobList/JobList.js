@@ -11,7 +11,7 @@ const JobList = ({ jobs }) => {
     }
 
     return (
-        <View style={{ gap: 1, paddingHorizontal: 10 }}>
+        <View style={{ gap: 1 }}>
             {jobs.length && jobs.map((section, index) => (
                 <Job
                     section={section}

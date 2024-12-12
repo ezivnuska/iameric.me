@@ -9,7 +9,6 @@ import HomeScreen from './HomeScreen'
 // import MapScreen from './MapScreen'
 // import PlayScreen from './PlayScreen'
 // import SimpleScreen from './SimpleScreen'
-import UserScreen from './UserScreen'
 import WorkScreen from './WorkScreen'
 
 export {
@@ -24,6 +23,5 @@ export {
     // MailScreen,
     // PlayScreen,
     // SimpleScreen,
-    UserScreen,
     WorkScreen,
 }

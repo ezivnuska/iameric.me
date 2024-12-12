@@ -18,9 +18,10 @@ const ImageList = ({ images, onPress, list = false, ...props }) => {
         let dimensions = null
 
         if (maxDims) {
+            console.log(maxDims)
             if (!list) {
                 let tileSize = null
-                const numImages = !landscape ? 2 : 4
+                const numImages = landscape ? 1 : 2
                 if (!landscape) {
                     tileSize = (maxDims.width - (imageGap * (numImages - 1)) - numImages * 2) / numImages
                 } else {
@@ -89,8 +90,9 @@ const ImageList = ({ images, onPress, list = false, ...props }) => {
                     showsVerticalScrollIndicator={false}
                     style={{ flex: 1 }}
                     contentContainerStyle={{
+                        // flex: 1,
                         flexDirection: !list || landscape ? 'row' : 'column',
-                        flexWrap: !list || !landscape ? 'wrap' : 'nowrap',
+                        flexWrap: !list && !landscape ? 'wrap' : 'nowrap',
                         gap: imageGap,
                     }}
                 >   
@@ -106,7 +108,7 @@ const ImageList = ({ images, onPress, list = false, ...props }) => {
                                         height: !list ? imageDims.height : landscape ? maxDims.height : imageDims.height,
                                         flexDirection: 'row',
                                         alignItems: 'center',
-                                        background: '#000',
+                                        // background: '#000',
                                     },
                                     buttonStyle,
                                 ]}

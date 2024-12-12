@@ -39,6 +39,7 @@ const UserNavBar = ({ landscape, route, size }) => {
                             paddingRight: 10,
                             borderRightWidth: 1,
                             borderRightColor: 'rgba(0, 0, 0, 0.5)',
+                            marginRight: 10,
                         }}
                     >
                         <TextCopy
@@ -55,7 +56,7 @@ const UserNavBar = ({ landscape, route, size }) => {
                 <Pressable
                     onPress={() => navigate('Profile', { username: route.params?.username })}
                     disabled={route.name === 'Profile'}
-                    style={{ paddingHorizontal: 10 }}
+                    style={{ paddingRight: 10 }}
                 >
                     <TextCopy
                         size={size}
@@ -95,7 +96,7 @@ const UserNavBar = ({ landscape, route, size }) => {
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        background: 'yellow',
+                        // background: 'yellow',
                         gap: 10,
                     }}
                 >
