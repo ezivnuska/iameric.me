@@ -18,7 +18,7 @@ const ImageList = ({ images, onPress, list = false, ...props }) => {
         let dimensions = null
 
         if (maxDims) {
-            console.log(maxDims)
+            
             if (!list) {
                 let tileSize = null
                 const numImages = landscape ? 1 : 2
