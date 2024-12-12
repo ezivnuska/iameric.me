@@ -54,6 +54,8 @@ const HomeScreen = props => {
                 const routeName = authRoute
                 setAuthRoute(null)
                 props.navigation.navigate(routeName)
+            } else {
+                props.navigation.navigate('Feed')
             }
         }
     }, [user])

@@ -45,7 +45,7 @@ const BugListItem = ({ item, onDelete = null }) => {
                         flexGrow: 1,
                         flexShrink: 1,
                         gap: 7,
-                        flexWrap: 'wrap',
+                        // flexWrap: 'wrap',
                     }}
                 >
                     <Pressable
@@ -66,7 +66,7 @@ const BugListItem = ({ item, onDelete = null }) => {
                         <View
                             style={{
                                 flexDirection: 'row',
-                                alignItems: 'flex-end',
+                                alignItems: 'flex-start',
                                 flexGrow: 1,
                                 gap: 10,
                             }}
@@ -93,26 +93,27 @@ const BugListItem = ({ item, onDelete = null }) => {
 
                             </View>
 
-                            {(user._id === item.author._id || user.role === 'admin') && (
-                                <IconButton
-                                    name='trash-outline'
-                                    disabled={disabled}
-                                    onPress={() => handleDelete(item._id)}
-                                    color={user.role === 'admin' ? 'purple' : '#000'}
-                                    size={25}
-                                />
-                            )}
-
                         </View>
 
                     </Pressable>
+
+                    {(user._id === item.author._id || user.role === 'admin') && (
+                        <IconButton
+                            name='trash-outline'
+                            disabled={disabled}
+                            onPress={() => handleDelete(item._id)}
+                            color={user.role === 'admin' ? 'purple' : '#000'}
+                            size={20}
+                        />
+                    )}
 
                 </View>
 
             </View>
 
             <TextCopy
-                size={20}
+                size={16}
+                color='blue'
                 style={{ lineHeight: 30 }}
             >
                 {item.text}

@@ -6,12 +6,15 @@ import {
     FeedNavBar,
     UserNavBar,
 } from './components'
-import { IconButton } from '@components'
+import { SimpleButton, IconButton } from '@components'
 import { navigate } from '@utils/navigation'
+import { useModal } from '@context'
 
 const Header = ({ landscape, user, route }) => {
 
     const size = 20
+
+    const { setModal } = useModal()
 
     const renderNav = () => {
 
@@ -77,14 +80,26 @@ const Header = ({ landscape, user, route }) => {
                 /> */}
 
                 {/* {navigation} */}
-
-                {landscape && renderNav()}
+                
+                {landscape && (
+                    <View
+                        style={{
+                            flexGrow: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <View style={{ flexBasis: 'auto' }}>
+                            {renderNav()}
+                        </View>
+                    </View>
+                )}
 
                 <View
                     style={{
-                        // flex: 1,
-                        flexBasis: 'auto',
-                        // flexGrow: 1,
+                        flex: 1,
+                        // flexBasis: 'auto',
+                        // flexGrow: user ? 1 : 0,
                         flexDirection: 'row',
                         justifyContent: landscape ? 'center' : 'flex-end',
                         alignItems: 'center',
@@ -93,13 +108,25 @@ const Header = ({ landscape, user, route }) => {
                     }}
                 >
                     {/* {route && ( */}
+                    <View
+                        style={{
+                            // flex: 1,
+                            // flexBasis: 'auto',
+                            flexGrow: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            // background: 'yellow',
+                        }}
+                    >
+
                         <View
                             style={{
                                 // flex: 1,
                                 flexBasis: 'auto',
-                                // flexGrow: 1,
+                                flexGrow: 1,
                                 flexDirection: 'row',
-                                justifyContent: landscape ? 'space-evenly' : 'center',
+                                justifyContent: user ? 'flex-end' : 'center',//landscape ? 'space-evenly' : 'center',
                                 alignItems: 'center',
                                 gap: 15,
                                 height: 40,
@@ -128,7 +155,16 @@ const Header = ({ landscape, user, route }) => {
                             />
 
                         </View>
+                    </View>
                     {/* )} */}
+
+                    {!user && (
+                        <SimpleButton
+                            label='Sign In'
+                            onPress={() => setModal('AUTH')}
+                        />
+                    )}
+
                 </View>
 
             </View>
