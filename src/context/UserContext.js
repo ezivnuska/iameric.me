@@ -96,12 +96,11 @@ export const UserContextProvider = ({ children }) => {
     }
 
     const initUsers = async () => {
-        console.log('init users')
+        
         dispatch({ type: 'SET_USERS_LOADING', payload: true })
         const users = await loadContacts()
         dispatch({ type: 'SET_USERS_LOADING', payload: false })
         
-        console.log('users', users)
         if (!users) console.log('could not load users')
         else dispatch({ type: 'SET_USERS', payload: users })
         

@@ -8,7 +8,6 @@ import React, {
 import { ActivityIndicator } from 'react-native-paper'
 import { useNotification, useUser } from '@context'
 // import { useMail } from '@mail'
-// import socket from '../socket'
 
 import { io } from 'socket.io-client'
 

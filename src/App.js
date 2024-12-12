@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import Layout from './Layout'
+import Layout from './layout'
 import {
     AppContextProvider,
     BugContextProvider,
@@ -45,7 +45,7 @@ const App = () => {
                                             <BugContextProvider>
 
                                                 <Layout />
-                                                
+
                                             </BugContextProvider>
                                         </SocketContextProvider>
                                     </ModalContextProvider>

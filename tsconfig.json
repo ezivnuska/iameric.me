@@ -49,7 +49,7 @@
       //   "src/modules/Images/index.js"
       // ],
       "@layout": [
-        "./src/Layout/index.js"
+        "src/layout/index.js"
       ],
       // "@modules": [
       //   "src/modules_old/index.js"
