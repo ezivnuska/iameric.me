@@ -1,6 +1,5 @@
 import React from 'react'
-import { Screen, TextHeading } from '@components'
-import Resume from '@components/Resume'
+import { Resume, Screen, TextHeading } from '@components'
 
 const WorkScreen = props => (
     <Screen {...props}>

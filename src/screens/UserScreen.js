@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, Images, ImageList, Screen, User } from '@components'
+import { ActivityIndicator, ImageList, Screen, User } from '@components'
 import { useModal, useUser } from '@context'
 
 const UserScreen = props => {

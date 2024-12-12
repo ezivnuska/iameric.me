@@ -1,6 +1,5 @@
 import React from 'react'
-import { Screen } from '@components'
-import { Feed } from '@components'
+import { Feed, Screen } from '@components'
 import { FeedContextProvider } from '@context'
     
 const FeedScreen = props => (

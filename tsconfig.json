@@ -15,8 +15,11 @@
       // "@bips": [
       //   "src/modules_old/BipList/index.js"
       // ],
-      "@components": [
-        "./src/components/index.js"
+      "@common": [
+        "./src/components/common/index.js"
+      ],
+      "@smart": [
+        "src/components/presentations/index.js"
       ],
       "@context": [
         "./src/context/index.js"
