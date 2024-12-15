@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { ImageOverlayFooter, ImageOverlayHeader } from './components'
 import { ImageMax } from '@components'
@@ -10,6 +10,7 @@ const ImageDisplayView = ({
     image,
     onClose,
     onDelete,
+    owner,
 }) => {
 
     const { closeModal } = useModal()
@@ -34,7 +35,6 @@ const ImageDisplayView = ({
 
     return (
         <View
-            // key={`image-display-view-${Date.now()}`}
             style={{
                 flex: 1,
                 position: 'relative',
@@ -64,7 +64,6 @@ const ImageDisplayView = ({
                 }, animatedStyle]}
             >
                 <ImageOverlayHeader
-                    // key={`overlay-header-${Date.now()}`}
                     image={image}
                     onClose={onClose}
                 />
@@ -80,12 +79,11 @@ const ImageDisplayView = ({
                 }, animatedStyle]}
             >
                 <ImageOverlayFooter
-                    // key={`overlay-footer-${Date.now()}`}
                     disabled={disabled}
                     image={image}
                     onClose={closeModal}
                     onDelete={onDelete}
-                    owner={user._id === image.user._id}
+                    owner={owner}
                 />
             </Animated.View>
                 

@@ -64,9 +64,16 @@ export const ContactsContextProvider = props => {
     }
 
     const getContact = username => state.contacts.filter(contact => contact.username === username)[0]
+    
+    const getContactImage = (username, imageId) => {
+        const user = state.contacts.filter(contact => contact.username === username)[0]
+        const image = user?.images?.length ? user.images.filter(image => image._id === imageId)[0] : null
+        return image
+    }
 
     const actions = useMemo(() => ({
         getContact,
+        getContactImage,
         initContact,
         initContacts,
         addContact: async payload => {

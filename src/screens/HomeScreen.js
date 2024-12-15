@@ -31,6 +31,13 @@ const HomeScreen = props => {
     }
 
     useEffect(() => {
+        if (user) {
+            props.navigation.navigate('Feed')
+        }
+    }, [])
+
+
+    useEffect(() => {
         if (params) {
             if (!user) {
                 if (params.email && params.password) {
@@ -45,6 +52,7 @@ const HomeScreen = props => {
     }, [params])
 
     useEffect(() => {
+        console.log('authRoute', authRoute)
         if (authRoute) setModal('AUTH')
     }, [authRoute])
 
@@ -54,8 +62,6 @@ const HomeScreen = props => {
                 const routeName = authRoute
                 setAuthRoute(null)
                 props.navigation.navigate(routeName)
-            } else {
-                props.navigation.navigate('Feed')
             }
         }
     }, [user])

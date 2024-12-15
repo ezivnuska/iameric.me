@@ -4,7 +4,10 @@ const loadImage = async (req, res) => {
     const { id } = req.params
     let image = await UserImage
         .findOne({ _id: id })
-        .populate('user')
+        .populate({
+            path: 'user',
+            populate: { path: 'profileImage' },
+        })
     
     if (!image) console.log('Error loading image')
     

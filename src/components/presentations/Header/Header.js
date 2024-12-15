@@ -18,26 +18,13 @@ const Header = ({ landscape, user, route }) => {
 
     const renderNav = () => {
 
-        const props = {
-            landscape,
-            route,
-            size,
-        }
+        const props = { landscape, route, size }
 
         switch (route?.name) {
-            case 'Feed':
-                return <FeedNavBar {...props} />
-                break
-
-            case 'Bugs': 
-                return <BugNavBar {...props} />
-                break
-
+            case 'Feed': return <FeedNavBar {...props} />; break
+            case 'Bugs':  return <BugNavBar {...props} />; break
             case 'Profile':
-            case 'Images':
-                return <UserNavBar {...props} />
-                break
-                
+            case 'Images': return <UserNavBar {...props} />; break
             default: return null
         }
 
@@ -53,7 +40,6 @@ const Header = ({ landscape, user, route }) => {
                 maxWidth: landscape ? '90%' : 400,
                 marginHorizontal: 'auto',
                 paddingHorizontal: 10,
-                // background: '#000',
             }}
         >
             
@@ -61,27 +47,16 @@ const Header = ({ landscape, user, route }) => {
                 style={{
                     flex: 1,
                     flexDirection: 'row',
-                    // flexWrap: 'wrap',
                     justifyContent: 'space-between',
-                    // justifyContent: landscape ? 'space-between' : 'flex-start',
                     alignItems: landscape ? 'center' : 'flex-start',
-                    // gap: landscape ? 0 : 15,
                     marginTop: 10,
-                    // height: 'auto',
-                    // background: 'red',
                 }}
             >
                 <Brand user={user} size={30} />
-                {/* <MainHeader
-                    landscape={landscape}
-                    route={route}
-                    size={size}
-                    user={user}
-                /> */}
 
                 {/* {navigation} */}
                 
-                {landscape && (
+                {landscape && user && (
                     <View
                         style={{
                             flexGrow: 1,
@@ -98,35 +73,27 @@ const Header = ({ landscape, user, route }) => {
                 <View
                     style={{
                         flex: 1,
-                        // flexBasis: 'auto',
-                        // flexGrow: user ? 1 : 0,
                         flexDirection: 'row',
                         justifyContent: landscape ? 'center' : 'flex-end',
                         alignItems: 'center',
                         gap: 15,
-                        // background: 'green',
                     }}
                 >
-                    {/* {route && ( */}
                     <View
                         style={{
-                            // flex: 1,
-                            // flexBasis: 'auto',
                             flexGrow: 1,
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            // background: 'yellow',
                         }}
                     >
 
                         <View
                             style={{
-                                // flex: 1,
                                 flexBasis: 'auto',
                                 flexGrow: 1,
                                 flexDirection: 'row',
-                                justifyContent: user ? 'flex-end' : 'center',//landscape ? 'space-evenly' : 'center',
+                                justifyContent: user ? 'flex-end' : 'center',
                                 alignItems: 'center',
                                 gap: 15,
                                 height: 40,
@@ -156,7 +123,6 @@ const Header = ({ landscape, user, route }) => {
 
                         </View>
                     </View>
-                    {/* )} */}
 
                     {!user && (
                         <SimpleButton
@@ -169,7 +135,7 @@ const Header = ({ landscape, user, route }) => {
 
             </View>
 
-            {!landscape && (
+            {!landscape && user && (
                 <View style={{ marginVertical: 5 }}>
                     {renderNav()}
                 </View>
