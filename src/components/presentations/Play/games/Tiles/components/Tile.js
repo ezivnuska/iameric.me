@@ -24,13 +24,11 @@ const Tile = ({
                 width: '100%',
                 height: size,
                 width: size,
-                overflow: 'hidden',
-                borderRadius: 8,
-                backgroundColor: dragging
-                    ? colors.dragged
-                    : direction
-                        ? colors.enabled
-                        : colorBase,
+                // backgroundColor: dragging
+                //     ? colors.dragged
+                //     : direction
+                //         ? colors.enabled
+                //         : colorBase,
             }, props.style]}
         >
             <TextCopy

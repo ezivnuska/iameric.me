@@ -151,7 +151,7 @@ const GameHeader = ({ status, onChangeStatus }) => {
                         }}
                     >
                         <TextCopy color='#fff' bold>
-                            Save Score: {formattedTime}
+                            Score: {formattedTime}
                         </TextCopy>
                     </Pressable>
                 )

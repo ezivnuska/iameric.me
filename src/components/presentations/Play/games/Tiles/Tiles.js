@@ -438,6 +438,7 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 
 	const animatedStyles = useAnimatedStyle(() => {
 		return {
+			backgroundColor: 'red',
 			transform: [
 				{ translateX: offsetX.value },
 				{ translateY: offsetY.value },
@@ -466,7 +467,14 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 							left: t.col * itemSize,
 							height: itemSize,
 							width: itemSize,
+							overflow: 'hidden',
+							borderRadius: 10,
 							cursor: t.direction ? 'pointer' : t.dragging ? 'grab' : 'default',
+							backgroundColor: status === 'resolved'
+								? 'purple'
+								: t.direction
+									? 'green'
+									: 'blue',
 						},
 						// props.style,
 						t.dragging ? animatedStyles : null,
@@ -478,16 +486,9 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 							size={itemSize}
 							dragging={t.dragging}
 							direction={t.direction}
-							style={{
-								backgroundColor: 
-									status === 'resolved'
-										? 'purple'
-										: t.direction
-											? 'green'
-											: t.dragging
-												? 'red'
-												: 'blue',
-							}}
+							// style={{
+							// 	backgroundColor: 
+							// }}
 						/>
 					</GestureDetector>
 					
