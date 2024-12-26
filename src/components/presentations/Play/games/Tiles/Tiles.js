@@ -479,11 +479,14 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 							dragging={t.dragging}
 							direction={t.direction}
 							style={{
-								backgroundColor: t.direction
-									? 'green'
-									: t.dragging
-										? 'red'
-										: 'blue',
+								backgroundColor: 
+									status === 'resolved'
+										? 'purple'
+										: t.direction
+											? 'green'
+											: t.dragging
+												? 'red'
+												: 'blue',
 							}}
 						/>
 					</GestureDetector>
