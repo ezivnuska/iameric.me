@@ -1,41 +1,86 @@
-import React from 'react'
-import { Contact, ContactImages, Screen } from '@components'
+import React, { useEffect, useState } from 'react'
+import { Pressable, View } from 'react-native'
+import { ActivityIndicator, ProfileImage, Screen, TextCopy } from '@components'
+import { useModal, useUser } from '@context'
 
 const ContactScreen = props => {
 
-    const renderContent = () => {
+    const {
+        userDetailsLoading,
+        findUserByUsername,
+        fetchUserAndUpdate,
+        updateUser,
+    } = useUser()
+    
+    const { setModal } = useModal()
+
+    const [profile, setProfile] = useState(null)
+    
+    const init = async username => {
         
-        switch (props.route.name) {
-            case 'Profile':
-                return (
-                    <Contact
-                        {...props}
-                        key={`profile-${Date.now()}`}
-                    />
-                )
-                break
-            case 'Images':
-                    return (
-                    <ContactImages
-                        {...props}
-                        key={`contact-images-${Date.now()}`}
-                        list={props.route.params?.list}
-                    />
-                )
-                break
-            default:
-                console.log('Could not render contact details')
-                return null
+        let user = findUserByUsername(username)
+        
+        if (!user) {
+
+            user = await fetchUserAndUpdate(username)
         }
+
+        if (user) setProfile(user)
     }
+
+    useEffect(() => {
+        if (props.route.params?.username) {
+            if (!profile || profile?.username !== props.route.params.username) {
+                init(props.route.params.username)
+            }
+        }
+    }, [])
 
     return (
         <Screen
-            secure
-            full={props.route.name === 'Images' && props.route.params?.list}
             {...props}
+            full={props.route.name === 'Images' && props.route.params?.list}
+            secure
         >
-            {renderContent()}
+            <View style={{ flex: 1 }}>
+
+                {userDetailsLoading
+                    ? <ActivityIndicator size='medium' label='Loading User...' />
+                    : profile
+                        ? (
+                            <View
+                                {...props}
+                                style={{ flex: 1 }}
+                            >
+
+                                <View
+                                    key={`contact-${profile.username}-${Date.now()}`}
+                                >
+
+                                    <Pressable
+                                        onPress={() => setModal('SHOWCASE', {
+                                            ...profile.profileImage,
+                                            user: { ...profile },
+                                        })}
+                                        disabled={!profile.profileImage}
+                                    >
+
+                                        <ProfileImage
+                                            user={profile}
+                                            size={100}
+                                        />
+
+                                    </Pressable>
+
+                                </View>
+                        
+                            </View>
+                        )
+                        : <TextCopy>Could not load user details.</TextCopy>
+                }
+
+            </View>
+            
         </Screen>
     )
 }

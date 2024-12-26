@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 
-const ModalContainer = ({ children, onClose, fullscreen = false }) => {
+const ModalContainer = ({ children, landscape, onClose, fullscreen = false }) => {
     
     return (
         <View
@@ -30,7 +30,8 @@ const ModalContainer = ({ children, onClose, fullscreen = false }) => {
                 style={{
                     flex: 1,
                     width: '100%',
-                    maxWidth: 400,
+                    // maxWidth: !landscape ? 400 : null,
+                    // maxHeight: landscape ? 400 : null,
                     marginHorizontal: 'auto',
                     // paddingVertical: 10,
                     zIndex: 100,
@@ -38,7 +39,11 @@ const ModalContainer = ({ children, onClose, fullscreen = false }) => {
             >
 
                 {fullscreen ? (
-                    <View style={{ flexGrow: 1 }}>
+                    <View
+                        style={{
+                            flex: 1,
+                        }}
+                    >
                         {children}
                     </View>
                 ) : (
@@ -56,7 +61,7 @@ const ModalContainer = ({ children, onClose, fullscreen = false }) => {
                     >
                         <View
                             style={{
-                                flexGrow: 1,
+                                // flexGrow: 1,
                                 paddingHorizontal: fullscreen ? 0 : 10,
                                 paddingVertical: 10,
                             }}

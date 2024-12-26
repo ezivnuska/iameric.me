@@ -8,11 +8,14 @@ import Checkbox from './Checkbox'
 // import Counter from './Counter'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
+import ImageContained from './ImageContained'
 import ImageClone from './ImageClone'
 import ImageMax from './ImageMax'
 // import InfoMarker from './InfoMarker'
 // import ProfileNav from './ProfileNav'
+import ProfileImage from './ProfileImage'
 import Screen from './Screen'
+import Scrollable from './Scrollable'
 import Settings from './Settings'
 import SimpleButton from './SimpleButton'
 // import Slider from './Slider'
@@ -34,12 +37,15 @@ export {
     // Counter,
     IconButton,
     IconButtonLarge,
+    ImageContained,
     ImageClone,
     ImageMax,
     // InfoMarker,
     // ProfileNav,
+    ProfileImage,
     Settings,
     Screen,
+    Scrollable,
     SimpleButton,
     // Slider,
     // SplitScreen,

@@ -95,27 +95,30 @@ const Header = ({ landscape, user, route }) => {
                                 flexDirection: 'row',
                                 justifyContent: user ? 'flex-end' : 'center',
                                 alignItems: 'center',
-                                gap: 15,
+                                gap: 10,
                                 height: 40,
                             }}
                         >
 
                             <IconButton
                                 name='people-outline'
+                                size={24}
                                 onPress={() => navigate('Users')}
                                 disabled={route?.name === 'Users'}
                                 padding={5}
-                            />
+                                />
 
                             <IconButton
                                 name='build-outline'
+                                size={24}
                                 onPress={() => navigate('Work')}
                                 disabled={route?.name === 'Work'}
                                 padding={5}
-                            />
+                                />
 
                             <IconButton
                                 name='list-outline'
+                                size={24}
                                 onPress={() => navigate('Feed')}
                                 disabled={route?.name === 'Feed'}
                                 padding={5}
@@ -136,7 +139,7 @@ const Header = ({ landscape, user, route }) => {
             </View>
 
             {!landscape && user && (
-                <View style={{ marginVertical: 5 }}>
+                <View style={{ marginVertical: 10 }}>
                     {renderNav()}
                 </View>
             )}

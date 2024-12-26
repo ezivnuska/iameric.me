@@ -8,10 +8,10 @@ import { getFields, validateFields } from './utils'
 const FormContainer = ({
     title,
     fields,
-    onSubmit,
     onCancel,
     color = null,
     data = null,
+    onSubmit = null,
 }) => {
 
     const { user } = useUser()
@@ -123,8 +123,10 @@ const FormContainer = ({
         return (
             <View
                 key={`formfield-${index}-${name}`}
+                // style={{ flex: 1 }}
             >
                 <FormField
+                    // style={{ flex: 1 }}
                     label={label}
                     value={formFields[name] || ''}
                     error={getError(name)}
@@ -146,6 +148,7 @@ const FormContainer = ({
         <View
             style={{
                 flex: 1,
+                // width: '100%',
             }}
         >
             {title && (
@@ -158,11 +161,13 @@ const FormContainer = ({
 
             {formReady && renderFields(formFields)}
 
-            <SimpleButton
-                label={formLoading ? 'Sending' : 'Send'}
-                disabled={formLoading || formError}
-                onPress={submitFormData}
-            />
+            {onSubmit && (
+                <SimpleButton
+                    label={formLoading ? 'Sending' : 'Send'}
+                    disabled={formLoading || formError}
+                    onPress={submitFormData}
+                />
+            )}
 
         </View>
     ) : null

@@ -52,8 +52,11 @@ const HomeScreen = props => {
     }, [params])
 
     useEffect(() => {
-        console.log('authRoute', authRoute)
-        if (authRoute) setModal('AUTH')
+        
+        if (authRoute) {
+            console.log('authRoute', authRoute)
+            setModal('AUTH')
+        }
     }, [authRoute])
 
     useEffect(() => {

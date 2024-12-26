@@ -18,10 +18,11 @@ const ImagePickerContainer = ({ data }) => {
     
     const {
         user,
-        setProfileImage,
-        addImage,
-        setUploading,
         uploading,
+        setProfileImage,
+        setUploading,
+        updateImage,
+        updateUser,
     } = useUser()
 
     const [preview, setPreview] = useState(null)
@@ -154,9 +155,12 @@ const ImagePickerContainer = ({ data }) => {
             console.log('error uploading image')
         } else {
             console.log('image uploaded')
-            addImage(image)
+            updateImage(image)
 
-            if (avatarCheckbox) setProfileImage(image)
+            if (avatarCheckbox) updateUser({
+                ...user,
+                profileImage: image,
+            })
             
             closeModal()
         }

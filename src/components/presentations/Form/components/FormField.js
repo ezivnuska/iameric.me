@@ -72,7 +72,7 @@ const FormField = ({
                             fontSize: 18,
                             lineHeight: multiline ? 25 : 40,
                             maxWidth: '100%',
-                            height: multiline ? 100 : 40,
+                            height: multiline ? 150 : 40,
                             flexWrap: 'wrap',
                             textAlignVertical: 'top',
                             backgroundColor: '#f7f7f7',

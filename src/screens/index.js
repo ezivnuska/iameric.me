@@ -5,6 +5,7 @@ import ContactsScreen from './ContactsScreen'
 import FeedScreen from './FeedScreen'
 import BugScreen from './BugScreen'
 import HomeScreen from './HomeScreen'
+import ImagesScreen from './ImagesScreen'
 // import MailScreen from './MailScreen'
 // import MapScreen from './MapScreen'
 // import PlayScreen from './PlayScreen'
@@ -19,6 +20,7 @@ export {
     FeedScreen,
     BugScreen,
     HomeScreen,
+    ImagesScreen,
     // MapScreen,
     // MailScreen,
     // PlayScreen,

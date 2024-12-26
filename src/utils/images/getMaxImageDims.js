@@ -1,12 +1,15 @@
-const getMaxImageDims = (w, h, maxW) => {
+const getMaxImageDims = (imageWidth, imageHeight, maxWidth = 600) => {
+
     let scale = 1
-    let width = w
-    let height = h
-        if (w > maxW) {
-            scale = maxW / w
-            width = maxW
-            height *= scale
-        }
+
+    let width = imageWidth
+    let height = imageHeight
+
+    if (width > maxWidth) {
+        scale = maxWidth / imageWidth
+        width = maxWidth
+        height *= scale
+    }
     
     return { width, height }
 }

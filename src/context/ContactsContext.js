@@ -37,7 +37,7 @@ export const ContactsContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const initContacts = async () => {
-
+        console.log('initContacts')
         dispatch({ type: 'SET_CONTACTS_LOADING', payload: true })
         const users = await loadContacts()
         dispatch({ type: 'SET_CONTACTS_LOADING', payload: false })

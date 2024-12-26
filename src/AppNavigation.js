@@ -5,6 +5,7 @@ import {
     FeedScreen,
     HomeScreen,
     WorkScreen,
+    ContactsScreen,
     // BipScreen,
     // BipsScreen,
     // MapScreen,

@@ -1,4 +1,4 @@
-import { ContactScreen } from '@screens'
+import { ContactScreen, ImagesScreen } from '@screens'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const UserNavigator = () => {
@@ -21,7 +21,7 @@ const UserNavigator = () => {
 
             <UserStack.Screen
                 name='Images'
-                component={ContactScreen}
+                component={ImagesScreen}
                 options={{
                     title: 'Images',
                     gestureEnabled: false,// not working, so far, only tested in brave

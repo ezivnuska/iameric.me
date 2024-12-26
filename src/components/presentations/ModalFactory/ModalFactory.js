@@ -1,13 +1,23 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
-import { AuthForm, BugForm, ImageDisplay, ImagePicker, PostForm, Settings, Socket, TextCopy } from '@components'
+import {
+    AuthForm,
+    BugForm,
+    ImageDisplay,
+    ImagePicker,
+    PostForm,
+    Scrollable,
+    Settings,
+    Socket,
+    TextCopy,
+} from '@components'
 import { ModalContainer, ModalHeader } from './components'
 import { useApp } from '@context'
 import Modal from 'react-native-modal'
 
 const ModalFactory = ({ modal, onClose }) => {
 
-    const { dims } = useApp()
+    const { dims, landscape } = useApp()
 
     const renderModalContent = () => {
 
@@ -43,14 +53,16 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             default: console.log('Modal not found', type)
         }
-        
+
         return (
             <ModalContainer
                 fullscreen={fullscreen}
+                landscape={landscape}
                 onClose={onClose}
             >
                 {title && <ModalHeader title={title} onClose={onClose} />}
                 {content}
+                {/* {fullscreen ? content : <Scrollable>(content)</Scrollable>} */}
             </ModalContainer>
         )
     }
@@ -66,20 +78,7 @@ const ModalFactory = ({ modal, onClose }) => {
             style={{ margin: 0 }}
         >
             {/* {isCamera && <View style={{ background: 'yellow', width: 100,  height: 100 }} />} */}
-            <ScrollView
-                style={{
-                    flex: 1,
-                    width: '100%',
-                }}
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    flex: 1,
-                    width: '100%',
-                }}
-            >
-                {renderModalContent()}
-
-            </ScrollView>
+            {renderModalContent()}
         </Modal>
     )
 }

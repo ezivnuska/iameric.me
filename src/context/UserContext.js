@@ -8,11 +8,10 @@ import React, {
 import { getItem, getStoredToken, setItem } from '@utils/storage'
 import { validateToken } from '@utils/auth'
 import { loadContact, loadContacts } from '@utils/contacts'
-import { loadImages } from '@utils/images'
+import { loadImage, loadImages } from '@utils/images'
 
 const initialState = {
     user: null,
-    userDetails: null,
     users: [],
     userLoaded: false,
     userLoading: false,
@@ -20,19 +19,16 @@ const initialState = {
     usersLoading: false,
     userDetailsLoading: false,
 
-    getUser: () => {},
+    findUserByUsername: () => {},
     addUser: () => {},
     removeUser: () => {},
-    setUserDetails: () => {},
-    setUserDetailsLoading: () => {},
     setUsers: () => {},
     setUsersLoaded: () => {},
     setUsersLoading: () => {},
     
-    // merged from images context
     images: [],
     error: null,
-    imagesLoaded: false,
+    imageLoading: false,
     imagesLoading: false,
     uploading: false,
 
@@ -41,11 +37,16 @@ const initialState = {
     setUserLoading: () => {},
     updateUser: () => {},
 
-    // merged from images context
     addImage: () => {},
     clearImages: () => {},
+    fetchUserAndUpdate: () => {},
+    fetchImageAndUpdate: () => {},
+    fetchImagesAndUpdate: () => {},
+    findUserById: () => {},
+    findUserImage: () => {},
     removeImage: () => {},
     setImages: () => {},
+    setImageLoading: () => {},
     setImagesLoading: () => {},
     setUploading: () => {},
     updateImage: () => {},
@@ -108,30 +109,43 @@ export const UserContextProvider = ({ children }) => {
         dispatch({ type: 'SET_USERS_LOADED' })
     }
 
-    const initUserDetails = async username => {
-
+    const fetchUserAndUpdate = async username => {
+        
         dispatch({ type: 'SET_USER_DETAILS_LOADING', payload: true })
         const user = await loadContact(username, true)
         dispatch({ type: 'SET_USER_DETAILS_LOADING', payload: false })
         
-        if (!user) console.log('could not load user details')
-        else {
-            dispatch({ type: 'SET_USER_DETAILS', payload: user })
-            dispatch({ type: 'UPDATE_USER', payload: user })
-        }
-        // dispatch({ type: 'SET_USER_DETAILS_LOADED' })
-        // dispatch({ type: 'SET_CONTACT_IMAGES_LOADED' })
+        if (user) dispatch({ type: 'UPDATE_USER', payload: user })
+        else console.log('could not fetch user details')
+
+        return user
     }
 
-    const initImages = async userId => {
+    const fetchImageAndUpdate = async imageId => {
 
+        dispatch({ type: 'SET_IMAGE_LOADING', payload: true })
+        const payload = await loadImage(imageId)
+        dispatch({ type: 'SET_IMAGE_LOADING', payload: false })
+
+        if (payload) dispatch({ type: 'UPDATE_IMAGE', payload })
+        else console.log('could not load image')
+        
+        return payload
+    }
+
+    const fetchImagesAndUpdate = async userId => {
+
+        let images = null
+        
         dispatch({type: 'SET_IMAGES_LOADING', payload: true })
-        const items = await loadImages(userId)
+        images = await loadImages(userId)
         dispatch({type: 'SET_IMAGES_LOADING', payload: false })
+        
+        if (images) {
+            dispatch({type: 'SET_IMAGES', payload: { userId, images } })
+        }
 
-        dispatch({type: 'SET_IMAGES', payload: items })
-
-        dispatch({type: 'SET_IMAGES_LOADED' })
+        return images
     }
 
     const reset = () => {
@@ -142,9 +156,6 @@ export const UserContextProvider = ({ children }) => {
         dispatch({ type: 'SET_USER', payload })
     }
 
-    const setUserDetails = payload => {
-        dispatch({ type: 'SET_USER_DETAILS', payload })
-    }
     const setUserLoading = payload => {
         dispatch({ type: 'SET_USER_LOADING', payload })
     }
@@ -161,17 +172,45 @@ export const UserContextProvider = ({ children }) => {
         // addNotification(`User ${keys.toString()} updated`)
     }
 
+    const findUserById = userId => state.users.filter(user => user._id === userId)[0]
+    const findUserImageById = (id, images) => images.filter(img => img._id === id)[0]
+    const findUserImage = (userId, imageId) => {
+        const userWithId = findUserById(userId)
+        if (userWithId && userWithId.images?.length) {
+            const imageWithId = findUserImageById(imageId, userWithId.images)
+            return imageWithId
+        }
+        return null
+    }
+    
+    const updateUserImage = payload => {
+        
+        const userToUpdate = findUserById(payload.user._id)
+        let images = userToUpdate.images || []
+        updateUser({
+            ...userToUpdate,
+            images: images.map(image => {
+                if (image._id === payload._id) {
+                    return { ...image, ...payload }
+                }
+                return image
+            }),
+        })
+    }
+
     const actions = useMemo(() => ({
-        initImages,
+        findUserByUsername: username => state.users.filter(user => user.username === username)[0],
+        findUserById,
+        fetchImageAndUpdate,
+        fetchImagesAndUpdate,
+        fetchUserAndUpdate,
+        findUserImage,
         initUsers,
-        initUserDetails,
         reset,
         setProfileImage,
-        setUserDetails,
         setUserLoading,
         setUser,
         updateUser,
-        getUser: id => state.users.filter(user => user._id === id)[0],
         addImage: payload => {
             dispatch({ type: 'ADD_IMAGE', payload })
         },
@@ -183,7 +222,9 @@ export const UserContextProvider = ({ children }) => {
         },
         setImages: payload => {
             dispatch({ type: 'SET_IMAGES', payload })
-            if (!state.imagesLoaded) dispatch({ type: 'SET_IMAGES_LOADED' })
+        },
+        setImageLoading: payload => {
+            dispatch({ type: 'SET_IMAGE_LOADING', payload })
         },
         setImagesLoading: payload => {
             dispatch({ type: 'SET_IMAGES_LOADING', payload })
@@ -209,7 +250,11 @@ export const UserContextProvider = ({ children }) => {
 }
 
 const reducer = (state, action) => {
+    
     const { payload, type } = action
+    
+    let updatedUsers
+    
     switch(type) {
         case 'RESET': return { ...state, user: null }; break
         case 'USER_LOADED': return { ...state, userLoaded: true }; break
@@ -234,12 +279,6 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 users: payload,
-            }
-            break
-        case 'SET_USER_DETAILS':
-            return {
-                ...state,
-                userDetails: payload,
             }
             break
         case 'SET_USER_LOADING':
@@ -267,35 +306,36 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_USER':
+            const savedUser = state.users.filter(user => user._id === payload._id)[0]
+            
+            const users = savedUser
+                ? state.users.map(user => user._id === payload._id ? payload : user)
+                : [ ...state.users, payload ]
+
+            const user = state.user._id === payload._id ? payload : state.user
+            
             return {
                 ...state,
-                users: state.users.map(user => {
-                    if (user._id === payload._id) {
-                        return payload
-                    }
-                    return user
-                }),
-                user: state.user._id === payload._id
-                    ? payload
-                    : state.user,
+                users,
+                user,
             }
             break
-        // merged from images context
+        case 'SET_IMAGE_LOADING':
+            return {
+                ...state,
+                imageLoading: payload,
+            }
+            break
         case 'SET_IMAGES_LOADING':
             return {
                 ...state,
                 imagesLoading: payload,
             }
             break
-        case 'SET_IMAGES_LOADED':
-            return {
-                ...state,
-                imagesLoaded: true,
-            }
-            break
         case 'REMOVE_IMAGE':
             const { userId, imageId } = payload
-            const updatedUsers = users.map((user, index) => {
+
+            updatedUsers = state.users.map((user, index) => {
                 if (user._id === userId) {
                     return {
                         ...user,
@@ -303,7 +343,7 @@ const reducer = (state, action) => {
                     }
                 } else return user
             })
-            // const images = state.images.filter(image => image._id !== payload)
+
             return {
                 ...state,
                 user: state.user._id === userId ? {
@@ -316,7 +356,19 @@ const reducer = (state, action) => {
         case 'SET_IMAGES':
             return {
                 ...state,
-                images: payload,
+                users: state.users.map(user => {
+                    if (user._id === payload.userId) {
+                        return {
+                            ...user,
+                            images: payload.images,
+                        }
+                    }
+                    return user
+                }),
+                user: payload.userId === state.user._id ? {
+                    ...state.user,
+                    images: payload.images,
+                } : state.user,
             }
             break
         case 'ADD_IMAGE':
@@ -332,13 +384,42 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 images: [],
-                imagesLoaded: false,
             }
             break
         case 'UPDATE_IMAGE':
+            let updatedUser = null
+            updatedUsers = state.users.map(item => {
+                if (item._id === payload.user._id) {
+                    
+                    let images = null
+                    if (!item.images) images = [payload]
+                    else {
+                        let index = null
+                        images = item.images.map((image, i) => {
+                            if (image._id === payload._id) {
+                                index = i
+                                return payload
+                            }
+                            return image
+                        })
+
+                        if (!index) images = [ ...images, payload ]
+                    }
+                    
+                    updatedUser = {
+                        ...item,
+                        images,
+                    }
+                    
+                    return updatedUser
+                }
+                return item
+            })
+            
             return {
                 ...state,
-                images: state.images.map(image => image._id === payload._id ? payload : image),
+                users: updatedUsers,
+                user: updatedUser._id === state.user._id ? updatedUser : state.user,
             }
             break
         default: throw new Error()

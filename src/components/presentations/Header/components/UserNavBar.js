@@ -15,12 +15,8 @@ const UserNavBar = ({ landscape, route, size }) => {
         <View
             style={{
                 flexDirection: 'row',
-                // justifyContent: landscape ? 'space-between' : 'flex-start',
                 justifyContent: landscape ? 'space-between' : 'space-between',
                 alignItems: 'center',
-                // paddingRight: 10,
-                gap: 10,
-                // background: 'blue',
             }}
         >
             <View
@@ -28,7 +24,6 @@ const UserNavBar = ({ landscape, route, size }) => {
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
-                    // background: 'red',
                 }}
             >
                 {!isCurrentUser && (
@@ -96,7 +91,6 @@ const UserNavBar = ({ landscape, route, size }) => {
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
-                        // background: 'yellow',
                         gap: 10,
                     }}
                 >
@@ -110,27 +104,32 @@ const UserNavBar = ({ landscape, route, size }) => {
                         />
                     )}
 
-                    <IconButton
-                        name='grid-outline'
-                        onPress={() => navigate('Images', {
-                            username: route.params?.username,
-                            list: false,
-                        })}
-                        color={route.params?.list ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
-                        size={22}
-                        disabled={!route.params?.list}
-                    />
+                    {!landscape && (
+                        <IconButton
+                            name='grid-outline'
+                            onPress={() => navigate('Images', {
+                                username: route.params?.username,
+                                list: false,
+                            })}
+                            color={route.params?.list ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
+                            size={22}
+                            disabled={!route.params?.list}
+                        />
+                    )}
 
-                    <IconButton
-                        name='menu-outline'
-                        onPress={() => navigate('Images', {
-                            username: route.params?.username,
-                            list: true,
-                        })}
-                        color={route.params?.list ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
-                        size={30}
-                        disabled={route.params?.list}
-                    />
+                    {!landscape && (
+                        <IconButton
+                            name='menu-outline'
+                            onPress={() => navigate('Images', {
+                                username: route.params?.username,
+                                list: true,
+                            })}
+                            color={route.params?.list ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
+                            size={30}
+                            disabled={route.params?.list}
+                        />
+                    )}
+
                 </View>
             )}
         </View>

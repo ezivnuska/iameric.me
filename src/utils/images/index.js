@@ -8,6 +8,7 @@ import loadImage from './loadImage'
 import loadImages from './loadImages'
 import openCamera from './openCamera'
 import openFileSelector from './openFileSelector'
+import setAvatar from './setAvatar'
 import setCaption from './setCaption'
 import uploadBipImage from './uploadBipImage'
 import uploadImage from './uploadImage'
@@ -23,6 +24,7 @@ export {
     loadImages,
     openCamera,
     openFileSelector,
+    setAvatar,
     setCaption,
     uploadBipImage,
     uploadImage,
