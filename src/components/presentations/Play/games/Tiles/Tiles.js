@@ -14,15 +14,16 @@ import {
 	GameHeader,
 	Tile,
 } from './components'
-import { usePlay } from '@context'
-import { getModifiedColor } from '@utils'
+import { useApp, usePlay, useUser } from '@context'
 
-export default ({ gameSize }) => {
+const Tiles = ({ gameSize }) => {
 
+	const { landscape } = useApp()
+	const { playModal, closePlayModal, setPlayModal } = usePlay()
 	const [level, setLevel] = useState(4)
 	
 	const [initialTiles, setInitialTiles] = useState(null)
-	const [gameStatus, setGameStatus] = useState('start')
+	const [gameStatus, setGameStatus] = useState('idle')
 
 	const createInitialTiles = async () => {
 		const tileArray = []
@@ -42,11 +43,25 @@ export default ({ gameSize }) => {
 	}
 
 	useEffect(() => {
-		if (gameSize) createInitialTiles()
+		if (gameSize) {
+			if (!initialTiles) {
+				createInitialTiles()
+			}
+		}
+		// if (landscape) setPlayModal('PAUSED')
 	}, [gameSize])
 
+	useEffect(() => {
+		if (landscape && (gameStatus === 'playing')) setGameStatus('paused')
+		else if (!landscape && playModal) closePlayModal()
+	}, [landscape, gameStatus])
+
+	useEffect(() => {
+		if (gameStatus == 'paused' && landscape && !playModal) setPlayModal('PAUSED')
+	}, [gameStatus])
+
 	const handleWin = () => {
-		if ((gameStatus === 'playing' || gameStatus === 'dev')) setGameStatus('resolved')
+		setGameStatus('resolved')
 	}
 
 	return (
@@ -61,6 +76,7 @@ export default ({ gameSize }) => {
 				<TileGame
 					initialTiles={initialTiles}
 					// tiles={tiles}
+					onChangeStatus={setGameStatus}
 					status={gameStatus}
 					handleWin={handleWin}
 					gameSize={gameSize}
@@ -71,15 +87,13 @@ export default ({ gameSize }) => {
 	)
 }
 
-const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => {
+const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, level = 4  }) => {
 
 	const {
-		// gameSize,
-		// initialTiles,
-		// ticks,
 		tiles,
 		setTiles,
 	} = usePlay()
+	const { user } = useUser()
 	
 	const itemSize = gameSize / level
 
@@ -88,20 +102,16 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 	const [isDragging, setIsDragging] = useState(false)
 
 	useEffect(() => {
-		console.log('status', status)
+		
 		switch (status) {
-			case 'start':
-				if (isPaused) setIsPaused(false)
+			case 'idle':
 				setTiles(initialTiles)
-				// setEmptyPos()
 				break
-			case 'dev':
-				if (isPaused) setIsPaused(false)
-				else startDevGame()
+			case 'start':
+				startGame()
 				break
 			case 'playing':
 				if (isPaused) setIsPaused(false)
-				else startGame()
 				break
 			case 'paused':
 				setIsPaused(true)
@@ -113,16 +123,17 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 		}
 	}, [status])
 	
-	const startDevGame = () => {
-		setRefreshing(true)
-		const shuffledTiles = shuffleForDev(initialTiles)
-		setTiles(shuffledTiles)
-	}
-	
 	const startGame = () => {
 		setRefreshing(true)
-		const shuffledTiles = shuffle(initialTiles)
+		
+		let shuffledTiles
+
+		if (user?.role === 'admin') shuffledTiles = shuffleForDev()
+		else shuffledTiles = shuffle()
+
 		setTiles(shuffledTiles)
+
+		onChangeStatus('playing')
 	}
 
 	const shuffleForDev = () => {
@@ -220,7 +231,7 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 		if (refreshing) {
 			setRefreshing(false)
 			if (tiles && tiles.length) {
-				if (status === 'playing' || status === 'dev') {
+				if (status === 'playing') {
 					const isCorrect = resolveTiles()
 					if (isCorrect) {
 						console.log('WINNER WINNER CHICKEN DINNER')
@@ -281,7 +292,7 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 	}
 
 	const onTouchStart = tile => {
-		if (status !== 'playing' && status !== 'dev') return
+		if (status !== 'playing') return
 		if (tile.direction) {
 			setIsDragging(true)
 			setDraggedTiles(tile)
@@ -445,14 +456,49 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 				.onFinalize(e => onTouchEnd(e, t))
 			
 			return (
-				<AnimatedView
+				<Animated.View
 					key={`tile-${t.id}`}
-					tile={t}
-					size={itemSize}
-					pan={pan}
-					animatedStyle={t.dragging ? animatedStyles : {}}
-				/>
+					// {...props}
+					style={[
+						{
+							position: 'absolute',
+							top: t.row * itemSize,
+							left: t.col * itemSize,
+							height: itemSize,
+							width: itemSize,
+							cursor: t.direction ? 'pointer' : t.dragging ? 'grab' : 'default',
+						},
+						// props.style,
+						t.dragging ? animatedStyles : null,
+					]}
+				>
+					<GestureDetector gesture={pan}>
+						<Tile
+							label={t.id + 1}
+							size={itemSize}
+							dragging={t.dragging}
+							direction={t.direction}
+							style={{
+								backgroundColor: t.direction
+									? 'green'
+									: t.dragging
+										? 'red'
+										: 'blue',
+							}}
+						/>
+					</GestureDetector>
+					
+				</Animated.View>
 			)
+			// return (
+			// 	<AnimatedView
+			// 		key={`tile-${t.id}`}
+			// 		tile={t}
+			// 		size={itemSize}
+			// 		pan={pan}
+			// 		animatedStyle={t.dragging ? animatedStyles : {}}
+			// 	/>
+			// )
 		})
 	}
 
@@ -471,47 +517,49 @@ const TileGame = ({ gameSize, initialTiles, status, handleWin, level = 4  }) => 
 	)
 }
 
-const AnimatedView = ({ tile, size, pan, animatedStyle, ...props }) => {
+// const AnimatedView = ({ tile, size, pan, animatedStyle, ...props }) => {
 
 	
-	const colorBase = '#ff0000'
-	const colors = {
-		dragged: getModifiedColor(colorBase, 50),
-		enabled: getModifiedColor(colorBase, 25),
-	}
+// 	const colorBase = '#ff0000'
+// 	const colors = {
+// 		dragged: getModifiedColor(colorBase, 50),
+// 		enabled: getModifiedColor(colorBase, 25),
+// 	}
 
-	const backgroundColor = tile.dragging
-		? colors.dragged
-		: tile.direction
-			? colors.enabled
-			: colorBase
+// 	const backgroundColor = tile.dragging
+// 		? colors.dragged
+// 		: tile.direction
+// 			? colors.enabled
+// 			: colorBase
 	
-	return (
-		<Animated.View
-			{...props}
-			style={[
-				{
-					position: 'absolute',
-					top: tile.row * size,
-					left: tile.col * size,
-					height: size,
-					width: size,
-					cursor: tile.direction ? 'pointer' : tile.dragging ? 'grab' : 'default',
-				},
-				// props.style,
-				animatedStyle,
-			]}
-		>
-			<GestureDetector gesture={pan}>
-				<Tile
-					label={tile.id + 1}
-					size={size}
-					dragging={tile.dragging}
-					direction={tile.direction}
-					style={{ backgroundColor }}
-				/>
-			</GestureDetector>
+// 	return (
+// 		<Animated.View
+// 			{...props}
+// 			style={[
+// 				{
+// 					position: 'absolute',
+// 					top: tile.row * size,
+// 					left: tile.col * size,
+// 					height: size,
+// 					width: size,
+// 					cursor: tile.direction ? 'pointer' : tile.dragging ? 'grab' : 'default',
+// 				},
+// 				// props.style,
+// 				animatedStyle,
+// 			]}
+// 		>
+// 			<GestureDetector gesture={pan}>
+// 				<Tile
+// 					label={tile.id + 1}
+// 					size={size}
+// 					dragging={tile.dragging}
+// 					direction={tile.direction}
+// 					style={{ backgroundColor }}
+// 				/>
+// 			</GestureDetector>
 			
-		</Animated.View>
-	)
-}
+// 		</Animated.View>
+// 	)
+// }
+
+export default Tiles

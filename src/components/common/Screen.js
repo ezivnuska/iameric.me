@@ -17,7 +17,7 @@ const Screen = ({
     const routeName = useMemo(() => props.route.name, [props])
 
     useEffect(() => {
-        console.log('props.route.name', props.route.name)
+        
         if (!authorized) {
             console.log('not authorized for route', routeName)
             if (routeName !== 'Home') {
@@ -41,7 +41,7 @@ const Screen = ({
                     width: '100%',
                     maxWidth: (landscape && !full) ? '90%' : null,
                     marginHorizontal: 'auto',
-                    paddingHorizontal: 10,
+                    paddingHorizontal: !full ? 10 : 0,
                     // paddingVertical: 10,
                 }}
             >

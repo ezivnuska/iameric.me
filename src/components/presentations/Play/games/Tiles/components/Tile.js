@@ -1,22 +1,37 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { View } from 'react-native'
 import { TextCopy } from '@components'
+import { getModifiedColor } from '@utils'
 
-const Tile = ({ label, size, ...props }) => {
+const Tile = ({
+    direction,
+    dragging,
+    label,
+    size,
+    ...props
+}) => {
+            
+    const colorBase = '#ff0000'
+    const colors = {
+        dragged: getModifiedColor(colorBase, 50),
+        enabled: getModifiedColor(colorBase, 25),
+    }
 
     return (
         <View
-            style={[
-                {
-                    flex: 1,
-                    width: '100%',
-                    height: size,
-                    width: size,
-                    overflow: 'hidden',
-                    borderRadius: 8,
-                },
-                props.style,
-            ]}
+            style={[{
+                flex: 1,
+                width: '100%',
+                height: size,
+                width: size,
+                overflow: 'hidden',
+                borderRadius: 8,
+                backgroundColor: dragging
+                    ? colors.dragged
+                    : direction
+                        ? colors.enabled
+                        : colorBase,
+            }, props.style]}
         >
             <TextCopy
                 bold

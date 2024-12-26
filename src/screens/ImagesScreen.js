@@ -59,7 +59,7 @@ const ImagesScreen = props => {
     return (
         <Screen
             secure
-            full={props.route.params?.list}
+            full={landscape || props.route.params?.list}
             {...props}
         >
             <View style={{ flex: 1 }}>

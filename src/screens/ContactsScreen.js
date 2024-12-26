@@ -6,14 +6,9 @@ const ContactsScreen = props => {
     return (
         <Screen secure {...props}>
     
-            {/* <View
-                style={{
-                    flex: 1,
-                    // paddingHorizontal: 10,
-                }}
-            > */}
+            <View style={{ flex: 1 }}>
                 <ContactsList {...props} />
-            {/* </View> */}
+            </View>
         </Screen>
     )
 }

@@ -1,9 +1,13 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react'
 
 const initialState = {
+    modals: [],
+    data: null,
     level: 4,
     ticks: 0,
     tiles: [],
+    closePlayModal: () => {},
+    setPlayModal: () => {},
     setTiles: () => {},
     startTicker: () => {},
     stopTicker: () => {},
@@ -71,6 +75,15 @@ export const PlayContextProvider = props => {
         startTicker,
         stopTicker,
         resetTicks,
+        setPlayModal: (type, data) => {
+            dispatch({
+                type: 'SET_PLAY_MODAL',
+                payload: { data, type },
+            })
+        },
+        closePlayModal: () => {
+            dispatch({ type: 'CLOSE_PLAY_MODAL' })
+        },
     }), [state, dispatch])
 
     return  (
@@ -78,6 +91,7 @@ export const PlayContextProvider = props => {
             value={{
                 ...state,
                 ...actions,
+                playModal: state.modals[state.modals.length - 1],
                 ticking,
                 getTile,
             }}
@@ -106,6 +120,21 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 ticks: 0,
+            }
+            break
+        case 'SET_PLAY_MODAL':
+            return {
+                ...state,
+                modals: [
+                    ...state.modals,
+                    payload,
+                ],
+            }
+            break
+        case 'CLOSE_PLAY_MODAL':
+            return {
+                ...state,
+                modals: state.modals.slice(0, state.modals.length - 1),
             }
             break
         default:

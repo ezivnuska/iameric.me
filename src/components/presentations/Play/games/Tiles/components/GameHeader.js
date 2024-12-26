@@ -12,10 +12,7 @@ import { usePlay } from '@context'
 
 const GameHeader = ({ status, onChangeStatus }) => {
     
-    let ticker = null
-
     const {
-        ticking,
         ticks,
         startTicker,
         stopTicker,
@@ -35,24 +32,23 @@ const GameHeader = ({ status, onChangeStatus }) => {
     }, [ticks])
 
     useEffect(() => {
-        return () => {
-            console.log('unmounting')
-            clearInterval(ticker)
-        }
-    }, [])
-
-    useEffect(() => {
+        
         switch (status) {
+            case 'idle':
+                resetTicks()
+                break
             case 'start':
-                // stopTicker()
+                startPlay()
                 break
             case 'playing':
-                // startTicker()
+                startTicker()
                 break
             case 'paused':
-                // stopTicker()
+                stopTicker()
                 break
             case 'resolved':
+                setScore(formattedTime)
+                stopTicker()
                 handleWin()
                 break
             default:
@@ -60,140 +56,75 @@ const GameHeader = ({ status, onChangeStatus }) => {
     }, [status])
 
     const handleWin = () =>  {
-        stopTicker()
-        setScore(ticks)
-        resetTicks()
+        // resetTicks()
         onChangeStatus('resolved')
     }
 
-    // const handlePress = () => {
-    //     if (!ticking) onGameStart()
-    //     else if (ticks > 0) stopTicker()
-    //     else startTicker()
-    // }
-
     const startPlay = () => {
-        startTicker()
-        onChangeStatus('playing')
-    }
-
-    const startDevPlay = () => {
-        startTicker()
-        onChangeStatus('dev')
+        onChangeStatus('start')
     }
 
     const unpause = () => {
-        startTicker()
-        onChangeStatus(status !== 'dev' ? 'playing' : 'dev')
+        onChangeStatus('playing')
     }
 
     const pause = () => {
-        stopTicker()
         onChangeStatus('paused')
     }
 
     const reset = () => {
-        stopTicker()
         resetTicks()
         setScore(null)
-        onChangeStatus('start')
-    }
-
-    const renderDefaultPanel = () => {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
-            >
-                <SimpleButton
-                    label={`Start`}
-                    onPress={startPlay}
-                />
-
-                <SimpleButton
-                    label={`Easy (dev)`}
-                    onPress={startDevPlay}
-                />
-
-            </View>
-        )
-    }
-
-    const renderPlayingPanel = () => {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
-            >
-                <SimpleButton
-                    label='Pause'
-                    onPress={pause}
-                />
-
-                <Text>{status === 'dev' ? 'DEV' : 'Playing'}</Text>
-
-            </View>
-        )
-    }
-
-    const renderPausedPanel = () => (
-        <View
-            style={{
-                flex: 1,
-                flexDirection: 'row',
-                gap: 10,
-            }}
-        >
-            
-            <SimpleButton
-                label='Continue'
-                onPress={unpause}
-            />
-
-            <SimpleButton
-                label='Give Up'
-                onPress={reset}
-            />
-
-            <Text>Paused</Text>
-        </View>
-    )
-
-    const renderResolvedPanel = () => {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
-            >
-                <SimpleButton
-                    label={`Finish`}
-                    onPress={reset}
-                />
-
-                <Text>Winner!</Text>
-            </View>
-        )
+        onChangeStatus('idle')
     }
 
     const renderPanel = () => {
-        switch (status) {
-            case 'dev':
-            case 'playing':
-                return renderPlayingPanel()
-                break
-            case 'paused': return renderPausedPanel(); break
-            case 'resolved': return renderResolvedPanel(); break
-            default: return renderDefaultPanel()
-        }
+        return (
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    gap: 10,
+                }}
+            >
+                {status === 'idle'
+                    ? (
+                        <SimpleButton
+                            label={`Shuffle`}
+                            onPress={startPlay}
+                        />
+                    )
+                    : status === 'paused'
+                        ? (
+                            <SimpleButton
+                                label='Continue'
+                                onPress={unpause}
+                            />
+                        )
+                        : status === 'resolved'
+                            ? (
+                                <SimpleButton
+                                    label={`Finish`}
+                                    onPress={reset}
+                                />
+                            )
+                            : (
+                                <SimpleButton
+                                    label='Pause'
+                                    onPress={pause}
+                                />
+                            )
+                }
+
+                {status === 'paused' && (
+                    <SimpleButton
+                        label='Give Up'
+                        onPress={reset}
+                    />
+                )}
+
+            </View>
+        )
     }
 
     return (
