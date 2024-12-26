@@ -15,21 +15,21 @@ import {
 	Tile,
 } from './components'
 import { useApp, usePlay, useUser } from '@context'
+import { navigate } from '@utils/navigation'
 
-const Tiles = ({ gameSize }) => {
+const Tiles = ({ gameSize, changeLevel, level }) => {
 
 	const { landscape } = useApp()
 	const { playModal, closePlayModal, setPlayModal } = usePlay()
-	const [level, setLevel] = useState(4)
 	
 	const [initialTiles, setInitialTiles] = useState(null)
 	const [gameStatus, setGameStatus] = useState('idle')
 
-	const createInitialTiles = async () => {
+	const createInitialTiles = async num => {
 		const tileArray = []
-		while (tileArray.length < level * level - 1) {
-			const col = tileArray.length % level
-			const row = Math.floor(tileArray.length / level)
+		while (tileArray.length < num * num - 1) {
+			const col = tileArray.length % num
+			const row = Math.floor(tileArray.length / num)
 			let newTile = {
 				id: tileArray.length,
 				col,
@@ -43,13 +43,13 @@ const Tiles = ({ gameSize }) => {
 	}
 
 	useEffect(() => {
-		if (gameSize) {
-			if (!initialTiles) {
-				createInitialTiles()
-			}
-		}
-		// if (landscape) setPlayModal('PAUSED')
-	}, [gameSize])
+		createInitialTiles(level)
+		if (landscape) setPlayModal('PAUSED')
+	}, [])
+
+	useEffect(() => {
+		createInitialTiles(level)
+	}, [level])
 
 	useEffect(() => {
 		if (landscape && (gameStatus === 'playing')) setGameStatus('paused')
@@ -70,6 +70,7 @@ const Tiles = ({ gameSize }) => {
 			<GameHeader
 				status={gameStatus}
 				onChangeStatus={setGameStatus}
+				changeLevel={changeLevel}
 			/>
 
 			{initialTiles && (
@@ -80,6 +81,7 @@ const Tiles = ({ gameSize }) => {
 					status={gameStatus}
 					handleWin={handleWin}
 					gameSize={gameSize}
+					level={level}
 				/>
 			)}
 
@@ -87,7 +89,7 @@ const Tiles = ({ gameSize }) => {
 	)
 }
 
-const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, level = 4  }) => {
+const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, changeLevel, level }) => {
 
 	const {
 		tiles,
@@ -95,11 +97,16 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 	} = usePlay()
 	const { user } = useUser()
 	
-	const itemSize = gameSize / level
+	const [itemSize, setItemSize] = useState(gameSize / level)
 
 	const [isPaused, setIsPaused] = useState(false)
 	const [refreshing, setRefreshing] = useState(false)
 	const [isDragging, setIsDragging] = useState(false)
+
+	useEffect(() => {
+		console.log('itemZize', itemSize)
+		setItemSize(gameSize / level)
+	}, [level])
 
 	useEffect(() => {
 		
@@ -139,10 +146,10 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 	const shuffleForDev = () => {
 		return tiles.map(t => {
 			let newTile = t
-			if (t.col === 2 && t.row === 3) {
+			if (t.col === level - 2 && t.row === level - 1) {
 				newTile = {
 					...newTile,
-					col: 3,
+					col: level - 1,
 				}
 			}
 			return newTile
@@ -446,7 +453,7 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 		}
 	})
 
-	const renderTiles = () => {
+	const renderTiles = tileSize => {
 		
 		return tiles.map(t => {
 
@@ -463,10 +470,10 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 					style={[
 						{
 							position: 'absolute',
-							top: t.row * itemSize,
-							left: t.col * itemSize,
-							height: itemSize,
-							width: itemSize,
+							top: t.row * tileSize,
+							left: t.col * tileSize,
+							height: tileSize,
+							width: tileSize,
 							overflow: 'hidden',
 							borderRadius: 10,
 							cursor: t.direction ? 'pointer' : t.dragging ? 'grab' : 'default',
@@ -483,7 +490,7 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 					<GestureDetector gesture={pan}>
 						<Tile
 							label={t.id + 1}
-							size={itemSize}
+							size={tileSize}
 							dragging={t.dragging}
 							direction={t.direction}
 							// style={{
@@ -515,7 +522,7 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, l
 					position: 'relative',
 				}}
 			>
-				{!refreshing && renderTiles()}
+				{!refreshing && renderTiles(itemSize)}
 			</View>
 		</GestureHandlerRootView>
 	)

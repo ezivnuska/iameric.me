@@ -3,18 +3,20 @@ import { View } from 'react-native'
 import { Play, Screen } from '@components'
 import { PlayContextProvider } from '@context'
 
-const PlayScreen = props => (
-    <Screen {...props}>
-            
-        <View style={{ flex: 1 }}>
-            
-            <PlayContextProvider>
-                <Play />
-            </PlayContextProvider>
+const PlayScreen = props => {
+    return (
+        <Screen {...props}>
+                
+            <View style={{ flex: 1 }}>
+                
+                <PlayContextProvider>
+                    <Play {...props} />
+                </PlayContextProvider>
 
-        </View>
+            </View>
 
-    </Screen>
-)
+        </Screen>
+    )
+}
 
 export default PlayScreen

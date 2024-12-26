@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { Tiles } from './games'
 import { usePlay } from '@context'
@@ -16,12 +16,18 @@ const Play = () => {
 		}
 	}
 
+    const [level, setLevel] = useState(4)
+
+    const changeLevel = () => {
+        setLevel(level === 4 ? 3 : 4)
+    }
+
     return (
         <View
             onLayout={onLayout}
             style={{ flex: 1 }}
         >
-            {maxWidth && <Tiles gameSize={maxWidth} />}
+            {maxWidth && <Tiles gameSize={maxWidth} level={level} changeLevel={changeLevel} />}
 
             <PlayModal
                 modal={playModal}

@@ -10,7 +10,7 @@ import {
 } from '@components'
 import { usePlay } from '@context'
 
-const GameHeader = ({ status, onChangeStatus }) => {
+const GameHeader = ({ status, onChangeStatus, changeLevel }) => {
     
     const {
         ticks,
@@ -90,7 +90,7 @@ const GameHeader = ({ status, onChangeStatus }) => {
                 {status === 'idle'
                     ? (
                         <SimpleButton
-                            label={`Shuffle`}
+                            label={`Start`}
                             onPress={startPlay}
                         />
                     )
@@ -115,6 +115,13 @@ const GameHeader = ({ status, onChangeStatus }) => {
                                 />
                             )
                 }
+
+                {status === 'idle' && (
+                    <SimpleButton
+                        label={`Change Level`}
+                        onPress={changeLevel}
+                    />
+                )}
 
                 {status === 'paused' && (
                     <SimpleButton

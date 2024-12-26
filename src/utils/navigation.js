@@ -6,7 +6,8 @@ import {
 const navigationRef = createNavigationContainerRef()
 
 export const navigate = (nextRoute, params) => {
-
+    // console.log('nextRoute', nextRoute)
+    // console.log('params', params)
     if (navigationRef.isReady()) {
         navigationRef.dispatch(CommonActions.navigate(nextRoute, params))
         
