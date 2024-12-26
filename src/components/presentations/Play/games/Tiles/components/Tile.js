@@ -33,7 +33,7 @@ const Tile = ({
         >
             <TextCopy
                 bold
-                color='#FFE04B'
+                color={direction ? 'blue' : 'orange'}
                 align='center'
                 size={48}
                 style={{

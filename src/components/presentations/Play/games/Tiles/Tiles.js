@@ -480,7 +480,7 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, c
 							backgroundColor: status === 'resolved'
 								? 'purple'
 								: t.direction
-									? 'green'
+									? 'orange'
 									: 'blue',
 						},
 						// props.style,
