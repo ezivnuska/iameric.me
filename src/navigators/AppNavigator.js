@@ -7,7 +7,7 @@ import {
     HomeScreen,
     // MapScreen,
     // MailScreen,
-    // PlayScreen,
+    PlayScreen,
     // SimpleScreen,
     WorkScreen,
 } from '@screens'
@@ -79,12 +79,12 @@ const AppNavigator = () => {
                 options={{ title: 'Work' }}
             />
 
-            {/* <AppStack.Screen
+            <AppStack.Screen
                 name='Play'
-                children={props => <PlayScreen {...props} />}
-                // component={AboutStackScreen}
+                // children={props => <PlayScreen {...props} />}
+                component={PlayScreen}
                 options={{ title: 'Play' }}
-            /> */}
+            />
 
             {/* <AppStack.Screen
                 name='Bips'

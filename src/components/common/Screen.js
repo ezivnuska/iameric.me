@@ -17,6 +17,7 @@ const Screen = ({
     const routeName = useMemo(() => props.route.name, [props])
 
     useEffect(() => {
+        console.log('props.route.name', props.route.name)
         if (!authorized) {
             console.log('not authorized for route', routeName)
             if (routeName !== 'Home') {

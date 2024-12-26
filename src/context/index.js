@@ -6,7 +6,7 @@ import { ModalContextProvider, useModal } from './ModalContext'
 import { UserContextProvider, useUser } from './UserContext'
 import { NotificationContextProvider, useNotification } from './NotificationContext'
 import { SocketContextProvider, useSocket } from './SocketContext'
-// import { ContactsContextProvider, useContacts } from './ContactsContext'
+import { PlayContextProvider, usePlay } from './PlayContext'
 
 export {
     AppContextProvider,
@@ -17,6 +17,7 @@ export {
     NotificationContextProvider,
     UserContextProvider,
     ModalContextProvider,
+    PlayContextProvider,
     SocketContextProvider,
     useApp,
     useBugs,
@@ -24,6 +25,7 @@ export {
     useFeed,
     useForm,
     useModal,
+    usePlay,
     useNotification,
     useSocket,
     useUser,

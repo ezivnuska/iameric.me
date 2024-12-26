@@ -14,6 +14,7 @@ import ImagePicker from './ImagePicker'
 import ImagePickerMini from './ImagePickerMini'
 import ModalFactory from './ModalFactory'
 import Notification from './Notification'
+import Play from './Play'
 import PostForm from './PostForm'
 import Resume from './Resume'
 import Socket from './Socket'
@@ -34,6 +35,7 @@ export {
     ImagePickerMini,
     ModalFactory,
     Notification,
+    Play,
     PostForm,
     Resume,
     Socket,
