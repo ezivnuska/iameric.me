@@ -116,12 +116,12 @@ const GameHeader = ({ status, onChangeStatus, changeLevel }) => {
                             )
                 }
 
-                {status === 'idle' && (
+                {/* {status === 'idle' && (
                     <SimpleButton
                         label={`Change Level`}
                         onPress={changeLevel}
                     />
-                )}
+                )} */}
 
                 {status === 'paused' && (
                     <SimpleButton
