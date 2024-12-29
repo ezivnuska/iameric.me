@@ -1,20 +1,17 @@
 import React, { useMemo } from 'react'
 import { Image, View } from 'react-native'
-import { useApp, useUser } from '@context'
+import { useApp } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const ProfileImage = ({ user, size = 'auto' }) => {
+const ProfileImage = ({ image, username, size = 'auto' }) => {
 
     const { theme } = useApp()
-    const { findUserById } = useUser()
-
-    const profileImage = useMemo(() => findUserById(user._id).profileImage, [user?.profileImage])
     
-    const source = useMemo(() => profileImage
-        ? `${IMAGE_PATH}/${user.username}/${profileImage.filename}`
+    const source = useMemo(() => image
+        ? `${IMAGE_PATH}/${username}/${image.filename}`
         : `${IMAGE_PATH}/avatar-default.png`,
-    [profileImage])
+    [image])
 
     return source && (
         <View

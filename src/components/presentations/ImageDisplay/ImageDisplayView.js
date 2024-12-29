@@ -193,7 +193,8 @@ const ImageDisplayView = ({
                             {/* PROFILE IMAGE */}
 
                             <ProfileImage
-                                user={user}
+                                image={user.profileImage}
+                                username={user.username}
                                 size={landscape ? 30 : 50}
                             />
         

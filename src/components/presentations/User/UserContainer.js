@@ -61,7 +61,13 @@ const UserContainer = props => {
                                 {`Add\nAvatar`}
                             </TextCopy>
 
-                        ) : <ProfileImage user={user} size={PROFILE_IMAGE_SIZE} />}
+                        ) : (
+                            <ProfileImage
+                                image={user.profileImage}
+                                username={user.username}
+                                size={PROFILE_IMAGE_SIZE}
+                            />
+                        )}
                     </View>
                     
                 </Pressable>

@@ -9,6 +9,7 @@ import { getItem, getStoredToken, setItem } from '@utils/storage'
 import { validateToken } from '@utils/auth'
 import { loadContact, loadContacts } from '@utils/contacts'
 import { loadImage, loadImages } from '@utils/images'
+import merge from 'deepmerge'
 
 const initialState = {
     user: null,
@@ -19,6 +20,7 @@ const initialState = {
     usersLoading: false,
     userDetailsLoading: false,
 
+    getUserProfileImage: () => {},
     findUserByUsername: () => {},
     addUser: () => {},
     removeUser: () => {},
@@ -97,24 +99,24 @@ export const UserContextProvider = ({ children }) => {
         dispatch({ type: 'USER_LOADED' })
     }
 
-    const initUsers = async () => {
+    // const initUsers = async () => {
         
-        dispatch({ type: 'SET_USERS_LOADING', payload: true })
-        const users = await loadContacts()
-        dispatch({ type: 'SET_USERS_LOADING', payload: false })
+    //     dispatch({ type: 'SET_USERS_LOADING', payload: true })
+    //     const users = await loadContacts()
+    //     dispatch({ type: 'SET_USERS_LOADING', payload: false })
         
-        if (!users) console.log('could not load users')
-        else dispatch({ type: 'SET_USERS', payload: users })
+    //     if (!users) console.log('could not load users')
+    //     else dispatch({ type: 'SET_USERS', payload: users })
         
-        dispatch({ type: 'SET_USERS_LOADED' })
-    }
+    //     dispatch({ type: 'SET_USERS_LOADED' })
+    // }
 
     const fetchUserAndUpdate = async username => {
         
         dispatch({ type: 'SET_USER_DETAILS_LOADING', payload: true })
-        const user = await loadContact(username, true)
+        const user = await loadContact(username)
         dispatch({ type: 'SET_USER_DETAILS_LOADING', payload: false })
-        
+        console.log('user', user)
         if (user) dispatch({ type: 'UPDATE_USER', payload: user })
         else console.log('could not fetch user details')
 
@@ -205,12 +207,16 @@ export const UserContextProvider = ({ children }) => {
         fetchImagesAndUpdate,
         fetchUserAndUpdate,
         findUserImage,
-        initUsers,
+        // initUsers,
         reset,
         setProfileImage,
         setUserLoading,
         setUser,
         updateUser,
+        getUserProfileImage: id => {
+            const { profileImage } = state.users.filter(user => user._id === id)[0]
+            return profileImage
+        },
         addImage: payload => {
             dispatch({ type: 'ADD_IMAGE', payload })
         },
@@ -309,10 +315,10 @@ const reducer = (state, action) => {
             const savedUser = state.users.filter(user => user._id === payload._id)[0]
             
             const users = savedUser
-                ? state.users.map(user => user._id === payload._id ? payload : user)
+                ? state.users.map(user => user._id === payload._id ? merge(user, payload) : user)
                 : [ ...state.users, payload ]
 
-            const user = state.user._id === payload._id ? payload : state.user
+            const user = state.user._id === payload._id ? merge(state.user, payload) : state.user
             
             return {
                 ...state,

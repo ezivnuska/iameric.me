@@ -1,32 +1,39 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ContactsList, Screen } from '@components'
-import { useUser } from '@context'
+import { ActivityIndicator, Screen, UserList } from '@components'
+import { loadContactIds } from '@utils/contacts'
 
 const ContactsScreen = props => {
 
-    const {
-        initUsers,
-        user,
-        users,
-        usersLoaded,
-        usersLoading,
-    } = useUser()
-
-    useEffect(() => {
-        if (!usersLoaded && !usersLoading) initUsers()
-    }, [])
+    const [userIds, setUserIds] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const onPress = username => props.navigation.navigate('User', { screen: 'Profile', params: { username } })
+
+    const loadIds = async () => {
+        if (!loading) setLoading(true)
+        const ids = await loadContactIds()
+        setLoading(false)
+
+        if (ids) {
+            setUserIds(ids)
+        } else {
+            console.log('could not load user ids.')
+        }
+    }
+
+    useEffect(() => {
+        loadIds()
+    }, [])
 
     return (
         <Screen secure {...props}>
     
             <View style={{ flex: 1 }}>
 
-                {users?.length
-                    ? <ContactsList contacts={users} onPress={onPress} />
-                    : <ActivityIndicator size='medium' />
+                {loading
+                    ? <ActivityIndicator size='small' />
+                    : userIds && <UserList data={userIds} onPress={onPress} />
                 }
 
             </View>

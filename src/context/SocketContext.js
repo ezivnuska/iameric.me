@@ -27,6 +27,7 @@ const initialState = {
     socket: null,
     socketLoaded: false,
     socketLoading: false,
+    getUserStatus: () => {},
     notifySocket: () => {},
 }
 
@@ -144,6 +145,7 @@ export const SocketContextProvider = ({ children }) => {
     }, [])
 
     const actions = useMemo(() => ({
+        getUserStatus: id => connections.filter(c => c.userId).indexOf(id) > -1,
         notifySocket: async (eventName, ...args) => {
             socket.emit(eventName, ...args)
         },

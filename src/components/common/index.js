@@ -18,6 +18,7 @@ import Screen from './Screen'
 import Scrollable from './Scrollable'
 import Settings from './Settings'
 import SimpleButton from './SimpleButton'
+import StatusIndicator from './StatusIndicator'
 // import Slider from './Slider'
 // import SplitScreen from './SplitScreen'
 // import Switch from './Switch'
@@ -47,6 +48,7 @@ export {
     Screen,
     Scrollable,
     SimpleButton,
+    StatusIndicator,
     // Slider,
     // SplitScreen,
     // Switch,

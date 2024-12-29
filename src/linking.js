@@ -28,6 +28,9 @@ const linking = {
             Play: {
                 path: 'play',
             },
+            Sandbox: {
+                path: 'sandbox',
+            },
             Simple: {
                 path: 'simple',
             },

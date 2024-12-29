@@ -8,6 +8,7 @@ import {
     // MapScreen,
     // MailScreen,
     PlayScreen,
+    Sandbox,
     // SimpleScreen,
     WorkScreen,
 } from '@screens'
@@ -71,6 +72,13 @@ const AppNavigator = () => {
                 // component={MailScreen}
                 options={{ title: 'Mail' }}
             /> */}
+
+            <AppStack.Screen
+                name='Sandbox'
+                // children={props => <ContactsNavigator {...props} />}
+                component={Sandbox}
+                options={{ title: 'Sandbox' }}
+            />
             
             <AppStack.Screen
                 name='Work'

@@ -7,6 +7,7 @@ const getUserById = require('./getUserById')
 const getUserByUsername = require('./getUserByUsername')
 const getUserAndImagesById = require('./getUserAndImagesById')
 const getUserDetailsById = require('./getUserDetailsById')
+const getUserIds = require('./getUserIds')
 const getUsers = require('./getUsers')
 const getUsersByRole = require('./getUsersByRole')
 const getVendor = require('./getVendor')
@@ -22,6 +23,7 @@ module.exports = {
     getUserByUsername,
     getUserAndImagesById,
     getUserDetailsById,
+    getUserIds,
     getUsers,
     getUsersByRole,
     getVendor,

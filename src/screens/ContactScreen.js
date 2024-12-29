@@ -1,40 +1,49 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { ActivityIndicator, ProfileImage, Screen, TextCopy } from '@components'
 import { useModal, useUser } from '@context'
+import { loadContact } from '@utils/contacts'
 
 const ContactScreen = props => {
 
     const {
-        userDetailsLoading,
+        userLoading,
         findUserByUsername,
-        fetchUserAndUpdate,
         updateUser,
+        getUserProfileImage,
+        setUserLoading,
+        getUserByUsername
     } = useUser()
     
     const { setModal } = useModal()
-
-    const [profile, setProfile] = useState(null)
     
     const init = async username => {
         
-        let user = findUserByUsername(username)
-        
-        if (!user) {
+        setUserLoading(true)
+        const user = await loadContact(username)
+        setUserLoading(false)
 
-            user = await fetchUserAndUpdate(username)
-        }
-
-        if (user) setProfile(user)
+        if (user) updateUser(user)
+        else console.log('could not fetch user details')
     }
 
+    const username = useMemo(() => props.route.params?.username, [props.route])
+    const profile = useMemo(() => username && findUserByUsername(username), [username])
+    const profileImage = useMemo(() => profile?._id && getUserProfileImage(profile._id), [profile])
+
     useEffect(() => {
-        if (props.route.params?.username) {
+        if (username) {
             if (!profile || profile?.username !== props.route.params.username) {
                 init(props.route.params.username)
             }
         }
     }, [])
+
+    useEffect(() => {
+        if (profile && profile.username !== username) {
+            init(username)
+        }
+    }, [username])
 
     return (
         <Screen
@@ -44,7 +53,7 @@ const ContactScreen = props => {
         >
             <View style={{ flex: 1 }}>
 
-                {userDetailsLoading
+                {userLoading
                     ? <ActivityIndicator size='medium' label='Loading User...' />
                     : profile
                         ? (
@@ -59,14 +68,15 @@ const ContactScreen = props => {
 
                                     <Pressable
                                         onPress={() => setModal('SHOWCASE', {
-                                            ...profile.profileImage,
+                                            ...profileImage,
                                             user: { ...profile },
                                         })}
-                                        disabled={!profile.profileImage}
+                                        disabled={!profileImage}
                                     >
 
                                         <ProfileImage
-                                            user={profile}
+                                            username={profile.username}
+                                            image={profileImage}
                                             size={100}
                                         />
 

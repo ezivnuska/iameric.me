@@ -14,15 +14,14 @@ const validateToken = async (req, res) => {
     
     const user = await User
         .findOne({ _id })
+        .select('_id username role profileImage')
         .populate('profileImage', 'filename width height')
-        .populate('address')
-    
-    if (!user) return res.status(200).json(null)
-
+        // .populate('address')
+        
     const newDate = new Date(exp) - Date.now()
     const expired = newDate > 0
 
-    if (expired) return res.status(200).json(null)
+    if (!user || expired) return res.status(200).json(null)
 
     return res.status(200).json(user)
 }

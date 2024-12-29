@@ -18,6 +18,7 @@ import {
     Scrollable,
     Settings,
     SimpleButton,
+    StatusIndicator,
     TextCopy,
     TextHeading,
     TextPressable,
@@ -30,7 +31,6 @@ import {
     AuthForm,
     BugForm,
     Bugs,
-    ContactsList,
     Feed,
     Footer,
     Form,
@@ -46,6 +46,7 @@ import {
     Resume,
     Socket,
     User,
+    UserList,
 } from './presentations'
 
 export {
@@ -68,6 +69,7 @@ export {
     Screen,
     Scrollable,
     SimpleButton,
+    StatusIndicator,
     TextCopy,
     TextHeading,
     TextPressable,
@@ -78,7 +80,6 @@ export {
     AuthForm,
     BugForm,
     Bugs,
-    ContactsList,
     Feed,
     Footer,
     Form,
@@ -94,4 +95,5 @@ export {
     Resume,
     Socket,
     User,
+    UserList,
 }
