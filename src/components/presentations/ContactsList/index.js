@@ -1,9 +1,3 @@
-// import Contacts from './Contacts'
-import ContactsListContainer from './ContactsListContainer'
-// import ContactsModal from './ContactsModal'
+import ContactsListView from './ContactsListView'
 
-// export default Contacts
-export default ContactsListContainer
-// export {
-//     ContactsModal,
-// }
+export default ContactsListView

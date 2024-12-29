@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import Layout from './layout'
 import {
     AppContextProvider,
-    BugContextProvider,
+    // BugContextProvider,
     // ContactsContextProvider,
     FormContextProvider,
     ModalContextProvider,
@@ -26,7 +26,7 @@ const Container = ({ children }) => {
 
 const App = () => {
     const apiKey = process.env.GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY
-    const [ mapsLoaded, setMapsLoaded ] = useState(false)
+    // const [ mapsLoaded, setMapsLoaded ] = useState(false)
     return (
         <AppContextProvider>
             <UserContextProvider>
@@ -42,11 +42,9 @@ const App = () => {
                                 <FormContextProvider>
                                     <ModalContextProvider>
                                         <SocketContextProvider>
-                                            <BugContextProvider>
 
                                                 <Layout />
 
-                                            </BugContextProvider>
                                         </SocketContextProvider>
                                     </ModalContextProvider>
                                 </FormContextProvider>
