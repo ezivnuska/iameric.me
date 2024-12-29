@@ -63,8 +63,8 @@ const UserContainer = props => {
 
                         ) : (
                             <ProfileImage
-                                image={user.profileImage}
-                                username={user.username}
+                                // image={user.profileImage}
+                                user={user}
                                 size={PROFILE_IMAGE_SIZE}
                             />
                         )}

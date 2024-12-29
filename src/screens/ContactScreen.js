@@ -12,38 +12,45 @@ const ContactScreen = props => {
         updateUser,
         getUserProfileImage,
         setUserLoading,
-        getUserByUsername
+        getUserByUsername,
     } = useUser()
     
     const { setModal } = useModal()
+
+    const [profile, setProfile] = useState(null)
+
+    useEffect(() => {
+        if (props.route.params?.username) {
+            init(props.route.params.username)
+        }
+        return () => setProfile(null)
+    }, [])
+
+    useEffect(() => {
+        if (profile?.username !== props.route.params?.username) {
+            init(props.route.params?.username)
+        }
+    }, [props.route])
     
     const init = async username => {
         
         setUserLoading(true)
-        const user = await loadContact(username)
+
+        let user = findUserByUsername(username)
+        
+        if (!user) {
+
+            user = await loadContact(username)
+            
+        }
+        
+        if (user) {
+            setProfile(user)
+            updateUser(user)
+        }
+
         setUserLoading(false)
-
-        if (user) updateUser(user)
-        else console.log('could not fetch user details')
     }
-
-    const username = useMemo(() => props.route.params?.username, [props.route])
-    const profile = useMemo(() => username && findUserByUsername(username), [username])
-    const profileImage = useMemo(() => profile?._id && getUserProfileImage(profile._id), [profile])
-
-    useEffect(() => {
-        if (username) {
-            if (!profile || profile?.username !== props.route.params.username) {
-                init(props.route.params.username)
-            }
-        }
-    }, [])
-
-    useEffect(() => {
-        if (profile && profile.username !== username) {
-            init(username)
-        }
-    }, [username])
 
     return (
         <Screen
@@ -57,34 +64,24 @@ const ContactScreen = props => {
                     ? <ActivityIndicator size='medium' label='Loading User...' />
                     : profile
                         ? (
-                            <View
-                                {...props}
-                                style={{ flex: 1 }}
+                            <Pressable
+                                key={`contact-${profile.username}-${Date.now()}`}
+                                onPress={() => setModal('SHOWCASE', {
+                                    image: profile.profileImage,
+                                    owner: profile,
+                                })}
+                                disabled={!profile.profileImage}
                             >
 
-                                <View
-                                    key={`contact-${profile.username}-${Date.now()}`}
-                                >
+                                {/* {profile.profileImage && ( */}
+                                    <ProfileImage
+                                        user={profile}
+                                        // image={profileImage}
+                                        size={100}
+                                    />
+                                {/* )} */}
 
-                                    <Pressable
-                                        onPress={() => setModal('SHOWCASE', {
-                                            ...profileImage,
-                                            user: { ...profile },
-                                        })}
-                                        disabled={!profileImage}
-                                    >
-
-                                        <ProfileImage
-                                            username={profile.username}
-                                            image={profileImage}
-                                            size={100}
-                                        />
-
-                                    </Pressable>
-
-                                </View>
-                        
-                            </View>
+                            </Pressable>
                         )
                         : <TextCopy>Could not load user details.</TextCopy>
                 }

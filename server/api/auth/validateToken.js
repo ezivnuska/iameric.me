@@ -14,7 +14,7 @@ const validateToken = async (req, res) => {
     
     const user = await User
         .findOne({ _id })
-        .select('_id username role profileImage')
+        // .select('_id username role profileImage')
         .populate('profileImage', 'filename width height')
         // .populate('address')
         

@@ -46,15 +46,15 @@ const ImagesScreen = props => {
                 init(props.route.params.username)
             }
         }
+        
+        return () => setProfile(null)
     }, [])
 
-    // useEffect(() => {
-    //     if (props.route.params?.username) {
-    //         if (profile && profile.username !== props.route.params?.username) {
-    //             init(props.route.params.username)
-    //         }
-    //     }
-    // }, [props.route.params])
+    useEffect(() => {
+        if (profile && profile.username !== props.route.params?.username) {
+            init(props.route.params.username)
+        }
+    }, [props.route])
 
     return (
         <Screen
@@ -69,6 +69,7 @@ const ImagesScreen = props => {
                     : profile.images
                         ? (
                             <ImageList
+                                key={`images-${profile._id}-${Date.now()}`}
                                 images={profile.images}
                                 onPress={(type, data) => setModal(type, data)}
                                 list={props.route.params?.list || landscape}

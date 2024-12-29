@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
 import { AdminButton, Form, IconButton, IconButtonLarge, ImageContained, ProfileImage, TextCopy, Time } from '@components'
 import { useApp, useForm, useModal, useUser } from '@context'
-import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
+import { deleteImage, setAvatar, setCaption } from '@utils/images'
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -10,9 +10,10 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const ImageDisplayView = ({
     disabled,
     image,
-    author,
+    // owner,
     onClose,
     onDelete,
+    update,
 }) => {
 
     const { dims, landscape } = useApp()
@@ -54,12 +55,10 @@ const ImageDisplayView = ({
             overlayVisibility.value = withTiming(1, { duration: 500 })
         }
     }
-
-    const profile = useMemo(() => author && findUserById(author._id), [author])
-    const profileImage = useMemo(() => profile?.profileImage, [profile?.profileImage])
-    const owner = useMemo(() => user._id === author?._id, [author])
-    const imageSource = useMemo(() => author && `${IMAGE_PATH}/${author.username}/${image.filename}`, [image])
-    const isProfileImage = useMemo(() => profileImage?._id === image._id, [profileImage])
+    
+    const isOwner = useMemo(() => user._id === image.user?._id, [image])
+    const imageSource = useMemo(() => image.user?.username && `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
+    const isProfileImage = useMemo(() => image.user?.profileImage?._id === image._id, [image])
     
     const handleDelete = async () => {
 
@@ -71,14 +70,16 @@ const ImageDisplayView = ({
 
         if (!deletedImage) console.log('Error deleting image.')
         else {
-            if (owner && isProfileImage) {
-                updateUser({
-                    ...author,
+
+            removeImage(owner._id, deletedImage._id)
+
+            if (user._id === owner?._id && isProfileImage) {
+                
+                update({
+                    ...user,
                     profileImage: null,
                 })
             }
-
-            removeImage(author._id, deletedImage._id)
 
             onClose()
         }
@@ -89,13 +90,16 @@ const ImageDisplayView = ({
         const newAvatarId = user.profileImage?._id !== image._id ? image._id : null
 
         setUserLoading(true)
+        
         const result = await setAvatar(user._id, newAvatarId)
+        
         setUserLoading(false)
-
-        updateUser({
+        
+        update({
             ...user,
             profileImage: result,
         })
+        
     }
     
     const submitCaptionEdit = async () => {
@@ -193,8 +197,8 @@ const ImageDisplayView = ({
                             {/* PROFILE IMAGE */}
 
                             <ProfileImage
-                                image={user.profileImage}
-                                username={user.username}
+                                // image={profileImage}
+                                user={image.user}
                                 size={landscape ? 30 : 50}
                             />
         
@@ -208,14 +212,14 @@ const ImageDisplayView = ({
                                 }}
                             >
                                     
-                                {author && (
+                                {image.user && (
                                     <TextCopy
                                         size={landscape ? 16 : 20}
                                         color='#fff'
                                         bold
                                         style={{ lineHeight: 25 }}
                                     >
-                                        {author.username}
+                                        {image.user.username}
                                     </TextCopy>
                                 )}
             
@@ -326,7 +330,7 @@ const ImageDisplayView = ({
                         </View>
                         
 
-                        {(owner || user.role === 'admin') && (
+                        {(isOwner || user.role === 'admin') && (
                             <View
                                 style={{
                                     flexGrow: 0,
@@ -338,7 +342,7 @@ const ImageDisplayView = ({
                                     background: 'rgba(0, 0, 0, 0.6)',
                                 }}
                             >
-                                {owner ? (
+                                {isOwner ? (
                                     <View
                                         style={{
                                             flex: 1,
@@ -379,7 +383,7 @@ const ImageDisplayView = ({
                                                     <IconButton
                                                         name='happy-sharp'
                                                         size={24}
-                                                        color={user.profileImage?._id === image._id ? 'tomato' : '#fff'}
+                                                        color={isProfileImage ? 'tomato' : '#fff'}
                                                         onPress={handleAvatar}
                                                         disabled={imagesLoading}
                                                     />

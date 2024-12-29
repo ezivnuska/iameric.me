@@ -3,7 +3,6 @@ const UserImage = require('../../models/UserImage')
 
 const getUserByUsername = async (req, res) => {
 
-    console.log('username', req.params.username)
     const user = await User
         .findOne({ username: req.params.username })
         .select('_id username role profileImage')
@@ -13,7 +12,7 @@ const getUserByUsername = async (req, res) => {
         })
         // .populate('profileImage', 'filename width height')
         // .populate('address')
-    console.log('user loaded', user)
+    
     if (!user) {
         console.log('could not get user by username.')
         return res.status(406).json(null)

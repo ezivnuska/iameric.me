@@ -50,8 +50,8 @@ const Brand = ({ size, user }) => (
                     </TextCopy>
 
                     <ProfileImage
-                        image={user.profileImage}
-                        username={user.username}
+                        // image={user.profileImage}
+                        user={user}
                         size={36}
                     />
 
