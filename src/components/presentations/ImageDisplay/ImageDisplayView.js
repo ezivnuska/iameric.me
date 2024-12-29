@@ -76,8 +76,10 @@ const ImageDisplayView = ({
             if (user._id === owner?._id && isProfileImage) {
                 
                 update({
-                    ...user,
-                    profileImage: null,
+                    user: {
+                        ...user,
+                        profileImage: null,
+                    },
                 })
             }
 
@@ -96,8 +98,10 @@ const ImageDisplayView = ({
         setUserLoading(false)
         
         update({
-            ...user,
-            profileImage: result,
+            user: {
+                ...user,
+                profileImage: result,
+            },
         })
         
     }
@@ -114,11 +118,13 @@ const ImageDisplayView = ({
         setUserLoading(false)
 
         if (data) {
-            updateImage({
-                ...image,
-                caption: data.caption,
+            update({
+                image: {
+                    ...image,
+                    caption: data.caption,
+                },
             })
-            console.log('need to set image caption locally?')
+            
             clearForm()
             setEditing(false)
             return data

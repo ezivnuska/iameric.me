@@ -16,6 +16,7 @@ const ImageDisplayContainer = ({ data }) => {
         findUserImage,
         removeImage,
         setImageLoading,
+        updateImage,
         updateUser,
         findUserById,
     } = useUser()
@@ -60,12 +61,18 @@ const ImageDisplayContainer = ({ data }) => {
         }
     }
 
-    const update = updatedUser => {
-        setImage({
-            ...image,
-            user: updatedUser,
-        })
-        updateUser(updatedUser)
+    const update = data => {
+        if (data.image) {
+            setImage({
+                ...image,
+                ...data.image,
+                // user: updatedUser,
+            })
+            updateImage(data.image)
+        }
+        if (data.user) {
+            updateUser(data.user)
+        }
     }
 
     return imageLoading
