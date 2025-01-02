@@ -9,6 +9,7 @@ const ImagesScreen = props => {
     const { setModal } = useModal()
     const {
         fetchUserAndUpdate,
+        findUserById,
         findUserByUsername,
         fetchImagesAndUpdate,
         updateUser,
@@ -16,6 +17,8 @@ const ImagesScreen = props => {
 
     // const profile = useMemo(() => props.route.params?.username && findUserByUsername(props.route.params.username), [props.route.params])
     const [profile, setProfile] = useState(null)
+    const currentUser = useMemo(() => profile && findUserById(profile._id), [profile])
+    const images = useMemo(() => currentUser?.images, [currentUser?.images])
 
     const init = async username => {
 
@@ -28,17 +31,27 @@ const ImagesScreen = props => {
    
         if (user) {
 
-            const images = await fetchImagesAndUpdate(user._id)
+            const userImages = await fetchImagesAndUpdate(user._id)
 
-            if (images) {
+            if (userImages) {
 
-                user = { ...user, images }
+                user = { ...user, images: userImages }
                 
             }
         }
 
         if (user) setProfile(user)
     }
+
+    useEffect(() => {
+        console.log('images', images)
+        
+    }, [images])
+
+    useEffect(() => {
+        console.log('currentUser', currentUser)
+        
+    }, [currentUser])
 
     useEffect(() => {
         if (props.route.params?.username) {
@@ -66,11 +79,11 @@ const ImagesScreen = props => {
 
                 {!profile
                     ? <ActivityIndicator label='Loading User Images...' color='#fff' />
-                    : profile.images
+                    : images
                         ? (
                             <ImageList
                                 key={`images-${profile._id}-${Date.now()}`}
-                                images={profile.images}
+                                images={images}
                                 onPress={(type, data) => setModal(type, data)}
                                 list={props.route.params?.list || landscape}
                             />

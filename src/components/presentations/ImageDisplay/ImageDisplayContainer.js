@@ -79,7 +79,7 @@ const ImageDisplayContainer = ({ data }) => {
                 setOwner({ ...owner, profileImage: null })
             }
 
-            onClose()
+            closeModal()
         }
     }
     
@@ -99,6 +99,7 @@ const ImageDisplayContainer = ({ data }) => {
         
         setImage({ ...image, caption })
 
+        closeModal()
     }
 
     return owner

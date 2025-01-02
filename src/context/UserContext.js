@@ -309,23 +309,27 @@ const reducer = (state, action) => {
             }
             break
         case 'REMOVE_IMAGE':
+
+            let updatedUser = null
+
             const { userId, imageId } = payload
 
             updatedUsers = state.users.map((user, index) => {
                 if (user._id === userId) {
-                    return {
+
+                    updatedUser = {
                         ...user,
                         images: user.images.filter(img => img._id !== imageId),
                     }
-                } else return user
+                    return updatedUser
+                }
+                
+                return user
             })
 
             return {
                 ...state,
-                user: state.user._id === userId ? {
-                    ...state.user,
-                    images: state.user.images.filter(img => img._id !== imageId),
-                } : state.user,
+                user: state.user._id === userId ? updatedUser : state.user,
                 users: updatedUsers,
             }
             break
@@ -363,7 +367,7 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_IMAGE':
-            let updatedUser = null
+            updatedUser = null
             updatedUsers = state.users.map(item => {
                 if (item._id === payload.user._id) {
                     
