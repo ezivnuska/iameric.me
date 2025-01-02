@@ -87,7 +87,6 @@ export {
     Form,
     Header,
     ImageDisplay,
-    ImageList,
     ImagePicker,
     ImagePickerMini,
     ModalFactory,

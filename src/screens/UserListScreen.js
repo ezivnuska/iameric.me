@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { ActivityIndicator, Screen, UserList } from '@components'
 import { loadContactIds } from '@utils/contacts'
 
-const ContactsScreen = props => {
+const UserListScreen = props => {
 
     const [userIds, setUserIds] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -42,4 +42,4 @@ const ContactsScreen = props => {
     )
 }
 
-export default ContactsScreen
+export default UserListScreen

@@ -5,7 +5,7 @@ import {
     FeedScreen,
     HomeScreen,
     WorkScreen,
-    ContactsScreen,
+    UserListScreen,
     // BipScreen,
     // BipsScreen,
     // MapScreen,
@@ -46,7 +46,7 @@ const AppStackScreen = () => {
 
             <AppStack.Screen
                 name='Users'
-                component={ContactsScreen}
+                component={UserListScreen}
                 options={{ title: 'Users' }}
             />
 

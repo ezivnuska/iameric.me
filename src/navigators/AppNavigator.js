@@ -2,7 +2,7 @@ import {
     // BipScreen,
     // BipsScreen,
     BugScreen,
-    ContactsScreen,
+    UserListScreen,
     FeedScreen,
     HomeScreen,
     // MapScreen,
@@ -37,7 +37,7 @@ const AppNavigator = () => {
             <AppStack.Screen
                 name='Users'
                 // children={props => <ContactsNavigator {...props} />}
-                component={ContactsScreen}
+                component={UserListScreen}
                 options={{ title: 'Users' }}
             />
 

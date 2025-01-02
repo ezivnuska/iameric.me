@@ -10,8 +10,6 @@ const Footer = ({ landscape, route }) => {
     const { setModal } = useModal()
     const { connections, connectionsLoading } = useSocket()
 
-    const disableBug = useMemo(() => route.name === 'Bugs', [route])
-
     return (
         <View
             style={{
@@ -51,10 +49,17 @@ const Footer = ({ landscape, route }) => {
                     }}
                 >
                     <IconButtonLarge
+                        name='apps-sharp'
+                        size={24}
+                        onPress={() => navigationRef.navigate('Play')}
+                        disabled={route.name === 'Play'}
+                        transparent
+                    />
+                    <IconButtonLarge
                         name='bug'
                         size={24}
                         onPress={() => navigationRef.navigate('Bugs')}
-                        disabled={disableBug}
+                        disabled={route.name === 'Bugs'}
                         transparent
                     />
 
