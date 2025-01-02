@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ImageList, TextCopy, Screen } from '@components'
+import { ActivityIndicator, UserImages, ImageList, TextCopy, Screen } from '@components'
 import { useApp, useModal, useUser } from '@context'
 
 const ImagesScreen = props => {
@@ -17,8 +17,13 @@ const ImagesScreen = props => {
 
     // const profile = useMemo(() => props.route.params?.username && findUserByUsername(props.route.params.username), [props.route.params])
     const [profile, setProfile] = useState(null)
-    const currentUser = useMemo(() => profile && findUserById(profile._id), [profile])
-    const images = useMemo(() => currentUser?.images, [currentUser?.images])
+    const user = useMemo(() => profile && findUserByUsername(profile.username), [profile])
+    const images = useMemo(() => user?.images, [user])
+
+
+    useEffect(() => {
+        console.log('user', user)
+    }, [user])
 
     const init = async username => {
 
@@ -31,11 +36,14 @@ const ImagesScreen = props => {
    
         if (user) {
 
-            const userImages = await fetchImagesAndUpdate(user._id)
+            const fetchedImages = await fetchImagesAndUpdate(user._id)
 
-            if (userImages) {
+            if (fetchedImages) {
 
-                user = { ...user, images: userImages }
+                user = {
+                    ...user,
+                    images: fetchedImages,
+                }
                 
             }
         }
@@ -77,11 +85,11 @@ const ImagesScreen = props => {
         >
             <View style={{ flex: 1 }}>
 
-                {!profile
+                {!user
                     ? <ActivityIndicator label='Loading User Images...' color='#fff' />
                     : images
                         ? (
-                            <ImageList
+                            <UserImages
                                 key={`images-${profile._id}-${Date.now()}`}
                                 images={images}
                                 onPress={(type, data) => setModal(type, data)}

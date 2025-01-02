@@ -23,6 +23,7 @@ import {
     TextHeading,
     TextPressable,
     Time,
+    UserImages,
 } from './common'
 
 // presentations
@@ -74,6 +75,7 @@ export {
     TextHeading,
     TextPressable,
     Time,
+    UserImages,
 
     // presentations
 
