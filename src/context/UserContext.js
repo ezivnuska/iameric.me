@@ -41,6 +41,7 @@ const initialState = {
 
     addImage: () => {},
     clearImages: () => {},
+    getUserImages: () => {},
     fetchUserAndUpdate: () => {},
     fetchImageAndUpdate: () => {},
     fetchImagesAndUpdate: () => {},
@@ -69,6 +70,10 @@ export const UserContextProvider = ({ children }) => {
     useEffect(() => {
         init()
     }, [])
+
+        // useEffect(() => {
+        //     console.log('state.user', state.user)
+        // }, [state.user])
 
     const init = async () => {
 
@@ -162,7 +167,13 @@ export const UserContextProvider = ({ children }) => {
         // addNotification(`User ${keys.toString()} updated`)
     }
 
-    const getUserImages = id => state.images.filter(img => img.user._id === id)
+    const getUserImages = userId => {
+        const userWithId = findUserById(userId)
+        if (userWithId && userWithId.images?.length) {
+            return userWithId.images
+        }
+        return []
+    }
     const findUserById = userId => state.users.filter(user => user._id === userId)[0]
     const findUserImageById = (id, images) => images.filter(img => img._id === id)[0]
     const findUserImage = (userId, imageId) => {
@@ -289,13 +300,13 @@ const reducer = (state, action) => {
             const savedUser = state.users.filter(user => user._id === payload._id)[0]
             
             const users = savedUser
-                ? state.users.map(user => user._id === payload._id ? merge(user, payload) : user)
+                ? state.users.map(user => user._id === payload._id ? payload : user)
                 : [ ...state.users, payload ]
             
             return {
                 ...state,
                 users,
-                user: state.user._id === payload._id ? merge(state.user, payload) : state.user,
+                user: state.user._id === payload._id ? payload : state.user,
             }
             break
         case 'SET_IMAGE_LOADING':
@@ -323,10 +334,12 @@ const reducer = (state, action) => {
                         ...user,
                         images: user.images.filter(img => img._id !== imageId),
                     }
+
                     return updatedUser
+                } else {
+
+                    return user
                 }
-                
-                return user
             })
 
             return {

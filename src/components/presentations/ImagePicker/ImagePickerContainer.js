@@ -78,19 +78,19 @@ const ImagePickerContainer = ({ data }) => {
 
     const openSelector = async () => {
         
-        console.log('openong image selector')
+        // console.log('opening image selector')
 
         if (!showActivity) {
             setShowActivity(true)
         }
 
         const uri = await openFileSelector()
-        console.log('image selection complete')
+        // console.log('image selection complete')
         
         setShowActivity(false)
         
         if (uri) {
-            console.log('image selected')
+            // console.log('image selected')
             handleSelectedImage(uri)
         } else {
             console.log('no selection made')
@@ -154,7 +154,7 @@ const ImagePickerContainer = ({ data }) => {
         if (!image) {
             console.log('error uploading image')
         } else {
-            console.log('image uploaded')
+            console.log('image uploaded', image)
             updateImage(image)
 
             if (avatarCheckbox) updateUser({

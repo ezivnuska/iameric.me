@@ -4,7 +4,7 @@ import { ActivityIndicator, ProfileImage, Screen, TextCopy } from '@components'
 import { useModal, useUser } from '@context'
 import { loadContact } from '@utils/contacts'
 
-const ContactScreen = props => {
+const UserScreen = props => {
 
     const {
         userLoading,
@@ -93,4 +93,4 @@ const ContactScreen = props => {
     )
 }
 
-export default ContactScreen
+export default UserScreen

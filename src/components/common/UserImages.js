@@ -1,6 +1,5 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Image, Pressable, ScrollView, View } from 'react-native'
-// import { ImageGridItem, ImageListItem } from './components'
 import { ActivityIndicator } from '@components'
 import { useApp, useUser } from '@context'
 
@@ -30,7 +29,7 @@ const ImageGridItem = ({ image, size }) => (
 )
 
 const UserImages = ({ images, onPress, list = false, ...props }) => {
-    console.log('images--->', images)
+
     const { landscape, theme } = useApp()
 
     const [maxDims, setMaxDims] = useState(null)
@@ -39,7 +38,6 @@ const UserImages = ({ images, onPress, list = false, ...props }) => {
 
     const getImageDims = image => {
         
-        // const isPortrait = image.width < image.height
         let dimensions = null
 
         if (maxDims) {
@@ -121,7 +119,7 @@ const UserImages = ({ images, onPress, list = false, ...props }) => {
                         gap: imageGap,
                     }}
                 >   
-                    {images.map((image, index) => {
+                    {images && images.map((image, index) => {
                         const imageDims = getImageDims(image)
                         return (
                             <Pressable

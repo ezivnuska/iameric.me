@@ -8,6 +8,8 @@ const ImagesScreen = props => {
     const { landscape } = useApp()
     const { setModal } = useModal()
     const {
+        user,
+        getUserImages,
         fetchUserAndUpdate,
         findUserById,
         findUserByUsername,
@@ -17,65 +19,51 @@ const ImagesScreen = props => {
 
     // const profile = useMemo(() => props.route.params?.username && findUserByUsername(props.route.params.username), [props.route.params])
     const [profile, setProfile] = useState(null)
-    const user = useMemo(() => profile && findUserByUsername(profile.username), [profile])
-    const images = useMemo(() => user?.images, [user])
+    // const [images, setImages] = useState(null)
 
+    // useEffect(() => {
+    //     console.log('images', images)
+    // }, [images])
 
-    useEffect(() => {
-        console.log('user', user)
-    }, [user])
+    const getImages = () => {
+        const userImages = getUserImages(profile._id)
+        return userImages
+    }
+
+    // useEffect(() => {
+    //     console.log('profile', profile)
+    //     // if (profile?.images) setImages(profile.images)
+    // }, [profile])
 
     const init = async username => {
 
         let user = findUserByUsername(username)
         
-        if (!user) {
-
-            user = await fetchUserAndUpdate(username)
-        }
+        if (!user) user = await fetchUserAndUpdate(username)
    
         if (user) {
-
-            const fetchedImages = await fetchImagesAndUpdate(user._id)
-
-            if (fetchedImages) {
-
-                user = {
-                    ...user,
-                    images: fetchedImages,
-                }
-                
-            }
+            const images = await fetchImagesAndUpdate(user._id)
+            if (images) user = { ...user, images }
         }
 
         if (user) setProfile(user)
     }
 
     useEffect(() => {
-        console.log('images', images)
-        
-    }, [images])
-
-    useEffect(() => {
-        console.log('currentUser', currentUser)
-        
-    }, [currentUser])
-
-    useEffect(() => {
-        if (props.route.params?.username) {
-            if (!profile || profile?.username !== props.route.params.username) {
-                init(props.route.params.username)
-            }
-        }
         
         return () => setProfile(null)
     }, [])
 
     useEffect(() => {
-        if (profile && profile.username !== props.route.params?.username) {
+        if (!profile || profile && profile.username !== props.route.params?.username) {
             init(props.route.params.username)
         }
     }, [props.route])
+
+    // const update = () => {
+    //     const updatedImages = getUserImages(profile._id)
+    //     setImages(updatedImages)
+    // }
 
     return (
         <Screen
@@ -85,17 +73,16 @@ const ImagesScreen = props => {
         >
             <View style={{ flex: 1 }}>
 
-                {!user
-                    ? <ActivityIndicator label='Loading User Images...' color='#fff' />
-                    : images
-                        ? (
-                            <UserImages
-                                key={`images-${profile._id}-${Date.now()}`}
-                                images={images}
-                                onPress={(type, data) => setModal(type, data)}
-                                list={props.route.params?.list || landscape}
-                            />
-                        ) : <TextCopy>No images to show.</TextCopy>
+                {!profile
+                    ? <ActivityIndicator label='Loading images...' color='#fff' />
+                    : (
+                        <UserImages
+                            key={`images-${profile._id}-${Date.now()}`}
+                            images={getImages()}
+                            onPress={(type, data) => setModal(type, data)}
+                            list={props.route.params?.list || landscape}
+                        />
+                    )
                 }
 
             </View>

@@ -1,4 +1,4 @@
-import React, { useMemo }  from 'react'
+import React, { useEffect }  from 'react'
 import { View } from 'react-native'
 import {
     Brand,
@@ -15,6 +15,10 @@ const Header = ({ landscape, user, route }) => {
     const size = 20
 
     const { setModal } = useModal()
+
+    // useEffect(() => {
+    //     console.log('header user', user)
+    // }, [user])
 
     const renderNav = () => {
 

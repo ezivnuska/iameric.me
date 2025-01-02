@@ -1,4 +1,4 @@
-import { ContactScreen, ImagesScreen } from '@screens'
+import { UserScreen, ImagesScreen } from '@screens'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const UserNavigator = () => {
@@ -15,7 +15,7 @@ const UserNavigator = () => {
 
             <UserStack.Screen
                 name='Profile'
-                component={ContactScreen}
+                component={UserScreen}
                 options={{ title: 'Profile' }}
             />
 

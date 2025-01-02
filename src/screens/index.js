@@ -1,6 +1,5 @@
 // import BipScreen from './BipScreen'
 // import BipsScreen from './BipsScreen'
-import ContactScreen from './ContactScreen'
 import ContactsScreen from './ContactsScreen'
 import FeedScreen from './FeedScreen'
 import BugScreen from './BugScreen'
@@ -11,12 +10,12 @@ import ImagesScreen from './ImagesScreen'
 import PlayScreen from './PlayScreen'
 import Sandbox from './Sandbox'
 // import SimpleScreen from './SimpleScreen'
+import UserScreen from './UserScreen'
 import WorkScreen from './WorkScreen'
 
 export {
     // BipScreen,
     // BipsScreen,
-    ContactScreen,
     ContactsScreen,
     FeedScreen,
     BugScreen,
@@ -27,5 +26,6 @@ export {
     PlayScreen,
     Sandbox,
     // SimpleScreen,
+    UserScreen,
     WorkScreen,
 }

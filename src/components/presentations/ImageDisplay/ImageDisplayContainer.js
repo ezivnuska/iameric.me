@@ -23,8 +23,6 @@ const ImageDisplayContainer = ({ data }) => {
     const [owner, setOwner] = useState(null)
     const [loading, setLoading] = useState(false)
     
-    const isProfileImage = useMemo(() => owner?.profileImage?._id === image?._id, [image, owner])
-    
     const initOwner = async userId => {
         let imageOwner = await findUserById(userId)
         if (imageOwner) setOwner(imageOwner)
@@ -50,37 +48,55 @@ const ImageDisplayContainer = ({ data }) => {
     }, [])
     
     useEffect(() => {
-        
         if (image) { 
             initOwner(image.user._id)
-            updateImage(image)
+            // updateImage(image)
         }
         
     }, [image])
     
-    useEffect(() => {
-        if (owner) updateUser(owner)
-    }, [owner])
+    // useEffect(() => {
+    //     if (owner) {
+    //         // console.log('user-------', owner)
+    //         console.log('owner-------', owner)
+    //         // updateUser(owner)
+    //     }
+    // }, [owner])
 
     const onDelete = async () => {
     
         if (process.env.NODE_ENV === 'development') return alert(`Can't delete in development`)
 
         setLoading(true)
-        const deletedImage = await deleteImage(image._id, isProfileImage)
+        const response = await deleteImage(data._id, owner.profileImage?._id === data._id)
+        
+        const { deletedImage, modifiedUser } = response
         setLoading(false)
 
-        if (!deletedImage) console.log('Error deleting image.')
-        else {
+        if (deletedImage) {
+            
+            let updatedOwner = null
 
-            removeImage(owner._id, deletedImage._id)
-
-            if (user._id === owner?._id && isProfileImage) {
-                setOwner({ ...owner, profileImage: null })
+            if (modifiedUser) {
+                
+                const images = owner.images.filter(img => img._id !== deletedImage._id)
+                updatedOwner = {
+                    ...modifiedUser,
+                    images,
+                    // profileImage: null,
+                }
+                updateUser(updatedOwner)
+                setOwner(updatedOwner)
             }
 
+            removeImage(owner._id, deletedImage._id)
             closeModal()
+
+        } else {
+
+            console.log('Error deleting image.')
         }
+
     }
     
     const onChangeAvatar = async () => {
@@ -91,7 +107,10 @@ const ImageDisplayContainer = ({ data }) => {
         const profileImage = await setAvatar(user._id, newAvatarId)
         setLoading(false)
 
-        setOwner({ ...owner, profileImage })
+        const newOwner = { ...owner, profileImage }
+
+        setOwner(newOwner)
+        updateUser(newOwner)
         
     }
     

@@ -1,14 +1,11 @@
 import axios from 'axios'
 
-const deleteImage = async (imageId, isProfileImage = null, isProductImage = null) => {
-    const { data } = await axios.post('/api/images/delete', {
-        imageId,
-        isProductImage,
-        isProfileImage,
-    })
+const deleteImage = async imageId => {
+    const { data } = await axios.post('/api/images/delete', { imageId })
+    // console.log('data', data)
+    if (data) return data
     
-    if (!data || !data.deletedImage) console.log('error deleting image.')
-    else return data.deletedImage
+    console.log('error deleting image.')
     return null
 }
 

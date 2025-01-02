@@ -1,76 +1,48 @@
-const findAndRemoveImageFromProduct = require('./findAndRemoveImageFromProduct')
-const clearUserProfileImage = require('./clearUserProfileImage')
-const removeImage = require('./removeImage')
-const Product = require('../../models/Product')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
 const path = require('path')
+const { remove } = require('fs-extra')
 
 const uploadDir = process.env.IMAGE_PATH || 'assets'
 
+const removeImage = async (dir, filename) => {
+
+    const imagePath = `${dir}/${filename}`
+    const thumbPath = `${dir}/thumb/${filename}`
+    remove(imagePath, () => console.log('removed image file at path', imagePath))
+    remove(thumbPath, () => console.log('removed thumb file at path', thumbPath))
+}
+
 const deleteImageById = async (req, res) => {
-    const { imageId, isProductImage, isProfileImage } = req.body
-    console.log(`deleteImageById: ${imageId}`)
-    
-    // check to see if it is a product image
-    if (isProductImage) {
-        const productImage = await findAndRemoveImageFromProduct(imageId)
-        console.log('image is product image.', productImage)
-        if (!productImage) {
-            console.log('error removing product image.')
-            // stop here.
-            return null
-        }
-        console.log('image removed from user product.')
-    }
 
-    // remove profile image reference to image
+    const deletedImage = await UserImage.findOneAndRemove({ _id: req.body.imageId })
 
-    if (isProfileImage) {
-        const profileImage = await clearUserProfileImage(imageId)
-        console.log('image is profile image.', profileImage)
-        if (!profileImage) {
-            console.log('error clearing profile image reference to image.')
-            return null
-        }
-        console.log('profile image reference removed from user.')
-    }
-    
-    const deletedImage = await UserImage.findOneAndRemove({ _id: imageId })
-
-    if (!deletedImage) console.log('Could not find image to delete')
-    else {
-        const user = await User.findOne({ _id: deletedImage.user })
-
-        if (!user) {
-            console.log('could not find user to update after image deletion.')
-        } else {
-            const userDir = path.join(uploadDir, user.username)
-            const filenameToDelete = deletedImage.filename
-    
-            const pathToThumb = `${userDir}/thumb/${filenameToDelete}`
-            const pathToAvatar = `${userDir}/${filenameToDelete}`
-            
-            if (isProfileImage) {
-                user.profileImage = null
-                await user.save()
-            }
-    
-            // const product = 
-            await Product.findOneAndUpdate({ image: imageId }, { $set: { image: null }})
-            
-            // if (product) {
-            //     product.image = null
-            //     await product.save()
-            // }
-    
-            removeImage(pathToAvatar)
-            removeImage(pathToThumb)
-    
-            return res.status(200).json({ deletedImage })
+    if (deletedImage) {
+        let user = await User.findOne({ _id: deletedImage.user })
+        
+        const dir = path.join(uploadDir, user.username)
+        const filename = deletedImage.filename
+        
+        removeImage(dir, filename)
+        
+        let userModified = false
+        
+        if (user.profileImage?.toString() === deletedImage._id.toString()) {
+            user.profileImage = null
+            userModified = true
         }
 
+        await user.save()
+
+        const response = {
+            deletedImage,
+            modifiedUser: userModified ? user : null,
+        }
+
+        return res.status(200).json(response)
+
     }
+    
     return res.status(200).json(null)
 }
 

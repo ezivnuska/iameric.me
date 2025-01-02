@@ -12,7 +12,6 @@ const handleFileUpload = require('./handleFileUpload')
 const loadImage = require('./loadImage')
 const removeAllBipImagesById = require('./removeAllBipImagesById')
 const removeUserAssetsByUsername = require('./removeUserAssetsByUsername')
-const removeImage = require('./removeImage')
 const removeImageAndThumb = require('./removeImageAndThumb')
 const saveBipImage = require('./saveBipImage')
 const saveUserImage = require('./saveUserImage')
@@ -38,7 +37,6 @@ module.exports = {
     loadImage,
     removeAllBipImagesById,
     removeUserAssetsByUsername,
-    removeImage,
     removeImageAndThumb,
     saveBipImage,
     saveUserImage,
