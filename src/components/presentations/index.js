@@ -9,7 +9,6 @@ import Footer from './Footer'
 import Form from './Form'
 import Header from './Header'
 import ImageDisplay from './ImageDisplay'
-import ImageList from './ImageList'
 import ImagePicker from './ImagePicker'
 import ImagePickerMini from './ImagePickerMini'
 import ModalFactory from './ModalFactory'
@@ -30,7 +29,6 @@ export {
     Form,
     Header,
     ImageDisplay,
-    ImageList,
     ImagePicker,
     ImagePickerMini,
     ModalFactory,

@@ -16,10 +16,6 @@ const Header = ({ landscape, user, route }) => {
 
     const { setModal } = useModal()
 
-    // useEffect(() => {
-    //     console.log('header user', user)
-    // }, [user])
-
     const renderNav = () => {
 
         const props = { landscape, route, size }

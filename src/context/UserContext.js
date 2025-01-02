@@ -71,20 +71,12 @@ export const UserContextProvider = ({ children }) => {
         init()
     }, [])
 
-        // useEffect(() => {
-        //     console.log('state.user', state.user)
-        // }, [state.user])
-
     const init = async () => {
 
         const token = await getStoredToken()
         
         if (token) {
-            // console.log('found token')
-            // WE DON'T NEED TO VALIDATE TOKEN, YET
-            // FOR NOW WE'RE JUST FAKING IT
 
-            // dispatch({ type: 'SET_TOKEN', payload})
             const user = await validateToken(token)
             
             
@@ -94,11 +86,8 @@ export const UserContextProvider = ({ children }) => {
                 console.log('validation failed')
             }
 
-            // SO FOR NOW...
-            // dispatch({ type: 'SET_TOKEN', payload: true })
         } else {
             console.log('no token found')
-            // dispatch({ type: 'SET_TOKEN', payload: false })
         }
         
         dispatch({ type: 'USER_LOADED' })

@@ -1,6 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ImageDisplayView from './ImageDisplayView'
-import { ActivityIndicator } from '@components'
 import { useModal, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
 
@@ -50,18 +49,9 @@ const ImageDisplayContainer = ({ data }) => {
     useEffect(() => {
         if (image) { 
             initOwner(image.user._id)
-            // updateImage(image)
         }
         
     }, [image])
-    
-    // useEffect(() => {
-    //     if (owner) {
-    //         // console.log('user-------', owner)
-    //         console.log('owner-------', owner)
-    //         // updateUser(owner)
-    //     }
-    // }, [owner])
 
     const onDelete = async () => {
     
@@ -83,7 +73,6 @@ const ImageDisplayContainer = ({ data }) => {
                 updatedOwner = {
                     ...modifiedUser,
                     images,
-                    // profileImage: null,
                 }
                 updateUser(updatedOwner)
                 setOwner(updatedOwner)

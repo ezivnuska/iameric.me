@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, UserImages, ImageList, TextCopy, Screen } from '@components'
+import { ActivityIndicator, UserImages, Screen } from '@components'
 import { useApp, useModal, useUser } from '@context'
 
 const ImagesScreen = props => {
@@ -11,29 +11,16 @@ const ImagesScreen = props => {
         user,
         getUserImages,
         fetchUserAndUpdate,
-        findUserById,
         findUserByUsername,
         fetchImagesAndUpdate,
-        updateUser,
     } = useUser()
 
-    // const profile = useMemo(() => props.route.params?.username && findUserByUsername(props.route.params.username), [props.route.params])
     const [profile, setProfile] = useState(null)
-    // const [images, setImages] = useState(null)
-
-    // useEffect(() => {
-    //     console.log('images', images)
-    // }, [images])
 
     const getImages = () => {
         const userImages = getUserImages(profile._id)
         return userImages
     }
-
-    // useEffect(() => {
-    //     console.log('profile', profile)
-    //     // if (profile?.images) setImages(profile.images)
-    // }, [profile])
 
     const init = async username => {
 
@@ -59,11 +46,6 @@ const ImagesScreen = props => {
             init(props.route.params.username)
         }
     }, [props.route])
-
-    // const update = () => {
-    //     const updatedImages = getUserImages(profile._id)
-    //     setImages(updatedImages)
-    // }
 
     return (
         <Screen
