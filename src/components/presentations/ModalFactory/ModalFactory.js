@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
+import { View } from 'react-native'
 import {
     AuthForm,
     BugForm,
@@ -20,8 +20,6 @@ const ModalFactory = ({ modal, onClose }) => {
     const { dims, landscape } = useApp()
 
     const renderModalContent = () => {
-
-        if (!modal) return <TextCopy>Could not find modal content</TextCopy>
         
         const { type, data } = modal
         let content = null
@@ -77,8 +75,10 @@ const ModalFactory = ({ modal, onClose }) => {
             onRequestClose={onClose}
             style={{ margin: 0 }}
         >
+            <View style={{ flex: 1 }}>
+                {modal && renderModalContent()}
+            </View>
             {/* {isCamera && <View style={{ background: 'yellow', width: 100,  height: 100 }} />} */}
-            {renderModalContent()}
         </Modal>
     )
 }

@@ -101,22 +101,20 @@ const ImageDisplayContainer = ({ data }) => {
 
     }
 
-    return imageLoading
-        ? <ActivityIndicator label='Loading...' size='medium' />
-        : owner
-            ? (
-                <ImageDisplayView
-                    disabled={imagesLoading}
-                    image={image}
-                    owner={owner}
-                    onClose={closeModal}
-                    onDelete={onDelete}
-                    onChangeAvatar={onChangeAvatar}
-                    onCaptionEdit={onCaptionEdit}
-                    // update={update}
-                />
-            )
-            : <ActivityIndicator label='Loading image owner...' size='medium' />
+    return owner
+        ? (
+            <ImageDisplayView
+                disabled={loading}
+                image={image}
+                imageLoading={loading}
+                owner={owner}
+                onClose={closeModal}
+                onDelete={onDelete}
+                onChangeAvatar={onChangeAvatar}
+                onCaptionEdit={onCaptionEdit}
+                // update={update}
+            />
+        ) : null
 }
 
 export default ImageDisplayContainer

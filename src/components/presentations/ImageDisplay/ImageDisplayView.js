@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
 import { AdminButton, Form, IconButton, IconButtonLarge, ImageContained, ProfileImage, TextCopy, Time } from '@components'
 import { useApp, useForm, useModal, useUser } from '@context'
@@ -10,6 +10,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const ImageDisplayView = ({
     disabled,
     image,
+    imageLoading,
     owner,
     onChangeAvatar,
     onClose,
@@ -42,13 +43,22 @@ const ImageDisplayView = ({
         opacity: overlayVisibility.value,
     }))
 
+    useEffect(() => {
+        setLoading(imageLoading)
+    }, [imageLoading])
+
+    const fadeIn = () => {
+        setOverlayVisible(true)
+        overlayVisibility.value = withTiming(1, { duration: 500 })
+    }
+
+    const fadeOut = () => {
+        overlayVisibility.value = withTiming(0, { duration: 500 }, () => setOverlayVisible(false))
+    }
+
     const toggleVisibility = () => {
-        if (overlayVisible) {
-            overlayVisibility.value = withTiming(0, { duration: 500 }, () => setOverlayVisible(false))
-        } else {
-            setOverlayVisible(true)
-            overlayVisibility.value = withTiming(1, { duration: 500 })
-        }
+        if (overlayVisible) fadeOut()
+        else fadeIn()
     }
     
     const isOwner = useMemo(() => user._id === owner?._id, [owner])
@@ -65,17 +75,15 @@ const ImageDisplayView = ({
         setLoading(true)
         const data = await setCaption(image._id, formFields.caption)
         setLoading(false)
-
+        
         if (data) {
-            onCaptionEdit({
-                ...image,
-                caption: data.caption,
-            })
-            
+
+            onCaptionEdit(data.caption)
             clearForm()
             setEditing(false)
+
         } else {
-            console.log('Error saving caption', err)
+            console.log('Error saving caption')
         }
         
     }
