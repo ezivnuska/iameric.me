@@ -27,6 +27,7 @@ import TextHeading from './TextHeading'
 import TextPressable from './TextPressable'
 // import ThumbList from './ThumbList'
 import Time from './Time'
+import UserImages from './UserImages'
 
 export {
     ActivityIndicator,
@@ -57,4 +58,5 @@ export {
     TextPressable,
     // ThumbList,
     Time,
+    UserImages,
 }

@@ -162,6 +162,7 @@ export const UserContextProvider = ({ children }) => {
         // addNotification(`User ${keys.toString()} updated`)
     }
 
+    const getUserImages = id => state.images.filter(img => img.user._id === id)
     const findUserById = userId => state.users.filter(user => user._id === userId)[0]
     const findUserImageById = (id, images) => images.filter(img => img._id === id)[0]
     const findUserImage = (userId, imageId) => {
@@ -174,6 +175,7 @@ export const UserContextProvider = ({ children }) => {
     }
 
     const actions = useMemo(() => ({
+        getUserImages,
         findUserByUsername: username => state.users.filter(user => user.username === username)[0],
         findUserById,
         fetchImageAndUpdate,

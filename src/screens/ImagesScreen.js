@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ImageList, TextCopy, Screen } from '@components'
+import { ActivityIndicator, UserImages, ImageList, TextCopy, Screen } from '@components'
 import { useApp, useModal, useUser } from '@context'
 
 const ImagesScreen = props => {
@@ -16,6 +16,13 @@ const ImagesScreen = props => {
 
     // const profile = useMemo(() => props.route.params?.username && findUserByUsername(props.route.params.username), [props.route.params])
     const [profile, setProfile] = useState(null)
+    const user = useMemo(() => profile && findUserByUsername(profile.username), [profile])
+    const images = useMemo(() => user?.images, [user])
+
+
+    useEffect(() => {
+        console.log('user', user)
+    }, [user])
 
     const init = async username => {
 
@@ -28,11 +35,14 @@ const ImagesScreen = props => {
    
         if (user) {
 
-            const images = await fetchImagesAndUpdate(user._id)
+            const fetchedImages = await fetchImagesAndUpdate(user._id)
 
-            if (images) {
+            if (fetchedImages) {
 
-                user = { ...user, images }
+                user = {
+                    ...user,
+                    images: fetchedImages,
+                }
                 
             }
         }
@@ -64,13 +74,13 @@ const ImagesScreen = props => {
         >
             <View style={{ flex: 1 }}>
 
-                {!profile
+                {!user
                     ? <ActivityIndicator label='Loading User Images...' color='#fff' />
-                    : profile.images
+                    : images
                         ? (
-                            <ImageList
+                            <UserImages
                                 key={`images-${profile._id}-${Date.now()}`}
-                                images={profile.images}
+                                images={images}
                                 onPress={(type, data) => setModal(type, data)}
                                 list={props.route.params?.list || landscape}
                             />
