@@ -101,10 +101,7 @@ const ImageList = ({ images, onPress, list = false, ...props }) => {
                         return (
                             <Pressable
                                 key={`image-${index}`}
-                                onPress={() => onPress('SHOWCASE', {
-                                    image,
-                                    owner: image.user,
-                                })}
+                                onPress={() => onPress('SHOWCASE', image)}
                                 style={[
                                     {
                                         width: !list ? imageDims.width : landscape ? imageDims.width : maxDims.width,

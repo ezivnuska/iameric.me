@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import ImageDisplayView from './ImageDisplayView'
 import { ActivityIndicator } from '@components'
 import { useModal, useUser } from '@context'
-import { deleteImage } from '@utils/images'
+import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
 
 const ImageDisplayContainer = ({ data }) => {
 
@@ -12,83 +12,111 @@ const ImageDisplayContainer = ({ data }) => {
         imageLoading,
         imagesLoading,
         user,
-        fetchImageAndUpdate,
-        findUserImage,
         removeImage,
-        setImageLoading,
         updateImage,
         updateUser,
+        fetchImageAndUpdate,
         findUserById,
     } = useUser()
 
     const [image, setImage] = useState(null)
+    const [owner, setOwner] = useState(null)
+    const [loading, setLoading] = useState(false)
     
-    const owner = useMemo(() => data.image.user, [data])
+    const isProfileImage = useMemo(() => owner?.profileImage?._id === image?._id, [image, owner])
+    
+    const initOwner = async userId => {
+        let imageOwner = await findUserById(userId)
+        if (imageOwner) setOwner(imageOwner)
+    }
 
     const init = async data => {
+        let currentImage = data
+        
+        let imageData = await fetchImageAndUpdate(data._id)
 
-        let currentImage = await fetchImageAndUpdate(data.image._id)
+        if (imageData) currentImage = imageData
+        else {
+            imageData = await loadImage(data._id)
             
-        if (currentImage) setImage(currentImage)
+            if (imageData) currentImage = imageData
+        }
+        
+        setImage(currentImage)
     }
 
     useEffect(() => {
         if (data) init(data)
     }, [])
-
+    
+    useEffect(() => {
+        
+        if (image) { 
+            initOwner(image.user._id)
+            updateImage(image)
+        }
+        
+    }, [image])
+    
     useEffect(() => {
         if (owner) updateUser(owner)
     }, [owner])
-    
+
     const onDelete = async () => {
-
+    
         if (process.env.NODE_ENV === 'development') return alert(`Can't delete in development`)
-        if (!image) return console.log('no image data to delete')
 
-        const isProfileImage = owner.profileImage?._id === image._id
-
-        setImageLoading(true)
+        setLoading(true)
         const deletedImage = await deleteImage(image._id, isProfileImage)
-        setImageLoading(false)
+        setLoading(false)
 
         if (!deletedImage) console.log('Error deleting image.')
         else {
+
             removeImage(owner._id, deletedImage._id)
 
-            if (isProfileImage) updateUser({ ...owner, profileImage: null })
+            if (user._id === owner?._id && isProfileImage) {
+                setOwner({ ...owner, profileImage: null })
+            }
 
             onClose()
         }
     }
+    
+    const onChangeAvatar = async () => {
 
-    const update = data => {
-        if (data.image) {
-            setImage({
-                ...image,
-                ...data.image,
-                // user: updatedUser,
-            })
-            updateImage(data.image)
-        }
-        if (data.user) {
-            updateUser(data.user)
-        }
+        const newAvatarId = user.profileImage?._id !== image._id ? image._id : null
+
+        setLoading(true)
+        const profileImage = await setAvatar(user._id, newAvatarId)
+        setLoading(false)
+
+        setOwner({ ...owner, profileImage })
+        
+    }
+    
+    const onCaptionEdit = async caption => {
+        
+        setImage({ ...image, caption })
+
     }
 
     return imageLoading
         ? <ActivityIndicator label='Loading...' size='medium' />
-        : image
+        : owner
             ? (
                 <ImageDisplayView
                     disabled={imagesLoading}
                     image={image}
-                    // owner={owner}
+                    owner={owner}
                     onClose={closeModal}
                     onDelete={onDelete}
-                    update={update}
+                    onChangeAvatar={onChangeAvatar}
+                    onCaptionEdit={onCaptionEdit}
+                    // update={update}
                 />
             )
-            : <ActivityIndicator label='...' size='medium' />
+            : <ActivityIndicator label='Loading image owner...' size='medium' />
 }
 
 export default ImageDisplayContainer

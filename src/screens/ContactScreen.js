@@ -10,7 +10,6 @@ const ContactScreen = props => {
         userLoading,
         findUserByUsername,
         updateUser,
-        getUserProfileImage,
         setUserLoading,
         getUserByUsername,
     } = useUser()
@@ -31,24 +30,32 @@ const ContactScreen = props => {
             init(props.route.params?.username)
         }
     }, [props.route])
+
+    useEffect(() => {
+        if (profile) {
+            updateUser(profile)
+        }
+    }, [profile])
     
     const init = async username => {
         
         setUserLoading(true)
 
         let user = findUserByUsername(username)
-        
+
         if (!user) {
 
             user = await loadContact(username)
             
-        }
-        
-        if (user) {
-            setProfile(user)
-            updateUser(user)
+            if (user) {
+                updateUser(user)
+            }
         }
 
+        if (user) {
+            setProfile(user)
+        }
+        
         setUserLoading(false)
     }
 
@@ -66,20 +73,14 @@ const ContactScreen = props => {
                         ? (
                             <Pressable
                                 key={`contact-${profile.username}-${Date.now()}`}
-                                onPress={() => setModal('SHOWCASE', {
-                                    image: profile.profileImage,
-                                    owner: profile,
-                                })}
+                                onPress={() => setModal('SHOWCASE', profile.profileImage)}
                                 disabled={!profile.profileImage}
                             >
 
-                                {/* {profile.profileImage && ( */}
-                                    <ProfileImage
-                                        user={profile}
-                                        // image={profileImage}
-                                        size={100}
-                                    />
-                                {/* )} */}
+                                <ProfileImage
+                                    user={profile}
+                                    size={100}
+                                />
 
                             </Pressable>
                         )

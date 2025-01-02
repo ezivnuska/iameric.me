@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
 import { AdminButton, Form, IconButton, IconButtonLarge, ImageContained, ProfileImage, TextCopy, Time } from '@components'
 import { useApp, useForm, useModal, useUser } from '@context'
-import { deleteImage, setAvatar, setCaption } from '@utils/images'
+import { setCaption } from '@utils/images'
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -10,10 +10,11 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 const ImageDisplayView = ({
     disabled,
     image,
-    // owner,
+    owner,
+    onChangeAvatar,
     onClose,
     onDelete,
-    update,
+    onCaptionEdit,
 }) => {
 
     const { dims, landscape } = useApp()
@@ -29,16 +30,10 @@ const ImageDisplayView = ({
     const {
         imagesLoading,
         user,
-        userLoading,
-        findUserById,
-        removeImage,
-        setImagesLoading,
-        setUserLoading,
-        updateImage,
-        updateUser,
     } = useUser()
 
     const [editing, setEditing] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [overlayVisible, setOverlayVisible] = useState(true)
 
     const overlayVisibility = useSharedValue(1)
@@ -56,82 +51,33 @@ const ImageDisplayView = ({
         }
     }
     
-    const isOwner = useMemo(() => user._id === image.user?._id, [image])
-    const imageSource = useMemo(() => image.user?.username && `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
-    const isProfileImage = useMemo(() => image.user?.profileImage?._id === image._id, [image])
+    const isOwner = useMemo(() => user._id === owner?._id, [owner])
+    const imageSource = useMemo(() => owner?.username && `${IMAGE_PATH}/${owner.username}/${image.filename}`, [image, owner])
+    const isProfileImage = useMemo(() => owner?.profileImage?._id === image._id, [image, owner])
     
-    const handleDelete = async () => {
-
-        if (process.env.NODE_ENV === 'development') return alert(`Can't delete in development`)
-
-        setImagesLoading(true)
-        const deletedImage = await deleteImage(image._id, isProfileImage)
-        setImagesLoading(false)
-
-        if (!deletedImage) console.log('Error deleting image.')
-        else {
-
-            removeImage(owner._id, deletedImage._id)
-
-            if (user._id === owner?._id && isProfileImage) {
-                
-                update({
-                    user: {
-                        ...user,
-                        profileImage: null,
-                    },
-                })
-            }
-
-            onClose()
-        }
-    }
-
-    const handleAvatar = async () => {
-
-        const newAvatarId = user.profileImage?._id !== image._id ? image._id : null
-
-        setUserLoading(true)
-        
-        const result = await setAvatar(user._id, newAvatarId)
-        
-        setUserLoading(false)
-        
-        update({
-            user: {
-                ...user,
-                profileImage: result,
-            },
-        })
-        
-    }
-    
-    const submitCaptionEdit = async () => {
+    const onSubmitCaption = async () => {
             
         if (formError) {
             console.log(`Error in form field ${formError.name}: ${formError.message}`)
             return
         }
         
-        setUserLoading(true)
+        setLoading(true)
         const data = await setCaption(image._id, formFields.caption)
-        setUserLoading(false)
+        setLoading(false)
 
         if (data) {
-            update({
-                image: {
-                    ...image,
-                    caption: data.caption,
-                },
+            onCaptionEdit({
+                ...image,
+                caption: data.caption,
             })
             
             clearForm()
             setEditing(false)
-            return data
+        } else {
+            console.log('Error saving caption', err)
         }
         
-        console.log('Error saving caption', err)
-        return null
     }
 
     return imageSource ? (
@@ -204,7 +150,7 @@ const ImageDisplayView = ({
 
                             <ProfileImage
                                 // image={profileImage}
-                                user={image.user}
+                                user={owner}
                                 size={landscape ? 30 : 50}
                             />
         
@@ -390,7 +336,7 @@ const ImageDisplayView = ({
                                                         name='happy-sharp'
                                                         size={24}
                                                         color={isProfileImage ? 'tomato' : '#fff'}
-                                                        onPress={handleAvatar}
+                                                        onPress={onChangeAvatar}
                                                         disabled={imagesLoading}
                                                     />
 
@@ -400,7 +346,7 @@ const ImageDisplayView = ({
                                                     name='trash-outline'
                                                     size={24}
                                                     color='#fff'
-                                                    onPress={handleDelete}
+                                                    onPress={onDelete}
                                                     disabled={imagesLoading}
                                                 />
 
@@ -431,15 +377,15 @@ const ImageDisplayView = ({
                                                     size={24}
                                                     color='#fff'
                                                     onPress={() => setEditing(false)}
-                                                    disabled={userLoading}
+                                                    // disabled={userLoading}
                                                 />
 
                                                 <IconButton
                                                     name='checkmark-outline'
                                                     size={24}
                                                     color='#0f0'
-                                                    onPress={submitCaptionEdit}
-                                                    disabled={userLoading}
+                                                    onPress={onSubmitCaption}
+                                                    disabled={loading}
                                                 />
 
                                             </View>
