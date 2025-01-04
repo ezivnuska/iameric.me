@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Pressable, View } from 'react-native'
 import { TextCopy, IconButton } from '@components'
 import { useModal, useUser } from '@context'
@@ -9,7 +9,7 @@ const UserNavBar = ({ landscape, route, size }) => {
     const { uploading, user } = useUser()
     const { setModal } = useModal()
 
-    const isCurrentUser = user.username === route.params?.username
+    const isCurrentUser = useMemo(() => user.username === route.params?.username, [route.params])
     
     return (
         <View

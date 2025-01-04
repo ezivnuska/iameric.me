@@ -67,7 +67,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                     }}
                 >
                     <Pressable
-                        onPress={() => navigate('Profile', { username: item.author?.username })}
+                        onPress={() => navigate('User', { username: item.author?.username })}
                         style={{
                             flexDirection: 'row',
                             alignItems: 'flex-start',

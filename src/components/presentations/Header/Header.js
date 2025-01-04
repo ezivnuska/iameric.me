@@ -101,7 +101,7 @@ const Header = ({ landscape, user, route }) => {
                         >
 
                             <IconButton
-                                name='people-outline'
+                                name={`people-${route?.name === 'Users' ? 'sharp' : 'outline'}`}
                                 size={24}
                                 onPress={() => navigate('Users')}
                                 disabled={route?.name === 'Users'}
@@ -109,7 +109,7 @@ const Header = ({ landscape, user, route }) => {
                                 />
 
                             <IconButton
-                                name='build-outline'
+                                name={`reader-${route?.name === 'Work' ? 'sharp' : 'outline'}`}
                                 size={24}
                                 onPress={() => navigate('Work')}
                                 disabled={route?.name === 'Work'}
@@ -117,7 +117,7 @@ const Header = ({ landscape, user, route }) => {
                                 />
 
                             <IconButton
-                                name='list-outline'
+                                name={`list-${route?.name === 'Feed' ? 'sharp' : 'outline'}`}
                                 size={24}
                                 onPress={() => navigate('Feed')}
                                 disabled={route?.name === 'Feed'}

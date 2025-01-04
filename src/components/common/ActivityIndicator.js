@@ -3,7 +3,12 @@ import { View } from 'react-native'
 import { TextCopy } from '@components'
 import { ActivityIndicator as Indicator } from 'react-native-paper'
 
-const ActivityIndicator = ({ size = 'large', color = 'tomato', label = null, ...props }) => (
+const ActivityIndicator = ({
+    size = 'medium',
+    color = 'tomato',
+    label = null,
+    ...props
+}) => (
     <View
         {...props}
         style={{

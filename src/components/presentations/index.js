@@ -4,7 +4,6 @@ import AuthForm from './AuthForm'
 import BugForm from './BugForm'
 import Bugs from './Bugs'
 import Feed from './Feed'
-import UserList from './UserList'
 import Footer from './Footer'
 import Form from './Form'
 import Header from './Header'
@@ -24,7 +23,6 @@ export {
     BugForm,
     Bugs,
     Feed,
-    UserList,
     Footer,
     Form,
     Header,

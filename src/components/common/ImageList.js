@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Image, Pressable, ScrollView, View } from 'react-native'
+import { FlatList, Image, Pressable, ScrollView, View } from 'react-native'
 import { ActivityIndicator, TextCopy } from '@components'
 import { useApp, useUser } from '@context'
 
@@ -32,7 +32,7 @@ const ImageGridItem = ({ image, size }) => (
     />
 )
 
-const UserImages = ({ images, onPress, list = false, ...props }) => {
+const ImageList = ({ images, onPress, list = false, ...props }) => {
 
     const { landscape, theme } = useApp()
 
@@ -108,6 +108,56 @@ const UserImages = ({ images, onPress, list = false, ...props }) => {
         <View
             {...props}
             onLayout={onLayout}
+            style={{ flex: 1 }}
+        >
+            {maxDims && (
+                <FlatList
+                    horizontal={landscape}
+                    numColumns={!landscape ? 2 : null}
+                    data={images}
+                    keyExtractor={item => item._id}
+                    renderItem={({ item }) => {
+                        const { height, width } = getImageDims(item)
+                        return !list ? (
+                            <Image
+                                source={{ uri: `${IMAGE_PATH}/${item.user.username}/thumb/${item.filename}` }}
+                                resizeMode='cover'
+                                style={{ width, height: width }}
+                            />
+                        ) : (
+                            <View
+                                style={{ borderWidth: 1 }}
+                            >
+                                <Pressable
+                                    onPress={() => onPress('SHOWCASE', item)}
+                                    style={{
+                                        height,
+                                        width,
+                                        marginHorizontal: 'auto',
+                                    }}
+                                >
+                                    <Image
+                                        source={{ uri: `${IMAGE_PATH}/${item.user.username}${width <= 200 ? `/thumb` : ''}/${item.filename}` }}
+                                        resizeMode='contain'
+                                        style={{
+                                            flex: 1,
+                                            alignSelf: 'stretch',
+                                        }}
+                                    />
+
+                                </Pressable>
+                            </View>
+                        )
+                    }}
+                />
+            )}
+        </View>
+    )
+
+    return (
+        <View
+            {...props}
+            onLayout={onLayout}
             style={{ flex: 1, width: '100%' }}
         >
             {maxDims ? (
@@ -154,4 +204,4 @@ const UserImages = ({ images, onPress, list = false, ...props }) => {
     )
 }
 
-export default UserImages
+export default ImageList

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, UserImages, Screen } from '@components'
+import { ActivityIndicator, ImageList, UserImages, Screen } from '@components'
 import { useApp, useModal, useUser } from '@context'
 
 const ImagesScreen = props => {
@@ -58,7 +58,7 @@ const ImagesScreen = props => {
                 {!profile
                     ? <ActivityIndicator label='Loading images...' color='#fff' />
                     : (
-                        <UserImages
+                        <ImageList
                             key={`images-${profile._id}-${Date.now()}`}
                             images={getImages()}
                             onPress={(type, data) => setModal(type, data)}

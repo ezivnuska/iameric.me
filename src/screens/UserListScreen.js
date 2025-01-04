@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { ActivityIndicator, Screen, UserList } from '@components'
 import { loadContactIds } from '@utils/contacts'
+import { useApp } from '@context'
 
 const UserListScreen = props => {
 
+    const { landscape } = useApp()
+    
     const [userIds, setUserIds] = useState(null)
     const [loading, setLoading] = useState(false)
 
@@ -27,7 +30,11 @@ const UserListScreen = props => {
     }, [])
 
     return (
-        <Screen secure {...props}>
+        <Screen
+            {...props}
+            full={landscape}
+            secure
+        >
     
             <View style={{ flex: 1 }}>
 

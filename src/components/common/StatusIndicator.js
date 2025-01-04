@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { useApp, useSocket } from '@context'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const StatusIndicator = ({ id, size = 25 }) => {
+const StatusIndicator = ({ id, size = 20 }) => {
     
     const { theme } = useApp()
     const { connections } = useSocket()
@@ -11,9 +11,11 @@ const StatusIndicator = ({ id, size = 25 }) => {
 
     return (
         <Icon
-            name={isConnected ? 'ellipse' : 'ellipse-outline'}
+            name='flash-sharp'
+            // name={`flash-${isConnected ? 'sharp' : 'outline'}`}
             size={size}
             color={isConnected ? theme?.colors.statusOn : theme?.colors.statusOff}
+            style={{ visibility: isConnected ? 'visible' : 'hidden' }}
         />
     )
 }

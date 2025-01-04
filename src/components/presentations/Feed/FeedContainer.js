@@ -63,31 +63,20 @@ const FeedContainer = props => {
     }
     
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{  }}>
 
-            {/* <FeedNavBar {...props} /> */}
+            {
+                sortedThreads.length
+                    ? sortedThreads.map((items, index) => (
+                        <FeedList
+                            key={`thread-${index}`}  
+                            posts={items}
+                            onDelete={removePost}
+                        />
+                    ))
+                    : <TextCopy> No posts yet.</TextCopy>
+            }
 
-            <View
-                style={{
-                    gap: 10,
-                    // paddingHorizontal: 10,
-                }}
-            >
-                
-                {
-                    sortedThreads.length
-                        ? sortedThreads.map((items, index) => (
-                            <FeedList
-                                key={`thread-${index}`}  
-                                posts={items}
-                                onDelete={removePost}
-                            />
-                        ))
-                        : <TextCopy> No posts yet.</TextCopy>
-                }
-
-            </View>
-                
         </View>
     )
 }
