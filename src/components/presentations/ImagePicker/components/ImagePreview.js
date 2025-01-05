@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, View } from 'react-native'
+import { Image, Pressable, View } from 'react-native'
 import { ActivityIndicator, IconButton, ImageClone } from '@components'
 
 const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
@@ -11,9 +11,9 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
     }
 
     return (
-        <Pressable
-            onPress={upload}
-            disabled={!imageLoaded || uploading}
+        <View
+            // onPress={upload}
+            // disabled={!imageLoaded || uploading}
             style={{
                 flex: 1,
                 flexDirection: 'row',
@@ -47,32 +47,59 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
                         }}
                     >
 
-                        {
-                            uploading
-                                ? (
-                                    <ActivityIndicator
-                                        size='medium'
-                                        label={`Uploading...\nDo not close window.${progress ? `\n${progress}%` : ''}`}
-                                        color='#fff'
-                                    />
-                                )
-                                : (
-                                    <IconButton
-                                        name='cloud-upload'
-                                        onPress={upload}
-                                        size={40}
-                                        color='#fff'
-                                        transparent
-                                    />
-                                )
-                        }
+                        {uploading ? (
+                            <ActivityIndicator
+                                size='medium'
+                                label={`Uploading...\nDo not close window.${progress ? `\n${progress}%` : ''}`}
+                                color='#fff'
+                            />
+                        ) : (
+                            <View
+                                style={{
+                                    padding: 20,
+                                    borderRadius: '50%',
+                                    background: 'rgba(0, 155, 0, 0.8)',
+                                }}
+                            >
+                                <IconButton
+                                    name='cloud-upload'
+                                    onPress={upload}
+                                    size={40}
+                                    color='#fff'
+                                    transparent
+                                />
+                            </View>
+                        )}
 
                     </View>
 
                 </View>
             )}
-
-            <ImageClone
+            <View
+                style={{
+                    height,
+                    width,
+                    marginHorizontal: 'auto',
+                    zIndex: 10,
+                }}
+            >
+                <Image
+                    onLayout={onLayout}
+                    source={{ uri }}
+                    // width={width}
+                    // height={height}
+                    resizeMode='contain'
+                    style={{
+                        flex: 1,
+                        alignSelf: 'stretch',
+                        // height,
+                        // width,
+                        // marginHorizontal: 'auto',
+                        // zIndex: 10,
+                    }}
+                />
+            </View>
+            {/* <ImageClone
                 onLayout={onLayout}
                 source={{ uri }}
                 width={width}
@@ -84,9 +111,9 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
                     marginHorizontal: 'auto',
                     zIndex: 10,
                 }}
-            />
+            /> */}
 
-        </Pressable>
+        </View>
     )
 }
 

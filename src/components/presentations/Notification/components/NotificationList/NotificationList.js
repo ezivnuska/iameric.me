@@ -13,22 +13,17 @@ export default () => {
     return (
         <View
             style={{
-                display: notifications.length ? 'flex' : 'none',
+                display: notifications.length ? 'block' : 'none',
                 marginHorizontal: 10,
-                marginVertical: 10,
-                gap: 5,
+                marginBottom: 5,
             }}
         >
             {notifications.map((note, index) => (
-                <View
+                <NotificationListItem
                     key={`note-${index}`}
-                    style={{ justifyContent: 'flex-end' }}
-                >
-                    <NotificationListItem
-                        text={note}
-                        onPress={() => removeNotification(index)}
-                    />
-                </View>
+                    text={note}
+                    remove={() => removeNotification(index)}
+                />
             ))}
         </View>
     )

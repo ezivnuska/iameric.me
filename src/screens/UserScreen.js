@@ -10,36 +10,37 @@ const UserScreen = props => {
         userLoading,
         findUserByUsername,
         updateUser,
-        setUserLoading,
+        // setUserLoading,
         getUserByUsername,
     } = useUser()
     
     const { setModal } = useModal()
 
+    const [loading, setLoading] = useState(false)
     const [profile, setProfile] = useState(null)
 
-    useEffect(() => {
-        if (props.route.params?.username) {
-            init(props.route.params.username)
-        }
-        return () => setProfile(null)
-    }, [])
+    // useEffect(() => {
+    //     if (props.route.params?.username) {
+    //         init(props.route.params.username)
+    //     }
+    //     return () => setProfile(null)
+    // }, [])
 
     useEffect(() => {
         if (profile?.username !== props.route.params?.username) {
             init(props.route.params?.username)
         }
-    }, [props.route])
+    }, [props.route.params])
 
     useEffect(() => {
-        if (profile) {
-            updateUser(profile)
-        }
+        // if (profile) {
+        //     updateUser(profile)
+        // }
     }, [profile])
     
     const init = async username => {
         
-        setUserLoading(true)
+        setLoading(true)
 
         let user = findUserByUsername(username)
 
@@ -47,16 +48,18 @@ const UserScreen = props => {
 
             user = await loadContact(username)
             
-            if (user) {
-                updateUser(user)
-            }
+            // if (user) {
+            //     updateUser(user)
+            // }
         }
 
         if (user) {
             setProfile(user)
+        } else {
+            console.log('could not load user.')
         }
         
-        setUserLoading(false)
+        setLoading(false)
     }
 
     return (
@@ -67,7 +70,7 @@ const UserScreen = props => {
         >
             <View style={{ flex: 1 }}>
 
-                {userLoading
+                {loading
                     ? <ActivityIndicator size='medium' label='Loading User...' />
                     : profile
                         ? (

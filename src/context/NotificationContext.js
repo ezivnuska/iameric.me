@@ -11,8 +11,6 @@ import { IMAGE_PATH } from '../../config'
 
 const assetPath = process.env.NODE_ENV === 'production' ? '/assets' : IMAGE_PATH
 
-const DURATION = 5000
-
 const initialState = {
     notifications: [],
     notificationsLoaded: false,
@@ -48,20 +46,20 @@ export const NotificationContextProvider = ({ children }) => {
 
     const notification = useMemo(() => notifications[0], [notifications])
 
-    let timer = undefined
+    // let timer = undefined
 
     useEffect(() => {
         dispatch({ type: 'NOTIFICATIONS_LOADED' })
     }, [])
 
-    useEffect(() => {
-        if (notification) {
-            if (!timer) startTimer()
-        } else {
-            clearTimeout(timer)
-            timer = undefined
-        }
-    }, [notifications])
+    // useEffect(() => {
+    //     if (notification) {
+    //         if (!timer) startTimer()
+    //     } else {
+    //         clearTimeout(timer)
+    //         timer = undefined
+    //     }
+    // }, [notifications])
 
     const addNotification = payload => {
         playSound()
@@ -76,9 +74,9 @@ export const NotificationContextProvider = ({ children }) => {
         dispatch({ type: 'NEXT_NOTIFICATION' })
     }
 
-    const startTimer = () => {
-        timer = setTimeout(nextNotification, DURATION)
-    }
+    // const startTimer = () => {
+    //     timer = setTimeout(removeNotification(), DURATION)
+    // }
     
     const actions = useMemo(() => ({
         addNotification,

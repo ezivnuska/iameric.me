@@ -13,6 +13,7 @@ const FeedList = ({ posts, onDelete, ...props }) => (
         {posts.map((post, index) => (
             <FeedListItem
                 key={`thread-item-${index}`}
+                index={index}
                 item={post}
                 onDelete={onDelete}
             />

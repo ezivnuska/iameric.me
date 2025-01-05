@@ -32,7 +32,10 @@ const initialState = {
     error: null,
     imageLoading: false,
     imagesLoading: false,
-    uploading: false,
+    imageUpload: null,
+    uploading: null,
+    deletedImage: null,
+    uploadedImage: null,
 
     setUser: () => {},
     setProfileImage: () => {},
@@ -51,6 +54,9 @@ const initialState = {
     setImages: () => {},
     setImageLoading: () => {},
     setImagesLoading: () => {},
+    setImageUpload: () => {},
+    setDeletedImage: () => {},
+    setUploadedImage: () => {},
     setUploading: () => {},
     updateImage: () => {},
 }
@@ -156,6 +162,18 @@ export const UserContextProvider = ({ children }) => {
         // addNotification(`User ${keys.toString()} updated`)
     }
 
+    const setDeletedImage = payload => {
+        dispatch({ type: 'SET_DELETED_IMAGE', payload })
+    }
+
+    const setUploadedImage = payload => {
+        dispatch({ type: 'SET_UPLOADED_IMAGE', payload })
+    }
+
+    const setImageUpload = payload => {
+        dispatch({ type: 'SET_IMAGE_UPLOAD', payload })
+    }
+
     const getUserImages = userId => {
         const userWithId = findUserById(userId)
         if (userWithId && userWithId.images?.length) {
@@ -183,10 +201,13 @@ export const UserContextProvider = ({ children }) => {
         fetchUserAndUpdate,
         findUserImage,
         reset,
+        setDeletedImage,
         setProfileImage,
         setUserLoading,
         setUser,
         updateUser,
+        setUploadedImage,
+        setImageUpload,
         getUserProfileImage: id => {
             const { profileImage } = state.users.filter(user => user._id === id)[0]
             return profileImage
@@ -305,6 +326,12 @@ const reducer = (state, action) => {
                 imageLoading: payload,
             }
             break
+        case 'SET_IMAGE_UPLOAD':
+            return {
+                ...state,
+                imageUpload: payload,
+            }
+            break
         case 'SET_IMAGES_LOADING':
             return {
                 ...state,
@@ -363,6 +390,12 @@ const reducer = (state, action) => {
         case 'SET_UPLOADING':
             return { ...state, uploading: payload }
             break
+        case 'SET_UPLOADED_IMAGE':
+            return { ...state, uploadedImage: payload }
+            break
+        case 'SET_DELETED_IMAGE':
+            return { ...state, deletedImage: payload }
+            break
         case 'RESET':
             return {
                 ...state,
@@ -376,16 +409,16 @@ const reducer = (state, action) => {
                     let images = null
                     if (!item.images) images = [payload]
                     else {
-                        let index = null
+                        let updated = false
                         images = item.images.map((image, i) => {
                             if (image === payload._id || image._id === payload._id) {
-                                index = i
+                                updated = true
                                 return payload
                             }
                             return image
                         })
 
-                        if (!index) images = [ ...images, payload ]
+                        if (!updated) images = [ ...images, payload ]
                     }
                     
                     updatedUser = {

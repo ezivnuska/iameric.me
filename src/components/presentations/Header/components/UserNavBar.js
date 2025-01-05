@@ -17,6 +17,7 @@ const UserNavBar = ({ landscape, route, size }) => {
                 flexDirection: 'row',
                 justifyContent: landscape ? 'space-between' : 'space-between',
                 alignItems: 'center',
+                gap: 10,
             }}
         >
             <View
@@ -99,7 +100,7 @@ const UserNavBar = ({ landscape, route, size }) => {
                             name='add-outline'
                             onPress={() => setModal('IMAGE_UPLOAD')}
                             color={!uploading ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
-                            size={28}
+                            size={26}
                             disabled={uploading}
                         />
                     )}

@@ -8,7 +8,6 @@ import {
     getMaxImageDims,
     handleImageData,
     openFileSelector,
-    uploadImage,
 } from '@utils/images'
 import EXIF from 'exif-js'
 
@@ -20,9 +19,8 @@ const ImagePickerContainer = ({ data }) => {
         user,
         uploading,
         setProfileImage,
+        setImageUpload,
         setUploading,
-        updateImage,
-        updateUser,
     } = useUser()
 
     const [preview, setPreview] = useState(null)
@@ -77,20 +75,16 @@ const ImagePickerContainer = ({ data }) => {
     }, [preview])
 
     const openSelector = async () => {
-        
-        // console.log('opening image selector')
 
         if (!showActivity) {
             setShowActivity(true)
         }
 
         const uri = await openFileSelector()
-        // console.log('image selection complete')
         
         setShowActivity(false)
         
         if (uri) {
-            console.log('image selected')
             handleSelectedImage(uri)
         } else {
             console.log('no selection made')
@@ -127,17 +121,19 @@ const ImagePickerContainer = ({ data }) => {
         image.src = src
     }
 
-    const onProgress = e => {
+    // not working, yet
 
-        if (e.lengthComputable) {
-            const progress = Math.round((e.loaded / e.total) * 100)
-            console.log(`Upload Progress: ${e.loaded}/${e.total}`)
-            console.log('progress', progress)
-            setProgress(progress)
-        } else {
-            console.log('upload data not computable')
-        }
-    }
+    // const onProgress = e => {
+
+    //     if (e.lengthComputable) {
+    //         const progress = Math.round((e.loaded / e.total) * 100)
+    //         console.log(`Upload Progress: ${e.loaded}/${e.total}`)
+    //         console.log('progress', progress)
+    //         setProgress(progress)
+    //     } else {
+    //         console.log('upload data not computable')
+    //     }
+    // }
 
     const handleUpload = async uploadData => {
 
@@ -146,24 +142,10 @@ const ImagePickerContainer = ({ data }) => {
         const { imageData, thumbData, userId } = uploadData
         const data = { imageData, thumbData, userId, avatar: data?.avatar }
 
-        // attempting upload
-        setUploading(true)
-        const image = await uploadImage({ ...data }, onProgress)
-        setUploading(false)
-        
-        if (!image) {
-            console.log('error uploading image')
-        } else {
-            console.log('image uploaded', image)
-            updateImage(image)
-
-            if (avatarCheckbox) updateUser({
-                ...user,
-                profileImage: image,
-            })
+        setUploading(preview)
+        setImageUpload(data)
             
-            closeModal()
-        }
+        closeModal()
     }
 
     const onCancel = () => {
@@ -191,37 +173,50 @@ const ImagePickerContainer = ({ data }) => {
             }}
         >
 
-            {preview && (
+            <View
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    paddingTop: 10,
+                    paddingRight: 10,
+                    zIndex: 100,
+                }}
+            >
                 <IconButton
                     name='close'
                     onPress={onCancel}
                     size={32}
                     color='#fff'
-                    style={{
-                        position: 'absolute',
-                        top: 10,
-                        right: 10,
-                    }}
                 />
-            )}
+            </View>
 
-            {imageDims ? (
-                <ImagePreview
-                    uri={preview?.uri}
-                    width={imageDims.width}
-                    height={imageDims.height}
-                    upload={initUpload}
-                    uploading={uploading}
-                    progress={progress}
-                />
-            ) : (
-                <ImagePickerView
-                    select={openSelector}
-                    cancel={closeModal}
-                    disabled={uploading}
-                    active={showActivity}
-                />
-            )}
+            <View
+                style={{
+                    flex: 1,
+                    zIndex: 10,
+                }}
+            >
+
+                {imageDims ? (
+                    <ImagePreview
+                        uri={preview?.uri}
+                        width={imageDims.width}
+                        height={imageDims.height}
+                        upload={initUpload}
+                        uploading={uploading}
+                        progress={progress}
+                    />
+                ) : (
+                    <ImagePickerView
+                        select={openSelector}
+                        cancel={closeModal}
+                        disabled={uploading}
+                        active={showActivity}
+                    />
+                )}
+
+            </View>
 
         </View>
     )

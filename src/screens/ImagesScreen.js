@@ -1,15 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
+import { Image, View } from 'react-native'
 import { ActivityIndicator, ImageList, Screen } from '@components'
-import { useApp, useModal, useUser } from '@context'
-import { loadImages } from '@utils/images'
+import { useApp, useModal, useNotification, useUser } from '@context'
+import { loadImages, uploadImage } from '@utils/images'
 import { loadContact } from '@utils/contacts'
+import { TextCopy } from '@common'
 
 const ImagesScreen = props => {
 
     const { landscape } = useApp()
+    const { addNotification } = useNotification()
     const { setModal } = useModal()
-    const { findUserByUsername, updateImage, updateUser } = useUser()
+    const {
+        deletedImage,
+        imageUpload,
+        uploadedImage,
+        uploading,
+        findUserByUsername,
+        removeImage,
+        setDeletedImage,
+        setImageUpload,
+        setUploadedImage,
+        setUploading,
+    } = useUser()
 
     const [loading, setLoading] = useState(false)
     const [profile, setProfile] = useState(null)
@@ -54,6 +67,63 @@ const ImagesScreen = props => {
         
     }, [profile])
 
+    // useEffect(() => {
+    //     console.log('uploading', uploading)
+    // }, [uploading])
+    
+    useEffect(() => {
+            
+        if (deletedImage) {
+            const ids = imageIds.filter(id => id !== deletedImage._id)
+            setImageIds(ids)
+            removeImage(profile._id, deletedImage._id)
+            // updateImage(uploadedImage)
+            
+            // if (avatarCheckbox) updateUser({
+            //     ...user,
+            //     profileImage: uploadedImage,
+            // })
+            addNotification('Image deleted.')
+            setDeletedImage(null)
+        }
+
+    }, [deletedImage])
+
+    useEffect(() => {
+            
+        if (uploadedImage) {
+
+            setImageIds([
+                ...imageIds,
+                uploadedImage._id,
+            ])
+            
+            addNotification('Image uploaded.')
+        }
+
+    }, [uploadedImage])
+
+    const initUpload = async data => {
+        
+        const image = await uploadImage({ ...data })
+        
+        setUploading(null)
+        
+        if (image) {
+            setUploadedImage(image)
+        } else {
+            console.log('error uploading image')
+        }
+    }
+
+    useEffect(() => {
+        if (imageUpload) {
+            initUpload(imageUpload)
+            setImageUpload(null)
+        }
+        
+    }, [imageUpload])
+
     const onRefresh = () => {
         initImages(profile._id)
     }
@@ -70,8 +140,55 @@ const ImagesScreen = props => {
             full={landscape || props.route.params?.list}
             {...props}
         >
-            <View style={{ flex: 1 }}>
+            <View
+                style={{
+                    flex: 1,
+                    position: 'relative',
+                }}
+            >
+                {uploading?.uri && (
+                    <View
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            right: 0,
+                            left: 0,
+                            height: 100,
+                            zIndex: 10,
+                            background: 'rgba(0, 0, 0, 0.5)',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: 20,
+                        }}
+                    >
+                        <View
+                            style={{
+                                flexBasis: 'auto',
+                                borderWidth: 1,
+                                borderStyle: 'dotted',
+                                borderColor: 'blue',
+                            }}
+                        >
+                            <Image
+                                // onLayout={onLayout}
+                                source={{ uri: uploading.uri }}
+                                width={80}
+                                height={80}
+                                resizeMode='contain'
+                                style={{
+                                    height: 72,
+                                    width: 72,
+                                }}
+                            />
+                        </View>
+                        
+                        <View style={{ flexBasis: 'auto' }}>
+                            <TextCopy size={20} color='#fff' bold>Uploading...</TextCopy>
+                        </View>
 
+                    </View>
+                )}
                 {loading
                     ? <ActivityIndicator label='Loading images...' color='#fff' />
                     : imageIds
@@ -81,7 +198,7 @@ const ImagesScreen = props => {
                                 imageIds={imageIds}
                                 user={profile}
                                 list={props.route.params?.list || landscape}
-                                onPress={(type, data) => setModal(type, data)}
+                                onPress={data => setModal('SHOWCASE', data)}
                                 onRefresh={onRefresh}
                                 refreshing={loading}
                             />

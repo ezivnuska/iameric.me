@@ -104,7 +104,6 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, c
 	const [isDragging, setIsDragging] = useState(false)
 
 	useEffect(() => {
-		console.log('itemZize', itemSize)
 		setItemSize(gameSize / level)
 	}, [level])
 

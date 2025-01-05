@@ -32,20 +32,9 @@ const Layout = () => {
                 height: dims.height,
                 width: dims.width,
                 backgroundColor: theme?.colors.background,
-                position: 'relative',
+                // position: 'relative',
             }}
         >
-            <View
-                style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    right: 0,
-                    zIndex: 100,
-                    height: 'auto',
-                }}
-            >
-                <Notification />
-            </View>
 
             <PaperProvider theme={theme}>
                 
@@ -65,10 +54,11 @@ const Layout = () => {
                     <View
                         style={{
                             flex: 1,
-                            height: dims.height,
+                            // height: dims.height,
                             width: '100%',
                             minWidth: 300,
                             backgroundColor: theme?.colors.background,
+                            position: 'relative',
                         }}
                     >
 
@@ -106,6 +96,27 @@ const Layout = () => {
                                 />
                             </View>
                         )}
+
+                        <View
+                            style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                right: 0,
+                                zIndex: 3000,
+                                overflow: 'visible',
+                                justifyContent: 'flex-end',
+                            }}
+                        >
+                            {/* <View
+                                style={{
+                                    flexGrow: 1,
+                                    borderWidth: 1,
+                                }}
+                            > */}
+
+                                <Notification />
+                            {/* </View> */}
+                        </View>
 
                     </View>
                 </NavigationContainer>

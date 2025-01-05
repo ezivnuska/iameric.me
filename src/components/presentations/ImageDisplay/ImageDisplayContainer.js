@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ImageDisplayView from './ImageDisplayView'
 import { useModal, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar } from '@utils/images'
+import { loadContactById } from '@utils/contacts'
 
 const ImageDisplayContainer = ({ data }) => {
 
@@ -9,34 +10,51 @@ const ImageDisplayContainer = ({ data }) => {
     
     const {
         user,
-        removeImage,
+        updateImage,
         updateUser,
         findUserById,
+        setDeletedImage,
     } = useUser()
 
     const [image, setImage] = useState(null)
     const [owner, setOwner] = useState(null)
     const [loading, setLoading] = useState(false)
-    
-    const init = async userId => {
-        let imageOwner = findUserById(userId)
-        if (imageOwner) setOwner(imageOwner)
-    }
 
-    const initImage = async imageId => {
+    const init = async imageId => {
         setLoading(true)
         let loadedImage = await loadImage(imageId)
         setLoading(false)
-        if (loadedImage) setImage(loadedImage)
+        
+        if (loadedImage) {
+            setImage(loadedImage)
+        }
     }
 
     useEffect(() => {
-        initImage(data._id)
+        init(data._id)
     }, [])
 
     useEffect(() => {
-        if (image) { 
-            init(image.user._id)
+        if (owner) updateImage(image)
+    }, [owner])
+
+    const loadImageOwner = async ownerId => {
+
+        let imageOwner = findUserById(ownerId)
+        
+        if (!imageOwner) {
+            imageOwner = await loadContactById(ownerId)
+        }
+
+        if (imageOwner) {
+            updateUser(imageOwner)
+            setOwner(imageOwner)
+        }
+    }
+
+    useEffect(() => {
+        if (image) {
+            loadImageOwner(image.user._id)
         }
         
     }, [image])
@@ -48,25 +66,12 @@ const ImageDisplayContainer = ({ data }) => {
         setLoading(true)
         const response = await deleteImage(data._id, owner.profileImage?._id === data._id)
         
-        const { deletedImage, modifiedUser } = response
         setLoading(false)
 
-        if (deletedImage) {
+        if (response.deletedImage) {
             
-            let updatedOwner = null
-
-            if (modifiedUser) {
-                
-                const images = owner.images.filter(img => img._id !== deletedImage._id)
-                updatedOwner = {
-                    ...modifiedUser,
-                    images,
-                }
-                updateUser(updatedOwner)
-                setOwner(updatedOwner)
-            }
-
-            removeImage(owner._id, deletedImage._id)
+            setDeletedImage(response.deletedImage)
+            
             closeModal()
 
         } else {

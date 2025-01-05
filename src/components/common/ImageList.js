@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
 import { ActivityIndicator } from '@components'
 import { useApp, useUser } from '@context'
@@ -53,9 +53,9 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
 
             const loadedImage = await loadImage(id)
             
-            // if (loadedImage) {
-            //     onUpdate(loadedImage)
-            // }
+            if (loadedImage) {
+                updateImage(loadedImage)
+            }
         // }
         setLoading(false)
         
@@ -102,7 +102,7 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
         const uri = `${IMAGE_PATH}/${user.username}${dims.width <= 200 ? `/thumb` : ''}/${item.filename}`
         return (
             <Pressable
-                onPress={() => onPress('SHOWCASE', item)}
+                onPress={() => onPress(item)}
                 style={{
                     flex: 1,
                     marginHorizontal: 'auto',
@@ -124,11 +124,22 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
 const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = false }) => {
 
     const { landscape, theme } = useApp()
+    const { uploadedImage, setUploadedImage } = useUser()
 
     const [maxDims, setMaxDims] = useState(null)
 
-    const onLayout = e => {
+    const listRef = useRef()
 
+    useEffect(() => {
+
+        if (uploadedImage) {
+            setUploadedImage(null)
+            listRef.current.scrollToEnd({ animated: true })
+        }
+    }, [imageIds])
+
+    const onLayout = e => {
+        
 		if (e.nativeEvent.target.offsetParent) {
             
             setMaxDims({
@@ -147,6 +158,7 @@ const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = fals
         >
             {maxDims && (
                 <FlatList
+                    ref={listRef}
                     key={`image-list-${user._id}-${getNumColumns()}`}
                     horizontal={landscape}
                     numColumns={getNumColumns()}

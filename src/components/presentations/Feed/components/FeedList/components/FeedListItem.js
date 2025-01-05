@@ -4,10 +4,10 @@ import { IconButton, ProfileImage, TextCopy, Time } from '@components'
 import { useFeed, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
-const FeedListItem = ({ item, onDelete = null }) => {
+const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
     
-    const { user } = useUser()
     const { feedLoading } = useFeed()
+    const { user } = useUser()
 
     const [disabled, setDisabled] = useState(false)
 
@@ -30,7 +30,6 @@ const FeedListItem = ({ item, onDelete = null }) => {
 
     useEffect(() => {
         if (!feedLoading && disabled) setDisabled(false)
-        // else if (feedLoading && !disabled) setDisabled(true)
     }, [feedLoading])
 
     const handleDelete = id => {
@@ -40,12 +39,10 @@ const FeedListItem = ({ item, onDelete = null }) => {
     
     return (
         <View
-            key={`post-${item._id}`}
+            {...props}
             style={{
                 marginBottom: 20,
                 gap: 10,
-                borderwidth: 1,
-                borderStyle: 'dotted',
             }}
         >
 
@@ -67,7 +64,7 @@ const FeedListItem = ({ item, onDelete = null }) => {
                     }}
                 >
                     <Pressable
-                        onPress={() => navigate('User', { username: item.author?.username })}
+                        onPress={() => navigate('User', { screen: 'Profile', params: { username: item.author?.username } })}
                         style={{
                             flexDirection: 'row',
                             alignItems: 'flex-start',
@@ -77,7 +74,6 @@ const FeedListItem = ({ item, onDelete = null }) => {
                         }}
                     >
                         <ProfileImage
-                            // image={item.author.profileImage}
                             user={item.author}
                             size={50}
                         />
