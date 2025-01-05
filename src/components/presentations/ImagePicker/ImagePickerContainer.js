@@ -90,7 +90,7 @@ const ImagePickerContainer = ({ data }) => {
         setShowActivity(false)
         
         if (uri) {
-            // console.log('image selected')
+            console.log('image selected')
             handleSelectedImage(uri)
         } else {
             console.log('no selection made')

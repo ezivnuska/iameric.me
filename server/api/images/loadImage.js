@@ -6,8 +6,8 @@ const loadImage = async (req, res) => {
         .findOne({ _id: id })
         .populate({
             path: 'user',
-            select: '_id username profileImage',
-            populate: { path: 'profileImage' },
+            select: '_id username',
+            // populate: { path: 'profileImage' },
         })
     
     if (!image) console.log('Error loading image')

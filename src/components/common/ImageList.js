@@ -1,19 +1,16 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { FlatList, Image, Pressable, ScrollView, View } from 'react-native'
-import { ActivityIndicator, TextCopy } from '@components'
+import React, { useEffect, useState } from 'react'
+import { FlatList, Image, Pressable, View } from 'react-native'
+import { ActivityIndicator } from '@components'
 import { useApp, useUser } from '@context'
+import { loadImage } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const ImageListItem = ({ image, dims }) => {
+const ImageListItem = ({ uri, dims }) => {
     const { height, width } = dims
-    // useEffect(() => {
-    //     console.log('image', image)
-    // }, [])
-
     return (
         <Image
-            source={{ uri: `${IMAGE_PATH}/${image.user.username}${width <= 200 ? `/thumb` : ''}/${image.filename}` }}
+            source={{ uri }}
             resizeMode='cover'
             style={{
                 width,
@@ -24,60 +21,111 @@ const ImageListItem = ({ image, dims }) => {
     )
 }
 
-const ImageGridItem = ({ image, size }) => (
-    <Image
-        source={{ uri: `${IMAGE_PATH}/${image.user.username}/thumb/${image.filename}` }}
-        resizeMode='cover'
-        style={{ width: size, height: size }}
-    />
-)
+const ImageGridItem = ({ uri, size }) => {
+    return (
+        <Image
+            source={{ uri }}
+            resizeMode='cover'
+            style={{ width: size, height: size }}
+        />
+    )
+}
 
-const ImageList = ({ images, onPress, list = false, ...props }) => {
+const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
 
-    const { landscape, theme } = useApp()
+    const { landscape } = useApp()
+    const { findUserImage, updateImage } = useUser()
 
-    const [maxDims, setMaxDims] = useState(null)
+    const [item, setItem] = useState(null)
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        init(imageId)
+    }, [])
+
+    const init = async id => {
+        
+        setLoading(true)
+
+        // let loadedImage = findUserImage(user._id, id)
+        // console.log('found saved user image', loadedImage)
+        // if (!loadedImage) {
+
+            const loadedImage = await loadImage(id)
+            
+            // if (loadedImage) {
+            //     onUpdate(loadedImage)
+            // }
+        // }
+        setLoading(false)
+        
+        if (loadedImage) {
+            setItem(loadedImage)
+        }
+
+    }
     
-    const imageGap = useMemo(() => list ? 5 : 5, [list])
-
     const getImageDims = image => {
         
         let dimensions = null
 
-        if (maxDims) {
-            
-            if (!list) {
-                let tileSize = null
-                const numImages = landscape ? 1 : 2
-                if (!landscape) {
-                    tileSize = (maxDims.width - (imageGap * (numImages - 1)) - numImages * 2) / numImages
-                } else {
-                    tileSize = (maxDims.height - (imageGap * ((numImages - 1) % numImages)) - numImages * 2) / numImages
-                }
+        if (list) {
+            let scale = 1
 
-                dimensions = {
-                    height: tileSize,
-                    width: tileSize,
+            if (landscape) {
+                if (image.height > maxDims.height) {
+                    scale = maxDims.height / image.height
                 }
-
             } else {
-                let scale = 1
-                
-                if (image.width > maxDims.width || image.height > maxDims.height) {
-                    scale = landscape
-                        ? scale = maxDims.height / image.height
-                        : scale = maxDims.width / image.width
-                }
-
-                dimensions = {
-                    height: image.height * scale,
-                    width: image.width * scale,
+                if (image.width > maxDims.width) {
+                    scale = maxDims.width / image.width
                 }
             }
+            
+            dimensions = {
+                height: image.height * scale,
+                width: image.width * scale,
+            }
+        } else {
+            const numImages = 2
+            dimensions = {
+                height: maxDims.width / numImages,
+                width: maxDims.width / numImages,
+            }
         }
-
+        
         return dimensions
     }
+
+    const renderItem = () => {
+        const dims = getImageDims(item)
+        const uri = `${IMAGE_PATH}/${user.username}${dims.width <= 200 ? `/thumb` : ''}/${item.filename}`
+        return (
+            <Pressable
+                onPress={() => onPress('SHOWCASE', item)}
+                style={{
+                    flex: 1,
+                    marginHorizontal: 'auto',
+                }}
+            >
+                {(list || landscape)
+                    ? <ImageListItem uri={uri} dims={dims} />
+                    : <ImageGridItem uri={uri} size={dims.width} />
+                }
+            </Pressable>
+        )
+    }
+
+    return loading || !item
+        ? <ActivityIndicator size='small' />
+        : item && renderItem(item)
+}
+
+const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = false }) => {
+
+    const { landscape, theme } = useApp()
+
+    const [maxDims, setMaxDims] = useState(null)
 
     const onLayout = e => {
 
@@ -90,116 +138,34 @@ const ImageList = ({ images, onPress, list = false, ...props }) => {
 		}
 	}
 
-    const buttonStyle = {
-        borderWidth: 1,
-        borderColor: theme?.colors.border,
-        shadowColor: theme?.colors.shadow,
-        shadowOffset: {
-            width: 1,
-            height: 1,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3,
-        elevation: 1,
-        backgroundColor: theme?.colors.background,
-    }
+    const getNumColumns = () => (!list && !landscape) ? 2 : 1
     
     return (
         <View
-            {...props}
             onLayout={onLayout}
             style={{ flex: 1 }}
         >
             {maxDims && (
                 <FlatList
+                    key={`image-list-${user._id}-${getNumColumns()}`}
                     horizontal={landscape}
-                    numColumns={!landscape ? 2 : null}
-                    data={images}
-                    keyExtractor={item => item._id}
-                    renderItem={({ item }) => {
-                        const { height, width } = getImageDims(item)
-                        return !list ? (
-                            <Image
-                                source={{ uri: `${IMAGE_PATH}/${item.user.username}/thumb/${item.filename}` }}
-                                resizeMode='cover'
-                                style={{ width, height: width }}
-                            />
-                        ) : (
-                            <View
-                                style={{ borderWidth: 1 }}
-                            >
-                                <Pressable
-                                    onPress={() => onPress('SHOWCASE', item)}
-                                    style={{
-                                        height,
-                                        width,
-                                        marginHorizontal: 'auto',
-                                    }}
-                                >
-                                    <Image
-                                        source={{ uri: `${IMAGE_PATH}/${item.user.username}${width <= 200 ? `/thumb` : ''}/${item.filename}` }}
-                                        resizeMode='contain'
-                                        style={{
-                                            flex: 1,
-                                            alignSelf: 'stretch',
-                                        }}
-                                    />
-
-                                </Pressable>
-                            </View>
-                        )
-                    }}
+                    numColumns={getNumColumns()}
+                    data={imageIds}
+                    keyExtractor={item => `image-${item}`}
+                    onRefresh={onRefresh}
+                    refreshing={refreshing}
+                    initialNumToRender={6}
+                    renderItem={({ item }) => (
+                        <ListItem
+                            user={user}
+                            imageId={item}
+                            maxDims={maxDims}
+                            list={list}
+                            onPress={onPress}
+                        />
+                    )}
                 />
             )}
-        </View>
-    )
-
-    return (
-        <View
-            {...props}
-            onLayout={onLayout}
-            style={{ flex: 1, width: '100%' }}
-        >
-            {maxDims ? (
-                <ScrollView
-                    horizontal={landscape}
-                    showsHorizontalScrollIndicator={false}
-                    showsVerticalScrollIndicator={false}
-                    style={{ flex: 1 }}
-                    contentContainerStyle={{
-                        // flex: 1,
-                        flexDirection: !list || landscape ? 'row' : 'column',
-                        flexWrap: !list && !landscape ? 'wrap' : 'nowrap',
-                        gap: imageGap,
-                    }}
-                >   
-                    {images && images.map((image, index) => {
-                        const imageDims = getImageDims(image)
-                        return (
-                            <Pressable
-                                key={`image-${index}`}
-                                onPress={() => onPress('SHOWCASE', image )}
-                                style={[
-                                    {
-                                        width: !list ? imageDims.width : landscape ? imageDims.width : maxDims.width,
-                                        height: !list ? imageDims.height : landscape ? maxDims.height : imageDims.height,
-                                        flexDirection: 'row',
-                                        alignItems: 'center',
-                                        // background: '#000',
-                                    },
-                                    buttonStyle,
-                                ]}
-                            >
-                                {!list
-                                    ? <ImageGridItem image={image} size={imageDims.width} />
-                                    : <ImageListItem image={image} dims={imageDims} />
-                                }
-                            </Pressable>
-                        )
-                    })}
-                </ScrollView>
-            ) : <ActivityIndicator size='medium' />}
-
         </View>
     )
 }

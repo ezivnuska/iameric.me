@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import ImageDisplayView from './ImageDisplayView'
 import { useModal, useUser } from '@context'
-import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
+import { deleteImage, loadImage, setAvatar } from '@utils/images'
 
 const ImageDisplayContainer = ({ data }) => {
 
     const { closeModal } = useModal()
     
     const {
-        imageLoading,
-        imagesLoading,
         user,
         removeImage,
-        updateImage,
         updateUser,
-        fetchImageAndUpdate,
         findUserById,
     } = useUser()
 
@@ -22,33 +18,25 @@ const ImageDisplayContainer = ({ data }) => {
     const [owner, setOwner] = useState(null)
     const [loading, setLoading] = useState(false)
     
-    const initOwner = async userId => {
-        let imageOwner = await findUserById(userId)
+    const init = async userId => {
+        let imageOwner = findUserById(userId)
         if (imageOwner) setOwner(imageOwner)
     }
 
-    const init = async data => {
-        let currentImage = data
-        
-        let imageData = await fetchImageAndUpdate(data._id)
-
-        if (imageData) currentImage = imageData
-        else {
-            imageData = await loadImage(data._id)
-            
-            if (imageData) currentImage = imageData
-        }
-        
-        setImage(currentImage)
+    const initImage = async imageId => {
+        setLoading(true)
+        let loadedImage = await loadImage(imageId)
+        setLoading(false)
+        if (loadedImage) setImage(loadedImage)
     }
 
     useEffect(() => {
-        if (data) init(data)
+        initImage(data._id)
     }, [])
-    
+
     useEffect(() => {
         if (image) { 
-            initOwner(image.user._id)
+            init(image.user._id)
         }
         
     }, [image])

@@ -233,6 +233,7 @@ const reducer = (state, action) => {
     
     const { payload, type } = action
     
+    let updatedUser
     let updatedUsers
     
     switch(type) {
@@ -312,8 +313,6 @@ const reducer = (state, action) => {
             break
         case 'REMOVE_IMAGE':
 
-            let updatedUser = null
-
             const { userId, imageId } = payload
 
             updatedUsers = state.users.map((user, index) => {
@@ -371,7 +370,6 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_IMAGE':
-            updatedUser = null
             updatedUsers = state.users.map(item => {
                 if (item._id === payload.user._id) {
                     
@@ -380,7 +378,7 @@ const reducer = (state, action) => {
                     else {
                         let index = null
                         images = item.images.map((image, i) => {
-                            if (image._id === payload._id) {
+                            if (image === payload._id || image._id === payload._id) {
                                 index = i
                                 return payload
                             }
@@ -403,7 +401,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 users: updatedUsers,
-                user: updatedUser._id === state.user._id ? updatedUser : state.user,
+                user: updatedUser?._id === state.user._id ? updatedUser : state.user,
             }
             break
         default: throw new Error()
