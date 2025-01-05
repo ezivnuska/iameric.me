@@ -24,7 +24,7 @@ const TextPressable = ({
                         fontSize: size,
                         fontWeight: bold ? 700 : 400,
                         color,
-                        lineHeight: size + 10,
+                        lineHeight: size + 5,
                         textAlign: align,
                     },
                     props.style,
