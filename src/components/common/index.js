@@ -12,6 +12,7 @@ import ImageContained from './ImageContained'
 import ImageClone from './ImageClone'
 import ImageList from './ImageList'
 import ImageMax from './ImageMax'
+import ImageUploadIndicator from './ImageUploadIndicator'
 // import InfoMarker from './InfoMarker'
 // import ProfileNav from './ProfileNav'
 import ProfileImage from './ProfileImage'
@@ -45,6 +46,7 @@ export {
     ImageClone,
     ImageList,
     ImageMax,
+    ImageUploadIndicator,
     // InfoMarker,
     // ProfileNav,
     ProfileImage,

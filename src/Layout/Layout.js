@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaView, View } from 'react-native'
 import { AppNavigator } from '../navigators'
 import linking from '../linking'
-import { Footer, Header, ModalFactory, Notification } from '@components'
+import { Footer, ImageUploadIndicator, Header, ModalFactory, Notification } from '@components'
 import { useApp, useModal, useUser } from '@context'
 import navigationRef from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
@@ -96,6 +96,8 @@ const Layout = () => {
                                 />
                             </View>
                         )}
+                        
+                        <ImageUploadIndicator style={{ zIndex: 2500 }} />
 
                         <View
                             style={{

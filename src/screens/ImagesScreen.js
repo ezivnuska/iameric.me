@@ -143,52 +143,9 @@ const ImagesScreen = props => {
             <View
                 style={{
                     flex: 1,
-                    position: 'relative',
+                    // position: 'relative',
                 }}
             >
-                {uploading?.uri && (
-                    <View
-                        style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            right: 0,
-                            left: 0,
-                            height: 100,
-                            zIndex: 10,
-                            background: 'rgba(0, 0, 0, 0.5)',
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: 20,
-                        }}
-                    >
-                        <View
-                            style={{
-                                flexBasis: 'auto',
-                                borderWidth: 1,
-                                borderStyle: 'dotted',
-                                borderColor: 'blue',
-                            }}
-                        >
-                            <Image
-                                // onLayout={onLayout}
-                                source={{ uri: uploading.uri }}
-                                width={80}
-                                height={80}
-                                resizeMode='contain'
-                                style={{
-                                    height: 72,
-                                    width: 72,
-                                }}
-                            />
-                        </View>
-                        
-                        <View style={{ flexBasis: 'auto' }}>
-                            <TextCopy size={20} color='#fff' bold>Uploading...</TextCopy>
-                        </View>
-
-                    </View>
-                )}
                 {loading
                     ? <ActivityIndicator label='Loading images...' color='#fff' />
                     : imageIds

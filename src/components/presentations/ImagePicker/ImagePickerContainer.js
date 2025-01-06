@@ -185,7 +185,7 @@ const ImagePickerContainer = ({ data }) => {
             >
                 <IconButton
                     name='close'
-                    onPress={onCancel}
+                    onPress={closeModal}
                     size={32}
                     color='#fff'
                 />
