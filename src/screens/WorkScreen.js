@@ -1,12 +1,10 @@
 import React from 'react'
-import { Resume, Screen, TextHeading } from '@components'
+import { JobList, Screen } from '@components'
 
 const WorkScreen = props => (
     <Screen {...props}>
 
-        <TextHeading>Work</TextHeading>
-
-        <Resume />
+        <JobList />
 
     </Screen>
 )

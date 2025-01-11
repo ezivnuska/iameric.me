@@ -1,7 +1,4 @@
-import React from 'react'
-import { JobList } from './components'
-
-const jobs = [
+export default jobs = [
     {
         company: 'Eveo',
         city: 'San Francisco',
@@ -141,7 +138,3 @@ const jobs = [
         ],
     }
 ]
-
-const Resume = () => <JobList jobs={jobs} />
-
-export default Resume

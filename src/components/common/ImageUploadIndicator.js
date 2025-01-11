@@ -16,7 +16,7 @@ const ImageUploadIndicator = props => {
             height: 3,
         },
         shadowOpacity: 0.3,
-        shadowRadius: 5,
+        shadowRadius: 3,
         elevation: 3,
     }
 
@@ -30,12 +30,14 @@ const ImageUploadIndicator = props => {
             }, props.style]}
         >
             <View
-                style={{
+                style={[{
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
                     position: 'relative',
-                }}
+                    borderRadius: 10,
+                    overflow: 'hidden',
+                }, shadow]}
             >
 
                 <View
@@ -68,9 +70,9 @@ const ImageUploadIndicator = props => {
                 <Image
                     source={{ uri: uploading.uri }}
                     // source={`${IMAGE_PATH}/avatar-default.png`}// used for testing locally
-                    width={80}
-                    height={80}
-                    resizeMode='contain'
+                    width={72}
+                    height={72}
+                    resizeMode='cover'
                     style={{
                         height: 72,
                         width: 72,
