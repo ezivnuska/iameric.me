@@ -62,9 +62,9 @@ const HomeScreen = props => {
     useEffect(() => {
         if (user) {
             if (authRoute) {
-                const routeName = authRoute
+                const routeName = authRoute.name
                 setAuthRoute(null)
-                props.navigation.navigate(routeName)
+                props.navigation.navigate(routeName, authRoute.params)
             }
         }
     }, [user])

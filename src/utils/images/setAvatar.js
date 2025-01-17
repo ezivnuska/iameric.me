@@ -1,9 +1,13 @@
 import axios from 'axios'
 
 const setAvatar = async (userId, imageId = null) => {
-    const { data } = await axios.post('/api/user/avatar', { imageId, userId })
-    if (!data || !data.user) console.log('error setting image as avatar')
-    else return data.user.profileImage
+    
+    const { data } = await axios.post('/api/user/avatar', { userId, imageId })
+    
+    if (data) return data.profileImage
+    
+    console.log('error setting image as avatar')
+
     return null
 }
 

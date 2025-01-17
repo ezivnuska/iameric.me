@@ -9,7 +9,7 @@ const UserListItem = ({ item, onPress }) => {
     const { landscape } = useApp()
     const { findUserById, updateUser } = useUser()
 
-    const [loading, setLoading] = useState(null)
+    const [loading, setLoading] = useState(false)
     const [user, setUser] = useState(null)
 
     useEffect(() => {
@@ -74,6 +74,7 @@ const VerticalListItem = ({ item }) => (
             <ProfileImage
                 size={30}
                 user={item}
+                userId={item._id}
             />
 
         </View>
@@ -115,7 +116,7 @@ const HorizontalListItem = ({ item }) => (
         }}
     >
 
-        <ProfileImage size={100} user={item} />
+        <ProfileImage size={100} user={item} userId={item._id} />
         
         <TextCopy bold align='center'>
             {item.username}

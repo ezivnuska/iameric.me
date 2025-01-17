@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react'
+import React  from 'react'
 import { View } from 'react-native'
 import {
     Brand,
@@ -10,10 +10,9 @@ import { SimpleButton, IconButton } from '@components'
 import { navigate } from '@utils/navigation'
 import { useModal } from '@context'
 
-const Header = ({ landscape, user, route }) => {
+const Header = ({ landscape, route, user = null }) => {
 
     const size = 20
-
     const { setModal } = useModal()
 
     const renderNav = () => {
@@ -106,7 +105,7 @@ const Header = ({ landscape, user, route }) => {
                                 onPress={() => navigate('Users')}
                                 disabled={route?.name === 'Users'}
                                 padding={5}
-                                />
+                            />
 
                             <IconButton
                                 name={`reader-${route?.name === 'Work' ? 'sharp' : 'outline'}`}
@@ -114,7 +113,7 @@ const Header = ({ landscape, user, route }) => {
                                 onPress={() => navigate('Work')}
                                 disabled={route?.name === 'Work'}
                                 padding={5}
-                                />
+                            />
 
                             <IconButton
                                 name={`list-${route?.name === 'Feed' ? 'sharp' : 'outline'}`}

@@ -1,5 +1,5 @@
-import FeedList from './FeedList'
+import FeedListItem from './FeedListItem'
 
 export {
-    FeedList,
+    FeedListItem,
 }

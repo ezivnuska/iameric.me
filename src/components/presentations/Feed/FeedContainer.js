@@ -1,13 +1,15 @@
-import React, { useEffect, useMemo } from 'react'
-import { View } from 'react-native'
-import { FeedList } from './components'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { FlatList, View } from 'react-native'
+import { FeedListItem } from './components'
 import { useFeed, useModal, useSocket } from '@context'
 import { TextCopy } from '@components'
-import { deletePostWithId } from './utils'
+import { deletePostWithId, loadPosts } from '@utils/feed'
+import { ActivityIndicator } from '@common'
 
 const FeedContainer = props => {
 
     const {
+        feedLoading,
         posts,
         addPost,
         deletePost,
@@ -16,39 +18,56 @@ const FeedContainer = props => {
     const { closeModal } = useModal()
     const { socket } = useSocket()
 
-    const getThreadIds = () => {
-        let ids = []
-        posts.map(post => {
-            if (ids.indexOf(post._id) < 0) {
-                ids.push(post._id)
-            }
-        })
-        return ids
-    }
+    const [postIds, setPostIds] = useState(null)
 
-    const getSortedThreads = () => {
+    const listRef = useRef()
 
-        const threadIds = getThreadIds()
-        const threads = []
+    // const getThreadIds = () => {
+    //     let ids = []
+    //     posts.map(post => {
+    //         if (ids.indexOf(post._id) < 0) {
+    //             ids.push(post._id)
+    //         }
+    //     })
+    //     return ids
+    // }
+
+    // const getSortedThreads = () => {
+
+    //     const threadIds = getThreadIds()
+    //     const threads = []
         
-        threadIds.map(threadId => {
+    //     threadIds.map(threadId => {
 
-            const thread = posts.filter(post => (post.threadId && post.threadId === threadId) || (!post.threadId && post._id === threadId))
+    //         const thread = posts.filter(post => (post.threadId && post.threadId === threadId) || (!post.threadId && post._id === threadId))
             
-            if (thread.length) {
-                threads.push(thread.reverse())
-            }
-        })
+    //         if (thread.length) {
+    //             threads.push(thread.reverse())
+    //         }
+    //     })
 
-        return threads
-    }
+    //     return threads
+    // }
 
-    const sortedThreads = useMemo(() => getSortedThreads(), [posts])
+    // const sortedThreads = useMemo(() => getSortedThreads(), [posts])
 
     useEffect(() => {
         socket.on('new_post', addPost)
         socket.on('deleted_post', deletePost)
+        loadPostIds()
     }, [])
+
+    const loadPostIds = async () => {
+        if (!feedLoading) setFeedLoading(true)
+        const ids = await loadPosts()
+        setFeedLoading(false)
+        
+        if (ids) {
+            setPostIds(ids)
+        } else {
+            console.log('could not load feed ids.')
+        }
+    }
 
     const removePost = async id => {
 
@@ -63,17 +82,38 @@ const FeedContainer = props => {
     }
     
     return (
-        <View style={{  }}>
+        <View style={{ flex: 1 }}>
 
-            {
-                sortedThreads.length
-                    ? sortedThreads.map((items, index) => (
-                        <FeedList
-                            key={`thread-${index}`}  
-                            posts={items}
-                            onDelete={removePost}
+            {feedLoading
+                ? <ActivityIndicator />
+                : postIds
+                    // ? postIds.map((items, index) => (
+                    ? (
+                        <FlatList
+                            ref={listRef}
+                            data={postIds}
+                            keyExtractor={(item, index) => `post-${index}`}
+                            // getItemLayout={(data, index) => (
+                            //     {
+                            //         length: ITEM_HEIGHT,
+                            //         offset: ITEM_HEIGHT * index, index
+                            //     }
+                            // )}
+                            // horizontal={landscape}
+                            // numColumns={landscape ? 2 : 1}
+                            // onRefresh={onRefresh}
+                            // refreshing={refreshing}
+                            // initialNumToRender={6}
+                            renderItem={({ item, index }) => (
+                                <FeedListItem
+                                    key={`thread-${index}`}
+                                    index={index}
+                                    item={item}
+                                    onDelete={removePost}
+                                />
+                            )}
                         />
-                    ))
+                    )
                     : <TextCopy> No posts yet.</TextCopy>
             }
 

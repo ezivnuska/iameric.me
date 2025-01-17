@@ -59,8 +59,9 @@ const BugListItem = ({ item, onDelete = null }) => {
                         }}
                     >
                         <ProfileImage
-                            // image={item.author.profileImage}
                             user={item.author}
+                            userId={item.author._id}
+                            // image={item.author.profileImage}
                             size={50}
                         />
 

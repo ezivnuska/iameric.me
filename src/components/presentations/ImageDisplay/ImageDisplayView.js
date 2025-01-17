@@ -1,6 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, ScrollView, View } from 'react-native'
-import { AdminButton, Form, IconButton, IconButtonLarge, ImageContained, ProfileImage, TextCopy, Time } from '@components'
+import {
+    AdminButton,
+    Form,
+    IconButton,
+    IconButtonLarge,
+    ImageContained,
+    ProfileImage,
+    TextCopy,
+    Time,
+    UserAvatar,
+} from '@components'
 import { useApp, useForm, useModal, useUser } from '@context'
 import { setCaption } from '@utils/images'
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -29,13 +39,17 @@ const ImageDisplayView = ({
     const { closeModal } = useModal()
     
     const {
+        authUser,
+        getProfile,
         imagesLoading,
-        user,
     } = useUser()
 
     const [editing, setEditing] = useState(false)
     const [loading, setLoading] = useState(false)
     const [overlayVisible, setOverlayVisible] = useState(true)
+    const [source, setSource] = useState(`${IMAGE_PATH}/avatar-default.png`)
+    
+    const isAuthorizedUser = useMemo(() => (authUser._id === owner?._id || authUser.role === 'admin'), [owner])
 
     const overlayVisibility = useSharedValue(1)
 
@@ -43,9 +57,25 @@ const ImageDisplayView = ({
         opacity: overlayVisibility.value,
     }))
 
+    // const profile = useMemo(() => owner && getProfile(owner._id), [owner])
+
+    // useEffect(() => {
+    //     setLoading(imageLoading)
+    // }, [imageLoading])
+
     useEffect(() => {
-        setLoading(imageLoading)
-    }, [imageLoading])
+        console.log('OWNER', owner)
+        const imagePath = owner.profileImage?.filename ? `${IMAGE_PATH}/${owner.username}/${owner.profileImage.filename}` : null
+        console.log('imagePath', imagePath)
+        if (imagePath) setSource(imagePath)
+    }, [owner])
+
+    useEffect(() => {
+        console.log('IMAGE', image)
+        // const imagePath = owner.profileImage?.filename ? `${IMAGE_PATH}/${owner.username}/${owner.profileImage.filename}` : null
+        // console.log('imagePath', imagePath)
+        // if (imagePath) setSource(imagePath)
+    }, [image])
 
     const fadeIn = () => {
         setOverlayVisible(true)
@@ -61,9 +91,8 @@ const ImageDisplayView = ({
         else fadeIn()
     }
     
-    const isOwner = useMemo(() => user._id === owner?._id, [owner])
-    const imageSource = useMemo(() => owner?.username && `${IMAGE_PATH}/${owner.username}/${image.filename}`, [image, owner])
-    const isProfileImage = useMemo(() => owner?.profileImage?._id === image._id, [image, owner])
+    const imageSource = useMemo(() => owner && `${IMAGE_PATH}/${owner.username}/${image.filename}`, [owner])
+    const isProfileImage = useMemo(() => owner?.profileImage === image?._id || owner.profileImage?._id === image?._id, [owner])
     
     const onSubmitCaption = async () => {
             
@@ -156,9 +185,8 @@ const ImageDisplayView = ({
 
                             {/* PROFILE IMAGE */}
 
-                            <ProfileImage
-                                // image={profileImage}
-                                user={owner}
+                            <UserAvatar
+                                user={image.user}
                                 size={landscape ? 30 : 50}
                             />
         
@@ -290,7 +318,7 @@ const ImageDisplayView = ({
                         </View>
                         
 
-                        {(isOwner || user.role === 'admin') && (
+                        {isAuthorizedUser && (
                             <View
                                 style={{
                                     flexGrow: 0,
@@ -302,7 +330,7 @@ const ImageDisplayView = ({
                                     background: 'rgba(0, 0, 0, 0.6)',
                                 }}
                             >
-                                {isOwner ? (
+                                {isAuthorizedUser ? (
                                     <View
                                         style={{
                                             flex: 1,
@@ -344,7 +372,11 @@ const ImageDisplayView = ({
                                                         name='happy-sharp'
                                                         size={24}
                                                         color={isProfileImage ? 'tomato' : '#fff'}
-                                                        onPress={onChangeAvatar}
+                                                        onPress={() => {
+                                                            const newAvatar = isProfileImage ? null : image
+                                                            console.log('newAvatar', newAvatar)
+                                                            onChangeAvatar(newAvatar)
+                                                        }}
                                                         disabled={imagesLoading}
                                                     />
 

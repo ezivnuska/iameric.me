@@ -16,7 +16,6 @@ import Notification from './Notification'
 import Play from './Play'
 import PostForm from './PostForm'
 import Socket from './Socket'
-import User from './User'
 
 export {
     AuthForm,
@@ -35,5 +34,4 @@ export {
     Play,
     PostForm,
     Socket,
-    User,
 }

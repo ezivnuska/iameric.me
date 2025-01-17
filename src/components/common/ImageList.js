@@ -47,22 +47,22 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
         
         setLoading(true)
 
-        // let loadedImage = findUserImage(user._id, id)
-        // console.log('found saved user image', loadedImage)
-        // if (!loadedImage) {
-
-            const loadedImage = await loadImage(id)
+        let loadedImage = findUserImage(user._id, id)
+        
+        if (!loadedImage) {
+            
+            loadedImage = await loadImage(id)
             
             if (loadedImage) {
                 updateImage(loadedImage)
             }
-        // }
-        setLoading(false)
+        }
         
         if (loadedImage) {
             setItem(loadedImage)
         }
-
+        
+        setLoading(false)
     }
     
     const getImageDims = image => {
@@ -163,14 +163,14 @@ const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = fals
                     horizontal={landscape}
                     numColumns={getNumColumns()}
                     data={imageIds}
-                    keyExtractor={item => `image-${item}`}
+                    keyExtractor={item => `image-${item._id}`}
                     onRefresh={onRefresh}
                     refreshing={refreshing}
                     initialNumToRender={6}
                     renderItem={({ item }) => (
                         <ListItem
                             user={user}
-                            imageId={item}
+                            imageId={item._id}
                             maxDims={maxDims}
                             list={list}
                             onPress={onPress}

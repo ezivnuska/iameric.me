@@ -97,6 +97,7 @@ const {
 const {
   createPost,
   deletePostById,
+  getPost,
   getPosts,
   getPostThread,
 } = require('./api/posts')
@@ -152,7 +153,8 @@ router.get(    '/thread/:threadId',        getThread)
 router.delete( '/entry/delete/:id',        deleteEntryById)
 
 // posts
-router.post(   '/post',                    createPost)
+router.get(    '/post',                    createPost)
+router.get(    '/post/:postId',            getPost)
 router.get(    '/posts',                   getPosts)
 router.get(    '/post/thread/:threadId',   getPostThread)
 router.delete( '/post/delete/:id',         deletePostById)
@@ -178,9 +180,9 @@ router.get(    '/product/:id',             getProductById)
 
 // images
 router.post(   '/user/avatar',             updateProfileImage)
+router.get(    '/image/:id',               loadImage)
 router.post(   '/image/upload',            uploadImage)
 // router.get(    '/image/:id',               getImageWithUsernameByImageId)
-router.get(    '/image/:id',               loadImage)
 router.get(    '/avatar/:id',              getProfileImageByUserId)
 router.get(    '/image/owner/:id',         getUserFromImageId)
 router.post(   '/user/image/caption',      setImageCaption)

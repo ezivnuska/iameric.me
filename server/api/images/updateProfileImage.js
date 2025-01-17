@@ -4,14 +4,14 @@ const updateProfileImage = async (req, res) => {
     
     const { userId, imageId } = req.body
 
-    let user = await User
+    let { profileImage } = await User
         .findOneAndUpdate({ _id: userId }, { $set: { profileImage: imageId } }, { new: true })
-        .populate({ path: 'profileImage', select: 'filename width height' })
+        .populate({
+            path: 'profileImage',
+            select: '_id filename',
+        })
     
-    if (!user) console.log('Error updating profile image')
-    else return res.status(200).json({ user })
-    
-    return res.status(200).json(null)
+    return res.status(200).json({ profileImage })
 }
 
 module.exports = updateProfileImage

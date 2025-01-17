@@ -72,7 +72,7 @@ export const light = {
         userTitle: '#000',
         modalBackground: '#fff',
         inputLabel: '#000',
-        inputText: '#0a0',
+        inputText: 'tomato',
         inputTextFocused: '#000',
         inputBackground: '#fff',
         inputBackgroundFocused: '#fee',

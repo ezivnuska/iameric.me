@@ -22,8 +22,9 @@ const authenticate = async (req, res) => {
 
     const user = await User
         .findOne({ _id: userFromToken._id })
-        .populate('profileImage', 'filename width height')
-        .populate('address')
+        // .select('_id email username role profileImage')
+        .populate({ path: 'profileImage', select: '_id filename' })
+        // .populate('address')
 
     if (!user) {
         console.log('failed to refresh user token')

@@ -29,15 +29,17 @@ export const FeedContextProvider = props => {
 
     const loadFeed = async () => {
 
-        dispatch({ type: 'SET_FEED_LOADING', payload: true })
-        const payload = await loadPosts()
-        dispatch({ type: 'SET_FEED_LOADING', payload: false })
+        // dispatch({ type: 'SET_FEED_LOADING', payload: true })
+        // const payload = await loadPosts()
+        // dispatch({ type: 'SET_FEED_LOADING', payload: false })
         
-        if (!payload) console.log('could not load posts')
-        else dispatch({ type: 'SET_POSTS', payload })
+        // if (!payload) console.log('could not load posts')
+        // else dispatch({ type: 'SET_POSTS', payload })
 
         dispatch({ type: 'SET_FEED_LOADED' })
     }
+
+    const findPostById = postId => state.posts.filter(post => post._id === postId)[0]
     
     useEffect(() => {
         loadFeed()
@@ -50,6 +52,7 @@ export const FeedContextProvider = props => {
         deletePost: async payload => {
             dispatch({ type: 'DELETE_POST', payload })
         },
+        findPostById,
         setPosts: async payload => {
             dispatch({ type: 'SET_POSTS', payload })
         },

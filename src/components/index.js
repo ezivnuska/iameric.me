@@ -14,6 +14,7 @@ import {
     ImageClone,
     ImageList,
     ImageMax,
+    ImageShowcase,
     ImageUploadIndicator,
     ProfileImage,
     Screen,
@@ -25,6 +26,7 @@ import {
     TextHeading,
     TextPressable,
     Time,
+    UserAvatar,
     UserImages,
     UserList,
 } from './common'
@@ -67,6 +69,7 @@ export {
     ImageClone,
     ImageList,
     ImageMax,
+    ImageShowcase,
     ImageUploadIndicator,
     ProfileImage,
     Settings,
@@ -78,6 +81,7 @@ export {
     TextHeading,
     TextPressable,
     Time,
+    UserAvatar,
     UserImages,
     UserList,
 

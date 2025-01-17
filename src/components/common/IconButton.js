@@ -19,6 +19,7 @@ const IconButton = ({ disabled, name, onPress, color = null, size = 18, padding 
                 height: size + 4,
                 opacity: disabled ? 0.3 : 1,
                 padding,
+                outlineStyle: 'none',
             }}
         >
             <Icon

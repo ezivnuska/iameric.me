@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import ImageDisplayView from './ImageDisplayView'
 import { useModal, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar } from '@utils/images'
@@ -9,16 +9,21 @@ const ImageDisplayContainer = ({ data }) => {
     const { closeModal } = useModal()
     
     const {
-        user,
+        authUser,
+        getProfile,
         updateImage,
         updateUser,
         findUserById,
+        findUserImage,
         setDeletedImage,
+        setProfileImage,
     } = useUser()
 
     const [image, setImage] = useState(null)
     const [owner, setOwner] = useState(null)
     const [loading, setLoading] = useState(false)
+
+    // const profile = useMemo(() => owner && getProfile(owner._id), [owner])
 
     const init = async imageId => {
         setLoading(true)
@@ -31,11 +36,15 @@ const ImageDisplayContainer = ({ data }) => {
     }
 
     useEffect(() => {
-        init(data._id)
+        console.log('INIT ImageDisplayContainer:data', data)
+        console.log('string or object?')
+        init(data._id || data)
     }, [])
 
     useEffect(() => {
-        if (owner) updateImage(image)
+        console.log(' ')
+        console.log('owner changed', owner)
+        console.log(' ')
     }, [owner])
 
     const loadImageOwner = async ownerId => {
@@ -44,17 +53,25 @@ const ImageDisplayContainer = ({ data }) => {
         
         if (!imageOwner) {
             imageOwner = await loadContactById(ownerId)
+
+            if (imageOwner) {
+                console.log('Image owner is freshly loaded; updating in state', imageOwner)
+                updateUser(imageOwner)
+            }
         }
 
         if (imageOwner) {
-            updateUser(imageOwner)
+            console.log('setting image owner', imageOwner)
             setOwner(imageOwner)
         }
     }
 
     useEffect(() => {
+        console.log('image changed', image)
         if (image) {
-            loadImageOwner(image.user._id)
+            if (!owner || owner._id !== image.user._id) {
+                loadImageOwner(image.user._id)
+            }
         }
         
     }, [image])
@@ -64,7 +81,7 @@ const ImageDisplayContainer = ({ data }) => {
         if (process.env.NODE_ENV === 'development') return alert(`Can't delete in development`)
 
         setLoading(true)
-        const response = await deleteImage(data._id, owner.profileImage?._id === data._id)
+        const response = await deleteImage(data, owner.profileImage?._id === data)
         
         setLoading(false)
 
@@ -81,16 +98,17 @@ const ImageDisplayContainer = ({ data }) => {
 
     }
     
-    const onChangeAvatar = async () => {
-
-        const newAvatarId = user.profileImage?._id !== image._id ? image._id : null
-
+    const onChangeAvatar = async (image = null) => {
+        console.log('image for new avatar', image)
         setLoading(true)
-        const profileImage = await setAvatar(user._id, newAvatarId)
+        const profileImage = await setAvatar(authUser._id, image?._id)
         setLoading(false)
 
         const newOwner = { ...owner, profileImage }
-
+        console.log(' ')
+        console.log('setAvatar:profileImage', profileImage)
+        console.log('setAvatar:newOwner', newOwner)
+        console.log(' ')
         setOwner(newOwner)
         updateUser(newOwner)
         

@@ -20,6 +20,7 @@ const initialState = {
     usersLoading: false,
     userDetailsLoading: false,
 
+    getProfile: () => {},
     getUserProfileImage: () => {},
     findUserByUsername: () => {},
     addUser: () => {},
@@ -123,21 +124,6 @@ export const UserContextProvider = ({ children }) => {
         return payload
     }
 
-    const fetchImagesAndUpdate = async userId => {
-
-        let images = null
-        
-        dispatch({type: 'SET_IMAGES_LOADING', payload: true })
-        images = await loadImages(userId)
-        dispatch({type: 'SET_IMAGES_LOADING', payload: false })
-        
-        if (images) {
-            dispatch({type: 'SET_IMAGES', payload: { userId, images } })
-        }
-
-        return images
-    }
-
     const reset = () => {
         dispatch({ type: 'RESET' })
     }
@@ -150,8 +136,13 @@ export const UserContextProvider = ({ children }) => {
         dispatch({ type: 'SET_USER_LOADING', payload })
     }
 
-    const setProfileImage = payload => {
-        dispatch({ type: 'SET_PROFILE_IMAGE', payload })
+    const setProfileImage = profileImage => {
+        const payload = {
+            ...state.user,
+            profileImage,
+        }
+        dispatch({ type: 'UPDATE_USER', payload })
+        // dispatch({ type: 'SET_PROFILE_IMAGE', payload })
     }
     
     const updateUser = payload => {
@@ -192,12 +183,14 @@ export const UserContextProvider = ({ children }) => {
         return null
     }
 
+    const getProfile = profileId => state.users.filter(user => user._id === profileId)[0]
+
     const actions = useMemo(() => ({
+        getProfile,
         getUserImages,
         findUserByUsername: username => state.users.filter(user => user.username === username)[0],
         findUserById,
         fetchImageAndUpdate,
-        fetchImagesAndUpdate,
         fetchUserAndUpdate,
         findUserImage,
         reset,
@@ -238,10 +231,13 @@ export const UserContextProvider = ({ children }) => {
         },
     }), [state, dispatch])
 
+    // const authUser = useMemo(() => state.users.filter(user => user._id === state.user._id)[0], [state.users])
+
     return (
         <UserContext.Provider
             value={{
                 ...state,
+                authUser: state.users.filter(user => user._id === state.user._id)[0],
                 ...actions,
             }}
         >
@@ -403,6 +399,7 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_IMAGE':
+            console.log('payload----', payload)
             updatedUsers = state.users.map(item => {
                 if (item._id === payload.user._id) {
                     
@@ -424,7 +421,41 @@ const reducer = (state, action) => {
                     updatedUser = {
                         ...item,
                         images,
+                        profileImage: item.profileImage && item.profileImage._id === payload._id ? {
+                            ...item.profileImage,
+                            user: {
+                                _id: payload.user._id,
+                                username: payload.user.username,
+                            },
+                        } : item.profileImage,
+                        // profileImage: item.profileImage && item.profileImage._id === payload._id
+                        //     ? {
+                        //         ...item.profileImage,
+                        //         user: {
+                        //             _id: payload.user._id,
+                        //             username: payload.user.username,
+                        //         },
+                        //         // _id: payload._id,
+                        //         // filename: payload.filename,
+                        //     } : item.profileImage
                     }
+
+                    // if (state.user._id === item._id) {
+                    //     if (item.profileImage && item.profileImage._id === payload._id) {
+                    //         updatedUser.profileImage = {
+                    //             _id: payload._id,
+                    //             filename: payload.filename,
+                    //         }
+                    //     }
+                    // }
+                    console.log('updatedUser', updatedUser)
+                    // console.log('payload', payload)
+                    // if () {
+                    //     updatedUser = {
+                    //         ...updatedUser,
+                    //         profileImage: payload,
+                    //     }
+                    // }
                     
                     return updatedUser
                 }
@@ -434,7 +465,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 users: updatedUsers,
-                user: updatedUser?._id === state.user._id ? updatedUser : state.user,
+                user: state.user.profileImage && updatedUser._id === state.user._id ? updatedUser : state.user,
             }
             break
         default: throw new Error()

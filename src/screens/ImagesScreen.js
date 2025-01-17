@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Image, View } from 'react-native'
+import { View } from 'react-native'
 import { ActivityIndicator, ImageList, Screen } from '@components'
 import { useApp, useModal, useNotification, useUser } from '@context'
 import { loadImages, uploadImage } from '@utils/images'
 import { loadContact } from '@utils/contacts'
-import { TextCopy } from '@common'
 
 const ImagesScreen = props => {
 
@@ -15,7 +14,6 @@ const ImagesScreen = props => {
         deletedImage,
         imageUpload,
         uploadedImage,
-        uploading,
         findUserByUsername,
         removeImage,
         setDeletedImage,
@@ -32,8 +30,8 @@ const ImagesScreen = props => {
         
         setLoading(true)
 
-        let savedUser = findUserByUsername(props.route.params.username)
-        
+        let savedUser = findUserByUsername(username)
+
         if (!savedUser) {
             savedUser = await loadContact(username)
         }
@@ -47,42 +45,32 @@ const ImagesScreen = props => {
         setLoading(false)
     }
 
-    const initImages = async userId => {
+    useEffect(() => {
+        if (profile) {
+            initImages(profile._id)
+        }
         
+    }, [profile])
+
+    const initImages = async userId => {
         setLoading(true)
         
         const loadedImages = await loadImages(userId)
         
         if (loadedImages) {
-            setImageIds(loadedImages.map(({ _id }) => _id))
+            setImageIds(loadedImages)
         }
 
         setLoading(false)
     }
 
     useEffect(() => {
-        if (profile && !profile.images) {
-            initImages(profile._id)
-        }
-        
-    }, [profile])
-
-    // useEffect(() => {
-    //     console.log('uploading', uploading)
-    // }, [uploading])
-    
-    useEffect(() => {
             
         if (deletedImage) {
             const ids = imageIds.filter(id => id !== deletedImage._id)
             setImageIds(ids)
             removeImage(profile._id, deletedImage._id)
-            // updateImage(uploadedImage)
             
-            // if (avatarCheckbox) updateUser({
-            //     ...user,
-            //     profileImage: uploadedImage,
-            // })
             addNotification('Image deleted.')
             setDeletedImage(null)
         }
@@ -95,7 +83,7 @@ const ImagesScreen = props => {
 
             setImageIds([
                 ...imageIds,
-                uploadedImage._id,
+                { _id: uploadedImage._id },
             ])
             
             addNotification('Image uploaded.')
@@ -129,10 +117,14 @@ const ImagesScreen = props => {
     }
 
     useEffect(() => {
-        if (profile?.username !== props.route.params?.username) {
+        if (profile && props.route.params?.username && profile.username !== props.route.params.username) {
             init(props.route.params.username)
         }
     }, [props.route.params])
+
+    useEffect(() => {
+        init(props.route.params.username)
+    }, [])
 
     return (
         <Screen
@@ -140,30 +132,26 @@ const ImagesScreen = props => {
             full={landscape || props.route.params?.list}
             {...props}
         >
-            <View
-                style={{
-                    flex: 1,
-                    // position: 'relative',
-                }}
-            >
-                {loading
-                    ? <ActivityIndicator label='Loading images...' color='#fff' />
-                    : imageIds
-                        ? (
+            {loading
+                ? <ActivityIndicator label='Loading images...' color='#fff' />
+                : (
+                    <View style={{ flex: 1 }}>
+                
+                        {imageIds && (
                             <ImageList
                                 // key={`images-${profile._id}-${Date.now()}`}
                                 imageIds={imageIds}
                                 user={profile}
                                 list={props.route.params?.list || landscape}
-                                onPress={data => setModal('SHOWCASE', data)}
+                                onPress={image => setModal('SHOWCASE', image)}
                                 onRefresh={onRefresh}
                                 refreshing={loading}
                             />
-                        )
-                        : null
-                }
+                        )}
 
-            </View>
+                    </View>
+                )
+            }
 
         </Screen>
     )

@@ -23,7 +23,7 @@ const Layout = () => {
         closeModal,
     } = useModal()
 
-    const { user } = useUser()
+    const { authUser } = useUser()
 
     return (
         <SafeAreaView
@@ -32,7 +32,6 @@ const Layout = () => {
                 height: dims.height,
                 width: dims.width,
                 backgroundColor: theme?.colors.background,
-                // position: 'relative',
             }}
         >
 
@@ -54,7 +53,6 @@ const Layout = () => {
                     <View
                         style={{
                             flex: 1,
-                            // height: dims.height,
                             width: '100%',
                             minWidth: 300,
                             backgroundColor: theme?.colors.background,
@@ -70,9 +68,10 @@ const Layout = () => {
                         >
                             <Header
                                 landscape={landscape}
-                                user={user}
+                                user={authUser}
                                 route={currentRoute}
                             />
+                            
                         </View>
                         
                         <View
@@ -109,15 +108,7 @@ const Layout = () => {
                                 justifyContent: 'flex-end',
                             }}
                         >
-                            {/* <View
-                                style={{
-                                    flexGrow: 1,
-                                    borderWidth: 1,
-                                }}
-                            > */}
-
-                                <Notification />
-                            {/* </View> */}
+                            <Notification />
                         </View>
 
                     </View>

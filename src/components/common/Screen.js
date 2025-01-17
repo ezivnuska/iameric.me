@@ -21,11 +21,11 @@ const Screen = ({
         if (!authorized) {
             console.log('not authorized for route', routeName)
             if (routeName !== 'Home') {
-                setAuthRoute(routeName)
+                setAuthRoute(props.route)
                 props.navigation.navigate('Home')
             } else setModal('AUTH')
         }
-    }, [authorized, routeName])
+    }, [authorized])
 
     if (!authorized) return <View style={{ flex: 1 }} />
 

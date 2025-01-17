@@ -12,6 +12,7 @@ import ImageContained from './ImageContained'
 import ImageClone from './ImageClone'
 import ImageList from './ImageList'
 import ImageMax from './ImageMax'
+import ImageShowcase from './ImageShowcase'
 import ImageUploadIndicator from './ImageUploadIndicator'
 // import InfoMarker from './InfoMarker'
 // import ProfileNav from './ProfileNav'
@@ -29,6 +30,7 @@ import TextHeading from './TextHeading'
 import TextPressable from './TextPressable'
 // import ThumbList from './ThumbList'
 import Time from './Time'
+import UserAvatar from './UserAvatar'
 import UserImages from './UserImages'
 import UserList from './UserList'
 
@@ -46,6 +48,7 @@ export {
     ImageClone,
     ImageList,
     ImageMax,
+    ImageShowcase,
     ImageUploadIndicator,
     // InfoMarker,
     // ProfileNav,
@@ -63,6 +66,7 @@ export {
     TextPressable,
     // ThumbList,
     Time,
+    UserAvatar,
     UserImages,
     UserList,
 }

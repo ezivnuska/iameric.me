@@ -50,7 +50,7 @@ const FormField = ({
             >
                 <View
                     style={{
-                        background: focused ? theme?.colors.inputBackgroundFocused : theme?.colors.inputBackground,
+                        background: 'transparent',//focused ? theme?.colors.inputBackgroundFocused : theme?.colors.inputBackground,
                         borderBottomWidth: 1,
                         borderBottomColor: error ? '#f00' : dirty ? '#1f1' : '#fff'
                     }}
@@ -65,19 +65,18 @@ const FormField = ({
                         onChangeText={onChange}
                         rows={multiline ? 4 : 1}
                         style={{
-                            paddingHorizontal: 10,
-                            paddingVertical: 5,
+                            paddingVertical: multiline ? 15 : 0,
                             color: focused ? theme?.colors.inputTextFocused : theme?.colors.inputText,
                             background: 'transparent',
-                            fontSize: 18,
-                            lineHeight: multiline ? 25 : 40,
+                            fontSize: 16,
+                            lineHeight: 21,// multiline ? 25 : 40,
                             maxWidth: '100%',
                             height: multiline ? 150 : 40,
                             flexWrap: 'wrap',
                             textAlignVertical: 'top',
-                            backgroundColor: '#f7f7f7',
-                            // borderTopLeftRadius: 10,
-                            // borderTopRightRadius: 10,
+                            backgroundColor: 'none',
+                            outlineWidth: 0,
+                            outlineColor: 'transparent',
                         }}
                     />
                 </View>

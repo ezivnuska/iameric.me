@@ -5,6 +5,7 @@ import {
     BugForm,
     ImageDisplay,
     ImagePicker,
+    ImageShowcase,
     PostForm,
     Scrollable,
     Settings,
@@ -42,7 +43,7 @@ const ModalFactory = ({ modal, onClose }) => {
                 content = <Settings />
                 break
             case 'SHOWCASE':
-                content = <ImageDisplay data={data} />
+                content = <ImageShowcase data={data} />
                 fullscreen = true
                 break
             case 'SOCKETS':

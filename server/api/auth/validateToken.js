@@ -9,14 +9,11 @@ const validateToken = async (req, res) => {
     if (!decodedUser) return res.status(200).json(null)
     
     const { _id, exp } = decodedUser
-
-    // if (!_id) return res.status(200).json(null)
     
     const user = await User
         .findOne({ _id })
-        // .select('_id username role profileImage')
-        .populate('profileImage', 'filename width height')
-        // .populate('address')
+        .select('_id email username role profileImage')
+        .populate({ path: 'profileImage', select: '_id filename' })
         
     const newDate = new Date(exp) - Date.now()
     const expired = newDate > 0

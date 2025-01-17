@@ -1,15 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { IconButton, ProfileImage, TextCopy, Time } from '@components'
+import { ActivityIndicator, IconButton, ProfileImage, TextCopy, Time } from '@components'
 import { useFeed, useUser } from '@context'
 import { navigate } from '@utils/navigation'
+import { loadPost, loadThread } from '@utils/feed'
 
 const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
     
-    const { feedLoading } = useFeed()
+    const { findPostById, updatePost } = useFeed()
     const { user } = useUser()
 
     const [disabled, setDisabled] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [post, setPost] = useState(null)
+
+    useEffect(() => {
+        if (item) initPost(item._id)
+    }, [])
+
+    useEffect(() => {
+        if (post) updatePost(post)
+    }, [post])
+        
+    const initPost = async id => {
+        
+        setLoading(true)
+
+        let result = findPostById(id)
+        
+        if (!result) result = await loadPost(id)
+        
+        if (result) setPost(result)
+        else console.log('could not find or load post data.')
+
+        setLoading(false)
+        
+    }
 
     // const fetchMeta = async () => {
     //     // try {
@@ -29,15 +55,15 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
     // }, [])
 
     useEffect(() => {
-        if (!feedLoading && disabled) setDisabled(false)
-    }, [feedLoading])
+        if (!loading && disabled) setDisabled(false)
+    }, [loading])
 
     const handleDelete = id => {
         setDisabled(true)
         onDelete(id)
     }
     
-    return (
+    return post ? (
         <View
             {...props}
             style={{
@@ -64,7 +90,7 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
                     }}
                 >
                     <Pressable
-                        onPress={() => navigate('User', { screen: 'Profile', params: { username: item.author?.username } })}
+                        onPress={() => navigate('User', { screen: 'Profile', params: { username: post.author?.username } })}
                         style={{
                             flexDirection: 'row',
                             alignItems: 'flex-start',
@@ -74,7 +100,8 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
                         }}
                     >
                         <ProfileImage
-                            user={item.author}
+                            userId={post.author._id}
+                            user={post.author}
                             size={50}
                         />
 
@@ -88,29 +115,29 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
                         >
                             <View style={{ flex: 1, flexGrow: 1 }}>
 
-                                {item.author?.username && (
+                                {post.author?.username && (
                                     <TextCopy
                                         size={20}
                                         bold
                                         style={{ lineHeight: 25 }}
                                     >
-                                        {item.author.username}
+                                        {post.author.username}
                                     </TextCopy>
                                 )}
 
                                 <Time
-                                    time={item.createdAt}
+                                    time={post.createdAt}
                                     size={20}
                                     style={{ lineHeight: 25 }}
                                 />
 
                             </View>
 
-                            {(user._id === item.author?._id || user.role === 'admin') && (
+                            {(user._id === post.author?._id || user.role === 'admin') && (
                                 <IconButton
                                     name='trash-outline'
                                     disabled={disabled}
-                                    onPress={() => handleDelete(item._id)}
+                                    onPress={() => handleDelete(post._id)}
                                     color={user.role === 'admin' ? 'purple' : '#000'}
                                     size={26}
                                 />
@@ -128,11 +155,11 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
                 size={24}
                 style={{ lineHeight: 30 }}
             >
-                {item.text}
+                {post.text}
             </TextCopy>
             
         </View>
-    )
+    ) : <ActivityIndicator size='small' />
 }
 
 export default FeedListItem

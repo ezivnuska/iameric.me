@@ -61,6 +61,7 @@ const BugView = ({ item, onDelete = null }) => {
                         <ProfileImage
                             // image={item.author.profileImage}
                             user={item.author}
+                            userId={item.author._id}
                             size={50}
                         />
 

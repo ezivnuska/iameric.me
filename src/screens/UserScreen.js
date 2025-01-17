@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { ActivityIndicator, ProfileImage, Screen, TextCopy } from '@components'
+import { Screen, UserAvatar } from '@components'
 import { useModal, useUser } from '@context'
 import { loadContact } from '@utils/contacts'
 
@@ -9,58 +9,65 @@ const UserScreen = props => {
     const {
         userLoading,
         findUserByUsername,
-        updateUser,
-        // setUserLoading,
-        getUserByUsername,
+        setUserLoading,
     } = useUser()
-    
-    const { setModal } = useModal()
-
-    const [loading, setLoading] = useState(false)
     const [profile, setProfile] = useState(null)
 
-    // useEffect(() => {
-    //     if (props.route.params?.username) {
-    //         init(props.route.params.username)
-    //     }
-    //     return () => setProfile(null)
-    // }, [])
+    useEffect(() => {
+        if (props.route.params?.username) {
+            initUser(props.route.params.username)
+        }
+    }, [])
 
     useEffect(() => {
-        if (profile?.username !== props.route.params?.username) {
-            init(props.route.params?.username)
+
+        console.log('params', props.route.params)
+        
+        if (!profile || profile.username !== props.route.params?.username) {
+            if (!userLoading) initUser(props.route.params?.username)
         }
     }, [props.route.params])
 
-    useEffect(() => {
-        // if (profile) {
-        //     updateUser(profile)
-        // }
-    }, [profile])
-    
-    const init = async username => {
-        
-        setLoading(true)
+    const initUser = async username => {
+
+        setUserLoading(true)
 
         let user = findUserByUsername(username)
 
         if (!user) {
-
             user = await loadContact(username)
-            
-            // if (user) {
-            //     updateUser(user)
-            // }
         }
-
+            
         if (user) {
             setProfile(user)
-        } else {
-            console.log('could not load user.')
         }
         
-        setLoading(false)
+        setUserLoading(false)
     }
+
+    // const loadAvatar = async () => {
+    //         console.log('loading avatar')
+    
+    //         setUserLoading(true)
+    
+    //         let result = findUserImage(profile._id, profileImage)
+    //         console.log('found avatar', result)
+    
+    //         if (!result) {
+    //             result = await loadImage(profileImage)
+    //             console.log('loaded avatar', result)
+    
+    //         }
+    
+    //         if (result) {
+    //             setProfile({
+    //                 ...profile,
+    //                 profileImage: result,
+    //             })
+    //         }
+    
+    //         setUserLoading(false)
+    //     }
 
     return (
         <Screen
@@ -70,29 +77,37 @@ const UserScreen = props => {
         >
             <View style={{ flex: 1 }}>
 
-                {loading
-                    ? <ActivityIndicator size='medium' label='Loading User...' />
-                    : profile
-                        ? (
-                            <Pressable
-                                key={`contact-${profile.username}-${Date.now()}`}
-                                onPress={() => setModal('SHOWCASE', profile.profileImage)}
-                                disabled={!profile.profileImage}
-                            >
-
-                                <ProfileImage
-                                    user={profile}
-                                    size={100}
-                                />
-
-                            </Pressable>
-                        )
-                        : <TextCopy>Could not load user details.</TextCopy>
-                }
+                <UserProfile profile={profile} />
 
             </View>
             
         </Screen>
+    )
+}
+
+const UserProfile = ({ profile }) => {
+
+    const { setModal } = useModal()
+    const { authUser } = useUser()
+
+    const isAuthUser = useMemo(() => profile && authUser._id === profile._id, [profile])
+    
+    return profile && (
+        <View style={{ flex: 1 }}>
+
+            <Pressable
+                key={`profile-${profile.username}-${Date.now()}`}
+                onPress={() => {
+                    console.log('SHOWCASE', profile)
+                    setModal('SHOWCASE', profile.profileImage._id)
+                }}
+                disabled={!profile.profileImage}
+            >
+                <UserAvatar user={isAuthUser ? authUser : profile} size={100} />
+
+            </Pressable>
+
+        </View>
     )
 }
 
