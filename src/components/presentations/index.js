@@ -7,7 +7,6 @@ import Feed from './Feed'
 import Footer from './Footer'
 import Form from './Form'
 import Header from './Header'
-import ImageDisplay from './ImageDisplay'
 import ImagePicker from './ImagePicker'
 import ImagePickerMini from './ImagePickerMini'
 import JobList from './JobList'
@@ -25,7 +24,6 @@ export {
     Footer,
     Form,
     Header,
-    ImageDisplay,
     ImagePicker,
     ImagePickerMini,
     JobList,

@@ -4,7 +4,7 @@ import {
     ActivityIndicator,
     // AuthForm,
     // BugForm,
-    // ImageDisplay,
+    // ImageShowcase,
     // ImagePicker,
     // PostForm,
     // Scrollable,
@@ -53,7 +53,7 @@ const PlayModal = ({ modal, onClose }) => {
             //     content = <Settings />
             //     break
             // case 'SHOWCASE':
-            //     content = <ImageDisplay data={data} />
+            //     content = <ImageShowcase data={data} />
             //     fullscreen = true
             //     break
             // case 'SOCKETS':
