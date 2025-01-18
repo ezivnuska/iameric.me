@@ -153,7 +153,7 @@ router.get(    '/thread/:threadId',        getThread)
 router.delete( '/entry/delete/:id',        deleteEntryById)
 
 // posts
-router.get(    '/post',                    createPost)
+router.post(   '/post',                    createPost)
 router.get(    '/post/:postId',            getPost)
 router.get(    '/posts',                   getPosts)
 router.get(    '/post/thread/:threadId',   getPostThread)

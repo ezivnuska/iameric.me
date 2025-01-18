@@ -1,12 +1,12 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { TextCopy, IconButton } from '@components'
-import { useModal } from '@context'
+import { useBugs } from '@context'
 import { navigate } from '@utils/navigation'
 
-const BugNavBar = ({ landscape, route, size }) => {
+const BugNavBar = ({ landscape, route, size = 20 }) => {
 
-    const { setModal } = useModal()
+    const { setBugModal } = useBugs()
 
     return (
         <View
@@ -61,7 +61,7 @@ const BugNavBar = ({ landscape, route, size }) => {
 
             <IconButton
                 name='create-outline'
-                onPress={() => setModal('BUG')}
+                onPress={() => setBugModal('BUG')}
                 size={28}
                 color='tomato'
                 transparent

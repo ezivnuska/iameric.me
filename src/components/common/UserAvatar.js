@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Image, View } from 'react-native'
 import { useApp } from '@context'
 
@@ -8,17 +8,25 @@ const UserAvatar = ({ user, size = 'auto' }) => {
 
     const { theme } = useApp()
 
-    const profileImage = useMemo(() => user && user.profileImage, [user])
+    // const profileImage = useMemo(() => user && user.profileImage, [user])
 
-    const source = useMemo(() => {
-        if (profileImage?.filename) {
-            return `${IMAGE_PATH}/${user.username}/${profileImage.filename}`
-        } else {
-            return `${IMAGE_PATH}/avatar-default.png`
+    // const source = useMemo(() => {
+    //     if (profileImage?.filename) {
+    //         return `${IMAGE_PATH}/${user.username}/${profileImage.filename}`
+    //     } else {
+    //         return `${IMAGE_PATH}/avatar-default.png`
+    //     }
+    // }, [profileImage])
+
+    const [source, setSource] = useState(`${IMAGE_PATH}/avatar-default.png`)
+
+    useEffect(() => {
+        if (user && user.profileImage?.filename) {
+            setSource(`${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`)
         }
-    }, [profileImage])
+    }, [user])
 
-    return source && (
+    return (
         <View
             style={{
                 flexGrow: 0,

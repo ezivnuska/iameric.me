@@ -6,8 +6,11 @@ import * as presentations from './presentations'
 import {
     ActivityIndicator,
     AdminButton,
+    // BugForm,
+    BugNavBar,
     Cabinet,
     Checkbox,
+    FeedNavBar,
     IconButton,
     IconButtonLarge,
     ImageContained,
@@ -16,6 +19,8 @@ import {
     ImageMax,
     ImageShowcase,
     ImageUploadIndicator,
+    ModalContainer,
+    PostForm,
     ProfileImage,
     Screen,
     Scrollable,
@@ -29,27 +34,23 @@ import {
     UserAvatar,
     UserImages,
     UserList,
+    UserNavBar,
 } from './common'
 
 // presentations
 
 import {
     AuthForm,
-    BugForm,
-    Bugs,
+    BugList,
     Feed,
-    Footer,
     Form,
-    Header,
     ImagePicker,
     ImagePickerMini,
     JobList,
     ModalFactory,
     Notification,
     Play,
-    PostForm,
     Socket,
-    User,
 } from './presentations'
 
 export {
@@ -60,8 +61,11 @@ export {
     
     ActivityIndicator,
     AdminButton,
+    // BugForm,
+    BugNavBar,
     Cabinet,
     Checkbox,
+    FeedNavBar,
     IconButton,
     IconButtonLarge,
     ImageContained,
@@ -70,6 +74,8 @@ export {
     ImageMax,
     ImageShowcase,
     ImageUploadIndicator,
+    ModalContainer,
+    PostForm,
     ProfileImage,
     Settings,
     Screen,
@@ -83,23 +89,19 @@ export {
     UserAvatar,
     UserImages,
     UserList,
+    UserNavBar,
 
     // presentations
 
     AuthForm,
-    BugForm,
-    Bugs,
+    BugList,
     Feed,
-    Footer,
     Form,
-    Header,
     ImagePicker,
     ImagePickerMini,
     JobList,
     ModalFactory,
     Notification,
     Play,
-    PostForm,
     Socket,
-    User,
 }

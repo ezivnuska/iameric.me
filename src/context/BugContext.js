@@ -2,13 +2,16 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 import { loadEntries } from '@utils/bugs'
 
 const initialState = {
+    modals: [],
     bugs: [],
     error: null,
     bugsLoaded: false,
     bugsLoading: false,
     addBug: () => {},
+    closeBugModal: () => {},
     deleteBug: () => {},
     loadBugs: () => {},
+    setBugModal: () => {},
     setBugs: () => {},
     setBugsLoading: () => {},
     updateBug: () => {},
@@ -40,11 +43,10 @@ export const BugContextProvider = ({ children }) => {
     }
     
     useEffect(() => {
-        // loadBugs()
+        loadBugs()
     }, [])
 
     const actions = useMemo(() => ({
-        loadBugs,
         addBug: payload => {
             dispatch({ type: 'ADD_BUG', payload })
         },
@@ -75,10 +77,11 @@ export const BugContextProvider = ({ children }) => {
         <BugContext.Provider
             value={{
                 ...state,
+                bugModal: state.modals[state.modals.length - 1],
                 ...actions,
             }}
         >
-            {children}
+            {state.bugsLoaded && children}
         </BugContext.Provider>
     )
 }
@@ -108,6 +111,18 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 bugs: payload,
+            }
+            break
+        case 'SET_BUG_MODAL':
+            return {
+                ...state,
+                modals: [...state.modals, payload],
+            }
+            break
+        case 'CLOSE_BUG_MODAL':
+            return {
+                ...state,
+                modals: state.modals.slice(0, state.modals.length - 1),
             }
             break
         case 'UPDATE_BUG':

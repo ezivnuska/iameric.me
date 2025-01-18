@@ -7,10 +7,15 @@ const getPost = async (req, res) => {
         .populate({
             path: 'author',
             select: 'username profileImage',
+            populate: {
+                path: 'profileImage',
+                select: 'filename',
+            }
         })
     
-    if (!post) console.log('error fetching post.')
-    else return res.status(200).json({ post })
+    if (post) return res.status(200).json({ post })
+    
+    console.log('error fetching post.')
 
     return res.status(200).json(null)
 }

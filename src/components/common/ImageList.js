@@ -69,12 +69,16 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
         
         let dimensions = null
 
+        let maxHeight = maxDims.height
+
+        if (maxHeight > 300) maxHeight = 300
+
         if (list) {
             let scale = 1
 
             if (landscape) {
                 if (image.height > maxDims.height) {
-                    scale = maxDims.height / image.height
+                    scale = maxHeight / image.height
                 }
             } else {
                 if (image.width > maxDims.width) {
@@ -105,7 +109,10 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
                 onPress={() => onPress(item)}
                 style={{
                     flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                     marginHorizontal: 'auto',
+                    // borderWidth: 1,
                 }}
             >
                 {(list || landscape)
@@ -150,6 +157,8 @@ const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = fals
 	}
 
     const getNumColumns = () => (!list && !landscape) ? 2 : 1
+
+    const separation = list ? 50 : 0
     
     return (
         <View
@@ -158,9 +167,11 @@ const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = fals
         >
             {maxDims && (
                 <FlatList
+                    ItemSeparatorComponent={() => <View style={{ height: separation, width: separation }} />}
                     ref={listRef}
                     key={`image-list-${user._id}-${getNumColumns()}`}
                     horizontal={landscape}
+                    contentOffset={{ x: separation, y: 0 }}
                     numColumns={getNumColumns()}
                     data={imageIds}
                     keyExtractor={item => `image-${item._id}`}

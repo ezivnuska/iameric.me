@@ -1,27 +1,21 @@
 import React  from 'react'
 import { View } from 'react-native'
-import {
-    Brand,
-    BugNavBar,
-    FeedNavBar,
-    UserNavBar,
-} from './components'
-import { SimpleButton, IconButton } from '@components'
+import { Brand, UserNavBar } from './components'
+import { BugNavBar, FeedNavBar, IconButton, SimpleButton } from '@components'
 import { navigate } from '@utils/navigation'
 import { useModal } from '@context'
 
 const Header = ({ landscape, route, user = null }) => {
 
-    const size = 20
     const { setModal } = useModal()
 
     const renderNav = () => {
 
-        const props = { landscape, route, size }
+        const props = { landscape, route }
 
         switch (route?.name) {
-            case 'Feed': return <FeedNavBar {...props} />; break
-            case 'Bugs':  return <BugNavBar {...props} />; break
+            // case 'Feed': return <FeedNavBar {...props} />; break
+            // case 'Bugs':  return <BugNavBar {...props} />; break
             case 'Profile':
             case 'Images': return <UserNavBar {...props} />; break
             default: return null
@@ -55,7 +49,7 @@ const Header = ({ landscape, route, user = null }) => {
 
                 {/* {navigation} */}
                 
-                {landscape && user && (
+                {/* {landscape && user && (
                     <View
                         style={{
                             flexGrow: 1,
@@ -67,7 +61,7 @@ const Header = ({ landscape, route, user = null }) => {
                             {renderNav()}
                         </View>
                     </View>
-                )}
+                )} */}
 
                 <View
                     style={{
@@ -137,11 +131,11 @@ const Header = ({ landscape, route, user = null }) => {
 
             </View>
 
-            {!landscape && user && (
+            {/* {!landscape && user && (
                 <View style={{ marginVertical: 10 }}>
                     {renderNav()}
                 </View>
-            )}
+            )} */}
 
         </View>
     )

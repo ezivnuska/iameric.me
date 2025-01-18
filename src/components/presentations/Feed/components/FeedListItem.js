@@ -1,36 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { ActivityIndicator, IconButton, ProfileImage, TextCopy, Time } from '@components'
+import { IconButton, TextCopy, Time, UserAvatar } from '@components'
 import { useFeed, useUser } from '@context'
 import { navigate } from '@utils/navigation'
-import { loadPost, loadThread } from '@utils/feed'
+import { loadPost } from '@utils/feed'
 
-const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
+const FeedListItem = ({ item, onDelete = null, ...props }) => {
     
-    const { findPostById, updatePost } = useFeed()
+    const { updatePost } = useFeed()
     const { user } = useUser()
 
-    const [disabled, setDisabled] = useState(false)
     const [loading, setLoading] = useState(false)
     const [post, setPost] = useState(null)
 
     useEffect(() => {
         if (item) initPost(item._id)
     }, [])
-
-    useEffect(() => {
-        if (post) updatePost(post)
-    }, [post])
         
     const initPost = async id => {
         
         setLoading(true)
-
-        let result = findPostById(id)
         
-        if (!result) result = await loadPost(id)
+        let result = await loadPost(id)
         
-        if (result) setPost(result)
+        if (result) {
+            setPost(result)
+            updatePost(result)
+        }
         else console.log('could not find or load post data.')
 
         setLoading(false)
@@ -53,17 +49,8 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
     // useEffect(() => {
     //     fetchMeta()
     // }, [])
-
-    useEffect(() => {
-        if (!loading && disabled) setDisabled(false)
-    }, [loading])
-
-    const handleDelete = id => {
-        setDisabled(true)
-        onDelete(id)
-    }
     
-    return post ? (
+    return post && (
         <View
             {...props}
             style={{
@@ -99,8 +86,7 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
                             gap: 10,
                         }}
                     >
-                        <ProfileImage
-                            userId={post.author._id}
+                        <UserAvatar
                             user={post.author}
                             size={50}
                         />
@@ -136,8 +122,8 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
                             {(user._id === post.author?._id || user.role === 'admin') && (
                                 <IconButton
                                     name='trash-outline'
-                                    disabled={disabled}
-                                    onPress={() => handleDelete(post._id)}
+                                    disabled={loading}
+                                    onPress={() => onDelete(post._id)}
                                     color={user.role === 'admin' ? 'purple' : '#000'}
                                     size={26}
                                 />
@@ -159,7 +145,7 @@ const FeedListItem = ({ index, item, onDelete = null, ...props }) => {
             </TextCopy>
             
         </View>
-    ) : <ActivityIndicator size='small' />
+    )
 }
 
 export default FeedListItem

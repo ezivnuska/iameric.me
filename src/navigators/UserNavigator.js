@@ -1,4 +1,5 @@
 import { UserScreen, ImagesScreen } from '@screens'
+import { UserNavBar } from '@components'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 const UserNavigator = () => {
@@ -9,7 +10,9 @@ const UserNavigator = () => {
         <UserStack.Navigator
             initialRouteName='Profile'
             screenOptions={{
-                headerShown: false,
+                // headerShown: false,
+                headerShown: true,
+                header: props => (<UserNavBar {...props} />),
             }}
         >
 

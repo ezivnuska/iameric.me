@@ -25,8 +25,9 @@ const FormField = ({
     return (
         <View
             style={{
+                flex: 1,
                 gap: 5,
-                marginBottom: 10,
+                // marginBottom: 10,
             }}
         >
             {label && (
@@ -50,6 +51,7 @@ const FormField = ({
             >
                 <View
                     style={{
+                        flex: 1,
                         background: 'transparent',//focused ? theme?.colors.inputBackgroundFocused : theme?.colors.inputBackground,
                         borderBottomWidth: 1,
                         borderBottomColor: error ? '#f00' : dirty ? '#1f1' : '#fff'
@@ -71,7 +73,7 @@ const FormField = ({
                             fontSize: 16,
                             lineHeight: 21,// multiline ? 25 : 40,
                             maxWidth: '100%',
-                            height: multiline ? 150 : 40,
+                            height: multiline ? '100%' : 40,
                             flexWrap: 'wrap',
                             textAlignVertical: 'top',
                             backgroundColor: 'none',

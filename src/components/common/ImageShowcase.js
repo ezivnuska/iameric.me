@@ -123,7 +123,7 @@ const ImageShowcase = ({ data }) => {
         <View
             style={{
                 flex: 1,
-                background: 'rgba(0, 0, 0, 0.8)',
+                background: 'rgba(0, 0, 0, 1.0)',
             }}
         >
             <ImageHeader
@@ -140,7 +140,7 @@ const ImageShowcase = ({ data }) => {
                 }}
             >
                 
-                <ImageContainer image={image} />
+                <ImageContainer image={image} landscape={landscape} />
                 
                 <CaptionContainer
                     image={image}
@@ -162,7 +162,10 @@ const ImageHeader = ({ image, landscape, onClose, ...props }) => {
     return image ? (
         <View
             {...props}
-            style={{ flexGrow: 0 }}
+            style={{
+                flexGrow: 0,
+                background: 'rgba(255, 255, 255, 0.25)',
+            }}
         >
             <View
                 style={{
@@ -229,12 +232,20 @@ const ImageHeader = ({ image, landscape, onClose, ...props }) => {
     ) : null
 }
 
-const ImageContainer = ({ image }) => {
+const ImageContainer = ({ image, landscape }) => {
 
     const source = useMemo(() => image && image.user && `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
 
     return (
-        <View style={{ flexGrow: 1 }}>
+        <View
+            style={{
+                flex: 1,
+                flexGrow: 1,
+                // flexShrink: 1,
+                flexBasis: 'auto',
+                maxHeight: landscape ? 300 : null,
+            }}
+        >
             <Image
                 source={source}
                 resizeMode='contain'
@@ -257,7 +268,8 @@ const CaptionContainer = ({
     
     const [editing, setEditing] = useState(false)
 
-    const hasAuthorization = useMemo(() => image && (authUser._id === image.user?._id || authUser.role === 'admin'), [image])
+    const hasAuthorization = useMemo(() => image && (authUser._id === image.user?._id), [image])
+    // const isAdmin = useMemo(() => authUser && authUser.role === 'admin', [authUser])
     
     const handleCaptionEdit = caption => {
         onChange(caption)
@@ -267,10 +279,14 @@ const CaptionContainer = ({
     return (
         <View
             style={{
-                // flexBasis: '40%',
-                maxHeight: '40%',
-                flexShrink: 1,
+                flex: 1,
+                // flexBasis: 'auto',
+                // flexShrink: 1,
+                // maxHeight: landscape ? null : '40%',
+                // maxWidth: landscape ? '40%' : null,
                 paddingHorizontal: 10,
+                // background: 'rgba(0, 0, 0, 0.8)',
+                background: 'rgba(255, 255, 255, 0.25)',
             }}
         >
             {
@@ -307,51 +323,20 @@ const CaptionView = ({ image, landscape, onChangeAvatar, setEditing, deleteImage
     // }, [image])
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, flexShrink: 1, gap: 10 }}>
 
-            <View
+            <ScrollView
                 style={{
                     flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'space-evenly',
-                    gap: 15,
+                    marginTop: 0,
+                }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingTop: 15,
                 }}
             >
-
-                <ScrollView
-                    style={{
-                        flex: 1,
-                        marginTop: 0,
-                    }}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{
-                        paddingTop: 15,
-                    }}
-                >
-                    <TextCopy color='#fff'>{image.caption}</TextCopy>
-                </ScrollView>
-
-                
-                {authorized && (
-                    <View
-                        style={{
-                            flexGrow: 0,
-                            paddingTop: 10,
-                        }}
-                    >
-
-                        <IconButton
-                            name='create-outline'
-                            size={24}
-                            color='#fff'
-                            onPress={() => setEditing(true)}
-                            disabled={loading}
-                        />
-
-                    </View>
-                )}
-
-            </View>
+                <TextCopy color='#fff'>{image.caption}</TextCopy>
+            </ScrollView>
 
             {authorized && (
                 <View
@@ -360,9 +345,20 @@ const CaptionView = ({ image, landscape, onChangeAvatar, setEditing, deleteImage
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         alignItems: 'center',
+                        flexWrap: 'wrap',
                         paddingVertical: 10,
+                        gap: 20,
                     }}
                 >
+
+                    <IconButton
+                        name='create-outline'
+                        size={24}
+                        color='#fff'
+                        onPress={() => setEditing(true)}
+                        disabled={loading}
+                    />
+                    
                     <IconButton
                         name='happy-sharp'
                         size={24}
@@ -393,63 +389,65 @@ const CaptionForm = ({ image, onChange, onCancel, loading }) => {
     } = useForm()
 
     return (
-        <View>
+        // <View
+        //     style={{
+        //         flex: 1,
+        //         paddingBottom: 10,
+        //         // flexDirection: 'row',
+        //         // gap: 10,
+        //         // padding: 8,
+        //     }}
+        // >
+        <View style={{ flex: 1, flexShrink: 1, gap: 10 }}>
             <View
                 style={{
-                    flexDirection: 'row',
-                    gap: 10,
-                    // padding: 8,
+                    flexGrow: 1,
                 }}
             >
-                <View
-                    style={{
-                        flexGrow: 1,
-                    }}
-                >
-                    <Form
-                        data={image}
-                        fields={[
-                            {
-                                name: 'caption',
-                                placeholder: 'new caption...',
-                                multiline: true,
-                            }
-                        ]}
-                        onCancel={onCancel}
-                    />
-
-                </View>
-
-                <View
-                    style={{
-                        flexGrow: 0,
-                        height: 150,
-                        gap: 10,
-                        justifyContent: 'space-between',
-                        paddingTop: 15,
-                        paddingBottom: 10,
-                    }}
-                >
-            
-                    <IconButton
-                        name='close'
-                        size={24}
-                        color='#fff'
-                        onPress={onCancel}
-                        disabled={loading}
-                    />
-
-                    <IconButton
-                        name='checkmark-outline'
-                        size={24}
-                        color='#0f0'
-                        onPress={onChange}
-                        disabled={loading || formLoading || !getDirty('caption')}
-                    />
-
-                </View>
+                <Form
+                    data={image}
+                    fields={[
+                        {
+                            name: 'caption',
+                            placeholder: 'new caption...',
+                            multiline: true,
+                        }
+                    ]}
+                    onCancel={onCancel}
+                />
 
             </View>
+
+            <View
+                style={{
+                    flexGrow: 0,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    paddingVertical: 10,
+                    gap: 20,
+                }}
+            >
+        
+                <IconButton
+                    name='close'
+                    size={24}
+                    color='#fff'
+                    onPress={onCancel}
+                    disabled={loading}
+                />
+
+                <IconButton
+                    name='checkmark-outline'
+                    size={24}
+                    color='#0f0'
+                    onPress={onChange}
+                    disabled={loading || formLoading || !getDirty('caption')}
+                />
+
+            </View>
+
         </View>
     )
 }

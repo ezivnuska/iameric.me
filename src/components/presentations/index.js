@@ -1,12 +1,9 @@
 // presentations
 
 import AuthForm from './AuthForm'
-import BugForm from './BugForm'
-import Bugs from './Bugs'
+import BugList from './BugList'
 import Feed from './Feed'
-import Footer from './Footer'
 import Form from './Form'
-import Header from './Header'
 import ImagePicker from './ImagePicker'
 import ImagePickerMini from './ImagePickerMini'
 import JobList from './JobList'
@@ -18,12 +15,9 @@ import Socket from './Socket'
 
 export {
     AuthForm,
-    BugForm,
-    Bugs,
+    BugList,
     Feed,
-    Footer,
     Form,
-    Header,
     ImagePicker,
     ImagePickerMini,
     JobList,

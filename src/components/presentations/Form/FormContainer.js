@@ -123,10 +123,10 @@ const FormContainer = ({
         return (
             <View
                 key={`formfield-${index}-${name}`}
-                // style={{ flex: 1 }}
+                style={{ flex: 1 }}
             >
                 <FormField
-                    // style={{ flex: 1 }}
+                    style={{ flex: 1 }}
                     label={label}
                     value={formFields[name] || ''}
                     error={getError(name)}

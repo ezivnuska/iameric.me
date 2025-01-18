@@ -437,7 +437,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 users: updatedUsers,
-                user: state.user.profileImage && updatedUser._id === state.user._id ? updatedUser : state.user,
+                user: state.user.profileImage && updatedUser?._id === state.user._id ? updatedUser : state.user,
             }
             break
         default: throw new Error()

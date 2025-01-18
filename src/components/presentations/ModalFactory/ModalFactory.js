@@ -2,10 +2,10 @@ import React from 'react'
 import { View } from 'react-native'
 import {
     AuthForm,
-    BugForm,
+    // BugForm,
     ImagePicker,
     ImageShowcase,
-    PostForm,
+    // PostForm,
     Settings,
     Socket,
 } from '@components'
@@ -26,15 +26,15 @@ const ModalFactory = ({ modal, onClose }) => {
         
         switch(type) {
             case 'AUTH': content = <AuthForm />; break
-            case 'BUG': content = <BugForm />; break
+            // case 'BUG': content = <BugForm />; break
             case 'IMAGE_UPLOAD':
                 content = <ImagePicker data={data} />
                 fullscreen = true
                 break
-            case 'FEEDBACK':
-                content = <PostForm data={data} />
-                // fullscreen = true
-                break
+            // case 'FEEDBACK':
+            //     content = <PostForm data={data} />
+            //     // fullscreen = true
+            //     break
             case 'SETTINGS':
                 title = 'Settings'
                 content = <Settings />

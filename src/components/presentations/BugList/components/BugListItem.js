@@ -1,34 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Pressable, View } from 'react-native'
-import { IconButton, ProfileImage, TextCopy, Time } from '@components'
-import { useBugs, useUser } from '@context'
+import { IconButton, TextCopy, Time, UserAvatar } from '@components'
+import { useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
-const BugListItem = ({ item, onDelete = null }) => {
+const BugListItem = ({ item, loading, onDelete = null }) => {
 
     const { user } = useUser()
-    const { bugsLoading } = useBugs()
-
-    const [disabled, setDisabled] = useState(false)
-
-    useEffect(() => {
-        if (!bugsLoading && disabled) setDisabled(false)
-    }, [bugsLoading])
-
-    const handleDelete = id => {
-        if (onDelete !== null) {
-            setDisabled(true)
-            onDelete(id)
-        }
-    }
 
     return (
         <View
-            key={`entry-${item._id}`}
+            key={`bug-${item._id}`}
             style={{
                 flexGrow: 0,
                 marginBottom: 20,
-                gap: 10,
+                gap: 5,
             }}
         >
 
@@ -45,7 +31,7 @@ const BugListItem = ({ item, onDelete = null }) => {
                         flexGrow: 1,
                         flexShrink: 1,
                         gap: 7,
-                        // flexWrap: 'wrap',
+                        flexWrap: 'wrap',
                     }}
                 >
                     <Pressable
@@ -58,17 +44,15 @@ const BugListItem = ({ item, onDelete = null }) => {
                             gap: 10,
                         }}
                     >
-                        <ProfileImage
+                        <UserAvatar
                             user={item.author}
-                            userId={item.author._id}
-                            // image={item.author.profileImage}
                             size={50}
                         />
 
                         <View
                             style={{
                                 flexDirection: 'row',
-                                alignItems: 'flex-start',
+                                alignItems: 'flex-end',
                                 flexGrow: 1,
                                 gap: 10,
                             }}
@@ -95,27 +79,26 @@ const BugListItem = ({ item, onDelete = null }) => {
 
                             </View>
 
+                            {(user._id === item.author._id || user.role === 'admin') && (
+                                <IconButton
+                                    name='trash-outline'
+                                    disabled={loading}
+                                    onPress={() => onDelete(item._id)}
+                                    color={user.role === 'admin' ? 'purple' : '#000'}
+                                    size={25}
+                                />
+                            )}
+
                         </View>
 
                     </Pressable>
-
-                    {(user._id === item.author._id || user.role === 'admin') && (
-                        <IconButton
-                            name='trash-outline'
-                            disabled={disabled}
-                            onPress={() => handleDelete(item._id)}
-                            color={user.role === 'admin' ? 'purple' : '#000'}
-                            size={20}
-                        />
-                    )}
 
                 </View>
 
             </View>
 
             <TextCopy
-                size={16}
-                color='blue'
+                size={20}
                 style={{ lineHeight: 30 }}
             >
                 {item.text}

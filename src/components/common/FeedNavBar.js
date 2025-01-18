@@ -1,29 +1,25 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { TextCopy, IconButton } from '@components'
-import { useModal } from '@context'
+import { useFeed } from '@context'
 import { navigate } from '@utils/navigation'
 
-const FeedNavBar = ({ landscape, route, size }) => {
+const FeedNavBar = ({ landscape, route, size = 20 }) => {
 
-    const { setModal } = useModal()
+    const { setFeedModal } = useFeed()
 
     return (
         <View
             style={{
-                // flexGrow: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                // paddingHorizontal: 10,
                 gap: 10,
-                // background: 'yellow',
             }}
         >
 
             <View
                 style={{
-                    // flexGrow: landscape ? 0 : 1,
                     flexDirection: 'row',
                     alignItems: 'center',
                 }}
@@ -59,13 +55,15 @@ const FeedNavBar = ({ landscape, route, size }) => {
                 
             </View>
 
-            <IconButton
-                name='create-outline'
-                onPress={() => setModal('FEEDBACK')}
-                size={28}
-                color='tomato'
-                transparent
-            />
+            {!landscape && (
+                <IconButton
+                    name='create-outline'
+                    onPress={() => setFeedModal('FEEDBACK')}
+                    size={28}
+                    color='tomato'
+                    transparent
+                />
+            )}
 
         </View>
     )

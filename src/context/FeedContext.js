@@ -2,14 +2,17 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 import { loadPosts } from '@utils/feed'
 
 const initialState = {
+    modals: [],
     posts: [],
     error: null,
     feedLoaded: false,
     feedLoading: false,
     addPost: () => {},
+    closeFeedModal: () => {},
     deletePost: () => {},
-    setPosts: () => {},
     setFeedLoading: () => {},
+    setFeedModal: () => {},
+    setPosts: () => {},
     updatePost: () => {},
 }
 
@@ -29,12 +32,12 @@ export const FeedContextProvider = props => {
 
     const loadFeed = async () => {
 
-        // dispatch({ type: 'SET_FEED_LOADING', payload: true })
-        // const payload = await loadPosts()
-        // dispatch({ type: 'SET_FEED_LOADING', payload: false })
+        dispatch({ type: 'SET_FEED_LOADING', payload: true })
+        const payload = await loadPosts()
+        dispatch({ type: 'SET_FEED_LOADING', payload: false })
         
-        // if (!payload) console.log('could not load posts')
-        // else dispatch({ type: 'SET_POSTS', payload })
+        if (payload) dispatch({ type: 'SET_POSTS', payload })
+        else console.log('could not load posts') 
 
         dispatch({ type: 'SET_FEED_LOADED' })
     }
@@ -62,12 +65,22 @@ export const FeedContextProvider = props => {
         updatePost: async payload => {
             dispatch({ type: 'UPDATE_POST', payload })
         },
+        setFeedModal: (type, data) => {
+            dispatch({
+                type: 'SET_FEED_MODAL',
+                payload: { data, type },
+            })
+        },
+        closeFeedModal: () => {
+            dispatch({ type: 'CLOSE_FEED_MODAL' })
+        },
     }), [state, dispatch])
 
     return  (
         <FeedContext.Provider
             value={{
                 ...state,
+                feedModal: state.modals[state.modals.length - 1],
                 ...actions,
             }}
         >
@@ -97,6 +110,18 @@ const reducer = (state, action) => {
                 feedLoading: payload,
             }
             break
+        case 'SET_FEED_MODAL':
+            return {
+                ...state,
+                modals: [...state.modals, payload],
+            }
+            break
+        case 'CLOSE_FEED_MODAL':
+            return {
+                ...state,
+                modals: state.modals.slice(0, state.modals.length - 1),
+            }
+            break
         case 'SET_POSTS':
             return {
                 ...state,
@@ -104,13 +129,16 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_POST':
-            const posts = state.posts.map(post => {
-                if (post._id === payload._id) return payload
-                else return post
+            let newPost = true
+            const posts = state.posts.map((post, i) => {
+                if (post._id === payload._id) {
+                    newPost = false
+                    return payload
+                } else return post
             })
             return {
                 ...state,
-                posts,
+                posts: newPost ? [payload, ...state.posts] : posts,
             }
             break
         case 'DELETE_POST':

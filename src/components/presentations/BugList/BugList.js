@@ -1,27 +1,26 @@
 import React, { useEffect } from 'react'
-import { View } from 'react-native'
-import { BugView } from './components'
-import { TextCopy } from '@components'
-import { useBugs, useModal, useSocket } from '@context'
+import { FlatList, View } from 'react-native'
+import { BugListItem, BugModal} from './components'
+import { BugNavBar, TextCopy } from '@components'
+import { useBugs, useSocket } from '@context'
 import { deleteEntryWithId } from '@utils/bugs'
 
-const BugContainer = () => {
+const BugList = props => {
 
     const {
+        bugModal,
         bugs,
-        addBug,
+        updateBug,
+        closeBugModal,
         deleteBug,
-        loadBugs,
         setBugsLoading,
     } = useBugs()
 
-    const { closeModal } = useModal()
     const { socket } = useSocket()
 
     useEffect(() => {
-        loadBugs()
 
-        socket.on('new_entry', addBug)
+        socket.on('new_entry', updateBug)
         socket.on('deleted_entry', deleteBug)
     }, [])
 
@@ -34,31 +33,28 @@ const BugContainer = () => {
         deleteBug(id)
         socket.emit('entry_deleted', id)
         
-        closeModal()
+        closeBugModal()
     }
     
     return (
         <View
             style={{
                 flex: 1,
-                // paddingHorizontal: 10,
                 gap: 10,
             }}
         >
             
+            {props.route.name === 'Bugs' && <BugNavBar {...props} />}
+
             {bugs.length > 0
                 ? (
-                    <View style={{ flexGrow: 1 }}>
-
-                        {bugs.map((bug, index) => (
-                            <BugView
-                                key={`bug-${index}`}
-                                item={bug}
-                                onDelete={removeBug}
-                            />
-                        ))}
-
-                    </View>
+                    <FlatList
+                        data={bugs}
+                        extraData={bugs}
+                        keyExtractor={item => `bug-item-${item._id}`}
+                        renderItem={({ item }) => <BugListItem item={item} onDelete={removeBug} />}
+                        style={{ flex: 1 }}
+                    />
                 )
                 : (
                     <TextCopy
@@ -69,9 +65,14 @@ const BugContainer = () => {
                     </TextCopy>
                 )
             }
+
+            <BugModal
+                modal={bugModal}
+                onClose={closeBugModal}
+            />
                 
         </View>
     )
 }
 
-export default BugContainer
+export default BugList
