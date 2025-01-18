@@ -19,15 +19,10 @@ const ImageShowcase = ({ data }) => {
 
     useEffect(() => {
         if (typeof data === 'string') {
+            console.log('ImageShowcase received _id string')
             findImage(data)
         } else {
             findImage(data._id)
-        }
-
-        return () => {
-            console.log('ImageShowcase unmounting')
-            console.log(' ')
-            console.log(' ')
         }
     }, [])
 
@@ -47,8 +42,6 @@ const ImageShowcase = ({ data }) => {
     }
     
     const handleAvatar = async () => {
-        
-        console.log('image before avatar change', image)
 
         const isProfileImage = image.user.profileImage && image._id === image.user.profileImage._id
         
@@ -66,10 +59,7 @@ const ImageShowcase = ({ data }) => {
         
         setImage(updatedImage)
 
-        updateUser({
-            ...user,
-            profileImage,
-        })
+        updateUser({ ...user, profileImage })
         
         setLoading(false)
     }
@@ -129,21 +119,29 @@ const ImageShowcase = ({ data }) => {
         
     }
 
-    return (
+    return image ? (
         <View
-            style={{ flex: 1 }}
+            style={{
+                flex: 1,
+                background: 'rgba(0, 0, 0, 0.8)',
+            }}
         >
-            {image && (
-                <ImageHeader
-                    key={`image-showcase-${image._id}-${Date.now()}`}
-                    image={image}
-                    landscape={landscape}
-                    onClose={closeModal}
-                />
-            )}
-            {image && <ImageContainer image={image} />}
+            <ImageHeader
+                key={`image-showcase-${image._id}-${Date.now()}`}
+                image={image}
+                landscape={landscape}
+                onClose={closeModal}
+            />
 
-            {image && (
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: landscape ? 'row' : 'column',
+                }}
+            >
+                
+                <ImageContainer image={image} />
+                
                 <CaptionContainer
                     image={image}
                     landscape={landscape}
@@ -152,23 +150,14 @@ const ImageShowcase = ({ data }) => {
                     deleteImage={handleDelete}
                     loading={loading}
                 />
-            )}
+
+            </View>
+
         </View>
-    )
+    ) : <ActivityIndicator />
 }
 
 const ImageHeader = ({ image, landscape, onClose, ...props }) => {
-
-    const { findUserById } = useUser()
-    
-    const [owner, setOwner] = useState(null)
-    // const owner = useMemo(() => image && findUserById(image.user._id), [image])
-    // const profileImage = useMemo(() => owner && owner.profileImage, [owner])
-    // useEffect(() => {
-    //     console.log('image.user', image.user)
-    //     const user = findUserById(image.user._id)
-    //     setOwner(user)
-    // }, [])
 
     return image ? (
         <View
@@ -188,12 +177,10 @@ const ImageHeader = ({ image, landscape, onClose, ...props }) => {
 
                 {/* PROFILE IMAGE */}
                 
-                {/* {owner && ( */}
-                    <UserAvatar
-                        user={image.user}
-                        size={landscape ? 30 : 50}
-                    />
-                {/* )} */}
+                <UserAvatar
+                    user={image.user}
+                    size={landscape ? 30 : 50}
+                />
 
                 <View
                     style={{
@@ -280,10 +267,10 @@ const CaptionContainer = ({
     return (
         <View
             style={{
-                flexGrow: 0,
+                // flexBasis: '40%',
+                maxHeight: '40%',
+                flexShrink: 1,
                 paddingHorizontal: 10,
-                paddingBottom: 15,
-                background: 'rgba(0, 0, 0, 0.6)',
             }}
         >
             {
@@ -315,48 +302,41 @@ const CaptionContainer = ({
 
 const CaptionView = ({ image, landscape, onChangeAvatar, setEditing, deleteImage, authorized, loading }) => {
 
-    useEffect(() => {
-        console.log('image changed', image)
-    }, [image])
+    // useEffect(() => {
+    //     console.log('image changed', image)
+    // }, [image])
 
     return (
-        <View
-            style={{
-                flex: 1,
-                alignContent: 'space-between',
-                justifyContent: 'space-between',
-                gap: 10,
-            }}
-        >
+        <View style={{ flex: 1 }}>
+
             <View
                 style={{
+                    flex: 1,
                     flexDirection: 'row',
-                    alignItems: 'flex-start',
-                    gap: 10,
+                    alignItems: 'space-evenly',
+                    gap: 15,
                 }}
             >
+
                 <ScrollView
                     style={{
                         flex: 1,
-                        // flexGrow: 1,//landscape ? 1 : 0,
                         marginTop: 0,
-                        // maxWidth: landscape ? 300 : null,
-                        maxHeight: 150,//!landscape ? 200 : null,
                     }}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{
                         paddingTop: 15,
-                        // paddingBottom: 20,
                     }}
                 >
                     <TextCopy color='#fff'>{image.caption}</TextCopy>
                 </ScrollView>
 
+                
                 {authorized && (
                     <View
                         style={{
                             flexGrow: 0,
-                            paddingTop: 15,
+                            paddingTop: 10,
                         }}
                     >
 
@@ -380,6 +360,7 @@ const CaptionView = ({ image, landscape, onChangeAvatar, setEditing, deleteImage
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         alignItems: 'center',
+                        paddingVertical: 10,
                     }}
                 >
                     <IconButton
