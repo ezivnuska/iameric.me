@@ -20,6 +20,7 @@ const ImagesScreen = props => {
         setImageUpload,
         setUploadedImage,
         setUploading,
+        updateUser,
     } = useUser()
 
     const [loading, setLoading] = useState(false)
@@ -47,6 +48,7 @@ const ImagesScreen = props => {
 
     useEffect(() => {
         if (profile) {
+            updateUser(profile)
             initImages(profile._id)
         }
         
@@ -118,12 +120,17 @@ const ImagesScreen = props => {
 
     useEffect(() => {
         if (profile && props.route.params?.username && profile.username !== props.route.params.username) {
+            setProfile(null)
             init(props.route.params.username)
         }
     }, [props.route.params])
 
     useEffect(() => {
         init(props.route.params.username)
+
+        return () => {
+            console.log('HEY')
+        }
     }, [])
 
     return (
@@ -132,26 +139,21 @@ const ImagesScreen = props => {
             full={landscape || props.route.params?.list}
             {...props}
         >
-            {loading
-                ? <ActivityIndicator label='Loading images...' color='#fff' />
-                : (
-                    <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 }}>
                 
-                        {imageIds && (
-                            <ImageList
-                                // key={`images-${profile._id}-${Date.now()}`}
-                                imageIds={imageIds}
-                                user={profile}
-                                list={props.route.params?.list || landscape}
-                                onPress={image => setModal('SHOWCASE', image)}
-                                onRefresh={onRefresh}
-                                refreshing={loading}
-                            />
-                        )}
+                {imageIds && (
+                    <ImageList
+                        // key={`images-${profile._id}-${Date.now()}`}
+                        imageIds={imageIds}
+                        user={profile}
+                        list={props.route.params?.list || landscape}
+                        onPress={image => setModal('SHOWCASE', image)}
+                        onRefresh={onRefresh}
+                        refreshing={loading}
+                    />
+                )}
 
-                    </View>
-                )
-            }
+            </View>
 
         </Screen>
     )

@@ -140,8 +140,8 @@ const ImageShowcase = ({ data }) => {
                 }}
             >
                 
-                <ImageContainer image={image} landscape={landscape} />
-                
+                <ImageContainer image={image} />
+
                 <CaptionContainer
                     image={image}
                     landscape={landscape}
@@ -164,7 +164,7 @@ const ImageHeader = ({ image, landscape, onClose, ...props }) => {
             {...props}
             style={{
                 flexGrow: 0,
-                background: 'rgba(255, 255, 255, 0.25)',
+                // background: 'rgba(255, 255, 255, 0.25)',
             }}
         >
             <View
@@ -232,18 +232,17 @@ const ImageHeader = ({ image, landscape, onClose, ...props }) => {
     ) : null
 }
 
-const ImageContainer = ({ image, landscape }) => {
+const ImageContainer = ({ image }) => {
 
     const source = useMemo(() => image && image.user && `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
 
     return (
         <View
             style={{
-                flex: 1,
+                // flex: 1,
                 flexGrow: 1,
                 // flexShrink: 1,
                 flexBasis: 'auto',
-                maxHeight: landscape ? 300 : null,
             }}
         >
             <Image
@@ -279,14 +278,13 @@ const CaptionContainer = ({
     return (
         <View
             style={{
-                flex: 1,
-                // flexBasis: 'auto',
-                // flexShrink: 1,
-                // maxHeight: landscape ? null : '40%',
-                // maxWidth: landscape ? '40%' : null,
+                // flex: 1,
+                flexBasis: 'auto',
+                flexShrink: 1,
+                maxHeight: landscape ? null : '50%',
+                maxWidth: landscape ? '40%' : null,
                 paddingHorizontal: 10,
-                // background: 'rgba(0, 0, 0, 0.8)',
-                background: 'rgba(255, 255, 255, 0.25)',
+                justifyContent: 'space-between',
             }}
         >
             {
@@ -316,14 +314,10 @@ const CaptionContainer = ({
     )
 }
 
-const CaptionView = ({ image, landscape, onChangeAvatar, setEditing, deleteImage, authorized, loading }) => {
-
-    // useEffect(() => {
-    //     console.log('image changed', image)
-    // }, [image])
+const CaptionView = ({ image, onChangeAvatar, setEditing, deleteImage, authorized, loading }) => {
 
     return (
-        <View style={{ flex: 1, flexShrink: 1, gap: 10 }}>
+        <View style={{ flex: 1 }}>
 
             <ScrollView
                 style={{
@@ -332,7 +326,7 @@ const CaptionView = ({ image, landscape, onChangeAvatar, setEditing, deleteImage
                 }}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
-                    paddingTop: 15,
+                    paddingVertical: 10,
                 }}
             >
                 <TextCopy color='#fff'>{image.caption}</TextCopy>
@@ -346,7 +340,7 @@ const CaptionView = ({ image, landscape, onChangeAvatar, setEditing, deleteImage
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         flexWrap: 'wrap',
-                        paddingVertical: 10,
+                        paddingVertical: 15,
                         gap: 20,
                     }}
                 >
@@ -389,16 +383,7 @@ const CaptionForm = ({ image, onChange, onCancel, loading }) => {
     } = useForm()
 
     return (
-        // <View
-        //     style={{
-        //         flex: 1,
-        //         paddingBottom: 10,
-        //         // flexDirection: 'row',
-        //         // gap: 10,
-        //         // padding: 8,
-        //     }}
-        // >
-        <View style={{ flex: 1, flexShrink: 1, gap: 10 }}>
+        <View style={{ flex: 1, flexShrink: 1 }}>
             <View
                 style={{
                     flexGrow: 1,

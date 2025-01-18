@@ -85,17 +85,19 @@ const FormField = ({
 
             </View>
             
-            <Text
-                style={{
-                    color: error ? '#f00' : dirty ? '#00f' : '#ccc',
-                    marginTop: 2,
-                    fontSize: 14,
-                    lineHeight: 18,
-                    textAlign: 'right',
-                }}
-            >
-                {required ? error && dirty ? error : `*required` : ' '}
-            </Text>
+            {dirty && error ? (
+                <Text
+                    style={{
+                        color: !dirty ? '#ccc' : error ? '#f00' : '#0f0',
+                        marginTop: 2,
+                        fontSize: 14,
+                        lineHeight: 18,
+                        textAlign: 'right',
+                    }}
+                >
+                    * required
+                </Text>
+            ) : null}
 
         </View>
     )
