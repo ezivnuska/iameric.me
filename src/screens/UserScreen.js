@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { Screen, UserAvatar } from '@components'
+import { Screen, TextCopy, UserAvatar } from '@components'
 import { useModal, useUser } from '@context'
 import { loadContact } from '@utils/contacts'
+import { create } from '@utils/normalize'
+import { fonts } from '@styles/base'
 
 const UserScreen = props => {
 
@@ -98,7 +100,7 @@ const UserProfile = ({ profile }) => {
             <Pressable
                 key={`profile-${profile.username}-${Date.now()}`}
                 onPress={() => {
-                    console.log('SHOWCASE', profile)
+                    // console.log('SHOWCASE', profile)
                     setModal('SHOWCASE', profile.profileImage._id)
                 }}
                 disabled={!profile.profileImage}
@@ -107,8 +109,20 @@ const UserProfile = ({ profile }) => {
 
             </Pressable>
 
+            {/* <TextCopy style={styles.text}>TEST COPY</TextCopy> */}
+
         </View>
     )
 }
+
+const styles = create({
+    text: {
+        // color: '#d4895e',
+        // fontWeight: 'bold',
+        fontSize: fonts.x10,
+        // paddingHorizontal: 20,
+        // marginHorizontal: 20,
+    },
+})
 
 export default UserScreen

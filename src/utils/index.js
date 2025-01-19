@@ -11,6 +11,7 @@ import compose from './compose'
 import getModifiedColor from './getModifiedColor'
 import destroy from './destroy'
 import navigation from './navigation'
+import normalize from './normalize'
 
 export {
     auth,
@@ -24,5 +25,6 @@ export {
     map,
     mail,
     navigation,
+    normalize,
     storage,
 }

@@ -76,6 +76,10 @@ export const AppContextProvider = ({ children }) => {
     useEffect(() => {
         if (fontsLoaded) init()
     }, [fontsLoaded])
+
+    // useEffect(() => {
+    //     console.log('dims*', dims)
+    // }, [dims])
     
     const toggleTheme = async () => {
         setItem('dark', !state.dark)
