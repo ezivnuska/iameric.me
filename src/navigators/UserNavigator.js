@@ -12,7 +12,7 @@ const UserNavigator = () => {
             screenOptions={{
                 // headerShown: false,
                 headerShown: true,
-                header: props => (<UserNavBar {...props} />),
+                header: props => <UserNavBar {...props} />,
             }}
         >
 

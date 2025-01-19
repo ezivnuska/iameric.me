@@ -28,7 +28,7 @@ const Header = ({ landscape, route, user = null }) => {
             style={{
                 flex: 1,
                 width: '100%',
-                marginBottom: 10,
+                // marginBottom: 10,
                 minWidth: 300,
                 maxWidth: landscape ? '90%' : 400,
                 marginHorizontal: 'auto',

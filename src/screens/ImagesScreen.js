@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, ImageList, Screen } from '@components'
+import { ImageList, Screen, TextCopy } from '@components'
 import { useApp, useModal, useNotification, useUser } from '@context'
 import { loadImages, uploadImage } from '@utils/images'
 import { loadContact } from '@utils/contacts'
+import { ActivityIndicator } from 'react-native-paper'
 
 const ImagesScreen = props => {
 
@@ -53,6 +54,12 @@ const ImagesScreen = props => {
         }
         
     }, [profile])
+
+    const reset = username => {
+        setImages(null)
+        setProfile(null)
+        init(username)
+    }
 
     const initImages = async userId => {
         setLoading(true)
@@ -123,8 +130,7 @@ const ImagesScreen = props => {
 
     useEffect(() => {
         if (profile && props.route.params?.username && profile.username !== props.route.params.username) {
-            setProfile(null)
-            init(props.route.params.username)
+            reset(props.route.params.username)
         }
     }, [props.route.params])
 
@@ -139,7 +145,7 @@ const ImagesScreen = props => {
             {...props}
         >
             <View style={{ flex: 1 }}>
-                
+
                 {images && (
                     <ImageList
                         // key={`images-${profile._id}-${Date.now()}`}

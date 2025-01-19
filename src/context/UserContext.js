@@ -5,8 +5,8 @@ import React, {
     useMemo,
     useReducer,
 } from 'react'
-import { getItem, getStoredToken, setItem } from '@utils/storage'
-import { validateToken } from '@utils/auth'
+import { getItem, getStoredToken, setItem, storeToken } from '@utils/storage'
+import { signin, validateToken } from '@utils/auth'
 import { loadContact, loadContacts } from '@utils/contacts'
 import { loadImage, loadImages } from '@utils/images'
 import merge from 'deepmerge'
@@ -41,6 +41,7 @@ const initialState = {
     setUser: () => {},
     setProfileImage: () => {},
     setUserLoading: () => {},
+    signinUser: () => {},
     updateUser: () => {},
 
     addImage: () => {},
@@ -98,6 +99,24 @@ export const UserContextProvider = ({ children }) => {
         }
         
         dispatch({ type: 'USER_LOADED' })
+    }
+
+    const signinUser = async (email, password) => {
+        
+        const payload = await signin(email, password)
+        
+        if (payload) {
+
+            await setItem('email', email)
+
+            const { token } = payload
+            
+            await storeToken(token)
+            
+            dispatch({ type: 'SET_USER', payload })
+        }
+
+        return payload
     }
 
     const fetchUserAndUpdate = async username => {
@@ -198,6 +217,7 @@ export const UserContextProvider = ({ children }) => {
         setProfileImage,
         setUserLoading,
         setUser,
+        signinUser,
         updateUser,
         setUploadedImage,
         setImageUpload,
@@ -237,7 +257,7 @@ export const UserContextProvider = ({ children }) => {
         <UserContext.Provider
             value={{
                 ...state,
-                authUser: state.users.filter(user => user._id === state.user._id)[0],
+                authUser: state.user && state.users.filter(user => user._id === state.user._id)[0],
                 ...actions,
             }}
         >

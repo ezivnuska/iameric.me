@@ -79,7 +79,7 @@ const Layout = () => {
                             style={{
                                 flexGrow: 1,
                                 width: '100%',
-                                maxWidth: landscape ? 800 : 400,
+                                maxWidth: landscape ? '90%' : 400,
                                 marginHorizontal: 'auto',
                                 zIndex: 100,
                             }}
