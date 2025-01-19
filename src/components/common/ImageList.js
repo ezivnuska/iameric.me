@@ -128,7 +128,7 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
         : item && renderItem(item)
 }
 
-const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = false }) => {
+const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false }) => {
 
     const { landscape, theme } = useApp()
     const { uploadedImage, setUploadedImage } = useUser()
@@ -143,7 +143,7 @@ const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = fals
             setUploadedImage(null)
             listRef.current.scrollToEnd({ animated: true })
         }
-    }, [imageIds])
+    }, [images])
 
     const onLayout = e => {
         
@@ -173,7 +173,8 @@ const ImageList = ({ imageIds, refreshing, user, onPress, onRefresh, list = fals
                     horizontal={landscape}
                     contentOffset={{ x: separation, y: 0 }}
                     numColumns={getNumColumns()}
-                    data={imageIds}
+                    data={images}
+                    extraData={images}
                     keyExtractor={item => `image-${item._id}`}
                     onRefresh={onRefresh}
                     refreshing={refreshing}

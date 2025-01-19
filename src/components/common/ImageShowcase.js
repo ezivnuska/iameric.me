@@ -12,7 +12,7 @@ const ImageShowcase = ({ data }) => {
     const { landscape } = useApp()
     const { clearForm, formError, formFields } = useForm()
     const { closeModal } = useModal()
-    const { user, authUser, updateImage, updateUser, setDeletedImage } = useUser()
+    const { user, authUser, setDeletedImage, updateImage, updateUser } = useUser()
 
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState(null)
@@ -90,11 +90,11 @@ const ImageShowcase = ({ data }) => {
     const handleCaption = async () => {
             
         if (formError) {
-            console.log(`Error in form field ${formError.name}: ${formError.message}`)
-            return
+            return console.log(`Error in form field ${formError.name}: ${formError.message}`)
         }
         
         setLoading(true)
+
         const { caption } = await setCaption(image._id, formFields.caption)
 
         if (caption) {
@@ -317,7 +317,9 @@ const CaptionContainer = ({
 const CaptionView = ({ image, onChangeAvatar, setEditing, deleteImage, authorized, loading }) => {
 
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            style={{ flex: 1 }}
+        >
 
             <ScrollView
                 style={{

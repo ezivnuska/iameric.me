@@ -25,7 +25,7 @@ const ImagesScreen = props => {
 
     const [loading, setLoading] = useState(false)
     const [profile, setProfile] = useState(null)
-    const [imageIds, setImageIds] = useState(null)
+    const [images, setImages] = useState(null)
 
     const init = async username => {
         
@@ -60,7 +60,7 @@ const ImagesScreen = props => {
         const loadedImages = await loadImages(userId)
         
         if (loadedImages) {
-            setImageIds(loadedImages)
+            setImages(loadedImages)
         }
 
         setLoading(false)
@@ -69,11 +69,12 @@ const ImagesScreen = props => {
     useEffect(() => {
             
         if (deletedImage) {
-            const ids = imageIds.filter(id => id !== deletedImage._id)
-            setImageIds(ids)
+            setImages(images.filter(image => image._id !== deletedImage._id))
+
             removeImage(profile._id, deletedImage._id)
             
             addNotification('Image deleted.')
+            
             setDeletedImage(null)
         }
 
@@ -83,12 +84,14 @@ const ImagesScreen = props => {
             
         if (uploadedImage) {
 
-            setImageIds([
-                ...imageIds,
-                { _id: uploadedImage._id },
+            setImages([
+                ...images,
+                uploadedImage,
             ])
             
             addNotification('Image uploaded.')
+
+            setUploadedImage(null)
         }
 
     }, [uploadedImage])
@@ -141,10 +144,10 @@ const ImagesScreen = props => {
         >
             <View style={{ flex: 1 }}>
                 
-                {imageIds && (
+                {images && (
                     <ImageList
                         // key={`images-${profile._id}-${Date.now()}`}
-                        imageIds={imageIds}
+                        images={images}
                         user={profile}
                         list={props.route.params?.list || landscape}
                         onPress={image => setModal('SHOWCASE', image)}
