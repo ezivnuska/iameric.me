@@ -130,10 +130,6 @@ const ImagesScreen = props => {
 
     useEffect(() => {
         init(props.route.params.username)
-
-        return () => {
-            console.log('HEY')
-        }
     }, [])
 
     return (
