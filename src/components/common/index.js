@@ -21,7 +21,6 @@ import ModalContainer from './ModalContainer'
 // import InfoMarker from './InfoMarker'
 // import ProfileNav from './ProfileNav'
 import PostForm from './PostForm'
-import ProfileImage from './ProfileImage'
 import Screen from './Screen'
 import Scrollable from './Scrollable'
 import Settings from './Settings'
@@ -63,7 +62,6 @@ export {
     // ProfileNav,
     ModalContainer,
     PostForm,
-    ProfileImage,
     Settings,
     Screen,
     Scrollable,

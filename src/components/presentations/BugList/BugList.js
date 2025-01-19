@@ -31,6 +31,7 @@ const BugList = props => {
         setBugsLoading(false)
         
         deleteBug(id)
+        
         socket.emit('entry_deleted', id)
         
         closeBugModal()
@@ -46,25 +47,24 @@ const BugList = props => {
             
             {props.route.name === 'Bugs' && <BugNavBar {...props} />}
 
-            {bugs.length > 0
-                ? (
-                    <FlatList
-                        data={bugs}
-                        extraData={bugs}
-                        keyExtractor={item => `bug-item-${item._id}`}
-                        renderItem={({ item }) => <BugListItem item={item} onDelete={removeBug} />}
-                        style={{ flex: 1 }}
-                    />
-                )
-                : (
-                    <TextCopy
-                        size={24}
-                        style={{ lineHeight: 30 }}
-                    >
-                        No bugs to squash.
-                    </TextCopy>
-                )
-            }
+            {!bugs.length && (
+                <TextCopy
+                    size={24}
+                    style={{ lineHeight: 30 }}
+                >
+                    No bugs to squash.
+                </TextCopy>
+            )}
+            
+            {bugs && (
+                <FlatList
+                    data={bugs}
+                    extraData={bugs}
+                    keyExtractor={item => `bug-item-${item._id}`}
+                    renderItem={({ item }) => <BugListItem item={item} onDelete={removeBug} />}
+                    style={{ flex: 1 }}
+                />
+            )}
 
             <BugModal
                 modal={bugModal}

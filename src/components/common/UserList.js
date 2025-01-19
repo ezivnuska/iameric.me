@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Pressable, View } from 'react-native'
-import { ActivityIndicator, ProfileImage, StatusIndicator, TextCopy } from '@components'
+import { ActivityIndicator, StatusIndicator, TextCopy, UserAvatar } from '@components'
 import { loadContactById } from '@utils/contacts'
 import { useApp, useUser } from '@context'
 
@@ -71,10 +71,9 @@ const VerticalListItem = ({ item }) => (
     >
         <View style={{ flexGrow: 0 }}>
 
-            <ProfileImage
+            <UserAvatar
                 size={30}
                 user={item}
-                userId={item._id}
             />
 
         </View>
@@ -116,7 +115,7 @@ const HorizontalListItem = ({ item }) => (
         }}
     >
 
-        <ProfileImage size={100} user={item} userId={item._id} />
+        <UserAvatar size={100} user={item} />
         
         <TextCopy bold align='center'>
             {item.username}

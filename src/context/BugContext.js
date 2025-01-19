@@ -126,13 +126,17 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_BUG':
+            let bugExists = false
             const bugs = state.bugs.map(bug => {
-                if (bug._id === payload._id) return payload
+                if (bug._id === payload._id) {
+                    bugExists = true
+                    return payload
+                }
                 else return bug
             })
             return {
                 ...state,
-                bugs,
+                bugs: bugExists ? bugs : [payload, ...state.bugs],
             }
             break
         case 'DELETE_BUG':
