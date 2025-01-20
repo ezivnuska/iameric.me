@@ -1,13 +1,15 @@
 import React from 'react'
-import { Pressable, View } from 'react-native'
-import { TextCopy, IconButton } from '@components'
+import { Pressable, Text, View } from 'react-native'
+import { IconButton } from '@components'
 import { useApp, useFeed } from '@context'
 import { navigate } from '@utils/navigation'
+import { useStyles } from '@styles'
 
 const FeedNavBar = ({ landscape, route, size = 20 }) => {
 
     const { theme } = useApp()
     const { setFeedModal } = useFeed()
+    const styles = useStyles(theme)
 
     return (
         <View
@@ -30,29 +32,25 @@ const FeedNavBar = ({ landscape, route, size = 20 }) => {
                 <Pressable
                     onPress={() => navigate('Home')}
                     disabled={route.name === 'Home'}
-                    style={{
-                        paddingRight: 10,
-                        borderRightWidth: 1,
-                        borderRightColor: '#aaa',
-                    }}
+                    style={styles.navButtonFirst}
                 >
-                    <TextCopy
-                        size={size}
-                        color={route.name !== 'Home' ? 'tomato' : theme.colors.textDefault}
-                        bold
+                    <Text
+                        style={[
+                            styles.heading,
+                            route.name !== 'Home' ? styles.link : null,
+                        ]}
                     >
                         Home
-                    </TextCopy>
+                    </Text>
 
                 </Pressable>
                 
-                <View style={{ paddingHorizontal: 10 }}>
-                    <TextCopy
-                        size={size}
-                        bold
+                <View style={styles.navButton}>
+                    <Text
+                        style={styles.heading}
                     >
                         Feed
-                    </TextCopy>
+                    </Text>
                 </View>
                 
             </View>

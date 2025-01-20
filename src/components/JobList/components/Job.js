@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, View } from 'react-native'
-import { TextCopy } from '@components'
+import { Pressable, Text, View } from 'react-native'
 import { useApp } from '@context'
+import { useStyles } from '@styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Animated, {
     interpolate,
@@ -10,72 +10,35 @@ import Animated, {
 	withTiming,
 } from 'react-native-reanimated'
 
-const Company = ({ name, open }) => (
-    <View>
-        <TextCopy size={18} color='#fff' bold>{name}</TextCopy>
-        {/* <TextCopy bold size={18} color='#fff'>{name}</TextCopy> */}
-    </View>
-)
 
-const Title = ({ title }) => (
-    <View>
-        <TextCopy color='tomato' size={18}>{title}</TextCopy>
-    </View>
-)
-
-const City = ({ city }) => (
-    <View>
-        <TextCopy size={18} color='#777'>{city}</TextCopy>
-    </View>
-)
-
-const Time = ({ start, end }) => {
-    const string = start === end ? start : `${start}-${end.substring(2)}`
-    return (
-        <View>
-            <TextCopy size={18} color='#777'>{string}</TextCopy>
-        </View>
-    )
-}
-
-const BulletListItem = ({ text, ...props }) => (
+const BulletListItem = ({ text, styles, ...props }) => (
     <View
         key={props.key}
-        style={{
-            flexDirection: 'row',
-            gap: 5,
-            flexShrink: 1,
-        }}
+        style={styles.flexRow}
     >
+        <Icon
+            name={'chevron-forward'}
+            size={16}
+            color='tomato'
+            style={{ marginTop: 3 }}
+        />
 
-        <View style={{ flexGrow: 0, marginTop: 3 }}>
-            <Icon
-                name={'chevron-forward'}
-                size={16}
-                color='tomato'
-            />
-        </View>
-
-        <View style={{ flexShrink: 1 }}>
-            <TextCopy size={18}>{text}</TextCopy>
-        </View>
+        <Text style={styles.copy}>{text}</Text>
     </View>
 )
 
-const BulletedList = ({ items, listKey }) => (
-    <View
-        style={{
-            gap: 10,
-            marginHorizontal: 7,
-            // marginBottom: 10,
-        }}
-    >
+const BulletedList = ({ items, listKey, styles }) => (
+    
+    <View style={[styles.paddedHorizontal, { gap: 10 }]}>
+
         {items.map((text, index) => (
             <BulletListItem
                 text={text}
+                styles={styles}
                 key={`${listKey}-${index}`}
             />
         ))}
+
     </View>
 )
 
@@ -83,9 +46,12 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
     const { company, city, start, end, title } = section
     
     const { theme } = useApp()
+    const styles = useStyles(theme)
 
     const [containerHeight, setContainerHeight] = useState(null)
     const [backgroundColor, setBackgroundColor] = useState('tomato')
+
+    const time = start === end ? start : `${start}-${end.substring(2)}`
 
     const anim = useSharedValue(0)
 
@@ -118,49 +84,44 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
                     backgroundColor: '#eee',
                     borderRadius: 6,
                     paddingHorizontal: 10,
-                    marginBottom: 10,
+                    // marginBottom: 10,
                     height: 40,
                 }, backgroundColorAnim]}
             >
-                <View
-                    style={{
-                        flexGrow: 1,
-                        flexDirection: 'row',
-                        alignContent: 'center',
-                        gap: 10,
-                    }}
-                >
-                    <Company name={company} />
-                    {/* <Title title={title} /> */}
+
+                <View style={[styles.flexRow, styles.flexDominant]}>
+                    <Text style={styles.buttonLabel}>{company}</Text>
                 </View>
 
-                <View style={{ flexGrow: 0 }}>
-                    <Icon
-                        name={visible ? 'chevron-up' : 'chevron-down'}
-                        size={24}
-                        color='#fff'
-                    />
-                </View>
+                <Icon
+                    name={visible ? 'chevron-up' : 'chevron-down'}
+                    size={24}
+                    color='#fff'
+                />
+
             </Animated.View>
             
             <Animated.View style={animatedStyle}>
                 <View
                     onLayout={onLayout}
-                    style={{ paddingBottom: 30, gap: 10 }}
+                    style={[styles.paddedVertical, { gap: 10 }]}
                 >
                     <View
-                        style={{
-                            flexDirection: 'row',
-                            alignContent: 'center',
-                            gap: 10,
-                            paddingHorizontal: 10,
-                        }}
+                        style={[
+                            styles.flexRow,
+                            styles.paddedHorizontal,
+                        ]}
                     >
-                        <Time start={start} end={end} />
-                        <City city={city} />
+                        <Text style={styles.time}>{time}</Text>
+                        <Text style={styles.city}>{city}</Text>
                     </View>
 
-                    <BulletedList items={section.bullets} listKey={props.key} />
+                    <BulletedList
+                        listKey={props.key}
+                        items={section.bullets}
+                        styles={styles}
+                    />
+
                 </View>
 
             </Animated.View>

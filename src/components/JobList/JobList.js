@@ -28,7 +28,8 @@ const JobList = () => {
             ref={listRef}
             data={jobs}
             keyExtractor={(item, index) => `job-${index}`}
-            style={{ marginVertical: 15 }}
+            // style={{ marginVertical: 15 }}
+            ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
             // getItemLayout={(data, index) => (
             //     {
             //         length: ITEM_HEIGHT,

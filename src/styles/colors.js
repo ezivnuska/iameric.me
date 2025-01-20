@@ -69,7 +69,7 @@ export const light = {
         tabActive: '#f00',
         tabInactive: '#000',
         tabBackground: '#fff',
-        textDefault: '#000',
+        textDefault: '#555',
         textAlt: '#fff',
         userTitle: '#000',
         modalBackground: '#fff',

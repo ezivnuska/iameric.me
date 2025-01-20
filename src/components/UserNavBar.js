@@ -1,21 +1,19 @@
-import React, { useEffect, useMemo } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
-import { TextCopy, IconButton } from '@components'
+import React, { useMemo } from 'react'
+import { Pressable, Text, View } from 'react-native'
+import { IconButton } from '@components'
 import { useApp, useModal, useUser } from '@context'
+import { useStyles } from '@styles'
 import { navigate } from '@utils/navigation'
 
-const UserNavBar = ({ route, size }) => {
+const UserNavBar = ({ route }) => {
 
     const { landscape, theme } = useApp()
     const { uploading, user, findUserByUsername } = useUser()
     const { setModal } = useModal()
+    const styles = useStyles(theme)
 
     const currentUser = useMemo(() => route.params?.username && findUserByUsername(route.params.username), [route.params])
     const isCurrentUser = useMemo(() => user.username === currentUser?.username, [currentUser])
-
-    // useEffect(() => {
-    //     console.log('currentUser', currentUser)
-    // }, [currentUser])
     
     return (
         <View
@@ -25,14 +23,9 @@ const UserNavBar = ({ route, size }) => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 gap: 10,
-                // width: '100%',
-                // maxWidth: 600,
-                // maxWidth: landscape ? '90%' : 400,
-                // marginHorizontal: 'auto',
                 paddingHorizontal: 10,
-                // borderWidth: 1,
             }}
-            >
+        >
             <View
                 style={{
                     flexDirection: 'row',
@@ -45,15 +38,16 @@ const UserNavBar = ({ route, size }) => {
                     <Pressable
                         onPress={() => navigate('Users')}
                         disabled={route.name === 'Users'}
-                        style={styles.leftButton}
+                        style={styles.navButtonFirst}
                     >
-                        <TextCopy
-                            size={size}
-                            color={route.name !== 'Users' ? 'tomato' : theme.colors.textDefault}
-                            bold
+                        <Text
+                            style={[
+                                styles.heading,
+                                route.name !== 'Users' ? styles.link : null,
+                            ]}
                         >
                             Users
-                        </TextCopy>
+                        </Text>
 
                     </Pressable>
                 {/* )} */}
@@ -61,30 +55,32 @@ const UserNavBar = ({ route, size }) => {
                 <Pressable
                     onPress={() => navigate('Profile', { username: route.params?.username })}
                     disabled={route.name === 'Profile'}
-                    style={styles.centerButton}
+                    style={styles.navButton}
                 >
-                    <TextCopy
-                        size={size}
-                        color={route.name === 'Profile' ? theme.colors.textDefault : 'tomato'}
-                        bold
+                    <Text
+                        style={[
+                            styles.heading,
+                            route.name !== 'Profile' ? styles.link : null,
+                        ]}
                     >
                         {route.params?.username}
-                    </TextCopy>
+                    </Text>
 
                 </Pressable>
 
                 <Pressable
                     onPress={() => navigate('Images', { username: route.params?.username })}
                     disabled={route.name === 'Images'}
-                    style={styles.rightButton}
+                    style={styles.navButtonLast}
                 >
-                    <TextCopy
-                        size={size}
-                        color={route.name === 'Images' ? theme.colors.textDefault : 'tomato'}
-                        bold
+                    <Text
+                        style={[
+                            styles.heading,
+                            route.name !== 'Images' ? styles.link : null,
+                        ]}
                     >
                         Images
-                    </TextCopy>
+                    </Text>
 
                 </Pressable>
                 
@@ -143,20 +139,3 @@ const UserNavBar = ({ route, size }) => {
 }
 
 export default UserNavBar
-
-const styles = StyleSheet.create({
-    leftButton: {
-        paddingRight: 10,
-        borderRightWidth: 1,
-        borderRightColor: '#aaa',
-        marginRight: 10,
-    },
-    centerButton: {
-        paddingRight: 10,
-    },
-    rightButton: {
-        paddingLeft: 10,
-        borderLeftWidth: 1,
-        borderLeftColor: '#aaa',
-    },
-})

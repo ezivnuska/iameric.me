@@ -1,6 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
-import { TextCopy } from '@components'
+import { Text, View } from 'react-native'
 import { ActivityIndicator as Indicator } from 'react-native-paper'
 
 const ActivityIndicator = ({
@@ -24,13 +23,9 @@ const ActivityIndicator = ({
             }}
         >
             {label && (
-                <TextCopy
-                    color={color}
-                    size={24}
-                    align='center'
-                >
+                <Text style={[styles.text, styles.copy, { color, fontSize: 24, textAlign: 'center' }]}>
                     {label}
-                </TextCopy>
+                </Text>
             )}
 
             <Indicator
