@@ -28,6 +28,7 @@ const JobList = () => {
             ref={listRef}
             data={jobs}
             keyExtractor={(item, index) => `job-${index}`}
+            style={{ marginVertical: 15 }}
             // getItemLayout={(data, index) => (
             //     {
             //         length: ITEM_HEIGHT,

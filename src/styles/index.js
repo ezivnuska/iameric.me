@@ -1,7 +1,11 @@
 import colors from './colors'
-import base from './base'
+import palette from './palette'
+import { useStyles } from './styles'
+import { useTheme } from './theme'
 
 export {
     colors,
-    base,
+    palette,
+    useStyles,
+    useTheme,
 }

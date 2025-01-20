@@ -1,10 +1,11 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { TextCopy, TextPressable, UserAvatar } from '@components'
+import { useApp } from '@context'
 import { navigate } from '@utils/navigation'
 
 const Brand = ({ size, user }) => {
-
+    const { theme } = useApp()
     return (
         <View>
     
@@ -21,7 +22,7 @@ const Brand = ({ size, user }) => {
                         onPress={() => navigate('Home')}
                         size={size}
                         bold
-                        color='#000'
+                        color={theme.colors.textDefault}
                     >
                         iam
                     </TextPressable>

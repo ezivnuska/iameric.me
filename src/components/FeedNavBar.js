@@ -1,11 +1,12 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { TextCopy, IconButton } from '@components'
-import { useFeed } from '@context'
+import { useApp, useFeed } from '@context'
 import { navigate } from '@utils/navigation'
 
 const FeedNavBar = ({ landscape, route, size = 20 }) => {
 
+    const { theme } = useApp()
     const { setFeedModal } = useFeed()
 
     return (
@@ -32,12 +33,12 @@ const FeedNavBar = ({ landscape, route, size = 20 }) => {
                     style={{
                         paddingRight: 10,
                         borderRightWidth: 1,
-                        borderRightColor: 'rgba(0, 0, 0, 0.5)',
+                        borderRightColor: '#aaa',
                     }}
                 >
                     <TextCopy
                         size={size}
-                        color={route.name !== 'Home' ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
+                        color={route.name !== 'Home' ? 'tomato' : theme.colors.textDefault}
                         bold
                     >
                         Home
@@ -49,7 +50,6 @@ const FeedNavBar = ({ landscape, route, size = 20 }) => {
                     <TextCopy
                         size={size}
                         bold
-                        color='rgba(0, 0, 0, 0.75)'
                     >
                         Feed
                     </TextCopy>

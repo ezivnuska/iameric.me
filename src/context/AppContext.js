@@ -5,30 +5,35 @@ import React, {
     useMemo,
     useReducer,
 } from 'react'
-import {
-    DarkTheme as NavigationDarkTheme,
-    DefaultTheme as NavigationDefaultTheme,
-} from '@react-navigation/native'
-import {
-    // ActivityIndicator,
-    MD2DarkTheme,
-    MD2LightTheme,
-} from 'react-native-paper'
+// import {
+//     DarkTheme as NavigationDarkTheme,
+//     DefaultTheme as NavigationDefaultTheme,
+// } from '@react-navigation/native'
+// import {
+//     // ActivityIndicator,
+//     MD2DarkTheme,
+//     MD2LightTheme,
+// } from 'react-native-paper'
 import { getItem, setItem } from '@utils/storage'
 
-import { dark, light } from '@styles/colors'
-import merge from 'deepmerge'
+// import { dark, light } from '@styles/colors'
+// import merge from 'deepmerge'
 import { useWindowDimensions } from 'react-native'
 import { useNotification } from '@context'
 
 import { useFonts } from 'expo-font'
 import Ionicons from '../fonts/Ionicons.ttf'
 
-const defaultTheme = merge(MD2LightTheme, NavigationDefaultTheme)
-const darkTheme = merge(MD2DarkTheme, NavigationDarkTheme)
+// const defaultTheme = merge(MD2LightTheme, NavigationDefaultTheme)
+// const darkTheme = merge(MD2DarkTheme, NavigationDarkTheme)
 
-const CombinedDefaultTheme = merge(defaultTheme, light)
-const CombinedDarkTheme = merge(darkTheme, dark)
+// const CombinedDefaultTheme = merge(defaultTheme, light)
+// const CombinedDarkTheme = merge(darkTheme, dark)
+
+import {
+    CombinedDefaultTheme,
+    CombinedDarkTheme,
+} from '@styles/theme'
 
 const initialState = {
     appLoaded: false,

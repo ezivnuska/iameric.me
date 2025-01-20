@@ -90,7 +90,7 @@ const VerticalListItem = ({ item }) => (
 
             <View style={{ flexGrow: 1 }}>
 
-                <TextCopy color='#000'>
+                <TextCopy>
                     {item.username}
                 </TextCopy>
                 
@@ -139,7 +139,10 @@ const UserList = ({ data, onPress }) => {
             keyExtractor={item => item._id}
             renderItem={({ item }) => <UserListItem item={item} onPress={onPress} />}
             horizontal={landscape}
-            style={{ flex: 1 }}
+            style={{
+                flex: 1,
+                paddingVertical: 20,
+            }}
         />
     )
 }

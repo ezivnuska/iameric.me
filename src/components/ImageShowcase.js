@@ -276,7 +276,7 @@ const CaptionContainer = ({
         setEditing(false)
     }
 
-    return hasAuthorization && image?.caption && (
+    return hasAuthorization && (
         <View
             style={{
                 // flex: 1,

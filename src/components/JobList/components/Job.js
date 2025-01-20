@@ -67,7 +67,7 @@ const BulletedList = ({ items, listKey }) => (
         style={{
             gap: 10,
             marginHorizontal: 7,
-            marginBottom: 10,
+            // marginBottom: 10,
         }}
     >
         {items.map((text, index) => (
@@ -117,8 +117,8 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
                     gap: 10,
                     backgroundColor: '#eee',
                     borderRadius: 6,
-                    paddingHorizontal: 15,
-                    marginBottom: 5,
+                    paddingHorizontal: 10,
+                    marginBottom: 10,
                     height: 40,
                 }, backgroundColorAnim]}
             >
@@ -146,14 +146,14 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
             <Animated.View style={animatedStyle}>
                 <View
                     onLayout={onLayout}
-                    style={{ paddingVertical: 10, gap: 10 }}
+                    style={{ paddingBottom: 30, gap: 10 }}
                 >
                     <View
                         style={{
                             flexDirection: 'row',
                             alignContent: 'center',
                             gap: 10,
-                            paddingHorizontal: 7,
+                            paddingHorizontal: 10,
                         }}
                     >
                         <Time start={start} end={end} />

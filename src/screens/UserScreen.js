@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { Screen, TextCopy, UserAvatar } from '@components'
-import { useModal, useUser } from '@context'
+import { useApp, useModal, useUser } from '@context'
 import { loadContact } from '@utils/contacts'
 import { create } from '@utils/normalize'
-import { fonts } from '@styles/base'
 
 const UserScreen = props => {
 
@@ -89,13 +88,14 @@ const UserScreen = props => {
 
 const UserProfile = ({ profile }) => {
 
+    const { theme, toggleTheme } = useApp()
     const { setModal } = useModal()
     const { authUser } = useUser()
 
     const isAuthUser = useMemo(() => profile && authUser._id === profile._id, [profile])
     
     return profile && (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, gap: 20 }}>
 
             <Pressable
                 key={`profile-${profile.username}-${Date.now()}`}
@@ -110,19 +110,29 @@ const UserProfile = ({ profile }) => {
             </Pressable>
 
             {/* <TextCopy style={styles.text}>TEST COPY</TextCopy> */}
-
+            <Pressable
+                onPress={toggleTheme}
+                style={{
+                    background: theme.colors.buttonSecondary,
+                    paddingVertical: 5,
+                    paddingHorizontal: 10,
+                    borderRadius: 10,
+                }}
+            >
+                <TextCopy>{`Switch to ${theme.dark ? 'light' : 'dark'} mode`}</TextCopy>
+            </Pressable>
         </View>
     )
 }
 
-const styles = create({
-    text: {
-        // color: '#d4895e',
-        // fontWeight: 'bold',
-        fontSize: fonts.x10,
-        // paddingHorizontal: 20,
-        // marginHorizontal: 20,
-    },
-})
+// const styles = create({
+//     text: {
+//         // color: '#d4895e',
+//         // fontWeight: 'bold',
+//         fontSize: fonts.x10,
+//         // paddingHorizontal: 20,
+//         // marginHorizontal: 20,
+//     },
+// })
 
 export default UserScreen

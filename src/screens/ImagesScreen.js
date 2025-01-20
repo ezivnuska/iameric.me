@@ -98,7 +98,7 @@ const ImagesScreen = props => {
             
             addNotification('Image uploaded.')
 
-            setUploadedImage(null)
+            // setUploadedImage(null)
         }
 
     }, [uploadedImage])

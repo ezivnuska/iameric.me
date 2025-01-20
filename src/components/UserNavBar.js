@@ -6,7 +6,7 @@ import { navigate } from '@utils/navigation'
 
 const UserNavBar = ({ route, size }) => {
 
-    const { landscape } = useApp()
+    const { landscape, theme } = useApp()
     const { uploading, user, findUserByUsername } = useUser()
     const { setModal } = useModal()
 
@@ -49,7 +49,7 @@ const UserNavBar = ({ route, size }) => {
                     >
                         <TextCopy
                             size={size}
-                            color={route.name !== 'Users' ? 'tomato' : 'rgba(0, 0, 0, 0.75)'}
+                            color={route.name !== 'Users' ? 'tomato' : theme.colors.textDefault}
                             bold
                         >
                             Users
@@ -65,7 +65,7 @@ const UserNavBar = ({ route, size }) => {
                 >
                     <TextCopy
                         size={size}
-                        color={route.name === 'Profile' ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
+                        color={route.name === 'Profile' ? theme.colors.textDefault : 'tomato'}
                         bold
                     >
                         {route.params?.username}
@@ -80,7 +80,7 @@ const UserNavBar = ({ route, size }) => {
                 >
                     <TextCopy
                         size={size}
-                        color={route.name === 'Images' ? 'rgba(0, 0, 0, 0.75)' : 'tomato'}
+                        color={route.name === 'Images' ? theme.colors.textDefault : 'tomato'}
                         bold
                     >
                         Images
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     leftButton: {
         paddingRight: 10,
         borderRightWidth: 1,
-        borderRightColor: 'rgba(0, 0, 0, 0.5)',
+        borderRightColor: '#aaa',
         marginRight: 10,
     },
     centerButton: {
@@ -157,6 +157,6 @@ const styles = StyleSheet.create({
     rightButton: {
         paddingLeft: 10,
         borderLeftWidth: 1,
-        borderLeftColor: 'rgba(0, 0, 0, 0.5)',
+        borderLeftColor: '#aaa',
     },
 })

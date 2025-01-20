@@ -19,7 +19,7 @@ const TextCopy = ({
                     flexShrink: 1,
                     fontSize: size,
                     fontWeight: bold ? 700 : 400,
-                    color: color || theme?.colors.textDefault,
+                    color: color || theme.colors.textDefault,
                     lineHeight: size + 5,
                     textAlign: align,
                 },

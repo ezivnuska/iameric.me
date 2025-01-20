@@ -1,3 +1,5 @@
+import palette from './palette'
+
 export const dark = {
     dark: true,
     colors: {
