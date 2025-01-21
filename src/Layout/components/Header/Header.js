@@ -1,27 +1,14 @@
 import React  from 'react'
 import { View } from 'react-native'
-import { Brand, UserNavBar } from './components'
-import { BugNavBar, FeedNavBar, IconButton, SimpleButton } from '@components'
+import { Brand } from './components'
+import { IconButton, SimpleButton } from '@components'
 import { navigate } from '@utils/navigation'
-import { useModal } from '@context'
+import { useModal, useTheme } from '@context'
 
 const Header = ({ landscape, route, user = null }) => {
-
+    
+    const { styles } = useTheme()
     const { setModal } = useModal()
-
-    const renderNav = () => {
-
-        const props = { landscape, route }
-
-        switch (route?.name) {
-            // case 'Feed': return <FeedNavBar {...props} />; break
-            // case 'Bugs':  return <BugNavBar {...props} />; break
-            case 'Profile':
-            case 'Images': return <UserNavBar {...props} />; break
-            default: return null
-        }
-
-    }
     
     return (
         <View
@@ -32,36 +19,28 @@ const Header = ({ landscape, route, user = null }) => {
                 minWidth: 300,
                 maxWidth: landscape ? '90%' : 400,
                 marginHorizontal: 'auto',
-                paddingHorizontal: 10,
             }}
         >
             
             <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: landscape ? 'center' : 'flex-start',
-                    marginTop: 10,
-                }}
+                style={[
+                    styles.flexRow,
+                    styles.justifyBetween,
+                    styles.padded,
+                    // {
+                    //     flex: 1,
+                    //     flexDirection: 'row',
+                    //     justifyContent: 'space-between',
+                    //     alignItems: landscape ? 'center' : 'flex-start',
+                    //     paddingHorizontal: 10,
+                    //     marginTop: 10,
+                    // }
+                ]}
             >
-                <Brand user={user} size={30} />
-
-                {/* {navigation} */}
-                
-                {/* {landscape && user && (
-                    <View
-                        style={{
-                            flexGrow: 1,
-                            flexDirection: 'row',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <View style={{ flexBasis: 'auto' }}>
-                            {renderNav()}
-                        </View>
-                    </View>
-                )} */}
+                <Brand
+                    user={user}
+                    disabled={route?.name === 'Home'}
+                />
 
                 <View
                     style={{

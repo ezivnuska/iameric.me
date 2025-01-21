@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { Screen, TextCopy, UserAvatar } from '@components'
-import { useApp, useModal, useUser } from '@context'
+import { useModal, useUser, useTheme } from '@context'
 import { loadContact } from '@utils/contacts'
 import { create } from '@utils/normalize'
 
@@ -88,7 +88,7 @@ const UserScreen = props => {
 
 const UserProfile = ({ profile }) => {
 
-    const { theme, toggleTheme } = useApp()
+    const { theme, toggleTheme } = useTheme()
     const { setModal } = useModal()
     const { authUser } = useUser()
 

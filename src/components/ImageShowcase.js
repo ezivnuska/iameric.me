@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Image, ScrollView, View } from 'react-native'
 import { ActivityIndicator, Form, IconButton, IconButtonLarge, TextCopy, Time, UserAvatar } from '@components'
-import { useApp, useForm, useModal, useUser } from '@context'
+import { useForm, useModal, useTheme, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
@@ -9,7 +9,7 @@ const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const ImageShowcase = ({ data }) => {
 
-    const { landscape } = useApp()
+    const { landscape } = useTheme()
     const { clearForm, formError, formFields } = useForm()
     const { closeModal } = useModal()
     const { user, authUser, setDeletedImage, updateImage, updateUser } = useUser()

@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 import { Image } from 'react-native'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const ImageContained = ({ source }) => {
 
-    // const { dims, landscape } = useApp()
+    // const { dims, landscape } = useTheme()
     // const uri = useMemo(() => `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
 
     return (

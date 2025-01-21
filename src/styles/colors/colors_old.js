@@ -1,4 +1,4 @@
-import palette from './palette'
+import palette from '../schemes'
 
 export const dark = {
     dark: true,

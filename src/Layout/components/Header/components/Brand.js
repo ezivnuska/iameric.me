@@ -1,11 +1,13 @@
 import React from 'react'
-import { Pressable, View } from 'react-native'
-import { TextCopy, TextPressable, UserAvatar } from '@components'
-import { useApp } from '@context'
+import { Pressable, Text, View } from 'react-native'
+import { UserAvatar } from '@components'
+import { useTheme } from '@context'
 import { navigate } from '@utils/navigation'
 
-const Brand = ({ size, user }) => {
-    const { theme } = useApp()
+const Brand = ({ user, disabled }) => {
+
+    const { styles } = useTheme()
+    
     return (
         <View>
     
@@ -18,31 +20,19 @@ const Brand = ({ size, user }) => {
                         gap: 3,
                     }}
                 >
-                    <TextPressable
-                        onPress={() => navigate('Home')}
-                        size={size}
-                        bold
-                        color={theme.colors.textDefault}
-                    >
-                        iam
-                    </TextPressable>
+                    <Pressable onPress={() => navigate('Home')}>
+                        <Text style={styles.brand}>
+                            iam
+                        </Text>
+                    </Pressable>
     
                     <Pressable
                         onPress={() => navigate('User', { screen: 'Profile', params: { username: user.username } })}
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'flex-start',
-                            alignItems: 'center',
-                            gap: 15,
-                        }}
+                        style={[styles.flexRow, { gap: 15 }]}
                     >
-                        <TextCopy
-                            bold
-                            size={size}
-                            color='tomato'
-                        >
+                        <Text style={styles.brandAlt}>
                             {user.username}
-                        </TextCopy>
+                        </Text>
                         
                         <UserAvatar
                             user={user}
@@ -55,23 +45,12 @@ const Brand = ({ size, user }) => {
             ) : (
                 <Pressable
                     onPress={() => navigate('Home')}
-                    style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}
+                    style={[styles.flexRow, { gap: 3 }]}
+                    disabled={disabled}
                 >
-                    <TextCopy
-                        bold
-                        color='#000'
-                        size={size}
-                    >
-                        iam
-                    </TextCopy>
-    
-                    <TextCopy
-                        bold
-                        color='#999'
-                        size={size}
-                    >
-                        eric
-                    </TextCopy>
+                    <Text style={styles.brand}>
+                        iameric
+                    </Text>
     
                 </Pressable>
             )}

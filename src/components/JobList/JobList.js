@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { Job } from './components'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 import jobs from './jobs'
 
 const JobList = () => {
 
-    const { landscape } = useApp()
+    const { landscape } = useTheme()
 
     const [visible, setVisible] = useState(null)
 

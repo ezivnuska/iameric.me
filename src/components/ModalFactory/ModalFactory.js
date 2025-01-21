@@ -10,12 +10,12 @@ import {
     Socket,
 } from '@components'
 import { ModalContainer, ModalHeader } from './components'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 import Modal from 'react-native-modal'
 
 const ModalFactory = ({ modal, onClose }) => {
 
-    const { dims, landscape } = useApp()
+    const { dims, landscape } = useTheme()
 
     const renderModalContent = () => {
         

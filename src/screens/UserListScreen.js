@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { ActivityIndicator, Screen, UserList } from '@components'
 import { loadContactIds } from '@utils/contacts'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 
 const UserListScreen = props => {
 
-    const { landscape } = useApp()
+    const { landscape } = useTheme()
     
     const [userIds, setUserIds] = useState(null)
     const [loading, setLoading] = useState(false)

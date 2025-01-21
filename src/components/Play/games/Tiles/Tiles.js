@@ -14,12 +14,11 @@ import {
 	GameHeader,
 	Tile,
 } from './components'
-import { useApp, usePlay, useUser } from '@context'
-import { navigate } from '@utils/navigation'
+import { usePlay, useTheme, useUser } from '@context'
 
 const Tiles = ({ gameSize, changeLevel, level }) => {
 
-	const { landscape } = useApp()
+	const { landscape } = useTheme()
 	const { playModal, closePlayModal, setPlayModal } = usePlay()
 	
 	const [initialTiles, setInitialTiles] = useState(null)

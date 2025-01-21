@@ -1,12 +1,12 @@
 import React from 'react'
 import { Text } from 'react-native'
 import { JobList, Screen } from '@components'
-import { useApp } from '@context'
-import { useStyles } from '@styles'
+import { useTheme } from '@context'
 
 const WorkScreen = props => {
-    const { theme } = useApp()
-    const styles = useStyles(theme)
+    
+    const { styles } = useTheme()
+    
     return (
         <Screen {...props}>
             <Text style={[styles.heading, styles.paddedVertical]}>Places I've Worked</Text>

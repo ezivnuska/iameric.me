@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Text, TextInput, View } from 'react-native'
 import { TextCopy } from '@components'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 
 const FormField = ({
     name,
@@ -16,7 +16,7 @@ const FormField = ({
     ...props
 }) => {
 
-    const { theme } = useApp()
+    const { theme } = useTheme()
 
     useState(() => {
         if (dirty && error) console.log('error:', error)

@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { IconButton, TextCopy, Time, UserAvatar } from '@components'
-import { useApp, useFeed, useUser } from '@context'
+import { useFeed, useUser, useTheme } from '@context'
 import { navigate } from '@utils/navigation'
 import { loadPost } from '@utils/feed'
-import { useStyles } from '@styles'
 
 const FeedListItem = ({ item, onDelete = null, ...props }) => {
     
-    const { theme } = useApp()
+    const { styles } = useTheme()
     const { updatePost } = useFeed()
     const { user } = useUser()
-    const styles = useStyles(theme)
 
     const [loading, setLoading] = useState(false)
     const [post, setPost] = useState(null)

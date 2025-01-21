@@ -9,14 +9,15 @@ import {
     ModalContextProvider,
     NotificationContextProvider,
     SocketContextProvider,
-    useApp,
+    useTheme,
+    ThemeContextProvider,
     UserContextProvider,
 } from './context'
 import { GOOGLE_MAPS_API_KEY } from '../config'
 import { APIProvider } from '@vis.gl/react-google-maps'
 
 const Container = ({ children }) => {
-    const { dims } = useApp()
+    const { dims } = useTheme()
     return (
         <View style={{ height: dims.height }}>
             {children}
@@ -29,30 +30,32 @@ const App = () => {
     // const [ mapsLoaded, setMapsLoaded ] = useState(false)
     return (
         <AppContextProvider>
-            <UserContextProvider>
-                <Container>
-                    {/* <APIProvider
-                        apiKey={apiKey}
-                        version='weekly'
-                        libraries={['marker', 'geocoding']}
-                        onLoad={() => setMapsLoaded(true)}
-                    > */}
-                        {/* {(mapsLoaded === true) ? ( */}
-                            <NotificationContextProvider>
-                                <FormContextProvider>
-                                    <ModalContextProvider>
-                                        <SocketContextProvider>
+            <ThemeContextProvider>
+                <UserContextProvider>
+                    <Container>
+                        {/* <APIProvider
+                            apiKey={apiKey}
+                            version='weekly'
+                            libraries={['marker', 'geocoding']}
+                            onLoad={() => setMapsLoaded(true)}
+                        > */}
+                            {/* {(mapsLoaded === true) ? ( */}
+                                <NotificationContextProvider>
+                                    <FormContextProvider>
+                                        <ModalContextProvider>
+                                            <SocketContextProvider>
 
-                                                <Layout />
+                                                    <Layout />
 
-                                        </SocketContextProvider>
-                                    </ModalContextProvider>
-                                </FormContextProvider>
-                            </NotificationContextProvider>
-                        {/* ) : <ActivityIndicator />} */}
-                    {/* </APIProvider> */}
-                </Container>
-            </UserContextProvider>
+                                            </SocketContextProvider>
+                                        </ModalContextProvider>
+                                    </FormContextProvider>
+                                </NotificationContextProvider>
+                            {/* ) : <ActivityIndicator />} */}
+                        {/* </APIProvider> */}
+                    </Container>
+                </UserContextProvider>
+            </ThemeContextProvider>
         </AppContextProvider>
     )
 }

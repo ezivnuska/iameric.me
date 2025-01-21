@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { ImageList, Screen, TextCopy } from '@components'
-import { useApp, useModal, useNotification, useUser } from '@context'
+import { useModal, useNotification, useTheme, useUser } from '@context'
 import { loadImages, uploadImage } from '@utils/images'
 import { loadContact } from '@utils/contacts'
 import { ActivityIndicator } from 'react-native-paper'
 
 const ImagesScreen = props => {
 
-    const { landscape } = useApp()
+    const { landscape } = useTheme()
     const { addNotification } = useNotification()
     const { setModal } = useModal()
     const {

@@ -1,16 +1,14 @@
 import React, { useMemo } from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { IconButton } from '@components'
-import { useApp, useModal, useUser } from '@context'
-import { useStyles } from '@styles'
+import { useModal, useTheme, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
 const UserNavBar = ({ route }) => {
 
-    const { landscape, theme } = useApp()
+    const { landscape, styles } = useTheme()
     const { uploading, user, findUserByUsername } = useUser()
     const { setModal } = useModal()
-    const styles = useStyles(theme)
 
     const currentUser = useMemo(() => route.params?.username && findUserByUsername(route.params.username), [route.params])
     const isCurrentUser = useMemo(() => user.username === currentUser?.username, [currentUser])
@@ -38,7 +36,7 @@ const UserNavBar = ({ route }) => {
                     <Pressable
                         onPress={() => navigate('Users')}
                         disabled={route.name === 'Users'}
-                        style={styles.navButtonFirst}
+                        style={styles.navLinkFirst}
                     >
                         <Text
                             style={[
@@ -55,7 +53,7 @@ const UserNavBar = ({ route }) => {
                 <Pressable
                     onPress={() => navigate('Profile', { username: route.params?.username })}
                     disabled={route.name === 'Profile'}
-                    style={styles.navButton}
+                    style={styles.navLink}
                 >
                     <Text
                         style={[
@@ -71,7 +69,7 @@ const UserNavBar = ({ route }) => {
                 <Pressable
                     onPress={() => navigate('Images', { username: route.params?.username })}
                     disabled={route.name === 'Images'}
-                    style={styles.navButtonLast}
+                    style={styles.navLinkLast}
                 >
                     <Text
                         style={[

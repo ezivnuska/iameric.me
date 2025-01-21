@@ -1,12 +1,12 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { TextCopy } from '@components'
-import { useApp, useForm } from '@context'
+import { useForm, useTheme } from '@context'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const FormHeader = ({ title, close = null, color = '#000' }) => {
 
-    const { theme } = useApp()
+    const { theme } = useTheme()
     const { clearForm } = useForm()
 
     const handleClose = () => {

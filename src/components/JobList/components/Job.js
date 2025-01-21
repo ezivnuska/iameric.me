@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, Text, View } from 'react-native'
-import { useApp } from '@context'
-import { useStyles } from '@styles'
+import { useTheme } from '@context'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Animated, {
     interpolate,
@@ -45,8 +44,7 @@ const BulletedList = ({ items, listKey, styles }) => (
 const Job = ({ section, onPress, visible = false, ...props }) => {
     const { company, city, start, end, title } = section
     
-    const { theme } = useApp()
-    const styles = useStyles(theme)
+    const { styles } = useTheme()
 
     const [containerHeight, setContainerHeight] = useState(null)
     const [backgroundColor, setBackgroundColor] = useState('tomato')

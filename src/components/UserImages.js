@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Image, Pressable, ScrollView, View } from 'react-native'
-import { ActivityIndicator, TextCopy } from '@components'
-import { useApp, useUser } from '@context'
+import { ActivityIndicator } from '@components'
+import { useTheme } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -34,7 +34,7 @@ const ImageGridItem = ({ image, size }) => (
 
 const UserImages = ({ images, onPress, list = false, ...props }) => {
 
-    const { landscape, theme } = useApp()
+    const { landscape, theme } = useTheme()
 
     const [maxDims, setMaxDims] = useState(null)
     

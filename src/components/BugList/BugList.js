@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
-import { FlatList, View } from 'react-native'
-import { BugListItem, BugModal} from './components'
-import { BugNavBar, TextCopy } from '@components'
-import { useBugs, useSocket } from '@context'
+import { FlatList, Text, View } from 'react-native'
+import { BugListItem, BugModal } from './components'
+import { useBugs, useSocket, useTheme } from '@context'
 import { deleteEntryWithId } from '@utils/bugs'
 
 const BugList = props => {
@@ -17,6 +16,7 @@ const BugList = props => {
     } = useBugs()
 
     const { socket } = useSocket()
+    const { styles } = useTheme()
 
     useEffect(() => {
 
@@ -44,19 +44,13 @@ const BugList = props => {
                 gap: 10,
             }}
         >
-            
-            {props.route.name === 'Bugs' && <BugNavBar {...props} />}
-
-            {!bugs.length && (
-                <TextCopy
-                    size={24}
-                    style={{ lineHeight: 30 }}
-                >
+            {!bugs?.length && (
+                <Text style={styles.text}>
                     No bugs to squash.
-                </TextCopy>
+                </Text>
             )}
             
-            {bugs && (
+            {bugs?.length && (
                 <FlatList
                     data={bugs}
                     extraData={bugs}

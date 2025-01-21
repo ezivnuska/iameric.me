@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { FeedListItem, FeedModal } from './components'
 import { useFeed, useSocket } from '@context'
-import { FeedNavBar } from '@components'
 import { deletePostWithId } from '@utils/feed'
 
 const Feed = props => {
@@ -43,8 +42,6 @@ const Feed = props => {
     
     return (
         <View style={{ flex: 1 }}>
-            
-            <FeedNavBar {...props} />
 
             {posts && (
                 <FlatList

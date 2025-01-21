@@ -10,9 +10,7 @@ const UserNavigator = () => {
         <UserStack.Navigator
             initialRouteName='Profile'
             screenOptions={{
-                // headerShown: false,
-                headerShown: true,
-                header: props => <UserNavBar {...props} />,
+                headerShown: false,
             }}
         >
 

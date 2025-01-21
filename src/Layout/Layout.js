@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaView, View } from 'react-native'
 import { AppNavigator } from '../navigators'
 import linking from '../linking'
 import { Footer, Header } from './components'
 import { ImageUploadIndicator, ModalFactory, Notification } from '@components'
-import { useApp, useModal, useUser } from '@context'
+import { useApp, useModal, useUser, useTheme } from '@context'
 import navigationRef from '@utils/navigation'
 import { PaperProvider } from 'react-native-paper'
 
@@ -13,11 +13,14 @@ const Layout = () => {
 
     const {
         currentRoute,
+        setCurrentRoute,
+    } = useApp()
+    
+    const {
         dims,
         landscape,
         theme,
-        setCurrentRoute,
-    } = useApp()
+    } = useTheme()
 
     const {
         modal,
@@ -26,13 +29,21 @@ const Layout = () => {
 
     const { authUser } = useUser()
 
+    useEffect(() => {
+        console.log('theme---', theme)
+    }, [theme])
+
+    useEffect(() => {
+        console.log('landscape---', landscape)
+    }, [landscape])
+
     return (
         <SafeAreaView
             style={{
                 flex: 1,
                 height: dims.height,
                 width: dims.width,
-                backgroundColor: theme?.colors.background,
+                backgroundColor: theme.colors.background,
             }}
         >
 
@@ -79,8 +90,6 @@ const Layout = () => {
                             style={{
                                 flexGrow: 1,
                                 width: '100%',
-                                maxWidth: landscape ? '90%' : 400,
-                                marginHorizontal: 'auto',
                                 zIndex: 100,
                             }}
                         >

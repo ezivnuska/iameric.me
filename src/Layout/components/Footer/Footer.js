@@ -1,11 +1,12 @@
-import React, { useMemo } from 'react'
-import { View } from 'react-native'
-import { IconButtonLarge, TextCopy, TextPressable } from '@components'
-import { useModal, useSocket, useUser } from '@context'
+import React from 'react'
+import { Pressable, Text, View } from 'react-native'
+import { IconButtonLarge } from '@components'
+import { useModal, useSocket, useTheme, useUser } from '@context'
 import navigationRef from '@utils/navigation'
 
 const Footer = ({ landscape, route }) => {
 
+    const { styles } = useTheme()
     const { user } = useUser()
     const { setModal } = useModal()
     const { connections, connectionsLoading } = useSocket()
@@ -29,15 +30,13 @@ const Footer = ({ landscape, route }) => {
                 style={{ paddingHorizontal: 10 }}
             >
                 {connectionsLoading ? (
-                    <TextCopy color='#ccc'>
+                    <Text style={styles.text.primary}>
                         Connectiong to socket...
-                    </TextCopy>
+                    </Text>
                 ) : (
-                    <TextPressable
-                        onPress={() => setModal('SOCKETS')}
-                    >
-                        {`${connections.length} user${connections.length !== 1 ? `s` : ''} connected`}
-                    </TextPressable>
+                    <Pressable onPress={() => setModal('SOCKETS')}>
+                        <Text style={styles.text}>{`${connections.length} user${connections.length !== 1 ? `s` : ''} connected`}</Text>
+                    </Pressable>
                 )}
             </View>
 

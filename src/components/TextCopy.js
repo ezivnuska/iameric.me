@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 
 const TextCopy = ({
     bold = false,
@@ -10,7 +10,7 @@ const TextCopy = ({
     ...props
 }) => {
     
-    const { theme } = useApp()
+    const { theme } = useTheme()
     
     return (
         <Text

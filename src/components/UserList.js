@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, Pressable, View } from 'react-native'
 import { ActivityIndicator, StatusIndicator, TextCopy, UserAvatar } from '@components'
 import { loadContactById } from '@utils/contacts'
-import { useApp, useUser } from '@context'
+import { useTheme, useUser } from '@context'
 
 const UserListItem = ({ item, onPress }) => {
 
-    const { landscape } = useApp()
+    const { landscape } = useTheme()
     const { findUserById, updateUser } = useUser()
 
     const [loading, setLoading] = useState(false)
@@ -130,7 +130,7 @@ const HorizontalListItem = ({ item }) => (
 
 const UserList = ({ data, onPress }) => {
 
-    const { landscape } = useApp()
+    const { landscape } = useTheme()
 
     return (
         <FlatList

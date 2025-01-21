@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Image, View } from 'react-native'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const UserAvatar = ({ user, size = 'auto' }) => {
 
-    const { theme } = useApp()
+    const { theme } = useTheme()
 
     // const profileImage = useMemo(() => user && user.profileImage, [user])
 

@@ -6,7 +6,7 @@ import AdminButton from './AdminButton'
 import Cabinet from './Cabinet'
 import Checkbox from './Checkbox'
 // import Counter from './Counter'
-import FeedNavBar from './FeedNavBar'
+import FeedNavBar from './NavBar'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageContained from './ImageContained'
@@ -16,6 +16,7 @@ import ImageMax from './ImageMax'
 import ImageShowcase from './ImageShowcase'
 import ImageUploadIndicator from './ImageUploadIndicator'
 import ModalContainer from './ModalContainer'
+import NavBar from './NavBar'
 // import InfoMarker from './InfoMarker'
 // import ProfileNav from './ProfileNav'
 import PostForm from './PostForm'
@@ -68,6 +69,7 @@ export {
     ImageShowcase,
     ImageUploadIndicator,
     ModalContainer,
+    NavBar,
     PostForm,
     Settings,
     Screen,

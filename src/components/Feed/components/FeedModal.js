@@ -1,12 +1,12 @@
 import React from 'react'
 import { View } from 'react-native'
 import { ModalContainer, PostForm } from '@components'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 import Modal from 'react-native-modal'
 
 const FeedModal = ({ modal, onClose }) => {
 
-    const { dims, landscape } = useApp()
+    const { dims, landscape } = useTheme()
 
     return (
         <Modal

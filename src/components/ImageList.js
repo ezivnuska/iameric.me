@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
 import { ActivityIndicator } from '@components'
-import { useApp, useUser } from '@context'
+import { useTheme, useUser } from '@context'
 import { loadImage } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
@@ -34,7 +34,7 @@ const ImageGridItem = ({ uri, size }) => {
 
 const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
 
-    const { landscape } = useApp()
+    const { landscape } = useTheme()
     const { findUserImage, updateImage } = useUser()
 
     const [item, setItem] = useState(null)
@@ -131,7 +131,7 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
 
 const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false }) => {
 
-    const { landscape, theme } = useApp()
+    const { landscape, theme } = useTheme()
     const { uploadedImage, setUploadedImage } = useUser()
 
     const [maxDims, setMaxDims] = useState(null)

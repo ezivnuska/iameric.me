@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react'
 import { Image, ScrollView, View } from 'react-native'
 import { getMaxImageDims } from '@utils/images'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const ImageMax = ({ image }) => {
 
-    const { dims } = useApp()
+    const { dims } = useTheme()
 
     const [imageDims, setImageDims] = useState(null)
 

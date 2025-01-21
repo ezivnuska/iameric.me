@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { ScrollView, View } from 'react-native'
-import { useApp, useModal, useUser } from '@context'
+import { useApp, useModal, useTheme, useUser } from '@context'
+import { NavBar } from '@components'
 
 const Screen = ({
     children,
@@ -9,7 +10,8 @@ const Screen = ({
     ...props
 }) => {
 
-    const { landscape, setAuthRoute } = useApp()
+    const { setAuthRoute } = useApp()
+    const { landscape } = useTheme()
     const { setModal } = useModal()
     const { user } = useUser()
 
@@ -30,7 +32,14 @@ const Screen = ({
     if (!authorized) return <View style={{ flex: 1 }} />
 
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            style={{
+                flex: 1,
+                borderWidth: 1,
+                borderStyle: 'dashed',
+            }}
+        >
+            <NavBar route={props.route} landscape={landscape} />
 
             <ScrollView
                 // horizontal={landscape}
@@ -39,10 +48,12 @@ const Screen = ({
                 contentContainerStyle={{
                     flex: 1,
                     width: '100%',
-                    // maxWidth: (landscape && !full) ? '90%' : null,
+                    maxWidth: landscape ? '90%' : 400,
                     marginHorizontal: 'auto',
+                    // maxWidth: (landscape && !full) ? '90%' : null,
+                    // marginHorizontal: 'auto',
                     paddingHorizontal: !full ? 10 : 0,
-                    // paddingVertical: 10,
+                    paddingVertical: 10,
                 }}
             >
                 {children}

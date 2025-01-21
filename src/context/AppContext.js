@@ -14,12 +14,12 @@ import React, {
 //     MD2DarkTheme,
 //     MD2LightTheme,
 // } from 'react-native-paper'
-import { getItem, setItem } from '@utils/storage'
+// import { getItem, setItem } from '@utils/storage'
 
 // import { dark, light } from '@styles/colors'
 // import merge from 'deepmerge'
-import { useWindowDimensions } from 'react-native'
-import { useNotification } from '@context'
+// import { useWindowDimensions } from 'react-native'
+// import { useNotification } from '@context'
 
 import { useFonts } from 'expo-font'
 import Ionicons from '../fonts/Ionicons.ttf'
@@ -30,21 +30,21 @@ import Ionicons from '../fonts/Ionicons.ttf'
 // const CombinedDefaultTheme = merge(defaultTheme, light)
 // const CombinedDarkTheme = merge(darkTheme, dark)
 
-import {
-    CombinedDefaultTheme,
-    CombinedDarkTheme,
-} from '@styles/theme'
+// import {
+//     CombinedDefaultTheme,
+//     CombinedDarkTheme,
+// } from '@styles/theme'
 
 const initialState = {
     appLoaded: false,
     authRoute: null,
     currentRoute: null,
     lastRoute: null,
-    dark: false,
-    theme: CombinedDefaultTheme,
+    // dark: false,
+    // theme: CombinedDefaultTheme,
     setAuthRoute: () => {},
     setCurrentRoute: () => {},
-    toggleTheme: () => {},
+    // toggleTheme: () => {},
 }
 
 export const AppContext = createContext(initialState)
@@ -59,9 +59,9 @@ export const AppContextProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const dims = useWindowDimensions()
+    // const dims = useWindowDimensions()
 
-    const landscape = useMemo(() => dims && dims.width > dims.height, [dims])
+    // const landscape = useMemo(() => dims && dims.width > dims.height, [dims])
 
     const [fontsLoaded] = useFonts({
         'Ionicons': Ionicons,
@@ -69,10 +69,10 @@ export const AppContextProvider = ({ children }) => {
 
     const init = async () => {
         
-        let storedValue = await getItem('dark')
+        // let storedValue = await getItem('dark')
 
-        if (storedValue && storedValue === 'true') dispatch({ type: 'TOGGLE_THEME' })
-        else await setItem('dark', false)
+        // if (storedValue && storedValue === 'true') dispatch({ type: 'TOGGLE_THEME' })
+        // else await setItem('dark', false)
         
         dispatch({ type: 'APP_LOADED' })
         console.log('app loaded')
@@ -86,13 +86,13 @@ export const AppContextProvider = ({ children }) => {
     //     console.log('dims*', dims)
     // }, [dims])
     
-    const toggleTheme = async () => {
-        setItem('dark', !state.dark)
-        dispatch({ type: 'TOGGLE_THEME' })
-    }
+    // const toggleTheme = async () => {
+    //     setItem('dark', !state.dark)
+    //     dispatch({ type: 'TOGGLE_THEME' })
+    // }
 
     const actions = useMemo(() => ({
-        toggleTheme,
+        // toggleTheme,
         setAuthRoute: payload => {
             dispatch({
                 type: 'SET_AUTH_ROUTE',
@@ -111,8 +111,8 @@ export const AppContextProvider = ({ children }) => {
         <AppContext.Provider
             value={{
                 ...state, // stuff from initial state
-                dims, // anything extra...
-                landscape,
+                // dims,
+                // landscape,
                 ...actions,
             }}
         >
@@ -125,15 +125,15 @@ const reducer = (state, action) => {
     const { type, payload } = action
     switch(type) {
         case 'APP_LOADED': return { ...state, appLoaded: true }; break
-        case 'TOGGLE_THEME':
-            return {
-                ...state,
-                dark: !state.dark,
-                theme: !state.dark
-                ? CombinedDarkTheme
-                : CombinedDefaultTheme,
-            }
-            break
+        // case 'TOGGLE_THEME':
+        //     return {
+        //         ...state,
+        //         dark: !state.dark,
+        //         theme: !state.dark
+        //         ? CombinedDarkTheme
+        //         : CombinedDefaultTheme,
+        //     }
+        //     break
         case 'SET_AUTH_ROUTE':
             return {
                 ...state,

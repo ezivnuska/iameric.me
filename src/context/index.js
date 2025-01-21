@@ -5,8 +5,9 @@ import { FormContextProvider, useForm } from './FormContext'
 import { ModalContextProvider, useModal } from './ModalContext'
 import { UserContextProvider, useUser } from './UserContext'
 import { NotificationContextProvider, useNotification } from './NotificationContext'
-import { SocketContextProvider, useSocket } from './SocketContext'
 import { PlayContextProvider, usePlay } from './PlayContext'
+import { SocketContextProvider, useSocket } from './SocketContext'
+import { ThemeContextProvider, useTheme } from './ThemeContext'
 
 export {
     AppContextProvider,
@@ -19,6 +20,7 @@ export {
     ModalContextProvider,
     PlayContextProvider,
     SocketContextProvider,
+    ThemeContextProvider,
     useApp,
     useBugs,
     // useContacts,
@@ -28,5 +30,6 @@ export {
     usePlay,
     useNotification,
     useSocket,
+    useTheme,
     useUser,
 }

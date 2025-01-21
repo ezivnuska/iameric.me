@@ -30,11 +30,11 @@ const HomeScreen = props => {
         else console.log('could not sign in user with params')
     }
 
-    useEffect(() => {
-        if (user) {
-            props.navigation.navigate('Feed')
-        }
-    }, [])
+    // useEffect(() => {
+    //     if (user) {
+    //         props.navigation.navigate('Feed')
+    //     }
+    // }, [])
 
 
     useEffect(() => {

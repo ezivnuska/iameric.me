@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react'
-import { useApp, useSocket } from '@context'
+import { useTheme, useSocket } from '@context'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const StatusIndicator = ({ id, size = 20 }) => {
     
-    const { theme } = useApp()
+    const { theme } = useTheme()
     const { connections } = useSocket()
 
     const isConnected = useMemo(() => connections.map(c => c.userId).indexOf(id) > -1, [connections])

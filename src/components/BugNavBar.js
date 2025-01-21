@@ -1,15 +1,13 @@
 import React from 'react'
 import { Pressable, Text, View } from 'react-native'
 import { IconButton } from '@components'
-import { useApp, useBugs } from '@context'
+import { useBugs, useTheme } from '@context'
 import { navigate } from '@utils/navigation'
-import { useStyles } from '@styles'
 
 const BugNavBar = ({ landscape, route }) => {
 
-    const { theme } = useApp()
+    const { styles } = useTheme()
     const { setBugModal } = useBugs()
-    const styles = useStyles(theme)
 
     return (
         <View
@@ -33,7 +31,7 @@ const BugNavBar = ({ landscape, route }) => {
                 <Pressable
                     onPress={() => navigate('Home')}
                     disabled={route.name === 'Home'}
-                    style={styles.navButtonFirst}
+                    style={styles.navLinkFirst}
                 >
                     <Text
                         style={[
@@ -46,7 +44,7 @@ const BugNavBar = ({ landscape, route }) => {
 
                 </Pressable>
                 
-                <View style={styles.navButton}>
+                <View style={styles.navLink}>
                     <Text style={styles.heading}>
                         Bugs
                     </Text>

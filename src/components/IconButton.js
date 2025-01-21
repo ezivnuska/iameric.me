@@ -1,12 +1,12 @@
 
 import React from 'react'
 import { Pressable } from 'react-native'
-import { useApp } from '@context'
+import { useTheme } from '@context'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const IconButton = ({ disabled, name, onPress, color = null, size = 18, padding = 0 }) => {
 
-    const { theme } = useApp()
+    const { theme } = useTheme()
 
     return (
         <Pressable
