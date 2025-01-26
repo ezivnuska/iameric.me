@@ -6,25 +6,25 @@ import navigationRef from '@utils/navigation'
 
 const Footer = ({ landscape, route }) => {
 
-    const { dark, toggleTheme } = useTheme()
+    const { dark, theme, toggleTheme } = useTheme()
     const { user } = useUser()
     const { setModal } = useModal()
     const { connections, connectionsLoading } = useSocket()
 
     return (
             
-        <View style={styles.footerLeft}>
+        <View style={styles.container}>
 
-            <View style={{ paddingHorizontal: 10 }}>
+            <View style={styles.footerLeft}>
 
                 {connectionsLoading ? (
-                    <Text variant='titleLarge'>
+                    <Text variant='titleMedium'>
                         Connectiong to socket...
                     </Text>
                 ) : (
                     <Pressable onPress={() => setModal('SOCKETS')}>
-                        <Text variant='titleLarge'>
-                            {`${connections.length} user${connections.length !== 1 ? `s` : ''} connected`}
+                        <Text variant='titleMedium'>
+                            {`${connections.length} connection${connections.length !== 1 ? `s` : ''}`}
                         </Text>
                     </Pressable>
                 )}
@@ -60,6 +60,7 @@ const Footer = ({ landscape, route }) => {
                     />
                 </View>
             )}
+            
         </View>
     )
 }
@@ -68,9 +69,11 @@ export default Footer
 
 const styles = StyleSheet.create({
     container: {
-        // backgroundColor: 'yellow',
+        flex: 1,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingLeft: 10,
     },
     footerLeft: {
         flexDirection: 'row',

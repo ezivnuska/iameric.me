@@ -28,8 +28,6 @@ import StatusIndicator from './StatusIndicator'
 // import SplitScreen from './SplitScreen'
 // import Switch from './Switch'
 import TextCopy from './TextCopy'
-import TextHeading from './TextHeading'
-import TextPressable from './TextPressable'
 // import ThumbList from './ThumbList'
 import Time from './Time'
 import UserAvatar from './UserAvatar'
@@ -76,8 +74,6 @@ export {
     Socket,
     StatusIndicator,
     TextCopy,
-    TextHeading,
-    TextPressable,
     Time,
     UserAvatar,
     UserImages,

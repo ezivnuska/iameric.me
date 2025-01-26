@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
-import { TextCopy } from'@components'
+import { Button, Text } from'react-native-paper'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const Checkbox = ({ label, onChange, value = false, disabled = false }) => {
@@ -11,6 +11,14 @@ const Checkbox = ({ label, onChange, value = false, disabled = false }) => {
 
     const onPress = () => setChecked(!checked)
     
+    return (
+        <Button
+            icon={`${checked ? 'radio-button-on' : 'radio-button-off'}`}
+            onPress={onPress}
+        >
+            {label}
+        </Button>
+    )
     return (
         <Pressable
             onPress={onPress}
@@ -26,12 +34,12 @@ const Checkbox = ({ label, onChange, value = false, disabled = false }) => {
                 color={disabled ? '#ccc' : 'tomato'}
             />
 
-            <TextCopy
-                size={24}
-                color={disabled ? '#ccc' : 'tomato'}
+            <Text
+                variant='labelLarge'
+                textColor={checked ? '#ccc' : 'tomato'}
             >
                 {label}
-            </TextCopy>
+            </Text>
         </Pressable>
     )
 }

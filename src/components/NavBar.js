@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import React, { useMemo } from 'react'
+import { StyleSheet, View } from 'react-native'
 import { Button, IconButton, SegmentedButtons, Text } from 'react-native-paper'
-import { useApp, useBugs, useFeed, useModal, useTheme, useUser } from '@context'
+import { useApp, useBugs, useFeed, useModal, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
 const NavBar = props => {
@@ -9,21 +9,19 @@ const NavBar = props => {
     const renderNavBar = () => {
         
         switch (props.route.name) {
-            case 'Home': return <Text variant='bodyMedium' style={{ paddingHorizontal: 10 }}>This page intentionally left blank.</Text>; break
+            case 'Home': return <Text variant='titleMedium' style={{ paddingHorizontal: 10 }}>This page intentionally left blank. Not sure why.</Text>; break
             case 'Feed': return <FeedNavBar {...props} />; break
             case 'Bugs': return <BugNavBar {...props} />; break
             case 'Images':
             case 'Profile': return <UserNavBar {...props} />; break
-            // case 'Work': return <Text style={[styles.heading, styles.padded]}>{`Places I\'ve worked`}</Text>; break
+            case 'Work': return <Text variant='titleMedium' style={{ paddingHorizontal: 10 }}>{`Places I\'ve worked`}</Text>; break
             default: return null
         }
     }
 
     return (
         <View style={[styles.navBar, styles.shadow]}>
-            {/* <View style={styles.centerContainer}> */}
-                {renderNavBar()}
-            {/* </View> */}
+            {renderNavBar()}
         </View>
     )
 }
