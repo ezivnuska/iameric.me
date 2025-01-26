@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
-import { FeedListItem, FeedModal } from './components'
-import { useFeed, useSocket } from '@context'
+import { FeedItem, FeedModal } from './components'
+import { useFeed, useSocket, useUser } from '@context'
 import { deletePostWithId } from '@utils/feed'
 
-const Feed = props => {
+const Feed = () => {
 
     const {
         feedModal,
@@ -50,19 +50,12 @@ const Feed = props => {
                     extraData={posts}
                     keyExtractor={item => `post-${item._id}`}
                     renderItem={({ item }) => (
-                        <FeedListItem item={item} onDelete={removePost} />
+                        <FeedItem
+                            item={item}
+                            onDelete={removePost}
+                            disabled={loading}
+                        />
                     )}
-                    // getItemLayout={(data, index) => (
-                    //     {
-                    //         length: ITEM_HEIGHT,
-                    //         offset: ITEM_HEIGHT * index, index
-                    //     }
-                    // )}
-                    // horizontal={landscape}
-                    // numColumns={landscape ? 2 : 1}
-                    // onRefresh={onRefresh}
-                    // refreshing={refreshing}
-                    // initialNumToRender={6}
                 />
             )}
 

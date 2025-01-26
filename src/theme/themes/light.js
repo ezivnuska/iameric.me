@@ -1,4 +1,5 @@
 import palette from '../palette'
+import layout from '../layout'
 
 const {
     black,
@@ -13,6 +14,7 @@ const {
 
 export default light = {
     dark: false,
+    layout,
     colors: {
         background: white,
         border: gray,
@@ -36,6 +38,9 @@ export default light = {
             text: black,
             link: orange,
             disabled: black,
+        },
+        screen: {
+            background: purple,
         },
         text: {
             primary: black,

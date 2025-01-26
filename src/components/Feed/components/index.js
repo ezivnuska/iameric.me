@@ -1,7 +1,7 @@
 import FeedModal from './FeedModal'
-import FeedListItem from './FeedListItem'
+import FeedItem from './FeedItem'
 
 export {
-    FeedListItem,
+    FeedItem,
     FeedModal,
 }

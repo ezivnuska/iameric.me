@@ -12,7 +12,6 @@ import { ThemeContextProvider, useTheme } from './ThemeContext'
 export {
     AppContextProvider,
     BugContextProvider,
-    // ContactsContextProvider,
     FeedContextProvider,
     FormContextProvider,
     NotificationContextProvider,
@@ -23,7 +22,6 @@ export {
     ThemeContextProvider,
     useApp,
     useBugs,
-    // useContacts,
     useFeed,
     useForm,
     useModal,

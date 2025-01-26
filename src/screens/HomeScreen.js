@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { View } from 'react-native'
-import { TextCopy, Screen } from '@components'
+import { Text } from 'react-native'
+import { Screen } from './components'
 import { useApp, useUser, useModal, useSocket } from '@context'
 import { signin, signout } from '@utils/auth'
 import { cleanStorage, setItem, storeToken } from '@utils/storage'
@@ -96,16 +96,6 @@ const HomeScreen = props => {
 
     return (
         <Screen {...props}>
-            
-            <View style={{ flex: 1, paddingHorizontal: 10 }}>
-
-                <View style={{ flexGrow: 0 }}>
-                    
-                </View>
-
-                <View style={{ flexGrow: 1 }} />
-                
-            </View>
 
         </Screen>
     )

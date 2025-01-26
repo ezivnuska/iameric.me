@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
-import { ActivityIndicator, Screen, UserList } from '@components'
+import { Screen } from './components'
+import { ActivityIndicator, UserList } from '@components'
 import { loadContactIds } from '@utils/contacts'
 import { useTheme } from '@context'
 
@@ -36,14 +36,14 @@ const UserListScreen = props => {
             secure
         >
     
-            <View style={{ flex: 1 }}>
+            {/* <View style={{ flex: 1 }}> */}
 
                 {loading
                     ? <ActivityIndicator size='small' />
                     : userIds && <UserList data={userIds} onPress={onPress} />
                 }
 
-            </View>
+            {/* </View> */}
 
         </Screen>
     )

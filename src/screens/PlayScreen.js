@@ -1,19 +1,15 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Play, Screen } from '@components'
+import { Screen } from './components'
 import { PlayContextProvider } from '@context'
+import { Play } from '@components'
 
 const PlayScreen = props => {
     return (
         <Screen {...props}>
                 
-            <View style={{ flex: 1 }}>
-                
-                <PlayContextProvider>
-                    <Play {...props} />
-                </PlayContextProvider>
-
-            </View>
+            <PlayContextProvider>
+                <Play {...props} />
+            </PlayContextProvider>
 
         </Screen>
     )

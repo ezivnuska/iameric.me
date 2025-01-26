@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
-import { ImageList, Screen, TextCopy } from '@components'
+import { Screen } from './components'
+import { ImageList } from '@components'
 import { useModal, useNotification, useTheme, useUser } from '@context'
 import { loadImages, uploadImage } from '@utils/images'
 import { loadContact } from '@utils/contacts'
-import { ActivityIndicator } from 'react-native-paper'
 
 const ImagesScreen = props => {
 
-    const { landscape } = useTheme()
+    const { landscape, styles } = useTheme()
     const { addNotification } = useNotification()
     const { setModal } = useModal()
     const {
@@ -144,7 +143,7 @@ const ImagesScreen = props => {
             full={landscape || props.route.params?.list}
             {...props}
         >
-            <View style={{ flex: 1 }}>
+            {/* <View style={[styles.border, { flex: 1 }]}> */}
 
                 {images && (
                     <ImageList
@@ -158,7 +157,7 @@ const ImagesScreen = props => {
                     />
                 )}
 
-            </View>
+            {/* </View> */}
 
         </Screen>
     )

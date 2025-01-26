@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
-import { Screen, TextCopy, UserAvatar } from '@components'
+import { Screen } from './components'
+import { UserAvatar } from '@components'
 import { useModal, useUser, useTheme } from '@context'
 import { loadContact } from '@utils/contacts'
 import { create } from '@utils/normalize'
@@ -94,6 +95,10 @@ const UserProfile = ({ profile }) => {
 
     const isAuthUser = useMemo(() => profile && authUser._id === profile._id, [profile])
     
+    useEffect(() => {
+        console.log('profile', profile)
+    }, [])
+
     return profile && (
         <View style={{ flex: 1, gap: 20 }}>
 
@@ -109,30 +114,8 @@ const UserProfile = ({ profile }) => {
 
             </Pressable>
 
-            {/* <TextCopy style={styles.text}>TEST COPY</TextCopy> */}
-            <Pressable
-                onPress={toggleTheme}
-                style={{
-                    background: theme.colors.buttonSecondary,
-                    paddingVertical: 5,
-                    paddingHorizontal: 10,
-                    borderRadius: 10,
-                }}
-            >
-                <TextCopy>{`Switch to ${theme.dark ? 'light' : 'dark'} mode`}</TextCopy>
-            </Pressable>
         </View>
     )
 }
-
-// const styles = create({
-//     text: {
-//         // color: '#d4895e',
-//         // fontWeight: 'bold',
-//         fontSize: fonts.x10,
-//         // paddingHorizontal: 20,
-//         // marginHorizontal: 20,
-//     },
-// })
 
 export default UserScreen

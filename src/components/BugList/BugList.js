@@ -45,7 +45,7 @@ const BugList = props => {
             }}
         >
             {!bugs?.length && (
-                <Text style={styles.text}>
+                <Text style={styles.copy}>
                     No bugs to squash.
                 </Text>
             )}

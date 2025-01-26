@@ -4,6 +4,7 @@ import ActivityIndicator from './ActivityIndicator'
 import BugNavBar from './BugNavBar'
 import AdminButton from './AdminButton'
 import Cabinet from './Cabinet'
+import CenteredContainer from './CenteredContainer'
 import Checkbox from './Checkbox'
 // import Counter from './Counter'
 import FeedNavBar from './NavBar'
@@ -12,7 +13,6 @@ import IconButtonLarge from './IconButtonLarge'
 import ImageContained from './ImageContained'
 import ImageClone from './ImageClone'
 import ImageList from './ImageList'
-import ImageMax from './ImageMax'
 import ImageShowcase from './ImageShowcase'
 import ImageUploadIndicator from './ImageUploadIndicator'
 import ModalContainer from './ModalContainer'
@@ -20,7 +20,6 @@ import NavBar from './NavBar'
 // import InfoMarker from './InfoMarker'
 // import ProfileNav from './ProfileNav'
 import PostForm from './PostForm'
-import Screen from './Screen'
 import Scrollable from './Scrollable'
 import Settings from './Settings'
 import SimpleButton from './SimpleButton'
@@ -36,7 +35,7 @@ import Time from './Time'
 import UserAvatar from './UserAvatar'
 import UserImages from './UserImages'
 import UserList from './UserList'
-import UserNavBar from './UserNavBar'
+// import UserNavBar from './UserNavBar_old'
 // presentations
 
 import AuthForm from './AuthForm'
@@ -58,6 +57,7 @@ export {
     // BugForm,
     BugNavBar,
     Cabinet,
+    CenteredContainer,
     Checkbox,
     FeedNavBar,
     IconButton,
@@ -65,14 +65,12 @@ export {
     ImageContained,
     ImageClone,
     ImageList,
-    ImageMax,
     ImageShowcase,
     ImageUploadIndicator,
     ModalContainer,
     NavBar,
     PostForm,
     Settings,
-    Screen,
     Scrollable,
     SimpleButton,
     Socket,
@@ -84,7 +82,7 @@ export {
     UserAvatar,
     UserImages,
     UserList,
-    UserNavBar,
+    // UserNavBar,
     
     BugList,
     Feed,

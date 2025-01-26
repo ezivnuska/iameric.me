@@ -1,6 +1,6 @@
 const palette = {
     black: '#000000',
-    gray: '#aaa',
+    gray: '#777',
     purple: '#6267C8',
     red: '#E25858',
     orange: 'rgba(255, 128, 0, 1.0)',

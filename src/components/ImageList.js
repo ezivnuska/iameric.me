@@ -34,15 +34,24 @@ const ImageGridItem = ({ uri, size }) => {
 
 const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
 
-    const { landscape } = useTheme()
+    const { dims, landscape } = useTheme()
     const { findUserImage, updateImage } = useUser()
 
     const [item, setItem] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [imageDims, setImageDims] = useState(false)
 
     useEffect(() => {
         init(imageId)
     }, [])
+
+    useEffect(() => {
+        if (item) {
+            const itemDims = getImageDims(item)
+            setImageDims(itemDims)
+        }
+    }, [item, dims])
+    
 
     const init = async id => {
         
@@ -103,8 +112,8 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
     }
 
     const renderItem = () => {
-        const dims = getImageDims(item)
-        const uri = `${IMAGE_PATH}/${user.username}${dims.width <= 200 ? `/thumb` : ''}/${item.filename}`
+        
+        const uri = `${IMAGE_PATH}/${user.username}${imageDims.width <= 200 ? `/thumb` : ''}/${item.filename}`
         return (
             <Pressable
                 onPress={() => onPress(item)}
@@ -113,25 +122,25 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     marginHorizontal: 'auto',
-                    // borderWidth: 1,
+                    marginTop: 10,
                 }}
             >
                 {(list || landscape)
-                    ? <ImageListItem uri={uri} dims={dims} />
-                    : <ImageGridItem uri={uri} size={dims.width} />
+                    ? <ImageListItem uri={uri} dims={imageDims} />
+                    : <ImageGridItem uri={uri} size={imageDims.width} />
                 }
             </Pressable>
         )
     }
 
-    return loading || !item
-        ? <ActivityIndicator size='small' />
-        : item && renderItem(item)
+    if (loading) return <ActivityIndicator size='small' />
+
+    return item && renderItem(item)
 }
 
 const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false }) => {
 
-    const { landscape, theme } = useTheme()
+    const { landscape, styles, theme } = useTheme()
     const { uploadedImage, setUploadedImage } = useUser()
 
     const [maxDims, setMaxDims] = useState(null)
@@ -164,7 +173,10 @@ const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false 
     return (
         <View
             onLayout={onLayout}
-            style={{ flex: 1 }}
+            style={[
+            //     // styles.border,
+                { flex: 1, },
+            ]}
         >
             {maxDims && (
                 <FlatList
@@ -172,7 +184,7 @@ const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false 
                     ref={listRef}
                     key={`image-list-${user._id}-${getNumColumns()}`}
                     horizontal={landscape}
-                    contentOffset={{ x: separation, y: 0 }}
+                    // contentOffset={{ x: 0, y: 0 }}
                     numColumns={getNumColumns()}
                     data={images}
                     extraData={images}

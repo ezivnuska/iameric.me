@@ -1,24 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Image, View } from 'react-native'
-import { useTheme } from '@context'
+// import { Image, View } from 'react-native'
+import { Avatar } from 'react-native-paper'
+// import { useTheme } from '@context'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const UserAvatar = ({ user, size = 'auto' }) => {
+const UserAvatar = ({ user, size = 50 }) => {
 
-    const { theme } = useTheme()
+    // const { theme } = useTheme()
 
-    // const profileImage = useMemo(() => user && user.profileImage, [user])
-
-    // const source = useMemo(() => {
-    //     if (profileImage?.filename) {
-    //         return `${IMAGE_PATH}/${user.username}/${profileImage.filename}`
-    //     } else {
-    //         return `${IMAGE_PATH}/avatar-default.png`
-    //     }
-    // }, [profileImage])
-
-    const [source, setSource] = useState(`${IMAGE_PATH}/avatar-default.png`)
+    const [source, setSource] = useState(null)
 
     useEffect(() => {
         if (user && user.profileImage?.filename) {
@@ -26,28 +17,9 @@ const UserAvatar = ({ user, size = 'auto' }) => {
         }
     }, [user])
 
-    return (
-        <View
-            style={{
-                flexGrow: 0,
-                width: size,
-                height: size,
-                borderRadius: 8,
-                borderWidth: 1,
-                borderColor: theme?.colors.textDefault,
-                overflow: 'hidden',
-            }}
-        >
-            <Image
-                source={source}
-                resizeMode='cover'
-                style={{
-                    width: size,
-                    height: size,
-                }}
-            />
-        </View>
-    )
+    return source
+        ? <Avatar.Image size={size} source={source} />
+        : <Avatar.Icon size={size} icon='guy-fawkes-mask' />
 }
 
 export default UserAvatar

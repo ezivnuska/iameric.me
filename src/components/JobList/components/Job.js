@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, Text, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
+import { Button, Icon, Text } from 'react-native-paper'
 import { useTheme } from '@context'
-import Icon from 'react-native-vector-icons/Ionicons'
+// import Icon from 'react-native-vector-icons/Ionicons'
 import Animated, {
     interpolate,
 	useAnimatedStyle,
@@ -10,41 +11,30 @@ import Animated, {
 } from 'react-native-reanimated'
 
 
-const BulletListItem = ({ text, styles, ...props }) => (
+const BulletListItem = ({ text, ...props }) => (
     <View
         key={props.key}
-        style={styles.flexRow}
+        style={{ flexDirection: 'row', gap: 5 }}
     >
         <Icon
-            name={'chevron-forward'}
-            size={16}
-            color='tomato'
-            style={{ marginTop: 3 }}
+            source={'chevron-right'}
+            size={18}
+            allowFontScaling={true}
+            // color='tomato'
+            style={{ fontWeight: 700 }}
         />
 
-        <Text style={styles.copy}>{text}</Text>
-    </View>
-)
-
-const BulletedList = ({ items, listKey, styles }) => (
-    
-    <View style={[styles.paddedHorizontal, { gap: 10 }]}>
-
-        {items.map((text, index) => (
-            <BulletListItem
-                text={text}
-                styles={styles}
-                key={`${listKey}-${index}`}
-            />
-        ))}
-
+        <Text variant='bodyMedium'>
+            {text}
+        </Text>
+        
     </View>
 )
 
 const Job = ({ section, onPress, visible = false, ...props }) => {
     const { company, city, start, end, title } = section
     
-    const { styles } = useTheme()
+    // const { styles } = useTheme()
 
     const [containerHeight, setContainerHeight] = useState(null)
     const [backgroundColor, setBackgroundColor] = useState('tomato')
@@ -70,62 +60,86 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
     }
 
     return (
-        <Pressable
-            onPress={onPress}
+        <View
             key={`job-${props.key}`}
+            style={{ marginHorizontal: 10 }}
         >
-            <Animated.View
-                style={[{
-                    flexDirection: 'row',
+            <Button
+                icon={visible ? 'chevron-up' : 'chevron-down'}
+                onPress={onPress}
+                mode={visible ? 'contained' : 'contained-tonal' }
+                contentStyle={{
+                    width: '100%',
+                    flexDirection: 'row-reverse',
                     alignItems: 'center',
+                    justifyContent: 'space-between',
                     gap: 10,
-                    backgroundColor: '#eee',
-                    borderRadius: 6,
-                    paddingHorizontal: 10,
-                    // marginBottom: 10,
-                    height: 40,
-                }, backgroundColorAnim]}
+                }}
+                labelStyle={{
+                    fontSize: 25,
+                    marginHorizontal: 20,
+                    marginVertical: 10,
+                }}
             >
-
-                <View style={[styles.flexRow, styles.flexDominant]}>
-                    <Text style={styles.buttonLabel}>{company}</Text>
-                </View>
-
-                <Icon
-                    name={visible ? 'chevron-up' : 'chevron-down'}
-                    size={24}
-                    color='#fff'
-                />
-
-            </Animated.View>
+                {company}
+            </Button>
             
             <Animated.View style={animatedStyle}>
                 <View
                     onLayout={onLayout}
-                    style={[styles.paddedVertical, { gap: 10 }]}
+                    style={{
+                        paddingHorizontal: 20,
+                        paddingVertical: 10,
+                        gap: 10,
+                     }}
                 >
                     <View
-                        style={[
-                            styles.flexRow,
-                            styles.paddedHorizontal,
-                        ]}
+                        style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            gap: 10,
+                        }}
                     >
-                        <Text style={styles.time}>{time}</Text>
-                        <Text style={styles.city}>{city}</Text>
-                    </View>
+                        <Text variant='titleMedium'>
+                            {time}
+                        </Text>
 
-                    <BulletedList
-                        listKey={props.key}
-                        items={section.bullets}
-                        styles={styles}
-                    />
+                        <Text variant='titleMedium'>
+                            {city}
+                        </Text>
+
+                    </View>
+                    
+                    <View style={{ gap: 10 }}>
+
+                        {section.bullets.map((text, index) => (
+                            <BulletListItem
+                                text={text}
+                                key={`${props.key}-${index}`}
+                            />
+                        ))}
+
+                    </View>
 
                 </View>
 
             </Animated.View>
 
-        </Pressable>
+        </View>
     )
 }
 
 export default Job
+
+const styles = StyleSheet.create({
+    buttonLabel: {
+        fontSize: 18,
+        // color: colors.button.text,
+        fontWeight: 700,
+    },
+    city: {
+        fontSize: 18,
+        lineHeight: 23,
+        // color: colors.gray,
+    },
+})

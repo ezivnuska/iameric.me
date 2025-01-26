@@ -12,6 +12,7 @@ import {
     // SimpleScreen,
     WorkScreen,
 } from '@screens'
+import { Footer, Header } from '@layout/components'
 import { UserNavigator } from '.'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -23,7 +24,8 @@ const AppNavigator = () => {
         <AppStack.Navigator
             initialRouteName='Home'
             screenOptions={{
-                headerShown: false,
+                headerShown: true,
+                header: props => <Header {...props} />,
             }}
         >
 

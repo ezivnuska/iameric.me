@@ -1,5 +1,6 @@
 import React from 'react'
-import { BugList, Screen } from '@components'
+import { Screen } from './components'
+import { BugList } from '@components'
 import { BugContextProvider } from '@context'
     
 const BugScreen = props => (

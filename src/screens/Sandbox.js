@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Screen } from '@components'
+import { Screen } from './components'
 // import { loadContactIds } from '@utils/contacts'
 // import { ActivityIndicator } from '@common'
 

@@ -14,7 +14,6 @@ import IconButtonLarge from './IconButtonLarge'
 import ImageContained from './ImageContained'
 import ImageClone from './ImageClone'
 import ImageList from './ImageList'
-import ImageMax from './ImageMax'
 import ImageShowcase from './ImageShowcase'
 import ImageUploadIndicator from './ImageUploadIndicator'
 import ModalContainer from './ModalContainer'
@@ -55,7 +54,6 @@ export {
     ImageContained,
     ImageClone,
     ImageList,
-    ImageMax,
     ImageShowcase,
     ImageUploadIndicator,
     // InfoMarker,

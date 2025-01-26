@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, Pressable, View } from 'react-native'
-import { ActivityIndicator, StatusIndicator, TextCopy, UserAvatar } from '@components'
+import { FlatList, Pressable, StyleSheet, View } from 'react-native'
+import { StatusIndicator, UserAvatar } from '@components'
 import { loadContactById } from '@utils/contacts'
 import { useTheme, useUser } from '@context'
+import { ActivityIndicator, Text } from 'react-native-paper'
 
 const UserListItem = ({ item, onPress }) => {
 
@@ -35,95 +36,51 @@ const UserListItem = ({ item, onPress }) => {
         
     }
 
-    return !loading && user ? (
-        <View
-            style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-            }}
+    if (loading) return <ActivityIndicator animating={true} />
+
+    return user && (
+        <Pressable
+            onPress={() => onPress(user.username)}
+            style={styles.itemContainer}
         >
-            <Pressable
-                onPress={() => onPress(user.username)}
-                style={{
-                    flex: 1,
-                    paddingHorizontal: 5,
-                }}
-            >
-                {
-                    landscape
-                        ? <HorizontalListItem item={user} />
-                        : <VerticalListItem item={user} />
-                }
-            </Pressable>
-        </View>
-    ) : <ActivityIndicator size='small' />
+            {landscape
+                ? <HorizontalListItem item={user} />
+                : <VerticalListItem item={user} />
+            }
+        </Pressable>
+    )
 }
 
 const VerticalListItem = ({ item }) => (
-    <View
-        style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            gap: 10,
-        }}
-    >
-        <View style={{ flexGrow: 0 }}>
 
-            <UserAvatar
-                size={30}
-                user={item}
-            />
+    <View style={styles.itemVertical}>
+
+        <View style={styles.itemHeader}>
+
+            <UserAvatar user={item} />
+
+            <Text variant='titleLarge'>
+                {item.username}
+            </Text>
 
         </View>
 
-        <View
-            style={{
-                flexGrow: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 10,
-            }}
-        >
+        <StatusIndicator id={item._id} />
 
-            <View style={{ flexGrow: 1 }}>
-
-                <TextCopy>
-                    {item.username}
-                </TextCopy>
-                
-            </View>
-
-            <View style={{ flexGrow: 0 }}>
-                
-                <StatusIndicator id={item._id} />
-
-            </View>
-
-        </View>
     </View>
 )
 
 const HorizontalListItem = ({ item }) => (
 
-    <View
-        style={{
-            justifyContent: 'center',
-            gap: 5,
-        }}
-    >
+    <View style={styles.itemHorizontal}>
 
-        <UserAvatar size={100} user={item} />
+        <UserAvatar user={item} size={100} />
         
-        <TextCopy bold align='center'>
+        <Text variant='titleLarge'>
             {item.username}
-        </TextCopy>
-        
-        <View style={{ marginHorizontal: 'auto' }}>
-            <StatusIndicator id={item._id} />
-        </View>
+        </Text>
+
+        <StatusIndicator id={item._id} />
         
     </View>
 )
@@ -131,20 +88,50 @@ const HorizontalListItem = ({ item }) => (
 const UserList = ({ data, onPress }) => {
 
     const { landscape } = useTheme()
-
+    const width = landscape ? 10 : 0
+    const height = landscape ? 0 : 10
     return (
         <FlatList
-            ItemSeparatorComponent={({ highlighted }) => <View style={{ height: 10 }} />}
+            ItemSeparatorComponent={({ highlighted }) => <View style={{ width, height }} />}
             data={data}
             keyExtractor={item => item._id}
             renderItem={({ item }) => <UserListItem item={item} onPress={onPress} />}
             horizontal={landscape}
-            style={{
-                flex: 1,
-                paddingVertical: 20,
-            }}
         />
     )
 }
 
 export default UserList
+
+const styles = StyleSheet.create({
+    itemContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+    },
+    itemVertical: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 10,
+        gap: 10,
+    },
+    itemHeader: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 10,
+    },
+    itemHorizontal: {
+        flex: 1,
+        alignItems: 'center',
+        paddingHorizontal: 15,
+        gap: 10,
+    },
+    itemUsername: {
+        // fontWeight: 700,
+        // textAlign: 'center',
+    }
+})

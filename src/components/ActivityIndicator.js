@@ -1,40 +1,51 @@
 import React from 'react'
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { ActivityIndicator as Indicator } from 'react-native-paper'
+// import { useTheme } from '@context'
 
 const ActivityIndicator = ({
     size = 'medium',
-    color = 'tomato',
     label = null,
-    ...props
-}) => (
-    <View
-        {...props}
-        style={{
-            flex: 1,
-            flexDirection: 'row',
-            alignItems: 'center',
-        }}
-    >
-        <View
-            style={{
-                gap: 10,
-                marginHorizontal: 'auto',
-            }}
-        >
-            {label && (
-                <Text style={[styles.text, styles.copy, { color, fontSize: 24, textAlign: 'center' }]}>
-                    {label}
-                </Text>
-            )}
+    // ...props
+}) => {
+    // const { styles, theme } = useTheme()
+    return (
+        <View style={styles.container}>
 
-            <Indicator
-                size={size}
-                color={color}
-                style={{ marginHorizontal: 'auto' }}
-            />
+            <View style={styles.content}>
+
+                {label && (
+                    <Text style={styles.label}>
+                        {label}
+                    </Text>
+                )}
+
+                <Indicator
+                    size={size}
+                    // color={theme.colors.text.primary}
+                    // style={{ marginHorizontal: 'auto' }}
+                />
+            </View>
         </View>
-    </View>
-)
+    )
+}
 
 export default ActivityIndicator
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    content: {
+        gap: 10,
+        // marginHorizontal: 'auto',
+        alignContent: 'center',
+    },
+    label: {
+        // color: theme.colors.text.primary,
+        fontSize: 24,
+        textAlign: 'center',
+    },
+})

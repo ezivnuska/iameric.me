@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { ScrollView, View } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { useApp, useModal, useTheme, useUser } from '@context'
 import { NavBar } from '@components'
 
@@ -32,29 +32,17 @@ const Screen = ({
     if (!authorized) return <View style={{ flex: 1 }} />
 
     return (
-        <View
-            style={{
-                flex: 1,
-                borderWidth: 1,
-                borderStyle: 'dashed',
-            }}
-        >
+        <View style={styles.flex}>
+
             <NavBar route={props.route} landscape={landscape} />
 
             <ScrollView
-                // horizontal={landscape}
                 showsVerticalScrollIndicator={false}
-                style={{ flexGrow: 1 }}
-                contentContainerStyle={{
-                    flex: 1,
-                    width: '100%',
-                    maxWidth: landscape ? '90%' : 400,
-                    marginHorizontal: 'auto',
-                    // maxWidth: (landscape && !full) ? '90%' : null,
-                    // marginHorizontal: 'auto',
-                    paddingHorizontal: !full ? 10 : 0,
-                    paddingVertical: 10,
-                }}
+                style={styles.flex}
+                contentContainerStyle={[
+                    styles.flex,
+                    !full && styles.padded,
+                ]}
             >
                 {children}
             </ScrollView>
@@ -64,3 +52,16 @@ const Screen = ({
 }
 
 export default Screen
+
+const styles = StyleSheet.create({
+    flex: {
+        flex: 1,
+        // backgroundColor: 'yellow',
+        // borderWidth: 1,
+        // borderStyle: 'dotted',
+        // borderColor: 'blue',
+    },
+    padded: {
+        paddingHorizontal: 10,
+    },
+})

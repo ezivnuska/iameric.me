@@ -1,8 +1,11 @@
 import { StyleSheet } from 'react-native'
 import { palette, text } from '.'
+import { dark, light } from './themes'
 
-export const getStyles = theme => {
-    const { colors } = theme
+export default getTheme = theme => {
+    console.log('getTheme', theme)
+    // const { colors, layout } = theme
+    return theme.dark ? dark : light
     const styles = StyleSheet.create({
         bold: {
             fontWeight: 700,
@@ -26,14 +29,31 @@ export const getStyles = theme => {
             color: colors.button.text,
             fontWeight: 700,
         },
+        centerContainer: {
+            flex: 1,
+            width: '90%',
+            minWidth: 300,
+            // maxWidth: 600,
+            marginHorizontal: 'auto',
+            // paddingHorizontal: 10,
+        },
+        fullContainer: {
+            flex: 1,
+            width: '90%',
+            minWidth: 300,
+            // maxWidth: 600,
+            marginHorizontal: 'auto',
+        },
         city: {
             fontSize: 18,
             lineHeight: 23,
             color: colors.gray,
         },
         copy: {
+            flex: 1,
+            justifyContent: 'stretch',
             flexWrap: 'wrap',
-            flexShrink: 1,
+            // flexShrink: 1,
             color: colors.text.primary,
             fontWeight: 400,
             fontSize: text.copy,
@@ -41,9 +61,13 @@ export const getStyles = theme => {
         },
         flexRow: {
             // width: '100%',
+            flexGrow: 0,
             flexDirection: 'row',
             alignItems: 'center',
             // gap: 10,
+        },
+        flexGap10: {
+            gap: 10,
         },
         justifyCenter: {
             justifyContent: 'center',
@@ -73,18 +97,43 @@ export const getStyles = theme => {
         paddedHorizontal: {
             paddingHorizontal: 10,
         },
+        paddedVerticalLess: {
+            paddingVertical: 5,
+        },
         paddedVertical: {
             paddingVertical: 10,
         },
+        paddedVerticalExtra: {
+            paddingVertical: 20,
+        },
+        shadow: {
+            shadowColor: '#000',
+            shadowOffset: {
+                width: 0,
+                height: 0,
+            },
+            shadowOpacity: 0.15,
+            shadowRadius: 5,
+            elevation: 3,
+        },
         text: {
             flexShrink: 1,
+            fontSize: 16,
             fontWeight: 400,
             color: colors.text.primary,
+            lineHeight: 20,
+        },
+        textCenter: {
+            textAlign: 'center',
         },
         time: {
             fontSize: 18,
             lineHeight: 23,
             color: colors.gray,
+        },
+        navBar: {
+            background: '#eee',
+            marginRight: 10,
         },
         navButton: {
             paddingRight: 10,

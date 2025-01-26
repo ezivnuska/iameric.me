@@ -58,7 +58,6 @@ const ModalFactory = ({ modal, onClose }) => {
             >
                 {title && <ModalHeader title={title} onClose={onClose} />}
                 {content}
-                {/* {fullscreen ? content : <Scrollable>(content)</Scrollable>} */}
             </ModalContainer>
         )
     }
