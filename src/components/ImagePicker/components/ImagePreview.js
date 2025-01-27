@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Image, Pressable, View } from 'react-native'
-import { ActivityIndicator, IconButton, ImageClone } from '@components'
+import { ActivityIndicator, IconButton } from 'react-native-paper'
+
 
 const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
 
@@ -48,11 +49,7 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
                     >
 
                         {uploading ? (
-                            <ActivityIndicator
-                                size='medium'
-                                label={`Uploading...\nDo not close window.${progress ? `\n${progress}%` : ''}`}
-                                color='#fff'
-                            />
+                            <ActivityIndicator size='medium' />
                         ) : (
                             <View
                                 style={{
@@ -62,12 +59,11 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
                                 }}
                             >
                                 <IconButton
-                                    name='cloud-upload'
+                                    icon='cloud-upload'
                                     onPress={upload}
-                                    size={40}
-                                    color='#fff'
-                                    transparent
+                                    size={50}
                                 />
+
                             </View>
                         )}
 

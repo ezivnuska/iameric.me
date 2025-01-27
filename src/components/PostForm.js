@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View } from 'react-native'
-import { Form, ImagePickerMini } from '@components'
+import { Form } from '@components'
 import { useFeed, useSocket, useUser } from '@context'
 import { uploadImage } from '@utils/images'
 import { createPost } from '@utils/feed'
@@ -78,7 +78,7 @@ const PostForm = ({ data = null }) => {
                 onSubmit={handleSubmit}
             />
             
-            <ImagePickerMini onSelection={setImageData} />
+            {/* <ImagePickerMini onSelection={setImageData} /> */}
         </View>
     )
 }

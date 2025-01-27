@@ -1,6 +1,7 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
-import { IconButton, TextCopy, Time, UserAvatar } from '@components'
+import { Time, UserAvatar } from '@components'
+import { IconButton, Text } from 'react-native-paper'
 import { useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
@@ -63,13 +64,9 @@ const BugListItem = ({ item, loading, onDelete = null }) => {
                                     flexGrow: 1,
                                 }}
                             >
-                                <TextCopy
-                                    size={20}
-                                    bold
-                                    style={{ lineHeight: 25 }}
-                                >
+                                <Text variant='titleMedium'>
                                     {item.author.username}
-                                </TextCopy>
+                                </Text>
 
                                 <Time
                                     time={item.createdAt}
@@ -82,11 +79,9 @@ const BugListItem = ({ item, loading, onDelete = null }) => {
 
                             {(user._id === item.author._id || user.role === 'admin') && (
                                 <IconButton
-                                    name='trash-outline'
-                                    disabled={loading}
+                                    icon='delete-forever'
                                     onPress={() => onDelete(item._id)}
-                                    color={user.role === 'admin' ? 'purple' : '#000'}
-                                    size={25}
+                                    disabled={loading}
                                 />
                             )}
 
@@ -98,12 +93,9 @@ const BugListItem = ({ item, loading, onDelete = null }) => {
 
             </View>
 
-            <TextCopy
-                size={20}
-                style={{ lineHeight: 30 }}
-            >
+            <Text variant='bodyLarge'>
                 {item.text}
-            </TextCopy>
+            </Text>
 
         </View>
     )

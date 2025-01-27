@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, View } from 'react-native'
 import { useUser } from '@context'
-import ActivityIndicator from './ActivityIndicator'
+import { ActivityIndicator } from 'react-native-paper'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
@@ -60,10 +60,7 @@ const ImageUploadIndicator = props => {
                     }}
                 >
 
-                    <ActivityIndicator
-                        size='small'
-                        color='#fff'
-                    />
+                    <ActivityIndicator size='small' />
 
                 </View>
 

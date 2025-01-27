@@ -1,13 +1,13 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { ActivityIndicator } from '@components'
+import { ActivityIndicator } from 'react-native-paper'
 import { useTheme } from '@context'
 import Modal from 'react-native-modal'
 
 const BlackScreen = () => {
     return (
         <View style={{ flex: 1, background: '#000' }}>
-            <ActivityIndicator label={`Game paused.\nPhone must be in portrait mode.`} />
+            <ActivityIndicator />
         </View>
     )
 }

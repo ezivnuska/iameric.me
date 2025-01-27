@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
-import { TextCopy } from '@components'
+import { Text } from 'react-native-paper'
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const DURATION = 10000
@@ -82,7 +82,7 @@ const NotificationListItem = ({ text, remove, ...props }) => {
                     alignItems: 'center',
                 }}
             >
-                <TextCopy bold size={18} color='#fff' style={{ marginHorizontal: 'auto' }}>{text}</TextCopy>
+                <Text variant='titleLarge'>{text}</Text>
             </Pressable>
         </Animated.View>
     )

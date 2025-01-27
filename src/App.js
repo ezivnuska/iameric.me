@@ -4,7 +4,7 @@ import Layout from './layout'
 import {
     AppContextProvider,
     // BugContextProvider,
-    // ContactsContextProvider,
+    FeedContextProvider,
     FormContextProvider,
     ModalContextProvider,
     NotificationContextProvider,
@@ -44,9 +44,11 @@ const App = () => {
                                     <FormContextProvider>
                                         <ModalContextProvider>
                                             <SocketContextProvider>
+                                                <FeedContextProvider>
 
-                                                    <Layout />
-
+                                                        <Layout />
+                                                        
+                                                </FeedContextProvider>
                                             </SocketContextProvider>
                                         </ModalContextProvider>
                                     </FormContextProvider>

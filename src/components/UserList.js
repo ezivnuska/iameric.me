@@ -97,6 +97,7 @@ const UserList = ({ data, onPress }) => {
             keyExtractor={item => item._id}
             renderItem={({ item }) => <UserListItem item={item} onPress={onPress} />}
             horizontal={landscape}
+            style={{ paddingVertical: 20 }}
         />
     )
 }

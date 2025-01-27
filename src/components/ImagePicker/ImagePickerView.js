@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, SimpleButton } from '@components'
+import { ActivityIndicator, Button } from 'react-native-paper'
 
 const ImagePickerView = ({ active, cancel, select, disabled = false }) => (
     <View
@@ -20,19 +20,21 @@ const ImagePickerView = ({ active, cancel, select, disabled = false }) => (
             }}
         >
         
-            <SimpleButton
-                label='Select Image'
+            <Button
+                mode='contained'
                 onPress={select}
                 disabled={disabled}
-            />
+            >
+                Select Image
+            </Button>
 
-            <SimpleButton
-                label='Cancel'
+            <Button
+                mode='contained'
                 onPress={cancel}
                 disabled={disabled}
-                color='#fff'
-                transparent
-            />
+            >
+                Cancel
+            </Button>
 
         </View>
     </View>

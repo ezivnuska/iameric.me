@@ -56,7 +56,7 @@ const BugList = props => {
                     extraData={bugs}
                     keyExtractor={item => `bug-item-${item._id}`}
                     renderItem={({ item }) => <BugListItem item={item} onDelete={removeBug} />}
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, paddingVertical: 20 }}
                 />
             )}
 

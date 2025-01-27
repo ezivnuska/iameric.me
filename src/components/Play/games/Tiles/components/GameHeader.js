@@ -1,13 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import {
-    Pressable,
-    Text,
-    View,
-} from 'react-native'
-import {
-    SimpleButton,
-    TextCopy,
-} from '@components'
+import { Pressable, View } from 'react-native'
+import { Button, Text } from 'react-native-paper'
 import { usePlay } from '@context'
 
 const GameHeader = ({ status, onChangeStatus, changeLevel }) => {
@@ -89,30 +82,34 @@ const GameHeader = ({ status, onChangeStatus, changeLevel }) => {
             >
                 {status === 'idle'
                     ? (
-                        <SimpleButton
-                            label={`Start`}
+                        <Button
                             onPress={startPlay}
-                        />
+                        >
+                            Start
+                        </Button>
                     )
                     : status === 'paused'
                         ? (
-                            <SimpleButton
-                                label='Continue'
+                            <Button
                                 onPress={unpause}
-                            />
+                            >
+                                Continue
+                            </Button>
                         )
                         : status === 'resolved'
                             ? (
-                                <SimpleButton
-                                    label={`Finish`}
+                                <Button
                                     onPress={reset}
-                                />
+                                >
+                                    Finish
+                                </Button>
                             )
                             : (
-                                <SimpleButton
-                                    label='Pause'
+                                <Button
                                     onPress={pause}
-                                />
+                                >
+                                    Pause
+                                </Button>
                             )
                 }
 
@@ -124,10 +121,11 @@ const GameHeader = ({ status, onChangeStatus, changeLevel }) => {
                 )} */}
 
                 {status === 'paused' && (
-                    <SimpleButton
-                        label='Give Up'
+                    <Button
                         onPress={reset}
-                    />
+                    >
+                        Give Up
+                    </Button>
                 )}
 
             </View>
@@ -157,16 +155,16 @@ const GameHeader = ({ status, onChangeStatus, changeLevel }) => {
                             alignItems: 'center',
                         }}
                     >
-                        <TextCopy color='#fff' bold>
+                        <Text variant='titleLarge'>
                             Score: {formattedTime}
-                        </TextCopy>
+                        </Text>
                     </Pressable>
                 )
                 : ticks > 0
                     ? (
-                        <TextCopy>
+                        <Text variant='titleLarge'>
                             Time: {formattedTime}
-                        </TextCopy>
+                        </Text>
                     )
                     : null
             }

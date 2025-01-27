@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
+import { TextInput } from 'react-native-paper'
 import { FormField, FormHeader } from './components'
 import { SimpleButton } from '@components'
 import { useForm, useUser } from '@context'
@@ -125,21 +126,37 @@ const Form = ({
                 key={`formfield-${index}-${name}`}
                 style={{ flex: 1 }}
             >
-                <FormField
-                    style={{ flex: 1 }}
+                <TextInput
                     label={label}
                     value={formFields[name] || ''}
+                    onChangeText={value => onChange(name, value)}
+                    
+                    style={{ flex: 1 }}
                     error={getError(name)}
                     placeholder={placeholder}
                     secureTextEntry={type === 'password'}
                     keyboardType='default'
                     autoCapitalize={autoCapitalize || 'sentences'}
-                    onChange={value => onChange(name, value)}
                     autoFocus={getFocus(name)}
                     onKeyPress={!multiline && onEnter}
                     dirty={getDirty(name)}
                     multiline={multiline}
                 />
+                {/* <FormField
+                    label={label}
+                    value={formFields[name] || ''}
+                    onChange={value => onChange(name, value)}
+                    style={{ flex: 1 }}
+                    error={getError(name)}
+                    placeholder={placeholder}
+                    secureTextEntry={type === 'password'}
+                    keyboardType='default'
+                    autoCapitalize={autoCapitalize || 'sentences'}
+                    autoFocus={getFocus(name)}
+                    onKeyPress={!multiline && onEnter}
+                    dirty={getDirty(name)}
+                    multiline={multiline}
+                /> */}
             </View>
         )
     })

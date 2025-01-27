@@ -12,6 +12,7 @@ const NavBar = props => {
             case 'Home': return <Text variant='titleMedium' style={{ paddingHorizontal: 10 }}>This page intentionally left blank. Not sure why.</Text>; break
             case 'Feed': return <FeedNavBar {...props} />; break
             case 'Bugs': return <BugNavBar {...props} />; break
+            case 'Users': return <Text variant='titleMedium' style={{ paddingHorizontal: 10 }}>Users</Text>; break
             case 'Images':
             case 'Profile': return <UserNavBar {...props} />; break
             case 'Work': return <Text variant='titleMedium' style={{ paddingHorizontal: 10 }}>{`Places I\'ve worked`}</Text>; break
@@ -39,16 +40,16 @@ const NavButtonList = ({ route, labels, children }) => (
                 const isActive = label === route.name || (route.name === 'Profile' && route.params?.username === label)
                 
                 return (
-                    // <View>
-                        <Button
-                            key={`nav-button-${index}-${label}`}
-                            onPress={() => navigate(name, params)}
-                            disabled={isActive}
-                            labelStyle={styles.navButtonLabel}
-                        >
-                            {label}
-                        </Button>
-                    // </View>
+                    <Button
+                        mode={isActive ? 'contained' : 'default'}
+                        key={`nav-button-${index}-${label}`}
+                        onPress={() => navigate(name, params)}
+                        // disabled={isActive}
+                        labelStyle={styles.buttonLabel}
+                        compact={true}
+                    >
+                        {label}
+                    </Button>
                 )
             })}
             
@@ -76,6 +77,7 @@ const BugNavBar = ({ landscape, route }) => {
                     icon='file-image-plus'
                     onPress={() => setBugModal('BUG')}
                     size={25}
+                    style={{ margin: 0 }}
                 />
             )}
 
@@ -123,11 +125,13 @@ const UserNavBar = ({ landscape, route }) => {
                             buttons={[
                                 {
                                     value: 'list',
-                                    label: 'List',
+                                    icon: 'table-column',
+                                    // label: 'List',
                                 },
                                 {
                                     value: 'grid',
-                                    label: 'Grid',
+                                    icon: 'grid',
+                                    // label: 'Grid',
                                 },
                             ]}
                         >
@@ -172,7 +176,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: 10,
-        paddingRight: 5,
+        paddingRight: 2,
         // marginBottom: 10,
         // borderWidth: 1,
     },
@@ -180,14 +184,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         // background: 'yellow',
-        // gap: 10,
+        gap: 5,
         // borderWidth: 1,
     },
-    navButtonLabel: {
-        lineHeight: 30,
-        fontSize: 20,
+    buttonLabel: {
+        lineHeight: 24,
+        fontSize: 18,
         fontWeight: 700,
-        marginVertical: 0,
+        marginVertical: 5,
         marginHorizontal: 10,
         // borderWidth: 1,
     },
@@ -197,7 +201,7 @@ const styles = StyleSheet.create({
     navBar: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 7,
+        // paddingVertical: 7,
         // borderWidth: 1,
     },
     shadow: {

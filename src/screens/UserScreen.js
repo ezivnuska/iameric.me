@@ -23,7 +23,7 @@ const UserScreen = props => {
 
     useEffect(() => {
 
-        console.log('params', props.route.params)
+        // console.log('params', props.route.params)
         
         if (!profile || profile.username !== props.route.params?.username) {
             if (!userLoading) initUser(props.route.params?.username)
@@ -77,11 +77,11 @@ const UserScreen = props => {
             full={props.route.name === 'Images' && props.route.params?.list}
             secure
         >
-            <View style={{ flex: 1 }}>
+            {/* <View style={{ flex: 1 }}> */}
 
-                <UserProfile profile={profile} />
+            <UserProfile profile={profile} />
 
-            </View>
+            {/* </View> */}
             
         </Screen>
     )
@@ -89,18 +89,18 @@ const UserScreen = props => {
 
 const UserProfile = ({ profile }) => {
 
-    const { theme, toggleTheme } = useTheme()
+    // const { theme, toggleTheme } = useTheme()
     const { setModal } = useModal()
     const { authUser } = useUser()
 
     const isAuthUser = useMemo(() => profile && authUser._id === profile._id, [profile])
     
-    useEffect(() => {
-        console.log('profile', profile)
-    }, [])
+    // useEffect(() => {
+    //     console.log('profile', profile)
+    // }, [])
 
     return profile && (
-        <View style={{ flex: 1, gap: 20 }}>
+        <View style={{ flex: 1, paddingVertical: 20 }}>
 
             <Pressable
                 key={`profile-${profile.username}-${Date.now()}`}

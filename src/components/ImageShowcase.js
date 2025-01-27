@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Image, ScrollView, View } from 'react-native'
-import { ActivityIndicator, Form, IconButton, IconButtonLarge, TextCopy, Time, UserAvatar } from '@components'
+import { Form, IconButton, IconButtonLarge, Time, UserAvatar } from '@components'
+import { ActivityIndicator, Text } from 'react-native-paper'
 import { useForm, useModal, useTheme, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
 import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -197,14 +198,9 @@ const ImageHeader = ({ image, landscape, onClose, ...props }) => {
                 >
                         
                     {image.user && (
-                        <TextCopy
-                            size={landscape ? 16 : 20}
-                            color='#fff'
-                            bold
-                            style={{ lineHeight: 25 }}
-                        >
+                        <Text variant='titleMedium'>
                             {image.user.username}
-                        </TextCopy>
+                        </Text>
                     )}
 
                     <Time
@@ -332,7 +328,7 @@ const CaptionView = ({ image, onChangeAvatar, setEditing, deleteImage, authorize
                     paddingVertical: 10,
                 }}
             >
-                <TextCopy color='#fff'>{image.caption}</TextCopy>
+                <Text variant='bodyMedium'>{image.caption}</Text>
             </ScrollView>
 
             {authorized && (

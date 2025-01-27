@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { TextCopy } from '@components'
+import { Text } from 'react-native-paper'
 import { useSocket, useUser } from '@context'
 
 const Socket = () => {
@@ -46,9 +46,9 @@ const SocketView = ({ connected, connections, username }) => {
                     flexShrink: 0,
                 }}
             >
-                <TextCopy size={16}>
+                <Text variant='bodyMedium'>
                     {`${connections.length || 'No'} connection${connections.length !== 1 ? `s` : ''}`}
-                </TextCopy>
+                </Text>
             </View>
 
             <View
@@ -57,9 +57,9 @@ const SocketView = ({ connected, connections, username }) => {
                     textAlign: 'right',
                 }}
             >
-                <TextCopy>
+                <Text variant='bodyMedium'>
                     {`Connected as ${username}`}
-                </TextCopy>
+                </Text>
             </View>
         </View>
     )
@@ -95,13 +95,13 @@ const SocketView = ({ connected, connections, username }) => {
                                 gap: 10,
                             }}
                         >
-                            <TextCopy
-                                color={connected ? 'tomato' : theme?.colors.textDefault}
-                                bold={connected ? true : false}
-                                size={16}
+                            <Text variant='titleMedium'
+                                // color={connected ? 'tomato' : theme?.colors.textDefault}
+                                // bold={connected ? true : false}
+                                // size={16}
                             >
                                 {conn?.username || username}
-                            </TextCopy>
+                            </Text>
                         </View>
                     ))}
                 </View>

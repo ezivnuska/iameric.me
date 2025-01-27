@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { TextCopy } from '@components'
+import { Text } from 'react-native-paper'
 import { getModifiedColor } from '@utils'
 
 const Tile = ({
@@ -31,18 +31,18 @@ const Tile = ({
                 //         : colorBase,
             }, props.style]}
         >
-            <TextCopy
-                bold
-                color={direction ? 'blue' : 'orange'}
-                align='center'
-                size={48}
+            <Text
+                variant='displayLarge'
+                // textColor={direction ? 'blue' : 'orange'}
                 style={{
                     flex: 1,
                     lineHeight: size,
+                    color: direction ? 'blue' : 'orange',
+                    textAlign: 'center',
                 }}
             >
                 {label}
-            </TextCopy>
+            </Text>
 
         </View>
     )

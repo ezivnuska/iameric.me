@@ -1,12 +1,10 @@
 import React from 'react'
-import { Pressable, View } from 'react-native'
-import { TextCopy } from '@components'
-import { useForm, useTheme } from '@context'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { View } from 'react-native'
+import { IconButton, Text } from 'react-native-paper'
+import { useForm } from '@context'
 
 const FormHeader = ({ title, close = null, color = '#000' }) => {
 
-    const { theme } = useTheme()
     const { clearForm } = useForm()
 
     const handleClose = () => {
@@ -23,24 +21,16 @@ const FormHeader = ({ title, close = null, color = '#000' }) => {
                 paddingBottom: 10,
             }}
         >
-            <TextCopy
-                bold
-                size={24}
-                color={color}
-            >
+            <Text variant='titleLarge'>
                 {title}
-            </TextCopy>
+            </Text>
 
             {close && (
-                <Pressable 
+                <IconButton
+                    icon='close'
                     onPress={handleClose}
-                >
-                    <Icon
-                        name={'close'}
-                        size={24}
-                        color={theme?.colors.textDefault}
-                    />
-                </Pressable>
+                    size={25}
+                />
             )}
         </View>
     )

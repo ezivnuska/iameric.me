@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Text, TextInput, View } from 'react-native'
-import { TextCopy } from '@components'
+import { TextInput, View } from 'react-native'
+import { Text } from 'react-native-paper'
 import { useTheme } from '@context'
 
 const FormField = ({
@@ -31,16 +31,9 @@ const FormField = ({
             }}
         >
             {label && (
-                <TextCopy
-                    bold
-                    size={18}
-                    style={{
-                        flexGrow: 0,
-                        color: theme?.colors.inputLabel,
-                    }}
-                >
+                <Text variant='titleLarge'>
                     {label}
-                </TextCopy>
+                </Text>
             )}
 
             <View
@@ -86,15 +79,7 @@ const FormField = ({
             </View>
             
             {dirty && error ? (
-                <Text
-                    style={{
-                        color: !dirty ? '#ccc' : error ? '#f00' : '#0f0',
-                        marginTop: 2,
-                        fontSize: 14,
-                        lineHeight: 18,
-                        textAlign: 'right',
-                    }}
-                >
+                <Text variant='bodySmall'>
                     * required
                 </Text>
             ) : null}

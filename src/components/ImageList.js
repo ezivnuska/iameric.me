@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
-import { ActivityIndicator } from '@components'
+import { ActivityIndicator } from 'react-native-paper'
 import { useTheme, useUser } from '@context'
 import { loadImage } from '@utils/images'
 
@@ -201,6 +201,7 @@ const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false 
                             onPress={onPress}
                         />
                     )}
+                    style={{ paddingVertical: 10 }}
                 />
             )}
         </View>

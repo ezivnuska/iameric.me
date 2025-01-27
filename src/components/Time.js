@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextCopy } from '@components'
+import { Text } from 'react-native-paper'
 import {
     format,
     formatDistance,
@@ -16,16 +16,12 @@ const Time = ({
     ...props
 }) => {
     return (
-        <TextCopy
-            color={color}
-            size={size}
-            style={props.style}
-        >
+        <Text variant='bodyMedium'>
             {time
                 ? `${prefix}${formatRelative(new Date(time), new Date())}${suffix}`
                 : 'Now'
             }
-        </TextCopy>
+        </Text>
     )
 }
 

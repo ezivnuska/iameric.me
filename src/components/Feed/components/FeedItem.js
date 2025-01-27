@@ -1,14 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { Time, UserAvatar } from '@components'
-import { useFeed, useTheme, useUser } from '@context'
+import { useFeed, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 import { loadPost } from '@utils/feed'
 import { IconButton, Text } from 'react-native-paper'
 
 const FeedItem = ({ item, disabled, onDelete = null }) => {
     
-    const { theme } = useTheme()
     const { updatePost } = useFeed()
     const { user } = useUser()
 
@@ -16,7 +15,6 @@ const FeedItem = ({ item, disabled, onDelete = null }) => {
     const [post, setPost] = useState(null)
 
     useEffect(() => {
-        console.log('THMEE', theme)
         if (item) initPost(item._id)
     }, [])
         

@@ -10,6 +10,7 @@ const initialState = {
     addPost: () => {},
     closeFeedModal: () => {},
     deletePost: () => {},
+    initFeed: () => {},
     setFeedLoading: () => {},
     setFeedModal: () => {},
     setPosts: () => {},
@@ -30,7 +31,7 @@ export const FeedContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const loadFeed = async () => {
+    const initFeed = async () => {
 
         dispatch({ type: 'SET_FEED_LOADING', payload: true })
         const payload = await loadPosts()
@@ -45,10 +46,11 @@ export const FeedContextProvider = props => {
     const findPostById = postId => state.posts.filter(post => post._id === postId)[0]
     
     useEffect(() => {
-        loadFeed()
+        // loadFeed()
     }, [])
 
     const actions = useMemo(() => ({
+        initFeed,
         addPost: async payload => {
             dispatch({ type: 'ADD_POST', payload })
         },
@@ -84,7 +86,7 @@ export const FeedContextProvider = props => {
                 ...actions,
             }}
         >
-            {state.feedLoaded && props.children}
+            {props.children}
         </FeedContext.Provider>
     )
 }

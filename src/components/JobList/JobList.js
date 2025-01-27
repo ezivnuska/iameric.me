@@ -51,7 +51,7 @@ const JobList = () => {
                     key={`job-${index}`}
                 />
             )}
-            style={{ paddingVertical: 10 }}
+            style={{ paddingVertical: 20 }}
         />
     )
 }

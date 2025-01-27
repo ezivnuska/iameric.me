@@ -1,4 +1,4 @@
-import ActivityIndicator from './ActivityIndicator'
+// import ActivityIndicator from './NOT_IN_USE/ActivityIndicator'
 // import AddressView from './BugForm'
 // import BugForm from '../presentations/BugList/components/BugForm'
 import BugNavBar from './BugNavBar'
@@ -11,7 +11,7 @@ import FeedNavBar from './NavBar'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageContained from './ImageContained'
-import ImageClone from './ImageClone'
+// import ImageClone from './NOT_IN_USE/ImageClone'
 import ImageList from './ImageList'
 import ImageShowcase from './ImageShowcase'
 import ImageUploadIndicator from './ImageUploadIndicator'
@@ -41,7 +41,7 @@ import BugList from './BugList'
 import Feed from './Feed'
 import Form from './Form'
 import ImagePicker from './ImagePicker'
-import ImagePickerMini from './ImagePickerMini'
+// import ImagePickerMini from './NOT_IN_USE/ImagePickerMini'
 import JobList from './JobList'
 import ModalFactory from './ModalFactory'
 import Notification from './Notification'
@@ -49,7 +49,7 @@ import Play from './Play'
 import Socket from './Socket'
 
 export {
-    ActivityIndicator,
+    // ActivityIndicator,
     AdminButton,
     AuthForm,
     // BugForm,
@@ -61,7 +61,7 @@ export {
     IconButton,
     IconButtonLarge,
     ImageContained,
-    ImageClone,
+    // ImageClone,
     ImageList,
     ImageShowcase,
     ImageUploadIndicator,
@@ -84,7 +84,7 @@ export {
     Feed,
     Form,
     ImagePicker,
-    ImagePickerMini,
+    // ImagePickerMini,
     JobList,
     ModalFactory,
     Notification,
