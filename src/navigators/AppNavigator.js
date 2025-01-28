@@ -12,7 +12,9 @@ import {
     // SimpleScreen,
     WorkScreen,
 } from '@screens'
+import { Button } from 'react-native-paper'
 import { Footer, Header } from '@layout/components'
+import { BugNavBar } from '@components'
 import { UserNavigator } from '.'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -61,11 +63,7 @@ const AppNavigator = () => {
                 name='Bugs'
                 children={props => <BugScreen {...props} />}
                 // component={BugScreen}
-                options={{
-                    title: 'Bugs',
-                    // headerShown: true,
-                    // header: props => <BugNavBar {...props} />,
-                }}
+                options={{ title: 'Bugs' }}
             />
 
             {/* <AppStack.Screen

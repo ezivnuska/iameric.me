@@ -63,9 +63,9 @@
       "@screens": [
         "./src/screens/index.js"
       ],
-      "@theme": [
-        "src/theme/index.js"
-      ],
+      // "@theme": [
+      //   "src/theme_old/index.js"
+      // ],
       "@user": [
         "./src/context/UserContext.js"
       ],

@@ -15,6 +15,6 @@ const styles = StyleSheet.create({
         width: '90%',
         minWidth: 300,
         marginHorizontal: 'auto',
-        backgroundColor: 'pink',
+        // backgroundColor: 'pink',
     },
 })

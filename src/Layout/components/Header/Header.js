@@ -1,8 +1,8 @@
 import React  from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
+import { Appbar, Button, IconButton, Text } from 'react-native-paper'
 import { UserAvatar } from '@components'
-import { useModal, useTheme, useUser } from '@context'
-import { Button, IconButton, Text } from 'react-native-paper'
+import { useModal, useUser } from '@context'
 
 const Header = props => {
     
@@ -10,26 +10,50 @@ const Header = props => {
     const { setModal } = useModal()
     
     return (
+        <Appbar.Header>
+            
+            <Appbar.Content
+                title={`iam${user?.username || 'eric'}`}
+                titleVariant='headlineLarge'
+                titleStyle={{ fontWeight: 700 }}
+                onPress={() => props.navigation.navigate('Home')}
+            />
+            
+            <Appbar.Action icon='account-group' onPress={() => props.navigation.navigate('Users')}
+                // style={{ margin: 0, padding: 0 }}
+            />
+
+            <Appbar.Action icon='certificate' onPress={() => props.navigation.navigate('Work')}
+                // style={{ margin: 0, padding: 0 }}
+            />
+            
+            <Appbar.Action icon='newspaper-variant-multiple' onPress={() => props.navigation.navigate('Feed')}
+                // style={{ margin: 0, padding: 0 }}
+            />
+            
+            <UserAvatar
+                user={user}
+                onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: user?.username } })}
+                size={35}
+                style={{ paddingHorizontal: 10 }}
+            />
+
+        </Appbar.Header>
+    )
+    return (
             
         <View style={styles.headerContent}>
 
             <Pressable
                 onPress={() => props.navigation.navigate('Home')}
             >
-                <Text
-                    variant='headlineLarge'
-                    style={{ fontWeight: 700 }}
-                >
-
+                <Text variant='headlineLarge' style={{ fontWeight: 700 }}>
                     iam{user?.username || 'eric'}
-
                 </Text>
 
             </Pressable>
 
-            <View
-                style={styles.controls}
-            >
+            <View style={styles.controls}>
 
                 <IconButton
                     icon='account-group'
@@ -58,15 +82,15 @@ const Header = props => {
             </View>
 
             {user ? (
-                <Pressable
+                <UserAvatar
+                    user={user}
                     onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: user.username } })}
-                >
-                    <UserAvatar user={user} size={30} />
-                </Pressable>
+                    size={40}
+                />
             ) : (
                 <Button
-                    onPress={() => setModal('AUTH')}
                     mode='contained'
+                    onPress={() => setModal('AUTH')}
                 >
                     Sign In
                 </Button>
@@ -83,7 +107,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 10,
+        paddingHorizontal: 20,
     },
     controls: {
         flexDirection: 'row',

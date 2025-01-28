@@ -73,19 +73,19 @@ const Layout = () => {
                                     // zIndex: 100,
                                     // borderWidth: 5,
                                     // borderStyle: 'dotted',
-                                    // borderColor: 'yellow',
+                                    // borderColor: 'red',
                                 }}
                             >
                                 <AppNavigator />
 
                             </View>
 
-                            <View style={{ flexGrow: 0, zIndex: 2000 }}>
+                            {/* <View style={{ zIndex: 2000 }}> */}
                                 <Footer
                                     landscape={landscape}
                                     route={currentRoute}
                                 />
-                            </View>
+                            {/* </View> */}
                             
                             <ImageUploadIndicator style={{ zIndex: 2500 }} />
 

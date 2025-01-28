@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { FlatList, Text, View } from 'react-native'
+import { FlatList, View } from 'react-native'
+import { Divider, Text } from 'react-native-paper'
 import { BugListItem, BugModal } from './components'
 import { useBugs, useSocket, useTheme } from '@context'
 import { deleteEntryWithId } from '@utils/bugs'
@@ -38,26 +39,21 @@ const BugList = props => {
     }
     
     return (
-        <View
-            style={{
-                flex: 1,
-                gap: 10,
-            }}
-        >
-            {!bugs?.length && (
-                <Text style={styles.copy}>
-                    No bugs to squash.
-                </Text>
-            )}
-            
-            {bugs?.length && (
+        <View style={{ flex: 1 }}>
+
+            {bugs?.length ? (
                 <FlatList
                     data={bugs}
                     extraData={bugs}
                     keyExtractor={item => `bug-item-${item._id}`}
                     renderItem={({ item }) => <BugListItem item={item} onDelete={removeBug} />}
-                    style={{ flex: 1, paddingVertical: 20 }}
+                    ItemSeparatorComponent={({ highlighted }) => <Divider />}
+                    style={{ flex: 1 }}
                 />
+            ) : (
+                <Text variant='bodyLarge'>
+                    No bugs to squash.
+                </Text>
             )}
 
             <BugModal

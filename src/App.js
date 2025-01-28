@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import Layout from './layout'
 import {
     AppContextProvider,
-    // BugContextProvider,
+    BugContextProvider,
     FeedContextProvider,
     FormContextProvider,
     ModalContextProvider,
@@ -45,9 +45,9 @@ const App = () => {
                                         <ModalContextProvider>
                                             <SocketContextProvider>
                                                 <FeedContextProvider>
-
-                                                        <Layout />
-                                                        
+                                                    <BugContextProvider>
+                                                                            <Layout />
+                                                    </BugContextProvider>
                                                 </FeedContextProvider>
                                             </SocketContextProvider>
                                         </ModalContextProvider>

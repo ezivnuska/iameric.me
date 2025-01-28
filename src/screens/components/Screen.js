@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
-import { useApp, useModal, useTheme, useUser } from '@context'
-import { NavBar } from '@components'
+import { ScrollView, View } from 'react-native'
+import { useApp, useModal, useUser } from '@context'
 
 const Screen = ({
     children,
@@ -11,11 +10,10 @@ const Screen = ({
 }) => {
 
     const { setAuthRoute } = useApp()
-    const { landscape } = useTheme()
     const { setModal } = useModal()
     const { user } = useUser()
 
-    const authorized = useMemo(() => (!secure || user !== null), [user, secure])
+    const authorized = useMemo(() => (!secure || user !== null), [user])
     const routeName = useMemo(() => props.route.name, [props])
 
     useEffect(() => {
@@ -32,17 +30,15 @@ const Screen = ({
     if (!authorized) return <View style={{ flex: 1 }} />
 
     return (
-        <View style={styles.flex}>
-
-            <NavBar {...props} />
+        <View style={{ flex: 1 }}>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                style={styles.flex}
-                contentContainerStyle={[
-                    styles.flex,
-                    !full && styles.padded,
-                ]}
+                style={{ flex: 1 }}
+                contentContainerStyle={{
+                    paddingHorizontal: full ? 0 : 15,
+                    paddingVertical: 10,
+                }}
             >
                 {children}
             </ScrollView>
@@ -52,16 +48,3 @@ const Screen = ({
 }
 
 export default Screen
-
-const styles = StyleSheet.create({
-    flex: {
-        flex: 1,
-        // backgroundColor: 'yellow',
-        // borderWidth: 1,
-        // borderStyle: 'dotted',
-        // borderColor: 'blue',
-    },
-    padded: {
-        paddingHorizontal: 10,
-    },
-})

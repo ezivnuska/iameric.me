@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
+import { Button } from 'react-native-paper'
 import { Form, SimpleButton } from '@components'
 import { useForm, useModal, useSocket, useUser } from '@context'
 import { signin, signup } from '@utils/auth'
@@ -106,11 +107,12 @@ const AuthForm = () => {
                 : <SignInForm onCancel={handleModalClose} onSubmit={handleSignin} />
             }
 
-            <SimpleButton
-                label={formType === 'up' ? 'Sign In' : 'Sign Up'}
+            <Button
+                mode='contained'
                 onPress={toggleFormType}
-                color='tomato'
-            />
+            >
+                {formType === 'up' ? 'Sign In' : 'Sign Up'}
+            </Button>
 
         </View>
     )

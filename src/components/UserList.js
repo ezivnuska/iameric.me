@@ -3,7 +3,7 @@ import { FlatList, Pressable, StyleSheet, View } from 'react-native'
 import { StatusIndicator, UserAvatar } from '@components'
 import { loadContactById } from '@utils/contacts'
 import { useTheme, useUser } from '@context'
-import { ActivityIndicator, Text } from 'react-native-paper'
+import { ActivityIndicator, Divider, Text } from 'react-native-paper'
 
 const UserListItem = ({ item, onPress }) => {
 
@@ -41,7 +41,8 @@ const UserListItem = ({ item, onPress }) => {
     return user && (
         <Pressable
             onPress={() => onPress(user.username)}
-            style={styles.itemContainer}
+            // style={styles.itemContainer}
+            style={{ flex: 1, paddingBottom: 15, paddingTop: 5, paddingHorizontal: 15, flexDirection: 'row', alignItems: 'center' }}
         >
             {landscape
                 ? <HorizontalListItem item={user} />
@@ -88,16 +89,13 @@ const HorizontalListItem = ({ item }) => (
 const UserList = ({ data, onPress }) => {
 
     const { landscape } = useTheme()
-    const width = landscape ? 10 : 0
-    const height = landscape ? 0 : 10
     return (
         <FlatList
-            ItemSeparatorComponent={({ highlighted }) => <View style={{ width, height }} />}
+            ItemSeparatorComponent={({ highlighted }) => <Divider />}
             data={data}
             keyExtractor={item => item._id}
             renderItem={({ item }) => <UserListItem item={item} onPress={onPress} />}
             horizontal={landscape}
-            // style={{ paddingVertical: 20 }}
         />
     )
 }
@@ -105,12 +103,6 @@ const UserList = ({ data, onPress }) => {
 export default UserList
 
 const styles = StyleSheet.create({
-    itemContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-    },
     itemVertical: {
         flex: 1,
         flexDirection: 'row',

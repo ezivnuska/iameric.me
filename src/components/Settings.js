@@ -1,5 +1,6 @@
 import React from'react'
 import { View } from'react-native'
+import { Button } from'react-native-paper'
 import { Cabinet, Form, SimpleButton } from '@components'
 import { navigate } from '@utils/navigation'
 
@@ -9,10 +10,12 @@ const Settings = () => (
             gap: 10,
         }}
     >
-        <SimpleButton
-            label={'Sign Out'}
+        <Button
+            mode='contained'
             onPress={() => navigate('Home', { signout: true })}
-        />
+        >
+            Sign Out
+        </Button>
 
         <Cabinet
             title='Close Account'

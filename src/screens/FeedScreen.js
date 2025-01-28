@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
+import { ActivityIndicator } from 'react-native-paper'
 import { Screen } from './components'
 import { Feed } from '@components'
 import { useFeed } from '@context'
     
 const FeedScreen = props => {
 
-    const { feedLoaded, initFeed } = useFeed()
+    const { feedLoaded, feedLoading, initFeed } = useFeed()
 
     useEffect(() => {
         initFeed()
@@ -14,6 +15,8 @@ const FeedScreen = props => {
     return (
         <Screen secure full {...props}>
             
+            {feedLoading && <ActivityIndicator />}
+
             {feedLoaded && <Feed {...props} />}
             
         </Screen>

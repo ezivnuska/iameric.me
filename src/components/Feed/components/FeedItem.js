@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
+import { ActivityIndicator, Card, IconButton, Text } from 'react-native-paper'
 import { Time, UserAvatar } from '@components'
 import { useFeed, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 import { loadPost } from '@utils/feed'
-import { IconButton, Text } from 'react-native-paper'
 
 const FeedItem = ({ item, disabled, onDelete = null }) => {
     
@@ -57,76 +57,67 @@ const FeedItem = ({ item, disabled, onDelete = null }) => {
 
     const authorized = useMemo(() => post && (user._id === post.author?._id || user.role === 'admin'), [post])
 
+    if (loading) return <ActivityIndicator />
+
     return post && (
-        <View style={styles.container}>
+        <View style={{ flex: 1 }}>
 
-            <View style={styles.header}>
-
-                <View style={styles.details}>
-
-                    <Pressable
-                        onPress={navigateToAuthorProfile}
-                        style={styles.author}
-                    >
-
-                        <UserAvatar user={post.author} size={30} />
-
-                        <Text
-                            variant='bodyLarge'
-                            style={{ fontWeight: 700 }}
-                        >
-                            {post.author.username}
-                        </Text>
-
-                    </Pressable>
-
-                    <Time time={post.createdAt} size={18} />
-                
-                </View>
-
-                {authorized && (
+            <Card.Title
+                title={post.author.username}
+                titleVariant='titleMedium'
+                // titleStyle={{ gap: 0, borderWidth: 1 }}
+                subtitle={<Time time={post.createdAt} />}
+                // subtitleStyle={{ gap: 0, borderWidth: 1 }}
+                // subitleVariant='titleMedium'
+                style={{ gap: 10 }}
+                left={() => <UserAvatar user={post.author} onPress={navigateToAuthorProfile} />}
+                right={() => authorized && (
                     <IconButton
                         icon='delete-forever'
-                        size={25}
                         onPress={() => onDelete(post._id)}
-                        disabled={disabled || loading}
+                        disabled={loading}
+                        // iconColor={MD3Colors.error50}
+                        // size={25}
+                        // style={{ borderWidth: 1 }}
                     />
                 )}
+            />
+            
+            {/* <Image
+                source={source}
+                resizeMode='contain'
+                style={{ flex: 1, flexGrow: 1 }}
+            /> */}
 
-            </View>
-
-            <Text variant='bodyLarge'>
-                {post.text}
-            </Text>
-
+            <Card.Content
+                style={{ paddingBottom: 20 }}
+            >
+                <Text variant='bodyLarge'>{post.text}</Text>
+            </Card.Content>
+            
+            {/* {(isOwner || hasAuthorization) && (
+                <Card.Actions>
+                    {isOwner && (
+                        <Button
+                            mode='text'
+                            onPress={handleAvatar}
+                        >
+                            {isProfileImage ? 'Unset Avatar' : 'Set Avatar'}
+                        </Button>
+                    )}
+                    {(
+                        <Button
+                            mode='text'
+                            onPress={handleDelete}
+                            disabled={loading}
+                        >
+                            Delete
+                        </Button>
+                    )}
+                </Card.Actions>
+            )} */}
         </View>
     )
 }
 
 export default FeedItem
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingLeft: 10,
-        // paddingHorizontal: 10,
-    },
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        gap: 10,
-    },
-    details: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        gap: 10,
-    },
-    author: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        gap: 10,
-    },
-})

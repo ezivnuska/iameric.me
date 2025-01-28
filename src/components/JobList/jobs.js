@@ -122,8 +122,8 @@ export default jobs = [
         duration: '2 years',
         title: 'Frontend',
         bullets: [
-            'Built all client web sites using HTML, CSS, JavaScript, and ActionScript',
-            'Built email templates for a CMS-based email software',
+            'Built out client web sites using HTML, CSS, JavaScript, Flash and ActionScript',
+            'Gathered some experience creating email templates for a CMS-based email software',
         ],
     },
     {

@@ -1,18 +1,25 @@
 import React, { useMemo } from 'react'
+import { View } from 'react-native'
 import { Appbar } from 'react-native-paper'
-import { useApp, useBugs, useFeed, useModal, useUser } from '@context'
-// import { navigate } from '@utils/navigation'
+import { useModal, useUser } from '@context'
 
 const NavBar = props => {
 
-    switch (props.route.name) {
-        case 'Feed':    return <FeedNavBar {...props} />; break
-        case 'Users':   return <UsersNavBar {...props} />; break
-        // case 'Profile': return <ProfileNavBar {...props} />; break
-        // case 'Images':  return <ImagesNavBar {...props} />; break
-        case 'Bugs':    return <BugNavBar {...props} />; break
-        default:        return <DefaultNavBar {...props} />
+    const renderNav = () => {
+        switch (props.route.name) {
+            case 'Profile': return <ProfileNavBar {...props} />; break
+            case 'Images':  return <ImagesNavBar {...props} />; break
+            default:        return <DefaultNavBar {...props} />
+        }
     }
+    return (
+        <View
+            // style={{ borderWidth: 1, margin: 0, padding: 0 }}
+        >
+            {renderNav()}
+        </View>
+    )
+    
 }
 
 const DefaultNavBar = ({ navigation, route }) => {
@@ -25,34 +32,11 @@ const DefaultNavBar = ({ navigation, route }) => {
     )
 }
 
-const BugNavBar = ({ navigation, route }) => {
-
-    const { setBugModal } = useBugs()
-
-    return (
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
-            <Appbar.Content title='Bugs' />
-            <Appbar.Action icon="bug" onPress={() => setBugModal('BUG')} />
-        </Appbar.Header>
-    )
-}
-
-const UsersNavBar = ({ navigation, route }) => {
-    
-    return (
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
-            <Appbar.Content title='Users' />
-        </Appbar.Header>
-    )
-}
-
 const ProfileNavBar = ({ navigation, route }) => {
     
     return (
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.navigate('Users')} />
+        <Appbar.Header style={{ height: 'auto', paddingRight: 10 }}>
+            <Appbar.BackAction onPress={() => navigation.navigate('Users')} style={{ margin: 0, padding: 0 }} />
             <Appbar.Content title={route.params?.username || 'Profie'} />
             <Appbar.Action
                 icon="image-multiple"
@@ -60,6 +44,7 @@ const ProfileNavBar = ({ navigation, route }) => {
                     username: route.params?.username,
                     // list: false,
                 })}
+                style={{ margin: 0, padding: 0 }}
             />
         </Appbar.Header>
     )
@@ -80,7 +65,7 @@ const ImagesNavBar = ({ navigation, route }) => {
     return (
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
-            <Appbar.Content title='Images' />
+            <Appbar.Content title={`${route.params?.username || 'User'} : Images`} />
             {isCurrentUser && (
                 <Appbar.Action
                     icon="file-image-plus"
@@ -96,19 +81,6 @@ const ImagesNavBar = ({ navigation, route }) => {
                 icon="table-column"
                 onPress={toggleViewMode}
             />
-        </Appbar.Header>
-    )
-}
-
-const FeedNavBar = ({ navigation, route }) => {
-
-    const { setFeedModal } = useFeed()
-
-    return (
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
-            <Appbar.Content title='Feed' />
-            <Appbar.Action icon="message-plus" onPress={() => setFeedModal('FEEDBACK')} />
         </Appbar.Header>
     )
 }

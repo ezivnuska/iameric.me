@@ -50,7 +50,7 @@ const ModalContainer = ({ children, onClose, fullscreen = false }) => {
                             width: '92%',
                             maxWidth: 380,
                             marginHorizontal: 'auto',
-                            backgroundColor: '#fff',
+                            // backgroundColor: '#fff',
                             borderRadius: 10,
                             overflow: 'hidden',
                             zIndex: 100,

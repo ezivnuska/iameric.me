@@ -3,6 +3,7 @@ import { FlatList, View } from 'react-native'
 import { FeedItem, FeedModal } from './components'
 import { useFeed, useSocket, useUser } from '@context'
 import { deletePostWithId } from '@utils/feed'
+import { Divider } from 'react-native-paper'
 
 const Feed = () => {
 
@@ -56,6 +57,7 @@ const Feed = () => {
                             disabled={loading}
                         />
                     )}
+                    ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 5 }} />}
                 />
             )}
 

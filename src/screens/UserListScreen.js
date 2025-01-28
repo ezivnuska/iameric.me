@@ -33,8 +33,9 @@ const UserListScreen = props => {
     return (
         <Screen
             {...props}
-            full={landscape}
             secure
+            full
+            // full={landscape}
         >
     
             {loading

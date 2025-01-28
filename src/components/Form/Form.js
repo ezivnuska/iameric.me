@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { View } from 'react-native'
-import { TextInput } from 'react-native-paper'
+import { ActivityIndicator, Appbar, Button, Card, IconButton, TextInput } from 'react-native-paper'
 import { FormField, FormHeader } from './components'
-import { SimpleButton } from '@components'
+import { SimpleButton, Time } from '@components'
 import { useForm, useUser } from '@context'
 import { getFields, validateFields } from './utils'
 
@@ -160,30 +160,91 @@ const Form = ({
             </View>
         )
     })
+    
+    return (
+        <View style={{ flex: 1, gap: 10 }}>
+            
+            {/* {title && ( */}
+                <Card.Title
+                    title={title}
+                    subtitle='The time is Now.'
+                    // left={() => <UserAvatar user={item.author} />}
+                    right={() => (
+                        <IconButton 
+                            icon='close-thick'
+                            onPress={onCancel}
+                            // disabled={loading}
+                            // iconColor={MD3Colors.error50}
+                            // size={25}
+                        />
+                    )}
+                />
+            {/* )} */}
+            
+            {/* <Image
+                source={source}
+                resizeMode='contain'
+                style={{ flex: 1, flexGrow: 1 }}
+            /> */}
 
+            <Card.Content
+                //
+            >
+                {formReady
+                    ? renderFields(formFields)
+                    : <ActivityIndicator size='medium' />
+                }
+            </Card.Content>
+            
+            {/* {(isOwner || hasAuthorization) && (
+                <Card.Actions>
+                    {isOwner && (
+                        <Button
+                            mode='text'
+                            onPress={handleAvatar}
+                        >
+                            {isProfileImage ? 'Unset Avatar' : 'Set Avatar'}
+                        </Button>
+                    )}
+                    {(
+                        <Button
+                            mode='text'
+                            onPress={handleDelete}
+                            disabled={loading}
+                        >
+                            Delete
+                        </Button>
+                    )}
+                </Card.Actions>
+            )} */}
+        </View>
+    )
     return focused !== null ? (
         <View
             style={{
                 flex: 1,
                 // width: '100%',
+                borderWidth: 5,
+                borderColor: 'yellow',
             }}
         >
             {title && (
-                <FormHeader
-                    title={title}
-                    color={color}
-                    close={onCancel}
-                />
+                <Appbar.Header>
+                    <Appbar.Content title={title} />
+                    <Appbar.Action icon='close-thick' onPress={onCancel} />
+                </Appbar.Header>
             )}
 
             {formReady && renderFields(formFields)}
 
             {onSubmit && (
-                <SimpleButton
-                    label={formLoading ? 'Sending' : 'Send'}
-                    disabled={formLoading || formError}
+                <Button
+                    mode='contained'
                     onPress={submitFormData}
-                />
+                    disabled={formLoading || formError}
+                >
+                    {formLoading ? 'Sending' : 'Send'}
+                </Button>
             )}
 
         </View>

@@ -56,7 +56,7 @@ module.exports = {
           // '@modules':       './src/modules',
           '@screens':       './src/screens',
           '@sounds':        './sounds',
-          '@theme':        './src/theme',
+          // '@theme':        './src/theme',
           '@user':          './src/context/UserContext',
           '@utils':         './src/utils',
         },

@@ -100,7 +100,7 @@ const UserProfile = ({ profile }) => {
     // }, [])
 
     return profile && (
-        <View style={{ flex: 1, paddingVertical: 20 }}>
+        <View style={{ flex: 1 }}>
 
             <Pressable
                 key={`profile-${profile.username}-${Date.now()}`}

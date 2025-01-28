@@ -10,7 +10,7 @@ const initialState = {
     addBug: () => {},
     closeBugModal: () => {},
     deleteBug: () => {},
-    loadBugs: () => {},
+    initBugs: () => {},
     setBugModal: () => {},
     setBugs: () => {},
     setBugsLoading: () => {},
@@ -31,7 +31,7 @@ export const BugContextProvider = ({ children }) => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const loadBugs = async () => {
+    const initBugs = async () => {
         dispatch({ type: 'SET_BUGS_LOADING', payload: true })
         const payload = await loadEntries()
         dispatch({ type: 'SET_BUGS_LOADING', payload: false })
@@ -42,11 +42,12 @@ export const BugContextProvider = ({ children }) => {
         dispatch({ type: 'SET_BUGS_LOADED' })
     }
     
-    useEffect(() => {
-        loadBugs()
-    }, [])
+    // useEffect(() => {
+    //     loadBugs()
+    // }, [])
 
     const actions = useMemo(() => ({
+        initBugs,
         addBug: payload => {
             dispatch({ type: 'ADD_BUG', payload })
         },
@@ -81,7 +82,7 @@ export const BugContextProvider = ({ children }) => {
                 ...actions,
             }}
         >
-            {state.bugsLoaded && children}
+            {children}
         </BugContext.Provider>
     )
 }

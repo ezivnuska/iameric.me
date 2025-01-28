@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native'
 import { Button, Text } from 'react-native-paper'
 import { usePlay } from '@context'
 
-const GameHeader = ({ status, onChangeStatus, changeLevel }) => {
+const GameHeader = ({ status, onChangeStatus }) => {
     
     const {
         ticks,
@@ -82,48 +82,31 @@ const GameHeader = ({ status, onChangeStatus, changeLevel }) => {
             >
                 {status === 'idle'
                     ? (
-                        <Button
-                            onPress={startPlay}
-                        >
+                        <Button onPress={startPlay}>
                             Start
                         </Button>
                     )
                     : status === 'paused'
                         ? (
-                            <Button
-                                onPress={unpause}
-                            >
+                            <Button onPress={unpause}>
                                 Continue
                             </Button>
                         )
                         : status === 'resolved'
                             ? (
-                                <Button
-                                    onPress={reset}
-                                >
+                                <Button onPress={reset}>
                                     Finish
                                 </Button>
                             )
                             : (
-                                <Button
-                                    onPress={pause}
-                                >
+                                <Button onPress={pause}>
                                     Pause
                                 </Button>
                             )
                 }
 
-                {/* {status === 'idle' && (
-                    <SimpleButton
-                        label={`Change Level`}
-                        onPress={changeLevel}
-                    />
-                )} */}
-
                 {status === 'paused' && (
-                    <Button
-                        onPress={reset}
-                    >
+                    <Button onPress={reset}>
                         Give Up
                     </Button>
                 )}
