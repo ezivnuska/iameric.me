@@ -34,7 +34,7 @@ const Screen = ({
     return (
         <View style={styles.flex}>
 
-            <NavBar route={props.route} landscape={landscape} />
+            <NavBar {...props} />
 
             <ScrollView
                 showsVerticalScrollIndicator={false}

@@ -1,24 +1,24 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Image, View } from 'react-native'
-import { Avatar, Button, Card, Text } from 'react-native-paper'
-import { useForm, useModal, useTheme, useUser } from '@context'
+import { Avatar, Button, Card, IconButton, MD3Colors, Text } from 'react-native-paper'
+import { useForm, useModal, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
-import { Time } from '@components'
+import { Time, UserAvatar } from '@components'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const LeftContent = props => <Avatar.Icon {...props} icon='guy-fawkes-mask' />
-
 const ImageCard = ({ data }) => {
 
-    const { landscape } = useTheme()
     const { clearForm, formError, formFields } = useForm()
     const { closeModal } = useModal()
-    const { user, authUser, setDeletedImage, updateImage, updateUser } = useUser()
+    const { user, setDeletedImage, updateImage, updateUser } = useUser()
 
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState(null)
-
+    
+    const isProfileImage = useMemo(() => image && user.profileImage?._id === image._id, [user])
+    const isOwner = useMemo(() => user && image && user._id === image.user._id, [image])
+    const hasAuthorization = useMemo(() => user && user.role === 'admin', [user])
     const source = useMemo(() => image && image.user && `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
 
     useEffect(() => {
@@ -29,6 +29,10 @@ const ImageCard = ({ data }) => {
             findImage(data._id)
         }
     }, [])
+
+    // useEffect(() => {
+    //     if (image.user._id === user._id)
+    // }, [image])
 
     const findImage = async imageId => {
         
@@ -51,7 +55,7 @@ const ImageCard = ({ data }) => {
         
         setLoading(true)
         
-        const profileImage = await setAvatar(authUser._id, isProfileImage ? null : image._id)
+        const profileImage = await setAvatar(user._id, isProfileImage ? null : image._id)
         
         const updatedImage = {
             ...image,
@@ -74,7 +78,7 @@ const ImageCard = ({ data }) => {
 
         setLoading(true)
 
-        const response = await deleteImage(image, authUser.profileImage?._id === image._id)
+        const response = await deleteImage(image, user.profileImage?._id === image._id)
         
         setLoading(false)
 
@@ -125,22 +129,54 @@ const ImageCard = ({ data }) => {
 
     return image && (
         <View style={{ flex: 1, gap: 10 }}>
-            <Card.Title title={image.user.username} subtitle={<Time time={image.createdAt} />} left={LeftContent} right={() => <Button onPress={closeModal}>Cancel</Button>} />
+            
+            <Card.Title
+                title={image.user.username}
+                subtitle={<Time time={image.createdAt} />}
+                left={() => <UserAvatar user={image.user} />}
+                right={() => (
+                    <IconButton 
+                        icon='close-thick'
+                        // iconColor={MD3Colors.error50}
+                        size={25}
+                        onPress={closeModal}
+                    />
+                )}
+            />
             
             <Image
                 source={source}
                 resizeMode='contain'
                 style={{ flex: 1, flexGrow: 1 }}
             />
-            <Card.Content>
+
+            <Card.Content
+                //
+            >
                 <Text variant='bodyMedium'>{image.caption}</Text>
             </Card.Content>
             
-            <Card.Actions>
-                {/* <Button onPress={closeModal}>Cancel</Button>
-                <Button>Ok</Button> */}
-            </Card.Actions>
-
+            {(isOwner || hasAuthorization) && (
+                <Card.Actions>
+                    {isOwner && (
+                        <Button
+                            mode='text'
+                            onPress={handleAvatar}
+                        >
+                            {isProfileImage ? 'Unset Avatar' : 'Set Avatar'}
+                        </Button>
+                    )}
+                    {(
+                        <Button
+                            mode='text'
+                            onPress={handleDelete}
+                            disabled={loading}
+                        >
+                            Delete
+                        </Button>
+                    )}
+                </Card.Actions>
+            )}
         </View>
     )
 }

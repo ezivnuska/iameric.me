@@ -12,17 +12,17 @@ export default jobs = [
             'Built microsite for use in 3rd party iPad software',
         ],
     },
-    {
-        company: 'Krafted By Us',
-        city: 'Martinez',
-        start: '2015',
-        end: '2015',
-        duration: '2 months',
-        title: 'Frontend',
-        bullets: [
-            'Built microsite with Node, Gulp and Sass/Bourbon',
-        ],
-    },
+    // {
+    //     company: 'Krafted By Us',
+    //     city: 'Martinez',
+    //     start: '2015',
+    //     end: '2015',
+    //     duration: '2 months',
+    //     title: 'Frontend',
+    //     bullets: [
+    //         'Built microsite with Node, Gulp and Sass/Bourbon',
+    //     ],
+    // },
     {
         company: 'Pixelette Studios',
         city: 'Berkeley',
