@@ -122,7 +122,7 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
                     flexDirection: 'row',
                     alignItems: 'center',
                     marginHorizontal: 'auto',
-                    marginTop: 10,
+                    // marginTop: 10,
                 }}
             >
                 {(list || landscape)
@@ -201,7 +201,7 @@ const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false 
                             onPress={onPress}
                         />
                     )}
-                    style={{ paddingVertical: 10 }}
+                    // style={{ paddingVertical: 10 }}
                 />
             )}
         </View>

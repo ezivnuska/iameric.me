@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import {
     AuthForm,
     // BugForm,
+    ImageCard,
     ImagePicker,
     ImageShowcase,
     // PostForm,
@@ -40,7 +41,8 @@ const ModalFactory = ({ modal, onClose }) => {
                 content = <Settings />
                 break
             case 'SHOWCASE':
-                content = <ImageShowcase data={data} />
+                content = <ImageCard data={data} />
+                // content = <ImageShowcase data={data} />
                 fullscreen = true
                 break
             case 'SOCKETS':

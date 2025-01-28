@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Button, IconButton, SegmentedButtons, Text } from 'react-native-paper'
+import { Appbar, Button, IconButton, SegmentedButtons, Text } from 'react-native-paper'
 import { useApp, useBugs, useFeed, useModal, useUser } from '@context'
 import { navigate } from '@utils/navigation'
 
@@ -21,9 +21,43 @@ const NavBar = props => {
     }
 
     return (
-        <View style={[styles.navBar, styles.shadow]}>
+        <View style={styles.navBar}>
             {renderNavBar()}
         </View>
+    )
+}
+
+const Menu = ({ route, labels, children }) => {
+
+    const title = route.name === 'Profile' ? route.params?.username : route.name
+    return (
+        <Appbar.Header>
+            {route.name !== 'Users' && (
+                <Appbar.BackAction
+                    onPress={() => {
+                        if (route.name === 'Profile') {
+                            navigate('Users')
+                        } else {
+                            navigate('Profile', {
+                                username: route.params?.username,
+                                list: route.params?.list,
+                            })
+                        }
+                    }}
+                />
+            )}
+            <Appbar.Content title={title} />
+            {/* {route.name === 'Images' && <Appbar.Content title='Users' />} */}
+            {/* {labels.map((label, index) => {
+                
+                const name = label === route.params?.username ? 'Profile' : label
+                const params = label === 'Users' ? null : route.params
+                
+                return <Appbar.Action icon="calendar" onPress={() => navigate(name, params)} />
+            })} */}
+            {/* <Appbar.Action icon="magnify" onPress={() => {}} /> */}
+            {children}
+        </Appbar.Header>
     )
 }
 
@@ -67,29 +101,30 @@ const BugNavBar = ({ landscape, route }) => {
     const { setBugModal } = useBugs()
 
     return (
-        <NavButtonList
+        <Menu
             route={route}
             labels={[ 'Home', 'Bugs' ]}
         >
 
             {!landscape && (
-                <IconButton
-                    icon='file-image-plus'
-                    onPress={() => setBugModal('BUG')}
-                    size={25}
-                    style={{ margin: 0 }}
-                />
+                <Appbar.Action icon="bug" onPress={() => setBugModal('BUG')} />
+                // <IconButton
+                //     icon='file-image-plus'
+                //     onPress={() => setBugModal('BUG')}
+                //     size={25}
+                //     style={{ margin: 0 }}
+                // />
             )}
 
-        </NavButtonList>
+        </Menu>
     )
 }
 
 const UserNavBar = ({ landscape, route }) => {
-    const { authUser } = useApp()
+    const { user } = useApp()
     const { setModal } = useModal()
     const { uploading } = useUser()
-    const isCurrentUser = useMemo(() => route.params?.username === authUser?.username, [authUser])
+    const isCurrentUser = useMemo(() => route.params?.username === user?.username, [user])
     
     const viewMode = useMemo(() => route.params?.list ? 'list' : 'grid', [route.params])
 
@@ -100,48 +135,79 @@ const UserNavBar = ({ landscape, route }) => {
         })
     }
 
-    return (
-        <NavButtonList
+    return route.name === 'Images' ? (
+        <Menu
             route={route}
-            labels={[ 'Users', route.params.username, 'Images' ]}
+            // labels={[ 'Users', route.params.username, 'Images' ]}
         >
-            {route.name === 'Images' && (
-                <View style={styles.row}>
+            <Appbar.Action
+                icon="file-image-plus"
+                onPress={() => setModal('IMAGE_UPLOAD')}
+                disabled={uploading}
+            />
+            <Appbar.Action
+                icon="grid"
+                onPress={toggleViewMode}
+            />
+            <Appbar.Action
+                icon="table-column"
+                onPress={toggleViewMode}
+            />
+            {/* { (
+                // <View
+                //     style={styles.row}
+                // >
 
                     {isCurrentUser && (
-                        <IconButton
-                            icon='file-image-plus'
-                            onPress={() => setModal('IMAGE_UPLOAD')}
-                            size={25}
-                            disabled={uploading}
-                        />
+                        
+                        // <IconButton
+                        //     icon='file-image-plus'
+                        //     onPress={() => setModal('IMAGE_UPLOAD')}
+                        //     size={25}
+                        // />
                     )}
 
                     {!landscape && (
-                        <SegmentedButtons
-                            value={viewMode}
-                            onValueChange={toggleViewMode}
-                            density='small'
-                            buttons={[
-                                {
-                                    value: 'list',
-                                    icon: 'table-column',
-                                    // label: 'List',
-                                },
-                                {
-                                    value: 'grid',
-                                    icon: 'grid',
-                                    // label: 'Grid',
-                                },
-                            ]}
-                        >
+                        <>
+                            
+                        </>
+                        // <SegmentedButtons
+                        //     value={viewMode}
+                        //     onValueChange={toggleViewMode}
+                        //     density='small'
+                        //     buttons={[
+                        //         {
+                        //             value: 'list',
+                        //             icon: 'table-column',
+                        //             // label: 'List',
+                        //         },
+                        //         {
+                        //             value: 'grid',
+                        //             icon: 'grid',
+                        //             // label: 'Grid',
+                        //         },
+                        //     ]}
+                        // >
 
-                        </SegmentedButtons>
+                        // </SegmentedButtons>
                     )}
 
                 </View>
-            )}
-        </NavButtonList>
+            )} */}
+        </Menu>
+    ) : (
+        <Menu
+            route={route}
+            // labels={[ 'Users', route.params.username, 'Images' ]}
+        >
+            <Appbar.Action
+                icon="image-multiple"
+                onPress={() => navigate('Images', {
+                    username: route.params?.username,
+                    list: !route.params?.list,
+                })}
+            />
+        </Menu>
     )
 }
 
@@ -150,20 +216,25 @@ const FeedNavBar = ({ landscape, route }) => {
     const { setFeedModal } = useFeed()
 
     return (
-        <NavButtonList
+        <Menu
+        // <NavButtonList
             route={route}
-            labels={[ 'Home', 'Feed' ]}
+            // labels={[ 'Home', 'Feed' ]}
         >
 
             {!landscape && (
-                <IconButton
-                    icon='message-plus'
+                <Appbar.Action
+                    icon="message-plus"
                     onPress={() => setFeedModal('FEEDBACK')}
-                    size={25}
                 />
+                // <IconButton
+                //     icon='message-plus'
+                //     onPress={() => setFeedModal('FEEDBACK')}
+                //     size={25}
+                // />
             )}
 
-        </NavButtonList>
+        </Menu>
     )
 }
 
@@ -184,7 +255,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         // background: 'yellow',
-        gap: 5,
+        gap: 2,
         // borderWidth: 1,
     },
     buttonLabel: {

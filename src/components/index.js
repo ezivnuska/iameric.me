@@ -10,6 +10,7 @@ import Checkbox from './Checkbox'
 import FeedNavBar from './NavBar'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
+import ImageCard from './ImageCard'
 import ImageContained from './ImageContained'
 // import ImageClone from './NOT_IN_USE/ImageClone'
 import ImageList from './ImageList'
@@ -60,6 +61,7 @@ export {
     FeedNavBar,
     IconButton,
     IconButtonLarge,
+    ImageCard,
     ImageContained,
     // ImageClone,
     ImageList,
