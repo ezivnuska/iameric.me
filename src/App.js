@@ -31,32 +31,32 @@ const App = () => {
     return (
         <AppContextProvider>
             <ThemeContextProvider>
-                <UserContextProvider>
-                    <Container>
-                        {/* <APIProvider
-                            apiKey={apiKey}
-                            version='weekly'
-                            libraries={['marker', 'geocoding']}
-                            onLoad={() => setMapsLoaded(true)}
-                        > */}
-                            {/* {(mapsLoaded === true) ? ( */}
-                                <NotificationContextProvider>
-                                    <FormContextProvider>
+                <FormContextProvider>
+                    <UserContextProvider>
+                        <SocketContextProvider>
+                            <Container>
+                                {/* <APIProvider
+                                    apiKey={apiKey}
+                                    version='weekly'
+                                    libraries={['marker', 'geocoding']}
+                                    onLoad={() => setMapsLoaded(true)}
+                                > */}
+                                {/* {(mapsLoaded === true) ? ( */}
+                                    <NotificationContextProvider>
                                         <ModalContextProvider>
-                                            <SocketContextProvider>
-                                                <FeedContextProvider>
-                                                    <BugContextProvider>
-                                                                            <Layout />
-                                                    </BugContextProvider>
-                                                </FeedContextProvider>
-                                            </SocketContextProvider>
+                                            <FeedContextProvider>
+                                                <BugContextProvider>
+                                                                        <Layout />
+                                                </BugContextProvider>
+                                            </FeedContextProvider>
                                         </ModalContextProvider>
-                                    </FormContextProvider>
-                                </NotificationContextProvider>
-                            {/* ) : <ActivityIndicator />} */}
-                        {/* </APIProvider> */}
-                    </Container>
-                </UserContextProvider>
+                                    </NotificationContextProvider>
+                                    {/* ) : <ActivityIndicator />} */}
+                                {/* </APIProvider> */}
+                            </Container>
+                        </SocketContextProvider>
+                    </UserContextProvider>
+                </FormContextProvider>
             </ThemeContextProvider>
         </AppContextProvider>
     )

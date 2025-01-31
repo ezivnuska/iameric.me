@@ -20,7 +20,7 @@ const Layout = () => {
     const { currentRoute, setCurrentRoute } = useApp()
     const { modal, closeModal } = useModal()
     const { dims, landscape, theme } = useTheme()
-    const { authUser } = useUser()
+    // const { authUser } = useUser()
 
     return (
         <SafeAreaView

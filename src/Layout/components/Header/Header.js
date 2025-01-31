@@ -6,14 +6,14 @@ import { useModal, useUser } from '@context'
 
 const Header = props => {
     
-    const { user } = useUser()
+    const { authUser } = useUser()
     const { setModal } = useModal()
     
     return (
         <Appbar.Header>
             
             <Appbar.Content
-                title={`iam${user?.username || 'eric'}`}
+                title={`iam${authUser?.username || 'eric'}`}
                 titleVariant='headlineLarge'
                 titleStyle={{ fontWeight: 700 }}
                 onPress={() => props.navigation.navigate('Home')}
@@ -26,17 +26,26 @@ const Header = props => {
             <Appbar.Action icon='certificate' onPress={() => props.navigation.navigate('Work')}
                 // style={{ margin: 0, padding: 0 }}
             />
-            
+
             <Appbar.Action icon='newspaper-variant-multiple' onPress={() => props.navigation.navigate('Feed')}
                 // style={{ margin: 0, padding: 0 }}
             />
             
-            <UserAvatar
-                user={user}
-                onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: user?.username } })}
-                size={35}
-                style={{ paddingHorizontal: 10 }}
-            />
+            {authUser ? (
+                <UserAvatar
+                    user={authUser}
+                    onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: authUser?.username } })}
+                    size={35}
+                    style={{ paddingHorizontal: 10 }}
+                />
+            ) : (
+                <Button
+                    mode='contained'
+                    onPress={() => setModal('AUTH')}
+                >
+                    Sign In
+                </Button>
+            )}
 
         </Appbar.Header>
     )
@@ -48,7 +57,7 @@ const Header = props => {
                 onPress={() => props.navigation.navigate('Home')}
             >
                 <Text variant='headlineLarge' style={{ fontWeight: 700 }}>
-                    iam{user?.username || 'eric'}
+                    iam{authUser?.username || 'eric'}
                 </Text>
 
             </Pressable>
@@ -81,10 +90,10 @@ const Header = props => {
 
             </View>
 
-            {user ? (
+            {authUser ? (
                 <UserAvatar
-                    user={user}
-                    onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: user.username } })}
+                    user={authUser}
+                    onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: authUser.username } })}
                     size={40}
                 />
             ) : (

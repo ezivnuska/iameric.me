@@ -91,9 +91,9 @@ const UserProfile = ({ profile }) => {
 
     // const { theme, toggleTheme } = useTheme()
     const { setModal } = useModal()
-    const { authUser } = useUser()
+    const { user } = useUser()
 
-    const isAuthUser = useMemo(() => profile && authUser._id === profile._id, [profile])
+    const isAuthUser = useMemo(() => profile && user._id === profile._id, [profile])
     
     // useEffect(() => {
     //     console.log('profile', profile)
@@ -110,7 +110,7 @@ const UserProfile = ({ profile }) => {
                 }}
                 disabled={!profile.profileImage}
             >
-                <UserAvatar user={isAuthUser ? authUser : profile} size={100} />
+                <UserAvatar user={isAuthUser ? user : profile} size={100} />
 
             </Pressable>
 

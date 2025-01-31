@@ -11,9 +11,9 @@ const Screen = ({
 
     const { setAuthRoute } = useApp()
     const { setModal } = useModal()
-    const { user } = useUser()
+    const { authUser } = useUser()
 
-    const authorized = useMemo(() => (!secure || user !== null), [user])
+    const authorized = useMemo(() => (!secure || authUser !== null), [authUser])
     const routeName = useMemo(() => props.route.name, [props])
 
     useEffect(() => {

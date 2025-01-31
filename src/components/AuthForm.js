@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 import { Button } from 'react-native-paper'
-import { Form, SimpleButton } from '@components'
+import { Form } from '@components'
 import { useForm, useModal, useSocket, useUser } from '@context'
-import { signin, signup } from '@utils/auth'
+import { signup } from '@utils/auth'
 import { setItem, storeToken } from '@utils/storage'
 
 const AuthForm = () => {
     
-    const { user, setUser, signinUser } = useUser()
+    const { authUser, setUser, signinUser } = useUser()
     const {
         formError,
         formReady,
@@ -21,18 +21,13 @@ const AuthForm = () => {
         
     const [formType, setFormType] = useState('in')
 
-    // useEffect(() => {
-    //     if (type !== formType) setFormType(type)
-    // }, [type])
-
     useEffect(() => {
-        if (formReady) reset()
+        if (formReady) resetForm()
     }, [formType])
 
     useEffect(() => {
-        console.log('user', user)
-        if (user) handleModalClose()
-    }, [user])
+        if (authUser) handleModalClose()
+    }, [authUser])
 
     const toggleFormType = () => {
         setFormType(formType === 'in' ? 'up' : 'in')
@@ -53,6 +48,8 @@ const AuthForm = () => {
             if (formError) clearFormError()
 
             const { _id, username } = connectedUser
+
+            // setUser(connectedUser)
             
             notifySocket('user_signed_in', {
                 userId: _id,
@@ -111,7 +108,7 @@ const AuthForm = () => {
                 mode='contained'
                 onPress={toggleFormType}
             >
-                {formType === 'up' ? 'Sign In' : 'Sign Up'}
+                {formType === 'up' ? 'Sign Up' : 'Sign In'}
             </Button>
 
         </View>

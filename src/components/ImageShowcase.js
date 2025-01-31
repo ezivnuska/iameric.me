@@ -48,7 +48,7 @@ const ImageShowcase = ({ data }) => {
         
         setLoading(true)
         
-        const profileImage = await setAvatar(authUser._id, isProfileImage ? null : image._id)
+        const profileImage = await setAvatar(user._id, isProfileImage ? null : image._id)
         
         const updatedImage = {
             ...image,
@@ -71,7 +71,7 @@ const ImageShowcase = ({ data }) => {
 
         setLoading(true)
 
-        const response = await deleteImage(image, authUser.profileImage?._id === image._id)
+        const response = await deleteImage(image, user.profileImage?._id === image._id)
         
         setLoading(false)
 
@@ -264,7 +264,7 @@ const CaptionContainer = ({
     
     const [editing, setEditing] = useState(false)
 
-    const hasAuthorization = useMemo(() => image && (authUser._id === image.user?._id), [image])
+    const hasAuthorization = useMemo(() => image && (user._id === image.user?._id), [image])
     // const isAdmin = useMemo(() => authUser && authUser.role === 'admin', [authUser])
     
     const handleCaptionEdit = caption => {

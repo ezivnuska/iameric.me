@@ -50,9 +50,9 @@ const Form = ({
     }
 
     useEffect(() => {
-        // initFields()
+        initFields()
 
-        return () => resetForm()
+        // return () => resetForm()
     }, [])
 
     useEffect(() => {
@@ -124,7 +124,7 @@ const Form = ({
         return (
             <View
                 key={`formfield-${index}-${name}`}
-                style={{ flex: 1 }}
+                style={{ flex: 1, gap: 10 }}
             >
                 <TextInput
                     label={label}
