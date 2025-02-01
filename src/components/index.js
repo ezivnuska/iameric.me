@@ -7,7 +7,9 @@ import Cabinet from './Cabinet'
 import CenteredContainer from './CenteredContainer'
 import Checkbox from './Checkbox'
 // import Counter from './Counter'
+import DestroyForm from './DestroyForm'
 import FeedNavBar from './NavBar'
+import FormContainer from './FormContainer'
 import IconButton from './IconButton'
 import IconButtonLarge from './IconButtonLarge'
 import ImageCard from './ImageCard'
@@ -58,7 +60,9 @@ export {
     Cabinet,
     CenteredContainer,
     Checkbox,
+    DestroyForm,
     FeedNavBar,
+    FormContainer,
     IconButton,
     IconButtonLarge,
     ImageCard,

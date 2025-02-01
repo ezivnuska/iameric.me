@@ -1,8 +1,10 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Pressable } from 'react-native'
+import { Card, IconButton } from 'react-native-paper'
 import {
     AuthForm,
     // BugForm,
+    DestroyForm,
     ImageCard,
     ImagePicker,
     ImageShowcase,
@@ -10,7 +12,6 @@ import {
     Settings,
     Socket,
 } from '@components'
-import { ModalContainer, ModalHeader } from './components'
 import { useTheme } from '@context'
 import Modal from 'react-native-modal'
 
@@ -32,12 +33,16 @@ const ModalFactory = ({ modal, onClose }) => {
                 content = <ImagePicker data={data} />
                 fullscreen = true
                 break
+            case 'DESTROY':
+                content = <DestroyForm data={data} />
+                // fullscreen = true
+                break
             // case 'FEEDBACK':
             //     content = <PostForm data={data} />
             //     // fullscreen = true
             //     break
             case 'SETTINGS':
-                title = 'Settings'
+                // title = 'Settings'
                 content = <Settings />
                 break
             case 'SHOWCASE':
@@ -53,14 +58,34 @@ const ModalFactory = ({ modal, onClose }) => {
         }
 
         return (
-            <ModalContainer
-                fullscreen={fullscreen}
-                landscape={landscape}
-                onClose={onClose}
+            <View
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: fullscreen ? 'stretch' : 'center',
+                    width: '100%',
+                    position: 'relative',
+                }}
             >
-                {title && <ModalHeader title={title} onClose={onClose} />}
-                {content}
-            </ModalContainer>
+                <Pressable
+                    onPress={onClose}
+                    style={{
+                        position: 'absolute',
+                        top: 0, right: 0, bottom: 0, left: 0,
+                        zIndex: 10,
+                    }}
+                />
+                
+                <View
+                    style={{
+                        width: fullscreen ? '100%' : '92%',
+                        marginHorizontal: 'auto',
+                        zIndex: 100,
+                    }}
+                >
+                    {content}
+                </View>
+            </View>
         )
     }
 

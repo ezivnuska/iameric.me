@@ -1,38 +1,39 @@
 import { isValidEmail } from '.'
 
 const checkForError = (name, value) => {
+    const invalid = !value || !value.length
     let error = null
     switch (name) {
         case 'email':
-            if (!value.length) {
+            if (invalid) {
                 return { name, message: 'Email required.' }
             } else if (!isValidEmail(value)) {
                 error = { name, message: 'Email invalid.' }
             }
             break
         case 'username':
-            if (!value.length) {
+            if (invalid) {
                 error = { name, message: 'Username required.' }
             }
             break
         case 'password':
-            if (!value.length) {
+            if (invalid) {
                 error = { name, message: 'Password required.' }
             }
             break
         case 'confirmPassword':
-            if (!value.length) {
+            if (invalid) {
                 error = { name, message: 'Please confirm password.' }
             }
             break
         case 'text':
         case 'destroy':
-            if (!value.length) {
+            if (invalid) {
                 error = { name, message: 'Field cannot be blank.' }
             }
             break
         default:
-            // console.log('No field to validate')
+            console.log('No field to validate by this name:', name)
     }
 
     // if (error) console.log('error found', error)

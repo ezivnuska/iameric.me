@@ -50,8 +50,9 @@ const ModalContainer = ({ children, landscape, onClose, fullscreen = false }) =>
                     <View
                         style={{
                             flex: 1,
-                            width: '92%',
-                            maxWidth: 380,
+                            width: '100%',
+                            // maxWidth: '92%',
+                            maxWidth: '92%',
                             marginHorizontal: 'auto',
                             backgroundColor: '#fff',
                             borderRadius: 10,

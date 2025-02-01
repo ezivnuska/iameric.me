@@ -1,18 +1,22 @@
 import React, { useEffect } from 'react'
-import { View } from 'react-native'
-import { ActivityIndicator, Appbar, Button, Card, IconButton, TextInput } from 'react-native-paper'
-import { FormField, FormHeader } from './components'
-import { SimpleButton, Time } from '@components'
+import { FlatList, View } from 'react-native'
+import {
+    Button,
+    Card,
+    Divider,
+    IconButton,
+    TextInput,
+} from 'react-native-paper'
 import { useForm, useUser } from '@context'
 import { getFields, validateFields } from './utils'
 
 const Form = ({
-    title,
     fields,
-    onCancel,
+    onCancel = null,
     color = null,
     data = null,
     onSubmit = null,
+    title = null,
 }) => {
 
     const { user } = useUser()
@@ -45,21 +49,27 @@ const Form = ({
         })
         
         const fieldValues = getFields(state, data)
-        // console.log('Field values', fieldValues)
+        console.log('Field values', fieldValues)
         initForm(fieldValues)
     }
 
     useEffect(() => {
-        initFields()
-
+        // console.log('fields', fields)
+        // initFields()
+        
         // return () => resetForm()
     }, [])
-
+    
     useEffect(() => {
-        if (!formReady) initFields()
+        console.log('formReady', formReady)
+        if (!formReady) {
+            console.log('fields', fields)
+            initFields()
+        }
     }, [formReady])
 
     useEffect(() => {
+        console.log('formFields***', formFields)
         if (formReady) {
             
             if (formFields) {
@@ -101,154 +111,81 @@ const Form = ({
         let formData = {
             ...formFields,
             author: user?._id,
-            // author: user?._id,
         }
-        // console.log('submitting formFields', formFields)
-        // console.log('submitting form data', formData)
         
         setFormLoading(true)
         const response = await onSubmit(formData)
         setFormLoading(false)
-
-        // console.log('form response', response)
         
-        if (!response) console.log('formData response', response)
+        if (!response) console.log('no response from form', response)
         else if (response.error) {
             console.log(`Form Error: ${response.name}: ${response.message}`)
             setFormError(response)
         } else resetForm()
     }
-
-    const renderFields = () => fields.map((field, index) => {
-        const { label, multiline, name, placeholder, type, autoCapitalize } = field
-        return (
-            <View
-                key={`formfield-${index}-${name}`}
-                style={{ flex: 1, gap: 10 }}
-            >
-                <TextInput
-                    label={label}
-                    value={formFields[name] || ''}
-                    onChangeText={value => onChange(name, value)}
-                    
-                    style={{ flex: 1 }}
-                    error={getError(name)}
-                    placeholder={placeholder}
-                    secureTextEntry={type === 'password'}
-                    keyboardType='default'
-                    autoCapitalize={autoCapitalize || 'sentences'}
-                    autoFocus={getFocus(name)}
-                    onKeyPress={!multiline && onEnter}
-                    dirty={getDirty(name)}
-                    multiline={multiline}
-                />
-                {/* <FormField
-                    label={label}
-                    value={formFields[name] || ''}
-                    onChange={value => onChange(name, value)}
-                    style={{ flex: 1 }}
-                    error={getError(name)}
-                    placeholder={placeholder}
-                    secureTextEntry={type === 'password'}
-                    keyboardType='default'
-                    autoCapitalize={autoCapitalize || 'sentences'}
-                    autoFocus={getFocus(name)}
-                    onKeyPress={!multiline && onEnter}
-                    dirty={getDirty(name)}
-                    multiline={multiline}
-                /> */}
-            </View>
-        )
-    })
     
     return (
-        <View style={{ flex: 1, gap: 10 }}>
-            
-            {/* {title && ( */}
+        <View style={{ flex: 1, gap: 20 }}>
+
+            {/* {title && (
                 <Card.Title
                     title={title}
-                    subtitle='The time is Now.'
-                    // left={() => <UserAvatar user={item.author} />}
-                    right={() => (
-                        <IconButton 
-                            icon='close-thick'
-                            onPress={onCancel}
-                            // disabled={loading}
-                            // iconColor={MD3Colors.error50}
-                            // size={25}
-                        />
-                    )}
+                    right={() => onCancel && <IconButton icon='close-thick' onPress={onCancel} />}
                 />
-            {/* )} */}
-            
-            {/* <Image
-                source={source}
-                resizeMode='contain'
-                style={{ flex: 1, flexGrow: 1 }}
-            /> */}
-
-            <Card.Content
-                //
-            >
-                {formReady
-                    ? renderFields(formFields)
-                    : <ActivityIndicator size='medium' />
-                }
-            </Card.Content>
-            
-            {/* {(isOwner || hasAuthorization) && (
-                <Card.Actions>
-                    {isOwner && (
-                        <Button
-                            mode='text'
-                            onPress={handleAvatar}
-                        >
-                            {isProfileImage ? 'Unset Avatar' : 'Set Avatar'}
-                        </Button>
-                    )}
-                    {(
-                        <Button
-                            mode='text'
-                            onPress={handleDelete}
-                            disabled={loading}
-                        >
-                            Delete
-                        </Button>
-                    )}
-                </Card.Actions>
             )} */}
-        </View>
-    )
-    return focused !== null ? (
-        <View
-            style={{
-                flex: 1,
-                // width: '100%',
-                borderWidth: 5,
-                borderColor: 'yellow',
-            }}
-        >
-            {title && (
-                <Appbar.Header>
-                    <Appbar.Content title={title} />
-                    <Appbar.Action icon='close-thick' onPress={onCancel} />
-                </Appbar.Header>
-            )}
+            
+            {/* <Card.Content> */}
 
-            {formReady && renderFields(formFields)}
+                {formReady && (
+                    <FlatList
+                        ItemSeparatorComponent={({ highlighted }) => <Divider />}
+                        data={fields}
+                        keyExtractor={item => `item-${item.name}`}
+                        // horizontal={landscape}
+                        renderItem={({ item }) => {
+                            console.log('item', item)
+                            const {
+                                label,
+                                multiline,
+                                name,
+                                placeholder,
+                                type,
+                                autoCapitalize,
+                            } = item
+                            return (
+                                // <View style={{ borderWidth: 1, borderColor: 'yellow' }}>
+                                    <TextInput
+                                        label={label}
+                                        value={formFields[name] || ''}
+                                        onChangeText={value => onChange(name, value)}
+                                        error={getError(name)}
+                                        placeholder={placeholder}
+                                        secureTextEntry={type === 'password'}
+                                        keyboardType='default'
+                                        autoCapitalize={autoCapitalize || 'sentences'}
+                                        autoFocus={getFocus(name)}
+                                        onKeyPress={!multiline && onEnter}
+                                        dirty={getDirty(name)}
+                                        multiline={multiline}
+                                    />
+                                // </View>
+                            )
+                        }}
+                    />
+                )}
+            {/* </Card.Content> */}
 
-            {onSubmit && (
+            {/* <Card.Actions style={{ marginVertical: 10 }}> */}
                 <Button
                     mode='contained'
                     onPress={submitFormData}
-                    disabled={formLoading || formError}
+                    disabled={formError}
                 >
-                    {formLoading ? 'Sending' : 'Send'}
+                    Submit
                 </Button>
-            )}
-
+            {/* </Card.Actions> */}
         </View>
-    ) : null
+    )
 }
 
 export default Form

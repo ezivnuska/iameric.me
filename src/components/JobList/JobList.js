@@ -14,7 +14,8 @@ const JobList = () => {
 
     useEffect(() => {
         if (visible) {
-            listRef.current.scrollToIndex({ index: visible, animated: true, viewOffset: 0, viewPosition: landscape ? 0 : 0.5 })
+            // listRef.current.scrollToIndex({ index: visible, animated: true, viewOffset: 0, viewPosition: landscape ? 0 : 0.5 })
+            listRef.current.scrollToIndex({ index: visible, animated: true, viewOffset: 0, viewPosition: 0 })
         }
     }, [landscape, visible])
 
