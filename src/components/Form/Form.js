@@ -125,11 +125,17 @@ const Form = ({
     }
     
     return (
-        <View style={{ flex: 1, gap: 20 }}>
+        <View
+            // style={{
+            //     // flex: 1,
+            //     // gap: 20,
+            //     // borderWidth: 1,
+            // }}
+        >
 
             {formReady && (
                 <FlatList
-                    ItemSeparatorComponent={({ highlighted }) => <Divider />}
+                    // ItemSeparatorComponent={({ highlighted }) => <Divider />}
                     data={fields}
                     keyExtractor={item => `item-${item.name}`}
                     // horizontal={landscape}
@@ -144,7 +150,7 @@ const Form = ({
                             autoCapitalize,
                         } = item
                         return (
-                            // <View style={{ borderWidth: 1, borderColor: 'yellow' }}>
+                            // <View>
                                 <TextInput
                                     label={label}
                                     value={formFields[name] || ''}
@@ -158,6 +164,7 @@ const Form = ({
                                     onKeyPress={!multiline && onEnter}
                                     dirty={getDirty(name)}
                                     multiline={multiline}
+                                    style={{ marginBottom: 20 }}
                                 />
                             // </View>
                         )

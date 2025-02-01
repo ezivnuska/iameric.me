@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { Button } from 'react-native-paper'
+import { Button, Card, IconButton } from 'react-native-paper'
 import { Form } from '@components'
 import { useForm, useModal, useSocket, useUser } from '@context'
 import { signup } from '@utils/auth'
@@ -90,29 +90,56 @@ const AuthForm = () => {
     }
 
     return (
-        <View
-            style={{
-                flexGrow: 1,
-                paddingHorizontal: 10,
-                paddingVertical: 10,
-                gap: 10,
-            }}
-        >
-    
-            {formType === 'up'
-                ? <SignUpForm onCancel={handleModalClose} onSubmit={handleSignup} />
-                : <SignInForm onCancel={handleModalClose} onSubmit={handleSignin} />
-            }
+        <Card>
 
-            <Button
-                mode='outlined'
-                onPress={toggleFormType}
-            >
-                {formType === 'up' ? 'Sign In' : 'Sign Up'}
-            </Button>
+            <Card.Title
+                title={formType === 'up' ? 'Sign Up' : 'Sign In'}
+                titleVariant='headlineLarge'
+                right={() => <IconButton icon='close-thick' onPress={closeModal} />}
+            />
 
-        </View>
+            <Card.Content style={{ marginTop: 10 }}>
+                {formType === 'up'
+                    ? <SignUpForm onCancel={handleModalClose} onSubmit={handleSignup} />
+                    : <SignInForm onCancel={handleModalClose} onSubmit={handleSignin} />
+                }
+            </Card.Content>
+
+            <Card.Actions style={{ flexDirection: 'column', alignItems: 'stretch', marginVertical: 10 }}>
+                <Button
+                    mode='outlined'
+                    onPress={toggleFormType}
+                >
+                    {formType === 'up' ? 'Sign In' : 'Sign Up'}
+                </Button>    
+            </Card.Actions>
+
+        </Card>
     )
+    // return (
+    //     <View
+    //         style={{
+    //             flexGrow: 1,
+    //             paddingHorizontal: 10,
+    //             paddingVertical: 10,
+    //             gap: 10,
+    //         }}
+    //     >
+    
+    //         {formType === 'up'
+    //             ? <SignUpForm onCancel={handleModalClose} onSubmit={handleSignup} />
+    //             : <SignInForm onCancel={handleModalClose} onSubmit={handleSignin} />
+    //         }
+
+    //         <Button
+    //             mode='outlined'
+    //             onPress={toggleFormType}
+    //         >
+    //             {formType === 'up' ? 'Sign In' : 'Sign Up'}
+    //         </Button>
+
+    //     </View>
+    // )
 }
 
 const SignUpForm = ({ onCancel, onSubmit }) => {
