@@ -102,13 +102,13 @@ const ImagesNavBar = ({ navigation, route }) => {
 
 const FeedNavBar = ({ navigation, route }) => {
 
-    const { setFeedModal } = useFeed()
+    const { setModal } = useModal()
 
     return (
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
             <Appbar.Content title='Feed' />
-            <Appbar.Action icon="message-plus" onPress={() => setFeedModal('FEEDBACK')} />
+            <Appbar.Action icon="message-plus" onPress={() => setModal('FEEDBACK')} />
         </Appbar.Header>
     )
 }

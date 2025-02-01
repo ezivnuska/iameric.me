@@ -51,9 +51,9 @@ const BugList = ({ navigation }) => {
             <Card.Title
                 title='Bugs'
                 titleVariant='titleLarge'
-                left={() => <IconButton icon='home' onPress={() => navigation.navigate('Home')} />}
+                // left={() => <IconButton icon='home' onPress={() => navigation.navigate('Home')} />}
                 right={() => <IconButton icon='plus-thick' onPress={() => setModal('BUG')} size={30} />}
-                style={{ padding: 0 }}
+                style={{ padding: 0, marginLeft: 15 }}
             />
 
             <Card.Content style={{ padding: 0 }}>

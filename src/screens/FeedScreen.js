@@ -14,8 +14,6 @@ const FeedScreen = props => {
 
     return (
         <Screen secure full {...props}>
-            
-            {feedLoading && <ActivityIndicator />}
 
             {feedLoaded && <Feed {...props} />}
             

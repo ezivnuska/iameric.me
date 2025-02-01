@@ -1,20 +1,91 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
-import { FeedItem, FeedModal } from './components'
-import { useFeed, useSocket, useUser } from '@context'
+import {
+    // ActivityIndicator, Button,
+    Card, Divider, IconButton, Text,
+} from 'react-native-paper'
+import { Time, UserAvatar } from '@components'
+import { useFeed, useModal, useSocket, useUser } from '@context'
 import { deletePostWithId } from '@utils/feed'
-import { Divider } from 'react-native-paper'
+import { loadPost } from '@utils/feed'
 
-const Feed = () => {
+const FeedItem = ({ onDelete, navigation, item, authorized = false, ...props }) => {
+    // console.log('post', post)
+   
+    const { updatePost } = useFeed()
+    const { user } = useUser()
+
+    const [loading, setLoading] = useState(false)
+    const [post, setPost] = useState(null)
+
+    useEffect(() => {
+        if (item) initPost(item._id)
+    }, [])
+        
+    const initPost = async id => {
+        
+        setLoading(true)
+        
+        let result = await loadPost(id)
+        
+        if (result) {
+            setPost(result)
+            updatePost(result)
+        }
+        else console.log('could not find or load post data.')
+
+        setLoading(false)
+        
+    }
+
+    return post && (
+        <View
+            // style={{ flex: 1 }}
+        >
+
+            <Card.Title
+                title={item.author.username}
+                titleVariant='titleMedium'
+                // titleStyle={{ gap: 0, borderWidth: 1 }}
+                subtitle={<Time time={item.createdAt} />}
+                // subtitleStyle={{ gap: 0, borderWidth: 1 }}
+                // subitleVariant='titleMedium'
+                style={{ gap: 10 }}
+                left={() => (
+                    <UserAvatar
+                        user={item.author}
+                        onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: item.author?.username } })}
+                    />
+                )}
+                right={() => authorized && (
+                    <IconButton
+                        icon='delete-forever'
+                        onPress={() => onDelete(item._id)}
+                        disabled={loading}
+                    />
+                )}
+            />
+
+            <Card.Content
+                style={{ paddingBottom: 20 }}
+            >
+                <Text variant='bodyLarge'>{item.text}</Text>
+            </Card.Content>
+        </View>
+    )
+}
+
+const Feed = props => {
 
     const {
-        feedModal,
         posts,
         updatePost,
-        closeFeedModal,
         deletePost,
     } = useFeed()
+
+    const { closeModal, setModal } = useModal()
     const { socket } = useSocket()
+    const { user } = useUser()
 
     const [loading, setLoading] = useState(false)
 
@@ -37,36 +108,56 @@ const Feed = () => {
 
         deletePost(id)
 
-        closeFeedModal()
+        closeModal()
         
     }
     
     return (
-        <View style={{ flex: 1 }}>
+        <Card
+            elevation={0}
+            style={{ flex: 1 }}
+        >
 
-            {posts && (
-                <FlatList
-                    ref={listRef}
-                    data={posts}
-                    extraData={posts}
-                    keyExtractor={item => `post-${item._id}`}
-                    renderItem={({ item }) => (
-                        <FeedItem
-                            item={item}
-                            onDelete={removePost}
-                            disabled={loading}
-                        />
-                    )}
-                    ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 5 }} />}
-                />
-            )}
-
-            <FeedModal
-                modal={feedModal}
-                onClose={closeFeedModal}
+            <Card.Title
+                title='Feed'
+                titleVariant='titleLarge'
+                // left={() => <IconButton icon='home' onPress={() => props.navigation.navigate('Feed')} />}
+                right={() => <IconButton icon='plus-thick' onPress={() => setModal('FEEDBACK')} size={30} />}
+                style={{ padding: 0, marginLeft: 15 }}
             />
 
-        </View>
+            <Card.Content style={{ padding: 0 }}>
+                
+                {/* {posts && ( */}
+                    <FlatList
+                        ref={listRef}
+                        data={posts}
+                        extraData={posts}
+                        keyExtractor={item => `post-${item._id}`}
+                        renderItem={({ item }) => {
+                            const authorized = user && (user._id === item.author?._id || user.role === 'admin')
+                            return (
+                                <FeedItem
+                                    item={item}
+                                    navigation={props.navigation}
+                                    onDelete={removePost}
+                                    disabled={loading}
+                                    authorized={authorized}
+                                />
+                            )
+                        }}
+                        ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 5 }} />}
+                    />
+                {/* )} */}
+
+            </Card.Content>
+
+            {/* <FeedModal
+                modal={feedModal}
+                onClose={closeFeedModal}
+            /> */}
+
+        </Card>
     )
 }
 

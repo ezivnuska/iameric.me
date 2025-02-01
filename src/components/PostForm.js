@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
+import { Card, IconButton } from 'react-native-paper'
 import { Form } from '@components'
-import { useFeed, useSocket, useUser } from '@context'
+import { useFeed, useModal, useSocket, useUser } from '@context'
 import { uploadImage } from '@utils/images'
 import { createPost } from '@utils/feed'
 
@@ -16,6 +16,7 @@ const PostForm = ({ data = null }) => {
     ]
 
     const { updatePost, closeFeedModal } = useFeed()
+    const { closeModal } = useModal()
     const { socket } = useSocket()
     const { setUploading } = useUser()
 
@@ -61,25 +62,37 @@ const PostForm = ({ data = null }) => {
             socket.emit('new_post', post)
         }
 
-        closeFeedModal()
+        closeModal()
     }
 
     return (
-        <View
-            style={{
-                // flexGrow: 1,
-                gap: 10,
-            }}
-        >
-            <Form
-                title='Add Post'
-                fields={fields}
-                onCancel={closeFeedModal}
-                onSubmit={handleSubmit}
+        <Card>
+
+            <Card.Title
+                title='Report Bug'
+                titleVariant='headlineLarge'
+                right={() => <IconButton icon='close-thick' onPress={closeModal} />}
             />
             
-            {/* <ImagePickerMini onSelection={setImageData} /> */}
-        </View>
+            <Card>
+
+                <Card.Title
+                    title='Tell us what happened'
+                    titleVariant='headlineSmall'
+                    subtitle='Please describe the bug.'
+                    subtitleVariant='bodyLarge'
+                />
+
+                <Card.Content style={{ marginTop: 10 }}>
+                    <Form
+                        title='Say Something'
+                        fields={fields}
+                        onCancel={closeModal}
+                        onSubmit={handleSubmit}
+                    />
+                </Card.Content>
+            </Card>
+        </Card>
     )
 }
 

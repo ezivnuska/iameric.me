@@ -41,7 +41,6 @@ const initialState = {
     setUser: () => {},
     setProfileImage: () => {},
     setUserLoading: () => {},
-    signinUser: () => {},
     updateUser: () => {},
 
     addImage: () => {},
@@ -99,28 +98,6 @@ export const UserContextProvider = ({ children }) => {
         }
         
         dispatch({ type: 'USER_LOADED' })
-    }
-
-    const signinUser = async (email, password) => {
-        
-        const payload = await signin(email, password)
-        
-        if (payload) {
-
-            if (payload.error) {
-                
-            }
-
-            await setItem('email', email)
-
-            const { token } = payload
-            
-            await storeToken(token)
-            
-            dispatch({ type: 'SET_USER', payload })
-        }
-
-        return payload
     }
 
     const fetchUserAndUpdate = async username => {
@@ -221,7 +198,6 @@ export const UserContextProvider = ({ children }) => {
         setProfileImage,
         setUserLoading,
         setUser,
-        signinUser,
         updateUser,
         setUploadedImage,
         setImageUpload,

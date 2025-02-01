@@ -8,7 +8,7 @@ import {
     ImageCard,
     ImagePicker,
     ImageShowcase,
-    // PostForm,
+    PostForm,
     Settings,
     Socket,
 } from '@components'
@@ -27,8 +27,12 @@ const ModalFactory = ({ modal, onClose }) => {
         let title = null
         
         switch(type) {
-            case 'AUTH': content = <AuthForm />; break
-            case 'BUG': content = <BugForm />; break
+            case 'AUTH':
+                content = <AuthForm />
+                break
+            case 'BUG':
+                content = <BugForm />
+                break
             case 'IMAGE_UPLOAD':
                 content = <ImagePicker data={data} />
                 fullscreen = true
@@ -37,10 +41,10 @@ const ModalFactory = ({ modal, onClose }) => {
                 content = <DestroyForm data={data} />
                 // fullscreen = true
                 break
-            // case 'FEEDBACK':
-            //     content = <PostForm data={data} />
-            //     // fullscreen = true
-            //     break
+            case 'FEEDBACK':
+                content = <PostForm data={data} />
+                // fullscreen = true
+                break
             case 'SETTINGS':
                 // title = 'Settings'
                 content = <Settings />
@@ -54,7 +58,10 @@ const ModalFactory = ({ modal, onClose }) => {
                 // title = 'Connected Users'
                 content = <Socket />
                 break
-            default: console.log('Modal not found', type)
+            default: {
+                console.log('Modal not found', type)
+                return null
+            }
         }
 
         return (

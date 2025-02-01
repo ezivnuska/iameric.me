@@ -109,11 +109,11 @@ const Form = ({
         const response = await onSubmit(formData)
         setFormLoading(false)
         
-        if (!response) console.log('no response from form', response)
-        else if (response.error) {
-            console.log(`Form Error: ${response.name}: ${response.message}`)
-            setFormError(response)
-        } else resetForm()
+        if (response) {
+            if (response.error) {
+                setFormError(response)
+            } else resetForm()
+        }
     }
     
     return (

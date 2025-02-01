@@ -8,7 +8,7 @@ import { setItem, storeToken } from '@utils/storage'
 
 const AuthForm = () => {
     
-    const { authUser, setUser, signinUser } = useUser()
+    const { authUser, setUser } = useUser()
     const {
         formError,
         formReady,
@@ -59,7 +59,7 @@ const AuthForm = () => {
                 if (formError) clearFormError()
     
                 const { _id, username } = response.user
-    
+                
                 setUser(response.user)
                 
                 notifySocket('user_signed_in', {

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
 // import { ImagePickerMini } from '@smart'
 import { Form } from '@components'
-import { useBugs, useSocket } from '@context'
+import { useBugs, useModal, useSocket } from '@context'
 // import { uploadImage } from '@utils/images'
 import { createEntry } from '@utils/bugs'
 
 const BugForm = () => {
 
-    const { updateBug, closeBugModal } = useBugs()
+    const { updateBug } = useBugs()
+    const { closeModal } = useModal()
     const { socket } = useSocket()
 
     const [loading, setLoading] = useState(false)
@@ -51,7 +52,7 @@ const BugForm = () => {
 
         socket.emit('new_entry', bug)
 
-        closeBugModal()
+        closeModal()
 
         return bug
     }
@@ -61,7 +62,7 @@ const BugForm = () => {
             <Form
                 title='Report Bug'
                 fields={fields}
-                onCancel={closeBugModal}
+                onCancel={closeModal}
                 onSubmit={handleSubmit}
             />
                     
