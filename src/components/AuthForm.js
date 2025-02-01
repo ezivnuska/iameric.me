@@ -105,7 +105,7 @@ const AuthForm = () => {
             }
 
             <Button
-                mode='contained'
+                mode='outlined'
                 onPress={toggleFormType}
             >
                 {formType === 'up' ? 'Sign In' : 'Sign Up'}

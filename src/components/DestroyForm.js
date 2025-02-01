@@ -27,7 +27,7 @@ const DestroyForm = () => {
                     subtitleVariant='bodyLarge'
                 />
 
-                <Card.Content>
+                <Card.Content style={{ marginTop: 10 }}>
                     <Form
                         fields={[
                             {

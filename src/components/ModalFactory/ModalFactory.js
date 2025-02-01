@@ -51,7 +51,7 @@ const ModalFactory = ({ modal, onClose }) => {
                 fullscreen = true
                 break
             case 'SOCKETS':
-                title = 'Connected Users'
+                // title = 'Connected Users'
                 content = <Socket />
                 break
             default: console.log('Modal not found', type)

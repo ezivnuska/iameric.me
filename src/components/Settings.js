@@ -34,7 +34,7 @@ const Settings = () => {
                 <Card.Content>
 
                     <Button
-                        mode='contained'
+                        mode='outlined'
                         onPress={initSignout}
                         style={{ marginVertical: 10 }}
                     >
@@ -57,7 +57,7 @@ const Settings = () => {
                 <Card.Content>
 
                     <Button
-                        mode='contained'
+                        mode='outlined'
                         onPress={() => setModal('DESTROY')}
                         style={{ marginVertical: 10 }}
                     >

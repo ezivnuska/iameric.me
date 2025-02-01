@@ -49,7 +49,7 @@ const Form = ({
         })
         
         const fieldValues = getFields(state, data)
-        console.log('Field values', fieldValues)
+        
         initForm(fieldValues)
     }
 
@@ -61,15 +61,15 @@ const Form = ({
     }, [])
     
     useEffect(() => {
-        console.log('formReady', formReady)
+        
         if (!formReady) {
-            console.log('fields', fields)
+            
             initFields()
         }
     }, [formReady])
 
     useEffect(() => {
-        console.log('formFields***', formFields)
+        
         if (formReady) {
             
             if (formFields) {
@@ -127,63 +127,51 @@ const Form = ({
     return (
         <View style={{ flex: 1, gap: 20 }}>
 
-            {/* {title && (
-                <Card.Title
-                    title={title}
-                    right={() => onCancel && <IconButton icon='close-thick' onPress={onCancel} />}
+            {formReady && (
+                <FlatList
+                    ItemSeparatorComponent={({ highlighted }) => <Divider />}
+                    data={fields}
+                    keyExtractor={item => `item-${item.name}`}
+                    // horizontal={landscape}
+                    renderItem={({ item }) => {
+                        // console.log('item', item)
+                        const {
+                            label,
+                            multiline,
+                            name,
+                            placeholder,
+                            type,
+                            autoCapitalize,
+                        } = item
+                        return (
+                            // <View style={{ borderWidth: 1, borderColor: 'yellow' }}>
+                                <TextInput
+                                    label={label}
+                                    value={formFields[name] || ''}
+                                    onChangeText={value => onChange(name, value)}
+                                    error={getError(name)}
+                                    placeholder={placeholder}
+                                    secureTextEntry={type === 'password'}
+                                    keyboardType='default'
+                                    autoCapitalize={autoCapitalize || 'sentences'}
+                                    autoFocus={getFocus(name)}
+                                    onKeyPress={!multiline && onEnter}
+                                    dirty={getDirty(name)}
+                                    multiline={multiline}
+                                />
+                            // </View>
+                        )
+                    }}
                 />
-            )} */}
+            )}
             
-            {/* <Card.Content> */}
-
-                {formReady && (
-                    <FlatList
-                        ItemSeparatorComponent={({ highlighted }) => <Divider />}
-                        data={fields}
-                        keyExtractor={item => `item-${item.name}`}
-                        // horizontal={landscape}
-                        renderItem={({ item }) => {
-                            console.log('item', item)
-                            const {
-                                label,
-                                multiline,
-                                name,
-                                placeholder,
-                                type,
-                                autoCapitalize,
-                            } = item
-                            return (
-                                // <View style={{ borderWidth: 1, borderColor: 'yellow' }}>
-                                    <TextInput
-                                        label={label}
-                                        value={formFields[name] || ''}
-                                        onChangeText={value => onChange(name, value)}
-                                        error={getError(name)}
-                                        placeholder={placeholder}
-                                        secureTextEntry={type === 'password'}
-                                        keyboardType='default'
-                                        autoCapitalize={autoCapitalize || 'sentences'}
-                                        autoFocus={getFocus(name)}
-                                        onKeyPress={!multiline && onEnter}
-                                        dirty={getDirty(name)}
-                                        multiline={multiline}
-                                    />
-                                // </View>
-                            )
-                        }}
-                    />
-                )}
-            {/* </Card.Content> */}
-
-            {/* <Card.Actions style={{ marginVertical: 10 }}> */}
-                <Button
-                    mode='contained'
-                    onPress={submitFormData}
-                    disabled={formError}
-                >
-                    Submit
-                </Button>
-            {/* </Card.Actions> */}
+            <Button
+                mode='contained'
+                onPress={submitFormData}
+                disabled={formError}
+            >
+                Submit
+            </Button>
         </View>
     )
 }
