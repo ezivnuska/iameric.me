@@ -14,7 +14,6 @@ const BugScreen = props => {
     
     return (
         <Screen full secure {...props}>
-            {bugsLoading && <ActivityIndicator size='medium' />}
             {bugsLoaded && <BugList {...props} />}
         </Screen>
     )

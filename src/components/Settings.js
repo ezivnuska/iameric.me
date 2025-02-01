@@ -22,7 +22,7 @@ const Settings = () => {
             />
 
             
-            <Card>
+            <Card elevation={0}>
 
                 <Card.Title
                     title='Sign Out'
@@ -45,7 +45,7 @@ const Settings = () => {
 
             </Card>
 
-            <Card>
+            <Card elevation={0}>
                 
                 <Card.Title
                     title='Close Account'
@@ -68,46 +68,6 @@ const Settings = () => {
 
             </Card>
         </Card>
-    )
-    return (
-        <View
-            style={{
-                gap: 10,
-            }}
-        >
-            <Button
-                mode='contained'
-                onPress={initSignout}
-            >
-                Sign Out
-            </Button>
-
-            <Button
-                mode='contained'
-                onPress={() => setModal('DESTROY')}
-            >
-                Close Account
-            </Button>
-            
-            {/* <Cabinet
-                title='Close Account'
-                transparent
-                closed={closed}
-            >
-                <Form
-                    fields={[
-                        {
-                            label: 'Enter Username',
-                            name: 'destroy',
-                            placeholder: 'username',
-                            multiline: false,
-                        },
-                    ]}
-                    onCancel={() => setClosed(true)}
-                    onSubmit={initDestroy}
-                />
-            </Cabinet> */}
-        </View>
     )
 }
 

@@ -2,9 +2,7 @@ import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
 import {
     Button,
-    Card,
-    Divider,
-    IconButton,
+    HelperText,
     TextInput,
 } from 'react-native-paper'
 import { useForm, useUser } from '@context'
@@ -52,13 +50,6 @@ const Form = ({
         
         initForm(fieldValues)
     }
-
-    useEffect(() => {
-        // console.log('fields', fields)
-        // initFields()
-        
-        // return () => resetForm()
-    }, [])
     
     useEffect(() => {
         
@@ -66,6 +57,7 @@ const Form = ({
             
             initFields()
         }
+        
     }, [formReady])
 
     useEffect(() => {
@@ -125,13 +117,7 @@ const Form = ({
     }
     
     return (
-        <View
-            // style={{
-            //     // flex: 1,
-            //     // gap: 20,
-            //     // borderWidth: 1,
-            // }}
-        >
+        <View>
 
             {formReady && (
                 <FlatList
@@ -140,7 +126,6 @@ const Form = ({
                     keyExtractor={item => `item-${item.name}`}
                     // horizontal={landscape}
                     renderItem={({ item }) => {
-                        // console.log('item', item)
                         const {
                             label,
                             multiline,
@@ -150,7 +135,7 @@ const Form = ({
                             autoCapitalize,
                         } = item
                         return (
-                            // <View>
+                            <View style={{ marginBottom: 20 }}>
                                 <TextInput
                                     label={label}
                                     value={formFields[name] || ''}
@@ -164,9 +149,11 @@ const Form = ({
                                     onKeyPress={!multiline && onEnter}
                                     dirty={getDirty(name)}
                                     multiline={multiline}
-                                    style={{ marginBottom: 20 }}
                                 />
-                            // </View>
+                                <HelperText type='error' visible={true}>
+                                    {getError(name)}
+                                </HelperText>
+                            </View>
                         )
                     }}
                 />

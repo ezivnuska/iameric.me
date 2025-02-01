@@ -1,6 +1,5 @@
-// import ActivityIndicator from './NOT_IN_USE/ActivityIndicator'
-// import AddressView from './BugForm'
-// import BugForm from '../presentations/BugList/components/BugForm'
+// import AddressView from './AddressView'
+import BugForm from './BugForm'
 import BugNavBar from './BugNavBar'
 import AdminButton from './AdminButton'
 import Cabinet from './Cabinet'
@@ -55,7 +54,7 @@ export {
     // ActivityIndicator,
     AdminButton,
     AuthForm,
-    // BugForm,
+    BugForm,
     BugNavBar,
     Cabinet,
     CenteredContainer,

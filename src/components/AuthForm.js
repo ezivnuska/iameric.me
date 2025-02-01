@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { Button, Card, IconButton } from 'react-native-paper'
 import { Form } from '@components'
 import { useForm, useModal, useSocket, useUser } from '@context'
-import { signup } from '@utils/auth'
+import { signup, signin } from '@utils/auth'
 import { setItem, storeToken } from '@utils/storage'
 
 const AuthForm = () => {
@@ -41,22 +41,36 @@ const AuthForm = () => {
 
     const handleSignin = async ({ email, password }) => {
         
-        const connectedUser = await signinUser(email, password)
+        const response = await signin(email, password)
+        // const connectedUser = await signin(email, password)
         
-        if (connectedUser) {
+        
+        if (response) {
 
-            if (formError) clearFormError()
+            // console.log('response:', response)
+            if (response.error) {
+                console.log('SignIn Error:', response.msg)
+                setFormError({
+                    name: response.invalidField,
+                    message: response.msg,
+                })
+            } else if (response.user) {
 
-            const { _id, username } = connectedUser
-
-            // setUser(connectedUser)
-            
-            notifySocket('user_signed_in', {
-                userId: _id,
-                username,
-            })
-
-            handleModalClose()
+                if (formError) clearFormError()
+    
+                const { _id, username } = response.user
+    
+                setUser(response.user)
+                
+                notifySocket('user_signed_in', {
+                    userId: _id,
+                    username,
+                })
+    
+                handleModalClose()
+            }
+        } else {
+            return null
         }
     }
 

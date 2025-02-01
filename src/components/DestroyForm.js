@@ -8,6 +8,15 @@ const DestroyForm = () => {
     
     const { closeModal } = useModal()
 
+    const fields = [
+        {
+            label: 'Enter Username',
+            name: 'destroy',
+            placeholder: 'username',
+            multiline: false,
+        },
+    ]
+
     return (
 
         <Card>
@@ -18,7 +27,7 @@ const DestroyForm = () => {
                 right={() => <IconButton icon='close-thick' onPress={closeModal} />}
             />
             
-            <Card>
+            <Card elevation={0}>
 
                 <Card.Title
                     title='Confirm Username'
@@ -29,14 +38,7 @@ const DestroyForm = () => {
 
                 <Card.Content style={{ marginTop: 10 }}>
                     <Form
-                        fields={[
-                            {
-                                label: 'Enter Username',
-                                name: 'destroy',
-                                placeholder: 'username',
-                                multiline: false,
-                            },
-                        ]}
+                        fields={fields}
                         onSubmit={() => navigate('Home', { destroy: true })}
                     />
                 </Card.Content>

@@ -107,6 +107,10 @@ export const UserContextProvider = ({ children }) => {
         
         if (payload) {
 
+            if (payload.error) {
+                
+            }
+
             await setItem('email', email)
 
             const { token } = payload

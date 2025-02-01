@@ -38,6 +38,7 @@ const Screen = ({
                 contentContainerStyle={{
                     paddingHorizontal: full ? 0 : 15,
                     paddingVertical: 10,
+                    flex: 1,
                 }}
             >
                 {children}

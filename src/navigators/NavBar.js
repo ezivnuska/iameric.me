@@ -27,13 +27,13 @@ const DefaultNavBar = ({ navigation, route }) => {
 
 const BugNavBar = ({ navigation, route }) => {
 
-    const { setBugModal } = useBugs()
+    const { setModal } = useModal()
 
     return (
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
             <Appbar.Content title='Bugs' />
-            <Appbar.Action icon="bug" onPress={() => setBugModal('BUG')} />
+            <Appbar.Action icon='bug' onPress={() => setModal('BUG')} />
         </Appbar.Header>
     )
 }

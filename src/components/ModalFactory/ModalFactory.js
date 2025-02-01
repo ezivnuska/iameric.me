@@ -3,7 +3,7 @@ import { View, Pressable } from 'react-native'
 import { Card, IconButton } from 'react-native-paper'
 import {
     AuthForm,
-    // BugForm,
+    BugForm,
     DestroyForm,
     ImageCard,
     ImagePicker,
@@ -28,7 +28,7 @@ const ModalFactory = ({ modal, onClose }) => {
         
         switch(type) {
             case 'AUTH': content = <AuthForm />; break
-            // case 'BUG': content = <BugForm />; break
+            case 'BUG': content = <BugForm />; break
             case 'IMAGE_UPLOAD':
                 content = <ImagePicker data={data} />
                 fullscreen = true

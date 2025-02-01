@@ -1,23 +1,30 @@
 import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
-import { Divider, Text } from 'react-native-paper'
-import { BugListItem, BugModal } from './components'
-import { useBugs, useSocket, useTheme } from '@context'
+import { Card, Divider, IconButton, MD3Colors, Text } from 'react-native-paper'
+import { Time, UserAvatar } from '@components'
+import { useBugs, useModal, useSocket, useTheme, useUser } from '@context'
 import { deleteEntryWithId } from '@utils/bugs'
 
-const BugList = props => {
+const BugList = ({ navigation }) => {
 
     const {
-        bugModal,
+        // bugModal,
         bugs,
+        bugsLoading,
         updateBug,
-        closeBugModal,
+        // closeBugModal,
         deleteBug,
         setBugsLoading,
     } = useBugs()
 
+    const {
+        closeModal,
+        setModal,
+    } = useModal()
+
     const { socket } = useSocket()
-    const { styles } = useTheme()
+    // const { styles } = useTheme()
+    const { user } = useUser()
 
     useEffect(() => {
 
@@ -35,34 +42,95 @@ const BugList = props => {
         
         socket.emit('entry_deleted', id)
         
-        closeBugModal()
+        closeModal()
     }
     
     return (
         <View style={{ flex: 1 }}>
-
-            {bugs?.length ? (
-                <FlatList
-                    data={bugs}
-                    extraData={bugs}
-                    keyExtractor={item => `bug-item-${item._id}`}
-                    renderItem={({ item }) => <BugListItem item={item} onDelete={removeBug} />}
-                    ItemSeparatorComponent={({ highlighted }) => <Divider />}
-                    style={{ flex: 1 }}
-                />
-            ) : (
-                <Text variant='bodyLarge'>
-                    No bugs to squash.
-                </Text>
-            )}
-
-            <BugModal
-                modal={bugModal}
-                onClose={closeBugModal}
+        
+            <Card.Title
+                title='Bugs'
+                titleVariant='titleLarge'
+                left={() => <IconButton icon='home' onPress={() => navigation.navigate('Home')} />}
+                right={() => <IconButton icon='plus-thick' onPress={() => setModal('BUG')} size={30} />}
+                style={{ padding: 0 }}
             />
-                
+
+            <Card.Content style={{ padding: 0 }}>
+
+                {bugs?.length ? (
+                    <FlatList
+                        data={bugs}
+                        extraData={bugs}
+                        keyExtractor={item => `bug-item-${item._id}`}
+                        renderItem={({ item }) => {
+                            const authorized = item && (user._id === item.author?._id || user.role === 'admin')
+                            return (
+                                <View
+                                    style={{ paddingBottom: 20, paddingTop: 5 }}
+                                >
+                                    
+                                    <Card.Title
+                                        title={item.author.username}
+                                        titleVariant='titleMedium'
+                                        subtitle={<Time time={item.createdAt} />}
+                                        style={{ gap: 10 }}
+                                        left={() => <UserAvatar user={item.author} />}
+                                        right={() => authorized && (
+                                            <IconButton 
+                                                icon='delete-circle'
+                                                onPress={() => removeBug(item._id)}
+                                                disabled={bugsLoading}
+                                                iconColor={MD3Colors.error50}
+                                                size={30}
+                                            />
+                                        )}
+                                    />
+                        
+                                    <Card.Content>
+                                        <Text variant='bodyLarge'>{item.text}</Text>
+                                    </Card.Content>
+                                </View>
+                            )
+                        }}
+                        ItemSeparatorComponent={({ highlighted }) => <Divider />}
+                        style={{ flex: 1 }}
+                    />
+                ) : (
+                    <Text variant='bodyLarge'>
+                        No bugs to squash.
+                    </Text>
+                )}
+
+            </Card.Content>
+
         </View>
     )
+    // return (
+    //     <View style={{ flex: 1 }}>
+
+    //         {bugs?.length ? (
+    //             <FlatList
+    //                 data={bugs}
+    //                 extraData={bugs}
+    //                 keyExtractor={item => `bug-item-${item._id}`}
+    //                 renderItem={({ item }) => <BugListItem item={item} onDelete={removeBug} />}
+    //                 ItemSeparatorComponent={({ highlighted }) => <Divider />}
+    //                 style={{ flex: 1 }}
+    //             />
+    //         ) : (
+    //             <Text variant='bodyLarge'>
+    //                 No bugs to squash.
+    //             </Text>
+    //         )}
+
+    //         <BugModal
+    //             modal={bugModal}
+    //             onClose={closeBugModal}
+    //         />
+                
+    //     </View>
+    // )
 }
 
 export default BugList
