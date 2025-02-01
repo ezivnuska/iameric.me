@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator } from 'react-native-paper'
 import { Screen } from './components'
-import { BugList } from '@components'
+import { Bugs } from '@components'
 import { useBugs } from '@context'
     
 const BugScreen = props => {
@@ -14,7 +13,7 @@ const BugScreen = props => {
     
     return (
         <Screen full secure {...props}>
-            {bugsLoaded && <BugList {...props} />}
+            {bugsLoaded && <Bugs {...props} />}
         </Screen>
     )
 }

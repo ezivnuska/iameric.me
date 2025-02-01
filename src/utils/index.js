@@ -1,6 +1,7 @@
 import * as auth from './auth'
 import * as bugs from './bugs'
 import * as contacts from './contacts'
+import * as form from './form'
 // import * as forum from '../modules'
 import * as images from './images'
 import * as map from './map'
@@ -18,6 +19,7 @@ export {
     bugs,
     compose,
     contacts,
+    form,
     destroy,
     getModifiedColor,
     // forum,

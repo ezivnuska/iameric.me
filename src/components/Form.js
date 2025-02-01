@@ -1,12 +1,8 @@
 import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
-import {
-    Button,
-    HelperText,
-    TextInput,
-} from 'react-native-paper'
+import { Button, HelperText, TextInput } from 'react-native-paper'
 import { useForm, useUser } from '@context'
-import { getFields, validateFields } from './utils'
+import { getFields, validateFields } from '@utils/form'
 
 const Form = ({
     fields,

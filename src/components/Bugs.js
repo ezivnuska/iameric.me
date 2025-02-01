@@ -5,7 +5,7 @@ import { Time, UserAvatar } from '@components'
 import { useBugs, useModal, useSocket, useTheme, useUser } from '@context'
 import { deleteEntryWithId } from '@utils/bugs'
 
-const BugList = ({ navigation }) => {
+const Bugs = ({ navigation }) => {
 
     const {
         // bugModal,
@@ -133,4 +133,4 @@ const BugList = ({ navigation }) => {
     // )
 }
 
-export default BugList
+export default Bugs

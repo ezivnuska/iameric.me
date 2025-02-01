@@ -1,7 +1,8 @@
 // import AddressView from './AddressView'
+import AdminButton from './AdminButton'
 import BugForm from './BugForm'
 import BugNavBar from './BugNavBar'
-import AdminButton from './AdminButton'
+import Bugs from './Bugs'
 import Cabinet from './Cabinet'
 import CenteredContainer from './CenteredContainer'
 import Checkbox from './Checkbox'
@@ -39,7 +40,7 @@ import UserList from './UserList'
 // presentations
 
 import AuthForm from './AuthForm'
-import BugList from './BugList'
+// import BugList from './ModalFactory/BugList'
 import Feed from './Feed'
 import Form from './Form'
 import ImagePicker from './ImagePicker'
@@ -56,6 +57,7 @@ export {
     AuthForm,
     BugForm,
     BugNavBar,
+    Bugs,
     Cabinet,
     CenteredContainer,
     Checkbox,
@@ -85,7 +87,7 @@ export {
     UserList,
     // UserNavBar,
     
-    BugList,
+    // BugList,
     Feed,
     Form,
     ImagePicker,

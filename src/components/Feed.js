@@ -9,11 +9,9 @@ import { useFeed, useModal, useSocket, useUser } from '@context'
 import { deletePostWithId } from '@utils/feed'
 import { loadPost } from '@utils/feed'
 
-const FeedItem = ({ onDelete, navigation, item, authorized = false, ...props }) => {
-    // console.log('post', post)
+const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
    
     const { updatePost } = useFeed()
-    const { user } = useUser()
 
     const [loading, setLoading] = useState(false)
     const [post, setPost] = useState(null)
@@ -39,17 +37,12 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false, ...props }) 
     }
 
     return post && (
-        <View
-            // style={{ flex: 1 }}
-        >
+        <View>
 
             <Card.Title
                 title={item.author.username}
                 titleVariant='titleMedium'
-                // titleStyle={{ gap: 0, borderWidth: 1 }}
                 subtitle={<Time time={item.createdAt} />}
-                // subtitleStyle={{ gap: 0, borderWidth: 1 }}
-                // subitleVariant='titleMedium'
                 style={{ gap: 10 }}
                 left={() => (
                     <UserAvatar
