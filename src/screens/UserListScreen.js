@@ -3,31 +3,32 @@ import { Screen } from './components'
 import { ActivityIndicator } from 'react-native-paper'
 import { UserList } from '@components'
 import { loadContactIds } from '@utils/contacts'
-import { useTheme } from '@context'
+import { useTheme, useUser } from '@context'
 
 const UserListScreen = props => {
 
     const { landscape } = useTheme()
     
-    const [userIds, setUserIds] = useState(null)
+    const [users, setUsers] = useState(null)
     const [loading, setLoading] = useState(false)
 
     const onPress = username => props.navigation.navigate('User', { screen: 'Profile', params: { username } })
 
-    const loadIds = async () => {
+    const loadUserIds = async () => {
         if (!loading) setLoading(true)
-        const ids = await loadContactIds()
+        const contacts = await loadContactIds()
+        console.log('contacts', contacts)
         setLoading(false)
 
-        if (ids) {
-            setUserIds(ids)
+        if (contacts) {
+            setUsers(contacts)
         } else {
-            console.log('could not load user ids.')
+            console.log('could not load contact ids.')
         }
     }
 
     useEffect(() => {
-        loadIds()
+        loadUserIds()
     }, [])
 
     return (
@@ -38,10 +39,7 @@ const UserListScreen = props => {
             // full={landscape}
         >
     
-            {loading
-                ? <ActivityIndicator size='small' />
-                : userIds && <UserList data={userIds} onPress={onPress} />
-            }
+            {users && <UserList data={users} onPress={onPress} />}
 
         </Screen>
     )

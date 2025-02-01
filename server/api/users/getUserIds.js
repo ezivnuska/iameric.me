@@ -9,8 +9,9 @@ const getUserIds = async (req, res) => {
         //     select: 'filename width height',
         // })
     
-    if (!users) console.log('Could not fetch users')
-    else return res.status(200).json({ users })
+    if (users) return res.status(200).json({ users })
+    
+    console.log('Could not fetch users')
     return res.status(200).json(null)
 }
 

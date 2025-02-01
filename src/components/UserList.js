@@ -3,7 +3,7 @@ import { FlatList, Pressable, StyleSheet, View } from 'react-native'
 import { StatusIndicator, UserAvatar } from '@components'
 import { loadContactById } from '@utils/contacts'
 import { useTheme, useUser } from '@context'
-import { ActivityIndicator, Divider, Text } from 'react-native-paper'
+import { ActivityIndicator, Divider, Icon, Text } from 'react-native-paper'
 
 const UserListItem = ({ item, onPress }) => {
 
@@ -14,7 +14,9 @@ const UserListItem = ({ item, onPress }) => {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        if (item) loadUser(item._id)
+        if (item) {
+            loadUser(item._id)
+        }
     }, [])
 
     useEffect(() => {
@@ -41,7 +43,6 @@ const UserListItem = ({ item, onPress }) => {
     return user && (
         <Pressable
             onPress={() => onPress(user.username)}
-            // style={styles.itemContainer}
             style={{ flex: 1, paddingBottom: 15, paddingTop: 5, paddingHorizontal: 15, flexDirection: 'row', alignItems: 'center' }}
         >
             {landscape
@@ -71,7 +72,7 @@ const VerticalListItem = ({ item }) => (
     </View>
 )
 
-const HorizontalListItem = ({ item }) => (
+const HorizontalListItem = ({ item, connected = false }) => (
 
     <View style={styles.itemHorizontal}>
 
