@@ -73,14 +73,18 @@ const ImagesNavBar = ({ navigation, route }) => {
                     disabled={uploading}
                 />
             )}
-            <Appbar.Action
-                icon="grid"
-                onPress={toggleViewMode}
-            />
-            <Appbar.Action
-                icon="table-column"
-                onPress={toggleViewMode}
-            />
+            {isCurrentUser && (
+                <Appbar.Action
+                    icon="grid"
+                    onPress={toggleViewMode}
+                />
+            )}
+            {isCurrentUser && (
+                <Appbar.Action
+                    icon="table-column"
+                    onPress={toggleViewMode}
+                />
+            )}
         </Appbar.Header>
     )
 }

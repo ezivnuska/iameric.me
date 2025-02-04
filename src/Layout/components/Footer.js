@@ -38,7 +38,7 @@ const Footer = ({ route }) => {
     const { dark, toggleTheme } = useTheme()
     const { setModal } = useModal()
     const { connections } = useSocket()
-    const { authUser } = useUser()
+    const { user } = useUser()
 
     
     return (
@@ -46,48 +46,44 @@ const Footer = ({ route }) => {
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                paddingTop: 1,
             }}
         >
 
-            <Appbar.Header
-                // style={{ margin: 0, padding: 0, borderWidth: 1 }}
-            >
+            <Appbar.Header>
                 <Connections connections={connections} onPress={() => setModal('SOCKETS')} />
+
             </Appbar.Header>
 
-            {authUser && (
-                <Appbar.Header
-                    // style={{ margin: 0, padding: 0, borderWidth: 1 }}
-                >
-                    
-                    <Appbar.Action
-                        icon={dark ? 'white-balance-sunny' : 'weather-night'}
-                        onPress={toggleTheme}
-                        // style={{ margin: 0, padding: 0, borderWidth: 1 }}
-                    />
-                    
-                    <Appbar.Action
-                        icon='grid'
-                        onPress={() => navigationRef.navigate('Play')}
-                        disabled={route === 'Play'}
-                        // style={{ margin: 0, padding: 0, borderWidth: 1 }}
-                    />
-                    
-                    <Appbar.Action
-                        icon='ladybug'
-                        onPress={() => navigationRef.navigate('Bugs')}
-                        disabled={route === 'Bugs'}
-                        // style={{ margin: 0, padding: 0, borderWidth: 1 }}
-                    />
+            <Appbar.Header>
+            
+                <Appbar.Action
+                    icon={dark ? 'white-balance-sunny' : 'weather-night'}
+                    onPress={toggleTheme}
+                />
+                
+                {user && (
+                    <>
+                        <Appbar.Action
+                            icon='grid'
+                            onPress={() => navigationRef.navigate('Play')}
+                            disabled={route === 'Play'}
+                        />
+                        
+                        <Appbar.Action
+                            icon='ladybug'
+                            onPress={() => navigationRef.navigate('Bugs')}
+                            disabled={route === 'Bugs'}
+                        />
 
-                    <Appbar.Action
-                        icon='cog'
-                        onPress={() => setModal('SETTINGS')}
-                        // style={{ margin: 0, padding: 0, borderWidth: 1 }}
-                    />
+                        <Appbar.Action
+                            icon='cog'
+                            onPress={() => setModal('SETTINGS')}
+                        />
+                    </>
+                )}
 
-                </Appbar.Header>
-            )}
+            </Appbar.Header>
 
         </Appbar>
     )

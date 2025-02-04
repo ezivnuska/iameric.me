@@ -17,7 +17,7 @@ const UserListScreen = props => {
     const loadUserIds = async () => {
         if (!loading) setLoading(true)
         const contacts = await loadContactIds()
-        console.log('contacts', contacts)
+        // console.log('contacts', contacts)
         setLoading(false)
 
         if (contacts) {

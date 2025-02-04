@@ -17,7 +17,7 @@ import Modal from 'react-native-modal'
 
 const ModalFactory = ({ modal, onClose }) => {
 
-    const { dims, landscape } = useTheme()
+    const { dims, landscape, theme } = useTheme()
 
     const renderModalContent = () => {
         
@@ -72,6 +72,7 @@ const ModalFactory = ({ modal, onClose }) => {
                     alignItems: fullscreen ? 'stretch' : 'center',
                     width: '100%',
                     position: 'relative',
+                    backgroundColor: theme.colors.background,
                 }}
             >
                 <Pressable
@@ -102,7 +103,7 @@ const ModalFactory = ({ modal, onClose }) => {
             deviceWidth={dims.width}
             deviceHeight={dims.height}
             animationType='fade'
-            transparent={true}
+            transparent={false}
             onRequestClose={onClose}
             style={{ margin: 0 }}
         >

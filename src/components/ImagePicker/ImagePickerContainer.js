@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { View } from 'react-native'
-import { IconButton } from '@components'
+import { ActivityIndicator, Button, Card, IconButton } from 'react-native-paper'
 import { ImagePreview } from './components'
 import ImagePickerView from './ImagePickerView'
 import { useModal, useUser } from '@context'
@@ -164,58 +164,75 @@ const ImagePickerContainer = ({ data }) => {
             style={{
                 flex: 1,
                 flexGrow: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                flexGrow: 1,
+                // flexGrow: 1,
                 gap: 10,
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                position: 'relative',
+                // backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                // position: 'relative',
             }}
         >
 
             <View
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    paddingTop: 10,
-                    paddingRight: 10,
-                    zIndex: 100,
-                }}
-            >
-                <IconButton
-                    name='close'
-                    onPress={closeModal}
-                    size={32}
-                    color='#fff'
-                />
-            </View>
-
-            <View
+                // elevation={0}
                 style={{
                     flex: 1,
-                    zIndex: 10,
+                    width: '100%',
+                    borderWidth: 1,
+                    borderColor: 'red',
                 }}
             >
+                
+                <Card.Title
+                    right={() => <IconButton icon='close-thick' onPress={closeModal} size={30} />}
+                />
+                
+                <View
+                    style={{
+                        flex: 1,
+                        flexGrow: 1,
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    {showActivity && <ActivityIndicator size='medium' />}
+                    {imageDims && (
+                        <ImagePreview
+                            uri={preview?.uri}
+                            width={imageDims.width}
+                            height={imageDims.height}
+                            upload={initUpload}
+                            uploading={uploading}
+                            progress={progress}
+                        />
+                    )}           
+                </View>
+                
+                {!imageDims && (
+                    <Card.Actions
+                        style={{
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            gap: 20,
+                        }}
+                    >
+                        <Button
+                            mode='contained'
+                            onPress={openSelector}
+                            disabled={uploading}
+                        >
+                            Select Image
+                        </Button>
+            
+                        <Button
+                            mode='contained'
+                            onPress={closeModal}
+                            disabled={uploading}
+                        >
+                            Cancel
+                        </Button>
 
-                {imageDims ? (
-                    <ImagePreview
-                        uri={preview?.uri}
-                        width={imageDims.width}
-                        height={imageDims.height}
-                        upload={initUpload}
-                        uploading={uploading}
-                        progress={progress}
-                    />
-                ) : (
-                    <ImagePickerView
-                        select={openSelector}
-                        cancel={closeModal}
-                        disabled={uploading}
-                        active={showActivity}
-                    />
+                    </Card.Actions>
                 )}
-
             </View>
 
         </View>

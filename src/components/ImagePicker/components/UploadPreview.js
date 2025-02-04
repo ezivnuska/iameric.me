@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Image, Pressable, View } from 'react-native'
-import { ActivityIndicator, IconButton } from 'react-native-paper'
+import { ActivityIndicator, Card, IconButton } from 'react-native-paper'
 
 
-const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
+const UploadPreview = ({ uri, height, width, progress, upload, uploading }) => {
 
     const [imageLoaded, setImageLoaded] = useState(false)
 
@@ -13,15 +13,14 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
 
     return (
         <View
-            // onPress={upload}
-            // disabled={!imageLoaded || uploading}
             style={{
                 flex: 1,
                 flexDirection: 'row',
                 alignItems: 'center',
                 flexGrow: 1,
                 position: 'relative',
-                backgroundColor: 'rgba(255, 0, 0, 0.9)',
+                backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                borderWidth: 1, borderColor: 'yellow', borderStyle: 'dotted',
             }}
         >
 
@@ -40,7 +39,6 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
                     <View
                         style={{
                             flex: 1,
-                            // width: '100%',
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -71,6 +69,7 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
 
                 </View>
             )}
+
             <View
                 style={{
                     height,
@@ -82,35 +81,16 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
                 <Image
                     onLayout={onLayout}
                     source={{ uri }}
-                    // width={width}
-                    // height={height}
                     resizeMode='contain'
                     style={{
                         flex: 1,
                         alignSelf: 'stretch',
-                        // height,
-                        // width,
-                        // marginHorizontal: 'auto',
-                        // zIndex: 10,
                     }}
                 />
             </View>
-            {/* <ImageClone
-                onLayout={onLayout}
-                source={{ uri }}
-                width={width}
-                height={height}
-                style={{
-                    borderWidth: 1,
-                    width,
-                    height,
-                    marginHorizontal: 'auto',
-                    zIndex: 10,
-                }}
-            /> */}
 
         </View>
     )
 }
 
-export default ImagePreview
+export default UploadPreview

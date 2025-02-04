@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Image, View } from 'react-native'
+import { Image, ScrollView, View } from 'react-native'
 import { Avatar, Button, Card, IconButton, MD3Colors, Text } from 'react-native-paper'
-import { useForm, useModal, useUser } from '@context'
+import { useForm, useModal, useTheme, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
 import { Time, UserAvatar } from '@components'
 
@@ -11,6 +11,7 @@ const ImageCard = ({ data }) => {
 
     const { clearForm, formError, formFields } = useForm()
     const { closeModal } = useModal()
+    const { landscape } = useTheme()
     const { user, setDeletedImage, updateImage, updateUser } = useUser()
 
     const [loading, setLoading] = useState(false)
@@ -127,56 +128,106 @@ const ImageCard = ({ data }) => {
         
     }
 
-    return image && (
-        <View style={{ flex: 1, gap: 10 }}>
-            
-            <Card.Title
-                title={image.user.username}
-                subtitle={<Time time={image.createdAt} />}
-                left={() => <UserAvatar user={image.user} />}
-                right={() => (
-                    <IconButton 
-                        icon='close-thick'
-                        // iconColor={MD3Colors.error50}
-                        size={25}
-                        onPress={closeModal}
-                    />
-                )}
-            />
-            
-            <Image
-                source={source}
-                resizeMode='contain'
-                style={{ flex: 1, flexGrow: 1 }}
-            />
-
-            <Card.Content
-                //
-            >
-                <Text variant='bodyMedium'>{image.caption}</Text>
-            </Card.Content>
-            
-            {(isOwner || hasAuthorization) && (
-                <Card.Actions>
-                    {isOwner && (
-                        <Button
-                            mode='text'
-                            onPress={handleAvatar}
-                        >
-                            {isProfileImage ? 'Unset Avatar' : 'Set Avatar'}
-                        </Button>
-                    )}
-                    {(
-                        <Button
-                            mode='text'
-                            onPress={handleDelete}
-                            disabled={loading}
-                        >
-                            Delete
-                        </Button>
-                    )}
-                </Card.Actions>
+    const renderTitle = image => (
+        <Card.Title
+            title={image.user.username}
+            subtitle={<Time time={image.createdAt} />}
+            left={() => <UserAvatar user={image.user} />}
+            right={() => (
+                <IconButton 
+                    icon='close-thick'
+                    // iconColor={MD3Colors.error50}
+                    size={25}
+                    onPress={closeModal}
+                />
             )}
+            style={{ flexShrink: 0 }}
+        />
+    )
+
+    return image && (
+        <View
+            style={{
+                flex: 1,
+                // gap: 10,
+            }}
+        >
+            
+            {!landscape && renderTitle(image)}
+            
+            <View
+                style={{
+                    flex: 1,
+                    // flexGrow: 1,
+                    flexDirection: landscape ? 'row' : 'column',
+                    // alignItems: landscape ? 'center' : 'flex-start',
+                }}
+            >
+                <View style={{ flex: 2, flexGrow: 2, flexShrink: 1 }}>
+
+                    <Image
+                        source={source}
+                        resizeMode='contain'
+                        style={{ 
+                            flex: 1,
+                            // flexGrow: 1,
+                        }}
+                    />
+
+                </View>
+
+                <View style={{ flex: 1, flexGrow: 1, flexShrink: 2 }}>
+
+                    {landscape && renderTitle(image)}
+
+                    <ScrollView
+                        style={{
+                            flex: 1,
+                            marginTop: 0,
+                        }}
+                        showsVerticalScrollIndicator={false}
+                        contentContainerStyle={{
+                            paddingHorizontal: 15,
+                            paddingVertical: 10,
+                        }}
+                    >
+                        {image.caption ? (
+                            <Text variant='bodyMedium'>
+                                {image.caption}
+                            </Text>
+                        ) : (
+                            <Text variant='bodyMedium'>
+                                Add a caption...
+                            </Text>
+                        )}
+                    </ScrollView>
+        
+                    {(isOwner || hasAuthorization) && (
+                        <Card.Actions style={{ flexShrink: 0 }}>
+                            {isOwner && (
+                                <Button
+                                    mode='text'
+                                    onPress={handleAvatar}
+                                >
+                                    {isProfileImage ? 'Unset Avatar' : 'Set Avatar'}
+                                </Button>
+                            )}
+                            {(
+                                <Button
+                                    mode='text'
+                                    onPress={handleDelete}
+                                    disabled={loading}
+                                >
+                                    Delete
+                                </Button>
+                            )}
+                        </Card.Actions>
+                    )}
+
+                </View>
+
+            </View>
+
         </View>
     )
 }

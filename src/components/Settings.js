@@ -1,16 +1,11 @@
-import React, { useState } from'react'
-import { View } from'react-native'
+import React from'react'
 import { Card, Button, IconButton } from'react-native-paper'
-import { Cabinet, Form } from '@components'
 import { useModal } from '@context'
 import { navigate } from '@utils/navigation'
 
 const Settings = () => {
     
     const { closeModal, setModal } = useModal()
-
-    const initDestroy = () => navigate('Home', { destroy: true })
-    const initSignout = () => navigate('Home', { signout: true })
     
     return (
         <Card>
@@ -35,7 +30,7 @@ const Settings = () => {
 
                     <Button
                         mode='outlined'
-                        onPress={initSignout}
+                        onPress={() => navigate('Home', { signout: true })}
                         style={{ marginVertical: 10 }}
                     >
                         Sign Out
