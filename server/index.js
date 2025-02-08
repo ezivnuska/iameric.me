@@ -29,7 +29,7 @@ const corsOptions = {
 		'http://localhost:3000',
 		'http://localhost:4000',
 		'https://iameric.me',
-		'https://maps.googleapis.com',
+		// 'https://maps.googleapis.com',
 	],
 	credentials: true,
 	methods: ['GET', 'POST'],
@@ -37,8 +37,8 @@ const corsOptions = {
 }
 
 // Enable CORS
-app.use(cors())
-// app.use(cors(corsOptions))
+// app.use(cors())
+app.use(cors(corsOptions))
 
 // Set up express-session
 app.use(sessionMiddleware)

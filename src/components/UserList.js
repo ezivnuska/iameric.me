@@ -57,9 +57,9 @@ const VerticalListItem = ({ item }) => (
 
     <View style={styles.itemVertical}>
 
-        <View style={styles.itemHeader}>
+        <View style={[styles.itemHeader, { gap: 15 }]}>
 
-            <UserAvatar user={item} />
+            <UserAvatar user={item} size={30} />
 
             <Text variant='titleLarge'>
                 {item.username}

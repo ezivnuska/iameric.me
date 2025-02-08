@@ -16,7 +16,7 @@ const Time = ({
     ...props
 }) => {
     return (
-        <Text variant='bodyMedium'>
+        <Text variant='bodyMedium' {...props}>
             {time
                 ? `${prefix}${formatRelative(new Date(time), new Date())}${suffix}`
                 : 'Now'

@@ -49,6 +49,15 @@ const Form = ({
     
     useEffect(() => {
         
+        // if (!formReady) {
+            
+        //     initFields()
+        // }
+        return () => resetForm()
+    }, [])
+
+    useEffect(() => {
+        
         if (!formReady) {
             
             initFields()

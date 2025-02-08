@@ -5,9 +5,10 @@ import { UserAvatar } from '@components'
 import { useModal, useUser, useTheme } from '@context'
 import { loadContact } from '@utils/contacts'
 import { create } from '@utils/normalize'
+import urlMetadata from 'url-metadata'
 
 const UserScreen = props => {
-
+    
     const {
         userLoading,
         findUserByUsername,
@@ -15,7 +16,31 @@ const UserScreen = props => {
     } = useUser()
     const [profile, setProfile] = useState(null)
 
+    const scrape = async () => {
+
+        // try {
+            const url = 'https://www.npmjs.com/package/url-metadata'
+            const metadata = await urlMetadata(url, {
+                requestHeaders: {
+                    // 'Access-Control-Allow-Origin': 'https://www.npmjs.com',
+                    'User-Agent': 'url-metadata/3.0 (npm module)',
+                    // 'From': 'example@example.com'
+                },
+                mode: 'no-cors',
+
+            })
+
+            if (metadata) {
+
+                console.log(metadata)
+            }
+        //   } catch (err) {
+        //     console.log(err)
+        //   }
+
+    }
     useEffect(() => {
+        scrape()
         if (props.route.params?.username) {
             initUser(props.route.params.username)
         }
@@ -23,7 +48,7 @@ const UserScreen = props => {
 
     useEffect(() => {
 
-        // console.log('params', props.route.params)
+        console.log('params', props.route.params)
         
         if (!profile || profile.username !== props.route.params?.username) {
             if (!userLoading) initUser(props.route.params?.username)
@@ -77,11 +102,11 @@ const UserScreen = props => {
             full={props.route.name === 'Images' && props.route.params?.list}
             secure
         >
-            {/* <View style={{ flex: 1 }}> */}
+            <View style={{ flex: 1 }}>
 
-            <UserProfile profile={profile} />
+                <UserProfile profile={profile} />
 
-            {/* </View> */}
+            </View>
             
         </Screen>
     )
@@ -89,28 +114,40 @@ const UserScreen = props => {
 
 const UserProfile = ({ profile }) => {
 
-    // const { theme, toggleTheme } = useTheme()
+    const { theme, toggleTheme } = useTheme()
     const { setModal } = useModal()
-    const { user } = useUser()
+    const { authUser } = useUser()
 
-    const isAuthUser = useMemo(() => profile && user._id === profile._id, [profile])
+    const isAuthUser = useMemo(() => profile && authUser._id === profile._id, [profile])
+    const [currentUser, setCurrentUser] = useState(null)
     
-    // useEffect(() => {
-    //     console.log('profile', profile)
-    // }, [])
+    useEffect(() => {
+        // console.log('profile', profile)
+        if (profile) {
+            setCurrentUser(isAuthUser ? authUser : profile)
+        }
+    }, [profile])
 
-    return profile && (
-        <View style={{ flex: 1 }}>
+    useEffect(() => {
+        if (isAuthUser) {
+            if (authUser.profileImage?._id !== currentUser.profileImage?._id) {
+                setCurrentUser(authUser)
+            }
+        }
+    }, [authUser])
+
+    return currentUser && (
+        <View style={{ flex: 1, gap: 20 }}>
 
             <Pressable
-                key={`profile-${profile.username}-${Date.now()}`}
+                key={`profile-${currentUser.username}-${Date.now()}`}
                 onPress={() => {
                     // console.log('SHOWCASE', profile)
-                    setModal('SHOWCASE', profile.profileImage._id)
+                    setModal('SHOWCASE', currentUser.profileImage._id)
                 }}
-                disabled={!profile.profileImage}
+                disabled={!currentUser.profileImage}
             >
-                <UserAvatar user={isAuthUser ? user : profile} size={100} />
+                <UserAvatar user={currentUser} size={100} />
 
             </Pressable>
 

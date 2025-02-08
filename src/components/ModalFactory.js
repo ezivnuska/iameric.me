@@ -4,6 +4,7 @@ import { Card, IconButton } from 'react-native-paper'
 import {
     AuthForm,
     BugForm,
+    CaptionForm,
     DestroyForm,
     ImageCard,
     ImagePicker,
@@ -39,6 +40,10 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             case 'DESTROY':
                 content = <DestroyForm data={data} />
+                // fullscreen = true
+                break
+            case 'CAPTION':
+                content = <CaptionForm data={data} />
                 // fullscreen = true
                 break
             case 'FEEDBACK':

@@ -9,9 +9,7 @@ const UserAvatar = ({ user, size = 50, onPress = null, ...props }) => {
     const [source, setSource] = useState(null)
 
     useEffect(() => {
-        if (user && user.profileImage?.filename) {
-            setSource(`${IMAGE_PATH}/${user.username}/${user.profileImage.filename}`)
-        }
+        setSource(user?.profileImage ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}` : null)
     }, [user])
 
     return (

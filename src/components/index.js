@@ -1,6 +1,7 @@
 import BugForm from './BugForm'
 import BugNavBar from './BugNavBar'
 import Bugs from './Bugs'
+import CaptionForm from './CaptionForm'
 import CenteredContainer from './CenteredContainer'
 import Checkbox from './Checkbox'
 import DestroyForm from './DestroyForm'
@@ -37,6 +38,7 @@ export {
     BugForm,
     BugNavBar,
     Bugs,
+    CaptionForm,
     CenteredContainer,
     Checkbox,
     DestroyForm,

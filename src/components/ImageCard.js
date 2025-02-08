@@ -1,16 +1,67 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Image, ScrollView, View } from 'react-native'
-import { Avatar, Button, Card, IconButton, MD3Colors, Text } from 'react-native-paper'
+import { Avatar, Button, Card, Icon, IconButton, MD3Colors, Text } from 'react-native-paper'
 import { useForm, useModal, useTheme, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar, setCaption } from '@utils/images'
 import { Time, UserAvatar } from '@components'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
+const CardHeader = ({ user, close, time = null }) => {
+    return (
+        <View
+            style={{
+                flexGrow: 0,
+                flexShrink: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 15,
+                paddingLeft: 15,
+                paddingRight: 5,
+                paddingVertical: 5,
+            }}
+        >
+            <UserAvatar user={user} size={time ? 40 : 30} />
+
+            <View style={{ flexGrow: 1 }}>
+                
+                {/* <View
+                    style={{
+                        // flexDirection: 'row',
+                        // alignItems: 'center',
+                        // gap: 15,
+                    }}
+                > */}
+                
+                    <Text variant='titleMedium' style={{ flex: 1 }}>
+                        {user.username}
+                    </Text>
+
+                    {time && <Time time={time} />}
+
+                {/* </View> */}
+
+            </View>
+
+            <IconButton
+                icon='close-thick'
+                size={20}
+                onPress={close}
+                style={{
+                    padding: 0,
+                    margin: 0,
+                    // alignSelf: 'flex-start'
+                }}
+            />
+
+        </View>
+    )
+}
+
 const ImageCard = ({ data }) => {
 
     const { clearForm, formError, formFields } = useForm()
-    const { closeModal } = useModal()
+    const { closeModal, setModal } = useModal()
     const { landscape } = useTheme()
     const { user, setDeletedImage, updateImage, updateUser } = useUser()
 
@@ -22,14 +73,23 @@ const ImageCard = ({ data }) => {
     const hasAuthorization = useMemo(() => user && user.role === 'admin', [user])
     const source = useMemo(() => image && image.user && `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
 
-    useEffect(() => {
+    const init = () => {
         if (typeof data === 'string') {
-            console.log('ImageShowcase received _id string')
+            // console.log('ImageShowcase received _id string')
             findImage(data)
         } else {
             findImage(data._id)
         }
+    }
+
+    useEffect(() => {
+        // init()
+        return () => setImage(null)
     }, [])
+
+    useEffect(() => {
+        init()
+    }, [user, data])
 
     // useEffect(() => {
     //     if (image.user._id === user._id)
@@ -52,11 +112,11 @@ const ImageCard = ({ data }) => {
     
     const handleAvatar = async () => {
 
-        const isProfileImage = image.user.profileImage && image._id === image.user.profileImage._id
+        const imageIsAvatar = image.user.profileImage && image._id === image.user.profileImage._id
         
         setLoading(true)
         
-        const profileImage = await setAvatar(user._id, isProfileImage ? null : image._id)
+        const profileImage = await setAvatar(user._id, imageIsAvatar ? null : image._id)
         
         const updatedImage = {
             ...image,
@@ -66,7 +126,7 @@ const ImageCard = ({ data }) => {
             },
         }
         
-        setImage(updatedImage)
+        // setImage(updatedImage)
 
         updateUser({ ...user, profileImage })
         
@@ -128,100 +188,360 @@ const ImageCard = ({ data }) => {
         
     }
 
-    const renderTitle = image => (
-        <Card.Title
-            title={image.user.username}
-            subtitle={<Time time={image.createdAt} />}
-            left={() => <UserAvatar user={image.user} />}
-            right={() => (
+    const renderHeader = () => (
+        <View
+        // style={{ flex: 1 }}
+        >
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 15,
+                }}
+            >
+                <UserAvatar user={image.user} size={25} />
+                <Text variant='titleLarge' style={{ flexGrow: 1 }}>
+                    {image.user.username}
+                </Text>
                 <IconButton 
                     icon='close-thick'
                     // iconColor={MD3Colors.error50}
                     size={25}
                     onPress={closeModal}
+                    style={{ margin: 0, padding: 0 }}
                 />
-            )}
-            style={{ flexShrink: 0 }}
-        />
+            </View>
+            {/* <Time time={image.createdAt} /> */}
+        </View>
     )
+
+    const renderTitle = () => (
+        <View
+            style={{
+                // flex: 1,
+                // paddingLeft: 15,
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 15,
+                // paddingVertical: 5,
+            }}
+        >
+            <UserAvatar user={image.user} size={40} />
+            
+            <View style={{ flexGrow: 1 }}>
+
+                <Text variant='titleLarge'>
+                    {image.user.username}
+                </Text>
+
+                <Time time={image.createdAt} />
+
+            </View>
+
+            <IconButton
+                icon='close-thick'
+                size={25}
+                onPress={closeModal}
+                style={{ alignSelf: 'flex-start' }}
+            />
+
+        </View>
+    )
+
+    const [maxDims, setMaxDims] = useState(null)
+    const [imageDims, setImageDims] = useState(null)
+
+    useEffect(() => {
+        if (maxDims) {
+            const dims = getImageDims(image)
+            setImageDims(dims)
+        }
+    }, [maxDims])
+
+    const getMinSize = (dims, maxDims) => {
+
+    }
+    
+    const getImageDims = image => {
+
+        let height = image.height
+        let width = image.width
+
+        const maxAreaPercentage = 0.66
+
+        let maxHeight = landscape ? maxDims.height : maxDims.height * maxAreaPercentage
+        let maxWidth =  landscape ? maxDims.width * maxAreaPercentage : maxDims.width
+
+        const orientation = width > height ? 'landscape' : 'portrait'
+
+        let scale = 1
+
+        if (width > maxWidth) {
+            scale = maxWidth / width
+            width *= scale
+            height *= scale
+        }
+        
+        if (height > maxHeight) {
+            scale = maxHeight / height
+            width *= scale
+            height *= scale
+        }
+        
+        return { height, width }
+    }
+
+    const onLayout = e => {
+        
+		if (e.nativeEvent.target.offsetParent) {
+            
+            setMaxDims({
+                width: e.nativeEvent.target.offsetParent.clientWidth,
+                height: e.nativeEvent.target.offsetParent.clientHeight,
+            })
+		}
+	}
 
     return image && (
         <View
-            style={{
-                flex: 1,
-                // gap: 10,
+            style={{ flex: 1,
+                // borderWidth: 1, borderColor: 'yellow',
             }}
         >
+            {!landscape && (
+                <CardHeader
+                    user={image.user}
+                    close={closeModal}
+                    time={image.createdAt}
+                />
+            )}
+
+            <View
+                onLayout={onLayout}
+                style={{
+                    flex: 1,
+                    // borderWidth: 5, borderColor: 'blue', borderStyle: 'dotted',
+                    // alignItems: 'stretch',
+                }}
+            >
+
+                {imageDims && (
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: landscape ? 'row' : 'column',
+                            // alignItems: 'space-between',
+                        }}
+                    >
+                        <View
+                            style={{
+                                // flex: 1,
+                                // flexDirection: landscape ? 'row' : 'column',
+                                // alignItems: 'stretch',
+                                // alignItems: 'space-between',
+                                width: imageDims.width,
+                                height: imageDims.height,
+                                marginHorizontal: 'auto',
+                                // borderWidth: 1,
+                                // borderColor: 'yellow',
+                            }}
+                        >
+                            <Image
+                                source={source}
+                                resizeMode={'contain'}
+                                // resizeMode={landscape ? 'contain' : 'center'}
+                                style={{
+                                    flex: 1,
+                                    // width: imageDims.width,
+                                    // height: imageDims.height,
+                                    // marginHorizontal: 'auto',
+                                }}
+                            />
+                        </View>
+
+                        <View
+                            style={{
+                                // flex: landscape ? 1 : 0,
+                                // flex: 1,
+                                flexShrink: 1,
+                                    flexGrow: 1,
+                                // borderWidth: 3, borderColor: 'yellow', borderStyle: 'dashed',
+                            }}
+                        >
+                            {/* {landscape && <Time time={image.createdAt} style={{ paddingHorizontal: 15 }} />} */}
+                            {landscape && (
+                                <CardHeader
+                                    user={image.user}
+                                    close={closeModal}
+                                    time={!image.createdAt}
+                                />
+                            )}
+
+                            <ScrollView
+                                style={{
+                                    flex: 1,
+                                    flexShrink: 1,
+                                    marginVertical: 0,
+                                    marginHorizontal: 15,
+                                    // borderWidth: 1, borderColor: 'yellow',
+                                }}
+                                showsVerticalScrollIndicator={false}
+                                contentContainerStyle={{
+                                    // width: '100%',
+                                    paddingVertical: 10,
+                                }}
+                            >
+                                {image.caption && (
+                                    <Text variant='bodyMedium' style={{ flexShrink: 1 }}>
+                                        {image.caption}
+                                    </Text>
+                                )}
+                            </ScrollView>
+                            
+                            {(isOwner || hasAuthorization) && (
+                                <View
+                                    style={{
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        // borderWidth: 1, borderColor: 'yellow',
+                                    }}
+                                >
+                                    
+                                    {isOwner && (
+                                        <IconButton
+                                            icon={
+                                                image.caption
+                                                    ? 'message-plus-outline'
+                                                    : 'comment-edit-outline'
+                                            }
+                                            onPress={() => setModal('CAPTION', image)}
+                                        />
+                                    )}
+                                    
+                                    {isOwner && (
+                                        <IconButton
+                                            // iconColor={isProfileImage ? 'blue' : 'green'}
+                                            // iconColor={isProfileImage ? 'blue' : null}
+                                            icon={isProfileImage ? 'face-man' : 'face-recognition'}
+                                            onPress={handleAvatar}
+                                            disabled={loading}
+                                            size={30}
+                                        />
+                                    )}
+                                    
+                                    <IconButton 
+                                        icon='delete-circle'
+                                        onPress={handleDelete}
+                                        disabled={loading}
+                                        iconColor={MD3Colors.error50}
+                                        size={30}
+                                    />
+
+                                </View>
+                            )}
+                        </View>
+                    </View>
+                )}
+            </View>
+        </View>
+    )
+
+    return image && (
+        <View style={{ flex: 1 }}>
             
-            {!landscape && renderTitle(image)}
-            
+            {!landscape && renderTitle()}
+
             <View
                 style={{
                     flex: 1,
-                    // flexGrow: 1,
+                    flexGrow: landscape ? 0 : 1,
                     flexDirection: landscape ? 'row' : 'column',
-                    // alignItems: landscape ? 'center' : 'flex-start',
                 }}
             >
-                <View style={{ flex: 2, flexGrow: 2, flexShrink: 1 }}>
+                <View
+                    style={{
+                        flex: 1,
+                        flexGrow: 2,
+                        flexShrink: 2,
+                    }}
+                >
 
                     <Image
                         source={source}
                         resizeMode='contain'
-                        style={{ 
-                            flex: 1,
-                            // flexGrow: 1,
-                        }}
+                        style={{ flex: 1 }}
                     />
 
                 </View>
 
-                <View style={{ flex: 1, flexGrow: 1, flexShrink: 2 }}>
+                <View
+                    style={{
+                        flex: 1,
+                        flexGrow: 1,
+                        flexShrink: 2,
+                    }}
+                >
 
-                    {landscape && renderTitle(image)}
+                    {landscape && renderHeader(image)}
 
                     <ScrollView
                         style={{
-                            flex: 1,
-                            marginTop: 0,
+                            // flex: 1,
+                            marginVertical: 0,
+                            marginHorizontal: 15,
                         }}
                         showsVerticalScrollIndicator={false}
                         contentContainerStyle={{
-                            paddingHorizontal: 15,
                             paddingVertical: 10,
                         }}
                     >
-                        {image.caption ? (
+                        {image.caption && (
                             <Text variant='bodyMedium'>
                                 {image.caption}
-                            </Text>
-                        ) : (
-                            <Text variant='bodyMedium'>
-                                Add a caption...
                             </Text>
                         )}
                     </ScrollView>
         
                     {(isOwner || hasAuthorization) && (
-                        <Card.Actions style={{ flexShrink: 0 }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                            }}
+                        >
+                            
+                            {isOwner && (
+                                <IconButton
+                                    icon={
+                                        image.caption
+                                            ? 'message-plus-outline'
+                                            : 'comment-edit-outline'
+                                    }
+                                    onPress={() => console.log('pressed')}
+                                />
+                            )}
+
                             {isOwner && (
                                 <Button
                                     mode='text'
                                     onPress={handleAvatar}
+                                    compact={true}
                                 >
                                     {isProfileImage ? 'Unset Avatar' : 'Set Avatar'}
                                 </Button>
                             )}
-                            {(
-                                <Button
-                                    mode='text'
-                                    onPress={handleDelete}
-                                    disabled={loading}
-                                >
-                                    Delete
-                                </Button>
-                            )}
-                        </Card.Actions>
+                            
+                            <IconButton 
+                                icon='delete-circle'
+                                onPress={handleDelete}
+                                disabled={loading}
+                                iconColor={MD3Colors.error50}
+                                size={30}
+                            />
+
+                        </View>
                     )}
 
                 </View>
