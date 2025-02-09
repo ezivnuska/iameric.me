@@ -12,6 +12,9 @@ const getPost = async (req, res) => {
                 select: 'filename',
             }
         })
+        .populate({
+            path: 'image',
+        })
     
     if (post) return res.status(200).json({ post })
     

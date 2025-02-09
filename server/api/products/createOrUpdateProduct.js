@@ -1,6 +1,6 @@
 // MONGOose models
 const Product = require('../../models/Product')
-const { uploadProductImage } = require('../images')
+const uploadProductImage = require('../upload/uploadProductImage')
 
 const createOrUpdateProduct = async (req, res) => {
 

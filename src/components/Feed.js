@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, Image, View } from 'react-native'
 import {
     // ActivityIndicator, Button,
     Card, Divider, IconButton, Text,
@@ -8,6 +8,8 @@ import { Time, UserAvatar } from '@components'
 import { useFeed, useModal, useSocket, useUser } from '@context'
 import { deletePostWithId } from '@utils/feed'
 import { loadPost } from '@utils/feed'
+
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
    
@@ -40,29 +42,39 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
         <View>
 
             <Card.Title
-                title={item.author.username}
+                title={post.author.username}
                 titleVariant='titleMedium'
-                subtitle={<Time time={item.createdAt} />}
+                subtitle={<Time time={post.createdAt} />}
                 style={{ gap: 10 }}
                 left={() => (
                     <UserAvatar
-                        user={item.author}
-                        onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: item.author?.username } })}
+                        user={post.author}
+                        onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: post.author?.username } })}
                     />
                 )}
                 right={() => authorized && (
                     <IconButton
                         icon='delete-forever'
-                        onPress={() => onDelete(item._id)}
+                        onPress={() => onDelete(post._id)}
                         disabled={loading}
                     />
                 )}
             />
 
             <Card.Content
-                style={{ paddingBottom: 20 }}
+                style={{ paddingBottom: 20, gap: 15 }}
             >
-                <Text variant='bodyLarge'>{item.text}</Text>
+                {post.image && (
+                    <Image
+                        source={`${IMAGE_PATH}/${post.author.username}/${post.image.filename}`}
+                        resizeMode='contain'
+                        style={{
+                            width: post.image.width,
+                            height: post.image.height,
+                        }}
+                    />
+                )}
+                <Text variant='bodyLarge'>{post.text}</Text>
             </Card.Content>
         </View>
     )
@@ -80,6 +92,7 @@ const Feed = props => {
     const { socket } = useSocket()
     const { user } = useUser()
 
+    const [items, setItems] = useState(posts)
     const [loading, setLoading] = useState(false)
 
     const listRef = useRef()
@@ -88,6 +101,10 @@ const Feed = props => {
         socket.on('new_post', updatePost)
         socket.on('deleted_post', deletePost)
     }, [])
+
+    useEffect(() => {
+        setItems(posts)
+    }, [posts])
 
     const removePost = async id => {
 
@@ -121,11 +138,11 @@ const Feed = props => {
 
             <Card.Content style={{ padding: 0 }}>
                 
-                {/* {posts && ( */}
+                {items && (
                     <FlatList
                         ref={listRef}
-                        data={posts}
-                        extraData={posts}
+                        data={items}
+                        extraData={items}
                         keyExtractor={item => `post-${item._id}`}
                         renderItem={({ item }) => {
                             const authorized = user && (user._id === item.author?._id || user.role === 'admin')
@@ -141,7 +158,7 @@ const Feed = props => {
                         }}
                         ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 5 }} />}
                     />
-                {/* )} */}
+                )}
 
             </Card.Content>
 

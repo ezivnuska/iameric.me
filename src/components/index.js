@@ -11,6 +11,7 @@ import IconButtonLarge from './IconButtonLarge'
 import ImageCard from './ImageCard'
 import ImageContained from './ImageContained'
 import ImageList from './ImageList'
+import ImagePreview from './ImagePreview'
 import ImageShowcase from './ImageShowcase'
 import ImageUploadIndicator from './ImageUploadIndicator'
 import NavBar from './NavBar'
@@ -48,6 +49,7 @@ export {
     ImageCard,
     ImageContained,
     ImageList,
+    ImagePreview,
     ImageShowcase,
     ImageUploadIndicator,
     NavBar,

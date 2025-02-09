@@ -12,8 +12,10 @@ const uploadFile = async (image, dir, filename) => {
         await promises.writeFile(fullPath, buffer)
     } catch (err) {
         console.log('Error writing file:', err)
-        return null
+        return false
     }
+
+    return true
 }
 
 const handleFileUpload = async ({ imageData, thumbData }, uploadPath, filename) => {

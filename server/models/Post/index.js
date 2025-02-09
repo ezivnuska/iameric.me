@@ -15,7 +15,7 @@ const PostSchema = new Schema({
     threadId: {
         type: Schema.Types.String,
     },
-    images: {
+    image: {
         type: Schema.Types.ObjectId,
         ref: 'UserImage',
     }

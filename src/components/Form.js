@@ -11,6 +11,7 @@ const Form = ({
     data = null,
     onSubmit = null,
     title = null,
+    children = null,
 }) => {
 
     const { user } = useUser()
@@ -122,7 +123,7 @@ const Form = ({
     }
     
     return (
-        <View>
+        <View style={{ gap: 10 }}>
 
             {formReady && (
                 <FlatList
@@ -139,8 +140,9 @@ const Form = ({
                             type,
                             autoCapitalize,
                         } = item
+
                         return (
-                            <View style={{ marginBottom: 20 }}>
+                            <View>
                                 <TextInput
                                     label={label}
                                     value={formFields[name] || ''}
@@ -162,6 +164,12 @@ const Form = ({
                         )
                     }}
                 />
+            )}
+
+            {children && (
+                <View style={{ alignContent: 'flex-start' }}>
+                    {children}
+                </View>
             )}
             
             <Button

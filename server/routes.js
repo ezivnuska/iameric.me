@@ -46,11 +46,14 @@ const {
   loadImage,
   setImageCaption,
   updateProfileImage,
+} = require('./api/images')
+
+const {
   uploadAvatar,
   uploadBipImage,
   uploadImage,
   uploadProductImage,
-} = require('./api/images')
+} = require('./api/upload')
 
 const {
   createOrUpdateProduct,
@@ -95,6 +98,7 @@ const {
 } = require('./api/entries')
 
 const {
+  // addImageToPost,
   createPost,
   deletePostById,
   getPost,
@@ -153,6 +157,7 @@ router.get(    '/thread/:threadId',        getThread)
 router.delete( '/entry/delete/:id',        deleteEntryById)
 
 // posts
+// router.post(   '/post/image',              addImageToPost)
 router.post(   '/post',                    createPost)
 router.get(    '/post/:postId',            getPost)
 router.get(    '/posts',                   getPosts)
