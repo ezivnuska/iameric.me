@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, Image, View } from 'react-native'
+import { FlatList, Image, Pressable, View } from 'react-native'
 import {
     // ActivityIndicator, Button,
     Card, Divider, IconButton, Text,
@@ -8,19 +8,29 @@ import { Time, UserAvatar } from '@components'
 import { useFeed, useModal, useSocket, useUser } from '@context'
 import { deletePostWithId } from '@utils/feed'
 import { loadPost } from '@utils/feed'
+import { getMaxImageDims } from '@utils/images'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
    
     const { updatePost } = useFeed()
+    const { setModal } = useModal()
 
     const [loading, setLoading] = useState(false)
     const [post, setPost] = useState(null)
+    const [imageDims, setImageDims] = useState(null)
 
     useEffect(() => {
         if (item) initPost(item._id)
     }, [])
+
+    useEffect(() => {
+        if (post?.image) {
+            const dims = getMaxImageDims(post.image.width, post.image.height, 100)
+            setImageDims(dims)
+        }
+    }, [post])
         
     const initPost = async id => {
         
@@ -62,19 +72,39 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
             />
 
             <Card.Content
-                style={{ paddingBottom: 20, gap: 15 }}
-            >
-                {post.image && (
-                    <Image
-                        source={`${IMAGE_PATH}/${post.author.username}/${post.image.filename}`}
-                        resizeMode='contain'
-                        style={{
-                            width: post.image.width,
-                            height: post.image.height,
-                        }}
-                    />
-                )}
-                <Text variant='bodyLarge'>{post.text}</Text>
+                style={{
+                    paddingBottom: 20,
+                    gap: 15,
+                }}
+                >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        gap: 15,
+                    }}
+                >
+
+                    {post.image && imageDims && (
+                        <Pressable
+                            onPress={() => setModal('SHOWCASE', post.image)}
+                        >
+                            <Image
+                                source={`${IMAGE_PATH}/${post.author.username}/${post.image.filename}`}
+                                resizeMode='contain'
+                                style={{
+                                    width: imageDims.width,
+                                    height: imageDims.height,
+                                }}
+                            />
+                        </Pressable>
+                    )}
+                    
+                    <Text variant='bodyLarge'>
+                        {post.text}
+                    </Text>
+
+                </View>
+                    
             </Card.Content>
         </View>
     )
