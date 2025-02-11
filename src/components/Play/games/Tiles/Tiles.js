@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
 import Animated, {
 	useAnimatedStyle,
@@ -16,13 +16,63 @@ import {
 } from './components'
 import { usePlay, useTheme, useUser } from '@context'
 
-const Tiles = ({ gameSize, changeLevel, level }) => {
+const Tiles = () => {
 
-	const { landscape } = useTheme()
+	const { dims, landscape } = useTheme()
 	const { playModal, closePlayModal, setPlayModal } = usePlay()
-	
+
+	const [maxDims, setMaxDims] = useState(null)
+	const [gameSize, setGameSize] = useState(null)
+
 	const [initialTiles, setInitialTiles] = useState(null)
 	const [gameStatus, setGameStatus] = useState('idle')
+
+	const containerRef = useRef(null)
+
+	// useEffect(() => {
+	// 	getSize()
+	// }, [maxDims])
+
+	useEffect(() => {
+		getSize()
+	}, [dims, landscape, maxDims])
+
+	useEffect(() => {
+		if (containerRef.current) {
+			console.log(containerRef.current)
+			setMaxDims({
+				height: containerRef.current.clientHeight,
+				width: containerRef.current.clientWidth,
+			})
+		}
+	}, [containerRef])
+
+	const getSize = () => {
+		if (!maxDims) return
+		const { width, height } = maxDims
+		let size = null
+		if (width > height) {
+			size = height
+		} else {
+			size = width
+		}
+		setGameSize(size)
+	}
+
+	const onLayout = e => {
+		if (e.nativeEvent.target.offsetParent) {
+			setMaxDims({
+				height: e.nativeEvent.target.clientHeight,
+				width: e.nativeEvent.target.clientWidth,
+			})
+		}
+	}
+
+	const [level, setLevel] = useState(4)
+
+	const changeLevel = () => {
+		setLevel(level === 4 ? 3 : 4)
+	}
 
 	const createInitialTiles = async num => {
 		const tileArray = []
@@ -43,28 +93,25 @@ const Tiles = ({ gameSize, changeLevel, level }) => {
 
 	useEffect(() => {
 		createInitialTiles(level)
-		if (landscape) setPlayModal('PAUSED')
 	}, [])
 
 	useEffect(() => {
 		createInitialTiles(level)
 	}, [level])
 
-	useEffect(() => {
-		if (landscape && (gameStatus === 'playing')) setGameStatus('paused')
-		else if (!landscape && playModal) closePlayModal()
-	}, [landscape, gameStatus])
-
-	useEffect(() => {
-		if (gameStatus == 'paused' && landscape && !playModal) setPlayModal('PAUSED')
-	}, [gameStatus])
-
 	const handleWin = () => {
 		setGameStatus('resolved')
 	}
 
 	return (
-		<View style={{ flex: 1, justifyContent: 'flex-start', gap: 10 }}>
+		<View
+			style={{
+				flex: 1,
+				flexDirection: landscape ? 'row-reverse' : 'column',
+				justifyContent: 'flex-start',
+				gap: 10,
+			}}
+		>
 			
 			<GameHeader
 				status={gameStatus}
@@ -73,22 +120,32 @@ const Tiles = ({ gameSize, changeLevel, level }) => {
 			/>
 
 			{initialTiles && (
-				<TileGame
-					initialTiles={initialTiles}
-					// tiles={tiles}
-					onChangeStatus={setGameStatus}
-					status={gameStatus}
-					handleWin={handleWin}
-					gameSize={gameSize}
-					level={level}
-				/>
+				<View
+					onLayout={onLayout}
+					ref={containerRef}
+					style={{
+						flexGrow: 1,
+					}}
+				>
+					{gameSize && (
+						<TileGame
+							initialTiles={initialTiles}
+							// tiles={tiles}
+							onChangeStatus={setGameStatus}
+							status={gameStatus}
+							handleWin={handleWin}
+							gameSize={gameSize}
+							level={level}
+						/>
+					)}
+				</View>
 			)}
 
 		</View>
 	)
 }
 
-const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, changeLevel, level }) => {
+const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, level }) => {
 
 	const {
 		tiles,
@@ -104,7 +161,11 @@ const TileGame = ({ gameSize, initialTiles, status, onChangeStatus, handleWin, c
 
 	useEffect(() => {
 		setItemSize(gameSize / level)
-	}, [level])
+	}, [gameSize])
+
+	// useEffect(() => {
+	// 	setItemSize(gameSize / level)
+	// }, [level])
 
 	useEffect(() => {
 		

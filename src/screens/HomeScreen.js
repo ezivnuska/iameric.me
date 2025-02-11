@@ -31,9 +31,7 @@ const HomeScreen = props => {
     }
 
     // useEffect(() => {
-    //     if (user) {
-    //         props.navigation.navigate('Feed')
-    //     }
+    //     initPonies()
     // }, [])
 
 

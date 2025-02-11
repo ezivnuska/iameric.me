@@ -97,7 +97,10 @@ const Bugs = ({ navigation }) => {
                         style={{ flex: 1 }}
                     />
                 ) : (
-                    <Text variant='bodyLarge'>
+                    <Text
+                        variant='bodyLarge'
+                        style={{ paddingHorizontal: 15 }}
+                    >
                         No bugs to squash.
                     </Text>
                 )}

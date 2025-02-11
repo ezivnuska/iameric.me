@@ -8,6 +8,7 @@ import * as map from './map'
 import * as mail from './mail'
 import * as storage from './storage'
 
+import { initPonies } from './ponies'
 import compose from './compose'
 import getModifiedColor from './getModifiedColor'
 import destroy from './destroy'
@@ -24,6 +25,7 @@ export {
     getModifiedColor,
     // forum,
     images,
+    initPonies,
     map,
     mail,
     navigation,
