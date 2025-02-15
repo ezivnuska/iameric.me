@@ -35,7 +35,7 @@ const Connections = ({ connections, onPress }) => (
 
 const Footer = ({ route }) => {
 
-    const { dark, toggleTheme } = useTheme()
+    const { dark, landscape, toggleTheme } = useTheme()
     const { setModal } = useModal()
     const { connections } = useSocket()
     const { user } = useUser()
@@ -43,23 +43,38 @@ const Footer = ({ route }) => {
     
     return (
         <Appbar
+            mode='small'
             style={{
+                width: '100%',
+                maxWidth: landscape ? null : 600,
+                marginHorizontal: 'auto',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 paddingTop: 1,
             }}
         >
 
-            <Appbar.Header>
+            <Appbar.Header
+                mode='small'
+                statusBarHeight={0}
+                style={{ margin: 0, padding: 0 }}
+            >
                 <Connections connections={connections} onPress={() => setModal('SOCKETS')} />
-
             </Appbar.Header>
 
-            <Appbar.Header>
+            <Appbar.Header
+                mode='small'
+                statusBarHeight={0}
+                style={{
+                    margin: 0,
+                    padding: 0,
+                }}
+            >
             
                 <Appbar.Action
                     icon={dark ? 'white-balance-sunny' : 'weather-night'}
                     onPress={toggleTheme}
+                    style={{ margin: 0, padding: 0 }}
                 />
                 
                 {user && (
@@ -68,17 +83,20 @@ const Footer = ({ route }) => {
                             icon='grid'
                             onPress={() => navigationRef.navigate('Play')}
                             disabled={route === 'Play'}
+                            style={{ margin: 0, padding: 0 }}
                         />
                         
                         <Appbar.Action
                             icon='ladybug'
                             onPress={() => navigationRef.navigate('Bugs')}
                             disabled={route === 'Bugs'}
+                            style={{ margin: 0, padding: 0 }}
                         />
 
                         <Appbar.Action
                             icon='cog'
                             onPress={() => setModal('SETTINGS')}
+                            style={{ margin: 0, padding: 0 }}
                         />
                     </>
                 )}

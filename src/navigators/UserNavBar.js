@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { Appbar } from 'react-native-paper'
 import { useModal, useUser } from '@context'
 
-const NavBar = props => {
+const UserNavBar = props => {
 
     const renderNav = () => {
         switch (props.route.name) {
@@ -13,9 +13,7 @@ const NavBar = props => {
         }
     }
     return (
-        <View
-            // style={{ borderWidth: 1, margin: 0, padding: 0 }}
-        >
+        <View>
             {renderNav()}
         </View>
     )
@@ -25,7 +23,10 @@ const NavBar = props => {
 const DefaultNavBar = ({ navigation, route }) => {
 
     return (
-        <Appbar.Header>
+        <Appbar.Header
+            mode='small'
+            statusBarHeight={0}
+        >
             {route.name !== 'Home' && <Appbar.BackAction onPress={() => navigation.navigate('Home')} />}
             <Appbar.Content title={route.name} />
         </Appbar.Header>
@@ -35,11 +36,15 @@ const DefaultNavBar = ({ navigation, route }) => {
 const ProfileNavBar = ({ navigation, route }) => {
     
     return (
-        <Appbar.Header style={{ height: 'auto', paddingRight: 10 }}>
+        <Appbar.Header
+            mode='small'
+            statusBarHeight={0}
+            style={{ paddingRight: 10 }}
+        >
             <Appbar.BackAction onPress={() => navigation.navigate('Users')} style={{ margin: 0, padding: 0 }} />
             <Appbar.Content title={route.params?.username || 'Profie'} />
             <Appbar.Action
-                icon="image-multiple"
+                icon='image-multiple'
                 onPress={() => navigation.navigate('Images', {
                     username: route.params?.username,
                     // list: false,
@@ -63,30 +68,44 @@ const ImagesNavBar = ({ navigation, route }) => {
     })
     
     return (
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
-            <Appbar.Content title={`${route.params?.username || 'User'} : Images`} />
+        <Appbar.Header
+            mode='small'
+            statusBarHeight={0}
+            // style={{ margin: 0, padding: 0, height: 'auto' }}
+        >
+            <Appbar.BackAction
+                onPress={() => navigation.navigate('Home')}
+                // style={{ margin: 0, padding: 0 }}
+            />
+
+            <Appbar.Content title='Images' />
+
             {isCurrentUser && (
                 <Appbar.Action
-                    icon="file-image-plus"
+                    icon='file-image-plus'
                     onPress={() => setModal('IMAGE_UPLOAD')}
                     disabled={uploading}
+                    style={{ margin: 0, padding: 0 }}
                 />
             )}
-            {isCurrentUser && (
+            {/* {isCurrentUser && ( */}
                 <Appbar.Action
-                    icon="grid"
+                    icon='grid'
                     onPress={toggleViewMode}
+                    disabled={!route.params?.list}
+                    style={{ margin: 0, padding: 0 }}
                 />
-            )}
-            {isCurrentUser && (
+            {/* )}
+            {isCurrentUser && ( */}
                 <Appbar.Action
-                    icon="table-column"
+                    icon='table-column'
                     onPress={toggleViewMode}
+                    disabled={route.params?.list}
+                    style={{ margin: 0, padding: 0 }}
                 />
-            )}
+            {/* )} */}
         </Appbar.Header>
     )
 }
 
-export default NavBar
+export default UserNavBar

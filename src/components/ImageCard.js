@@ -25,21 +25,11 @@ const CardHeader = ({ user, close, time = null }) => {
 
             <View style={{ flexGrow: 1 }}>
                 
-                {/* <View
-                    style={{
-                        // flexDirection: 'row',
-                        // alignItems: 'center',
-                        // gap: 15,
-                    }}
-                > */}
-                
-                    <Text variant='titleMedium' style={{ flex: 1 }}>
-                        {user.username}
-                    </Text>
+                <Text variant='titleMedium' style={{ flex: 1 }}>
+                    {user.username}
+                </Text>
 
-                    {time && <Time time={time} />}
-
-                {/* </View> */}
+                {time && <Time time={time} />}
 
             </View>
 
@@ -50,7 +40,6 @@ const CardHeader = ({ user, close, time = null }) => {
                 style={{
                     padding: 0,
                     margin: 0,
-                    // alignSelf: 'flex-start'
                 }}
             />
 
@@ -75,17 +64,15 @@ const ImageCard = ({ data }) => {
 
     const init = () => {
         if (typeof data === 'string') {
-            // console.log('ImageShowcase received _id string')
             findImage(data)
         } else {
             findImage(data._id)
         }
     }
 
-    useEffect(() => {
-        // init()
-        return () => setImage(null)
-    }, [])
+    // useEffect(() => {
+    //     return () => setImage(null)
+    // }, [])
 
     useEffect(() => {
         init()
@@ -320,6 +307,8 @@ const ImageCard = ({ data }) => {
                 onLayout={onLayout}
                 style={{
                     flex: 1,
+                    flexDirection: landscape ? 'row' : 'column',
+                    alignItems: landscape ? 'center' : null,
                     // borderWidth: 5, borderColor: 'blue', borderStyle: 'dotted',
                     // alignItems: 'stretch',
                 }}
@@ -335,40 +324,25 @@ const ImageCard = ({ data }) => {
                     >
                         <View
                             style={{
-                                // flex: 1,
-                                // flexDirection: landscape ? 'row' : 'column',
-                                // alignItems: 'stretch',
-                                // alignItems: 'space-between',
                                 width: imageDims.width,
                                 height: imageDims.height,
                                 marginHorizontal: 'auto',
-                                // borderWidth: 1,
-                                // borderColor: 'yellow',
                             }}
                         >
                             <Image
                                 source={source}
                                 resizeMode={'contain'}
-                                // resizeMode={landscape ? 'contain' : 'center'}
-                                style={{
-                                    flex: 1,
-                                    // width: imageDims.width,
-                                    // height: imageDims.height,
-                                    // marginHorizontal: 'auto',
-                                }}
+                                style={{ flex: 1 }}
                             />
                         </View>
 
                         <View
                             style={{
-                                // flex: landscape ? 1 : 0,
-                                // flex: 1,
-                                flexShrink: 1,
-                                    flexGrow: 1,
+                                flex: 1,
+                                maxHeight: landscape ? imageDims.height : null,
                                 // borderWidth: 3, borderColor: 'yellow', borderStyle: 'dashed',
                             }}
                         >
-                            {/* {landscape && <Time time={image.createdAt} style={{ paddingHorizontal: 15 }} />} */}
                             {landscape && (
                                 <CardHeader
                                     user={image.user}
@@ -377,69 +351,68 @@ const ImageCard = ({ data }) => {
                                 />
                             )}
 
-                            <ScrollView
-                                style={{
-                                    flex: 1,
-                                    flexShrink: 1,
-                                    marginVertical: 0,
-                                    marginHorizontal: 15,
-                                    // borderWidth: 1, borderColor: 'yellow',
-                                }}
-                                showsVerticalScrollIndicator={false}
-                                contentContainerStyle={{
-                                    // width: '100%',
-                                    paddingVertical: 10,
-                                }}
+                            <View
+                                style={{ flexGrow: 1 }}
                             >
-                                {image.caption && (
-                                    <Text variant='bodyMedium' style={{ flexShrink: 1 }}>
-                                        {image.caption}
-                                    </Text>
-                                )}
-                            </ScrollView>
-                            
-                            {(isOwner || hasAuthorization) && (
-                                <View
+                                <ScrollView
                                     style={{
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
-                                        // borderWidth: 1, borderColor: 'yellow',
+                                        flex: 1,
+                                        flexShrink: 1,
+                                        marginVertical: 0,
+                                        marginHorizontal: 15,
+                                    }}
+                                    showsVerticalScrollIndicator={false}
+                                    contentContainerStyle={{
+                                        paddingVertical: 10,
                                     }}
                                 >
-                                    
-                                    {isOwner && (
-                                        <IconButton
-                                            icon={
-                                                image.caption
-                                                    ? 'message-plus-outline'
-                                                    : 'comment-edit-outline'
-                                            }
-                                            onPress={() => setModal('CAPTION', image)}
-                                        />
+                                    {image.caption && (
+                                        <Text variant='bodyMedium' style={{ flexShrink: 1 }}>
+                                            {image.caption}
+                                        </Text>
                                     )}
-                                    
-                                    {isOwner && (
-                                        <IconButton
-                                            // iconColor={isProfileImage ? 'blue' : 'green'}
-                                            // iconColor={isProfileImage ? 'blue' : null}
-                                            icon={isProfileImage ? 'face-man' : 'face-recognition'}
-                                            onPress={handleAvatar}
+                                </ScrollView>
+                                
+                                {(isOwner || hasAuthorization) && (
+                                    <View
+                                        style={{
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        
+                                        {isOwner && (
+                                            <IconButton
+                                                icon={
+                                                    image.caption
+                                                        ? 'message-plus-outline'
+                                                        : 'comment-edit-outline'
+                                                }
+                                                onPress={() => setModal('CAPTION', image)}
+                                            />
+                                        )}
+                                        
+                                        {isOwner && (
+                                            <IconButton
+                                                icon={isProfileImage ? 'face-man' : 'face-recognition'}
+                                                onPress={handleAvatar}
+                                                disabled={loading}
+                                                size={30}
+                                            />
+                                        )}
+                                        
+                                        <IconButton 
+                                            icon='delete-circle'
+                                            onPress={handleDelete}
                                             disabled={loading}
+                                            iconColor={MD3Colors.error50}
                                             size={30}
                                         />
-                                    )}
-                                    
-                                    <IconButton 
-                                        icon='delete-circle'
-                                        onPress={handleDelete}
-                                        disabled={loading}
-                                        iconColor={MD3Colors.error50}
-                                        size={30}
-                                    />
 
-                                </View>
-                            )}
+                                    </View>
+                                )}
+                            </View>
                         </View>
                     </View>
                 )}

@@ -4,8 +4,9 @@ import Bugs from './Bugs'
 import CaptionForm from './CaptionForm'
 import CenteredContainer from './CenteredContainer'
 import Checkbox from './Checkbox'
+import DateSelector from './DateSelector'
 import DestroyForm from './DestroyForm'
-import FeedNavBar from './NavBar'
+// import FeedNavBar from './FeedNavBar'
 import FormContainer from './FormContainer'
 import IconButtonLarge from './IconButtonLarge'
 import ImageCard from './ImageCard'
@@ -42,8 +43,9 @@ export {
     CaptionForm,
     CenteredContainer,
     Checkbox,
+    DateSelector,
     DestroyForm,
-    FeedNavBar,
+    // FeedNavBar,
     FormContainer,
     IconButtonLarge,
     ImageCard,

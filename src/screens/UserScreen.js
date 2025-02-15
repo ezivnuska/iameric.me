@@ -5,7 +5,7 @@ import { UserAvatar } from '@components'
 import { useModal, useUser, useTheme } from '@context'
 import { loadContact } from '@utils/contacts'
 import { create } from '@utils/normalize'
-import urlMetadata from 'url-metadata'
+// import urlMetadata from 'url-metadata'
 
 const UserScreen = props => {
     
@@ -16,31 +16,31 @@ const UserScreen = props => {
     } = useUser()
     const [profile, setProfile] = useState(null)
 
-    const scrape = async () => {
+    // const scrape = async () => {
 
-        // try {
-            const url = 'https://www.npmjs.com/package/url-metadata'
-            const metadata = await urlMetadata(url, {
-                requestHeaders: {
-                    // 'Access-Control-Allow-Origin': 'https://www.npmjs.com',
-                    'User-Agent': 'url-metadata/3.0 (npm module)',
-                    // 'From': 'example@example.com'
-                },
-                mode: 'no-cors',
+    //     // try {
+    //         const url = 'https://www.npmjs.com/package/url-metadata'
+    //         const metadata = await urlMetadata(url, {
+    //             requestHeaders: {
+    //                 // 'Access-Control-Allow-Origin': 'https://www.npmjs.com',
+    //                 'User-Agent': 'url-metadata/3.0 (npm module)',
+    //                 // 'From': 'example@example.com'
+    //             },
+    //             mode: 'no-cors',
 
-            })
+    //         })
 
-            if (metadata) {
+    //         if (metadata) {
 
-                console.log(metadata)
-            }
-        //   } catch (err) {
-        //     console.log(err)
-        //   }
+    //             console.log(metadata)
+    //         }
+    //     //   } catch (err) {
+    //     //     console.log(err)
+    //     //   }
 
-    }
+    // }
     useEffect(() => {
-        scrape()
+        // scrape()
         if (props.route.params?.username) {
             initUser(props.route.params.username)
         }
@@ -48,7 +48,7 @@ const UserScreen = props => {
 
     useEffect(() => {
 
-        console.log('params', props.route.params)
+        // console.log('params', props.route.params)
         
         if (!profile || profile.username !== props.route.params?.username) {
             if (!userLoading) initUser(props.route.params?.username)

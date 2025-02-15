@@ -1,16 +1,24 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Appbar, IconButton } from 'react-native-paper'
-import { UserAvatar } from '@components'
-import { useModal, useUser } from '@context'
+import { NavBar, UserAvatar } from '@components'
+import { useModal, useTheme, useUser } from '@context'
 
 const Header = props => {
     
+    const { landscape } = useTheme()
     const { authUser } = useUser()
     const { setModal } = useModal()
     
     return (
-        <Appbar.Header style={{ justifyContent: 'space-between' }}>
+        <Appbar.Header
+            style={{
+                width: '100%',
+                maxWidth: landscape ? null : 600,
+                marginHorizontal: 'auto',
+                justifyContent: 'space-between',
+            }}
+        >
             
             <Appbar.Content
                 title={`iam${authUser?.username || 'eric'}`}
@@ -18,6 +26,12 @@ const Header = props => {
                 titleStyle={{ fontWeight: 700 }}
                 onPress={() => props.navigation.navigate('Home')}
             />
+
+            {/* {landscape && (
+                <View style={{ flexGrow: 1 }}>
+                    <NavBar {...props} />
+                </View>
+            )} */}
             
             <Appbar.Action icon='account-group' onPress={() => props.navigation.navigate('Users')}
                 // style={{ margin: 0, padding: 0 }}

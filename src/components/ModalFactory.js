@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Pressable } from 'react-native'
-import { Card, IconButton } from 'react-native-paper'
 import {
     AuthForm,
     BugForm,
@@ -8,7 +7,6 @@ import {
     DestroyForm,
     ImageCard,
     ImagePicker,
-    ImageShowcase,
     PostForm,
     Settings,
     Socket,
@@ -18,14 +16,13 @@ import Modal from 'react-native-modal'
 
 const ModalFactory = ({ modal, onClose }) => {
 
-    const { dims, landscape, theme } = useTheme()
+    const { dims, theme } = useTheme()
 
     const renderModalContent = () => {
         
         const { type, data } = modal
         let content = null
         let fullscreen = false
-        let title = null
         
         switch(type) {
             case 'AUTH':
@@ -36,7 +33,7 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             case 'IMAGE_UPLOAD':
                 content = <ImagePicker data={data} />
-                fullscreen = true
+                // fullscreen = true
                 break
             case 'DESTROY':
                 content = <DestroyForm data={data} />
@@ -77,7 +74,7 @@ const ModalFactory = ({ modal, onClose }) => {
                     alignItems: fullscreen ? 'stretch' : 'center',
                     width: '100%',
                     position: 'relative',
-                    backgroundColor: theme.colors.background,
+                    // backgroundColor: theme.colors.background,
                 }}
             >
                 <Pressable
@@ -92,6 +89,7 @@ const ModalFactory = ({ modal, onClose }) => {
                 <View
                     style={{
                         width: fullscreen ? '100%' : '92%',
+                        maxWidth: fullscreen ? null : 400,
                         marginHorizontal: 'auto',
                         zIndex: 100,
                     }}
@@ -108,7 +106,7 @@ const ModalFactory = ({ modal, onClose }) => {
             deviceWidth={dims.width}
             deviceHeight={dims.height}
             animationType='fade'
-            transparent={false}
+            transparent={true}
             onRequestClose={onClose}
             style={{ margin: 0 }}
         >

@@ -166,8 +166,8 @@ const ImagePickerContainer = ({ data }) => {
                 flexGrow: 1,
                 // flexGrow: 1,
                 gap: 10,
-                // backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                // position: 'relative',
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                position: 'relative',
             }}
         >
 
@@ -176,12 +176,14 @@ const ImagePickerContainer = ({ data }) => {
                 style={{
                     flex: 1,
                     width: '100%',
-                    borderWidth: 1,
-                    borderColor: 'red',
+                    // borderWidth: 1,
+                    // borderColor: 'red',
                 }}
             >
                 
                 <Card.Title
+                    title='Select Image'
+                    titleVariant='headlineLarge'
                     right={() => <IconButton icon='close-thick' onPress={closeModal} size={30} />}
                 />
                 
@@ -194,7 +196,7 @@ const ImagePickerContainer = ({ data }) => {
                         alignItems: 'center',
                     }}
                 >
-                    {showActivity && <ActivityIndicator size='medium' />}
+                    {/* {showActivity && <ActivityIndicator size='medium' />} */}
                     {imageDims && (
                         <ImagePreview
                             uri={preview?.uri}

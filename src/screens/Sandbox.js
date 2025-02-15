@@ -1,41 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Screen } from './components'
-import { List } from 'react-native-paper'
+import { DateSelector } from '@components'
 
 const Sandbox = props => {
 
+    const onChangeDate = value => {
+        // console.log('new date', value)
+    }
+    
     return (
         <Screen secure {...props}>
-            <List.Item
-                title="First Item"
-                description="Item description"
-                left={listProps => <List.Icon {...listProps} icon="folder" />}
-            />
-            <List.Item
-                title="Second Item"
-                description="Item description"
-                left={listProps => <List.Icon {...listProps} icon="folder" />}
-            />
-            <List.Item
-                title="Third Item"
-                description="Item description"
-                left={listProps => <List.Icon {...listProps} icon="folder" />}
-            />
-            <List.Item
-                title="Fourth Item"
-                description="Item description"
-                left={listProps => <List.Icon {...listProps} icon="folder" />}
-            />
-            <List.Item
-                title="Fifth Item"
-                description="Item description"
-                left={listProps => <List.Icon {...listProps} icon="folder" />}
-            />
-            <List.Item
-                title="Sixth Item"
-                description="Item description"
-                left={listProps => <List.Icon {...listProps} icon="folder" />}
-            />
+            <DateSelector onChange={onChangeDate} />
         </Screen>
     )
 }

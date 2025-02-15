@@ -17,11 +17,8 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
             // disabled={!imageLoaded || uploading}
             style={{
                 flex: 1,
-                flexDirection: 'row',
-                alignItems: 'center',
-                flexGrow: 1,
                 position: 'relative',
-                backgroundColor: 'rgba(255, 0, 0, 0.9)',
+                // backgroundColor: 'rgba(255, 0, 0, 0.9)',
             }}
         >
 
@@ -44,27 +41,21 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
                             flexDirection: 'row',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            background: `rgba(0, 0, 0, ${uploading ? 0.8 : 0.5})`,
+                            // background: `rgba(0, 0, 0, ${uploading ? 0.8 : 0.3})`,
+                            padding: 20,
+                            borderRadius: '50%',
+                            background: 'rgba(0, 155, 0, 0.8)',
                         }}
                     >
 
                         {uploading ? (
                             <ActivityIndicator size='medium' />
                         ) : (
-                            <View
-                                style={{
-                                    padding: 20,
-                                    borderRadius: '50%',
-                                    background: 'rgba(0, 155, 0, 0.8)',
-                                }}
-                            >
-                                <IconButton
-                                    icon='cloud-upload'
-                                    onPress={upload}
-                                    size={50}
-                                />
-
-                            </View>
+                            <IconButton
+                                icon='cloud-upload'
+                                onPress={upload}
+                                size={50}
+                            />
                         )}
 
                     </View>
@@ -87,7 +78,7 @@ const ImagePreview = ({ uri, height, width, progress, upload, uploading }) => {
                     resizeMode='contain'
                     style={{
                         flex: 1,
-                        alignSelf: 'stretch',
+                        // alignSelf: 'stretch',
                         // height,
                         // width,
                         // marginHorizontal: 'auto',
