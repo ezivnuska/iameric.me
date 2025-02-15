@@ -5,6 +5,7 @@ import {
     UserListScreen,
     FeedScreen,
     HomeScreen,
+    MemoryScreen,
     // MapScreen,
     // MailScreen,
     PlayScreen,
@@ -57,6 +58,13 @@ const AppNavigator = () => {
                 children={props => <FeedScreen {...props} />}
                 // component={FeedScreen}
                 options={{ title: 'Feed' }}
+            />
+
+            <AppStack.Screen
+                name='Memories'
+                children={props => <MemoryScreen {...props} />}
+                // component={MemoryScreen}
+                options={{ title: 'Memories' }}
             />
 
             <AppStack.Screen

@@ -6,6 +6,7 @@ import {
     BugContextProvider,
     FeedContextProvider,
     FormContextProvider,
+    MemoryContextProvider,
     ModalContextProvider,
     NotificationContextProvider,
     SocketContextProvider,
@@ -45,9 +46,11 @@ const App = () => {
                                     <NotificationContextProvider>
                                         <ModalContextProvider>
                                             <FeedContextProvider>
-                                                <BugContextProvider>
-                                                                        <Layout />
-                                                </BugContextProvider>
+                                                <MemoryContextProvider>
+                                                    <BugContextProvider>
+                                                        <Layout />
+                                                    </BugContextProvider>
+                                                </MemoryContextProvider>
                                             </FeedContextProvider>
                                         </ModalContextProvider>
                                     </NotificationContextProvider>

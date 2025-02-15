@@ -22,6 +22,9 @@ const linking = {
             Home: {
                 path: '',
             },
+            Memories: {
+                path: 'memories',
+            },
             Mail: {
                 path: 'mail',
             },

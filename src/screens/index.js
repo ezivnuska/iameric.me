@@ -6,6 +6,7 @@ import HomeScreen from './HomeScreen'
 import ImagesScreen from './ImagesScreen'
 // import MailScreen from './MailScreen'
 // import MapScreen from './MapScreen'
+import MemoryScreen from './MemoryScreen'
 import PlayScreen from './PlayScreen'
 import Sandbox from './Sandbox'
 // import SimpleScreen from './SimpleScreen'
@@ -20,6 +21,7 @@ export {
     BugScreen,
     HomeScreen,
     ImagesScreen,
+    MemoryScreen,
     // MapScreen,
     // MailScreen,
     PlayScreen,

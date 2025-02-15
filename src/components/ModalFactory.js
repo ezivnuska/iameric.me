@@ -7,6 +7,7 @@ import {
     DestroyForm,
     ImageCard,
     ImagePicker,
+    MemoryForm,
     PostForm,
     Settings,
     Socket,
@@ -30,6 +31,9 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             case 'BUG':
                 content = <BugForm />
+                break
+            case 'MEMORY':
+                content = <MemoryForm data={data} />
                 break
             case 'IMAGE_UPLOAD':
                 content = <ImagePicker data={data} />

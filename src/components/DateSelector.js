@@ -38,6 +38,8 @@ const DateSelector = ({ onChange, memory = null }) => {
     const selectedDate = useMemo(() => new Date(year, month, day), [year, month, day])
 
     useEffect(() => {
+
+        onChange(today)
         
         initOptions()
 

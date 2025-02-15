@@ -98,6 +98,15 @@ const {
 } = require('./api/entries')
 
 const {
+  createMemory,
+  deleteAllMemoriesByUserId,
+  deleteMemoryById,
+  getMemory,
+  getMemories,
+  getMemoryThread,
+} = require('./api/memories')
+
+const {
   // addImageToPost,
   createPost,
   deletePostById,
@@ -155,6 +164,13 @@ router.post(   '/entry',                   createEntry)
 router.get(    '/entries',                 getEntries)
 router.get(    '/thread/:threadId',        getThread)
 router.delete( '/entry/delete/:id',        deleteEntryById)
+
+// memories
+router.post(   '/memory',                  createMemory)
+router.get(    '/memory/:memoryId',        getMemory)
+router.get(    '/memories',                getMemories)
+router.get(    '/memory/thread/:threadId', getMemoryThread)
+router.delete( '/memory/delete/:id',       deleteMemoryById)
 
 // posts
 // router.post(   '/post/image',              addImageToPost)

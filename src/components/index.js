@@ -15,6 +15,8 @@ import ImageList from './ImageList'
 import ImagePreview from './ImagePreview'
 import ImageShowcase from './ImageShowcase'
 import ImageUploadIndicator from './ImageUploadIndicator'
+import MemoryForm from './MemoryForm'
+import MemoryList from './MemoryList'
 import NavBar from './NavBar'
 import PostForm from './PostForm'
 import Settings from './Settings'
@@ -54,6 +56,8 @@ export {
     ImagePreview,
     ImageShowcase,
     ImageUploadIndicator,
+    MemoryForm,
+    MemoryList,
     NavBar,
     PostForm,
     Settings,

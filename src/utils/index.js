@@ -6,6 +6,7 @@ import * as form from './form'
 import * as images from './images'
 import * as map from './map'
 import * as mail from './mail'
+import * as memories from './memories'
 import * as storage from './storage'
 
 import { initPonies } from './ponies'
@@ -28,6 +29,7 @@ export {
     initPonies,
     map,
     mail,
+    memories,
     navigation,
     normalize,
     storage,
