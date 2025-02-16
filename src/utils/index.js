@@ -8,6 +8,7 @@ import * as map from './map'
 import * as mail from './mail'
 import * as memories from './memories'
 import * as storage from './storage'
+import * as time from './time'
 
 import { initPonies } from './ponies'
 import compose from './compose'
@@ -33,4 +34,5 @@ export {
     navigation,
     normalize,
     storage,
+    time,
 }

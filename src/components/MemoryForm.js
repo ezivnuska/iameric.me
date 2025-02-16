@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
+// import { Image } from 'react-native'
 import { Button, Card, IconButton } from 'react-native-paper'
 import { DateSelector, Form, ImagePreview } from '@components'
 import { useMemory, useForm, useModal, useSocket, useUser } from '@context'
@@ -23,6 +24,8 @@ import {
     getDaysInMonth,
     parseISO,
 } from 'date-fns'
+
+const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const MemoryForm = ({ data = null }) => {
 
@@ -129,17 +132,19 @@ const MemoryForm = ({ data = null }) => {
     const handleSubmit = async formData => {
         
         let memoryData = {
+            ...data,
             ...formData,
+            _id: data?._id || null,
             author: user._id,
             year,
             month,
             day,
-            threadId: memory?._id || null,
         }
         
-        if (data?.image) {
-            console.log('data:image', data.image)
-        } else if (payload) {
+        // if (data?.image) {
+        //     console.log('data:image', data.image)
+        // } else
+        if (payload) {
             const { imageData, thumbData } = payload
             
             memoryData.image = { imageData, thumbData }
@@ -154,6 +159,7 @@ const MemoryForm = ({ data = null }) => {
         setUploading(null)
 
         if (memory) {
+            console.log('new or edited memory', memory)
             socket.emit('new_memory', memory)
 
             updateMemory(memory)
@@ -211,27 +217,42 @@ const MemoryForm = ({ data = null }) => {
                 right={() => <IconButton icon='close-thick' onPress={closeModal} />}
             />
             
-            <Card>
+            {/* <Card> */}
 
-                <Card.Title
-                    title='Share something.'
+                {/* <Card.Title
+                    title='Share something'
                     titleVariant='headlineSmall'
-                    // subtitle=''
-                    // subtitleVariant='bodyLarge'
-                />
+                    subtitle=''
+                    subtitleVariant='bodyLarge'
+                /> */}
 
-                <Card.Content style={{ marginTop: 10 }}>
+                
+
+                <Card.Content style={{ gap: 15 }}>
+
+                    <DateSelector
+                        memory={data}
+                        onChange={value => setDate(value)}
+                    />
+
                     <Form
-                        title='Say Something'
+                        // title='Say Something'
                         fields={fields}
-                        data={memory}
+                        data={data}
                         onCancel={closeModal}
                         onSubmit={handleSubmit}
                     >
-                        <DateSelector
-                            memory={memory}
-                            onChange={value => setDate(value)}
-                        />
+
+                        {/* {data?.image && (
+                            <Image
+                                source={`${IMAGE_PATH}/${user.username}/${data.image.filename}`}
+                                resizeMode='contain'
+                                style={{
+                                    width: 100,
+                                    height: 100,
+                                }}
+                            />
+                        )} */}
                         
                         {preview && (
                             <ImagePreview
@@ -239,7 +260,8 @@ const MemoryForm = ({ data = null }) => {
                                 uploading={uploading}
                             />
                         )}
-                        {memory?.image ? (
+
+                        {/* {data?.image && (
                             <Button
                                 icon='file-image-remove'
                                 mode='contained'
@@ -251,20 +273,21 @@ const MemoryForm = ({ data = null }) => {
                             >
                                 Remove Image
                             </Button>
-                        ) : (
+                        )} */}
+                        {/* {!data?.image && ( */}
                             <Button
-                                icon='file-image-plus'
+                                icon={data?.image ? 'file-image-remove' : 'file-image-plus'}
                                 mode='contained'
                                 onPress={openSelector}
                                 disabled={formError}
                             >
                                 Add Image
                             </Button>
-                        )}
+                        {/* )} */}
                     </Form>
                 </Card.Content>
             </Card>
-        </Card>
+        // </Card>
     )
 }
 

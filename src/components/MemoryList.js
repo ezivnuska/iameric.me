@@ -5,76 +5,54 @@ import { Time, UserAvatar } from '@components'
 import { useMemory, useModal, useSocket, useUser } from '@context'
 import { deleteMemoryWithId, loadMemory } from '@utils/memories'
 import { getMaxImageDims } from '@utils/images'
-import {
-    getDate,
-    getDay,
-    getMonth,
-    getYear,
-    endOfDay,
-    format,
-    formatDistance,
-    formatRelative,
-    subDays,
-    getDaysInMonth,
-    parseISO,
-} from 'date-fns'
+import { getTime } from '@utils/time'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
-const MemoryListItem = ({ onDelete, navigation, item, authorized = false }) => {
+const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
    
-    const { updateMemory } = useMemory()
+    const { memories, updateMemory } = useMemory()
     const { setModal } = useModal()
     const { user } = useUser()
 
     const [loading, setLoading] = useState(false)
-    const [memory, setMemory] = useState(null)
-    const [imageDims, setImageDims] = useState(null)
 
-    const year = useMemo(() => item?.year, [item])
-    const month = useMemo(() => item?.month, [item])
-    const day = useMemo(() => item?.day, [item])
+    const memory = useMemo(() => memories && memories.filter(m => m._id === memoryId)[0], [memories])
+    const year = useMemo(() => memory?.year, [memory])
+    const month = useMemo(() => memory?.month, [memory])
+    const day = useMemo(() => memory?.day, [memory])
     const date = useMemo(() => (year && month && day) && new Date(year, month, day), [year, month, day])
+    const authorized = useMemo(() => memory?.author && (user._id === memory.author._id || user.role === 'admin'), [memory])
+    const imageDims = useMemo(() => memory?.image && getMaxImageDims(memory.image.width, memory.image.height, 100), [memory])
 
     useEffect(() => {
-        if (item) initMemory(item._id)
+        initMemory()
     }, [])
-
-    // useEffect(() => {
-    //     if (date) console.log('date', date.toDateString())
-    // }, [date])
-
-    useEffect(() => {
-        if (memory?.image) {
-            const dims = getMaxImageDims(memory.image.width, memory.image.height, 100)
-            setImageDims(dims)
-        }
-    }, [memory])
         
-    const initMemory = async id => {
+    const initMemory = async () => {
         
         setLoading(true)
-        
-        let result = await loadMemory(id)
-        
-        if (result) {
-            setMemory(result)
-            updateMemory(result)
-        }
-        else console.log('could not find or load memory data.')
-
+        const result = await loadMemory(memoryId)
         setLoading(false)
-        
+
+        if (result) {
+            updateMemory(result)
+        } else {
+            console.log('could not find or load memory data.')}
     }
 
     return memory && (
-        <View>
+        <View
+            {...props}
+            style={{ gap: 5 }}
+        >
 
             <Card.Title
                 title={memory.author.username}
                 titleVariant='titleMedium'
-                subtitle={<Time time={memory.createdAt} />}
-                style={{ gap: 10 }}
+                subtitle={getTime(memory.createdAt, 'relative')}
+                subtitleVariant='titleSmall'
+                style={{ gap: 10, height: 'auto', minHeight: null }}
                 left={() => (
                     <UserAvatar
                         user={memory.author}
@@ -87,15 +65,18 @@ const MemoryListItem = ({ onDelete, navigation, item, authorized = false }) => {
                         mode='contained'
                         onPress={() => onDelete(memory._id)}
                         disabled={loading}
+                        style={{ marginVertical: 0 }}
                     />
                 )}
             />
 
             <Card.Content
                 style={{
-                    paddingBottom: 20,
+                    flex: 1,
+                    paddingBottom: 15,
                     // gap: 15,
                     paddingRight: 0,
+                    // borderWidth: 1,
                 }}
             >
                 <View
@@ -120,7 +101,7 @@ const MemoryListItem = ({ onDelete, navigation, item, authorized = false }) => {
                         </Pressable>
                     )}
                     
-                    <View style={{ flexGrow: 1 }}>
+                    <View style={{ flex: 1, flexGrow: 1 }}>
 
                         <View
                             style={{
@@ -140,14 +121,17 @@ const MemoryListItem = ({ onDelete, navigation, item, authorized = false }) => {
                                 <IconButton
                                     icon='comment-edit-outline'
                                     onPress={() => setModal('MEMORY', memory)}
-                                    // style={{ borderWidth: 1 }}
+                                    style={{ marginVertical: 0 }}
                                 />
                             )}
 
 
                         </View>
 
-                        <Text variant='bodyLarge'>
+                        <Text
+                            variant='bodyLarge'
+                            style={{ flex: 1, paddingRight: 15 }}
+                        >
                             {memory.body}
                         </Text>
 
@@ -160,10 +144,10 @@ const MemoryListItem = ({ onDelete, navigation, item, authorized = false }) => {
     )
 }
 
-const MemoryList = props => {
+const MemoryList = ({ ids, ...props }) => {
 
     const {
-        memories,
+        // memories,
         updateMemory,
         deleteMemory,
     } = useMemory()
@@ -172,7 +156,7 @@ const MemoryList = props => {
     const { socket } = useSocket()
     const { user } = useUser()
 
-    const [items, setItems] = useState(memories)
+    // const [items, setItems] = useState(memories)
     const [loading, setLoading] = useState(false)
 
     const listRef = useRef()
@@ -182,9 +166,10 @@ const MemoryList = props => {
         socket.on('deleted_memory', deleteMemory)
     }, [])
 
-    useEffect(() => {
-        setItems(memories)
-    }, [memories])
+    // useEffect(() => {
+    //     console.log('memories changed', memories)
+    //     setItems(memories)
+    // }, [memories])
 
     const removeMemory = async id => {
 
@@ -208,38 +193,36 @@ const MemoryList = props => {
             style={{ flex: 1 }}
         >
 
-            <Card.Title
-                title='Memories'
-                titleVariant='titleLarge'
-                // left={() => <IconButton icon='home' onPress={() => props.navigation.navigate('Memories')} />}
-                right={() => <IconButton icon='plus-thick' onPress={() => setModal('MEMORY')} size={30} />}
-                style={{ padding: 0, marginLeft: 15 }}
-            />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginLeft: 15 }}>
+                <Text variant='titleLarge'>Memories</Text>
+                <IconButton
+                    icon='plus-thick'
+                    onPress={() => setModal('MEMORY')}
+                    size={30}
+                    style={{ marginHorizontal: 3 }}
+                />
+            </View>
 
-            <Card.Content style={{ padding: 0 }}>
+            <Card.Content style={{ flex: 1, padding: 0 }}>
                 
-                {items && (
-                    <FlatList
-                        ref={listRef}
-                        data={items}
-                        extraData={items}
-                        keyExtractor={item => `memory-${item._id}`}
-                        renderItem={({ item }) => {
-                            const authorized = user && (user._id === item.author?._id || user.role === 'admin')
-                            return (
-                                <MemoryListItem
-                                    item={item}
-                                    navigation={props.navigation}
-                                    onDelete={removeMemory}
-                                    onEdit={() => setModal('MEMORY', item)}
-                                    disabled={loading}
-                                    authorized={authorized}
-                                />
-                            )
-                        }}
-                        ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 5 }} />}
-                    />
-                )}
+                <FlatList
+                    ref={listRef}
+                    data={ids}
+                    extraData={ids}
+                    keyExtractor={item => `memory-${item}`}
+                    renderItem={({ item }) => {
+                        return (
+                            <MemoryListItem
+                                style={{ flex: 1 }}
+                                memoryId={item}
+                                navigation={props.navigation}
+                                onDelete={removeMemory}
+                            />
+                        )
+                    }}
+                    ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 10 }} />}
+                    // style={{ flex: 1 }}
+                />
 
             </Card.Content>
 

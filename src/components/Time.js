@@ -1,11 +1,12 @@
 import React from 'react'
 import { Text } from 'react-native-paper'
-import {
-    format,
-    formatDistance,
-    formatRelative,
-    subDays,
-} from 'date-fns'
+// import {
+//     format,
+//     formatDistance,
+//     formatRelative,
+//     subDays,
+// } from 'date-fns'
+import { getTime } from '@utils/time'
 
 const Time = ({
     time = null,
@@ -18,7 +19,7 @@ const Time = ({
     return (
         <Text variant='bodyMedium' {...props}>
             {time
-                ? `${prefix}${formatRelative(new Date(time), new Date())}${suffix}`
+                ? `${prefix}${getTime(time, 'relative')}${suffix}`
                 : 'Now'
             }
         </Text>

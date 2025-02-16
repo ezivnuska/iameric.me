@@ -37,7 +37,7 @@ const Screen = ({
                 style={{ flex: 1 }}
                 contentContainerStyle={{
                     paddingHorizontal: full ? 0 : 15,
-                    paddingVertical: 10,
+                    // paddingVertical: 10,
                     flex: 1,
                 }}
             >
