@@ -10,7 +10,7 @@ import * as memories from './memories'
 import * as storage from './storage'
 import * as time from './time'
 
-import { initPonies } from './ponies'
+// import { initPonies } from './NOT_IN_USE/ponies/ponies'
 import compose from './compose'
 import getModifiedColor from './getModifiedColor'
 import destroy from './destroy'
@@ -27,7 +27,7 @@ export {
     getModifiedColor,
     // forum,
     images,
-    initPonies,
+    // initPonies,
     map,
     mail,
     memories,
