@@ -110,7 +110,7 @@ const ModalFactory = ({ modal, onClose }) => {
             deviceWidth={dims.width}
             deviceHeight={dims.height}
             animationType='fade'
-            transparent={true}
+            transparent={false}
             onRequestClose={onClose}
             style={{ margin: 0 }}
         >

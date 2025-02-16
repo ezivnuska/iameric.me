@@ -44,7 +44,6 @@ const MemoryForm = ({ data = null }) => {
     const [payload, setPayload] = useState(null)
     const [maxWidth, setMaxWidth] = useState(200)
     const [imageDims, setImageDims] = useState(null)
-    const [memory, setMemory] = useState(data)
     const [date, setDate] = useState(null)
 
     const year = useMemo(() => date && getYear(date), [date])
@@ -138,8 +137,8 @@ const MemoryForm = ({ data = null }) => {
             threadId: memory?._id || null,
         }
         
-        if (memory?.image) {
-            console.log('memory:image', memory.image)
+        if (data?.image) {
+            console.log('data:image', data.image)
         } else if (payload) {
             const { imageData, thumbData } = payload
             

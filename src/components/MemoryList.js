@@ -84,6 +84,7 @@ const MemoryListItem = ({ onDelete, navigation, item, authorized = false }) => {
                 right={() => authorized && (
                     <IconButton
                         icon='delete-forever'
+                        mode='contained'
                         onPress={() => onDelete(memory._id)}
                         disabled={loading}
                     />
@@ -93,9 +94,10 @@ const MemoryListItem = ({ onDelete, navigation, item, authorized = false }) => {
             <Card.Content
                 style={{
                     paddingBottom: 20,
-                    gap: 15,
+                    // gap: 15,
+                    paddingRight: 0,
                 }}
-                >
+            >
                 <View
                     style={{
                         flexDirection: 'row',
@@ -118,21 +120,28 @@ const MemoryListItem = ({ onDelete, navigation, item, authorized = false }) => {
                         </Pressable>
                     )}
                     
-                    <View style={{ gap: 10 }}>
+                    <View style={{ flexGrow: 1 }}>
 
-                        <View style={{ flexDirection: 'row' }}>
-
-                            {authorized && (
-                                <IconButton
-                                    icon='comment-edit-outline'
-                                    onPress={() => setModal('MEMORY', memory)}
-                                />
-                            )}
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                            }}
+                        >
 
                             {date && (
                                 <Text variant='titleMedium'>
                                     {date.toDateString()}
                                 </Text>
+                            )}
+
+                            {authorized && (
+                                <IconButton
+                                    icon='comment-edit-outline'
+                                    onPress={() => setModal('MEMORY', memory)}
+                                    // style={{ borderWidth: 1 }}
+                                />
                             )}
 
 
