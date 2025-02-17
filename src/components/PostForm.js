@@ -201,7 +201,7 @@ const PostForm = ({ data = null }) => {
                     >
                         {imageDims ? (
                             <ImagePreview
-                                uri={preview?.uri}
+                                preview={preview}
                                 uploading={uploading}
                             />
                         ) : (

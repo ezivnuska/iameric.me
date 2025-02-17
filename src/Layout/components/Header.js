@@ -34,19 +34,19 @@ const Header = props => {
             )} */}
 
             <Appbar.Action icon='bookshelf' onPress={() => props.navigation.navigate('Memories')}
-                // style={{ margin: 0, padding: 0 }}
+                style={{ margin: 0, padding: 0 }}
             />
 
             <Appbar.Action icon='newspaper-variant-multiple' onPress={() => props.navigation.navigate('Feed')}
-                // style={{ margin: 0, padding: 0 }}
+                style={{ margin: 0, padding: 0 }}
             />
             
             <Appbar.Action icon='account-group' onPress={() => props.navigation.navigate('Users')}
-                // style={{ margin: 0, padding: 0 }}
+                style={{ margin: 0, padding: 0 }}
             />
 
             <Appbar.Action icon='certificate' onPress={() => props.navigation.navigate('Work')}
-                // style={{ margin: 0, padding: 0 }}
+                style={{ margin: 0, padding: 0 }}
             />
             
             {authUser ? (

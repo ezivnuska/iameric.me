@@ -1,16 +1,17 @@
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { loadMemories } from '@utils/memories'
 
 const initialState = {
     memories: [],
     error: null,
     memoriesLoaded: false,
     memoriesLoading: false,
+    uploadData: null,
     addMemory: () => {},
     deleteMemory: () => {},
-    initMemories: () => {},
+    findMemoryById: () => {},
     setMemories: () => {},
     setMemoriesLoading: () => {},
+    setUploadData: () => {},
     updateMemory: () => {},
 }
 
@@ -28,26 +29,9 @@ export const MemoryContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const initMemories = async () => {
-
-        dispatch({ type: 'SET_MEMORY_LOADING', payload: true })
-        const payload = await loadMemories()
-        dispatch({ type: 'SET_MEMORY_LOADING', payload: false })
-        
-        if (payload) dispatch({ type: 'SET_MEMORIES', payload })
-        else console.log('could not load memories') 
-
-        dispatch({ type: 'SET_MEMORY_LOADED' })
-    }
-
     const findMemoryById = memoryId => state.memories.filter(memory => memory._id === memoryId)[0]
     
-    // useEffect(() => {
-    //     // loadMemories()
-    // }, [])
-
     const actions = useMemo(() => ({
-        initMemories,
         addMemory: async payload => {
             dispatch({ type: 'ADD_MEMORY', payload })
         },
@@ -59,7 +43,10 @@ export const MemoryContextProvider = props => {
             dispatch({ type: 'SET_MEMORIES', payload })
         },
         setMemoriesLoading: async payload => {
-            dispatch({ type: 'SET_MEMORY_LOADING', payload })
+            dispatch({ type: 'SET_MEMORIES_LOADING', payload })
+        },
+        setUploadData: async payload => {
+            dispatch({ type: 'SET_UPLOAD_DATA', payload })
         },
         updateMemory: async payload => {
             dispatch({ type: 'UPDATE_MEMORY', payload })
@@ -70,7 +57,6 @@ export const MemoryContextProvider = props => {
         <MemoryContext.Provider
             value={{
                 ...state,
-                // memoriesModal: state.modals[state.modals.length - 1],
                 ...actions,
             }}
         >
@@ -88,13 +74,13 @@ const reducer = (state, action) => {
                 memories: [ payload, ...state.memories ],
             }
             break
-        case 'SET_MEMORY_LOADED':
+        case 'SET_MEMORIES_LOADED':
             return {
                 ...state,
                 memoriesLoaded: true,
             }
             break
-        case 'SET_MEMORY_LOADING':
+        case 'SET_MEMORIES_LOADING':
             return {
                 ...state,
                 memoriesLoading: payload,
@@ -106,12 +92,21 @@ const reducer = (state, action) => {
                 memories: payload,
             }
             break
+        case 'SET_UPLOAD_DATA':
+            return {
+                ...state,
+                uploadData: payload,
+            }
+            break
         case 'UPDATE_MEMORY':
             let newMemory = true
             const memories = state.memories.map((memory, i) => {
                 if (memory._id === payload._id) {
                     newMemory = false
-                    return payload
+                    return {
+                        ...memory,
+                        ...payload,
+                    }
                 } else return memory
             })
             return {

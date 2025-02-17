@@ -3,8 +3,6 @@ import { Image, View } from 'react-native'
 import { useUser } from '@context'
 import { ActivityIndicator } from 'react-native-paper'
 
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
-
 const ImageUploadIndicator = props => {
 
     const { uploading } = useUser()
@@ -24,10 +22,12 @@ const ImageUploadIndicator = props => {
         <View
             style={[
                 {
-                position: 'absolute',
-                bottom: 50,
-                left: 10,
-            }, props.style]}
+                    position: 'absolute',
+                    bottom: 50,
+                    left: 10,
+                },
+                props.style,
+            ]}
         >
             <View
                 style={[{
@@ -47,7 +47,7 @@ const ImageUploadIndicator = props => {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: 'rgba(0, 0, 0, 0.5)',
+                        background: 'rgba(255, 255, 255, 0.5)',
                         zIndex: 100,
                     }}
                 />
@@ -59,8 +59,16 @@ const ImageUploadIndicator = props => {
                         zIndex: 1000,
                     }}
                 >
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <ActivityIndicator size='small' color='white' />
+                    </View>
 
-                    <ActivityIndicator size='small' />
 
                 </View>
 

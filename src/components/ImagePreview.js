@@ -3,7 +3,7 @@ import { Image, View } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 
 
-const ImagePreview = ({ uri, uploading }) => {
+const ImagePreview = ({ preview, width, height, uploading }) => {
 
     const [imageLoaded, setImageLoaded] = useState(false)
 
@@ -14,9 +14,9 @@ const ImagePreview = ({ uri, uploading }) => {
     return (
         <View
             style={{
-                // flex: 1,
-                width: 100,
-                height: 100,
+                flex: 1,
+                width,
+                height,
                 flexDirection: 'row',
                 alignItems: 'center',
                 position: 'relative',
@@ -37,27 +37,30 @@ const ImagePreview = ({ uri, uploading }) => {
                         background: `rgba(0, 0, 0, ${uploading ? 0.8 : 0.5})`,
                     }}
                 >
-                    {uploading && <ActivityIndicator size='medium' />}
+                    <ActivityIndicator size='medium' />
                 </View>
             )}
 
-            <View
+            {/* <View
                 style={{
                     // flex: 1,
                     height: '100%',
                     width: '100%',
                     zIndex: 10,
                 }}
-            >
+            > */}
                 <Image
                     onLayout={onLayout}
-                    source={{ uri }}
+                    source={{ uri: preview.uri }}
                     resizeMode='contain'
-                    style={{ flex: 1, 
-                        alignItems: 'stretch', }}
+                    style={{
+                        flex: 1,
+                        alignItems: 'stretch',
+                        zIndex: 10,
+                    }}
                 />
 
-            </View>
+            {/* </View> */}
 
         </View>
     )

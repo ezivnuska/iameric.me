@@ -1,31 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react'
-// import { Image } from 'react-native'
 import { Button, Card, IconButton } from 'react-native-paper'
 import { DateSelector, Form, ImagePreview } from '@components'
 import { useMemory, useForm, useModal, useSocket, useUser } from '@context'
-import { createMemory } from '@utils/memories'
-
-import {
-    getMaxImageDims,
-    handleImageData,
-    openFileSelector,
-} from '@utils/images'
+import { addMemoryImage, createMemory } from '@utils/memories'
+import { getMaxImageDims, handleImageData, openFileSelector } from '@utils/images'
 import EXIF from 'exif-js'
-import {
-    getDate,
-    getDay,
-    getMonth,
-    getYear,
-    endOfDay,
-    format,
-    formatDistance,
-    formatRelative,
-    subDays,
-    getDaysInMonth,
-    parseISO,
-} from 'date-fns'
-
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+import { getDate, getMonth, getYear } from 'date-fns'
 
 const MemoryForm = ({ data = null }) => {
 
@@ -37,7 +17,7 @@ const MemoryForm = ({ data = null }) => {
         },
     ]
 
-    const { updateMemory } = useMemory()
+    const { uploadData, updateMemory, setUploadData } = useMemory()
     const { formError } = useForm()
     const { closeModal } = useModal()
     const { socket } = useSocket()
@@ -53,19 +33,17 @@ const MemoryForm = ({ data = null }) => {
     const month = useMemo(() => date && getMonth(date), [date])
     const day = useMemo(() => date && getDate(date), [date])
 
-    // useEffect(() => {
-    
-    //     if (data) {
-            
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (uploadData) {
+            setPreview(uploadData.preview)
+            setUploadData(null)
+        }
+    }, [uploadData])
 
     useEffect(() => {
     
-        // if image is loaded and data is available
         if (payload) {
 
-            // set preview from available data
             const { uri, height, width } = payload.imageData
             setPreview({ uri, height, width })
 
@@ -76,10 +54,8 @@ const MemoryForm = ({ data = null }) => {
 
     useEffect(() => {
 
-        // if image selected and preview available
         if (preview) {
 
-            // set image dimensions to maximum size
             setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
 
         } else {
@@ -88,45 +64,19 @@ const MemoryForm = ({ data = null }) => {
 
     }, [preview])
 
-    // useEffect(() => {
-    //     if (imageUpload) {
-    //         if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
-    //         setUploading(preview)
-    //         // setImageUpload(null)
-    //     }
-        
-    // }, [imageUpload])
-
-    // useEffect(() => {
-    //     if (uploadedImage) {
-    //         setNewPost({
-    //             ...newPost,
-    //             images: [uploadedImage._id]
-    //             // images: [...newPost.images, uploadedImage._id]
-    //         })
-    //         setUploadedImage(null)
-    //     }
-    // }, [uploadedImage])
-
-    // const initUpload = () => {
-    //     const { imageData, thumbData, userId } = payload
-    //     const data = { imageData, thumbData, userId }
-    //     setImageUpload(data)
-    //     // handleUpload({ imageData, thumbData, userId })
-    // }
-
-    // const handleUpload = async () => {
-
-    //     if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
-
-    //     const { imageData, thumbData, userId } = payload
-    //     const data = { imageData, thumbData, userId }
-
-    //     setImageUpload(data)
-
+    // const uploadMemoryImage = async (memoryId, data) => {
     //     setUploading(preview)
-            
-    //     // closeModal()
+        
+    //     const memory = await addMemoryImage(memoryId, data)
+        
+    //     setUploading(null)
+
+    //     if (memory) {
+
+    //         updateMemory(memory)
+
+    //         // socket.emit('new_memory', memory)
+    //     }
     // }
 
     const handleSubmit = async formData => {
@@ -140,29 +90,24 @@ const MemoryForm = ({ data = null }) => {
             month,
             day,
         }
+
+        // console.log('submitting form data', memoryData)
+
+        let memory = await createMemory(memoryData)
         
-        // if (data?.image) {
-        //     console.log('data:image', data.image)
-        // } else
-        if (payload) {
-            const { imageData, thumbData } = payload
-            
-            memoryData.image = { imageData, thumbData }
-
-            setUploading(preview)
-        }
-
-        console.log('submitting form data', memoryData)
-
-        const memory = await createMemory(memoryData)
-        
-        setUploading(null)
-
         if (memory) {
-            console.log('new or edited memory', memory)
-            socket.emit('new_memory', memory)
+        //     // console.log('new or edited memory', memory)
 
             updateMemory(memory)
+
+        //     if (payload) {
+        //         const { imageData, thumbData } = payload
+                
+        //         const image = { imageData, thumbData }
+
+        //         uploadMemoryImage(memory._id, image)
+        //     }
+
         }
 
         closeModal()
@@ -217,77 +162,38 @@ const MemoryForm = ({ data = null }) => {
                 right={() => <IconButton icon='close-thick' onPress={closeModal} />}
             />
             
-            {/* <Card> */}
+            <Card.Content style={{ gap: 15 }}>
 
-                {/* <Card.Title
-                    title='Share something'
-                    titleVariant='headlineSmall'
-                    subtitle=''
-                    subtitleVariant='bodyLarge'
-                /> */}
+                <DateSelector
+                    memory={data}
+                    onChange={value => setDate(value)}
+                />
 
-                
+                <Form
+                    fields={fields}
+                    data={data}
+                    onCancel={closeModal}
+                    onSubmit={handleSubmit}
+                />
+                    
+                    {/* {preview && (
+                        <ImagePreview
+                            uri={preview?.uri}
+                            uploading={uploading}
+                        />
+                    )}
 
-                <Card.Content style={{ gap: 15 }}>
-
-                    <DateSelector
-                        memory={data}
-                        onChange={value => setDate(value)}
-                    />
-
-                    <Form
-                        // title='Say Something'
-                        fields={fields}
-                        data={data}
-                        onCancel={closeModal}
-                        onSubmit={handleSubmit}
+                    <Button
+                        icon={data?.image ? 'file-image-remove' : 'file-image-plus'}
+                        mode='contained'
+                        onPress={openSelector}
+                        disabled={formError}
                     >
-
-                        {/* {data?.image && (
-                            <Image
-                                source={`${IMAGE_PATH}/${user.username}/${data.image.filename}`}
-                                resizeMode='contain'
-                                style={{
-                                    width: 100,
-                                    height: 100,
-                                }}
-                            />
-                        )} */}
-                        
-                        {preview && (
-                            <ImagePreview
-                                uri={preview?.uri}
-                                uploading={uploading}
-                            />
-                        )}
-
-                        {/* {data?.image && (
-                            <Button
-                                icon='file-image-remove'
-                                mode='contained'
-                                onPress={() => setMemory({
-                                    ...memory,
-                                    image: null,
-                                })}
-                                disabled={formError}
-                            >
-                                Remove Image
-                            </Button>
-                        )} */}
-                        {/* {!data?.image && ( */}
-                            <Button
-                                icon={data?.image ? 'file-image-remove' : 'file-image-plus'}
-                                mode='contained'
-                                onPress={openSelector}
-                                disabled={formError}
-                            >
-                                Add Image
-                            </Button>
-                        {/* )} */}
-                    </Form>
-                </Card.Content>
-            </Card>
-        // </Card>
+                        Add Image
+                    </Button>
+                </Form> */}
+            </Card.Content>
+        </Card>
     )
 }
 

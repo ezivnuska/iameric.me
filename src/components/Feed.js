@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
 import {
     // ActivityIndicator, Button,
@@ -16,10 +16,13 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
    
     const { updatePost } = useFeed()
     const { setModal } = useModal()
+    const { findUserById } = useUser()
 
     const [loading, setLoading] = useState(false)
     const [post, setPost] = useState(null)
     const [imageDims, setImageDims] = useState(null)
+
+    const author = useMemo(() => post && findUserById(post.author._id), [post])
 
     useEffect(() => {
         if (item) initPost(item._id)
@@ -52,13 +55,13 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
         <View>
 
             <Card.Title
-                title={post.author.username}
+                title={author.username}
                 titleVariant='titleMedium'
                 subtitle={<Time time={post.createdAt} />}
                 style={{ gap: 10 }}
                 left={() => (
                     <UserAvatar
-                        user={post.author}
+                        user={author}
                         onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: post.author?.username } })}
                     />
                 )}
@@ -89,7 +92,7 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
                             onPress={() => setModal('SHOWCASE', post.image)}
                         >
                             <Image
-                                source={`${IMAGE_PATH}/${post.author.username}/${post.image.filename}`}
+                                source={`${IMAGE_PATH}/${author.username}/${post.image.filename}`}
                                 resizeMode='contain'
                                 style={{
                                     width: imageDims.width,

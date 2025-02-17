@@ -13,9 +13,17 @@ const FeedScreen = props => {
     }, [])
 
     return (
-        <Screen secure full {...props}>
+        <Screen
+            {...props}
+            secure
+            full
+        >
 
-            {feedLoaded && <Feed {...props} />}
+            {feedLoaded && (
+                <Feed
+                    {...props}
+                />
+            )}
             
         </Screen>
     )

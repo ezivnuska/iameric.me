@@ -6,22 +6,26 @@ import { loadMemories } from '@utils/memories'
     
 const MemoryScreen = props => {
 
-    const { memoriesLoaded, memoriesLoading, setMemoriesLoading } = useMemory()
+    const { memories, setMemoriesLoading } = useMemory()
 
     const [ids, setIds] = useState(null)
 
     useEffect(() => {
         initMemories()
     }, [])
+
+    useEffect(() => {
+        initMemories()
+    }, [memories])
     
     const initMemories = async () => {
+
         setMemoriesLoading(true)
-        const payload = await loadMemories()
+        const loadedMemories = await loadMemories()
         setMemoriesLoading(false)
 
-        if (payload) {
-            // console.log('payload', payload)
-            setIds(payload.map(item => item._id))
+        if (loadedMemories) {
+            setIds(loadedMemories.map(item => item._id))
         }
     }
 

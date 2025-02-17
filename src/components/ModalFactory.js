@@ -8,6 +8,7 @@ import {
     ImageCard,
     ImagePicker,
     MemoryForm,
+    MemoryImageSelector,
     PostForm,
     Settings,
     Socket,
@@ -17,7 +18,7 @@ import Modal from 'react-native-modal'
 
 const ModalFactory = ({ modal, onClose }) => {
 
-    const { dims, theme } = useTheme()
+    const { theme } = useTheme()
 
     const renderModalContent = () => {
         
@@ -35,33 +36,30 @@ const ModalFactory = ({ modal, onClose }) => {
             case 'MEMORY':
                 content = <MemoryForm data={data} />
                 break
+            case 'MEMORY_IMAGE':
+                content = <MemoryImageSelector data={data} />
+                fullscreen = true
+                break
             case 'IMAGE_UPLOAD':
                 content = <ImagePicker data={data} />
-                // fullscreen = true
                 break
             case 'DESTROY':
                 content = <DestroyForm data={data} />
-                // fullscreen = true
                 break
             case 'CAPTION':
                 content = <CaptionForm data={data} />
-                // fullscreen = true
                 break
             case 'FEEDBACK':
                 content = <PostForm data={data} />
-                // fullscreen = true
                 break
             case 'SETTINGS':
-                // title = 'Settings'
                 content = <Settings />
                 break
             case 'SHOWCASE':
                 content = <ImageCard data={data} />
-                // content = <ImageShowcase data={data} />
                 fullscreen = true
                 break
             case 'SOCKETS':
-                // title = 'Connected Users'
                 content = <Socket />
                 break
             default: {
@@ -78,7 +76,7 @@ const ModalFactory = ({ modal, onClose }) => {
                     alignItems: fullscreen ? 'stretch' : 'center',
                     width: '100%',
                     position: 'relative',
-                    // backgroundColor: theme.colors.background,
+                    backgroundColor: theme.colors.background,
                 }}
             >
                 <Pressable
@@ -107,8 +105,8 @@ const ModalFactory = ({ modal, onClose }) => {
     return (
         <Modal
             isVisible={modal !== undefined}
-            deviceWidth={dims.width}
-            deviceHeight={dims.height}
+            // deviceWidth={dims.width}
+            // deviceHeight={dims.height}
             animationType='fade'
             transparent={false}
             onRequestClose={onClose}

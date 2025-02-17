@@ -1,33 +1,45 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
-import { Card, Divider, IconButton, Text } from 'react-native-paper'
-import { Time, UserAvatar } from '@components'
+import { ActivityIndicator, Card, Divider, IconButton, Text } from 'react-native-paper'
+import { UserAvatar } from '@components'
 import { useMemory, useModal, useSocket, useUser } from '@context'
-import { deleteMemoryWithId, loadMemory } from '@utils/memories'
+import { addMemoryImage, deleteMemoryWithId, loadMemory } from '@utils/memories'
 import { getMaxImageDims } from '@utils/images'
 import { getTime } from '@utils/time'
+import ImagePreview from './ImagePreview'
 
 const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
    
-    const { memories, updateMemory } = useMemory()
+    const { memories, findMemoryById, updateMemory } = useMemory()
     const { setModal } = useModal()
-    const { user } = useUser()
+    const { user, findUserById } = useUser()
 
     const [loading, setLoading] = useState(false)
 
-    const memory = useMemo(() => memories && memories.filter(m => m._id === memoryId)[0], [memories])
+    const memory = useMemo(() => memories && findMemoryById(memoryId), [memories])
+    const upload = useMemo(() => memory && memory.upload, [memory])
+    const author = useMemo(() => memory && findUserById(memory.author._id), [memory])
+    const image = useMemo(() => memory && memory.image, [memory])
+    const imageDims = useMemo(() => image && getMaxImageDims(image.width, image.height, 100), [image])
+    const previewDims = useMemo(() => upload && getMaxImageDims(upload.preview.width, upload.preview.height, 100), [upload])
     const year = useMemo(() => memory?.year, [memory])
     const month = useMemo(() => memory?.month, [memory])
     const day = useMemo(() => memory?.day, [memory])
     const date = useMemo(() => (year && month && day) && new Date(year, month, day), [year, month, day])
     const authorized = useMemo(() => memory?.author && (user._id === memory.author._id || user.role === 'admin'), [memory])
-    const imageDims = useMemo(() => memory?.image && getMaxImageDims(memory.image.width, memory.image.height, 100), [memory])
 
     useEffect(() => {
         initMemory()
     }, [])
+
+    useEffect(() => {
+        // if (author) console.log('author', author)
+        if (image) console.log('image', image)
+        if (imageDims) console.log('imageDims', imageDims)
+        // if (memory) console.log('memory', memory)
+    }, [author, image, imageDims, memory])
         
     const initMemory = async () => {
         
@@ -41,6 +53,17 @@ const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
             console.log('could not find or load memory data.')}
     }
 
+    const shadow = {
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 2,
+            height: 2,
+        },
+        shadowOpacity: 0.4,
+        shadowRadius: 5,
+        elevation: 1,
+    }
+
     return memory && (
         <View
             {...props}
@@ -48,15 +71,15 @@ const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
         >
 
             <Card.Title
-                title={memory.author.username}
+                title={author.username}
                 titleVariant='titleMedium'
                 subtitle={getTime(memory.createdAt, 'relative')}
                 subtitleVariant='titleSmall'
                 style={{ gap: 10, height: 'auto', minHeight: null }}
                 left={() => (
                     <UserAvatar
-                        user={memory.author}
-                        onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: memory.author?.username } })}
+                        user={author}
+                        onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: author?.username } })}
                     />
                 )}
                 right={() => authorized && (
@@ -83,58 +106,89 @@ const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
                     style={{
                         flexDirection: 'row',
                         gap: 15,
+                        paddingTop: 15,
                     }}
                 >
 
-                    {memory.image && imageDims && (
-                        <Pressable
-                            onPress={() => setModal('SHOWCASE', memory.image)}
-                        >
-                            <Image
-                                source={`${IMAGE_PATH}/${memory.author.username}/${memory.image.filename}`}
-                                resizeMode='contain'
-                                style={{
+                        {previewDims && upload && (
+                            <ImagePreview
+                                preview={upload.preview}
+                                width={previewDims.width}
+                                height={previewDims.height}
+                                uploading={upload}
+                            />
+                        )}
+
+                        {imageDims && image && (
+                            <Pressable
+                                onPress={() => setModal('SHOWCASE', image)}
+                                style={[{
                                     width: imageDims.width,
                                     height: imageDims.height,
-                                }}
-                            />
-                        </Pressable>
-                    )}
+                                }, shadow]}
+                            >
+                                <Image
+                                    source={`${IMAGE_PATH}/${author.username}/${image.filename}`}
+                                    resizeMode='contain'
+                                    style={{
+                                        // flex: 1,
+                                        width: imageDims.width,
+                                        height: imageDims.height,
+                                    }}
+                                />
+                            </Pressable>
+                        )}
                     
-                    <View style={{ flex: 1, flexGrow: 1 }}>
-
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                        }}
+                    >
                         <View
                             style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
+                                flex: 1,
+                                gap: 10,
                             }}
                         >
-
                             {date && (
                                 <Text variant='titleMedium'>
                                     {date.toDateString()}
                                 </Text>
                             )}
 
-                            {authorized && (
+                            <Text
+                                variant='bodyLarge'
+                                style={{ flex: 1, paddingRight: 15 }}
+                            >
+                                {memory.body}
+                            </Text>
+
+                        </View>
+
+                        {authorized && (
+                            <View>
                                 <IconButton
                                     icon='comment-edit-outline'
                                     onPress={() => setModal('MEMORY', memory)}
                                     style={{ marginVertical: 0 }}
                                 />
-                            )}
 
-
-                        </View>
-
-                        <Text
-                            variant='bodyLarge'
-                            style={{ flex: 1, paddingRight: 15 }}
-                        >
-                            {memory.body}
-                        </Text>
-
+                                {image ? (
+                                    <IconButton
+                                        icon='file-image-remove-outline'
+                                        onPress={() => console.log('TODO: remove image...')}
+                                        style={{ marginVertical: 0 }}
+                                    />
+                                ) : (
+                                    <IconButton
+                                        icon='file-image-plus-outline'
+                                        onPress={() => setModal('MEMORY_IMAGE', memory)}
+                                        style={{ marginVertical: 0 }}
+                                    />
+                                )}
+                            </View>
+                        )}
                     </View>
 
                 </View>
@@ -147,17 +201,15 @@ const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
 const MemoryList = ({ ids, ...props }) => {
 
     const {
-        // memories,
         updateMemory,
         deleteMemory,
+        uploadData,
+        setUploadData,
     } = useMemory()
 
+    const { setUploading } = useUser()
     const { closeModal, setModal } = useModal()
     const { socket } = useSocket()
-    const { user } = useUser()
-
-    // const [items, setItems] = useState(memories)
-    const [loading, setLoading] = useState(false)
 
     const listRef = useRef()
 
@@ -166,18 +218,33 @@ const MemoryList = ({ ids, ...props }) => {
         socket.on('deleted_memory', deleteMemory)
     }, [])
 
-    // useEffect(() => {
-    //     console.log('memories changed', memories)
-    //     setItems(memories)
-    // }, [memories])
+    const addImage = async upload => {
+        const { imageData, thumbData, memoryId, preview } = upload
+        updateMemory({
+            _id: memoryId,
+            upload,
+        })
+        const memory = await addMemoryImage(memoryId, { imageData, thumbData })
+        // initUpload(imageUpload)
+        if (memory) {
+            updateMemory({
+                ...memory,
+                upload: null,
+            })
+            setUploadData(null)
+            setUploading(null)
+        }
+    }
+    useEffect(() => {
+        if (uploadData) {
+            addImage(uploadData)
+        }
+        
+    }, [uploadData])
 
     const removeMemory = async id => {
 
-        setLoading(true)
-
         await deleteMemoryWithId(id)
-        
-        setLoading(false)
 
         socket.emit('memory_deleted', id)
 
@@ -221,7 +288,6 @@ const MemoryList = ({ ids, ...props }) => {
                         )
                     }}
                     ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 10 }} />}
-                    // style={{ flex: 1 }}
                 />
 
             </Card.Content>

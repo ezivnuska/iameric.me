@@ -104,7 +104,7 @@ const ImagesScreen = props => {
 
     const initUpload = async data => {
         
-        const image = await uploadImage({ ...data })
+        const image = await uploadImage(data)
         
         setUploading(null)
         
