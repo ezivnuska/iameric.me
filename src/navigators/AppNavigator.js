@@ -1,21 +1,14 @@
 import {
-    // BipScreen,
-    // BipsScreen,
     BugScreen,
     UserListScreen,
     FeedScreen,
     HomeScreen,
     MemoryScreen,
-    // MapScreen,
-    // MailScreen,
     PlayScreen,
     Sandbox,
-    // SimpleScreen,
     WorkScreen,
 } from '@screens'
-import { Button } from 'react-native-paper'
-import { Footer, Header } from '@layout/components'
-import { BugNavBar } from '@components'
+import { Header } from '@layout/components'
 import { UserNavigator } from '.'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 

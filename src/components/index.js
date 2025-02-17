@@ -1,5 +1,5 @@
 import BugForm from './BugForm'
-import BugNavBar from './BugNavBar'
+// import BugNavBar from './NOT_IN_USE/BugNavBar'
 import Bugs from './Bugs'
 import CaptionForm from './CaptionForm'
 import CenteredContainer from './CenteredContainer'
@@ -13,7 +13,7 @@ import ImageCard from './ImageCard'
 import ImageContained from './ImageContained'
 import ImageList from './ImageList'
 import ImagePreview from './ImagePreview'
-import ImageShowcase from './ImageShowcase'
+// import ImageShowcase from './NOT_IN_USE/ImageShowcase'
 import ImageUploadIndicator from './ImageUploadIndicator'
 import MemoryForm from './MemoryForm'
 import MemoryImageSelector from './MemoryImageSelector'
@@ -41,7 +41,7 @@ import Socket from './Socket'
 export {
     AuthForm,
     BugForm,
-    BugNavBar,
+    // BugNavBar,
     Bugs,
     CaptionForm,
     CenteredContainer,
@@ -55,7 +55,7 @@ export {
     ImageContained,
     ImageList,
     ImagePreview,
-    ImageShowcase,
+    // ImageShowcase,
     ImageUploadIndicator,
     MemoryForm,
     MemoryImageSelector,
