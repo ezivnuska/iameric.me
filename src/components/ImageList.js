@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
 import { useTheme, useUser } from '@context'
+import { Paths } from '@constants'
 import { loadImage } from '@utils/images'
-
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const ImageListItem = ({ uri, dims }) => {
     const { height, width } = dims
@@ -113,7 +112,7 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
 
     const renderItem = () => {
         
-        const uri = `${IMAGE_PATH}/${user.username}${imageDims.width <= 200 ? `/thumb` : ''}/${item.filename}`
+        const uri = `${Paths.ASSETS}/${user.username}${imageDims.width <= 200 ? `/thumb` : ''}/${item.filename}`
         return (
             <Pressable
                 onPress={() => onPress(item)}

@@ -74,7 +74,6 @@ const ImageUploadIndicator = props => {
 
                 <Image
                     source={{ uri: uploading.uri }}
-                    // source={`${IMAGE_PATH}/avatar-default.png`}// used for testing locally
                     width={72}
                     height={72}
                     resizeMode='cover'

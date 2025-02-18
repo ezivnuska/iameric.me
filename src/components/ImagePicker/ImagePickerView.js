@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { ActivityIndicator, Button, Card } from 'react-native-paper'
+import { ActivityIndicator, Button, Card, IconButton } from 'react-native-paper'
 
 const ImagePickerView = ({ active, cancel, select, disabled = false }) => {
     return (

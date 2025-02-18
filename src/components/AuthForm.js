@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { View } from 'react-native'
 import { Button, Card, IconButton } from 'react-native-paper'
 import { Form } from '@components'
 import { useForm, useModal, useSocket, useUser } from '@context'

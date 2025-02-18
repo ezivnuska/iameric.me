@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable } from 'react-native'
 import { Avatar } from 'react-native-paper'
-
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
+import { Paths } from '@constants'
 
 const UserAvatar = ({ user, size = 50, onPress = null, ...props }) => {
 
     const [source, setSource] = useState(null)
 
     useEffect(() => {
-        setSource(user?.profileImage ? `${IMAGE_PATH}/${user.username}/${user.profileImage.filename}` : null)
+        setSource(user?.profileImage ? `${Paths.ASSETS}/${user.username}/${user.profileImage.filename}` : null)
     }, [user])
 
     return (

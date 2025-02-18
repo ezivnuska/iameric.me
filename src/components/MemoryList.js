@@ -3,12 +3,11 @@ import { FlatList, Image, Pressable, View } from 'react-native'
 import { ActivityIndicator, Card, Divider, IconButton, Text } from 'react-native-paper'
 import { UserAvatar } from '@components'
 import { useMemory, useModal, useSocket, useUser } from '@context'
+import { Paths } from '@constants'
 import { addMemoryImage, deleteMemoryWithId, loadMemory } from '@utils/memories'
 import { getMaxImageDims } from '@utils/images'
 import { getTime } from '@utils/time'
 import ImagePreview from './ImagePreview'
-
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
    
@@ -34,12 +33,12 @@ const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
         initMemory()
     }, [])
 
-    useEffect(() => {
-        // if (author) console.log('author', author)
-        if (image) console.log('image', image)
-        if (imageDims) console.log('imageDims', imageDims)
-        // if (memory) console.log('memory', memory)
-    }, [author, image, imageDims, memory])
+    // useEffect(() => {
+    //     // if (author) console.log('author', author)
+    //     if (image) console.log('image', image)
+    //     if (imageDims) console.log('imageDims', imageDims)
+    //     // if (memory) console.log('memory', memory)
+    // }, [author, image, imageDims, memory])
         
     const initMemory = async () => {
         
@@ -128,7 +127,7 @@ const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
                                 }, shadow]}
                             >
                                 <Image
-                                    source={`${IMAGE_PATH}/${author.username}/${image.filename}`}
+                                    source={`${Paths.ASSETS}/${author.username}/${image.filename}`}
                                     resizeMode='contain'
                                     style={{
                                         // flex: 1,

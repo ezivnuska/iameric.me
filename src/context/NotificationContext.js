@@ -7,9 +7,7 @@ import React, {
 } from 'react'
 
 import { Audio } from 'expo-av'
-import { IMAGE_PATH } from '../../config'
-
-const assetPath = process.env.NODE_ENV === 'production' ? '/assets' : IMAGE_PATH
+import { Paths } from '@constants'
 
 const initialState = {
     notifications: [],
@@ -32,7 +30,7 @@ const playSound = async () => {
     const sound = new Audio.Sound()
 
     try {
-        await sound.loadAsync(`${assetPath}/sounds/bell.mp3`, { shouldPlay: true })
+        await sound.loadAsync(`${Paths.SOUNDS}/bell.mp3`, { shouldPlay: true })
         await sound.unloadAsync()
     } catch (error) {
         console.error('AUDIO PLAY: ', error)

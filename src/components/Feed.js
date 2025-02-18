@@ -1,16 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
-import {
-    // ActivityIndicator, Button,
-    Card, Divider, IconButton, Text,
-} from 'react-native-paper'
+import { Card, Divider, IconButton, Text } from 'react-native-paper'
 import { Time, UserAvatar } from '@components'
 import { useFeed, useModal, useSocket, useUser } from '@context'
+import { Paths } from '@constants'
 import { deletePostWithId } from '@utils/feed'
 import { loadPost } from '@utils/feed'
 import { getMaxImageDims } from '@utils/images'
-
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
    
@@ -92,7 +88,7 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
                             onPress={() => setModal('SHOWCASE', post.image)}
                         >
                             <Image
-                                source={`${IMAGE_PATH}/${author.username}/${post.image.filename}`}
+                                source={`${Paths.ASSETS}/${author.username}/${post.image.filename}`}
                                 resizeMode='contain'
                                 style={{
                                     width: imageDims.width,

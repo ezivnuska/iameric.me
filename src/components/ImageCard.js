@@ -2,10 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Image, ScrollView, View } from 'react-native'
 import { IconButton, MD3Colors, Text } from 'react-native-paper'
 import { useModal, useTheme, useUser } from '@context'
+import { Paths } from '@constants'
 import { deleteImage, loadImage, setAvatar } from '@utils/images'
 import { Time, UserAvatar } from '@components'
-
-const IMAGE_PATH = __DEV__ ? 'https://iameric.me/assets' : '/assets'
 
 const CardHeader = ({ user, close, time = null }) => {
     return (
@@ -62,7 +61,7 @@ const ImageCard = ({ data }) => {
     const isProfileImage = useMemo(() => image && user.profileImage?._id === image._id, [user])
     const isOwner = useMemo(() => user && image && user._id === image.user._id, [image])
     const hasAuthorization = useMemo(() => user && user.role === 'admin', [user])
-    const source = useMemo(() => image && image.user && `${IMAGE_PATH}/${image.user.username}/${image.filename}`, [image])
+    const source = useMemo(() => image && image.user && `${Paths.ASSETS}/${image.user.username}/${image.filename}`, [image])
 
     const init = () => {
         if (typeof data === 'string') {
