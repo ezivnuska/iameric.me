@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Appbar, IconButton } from 'react-native-paper'
-import { NavBar, UserAvatar } from '@components'
+import { NavBar, SmartAvatar } from '@components'
 import { useModal, useTheme, useUser } from '@context'
 
 const Header = props => {
@@ -50,7 +50,7 @@ const Header = props => {
             />
             
             {authUser ? (
-                <UserAvatar
+                <SmartAvatar
                     user={authUser}
                     onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: authUser?.username } })}
                     size={35}

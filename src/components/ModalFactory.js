@@ -18,7 +18,7 @@ import Modal from 'react-native-modal'
 
 const ModalFactory = ({ modal, onClose }) => {
 
-    const { theme } = useTheme()
+    const { dims, theme } = useTheme()
 
     const renderModalContent = () => {
         
@@ -38,7 +38,7 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             case 'MEMORY_IMAGE':
                 content = <MemoryImageSelector data={data} />
-                fullscreen = true
+                // fullscreen = true
                 break
             case 'IMAGE_UPLOAD':
                 content = <ImagePicker data={data} />
@@ -76,22 +76,23 @@ const ModalFactory = ({ modal, onClose }) => {
                     alignItems: fullscreen ? 'stretch' : 'center',
                     width: '100%',
                     position: 'relative',
-                    backgroundColor: theme.colors.background,
                 }}
             >
-                <Pressable
-                    onPress={onClose}
-                    style={{
-                        position: 'absolute',
-                        top: 0, right: 0, bottom: 0, left: 0,
-                        zIndex: 10,
-                    }}
-                />
+                {!fullscreen && (
+                    <Pressable
+                        onPress={onClose}
+                        style={{
+                            position: 'absolute',
+                            top: 0, right: 0, bottom: 0, left: 0,
+                            zIndex: 10,
+                        }}
+                    />
+                )}
                 
                 <View
                     style={{
-                        width: fullscreen ? '100%' : '92%',
-                        maxWidth: fullscreen ? null : 400,
+                        width: (fullscreen && '100%'),
+                        // maxWidth: (!fullscreen && 400),
                         marginHorizontal: 'auto',
                         zIndex: 100,
                     }}
@@ -105,10 +106,10 @@ const ModalFactory = ({ modal, onClose }) => {
     return (
         <Modal
             isVisible={modal !== undefined}
-            // deviceWidth={dims.width}
-            // deviceHeight={dims.height}
+            deviceWidth={dims.width}
+            deviceHeight={dims.height}
             animationType='fade'
-            transparent={false}
+            transparent={true}
             onRequestClose={onClose}
             style={{ margin: 0 }}
         >

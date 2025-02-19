@@ -184,8 +184,8 @@ const MemoryImageSelector = ({ data }) => {
             }}
         >
 
-            <View
-                // elevation={0}
+            <Card
+                elevation={5}
                 style={{
                     flex: 1,
                     width: '100%',
@@ -197,8 +197,8 @@ const MemoryImageSelector = ({ data }) => {
                 
                 <Card.Title
                     title='Select Image'
-                    titleVariant='headlineLarge'
-                    right={() => <IconButton icon='close-thick' onPress={closeModal} size={30} />}
+                    titleVariant='headlineMedium'
+                    right={() => <IconButton icon='close-thick' onPress={closeModal} size={25} />}
                 />
                 
                 {/* <View
@@ -221,31 +221,32 @@ const MemoryImageSelector = ({ data }) => {
                 
                 {!imageDims && (
                     <Card.Actions
-                        style={{
-                            flexDirection: 'column',
-                            alignItems: 'stretch',
-                            gap: 20,
-                        }}
+                        // style={{
+                        //     flexDirection: 'column',
+                        //     alignItems: 'stretch',
+                        //     gap: 20,
+                        // }}
                     >
-                        <Button
-                            mode='contained'
-                            onPress={openSelector}
-                            disabled={uploadData || selectorOpen}
-                        >
-                            Select Image
-                        </Button>
             
                         <Button
-                            mode='contained'
+                            mode='contained-tonal'
                             onPress={closeModal}
-                            disabled={uploadData || selectorOpen}
+                            disabled={uploadData}
                         >
                             Cancel
                         </Button>
 
+                        <Button
+                            mode='contained'
+                            onPress={openSelector}
+                            disabled={uploadData}
+                        >
+                            Select Image
+                        </Button>
+
                     </Card.Actions>
                 )}
-            </View>
+            </Card>
 
         </View>
     )

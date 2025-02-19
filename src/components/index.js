@@ -15,9 +15,9 @@ import MemoryList from './MemoryList'
 import NavBar from './NavBar'
 import PostForm from './PostForm'
 import Settings from './Settings'
+import SmartAvatar from './SmartAvatar'
 import StatusIndicator from './StatusIndicator'
 import Time from './Time'
-import UserAvatar from './UserAvatar'
 import UserList from './UserList'
 import AuthForm from './AuthForm'
 import Feed from './Feed'
@@ -49,9 +49,9 @@ export {
     PostForm,
     Settings,
     Socket,
+    SmartAvatar,
     StatusIndicator,
     Time,
-    UserAvatar,
     UserList,
     Feed,
     Form,

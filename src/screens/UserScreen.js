@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { Screen } from './components'
-import { UserAvatar } from '@components'
+import { SmartAvatar } from '@components'
 import { useModal, useUser, useTheme } from '@context'
 import { loadContact } from '@utils/contacts'
 import { create } from '@utils/normalize'
@@ -147,7 +147,7 @@ const UserProfile = ({ profile }) => {
                 }}
                 disabled={!currentUser.profileImage}
             >
-                <UserAvatar user={currentUser} size={100} />
+                <SmartAvatar user={currentUser} size={100} />
 
             </Pressable>
 

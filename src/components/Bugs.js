@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
 import { Card, Divider, IconButton, MD3Colors, Text } from 'react-native-paper'
-import { Time, UserAvatar } from '@components'
+import { Time, SmartAvatar } from '@components'
 import { useBugs, useModal, useSocket, useTheme, useUser } from '@context'
 import { deleteEntryWithId } from '@utils/bugs'
 
@@ -75,7 +75,7 @@ const Bugs = ({ navigation }) => {
                                         titleVariant='titleMedium'
                                         subtitle={<Time time={item.createdAt} />}
                                         style={{ gap: 10 }}
-                                        left={() => <UserAvatar user={item.author} />}
+                                        left={() => <SmartAvatar user={item.author} />}
                                         right={() => authorized && (
                                             <IconButton 
                                                 icon='delete-circle'

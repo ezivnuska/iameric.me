@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
 import { ActivityIndicator, Card, Divider, IconButton, Text } from 'react-native-paper'
-import { UserAvatar } from '@components'
+import { SmartAvatar } from '@components'
 import { useMemory, useModal, useSocket, useUser } from '@context'
 import { Paths } from '@constants'
 import { addMemoryImage, deleteMemoryWithId, loadMemory } from '@utils/memories'
@@ -76,7 +76,7 @@ const MemoryListItem = ({ onDelete, navigation, memoryId, ...props }) => {
                 subtitleVariant='titleSmall'
                 style={{ gap: 10, height: 'auto', minHeight: null }}
                 left={() => (
-                    <UserAvatar
+                    <SmartAvatar
                         user={author}
                         onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: author?.username } })}
                     />

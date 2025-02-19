@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, Pressable, StyleSheet, View } from 'react-native'
-import { StatusIndicator, UserAvatar } from '@components'
+import { StatusIndicator, SmartAvatar } from '@components'
 import { loadContactById } from '@utils/contacts'
 import { useTheme, useUser } from '@context'
 import { ActivityIndicator, Divider, Icon, Text } from 'react-native-paper'
@@ -59,7 +59,7 @@ const VerticalListItem = ({ item }) => (
 
         <View style={[styles.itemHeader, { gap: 15 }]}>
 
-            <UserAvatar user={item} size={30} />
+            <SmartAvatar user={item} size={30} />
 
             <Text variant='titleLarge'>
                 {item.username}
@@ -76,7 +76,7 @@ const HorizontalListItem = ({ item, connected = false }) => (
 
     <View style={styles.itemHorizontal}>
 
-        <UserAvatar user={item} size={100} />
+        <SmartAvatar user={item} size={100} />
         
         <Text variant='titleLarge'>
             {item.username}

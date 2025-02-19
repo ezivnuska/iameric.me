@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
 import { Card, Divider, IconButton, Text } from 'react-native-paper'
-import { Time, UserAvatar } from '@components'
+import { Time, SmartAvatar } from '@components'
 import { useFeed, useModal, useSocket, useUser } from '@context'
 import { Paths } from '@constants'
 import { deletePostWithId } from '@utils/feed'
@@ -56,7 +56,7 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
                 subtitle={<Time time={post.createdAt} />}
                 style={{ gap: 10 }}
                 left={() => (
-                    <UserAvatar
+                    <SmartAvatar
                         user={author}
                         onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: post.author?.username } })}
                     />
