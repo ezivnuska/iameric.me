@@ -17,6 +17,7 @@ import PostForm from './PostForm'
 import Settings from './Settings'
 import SmartAvatar from './SmartAvatar'
 import StatusIndicator from './StatusIndicator'
+import TappableView from './TappableView'
 import Time from './Time'
 import UserList from './UserList'
 import AuthForm from './AuthForm'
@@ -51,6 +52,7 @@ export {
     Socket,
     SmartAvatar,
     StatusIndicator,
+    TappableView,
     Time,
     UserList,
     Feed,

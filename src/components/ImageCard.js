@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react'
 import { Image, Pressable, ScrollView, View } from 'react-native'
 import { Card, IconButton, MD3Colors, Text } from 'react-native-paper'
-import { Time, SmartAvatar } from '@components'
+import { TappableView, SmartAvatar } from '@components'
 import { Paths } from '@constants'
-import { useModal, useTheme, useUser } from '@context'
+import { useNotification, useModal, useTheme, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar } from '@utils/images'
 import { getTime } from '@utils/time'
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
@@ -67,6 +67,7 @@ const CardHeader = ({ user, close, time = null }) => {
 
 const ImageCard = ({ data }) => {
 
+    const { addNotification } = useNotification()
     const { closeModal, setModal } = useModal()
     const { dims, landscape, theme } = useTheme()
     const { user, setDeletedImage, setProfileImage, updateUser } = useUser()
@@ -75,12 +76,13 @@ const ImageCard = ({ data }) => {
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState(null)
     const [currentUser, setCurrentUser] = useState(user)
+    const [zoom, setZoom] = useState(false)
 
     const [imageDims, setImageDims] = useState(null)
     
-    const isProfileImage = useMemo(() => (user?.profileImage && image) && user.profileImage._id === image._id, [user])
-    const isOwner = useMemo(() => user && image && user._id === image.user._id, [image])
-    const hasAuthorization = useMemo(() => user && user.role === 'admin', [user])
+    const isProfileImage = useMemo(() => (currentUser?.profileImage && image) && currentUser.profileImage._id === image._id, [currentUser])
+    const isOwner = useMemo(() => currentUser && image && currentUser._id === image.user._id, [image, currentUser])
+    const hasAuthorization = useMemo(() => currentUser && currentUser.role === 'admin', [currentUser])
     const source = useMemo(() => image && image.user && `${Paths.ASSETS}/${image.user.username}/${image.filename}`, [image])
 
     const opacity = useSharedValue(1)
@@ -106,12 +108,24 @@ const ImageCard = ({ data }) => {
         }
     }
 
+    const anim = useSharedValue(0)
+
+    const animatedStyle = useAnimatedStyle(() => imageDims ? ({
+        width: interpolate(anim.value, [0, 1], [imageDims.width, imageDims.width * 2]),
+        height: interpolate(anim.value, [0, 1], [imageDims.height, imageDims.height * 2]),
+        // opacity: opacity.value,
+    }) : {})
+
     const init = () => {
         if (typeof data === 'string') {
             findImage(data)
         } else {
             findImage(data._id)
         }
+    }
+
+    const toggleZoom = () => {
+        anim.value = withTiming(Math.abs(anim.value - 1), { duration: 300 })
     }
 
     useEffect(() => {
@@ -134,10 +148,8 @@ const ImageCard = ({ data }) => {
     }
 
     const getAndSetImageDims = (image, maxDims) => {
-        if (image) {
-            const { width, height } = getImageDims(image, maxDims)
-            setImageDims({ height: Math.floor(height), width: Math.floor(width) })
-        }
+        const { width, height } = getImageDims(image, maxDims)
+        setImageDims({ height: Math.floor(height), width: Math.floor(width) })
     }
 
     const getImageDims = (image, maxDims) => {
@@ -145,8 +157,8 @@ const ImageCard = ({ data }) => {
         let height = image.height
         let width = image.width
 
-        let maxHeight = maxDims.height * 0.7 < height ? maxDims.height * 0.7 : height
-        let maxWidth =  maxDims.width * 0.7 < width ? maxDims.width * 0.7 : width
+        let maxHeight = maxDims.height < height ? maxDims.height : height
+        let maxWidth =  maxDims.width < width ? maxDims.width : width
 
         if (maxHeight > height) maxHeight = height
         if (maxWidth > width) maxWidth = width
@@ -232,8 +244,17 @@ const ImageCard = ({ data }) => {
 
     }
 
+    const onLayout = e => {
+        
+		getAndSetImageDims(image, {
+            width: e.nativeEvent.target.clientWidth,
+            height: e.nativeEvent.target.clientHeight,
+        })
+	}
+
     return image && (
         <View
+            onLayout={onLayout}
             style={{
                 flex: 1,
                 backgroundColor: theme.colors.background,
@@ -242,50 +263,66 @@ const ImageCard = ({ data }) => {
         >
         
             {!landscape && (
-                
+                <Animated.View
+                    style={[{
+                        position: 'absolute',
+                        top: 0, left: 0, right: 0,
+                        zIndex: 30,
+                        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                    }, opacityStyle]}
+                >
 
-            <Animated.View
-                style={[{
-                    position: 'absolute',
-                    top: 0, left: 0, right: 0,
-                    zIndex: 30,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                }, opacityStyle]}
-            >
-
-                <CardHeader
-                    user={currentUser}
-                    close={closeModal}
-                    time={new Date(image.createdAt)}
-                />
-            </Animated.View>
+                    <CardHeader
+                        user={currentUser}
+                        close={closeModal}
+                        time={new Date(image.createdAt)}
+                    />
+                </Animated.View>
             )}
-            
-            <Image
-                style={{
-                    position: 'absolute',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    zIndex: 10,
-                }}
-                source={source}
-                resizeMode='contain'
-            />
 
-            <Pressable
-                onPress={toggleVisibility}
+            <TappableView
+                onSingle={toggleVisibility}
+                onDouble={toggleZoom}
                 style={{
+                    flex: 1,
                     position: 'absolute',
                     top: 0, left: 0, right: 0, bottom: 0,
                     zIndex: 20,
                 }}
             />
+            
+            {imageDims && (
+                <View
+                    style={{
+                        position: 'absolute',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        zIndex: 10,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Animated.View
+                        style={[{
+                        }, animatedStyle]}
+                    >
+                        <Image
+                            source={source}
+                            style={{
+                                width: '100%',
+                                height: '100%',
+                            }}
+                            resizeMode='contain'
+                        />
+                    </Animated.View>
+                </View>
+            )}
 
             <Animated.View
                 style={[{
                     position: 'absolute',
                     top: 0, right: 0, left: 0,
                     zIndex: 200,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 }, opacityStyle]}
             >
 
@@ -304,7 +341,7 @@ const ImageCard = ({ data }) => {
                     position: 'absolute',
                     bottom: 0, right: 0, left: 0,
                     zIndex: 300,
-                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 }, opacityStyle]}
             >
                 {image.caption && (
@@ -334,7 +371,6 @@ const ImageCard = ({ data }) => {
                             flexDirection: 'row',
                             justifyContent: 'space-between',
                             alignItems: 'center',
-                            // backgroundColor: 'rgba(0, 0, 0, 0.5)',
                         }}
                     >
                         
