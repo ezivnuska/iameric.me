@@ -453,9 +453,9 @@ const reducer = (state, action) => {
                 }
                 return item
             })
-            console.log('updatedUsers', updatedUsers)
-            // const user = state.user.profileImage && updatedUser?._id === state.user._id ? updatedUser : state.user
-            console.log('updatedUser', updatedUser)
+            // console.log('updatedUsers', updatedUsers)
+            // // const user = state.user.profileImage && updatedUser?._id === state.user._id ? updatedUser : state.user
+            // console.log('updatedUser', updatedUser)
             return {
                 ...state,
                 users: updatedUsers,

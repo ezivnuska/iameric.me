@@ -16,6 +16,7 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
 
     const [loading, setLoading] = useState(false)
     const [post, setPost] = useState(null)
+    const [maxDims, setMaxDims] = useState({ width: 100, height: null })
     const [imageDims, setImageDims] = useState(null)
 
     const author = useMemo(() => post && findUserById(post.author._id), [post])
@@ -26,7 +27,7 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
 
     useEffect(() => {
         if (post?.image) {
-            const dims = getMaxImageDims(post.image.width, post.image.height, 100)
+            const dims = getMaxImageDims(post.image.width, post.image.height, maxDims)
             setImageDims(dims)
         }
     }, [post])
@@ -46,6 +47,14 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
         setLoading(false)
         
     }
+
+    const onLayout = e => {
+        
+        setMaxDims({
+            width: e.nativeEvent.target.clientWidth,
+            height: e.nativeEvent.target.clientHeight,
+        })
+	}
 
     return post && (
         <View>
@@ -75,26 +84,30 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
                     paddingBottom: 20,
                     gap: 15,
                 }}
-                >
+            >
                 <View
+                    onLayout={onLayout}
                     style={{
+                        flex: 1,
                         flexDirection: 'row',
                         gap: 15,
                     }}
                 >
 
-                    {post.image && imageDims && (
+                    {post.image && (
                         <Pressable
                             onPress={() => addModal('SHOWCASE', post.image)}
                         >
-                            <Image
-                                source={`${Paths.ASSETS}/${author.username}/${post.image.filename}`}
-                                resizeMode='contain'
-                                style={{
-                                    width: imageDims.width,
-                                    height: imageDims.height,
-                                }}
-                            />
+                            {imageDims && (
+                                <Image
+                                    source={`${Paths.ASSETS}/${author.username}/${post.image.filename}`}
+                                    resizeMode='contain'
+                                    style={{
+                                        width: imageDims.width,
+                                        height: imageDims.height,
+                                    }}
+                                />
+                            )}
                         </Pressable>
                     )}
                     

@@ -125,7 +125,7 @@ const Form = ({
     return (
         <View
             style={{
-                // flex: 1,
+                flex: 1,
                 gap: 10,
             }}
         >
@@ -168,6 +168,7 @@ const Form = ({
                                     onKeyPress={!multiline && onEnter}
                                     dirty={getDirty(name)}
                                     multiline={multiline}
+                                    numberOfLines={20}
                                 />
                                 <HelperText type='error' visible={true}>
                                     {getError(name)}

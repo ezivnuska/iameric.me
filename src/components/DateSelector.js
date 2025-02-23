@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Icon, Text } from 'react-native-paper'
 import SelectDropdown from 'react-native-select-dropdown'
+import { useTheme } from '@context'
 import {
     getDate,
     getDay,
@@ -18,6 +19,8 @@ import {
 
 
 const DateSelector = ({ onChange, memory = null }) => {
+
+    const { landscape } = useTheme()
 
     const today = new Date(Date.now())
 
@@ -144,65 +147,25 @@ const DateSelector = ({ onChange, memory = null }) => {
     return (
         <View
             style={{
-                justifyContent: 'center',
+                width: '100%',
+                flexDirection: 'landscape' ? 'row' : 'column',
+                alignItems: 'center',
+                // justifyContent: 'center',
                 gap: 20,
-                maxWidth: 300,
+                // maxWidth: 300,
                 marginHorizontal: 'auto',
             }}
         >
 
             <View
                 style={{
+                    flex: 1,
                     flexDirection: 'row',
-                    justifyContent: 'center',
+                    justifyContent: 'space-between',
                     gap: 10,
+                    background: 'yellow',
                 }}
             >
-                <View style={{ flex: 1 }}>
-                    <SelectDropdown
-                        ref={selectYearRef}
-                        data={years}
-                        onSelect={selectedItem => setYear(selectedItem.value)}
-                        renderButton={(selectedItem, isOpened) => {
-                            return (
-                                <View style={styles.dropdownButtonStyle}>
-                                    
-                                    <Text
-                                        style={styles.dropdownButtonTxtStyle}
-                                    >
-                                        {(selectedItem && selectedItem.label) || year || 'Year' }
-                                    </Text>
-
-                                    <Icon
-                                        source={isOpened ? 'chevron-up' : 'chevron-down'}
-                                        size={25}
-                                    />
-
-                                </View>
-                            )
-                        }}
-                        renderItem={(item, index, isSelected) => {
-                            return (
-                                <View
-                                    style={{
-                                        ...styles.dropdownItemStyle,
-                                        ...(isSelected && {backgroundColor: '#D2D9DF'})
-                                    }}
-                                >
-                                    <Text
-                                        style={styles.dropdownItemTxtStyle}
-                                    >
-                                        {item.label}
-                                    </Text>
-                                </View>
-                            )
-                        }}
-                        showsVerticalScrollIndicator={false}
-                        dropdownStyle={styles.dropdownMenuStyle}
-                    />
-                    
-                </View>
-
                 <View style={{ flex: 1 }}>
                     <SelectDropdown
                         ref={selectMonthRef}
@@ -216,10 +179,10 @@ const DateSelector = ({ onChange, memory = null }) => {
                                         {(selectedItem && selectedItem.label) || month || 'Month' }
                                     </Text>
 
-                                    <Icon
+                                    {/* <Icon
                                         source={isOpened ? 'chevron-up' : 'chevron-down'}
                                         size={25}
-                                    />
+                                    /> */}
                                     
                                 </View>
                             )
@@ -261,10 +224,10 @@ const DateSelector = ({ onChange, memory = null }) => {
                                         {(selectedItem && selectedItem.label) || day || 'Day' }
                                     </Text>
 
-                                    <Icon
+                                    {/* <Icon
                                         source={isOpened ? 'chevron-up' : 'chevron-down'}
                                         size={25}
-                                    />
+                                    /> */}
                                 </View>
                             )
                         }}
@@ -289,18 +252,52 @@ const DateSelector = ({ onChange, memory = null }) => {
                     />
                     
                 </View>
+                <View style={{ flex: 1 }}>
+                    <SelectDropdown
+                        ref={selectYearRef}
+                        data={years}
+                        onSelect={selectedItem => setYear(selectedItem.value)}
+                        renderButton={(selectedItem, isOpened) => {
+                            return (
+                                <View style={styles.dropdownButtonStyle}>
+                                    
+                                    <Text
+                                        style={styles.dropdownButtonTxtStyle}
+                                    >
+                                        {(selectedItem && selectedItem.label) || year || 'Year' }
+                                    </Text>
+
+                                    {/* <Icon
+                                        source={isOpened ? 'chevron-up' : 'chevron-down'}
+                                        size={25}
+                                    /> */}
+
+                                </View>
+                            )
+                        }}
+                        renderItem={(item, index, isSelected) => {
+                            return (
+                                <View
+                                    style={{
+                                        ...styles.dropdownItemStyle,
+                                        ...(isSelected && {backgroundColor: '#D2D9DF'})
+                                    }}
+                                >
+                                    <Text
+                                        style={styles.dropdownItemTxtStyle}
+                                    >
+                                        {item.label}
+                                    </Text>
+                                </View>
+                            )
+                        }}
+                        showsVerticalScrollIndicator={false}
+                        dropdownStyle={styles.dropdownMenuStyle}
+                    />
+                    
+                </View>
 
             </View>
-            
-            {selectedDate && (
-                <View style={{ marginHorizontal: 'auto' }}>
-                    <Text
-                        variant='titleLarge'
-                    >
-                        {selectedDate.toDateString()}
-                    </Text>
-                </View>
-            )}
         </View>
     )
 }
@@ -322,6 +319,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
         color: '#151E26',
+        textAlign: 'center',
     },
     dropdownButtonIconStyle: {
         fontSize: 28,
@@ -341,6 +339,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: '500',
         color: '#151E26',
+        textAlign: 'center',
     },
 })
 

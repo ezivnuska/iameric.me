@@ -32,6 +32,11 @@ const checkForError = (name, value) => {
                 error = { name, message: 'Field cannot be blank.' }
             }
             break
+        case 'body':
+            if (invalid) {
+                error = { name, message: 'Field cannot be blank.' }
+            }
+            break
         default:
             console.log('No field to validate by this name:', name)
     }

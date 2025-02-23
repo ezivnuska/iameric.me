@@ -11,14 +11,14 @@ const ImagePreview = ({ preview, width, height, uploading }) => {
         setImageLoaded(true)
     }
 
-    return (
+    return preview && (
         <View
             style={{
                 flex: 1,
                 width,
                 height,
-                flexDirection: 'row',
-                alignItems: 'center',
+                // flexDirection: 'row',
+                // alignItems: 'center',
                 position: 'relative',
             }}
         >
@@ -52,6 +52,8 @@ const ImagePreview = ({ preview, width, height, uploading }) => {
                 source={{ uri: preview.uri }}
                 resizeMode='contain'
                 style={{
+                    // height: preview.height,
+                    // width: preview.width,
                     height: '100%',
                     width: '100%',
                     zIndex: 10,
