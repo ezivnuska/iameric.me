@@ -19,7 +19,7 @@ const Bugs = ({ navigation }) => {
 
     const {
         closeModal,
-        setModal,
+        addModal,
     } = useModal()
 
     const { socket } = useSocket()
@@ -52,7 +52,7 @@ const Bugs = ({ navigation }) => {
                 title='Bugs'
                 titleVariant='titleLarge'
                 // left={() => <IconButton icon='home' onPress={() => navigation.navigate('Home')} />}
-                right={() => <IconButton icon='plus-thick' onPress={() => setModal('BUG')} size={30} />}
+                right={() => <IconButton icon='plus-thick' onPress={() => addModal('BUG')} size={30} />}
                 style={{ padding: 0, marginLeft: 15 }}
             />
 

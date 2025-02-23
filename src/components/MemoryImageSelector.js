@@ -10,7 +10,7 @@ import { addMemoryImage } from 'src/utils/memories'
 
 const MemoryImageSelector = ({ data }) => {
 
-    const { closeModal } = useModal()
+    const { clearModals, closeModal } = useModal()
     const { user, uploading, setImageUpload, setUploading } = useUser()
     const { uploadData, setUploadData } = useMemory()
 
@@ -18,71 +18,81 @@ const MemoryImageSelector = ({ data }) => {
     const [maxWidth, setMaxWidth] = useState(100)
     const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
-    const [selectorOpen, setSelectorOpen] = useState(false)
+    // const [selectorOpen, setSelectorOpen] = useState(false)
 
     const [progress, setProgress] = useState(null)
     const [showActivity, setShowActivity] = useState(false)
 
-    const onLayout = e => {
+    // const onLayout = e => {
 
-        // determine and set available width of parent element
-        const parentWidth = e.nativeEvent.target.offsetParent.clientWidth
-        setMaxWidth(parentWidth)
+    //     // determine and set available width of parent element
+    //     const parentWidth = e.nativeEvent.target.offsetParent.clientWidth
+    //     setMaxWidth(parentWidth)
 
-    }
+    // }
 
     useEffect(() => {
 
-        // open selector on mount
-        openSelector()
-
-    }, [])
+        console.log('preview', preview)
+        if (preview) {
+            // set image dimensions to maximum size
+            setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
+        } else {
+            setImageDims(null)
+        }
+    }, [preview])
 
     useEffect(() => {
 
         // if image is loaded and data is available
         if (payload) {
-
-            const { imageData, thumbData } = payload
-            const { uri, height, width } = imageData
+            
+            const { uri, height, width } = payload.imageData
             setPreview({ uri, height, width })
-            setUploading(preview)
-            setUploadData({
-                imageData,
-                thumbData,
-                memoryId: data._id,
-                preview: { uri, height, width },
-            })
+            // const { imageData, thumbData, userId } = payload
+            // const { uri, height, width } = imageData
+            // // setUploading(preview)
+            // const dataToUpload = {
+            //     memoryId: data._id,
+            //     imageData,
+            //     thumbData,
+            //     userId,
+            //     preview,
+            // }
+            // console.log('dataToUpload', dataToUpload)
+            // setUploadData(dataToUpload)
             // addMemoryImage(data._id, { imageData, thumbData })
-            closeModal()
+// closeModal()
 
             // set preview from available data
             // const { uri, height, width } = payload.imageData
             // setPreview({ uri, height, width })
-            setPayload(null)
+            // setPayload(null)
 
-        } else {
-            setPreview(null)
         }
+        // else {
+        //     setPreview(null)
+        // }
     }, [payload])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        // if image selected and preview available
-        if (uploadData) {
+    //     // if image selected and preview available
+    //     if (uploadData) {
+    //         // setPreview(uploadData.preview)
+    //         // set image dimensions to maximum size
+    //         console.log('uploadData', uploadData)
+    //         setImageDims(getMaxImageDims(preview.width, uploadData.preview.height, maxWidth))
 
-            // set image dimensions to maximum size
-            setImageDims(getMaxImageDims(uploadData.preview.width, uploadData.preview.height, maxWidth))
+    //     } else {
+    //         setImageDims(null)
+    //     }
 
-        } else {
-            setImageDims(null)
-        }
-
-    }, [uploadData])
+    // }, [uploadData])
 
     const openSelector = async () => {
 
-        setSelectorOpen(true)
+        // setSelectorOpen(true)
 
         if (!showActivity) {
             setShowActivity(true)
@@ -90,7 +100,7 @@ const MemoryImageSelector = ({ data }) => {
 
         const uri = await openFileSelector()
         
-        setSelectorOpen(false)
+        // setSelectorOpen(false)
 
         setShowActivity(false)
         
@@ -124,7 +134,7 @@ const MemoryImageSelector = ({ data }) => {
         image.onload = async () => {
             const imageResult = await handleImageData(id, image, exif)
             if (imageResult) {
-
+                console.log('imageResult', imageResult)
                 setPayload(imageResult)
 
             }
@@ -148,18 +158,22 @@ const MemoryImageSelector = ({ data }) => {
     //     }
     // }
 
-    // const handleUpload = async uploadData => {
+    const handleUpload = async () => {
 
-    //     if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
+        if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
         
-    //     const { imageData, thumbData, userId } = uploadData
-    //     const data = { imageData, thumbData, userId, avatar: data?.avatar }
+        const dataToUpload = {
+            memoryId: data._id,
+            preview,
+            ...payload,
+        }
 
-    //     setUploading(preview)
-    //     setImageUpload(data)
-            
-    //     closeModal()
-    // }
+        console.log('dataToUpload', dataToUpload)
+        setUploadData(dataToUpload)
+        setImageUpload(payload)
+        
+        closeModal()
+    }
 
     // const onCancel = () => {
     //     setShowActivity(false)
@@ -171,83 +185,104 @@ const MemoryImageSelector = ({ data }) => {
     //     addMemoryImage(data._id, { imageData, thumbData })
     // }
 
+    const skipImage = () => {
+
+        setUploadData(null)
+        clearModals()
+    }
+
     return (
         <View
-            onLayout={onLayout}
             style={{
                 flex: 1,
-                // flexGrow: 1,
-                // flexGrow: 1,
-                gap: 10,
-                // backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                position: 'relative',
             }}
         >
-
-            <Card
-                elevation={5}
+            <View
+                // onLayout={onLayout}
                 style={{
                     flex: 1,
-                    width: '100%',
                     justifyContent: 'space-between',
-                    // borderWidth: 1,
-                    // borderColor: 'red',
+                    // flexGrow: 1,
+                    // flexGrow: 1,
+                    gap: 10,
+                    // backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    // position: 'relative',
                 }}
             >
-                
-                <Card.Title
-                    title='Select Image'
-                    titleVariant='headlineMedium'
-                    right={() => <IconButton icon='close-thick' onPress={closeModal} size={25} />}
-                />
-                
-                {/* <View
+
+                {/* <Card
+                    elevation={5}
                     style={{
                         flex: 1,
-                        flexGrow: 1,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        width: '100%',
+                        // borderWidth: 1,
+                        // borderColor: 'red',
                     }}
-                >
-                    {showActivity && <ActivityIndicator size='medium' />}
-                    {imageDims && (
-                        <ImagePreview
-                            preview={preview}
-                            uploading={uploadData}
-                        />
-                    )}
-                </View> */}
-                
-                {!imageDims && (
-                    <Card.Actions
-                        // style={{
-                        //     flexDirection: 'column',
-                        //     alignItems: 'stretch',
-                        //     gap: 20,
-                        // }}
+                > */}
+                    
+                    {/* <Card.Title
+                        title='Select Image'
+                        titleVariant='headlineMedium'
+                        right={() => <IconButton icon='close-thick' onPress={closeModal} size={25} />}
+                    /> */}
+                    
+                    <View
+                        style={{
+                            flex: 1,
+                            flexGrow: 1,
+                            flexDirection: 'row',
+                            // justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
                     >
-            
-                        <Button
-                            mode='contained-tonal'
-                            onPress={closeModal}
-                            disabled={uploadData}
+                        <View
+                            style={{
+                                gap: 20,
+                            }}
                         >
-                            Cancel
-                        </Button>
 
-                        <Button
-                            mode='contained'
-                            onPress={openSelector}
-                            disabled={uploadData}
-                        >
-                            Select Image
-                        </Button>
+                            {!imageDims ? (
+                                <Button
+                                    mode='contained'
+                                    onPress={openSelector}
+                                    disabled={uploadData}
+                                >
+                                    Select Image
+                                </Button>
+                            ) : (
+                                <Button
+                                    mode='contained'
+                                    onPress={handleUpload}
+                                    disabled={uploading}
+                                >
+                                    Upload Image
+                                </Button>
+                            )}
 
-                    </Card.Actions>
-                )}
-            </Card>
+                            <Button
+                                mode='contained-tonal'
+                                onPress={skipImage}
+                                disabled={uploadData}
+                            >
+                                Skip
+                            </Button>
 
+                        </View>
+                        {/* {showActivity && <ActivityIndicator size='medium' />} */}
+                        {imageDims && (
+                            <ImagePreview
+                                preview={preview}
+                                width={imageDims.width}
+                                height={imageDims.height}
+                                uploading={uploadData}
+                            />
+                        )}
+                    </View>
+
+                    
+                {/* </Card> */}
+
+            </View>
         </View>
     )
 

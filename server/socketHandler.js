@@ -58,22 +58,20 @@ const socketHandler = io => socket => {
 		return socketIds
 	}
 
-	const sendConnections = async () => {
+	const refreshConnections = async () => {
 		const connections = await getDataFromConnections()
 		notifyEveryone('refresh_connections', connections)
-	}
-
-	const refreshConnections = () => {
-		sendConnections()
 	}
 
 	// fires on new socket connection
 
 	const onConnected = async () => {
 
-		socket.data.socketId = socket.id
+		setSocketData({
+			socketId: socket.id,
+		})
 
-		refreshConnections()
+		// refreshConnections()
 	}
 
 	// const handleSignedOutUser = async userId => {
@@ -88,7 +86,7 @@ const socketHandler = io => socket => {
 
 	const onDisconnect = (reason, details) => {
 		console.log(`socket disconnect: ${reason}${details ? `, ${details}` : ``}`)
-		refreshConnections()
+		// refreshConnections()
 	}
 
 	const getPrevId = async userId => {
@@ -100,20 +98,26 @@ const socketHandler = io => socket => {
 	const signOutPreviousSocketId = async userId => {
 		const prevId = await getPrevId(userId)
 		if (prevId) {
-			socket.broadcast.to(prevId).emit('force_signout', prevId)
+			socket.to(prevId).emit('force_signout', prevId)
 		}
+	}
+
+	const setSocketData = data => {
+		const socketData = {
+			...socket.data,
+			...data,
+		}
+		// console.log('socketData', socketData)
+		socket.data = socketData
+
+		refreshConnections()
 	}
 
 	const onUserConnected = async data => {
 		
 		// await signOutPreviousSocketId(data.userId)
 		
-		socket.data = {
-			...socket.data,
-			...data,
-		}
-		
-		refreshConnections()
+		setSocketData(data)
 	}
 
 	const onConnectionDetails = async user => {
@@ -124,31 +128,35 @@ const socketHandler = io => socket => {
 			await signOutPreviousSocketId(user._id)
 		}
 
-		socket.data = {
-			...socket.data,
+		setSocketData({
 			username: user.username,
 			userId: user._id,
-		}
-		
-		refreshConnections()
+		})
 	}
 
 	const onUserSignedOut = async userId => {
 
 		if (socket.data.userId === userId) {
-			socket.data.username = null
-			socket.data.userId = null
+			setSocketData({
+				username: null,
+				userId: null,
+			})
+			// socket.data.username = null
+			// socket.data.userId = null
 		}
 		
-		refreshConnections()
 	}
 
 	const onForcedSignoutComplete = async () => {
 
-		socket.data.username = null
-		socket.data.userId = null
+		setSocketData({
+			username: null,
+			userId: null,
+		})
+		// socket.data.username = null
+		// socket.data.userId = null
 
-		refreshConnections()
+		// refreshConnections()
 	}
 
 	const onNewBip = async bip => {

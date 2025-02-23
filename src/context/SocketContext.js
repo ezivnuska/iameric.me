@@ -111,15 +111,15 @@ export const SocketContextProvider = ({ children }) => {
     }
 
     const onRefreshConnections = payload => {
+        // addNotification('refreshing connections')
         dispatch({ type: 'SET_CONNECTIONS', payload })
     }
 
     const onForceSignout = socketId => {
         if (socket.id === socketId) {
-            reset()
+            // reset()
             socket.emit('forced_signout_complete', socketId)
-            addNotification('Signed out')
-            addNotification('Signed in on another client')
+            // addNotification('Signed out. Signed in on another client.')
         }
     }
 

@@ -115,7 +115,7 @@ const UserScreen = props => {
 const UserProfile = ({ profile }) => {
 
     const { theme, toggleTheme } = useTheme()
-    const { setModal } = useModal()
+    const { addModal } = useModal()
     const { authUser } = useUser()
 
     const isAuthUser = useMemo(() => profile && authUser._id === profile._id, [profile])
@@ -143,7 +143,7 @@ const UserProfile = ({ profile }) => {
                 key={`profile-${currentUser.username}-${Date.now()}`}
                 onPress={() => {
                     // console.log('SHOWCASE', profile)
-                    setModal('SHOWCASE', currentUser.profileImage._id)
+                    addModal('SHOWCASE', currentUser.profileImage._id)
                 }}
                 disabled={!currentUser.profileImage}
             >

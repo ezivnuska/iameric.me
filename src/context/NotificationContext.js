@@ -60,7 +60,7 @@ export const NotificationContextProvider = ({ children }) => {
     // }, [notifications])
 
     const addNotification = payload => {
-        playSound()
+        // playSound()
         dispatch({ type: 'ADD_NOTIFICATION', payload })
     }
 

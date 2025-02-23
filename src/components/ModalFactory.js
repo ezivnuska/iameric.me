@@ -35,10 +35,11 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             case 'MEMORY':
                 content = <MemoryForm data={data} />
+                fullscreen = true
                 break
             case 'MEMORY_IMAGE':
                 content = <MemoryImageSelector data={data} />
-                // fullscreen = true
+                fullscreen = true
                 break
             case 'IMAGE_UPLOAD':
                 content = <ImagePicker data={data} />
@@ -91,8 +92,9 @@ const ModalFactory = ({ modal, onClose }) => {
                 
                 <View
                     style={{
-                        width: (fullscreen && '100%'),
-                        // maxWidth: (!fullscreen && 400),
+                        flex: 1,
+                        // width: (!fullscreen && '80%'),
+                        maxWidth: (!fullscreen && '80%'),
                         marginHorizontal: 'auto',
                         zIndex: 100,
                     }}

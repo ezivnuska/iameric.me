@@ -34,30 +34,30 @@ const App = () => {
             <ThemeContextProvider>
                 <FormContextProvider>
                     <UserContextProvider>
-                        <SocketContextProvider>
-                            <Container>
-                                {/* <APIProvider
-                                    apiKey={apiKey}
-                                    version='weekly'
-                                    libraries={['marker', 'geocoding']}
-                                    onLoad={() => setMapsLoaded(true)}
-                                > */}
-                                {/* {(mapsLoaded === true) ? ( */}
-                                    <NotificationContextProvider>
-                                        <ModalContextProvider>
-                                            <FeedContextProvider>
-                                                <MemoryContextProvider>
-                                                    <BugContextProvider>
-                                                        <Layout />
-                                                    </BugContextProvider>
-                                                </MemoryContextProvider>
-                                            </FeedContextProvider>
-                                        </ModalContextProvider>
-                                    </NotificationContextProvider>
-                                    {/* ) : <ActivityIndicator />} */}
-                                {/* </APIProvider> */}
-                            </Container>
-                        </SocketContextProvider>
+                        <NotificationContextProvider>
+                            <SocketContextProvider>
+                                {/* <Container> */}
+                                    {/* <APIProvider
+                                        apiKey={apiKey}
+                                        version='weekly'
+                                        libraries={['marker', 'geocoding']}
+                                        onLoad={() => setMapsLoaded(true)}
+                                    > */}
+                                    {/* {(mapsLoaded === true) ? ( */}
+                                            <ModalContextProvider>
+                                                <FeedContextProvider>
+                                                    <MemoryContextProvider>
+                                                        <BugContextProvider>
+                                                            <Layout />
+                                                        </BugContextProvider>
+                                                    </MemoryContextProvider>
+                                                </FeedContextProvider>
+                                            </ModalContextProvider>
+                                        {/* ) : <ActivityIndicator />} */}
+                                    {/* </APIProvider> */}
+                                {/* </Container> */}
+                            </SocketContextProvider>
+                        </NotificationContextProvider>
                     </UserContextProvider>
                 </FormContextProvider>
             </ThemeContextProvider>

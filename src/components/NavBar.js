@@ -46,7 +46,7 @@ const ProfileNavBar = ({ navigation, route }) => {
 }
 
 const ImagesNavBar = ({ navigation, route }) => {
-    const { setModal } = useModal()
+    const { addModal } = useModal()
     const { uploading, user } = useUser()
     const isCurrentUser = useMemo(() => route.params?.username === user?.username, [user])
 
@@ -64,7 +64,7 @@ const ImagesNavBar = ({ navigation, route }) => {
             {isCurrentUser && (
                 <Appbar.Action
                     icon="file-image-plus"
-                    onPress={() => setModal('IMAGE_UPLOAD')}
+                    onPress={() => addModal('IMAGE_UPLOAD')}
                     disabled={uploading}
                 />
             )}
@@ -86,13 +86,13 @@ const ImagesNavBar = ({ navigation, route }) => {
 
 const BugNavBar = ({ navigation, route }) => {
 
-    const { setModal } = useModal()
+    const { addModal } = useModal()
 
     return (
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
             <Appbar.Content title='Bugs' />
-            <Appbar.Action icon='bug' onPress={() => setModal('BUG')} />
+            <Appbar.Action icon='bug' onPress={() => addModal('BUG')} />
         </Appbar.Header>
     )
 }
@@ -109,13 +109,13 @@ const UsersNavBar = ({ navigation, route }) => {
 
 const FeedNavBar = ({ navigation, route }) => {
 
-    const { setModal } = useModal()
+    const { addModal } = useModal()
 
     return (
         <Appbar.Header>
             <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
             <Appbar.Content title='Feed' />
-            <Appbar.Action icon="message-plus" onPress={() => setModal('FEEDBACK')} />
+            <Appbar.Action icon="message-plus" onPress={() => addModal('FEEDBACK')} />
         </Appbar.Header>
     )
 }
@@ -150,13 +150,13 @@ export default NavBar
 
 // const BugNavBar = ({ navigation, route }) => {
 
-//     const { setModal } = useModal()
+//     const { addModal } = useModal()
 
 //     return (
 //         <Appbar.Header>
 //             <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
 //             <Appbar.Content title='Bugs' />
-//             <Appbar.Action icon='bug' onPress={() => setModal('BUG')} />
+//             <Appbar.Action icon='bug' onPress={() => addModal('BUG')} />
 //         </Appbar.Header>
 //     )
 // }
@@ -189,7 +189,7 @@ export default NavBar
 // }
 
 // const ImagesNavBar = ({ navigation, route }) => {
-//     const { setModal } = useModal()
+//     const { addModal } = useModal()
 //     const { uploading, user } = useUser()
 //     const isCurrentUser = useMemo(() => route.params?.username === user?.username, [user])
 
@@ -207,7 +207,7 @@ export default NavBar
 //             {isCurrentUser && (
 //                 <Appbar.Action
 //                     icon="file-image-plus"
-//                     onPress={() => setModal('IMAGE_UPLOAD')}
+//                     onPress={() => addModal('IMAGE_UPLOAD')}
 //                     disabled={uploading}
 //                 />
 //             )}
@@ -225,13 +225,13 @@ export default NavBar
 
 // const FeedNavBar = ({ navigation, route }) => {
 
-//     const { setModal } = useModal()
+//     const { addModal } = useModal()
 
 //     return (
 //         <Appbar.Header>
 //             <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
 //             <Appbar.Content title='Feed' />
-//             <Appbar.Action icon="message-plus" onPress={() => setModal('FEEDBACK')} />
+//             <Appbar.Action icon="message-plus" onPress={() => addModal('FEEDBACK')} />
 //         </Appbar.Header>
 //     )
 // }

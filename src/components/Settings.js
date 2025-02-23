@@ -5,7 +5,7 @@ import { navigate } from '@utils/navigation'
 
 const Settings = () => {
     
-    const { closeModal, setModal } = useModal()
+    const { closeModal, addModal } = useModal()
     
     return (
         <Card>
@@ -53,7 +53,7 @@ const Settings = () => {
 
                     <Button
                         mode='outlined'
-                        onPress={() => setModal('DESTROY')}
+                        onPress={() => addModal('DESTROY')}
                         style={{ marginVertical: 10 }}
                     >
                         Close Account

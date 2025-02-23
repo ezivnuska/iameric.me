@@ -11,7 +11,7 @@ const HomeScreen = props => {
 
     const { authRoute, setAuthRoute } = useApp()
     const { reset, user, setUser } = useUser()
-    const { clearModal, setModal } = useModal()
+    const { clearModals, addModal } = useModal()
     const { notifySocket } = useSocket()
 
     // SUPER UGLY
@@ -53,7 +53,7 @@ const HomeScreen = props => {
         
         if (authRoute) {
             console.log('authRoute', authRoute)
-            setModal('AUTH')
+            addModal('AUTH')
         }
     }, [authRoute])
 
@@ -68,15 +68,16 @@ const HomeScreen = props => {
     }, [user])
 
     const handleSignout = async () => {
+        // console.log('handleSignout', params)
         if (params.signout && user) {
             const userId = user._id
             await signout(userId)
             notifySocket('user_signed_out', userId)
             cleanStorage()
             reset()
-            clearModal()
+            clearModals()
         }
-        props.navigation.navigate('Home')
+        props.navigation.navigate('Home', null)
     }
 
     const handleDestroy = async () => {
@@ -87,7 +88,7 @@ const HomeScreen = props => {
             notifySocket('user_signed_out', id)
             cleanStorage()
             reset()
-            clearModal()
+            clearModals()
         }
         props.navigation.navigate('Home')
     }

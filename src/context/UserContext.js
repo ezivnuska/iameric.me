@@ -20,7 +20,9 @@ const initialState = {
     usersLoading: false,
     userDetailsLoading: false,
 
+    getUser: () => {},
     getProfile: () => {},
+    getProfileImage: () => {},
     getUserProfileImage: () => {},
     findUserByUsername: () => {},
     addUser: () => {},
@@ -172,6 +174,20 @@ export const UserContextProvider = ({ children }) => {
         }
         return []
     }
+
+    const getUser = (id = null) => {
+        const userId = id || state.user._id
+        const user = state.users.filter(user => user._id === userId)[0]
+        return user
+    }
+
+    const getProfileImage = (id = null) => {
+        const userId = id || state.user._id
+        const user = state.users.filter(user => user._id === userId)[0]
+        return user.profileImage
+    }
+
+
     const findUserById = userId => state.users.filter(user => user._id === userId)[0]
     const findUserImageById = (id, images) => images.filter(img => img._id === id)[0]
     const findUserImage = (userId, imageId) => {
@@ -186,6 +202,8 @@ export const UserContextProvider = ({ children }) => {
     const getProfile = profileId => state.users.filter(user => user._id === profileId)[0]
 
     const actions = useMemo(() => ({
+        getUser,
+        getProfileImage,
         getProfile,
         getUserImages,
         findUserByUsername: username => state.users.filter(user => user.username === username)[0],
@@ -202,8 +220,8 @@ export const UserContextProvider = ({ children }) => {
         setUploadedImage,
         setImageUpload,
         getUserProfileImage: id => {
-            const { profileImage } = state.users.filter(user => user._id === id)[0]
-            return profileImage
+            const user = state.users.filter(user => user._id === id)[0]
+            return user?.profileImage
         },
         addImage: payload => {
             dispatch({ type: 'ADD_IMAGE', payload })
@@ -231,13 +249,14 @@ export const UserContextProvider = ({ children }) => {
         },
     }), [state, dispatch])
 
-    // const authUser = useMemo(() => state.users.filter(user => user._id === state.user._id)[0], [state.users])
+    const iam = useMemo(() => state.users.filter(user => user._id === state.user._id)[0], [state.users])
 
     return (
         <UserContext.Provider
             value={{
                 ...state,
                 authUser: state.user && state.users.filter(user => user._id === state.user._id)[0],
+                iam,
                 ...actions,
             }}
         >
@@ -249,6 +268,7 @@ export const UserContextProvider = ({ children }) => {
 const reducer = (state, action) => {
     
     const { payload, type } = action
+    // console.log(type, payload)
     
     let updatedUser
     let updatedUsers
@@ -307,13 +327,13 @@ const reducer = (state, action) => {
             const savedUser = state.users.filter(user => user._id === payload._id)[0]
             
             const users = savedUser
-                ? state.users.map(user => user._id === payload._id ? payload : user)
+                ? state.users.map(user => user._id === payload._id ? {...user, ...payload} : user)
                 : [ ...state.users, payload ]
             
             return {
                 ...state,
                 users,
-                user: state.user._id === payload._id ? payload : state.user,
+                user: state.user._id === payload._id ? {...state.user, ...payload} : state.user,
             }
             break
         case 'SET_IMAGE_LOADING':
@@ -433,7 +453,9 @@ const reducer = (state, action) => {
                 }
                 return item
             })
-            
+            console.log('updatedUsers', updatedUsers)
+            // const user = state.user.profileImage && updatedUser?._id === state.user._id ? updatedUser : state.user
+            console.log('updatedUser', updatedUser)
             return {
                 ...state,
                 users: updatedUsers,

@@ -21,7 +21,7 @@ const Notification = () => {
             <FlatList
                 data={notifications}
                 extraData={notifications}
-                keyExtractor={item => `note-${item._id}`}
+                keyExtractor={(item, index) => `note-${index}`}
                 // getItemLayout={(data, index) => (
                 //     {
                 //         length: ITEM_HEIGHT,

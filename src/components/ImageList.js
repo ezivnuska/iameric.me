@@ -63,6 +63,7 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
             loadedImage = await loadImage(id)
             
             if (loadedImage) {
+                console.log('ImageList:init', loadedImage)
                 updateImage(loadedImage)
             }
         }

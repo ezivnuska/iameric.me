@@ -7,9 +7,9 @@ const initialState = {
     loaded: false,
     loading: false,
     type: null,
-    setModal: () => {},
+    addModal: () => {},
     setNewModal: () => {},
-    clearModal: () => {},
+    clearModals: () => {},
     closeModal: () => {},
 }
 
@@ -28,9 +28,9 @@ export const ModalContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
-        setModal: (type, data) => {
+        addModal: (type, data) => {
             dispatch({
-                type: 'SET_MODAL',
+                type: 'ADD_MODAL',
                 payload: { data, type },
             })
         },
@@ -40,8 +40,8 @@ export const ModalContextProvider = props => {
                 payload: { data, type },
             })
         },
-        clearModal: () => {
-            dispatch({ type: 'CLEAR_MODAL' })
+        clearModals: () => {
+            dispatch({ type: 'CLEAR_MODALS' })
         },
         closeModal: () => {
             dispatch({ type: 'CLOSE_MODAL' })
@@ -63,7 +63,7 @@ export const ModalContextProvider = props => {
 const reducer = (state, action) => {
     const { type, payload } = action
     switch(type) {
-        case 'SET_MODAL':
+        case 'ADD_MODAL':
             return {
                 ...state,
                 modals: [
@@ -88,7 +88,7 @@ const reducer = (state, action) => {
                 modals: state.modals.slice(0, state.modals.length - 1),
             }
             break
-        case 'CLEAR_MODAL':
+        case 'CLEAR_MODALS':
             return {
                 ...state,
                 type: null,

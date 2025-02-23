@@ -6,7 +6,7 @@ import { loadMemories } from '@utils/memories'
     
 const MemoryScreen = props => {
 
-    const { memories, setMemoriesLoading } = useMemory()
+    const { memories, setMemories, setMemoriesLoading } = useMemory()
 
     const [ids, setIds] = useState(null)
 
@@ -14,9 +14,9 @@ const MemoryScreen = props => {
         initMemories()
     }, [])
 
-    useEffect(() => {
-        initMemories()
-    }, [memories])
+    // useEffect(() => {
+    //     initMemories()
+    // }, [memories])
     
     const initMemories = async () => {
 
@@ -25,14 +25,17 @@ const MemoryScreen = props => {
         setMemoriesLoading(false)
 
         if (loadedMemories) {
-            setIds(loadedMemories.map(item => item._id))
+            // console.log('loadedMemories', loadedMemories)
+            setMemories(loadedMemories)
+            // setMemories(loadedMemories.map(item => item._id))
         }
     }
 
     return (
         <Screen secure full {...props}>
 
-            {ids && <MemoryList ids={ids} {...props} />}
+            {memories && <MemoryList memories={memories} {...props} />}
+            {/* {ids && <MemoryList ids={ids} {...props} />} */}
             
         </Screen>
     )

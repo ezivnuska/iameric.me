@@ -56,7 +56,7 @@ const ProfileNavBar = ({ navigation, route }) => {
 }
 
 const ImagesNavBar = ({ navigation, route }) => {
-    const { setModal } = useModal()
+    const { addModal } = useModal()
     const { uploading, user } = useUser()
     const isCurrentUser = useMemo(() => route.params?.username === user?.username, [user])
 
@@ -83,7 +83,7 @@ const ImagesNavBar = ({ navigation, route }) => {
             {isCurrentUser && (
                 <Appbar.Action
                     icon='file-image-plus'
-                    onPress={() => setModal('IMAGE_UPLOAD')}
+                    onPress={() => addModal('IMAGE_UPLOAD')}
                     disabled={uploading}
                     style={{ margin: 0, padding: 0 }}
                 />

@@ -11,7 +11,7 @@ import { getMaxImageDims } from '@utils/images'
 const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
    
     const { updatePost } = useFeed()
-    const { setModal } = useModal()
+    const { addModal } = useModal()
     const { findUserById } = useUser()
 
     const [loading, setLoading] = useState(false)
@@ -85,7 +85,7 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
 
                     {post.image && imageDims && (
                         <Pressable
-                            onPress={() => setModal('SHOWCASE', post.image)}
+                            onPress={() => addModal('SHOWCASE', post.image)}
                         >
                             <Image
                                 source={`${Paths.ASSETS}/${author.username}/${post.image.filename}`}
@@ -117,7 +117,7 @@ const Feed = props => {
         deletePost,
     } = useFeed()
 
-    const { closeModal, setModal } = useModal()
+    const { closeModal, addModal } = useModal()
     const { socket } = useSocket()
     const { user } = useUser()
 
@@ -161,7 +161,7 @@ const Feed = props => {
                 title='Feed'
                 titleVariant='titleLarge'
                 // left={() => <IconButton icon='home' onPress={() => props.navigation.navigate('Feed')} />}
-                right={() => <IconButton icon='plus-thick' onPress={() => setModal('FEEDBACK')} size={30} />}
+                right={() => <IconButton icon='plus-thick' onPress={() => addModal('FEEDBACK')} size={30} />}
                 style={{ padding: 0, marginLeft: 15 }}
             />
 

@@ -44,7 +44,7 @@ const Form = ({
         })
         
         const fieldValues = getFields(state, data)
-        
+        console.log('fieldValues', fieldValues)
         initForm(fieldValues)
     }
     
@@ -123,7 +123,12 @@ const Form = ({
     }
     
     return (
-        <View style={{ gap: 10 }}>
+        <View
+            style={{
+                // flex: 1,
+                gap: 10,
+            }}
+        >
 
             {formReady && (
                 <FlatList
@@ -131,6 +136,12 @@ const Form = ({
                     data={fields}
                     keyExtractor={item => `item-${item.name}`}
                     // horizontal={landscape}
+                    style={{
+                        // flex: 1,
+                        borderWidth: 1,
+                        borderColor: 'yellow',
+                        borderStyle: 'dashed',
+                    }}
                     renderItem={({ item }) => {
                         const {
                             label,
@@ -144,6 +155,7 @@ const Form = ({
                         return (
                             <View>
                                 <TextInput
+                                    name={name}
                                     label={label}
                                     value={formFields[name] || ''}
                                     onChangeText={value => onChange(name, value)}

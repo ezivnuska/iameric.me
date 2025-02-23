@@ -10,20 +10,19 @@ const Screen = ({
 }) => {
 
     const { setAuthRoute } = useApp()
-    const { setModal } = useModal()
-    const { authUser } = useUser()
+    const { addModal } = useModal()
+    const { user } = useUser()
 
-    const authorized = useMemo(() => (!secure || authUser !== null), [authUser])
+    const authorized = useMemo(() => (!secure || user !== null), [user])
     const routeName = useMemo(() => props.route.name, [props])
 
     useEffect(() => {
-        
         if (!authorized) {
             console.log('not authorized for route', routeName)
             if (routeName !== 'Home') {
                 setAuthRoute(props.route)
                 props.navigation.navigate('Home')
-            } else setModal('AUTH')
+            } else addModal('AUTH')
         }
     }, [authorized])
 

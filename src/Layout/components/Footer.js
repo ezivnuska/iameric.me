@@ -36,7 +36,7 @@ const Connections = ({ connections, onPress }) => (
 const Footer = ({ route }) => {
 
     const { dark, landscape, toggleTheme } = useTheme()
-    const { setModal } = useModal()
+    const { addModal } = useModal()
     const { connections } = useSocket()
     const { user } = useUser()
 
@@ -59,7 +59,7 @@ const Footer = ({ route }) => {
                 statusBarHeight={0}
                 style={{ margin: 0, padding: 0 }}
             >
-                <Connections connections={connections} onPress={() => setModal('SOCKETS')} />
+                <Connections connections={connections} onPress={() => addModal('SOCKETS')} />
             </Appbar.Header>
 
             <Appbar.Header
@@ -95,7 +95,7 @@ const Footer = ({ route }) => {
 
                         <Appbar.Action
                             icon='cog'
-                            onPress={() => setModal('SETTINGS')}
+                            onPress={() => addModal('SETTINGS')}
                             style={{ margin: 0, padding: 0 }}
                         />
                     </>

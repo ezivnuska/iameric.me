@@ -22,7 +22,7 @@ const ImagePreview = ({ preview, width, height, uploading }) => {
                 position: 'relative',
             }}
         >
-            {imageLoaded && (
+            {!imageLoaded && (
                 <View
                     style={{
                         position: 'absolute',
@@ -31,36 +31,32 @@ const ImagePreview = ({ preview, width, height, uploading }) => {
                         right: 0,
                         bottom: 0,
                         zIndex: 100,
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        background: `rgba(0, 0, 0, ${uploading ? 0.8 : 0.5})`,
                     }}
                 >
-                    <ActivityIndicator size='medium' />
+                    <View
+                        style={{
+                            flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            background: (uploading &&`rgba(0, 0, 0, 0.3)`),
+                        }}
+                    >
+                        <ActivityIndicator size='small' />
+                    </View>
                 </View>
             )}
 
-            {/* <View
+            <Image
+                onLayout={onLayout}
+                source={{ uri: preview.uri }}
+                resizeMode='contain'
                 style={{
-                    // flex: 1,
                     height: '100%',
                     width: '100%',
                     zIndex: 10,
                 }}
-            > */}
-                <Image
-                    onLayout={onLayout}
-                    source={{ uri: preview.uri }}
-                    resizeMode='contain'
-                    style={{
-                        flex: 1,
-                        alignItems: 'stretch',
-                        zIndex: 10,
-                    }}
-                />
-
-            {/* </View> */}
+            />
 
         </View>
     )

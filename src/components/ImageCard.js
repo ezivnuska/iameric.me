@@ -23,7 +23,7 @@ const CardHeader = ({ user, close, time = null }) => {
         >
             <SmartAvatar
                 user={user}
-                size={time ? 40 : 30}
+                size={landscape ? 30 : 40}
             />
 
             <View
@@ -68,7 +68,7 @@ const CardHeader = ({ user, close, time = null }) => {
 const ImageCard = ({ data }) => {
 
     const { addNotification } = useNotification()
-    const { closeModal, setModal } = useModal()
+    const { closeModal, addModal } = useModal()
     const { dims, landscape, theme } = useTheme()
     const { user, setDeletedImage, setProfileImage, updateUser } = useUser()
 
@@ -381,7 +381,7 @@ const ImageCard = ({ data }) => {
                                         ? 'message-plus-outline'
                                         : 'comment-edit-outline'
                                 }
-                                onPress={() => setModal('CAPTION', image)}
+                                onPress={() => addModal('CAPTION', image)}
                             />
                         )}
                         

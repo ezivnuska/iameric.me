@@ -7,8 +7,8 @@ import { useModal, useTheme, useUser } from '@context'
 const Header = props => {
     
     const { landscape } = useTheme()
-    const { authUser } = useUser()
-    const { setModal } = useModal()
+    const { user } = useUser()
+    const { addModal } = useModal()
     
     return (
         <Appbar.Header
@@ -21,7 +21,7 @@ const Header = props => {
         >
             
             <Appbar.Content
-                title={`iam${authUser?.username || 'eric'}`}
+                title={`iam${user?.username || 'eric'}`}
                 titleVariant='headlineLarge'
                 titleStyle={{ fontWeight: 700 }}
                 onPress={() => props.navigation.navigate('Home')}
@@ -33,26 +33,32 @@ const Header = props => {
                 </View>
             )} */}
 
-            <Appbar.Action icon='bookshelf' onPress={() => props.navigation.navigate('Memories')}
+            {user && (
+                <Appbar.Action icon='bookshelf' onPress={() => props.navigation.navigate('Memories')}
                 style={{ margin: 0, padding: 0 }}
-            />
+                />
+            )}
 
-            <Appbar.Action icon='newspaper-variant-multiple' onPress={() => props.navigation.navigate('Feed')}
-                style={{ margin: 0, padding: 0 }}
-            />
+            {user && (
+                <Appbar.Action icon='newspaper-variant-multiple' onPress={() => props.navigation.navigate('Feed')}
+                    style={{ margin: 0, padding: 0 }}
+                />
+            )}
             
-            <Appbar.Action icon='account-group' onPress={() => props.navigation.navigate('Users')}
-                style={{ margin: 0, padding: 0 }}
-            />
+            {user && (
+                <Appbar.Action icon='account-group' onPress={() => props.navigation.navigate('Users')}
+                    style={{ margin: 0, padding: 0 }}
+                />
+            )}
 
             <Appbar.Action icon='certificate' onPress={() => props.navigation.navigate('Work')}
                 style={{ margin: 0, padding: 0 }}
             />
             
-            {authUser ? (
+            {user ? (
                 <SmartAvatar
-                    user={authUser}
-                    onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: authUser?.username } })}
+                    user={user}
+                    onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: user?.username } })}
                     size={35}
                     style={{ paddingHorizontal: 10 }}
                 />
@@ -60,7 +66,7 @@ const Header = props => {
                 <IconButton
                     icon='power'
                     // mode='contained'
-                    onPress={() => setModal('AUTH')}
+                    onPress={() => addModal('AUTH')}
                     // style={{ marginRight: 10 }}
                     // compact
                 />

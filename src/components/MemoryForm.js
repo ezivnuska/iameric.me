@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Button, Card, IconButton } from 'react-native-paper'
-import { DateSelector, Form, ImagePreview } from '@components'
+import { View } from 'react-native'
+import { Button, Card, IconButton, Text } from 'react-native-paper'
+import { DateSelector, Form, ImagePreview, MemoryImageSelector } from '@components'
 import { useMemory, useForm, useModal, useSocket, useUser } from '@context'
 import { addMemoryImage, createMemory } from '@utils/memories'
 import { getMaxImageDims, handleImageData, openFileSelector } from '@utils/images'
@@ -19,7 +20,7 @@ const MemoryForm = ({ data = null }) => {
 
     const { uploadData, updateMemory, setUploadData } = useMemory()
     const { formError } = useForm()
-    const { closeModal } = useModal()
+    const { addModal, clearModals, closeModal } = useModal()
     const { socket } = useSocket()
     const { user, uploading, setUploading } = useUser()
 
@@ -33,36 +34,38 @@ const MemoryForm = ({ data = null }) => {
     const month = useMemo(() => date && getMonth(date), [date])
     const day = useMemo(() => date && getDate(date), [date])
 
-    useEffect(() => {
-        if (uploadData) {
-            setPreview(uploadData.preview)
-            setUploadData(null)
-        }
-    }, [uploadData])
+    const [memory, setMemory] = useState(null)
 
-    useEffect(() => {
-    
-        if (payload) {
+// useEffect(() => {
+//     if (uploadData) {
+//         setPreview(uploadData.preview)
+//         setUploadData(null)
+//     }
+// }, [uploadData])
 
-            const { uri, height, width } = payload.imageData
-            setPreview({ uri, height, width })
+// useEffect(() => {
 
-        } else {
-            setPreview(null)
-        }
-    }, [payload])
+//     if (payload) {
 
-    useEffect(() => {
+//         const { uri, height, width } = payload.imageData
+//         setPreview({ uri, height, width })
 
-        if (preview) {
+//     } else {
+//         setPreview(null)
+//     }
+// }, [payload])
 
-            setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
+// useEffect(() => {
 
-        } else {
-            setImageDims(null)
-        }
+//     if (preview) {
 
-    }, [preview])
+//         setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
+
+//     } else {
+//         setImageDims(null)
+//     }
+
+// }, [preview])
 
     // const uploadMemoryImage = async (memoryId, data) => {
     //     setUploading(preview)
@@ -107,93 +110,141 @@ const MemoryForm = ({ data = null }) => {
 
         //         uploadMemoryImage(memory._id, image)
         //     }
+            setMemory(memory)
 
         }
 
-        closeModal()
+        // closeModal()
     }
 
-    const openSelector = async () => {
-        const uri = await openFileSelector()
+    // const openSelector = async () => {
+    //     const uri = await openFileSelector()
         
-        if (uri) {
-            handleSelectedImage(uri)
-        } else {
-            console.log('no selection made')
-        }
-    }
+    //     if (uri) {
+    //         handleSelectedImage(uri)
+    //     } else {
+    //         console.log('no selection made')
+    //     }
+    // }
 
-    const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
+    // const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
 
-    const handleSelectedImage = async uri => {
+    // const handleSelectedImage = async uri => {
 
-        const blob = await dataURItoBlob(uri)
+    //     const blob = await dataURItoBlob(uri)
         
-        const reader = new FileReader()
+    //     const reader = new FileReader()
         
-        reader.onload = ({ target }) => {
-            const exif = EXIF.readFromBinaryFile(target.result)
-            loadImage(uri, exif, user._id)
-        }
+    //     reader.onload = ({ target }) => {
+    //         const exif = EXIF.readFromBinaryFile(target.result)
+    //         loadImage(uri, exif, user._id)
+    //     }
 
-        reader.readAsArrayBuffer(blob)
-    }
+    //     reader.readAsArrayBuffer(blob)
+    // }
 
-    const loadImage = async (src, exif, id) => {
+    // const loadImage = async (src, exif, id) => {
         
-        const image = new Image()
+    //     const image = new Image()
         
-        image.onload = async () => {
-            const data = await handleImageData(id, image, exif)
+    //     image.onload = async () => {
+    //         const data = await handleImageData(id, image, exif)
             
-            if (data) setPayload(data)
-            else console.log('error loading image')
-        }
+    //         if (data) setPayload(data)
+    //         else console.log('error loading image')
+    //     }
 
-        image.src = src
-    }
+    //     image.src = src
+    // }
 
     return (
-        <Card>
+        <View
+            style={{
+                flex: 1,
+                borderWidth: 1,
+                borderColor: 'red',
+            }}
+        >
 
-            <Card.Title
-                title='Create Memory'
-                titleVariant='headlineLarge'
-                right={() => <IconButton icon='close-thick' onPress={closeModal} />}
-            />
-            
-            <Card.Content style={{ gap: 15 }}>
-
-                <DateSelector
-                    memory={data}
-                    onChange={value => setDate(value)}
+            {/* <View> */}
+                <Card.Title
+                    title='Create Memory'
+                    titleVariant='headlineMedium'
+                    right={() => <IconButton icon='close-thick' onPress={closeModal} />}
                 />
 
-                <Form
-                    fields={fields}
-                    data={data}
-                    onCancel={closeModal}
-                    onSubmit={handleSubmit}
-                />
+            {/* </View> */}
+
+            <View
+                style={{
+                    flex: 1,
+                    background: 'orange',
+                }}
+            >
+                
+                <View
+                    style={{ flex: 1, gap: 15, borderWidth: 1, borderColor: 'yellow', flexDirection: 'row', alignItems: 'center' }}
+                >
                     
-                    {/* {preview && (
-                        <ImagePreview
-                            uri={preview?.uri}
-                            uploading={uploading}
-                        />
+                    {memory ? (
+                        <View style={{ gap: 15 }}>
+
+                            <Text variant='titleMedium'>Memory Saved!</Text>
+                            <Text variant='bodyMedium'>{memory.body}</Text>
+
+                            {!uploadData && (
+                                <View>
+                                    <Text variant='titleMedium'>Would you like to add an image?</Text>
+                                    <MemoryImageSelector data={memory} />
+                                    {/* <Button
+                                        // mode='contained'
+                                        onPress={clearModals}
+                                    >
+                                        Skip
+                                    </Button>
+                                    <Button
+                                        mode='contained'
+                                        onPress={() => addModal('MEMORY_IMAGE', memory)}
+                                    >
+                                        Add an Image
+                                    </Button> */}
+                                    {/* <MemoryImageSelector data={memory} /> */}
+                                </View>
+                            )
+                            // : (
+                            //     <ImagePreview
+                            //         uri={uploadData.preview.uri}
+                            //         uploading={uploading}
+                            //     />
+                            // )
+                            }
+
+                        </View>
+                    ) : (
+                        <View style={{ flex: 1, gap: 15 }}>
+                            <Card>
+                                <Card.Content>
+                                    <DateSelector
+                                        memory={data}
+                                        onChange={value => setDate(value)}
+                                    />
+                
+                                    <Form
+                                        fields={fields}
+                                        data={data}
+                                        onCancel={closeModal}
+                                        onSubmit={handleSubmit}
+                                    />
+                                </Card.Content>
+                            </Card>
+                        </View>
                     )}
 
-                    <Button
-                        icon={data?.image ? 'file-image-remove' : 'file-image-plus'}
-                        mode='contained'
-                        onPress={openSelector}
-                        disabled={formError}
-                    >
-                        Add Image
-                    </Button>
-                </Form> */}
-            </Card.Content>
-        </Card>
+                        
+                </View>
+                
+            </View>
+        </View>
     )
 }
 

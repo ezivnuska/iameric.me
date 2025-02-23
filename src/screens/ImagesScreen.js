@@ -9,7 +9,7 @@ const ImagesScreen = props => {
 
     const { landscape, styles } = useTheme()
     const { addNotification } = useNotification()
-    const { setModal } = useModal()
+    const { addModal } = useModal()
     const {
         deletedImage,
         imageUpload,
@@ -151,7 +151,7 @@ const ImagesScreen = props => {
                         images={images}
                         user={profile}
                         list={props.route.params?.list || landscape}
-                        onPress={image => setModal('SHOWCASE', image)}
+                        onPress={image => addModal('SHOWCASE', image)}
                         onRefresh={onRefresh}
                         refreshing={loading}
                     />

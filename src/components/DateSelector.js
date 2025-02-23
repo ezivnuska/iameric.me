@@ -150,15 +150,6 @@ const DateSelector = ({ onChange, memory = null }) => {
                 marginHorizontal: 'auto',
             }}
         >
-            {selectedDate && (
-                <View style={{ marginHorizontal: 'auto' }}>
-                    <Text
-                        variant='titleLarge'
-                    >
-                        {selectedDate.toDateString()}
-                    </Text>
-                </View>
-            )}
 
             <View
                 style={{
@@ -300,6 +291,16 @@ const DateSelector = ({ onChange, memory = null }) => {
                 </View>
 
             </View>
+            
+            {selectedDate && (
+                <View style={{ marginHorizontal: 'auto' }}>
+                    <Text
+                        variant='titleLarge'
+                    >
+                        {selectedDate.toDateString()}
+                    </Text>
+                </View>
+            )}
         </View>
     )
 }
