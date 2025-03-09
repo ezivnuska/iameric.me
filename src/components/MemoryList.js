@@ -143,6 +143,7 @@ const MemoryListItem = ({ onDelete, memory, ...props }) => {
                         {imageDims && (
                             <Pressable
                                 onPress={() => addModal('SHOWCASE', memory.image)}
+                                disabled={memory.image.uri}
                                 style={[{
                                     width: imageDims.width,
                                     height: imageDims.height,

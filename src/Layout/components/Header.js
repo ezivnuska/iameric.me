@@ -17,7 +17,6 @@ const Header = props => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 // width: '100%',
-                maxWidth: landscape ? null : 600,
                 paddingLeft: 15,
                 // paddingRight: 5,
                 // marginHorizontal: 'auto',
@@ -25,7 +24,13 @@ const Header = props => {
                 // backgroundColor: 'yellow',
             }}
         >
-            
+            <View
+                style={{
+                    maxWidth: landscape ? null : 600,
+                }}
+            >
+                
+            </View>
             <Appbar.Content
                 title={`iam${user?.username || 'eric'}`}
                 titleVariant='headlineLarge'
