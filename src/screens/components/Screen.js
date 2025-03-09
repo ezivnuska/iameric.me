@@ -35,8 +35,11 @@ const Screen = ({
                 showsVerticalScrollIndicator={false}
                 style={{ flex: 1 }}
                 contentContainerStyle={{
-                    paddingHorizontal: full ? 0 : 15,
                     flex: 1,
+                    paddingHorizontal: full ? 0 : 15,
+                    marginHorizontal: 'auto',
+                    maxWidth: 600,
+                    // flex: 1,
                 }}
             >
                 {children}

@@ -87,7 +87,7 @@ const ImageCard = ({ data }) => {
 
     const opacity = useSharedValue(1)
     const opacityStyle = useAnimatedStyle(() => ({
-        opacity: opacity.value,
+        opacity: interpolate(opacity.value, [0, 1], [0, 0.8]),
         visibility: detailsVisible ? 'visible' : 'hidden',
     }))
 
@@ -268,7 +268,8 @@ const ImageCard = ({ data }) => {
                         position: 'absolute',
                         top: 0, left: 0, right: 0,
                         zIndex: 30,
-                        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                        backgroundColor: theme.colors.background,
+                        // backgroundColor: 'rgba(0, 0, 0, 0.75)',
                     }, opacityStyle]}
                 >
 
@@ -322,7 +323,8 @@ const ImageCard = ({ data }) => {
                     position: 'absolute',
                     top: 0, right: 0, left: 0,
                     zIndex: 200,
-                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                    backgroundColor: theme.colors.background,
+                    // backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 }, opacityStyle]}
             >
 
@@ -341,7 +343,8 @@ const ImageCard = ({ data }) => {
                     position: 'absolute',
                     bottom: 0, right: 0, left: 0,
                     zIndex: 300,
-                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                    backgroundColor: theme.colors.background,
+                    // backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 }, opacityStyle]}
             >
                 {image.caption && (
