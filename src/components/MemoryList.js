@@ -102,7 +102,7 @@ const MemoryListItem = ({ onDelete, memory, ...props }) => {
                     <Text
                         variant='titleMedium'
                     >
-                        {memory.author.username}
+                        {memory.author?.username}
                     </Text>
     
                     <Text
@@ -136,27 +136,28 @@ const MemoryListItem = ({ onDelete, memory, ...props }) => {
                     gap: landscape ? 15 : 10,
                 }}
             >
-
-                <View
-                    onLayout={onLayout}
-                >
-                    {memory?.image && imageDims && (
-                        <Pressable
-                            onPress={() => addModal('SHOWCASE', memory.image)}
-                            style={[{
-                                width: imageDims.width,
-                                height: imageDims.height,
-                            }, shadow]}
-                        >
-                            <ImageLoader
-                                image={memory.image}
-                                user={memory.author}
-                                memoryId={memory._id}
-                            />
-                            
-                        </Pressable>
-                    )}
-                </View>
+                {memory?.image && (
+                    <View
+                        onLayout={onLayout}
+                    >
+                        {imageDims && (
+                            <Pressable
+                                onPress={() => addModal('SHOWCASE', memory.image)}
+                                style={[{
+                                    width: imageDims.width,
+                                    height: imageDims.height,
+                                }, shadow]}
+                            >
+                                <ImageLoader
+                                    image={memory.image}
+                                    user={memory.author}
+                                    memoryId={memory._id}
+                                />
+                                
+                            </Pressable>
+                        )}
+                    </View>
+                )}
                     
                 <View
                     style={{
@@ -293,23 +294,32 @@ const MemoryList = props => {
             style={{ flex: 1 }}
         >
 
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginLeft: 15 }}>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginLeft: 15,
+                }}
+            >
                 <Text variant='titleLarge'>Memories</Text>
+
                 <IconButton
                     icon='plus-thick'
                     onPress={() => addModal('MEMORY')}
-                    size={30}
-                    style={{ marginHorizontal: 3 }}
+                    size={25}
+                    style={{ margin: 0, marginHorizontal: 3 }}
                 />
+
             </View>
 
-            <Card.Content style={{ flex: 1, padding: 0 }}>
+            <View style={{ flex: 1, padding: 0 }}>
                 
                 <FlatList
                     ref={listRef}
                     data={memories}
                     extraData={memories}
-                    keyExtractor={item => `memory-${item._id}`}
+                    keyExtractor={(item, index) => `memory-${item._id}-${index}`}
                     renderItem={({ item }) => (
                         <MemoryListItem
                             memory={item}
@@ -317,10 +327,10 @@ const MemoryList = props => {
                             style={{ flex: 1 }}
                         />
                     )}
-                    ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 10 }} />}
+                    ItemSeparatorComponent={({ highlighted }) => <Divider />}
                 />
 
-            </Card.Content>
+            </View>
 
         </Card>
     )

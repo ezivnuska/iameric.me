@@ -6,11 +6,8 @@ import { getFields, validateFields } from '@utils/form'
 
 const Form = ({
     fields,
-    onCancel = null,
-    color = null,
     data = null,
     onSubmit = null,
-    title = null,
     children = null,
 }) => {
 
@@ -44,16 +41,14 @@ const Form = ({
         })
         
         const fieldValues = getFields(state, data)
-        console.log('fieldValues', fieldValues)
+        // console.log('fieldValues', fieldValues)
         initForm(fieldValues)
     }
     
     useEffect(() => {
+
+        // if (!formReady) initFields()
         
-        // if (!formReady) {
-            
-        //     initFields()
-        // }
         return () => resetForm()
     }, [])
 
@@ -123,25 +118,12 @@ const Form = ({
     }
     
     return (
-        <View
-            style={{
-                flex: 1,
-                gap: 10,
-            }}
-        >
+        <View style={{ gap: 10 }}>
 
             {formReady && (
                 <FlatList
-                    // ItemSeparatorComponent={({ highlighted }) => <Divider />}
                     data={fields}
                     keyExtractor={item => `item-${item.name}`}
-                    // horizontal={landscape}
-                    style={{
-                        // flex: 1,
-                        borderWidth: 1,
-                        borderColor: 'yellow',
-                        borderStyle: 'dashed',
-                    }}
                     renderItem={({ item }) => {
                         const {
                             label,
@@ -168,7 +150,7 @@ const Form = ({
                                     onKeyPress={!multiline && onEnter}
                                     dirty={getDirty(name)}
                                     multiline={multiline}
-                                    numberOfLines={20}
+                                    rows={7}
                                 />
                                 <HelperText type='error' visible={true}>
                                     {getError(name)}

@@ -46,7 +46,7 @@ const DateSelector = ({ onChange, memory = null }) => {
         
         initOptions()
 
-        console.log('memory', memory)
+        // console.log('memory', memory)
     }, [])
 
     const initOptions = () => {

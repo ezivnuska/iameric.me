@@ -35,6 +35,12 @@ const MemoryForm = ({ data = null }) => {
     const [memory, setMemory] = useState(null)
 
     useEffect(() => {
+        if (memory && memory.image) {
+            clearModals()
+        }
+    }, [memory])
+
+    useEffect(() => {
 
         if (payload) {
 
@@ -152,7 +158,7 @@ const MemoryForm = ({ data = null }) => {
                         paddingHorizontal: 15,
                     }}
                 >
-                    New Memory
+                    {`${memory ? 'Edit' : 'New'} Memory`}
                 </Text>
 
                 <IconButton
@@ -160,7 +166,7 @@ const MemoryForm = ({ data = null }) => {
                     onPress={closeModal}
                     style={{
                         margin: 0,
-                        paddingHorizontal: 5,
+                        paddingHorizontal: 10,
                     }}
                 />
             </View>
@@ -169,11 +175,13 @@ const MemoryForm = ({ data = null }) => {
             <View
                 style={{
                     flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                     paddingVertical: 10,
                     paddingHorizontal: 15,
                     gap: 15,
-                    borderWidth: 1,
-                    borderColor: 'yellow',
+                    // borderWidth: 1,
+                    // borderColor: 'yellow',
                 }}
             >
                 
@@ -181,41 +189,26 @@ const MemoryForm = ({ data = null }) => {
                     <View
                         style={{
                             flex: 1,
+                            flexDirection: 'row',
+                            justifyContent: 'space-evenly',
+                            alignItems: 'center',
                             gap: 15,
-                            flexDirection: landscape ? 'row' : 'column',
                         }}
                     >
-
-                        <View style={{ flex: 1, gap: 10 }}>
-                            <Text variant='titleMedium'>
-                                {date?.toDateString() || 'Date unknown'}
-                            </Text>
-                            <Text variant='bodyMedium'>{memory.body.length > 140 ? `${memory.body.substr(0, 140)}...` : memory.body}</Text>
-                        </View>
-
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-evenly',
-                                gap: 20,
-                            }}
+    
+                        <Button
+                            mode='contained'
+                            onPress={openSelector}
                         >
-    
-                            <Button
-                                mode='contained'
-                                onPress={openSelector}
-                            >
-                                Add Image
-                            </Button>
-    
-                            <Button
-                                mode='text'
-                                onPress={clearModals}
-                            >
-                                Skip
-                            </Button>
-    
-                        </View>
+                            Add Image
+                        </Button>
+
+                        <Button
+                            mode='text'
+                            onPress={clearModals}
+                        >
+                            Skip
+                        </Button>
 
                     </View>
                 ) : (
@@ -223,45 +216,20 @@ const MemoryForm = ({ data = null }) => {
                         style={{
                             flex: 1,
                             gap: 15,
-                            flexDirection: landscape ? 'row' : 'column',
                         }}
                     >
-                        <View
-                            style={{
-                                flex: (landscape && 1),
-                                // gap: 15,
-                            }}
-                        >
-                            <Text variant='titleLarge'>
-                                {date?.toDateString() || 'date unknown'}
-                            </Text>
-                        </View>
+                        <DateSelector
+                            memory={data}
+                            onChange={value => setDate(value)}
+                        />
 
-                        <View
-                            style={{
-                                flex: 1,
-                                gap: 15,
-                            }}
-                        >
-                            <DateSelector
-                                memory={data}
-                                onChange={value => setDate(value)}
-                            />
-                            
-                            <View
-                                style={{
-                                    flex: 1,
-                                    background: 'green',
-                                }}
-                            >
-                                <Form
-                                    fields={fields}
-                                    data={data}
-                                    onCancel={closeModal}
-                                    onSubmit={handleSubmit}
-                                />
-                            </View>
-                        </View>
+                        <Form
+                            fields={fields}
+                            data={data}
+                            onCancel={closeModal}
+                            onSubmit={handleSubmit}
+                        />
+
                     </View>
                 )}
                 

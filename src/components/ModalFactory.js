@@ -49,6 +49,7 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             case 'CAPTION':
                 content = <CaptionForm data={data} />
+                fullscreen = true
                 break
             case 'FEEDBACK':
                 content = <PostForm data={data} />

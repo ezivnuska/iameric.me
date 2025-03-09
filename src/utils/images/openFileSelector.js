@@ -63,12 +63,12 @@ const openImagePickerAsync = async () => {
 
 const openFileSelector = async () => {
     let uri = false
-    console.log('Platform.OS:', Platform.OS)
+    console.log('Platform:', Platform.OS)
     if (Platform.OS === 'web') {
-        console.log('opening ImageSelector')
+        // console.log('opening ImageSelector')
         uri = await openImageSelector()
     } else {
-        console.log('opening ImagePickerAsync')
+        // console.log('opening ImagePickerAsync')
         uri = await openImagePickerAsync()
     }
     

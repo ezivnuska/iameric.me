@@ -10,7 +10,6 @@ const deleteMemoryById = async (req, res) => {
             .findByIdAndDelete(req.params.id)
         
         if (memory) {
-            console.log('Memory deleted', memory)
 
             return res.status(200).json({ memory })
         }

@@ -11,12 +11,18 @@ const Header = props => {
     const { addModal } = useModal()
     
     return (
-        <Appbar.Header
+        <View
             style={{
-                width: '100%',
-                maxWidth: landscape ? null : 600,
-                marginHorizontal: 'auto',
+                flexDirection: 'row',
                 justifyContent: 'space-between',
+                alignItems: 'center',
+                // width: '100%',
+                maxWidth: landscape ? null : 600,
+                paddingLeft: 15,
+                // paddingRight: 5,
+                // marginHorizontal: 'auto',
+                paddingVertical: !landscape && 3,
+                // backgroundColor: 'yellow',
             }}
         >
             
@@ -60,7 +66,7 @@ const Header = props => {
                     user={user}
                     onPress={() => props.navigation.navigate('User', { screen: 'Profile', params: { username: user?.username } })}
                     size={35}
-                    style={{ paddingHorizontal: 10 }}
+                    style={{ paddingLeft: 15, paddingRight: 7 }}
                 />
             ) : (
                 <IconButton
@@ -72,7 +78,7 @@ const Header = props => {
                 />
             )}
 
-        </Appbar.Header>
+        </View>
     )
 }
 
