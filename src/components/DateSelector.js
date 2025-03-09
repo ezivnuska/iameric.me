@@ -163,7 +163,7 @@ const DateSelector = ({ onChange, memory = null }) => {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     gap: 10,
-                    background: 'yellow',
+                    // background: 'yellow',
                 }}
             >
                 <View style={{ flex: 1 }}>

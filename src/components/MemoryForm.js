@@ -74,7 +74,7 @@ const MemoryForm = ({ data = null }) => {
         let newMemory = await createMemory(memoryData)
         
         if (newMemory) {
-            addMemory(newMemory)
+            updateMemory(newMemory)
             setMemory(newMemory)
         }
     }
@@ -141,14 +141,19 @@ const MemoryForm = ({ data = null }) => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View
+            style={{
+                flex: 1,
+                gap: 15,
+                backgroundColor: theme.colors.background,
+            }}
+        >
 
             <View
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingVertical: 5,
-                    backgroundColor: theme.colors.background,
                 }}
             >
                 <Text
@@ -171,31 +176,16 @@ const MemoryForm = ({ data = null }) => {
                 />
             </View>
 
-
             <View
                 style={{
                     flex: 1,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingVertical: 10,
                     paddingHorizontal: 15,
-                    gap: 15,
-                    // borderWidth: 1,
-                    // borderColor: 'yellow',
                 }}
             >
-                
+
                 {memory ? (
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            justifyContent: 'space-evenly',
-                            alignItems: 'center',
-                            gap: 15,
-                        }}
-                    >
-    
+                    <View style={{ gap: 15 }}>
+
                         <Button
                             mode='contained'
                             onPress={openSelector}
@@ -212,28 +202,25 @@ const MemoryForm = ({ data = null }) => {
 
                     </View>
                 ) : (
-                    <View
-                        style={{
-                            flex: 1,
-                            gap: 15,
-                        }}
-                    >
+                    <View style={{ gap: 15 }}>
+
                         <DateSelector
                             memory={data}
                             onChange={value => setDate(value)}
                         />
 
                         <Form
-                            fields={fields}
                             data={data}
+                            fields={fields}
                             onCancel={closeModal}
                             onSubmit={handleSubmit}
                         />
 
                     </View>
                 )}
-                
+
             </View>
+                
         </View>
     )
 }

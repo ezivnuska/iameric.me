@@ -3,7 +3,7 @@ import { FlatList, Pressable, View } from 'react-native'
 import { Card, Divider, IconButton, Text } from 'react-native-paper'
 import { ImageLoader, SmartAvatar } from '@components'
 import { useMemory, useModal, useSocket, useTheme, useUser } from '@context'
-import { addMemoryImage, deleteMemoryWithId, loadMemories, loadMemory } from '@utils/memories'
+import { deleteMemoryWithId, loadMemories, loadMemory } from '@utils/memories'
 import { getMaxImageDims } from '@utils/images'
 import { getTime } from '@utils/time'
 
@@ -215,14 +215,11 @@ const MemoryList = props => {
 
     const {
         memories,
-        // uploadData,
         updateMemory,
         setMemories,
         deleteMemory,
-        // setUploadData,
     } = useMemory()
 
-    // const { setUploading } = useUser()
     const { modal, closeModal, addModal } = useModal()
     const { socket } = useSocket()
 
@@ -239,45 +236,15 @@ const MemoryList = props => {
 
     useEffect(() => {
         socket.on('new_memory', memory => {
-            console.log('new memory', memory)
+            console.log(' socket heard new memory', memory)
             updateMemory(memory)
         })
         socket.on('deleted_memory', deleteMemory)
         initMemories()
     }, [])
 
-    // const addImage = async upload => {
-        
-    //     const { imageData, thumbData, memoryId, preview } = upload
-        
-    //     // setUploading(preview)
-        
-    //     // updateMemory({
-    //     //     _id: memoryId,
-    //     //     upload,
-    //     // })
-
-    //     const memory = await addMemoryImage(memoryId, { imageData, thumbData })
-        
-    //     if (memory) {
-    //         updateMemory({
-    //             ...memory,
-    //             upload: null,
-    //         })
-    //         setUploadData(null)
-    //         setUploading(null)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     if (uploadData) {
-    //         addImage(uploadData)
-    //     }
-        
-    // }, [uploadData])
-
     const removeMemory = async id => {
-        console.log('removing memory with id:', id)
+        
         await deleteMemoryWithId(id)
 
         socket.emit('memory_deleted', id)

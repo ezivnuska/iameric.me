@@ -56,6 +56,7 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             case 'SETTINGS':
                 content = <Settings />
+                fullscreen = true
                 break
             case 'SHOWCASE':
                 content = <ImageCard data={data} />
@@ -112,9 +113,12 @@ const ModalFactory = ({ modal, onClose }) => {
             deviceWidth={dims.width}
             deviceHeight={dims.height}
             animationType='fade'
-            transparent={true}
+            transparent={false}
             onRequestClose={onClose}
-            style={{ margin: 0 }}
+            style={{
+                margin: 0,
+                backgroundColor: theme.colors.background,
+            }}
         >
             <View style={{ flex: 1 }}>
                 {modal && renderModalContent()}
