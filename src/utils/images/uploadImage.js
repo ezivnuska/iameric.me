@@ -2,6 +2,7 @@ import axios from 'axios'
 import { FileSystemUploadType } from 'expo-file-system'
 
 const uploadImage = async (imageData, onProgress = null) => {
+    console.log('imageData', imageData)
     // expecting { userId, imageData, thumbData, avatar=null, location=null }
     const { data } = await axios.post(`/api/image/upload`, imageData, {
         // headers: {

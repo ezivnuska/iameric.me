@@ -86,21 +86,21 @@ const ImagesScreen = props => {
 
     }, [deletedImage])
 
-    useEffect(() => {
+    // useEffect(() => {
             
-        if (uploadedImage) {
+    //     if (uploadedImage) {
 
-            setImages([
-                ...images,
-                uploadedImage,
-            ])
+    //         setImages([
+    //             ...images,
+    //             uploadedImage,
+    //         ])
             
-            addNotification('Image uploaded.')
+    //         addNotification('Image uploaded.')
 
-            // setUploadedImage(null)
-        }
+    //         // setUploadedImage(null)
+    //     }
 
-    }, [uploadedImage])
+    // }, [uploadedImage])
 
     const initUpload = async data => {
         
@@ -115,13 +115,13 @@ const ImagesScreen = props => {
         }
     }
 
-    useEffect(() => {
-        if (imageUpload) {
-            initUpload(imageUpload)
-            setImageUpload(null)
-        }
+    // useEffect(() => {
+    //     if (imageUpload) {
+    //         initUpload(imageUpload)
+    //         setImageUpload(null)
+    //     }
         
-    }, [imageUpload])
+    // }, [imageUpload])
 
     const onRefresh = () => {
         initImages(profile._id)

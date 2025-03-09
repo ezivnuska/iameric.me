@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Appbar } from 'react-native-paper'
-import { useBugs, useFeed, useModal } from '@context'
+import { useBugs, useFeed, useModal, useUser } from '@context'
 
 const NavBar = props => {
-    console.log('NavBar', props.route.name)
+    // console.log('NavBar', props.route.name)
     switch (props.route.name) {
         case 'Feed':    return <FeedNavBar {...props} />; break
         case 'Users':   return <UsersNavBar {...props} />; break

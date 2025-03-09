@@ -13,10 +13,6 @@ const MemoryScreen = props => {
     useEffect(() => {
         initMemories()
     }, [])
-
-    // useEffect(() => {
-    //     initMemories()
-    // }, [memories])
     
     const initMemories = async () => {
 
@@ -25,17 +21,14 @@ const MemoryScreen = props => {
         setMemoriesLoading(false)
 
         if (loadedMemories) {
-            // console.log('loadedMemories', loadedMemories)
-            setMemories(loadedMemories)
-            // setMemories(loadedMemories.map(item => item._id))
+            setIds(loadedMemories.map(memory => memory._id))
         }
     }
 
     return (
         <Screen secure full {...props}>
 
-            {memories && <MemoryList memories={memories} {...props} />}
-            {/* {ids && <MemoryList ids={ids} {...props} />} */}
+            {ids && <MemoryList ids={ids} {...props} />}
             
         </Screen>
     )

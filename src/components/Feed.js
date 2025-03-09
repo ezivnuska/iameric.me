@@ -60,13 +60,13 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
         <View>
 
             <Card.Title
-                title={author.username}
+                title={post.author.username}
                 titleVariant='titleMedium'
                 subtitle={<Time time={post.createdAt} />}
                 style={{ gap: 10 }}
                 left={() => (
                     <SmartAvatar
-                        user={author}
+                        user={post.author}
                         onPress={() => navigation.navigate('User', { screen: 'Profile', params: { username: post.author?.username } })}
                     />
                 )}
@@ -100,7 +100,7 @@ const FeedItem = ({ onDelete, navigation, item, authorized = false }) => {
                         >
                             {imageDims && (
                                 <Image
-                                    source={`${Paths.ASSETS}/${author.username}/${post.image.filename}`}
+                                    source={`${Paths.ASSETS}/${post.author.username}/${post.image.filename}`}
                                     resizeMode='contain'
                                     style={{
                                         width: imageDims.width,

@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { Button, Card, IconButton, Text } from 'react-native-paper'
-import { DateSelector, Form, ImagePreview, MemoryImageSelector } from '@components'
+import { Button, IconButton, Text } from 'react-native-paper'
+import { DateSelector, Form } from '@components'
 import { useMemory, useForm, useModal, useSocket, useTheme, useUser } from '@context'
+import { handleImageData, openFileSelector, uploadImage } from '@utils/images'
 import { addMemoryImage, createMemory } from '@utils/memories'
-import { getMaxImageDims, handleImageData, openFileSelector } from '@utils/images'
-import EXIF from 'exif-js'
 import { getDate, getMonth, getYear } from 'date-fns'
+import EXIF from 'exif-js'
 
 const MemoryForm = ({ data = null }) => {
 
@@ -19,16 +19,13 @@ const MemoryForm = ({ data = null }) => {
     ]
 
     const { landscape, theme } = useTheme()
-    const { uploadData, updateMemory, setUploadData, setImageUpload } = useMemory()
+    const { addMemory, updateMemory } = useMemory()
     const { formError } = useForm()
-    const { addModal, clearModals, closeModal } = useModal()
+    const { clearModals, closeModal } = useModal()
     const { socket } = useSocket()
-    const { user, uploading, setUploading } = useUser()
+    const { user } = useUser()
 
-    const [preview, setPreview] = useState(null)
     const [payload, setPayload] = useState(null)
-    const [maxDims, setMaxDims] = useState(null)
-    const [imageDims, setImageDims] = useState(null)
     const [date, setDate] = useState(null)
 
     const year = useMemo(() => date && getYear(date), [date])
@@ -37,61 +34,24 @@ const MemoryForm = ({ data = null }) => {
 
     const [memory, setMemory] = useState(null)
 
-// useEffect(() => {
-//     if (uploadData) {
-//         setPreview(uploadData.preview)
-//         setUploadData(null)
-//     }
-// }, [uploadData])
+    useEffect(() => {
 
-useEffect(() => {
+        if (payload) {
 
-    if (preview) {
-        // set image dimensions to maximum size
-        setImageDims(getMaxImageDims(preview.width, preview.height, maxDims))
-    } else {
-        setImageDims(null)
-        setUploadData(null)
-    }
-}, [preview])
+            const { uri, height, width } = payload.imageData
 
-useEffect(() => {
-
-    if (payload) {
-
-        const { uri, height, width } = payload.imageData
-        setPreview({ uri, height, width })
-
-    } else {
-        setPreview(null)
-    }
-}, [payload])
-
-useEffect(() => {
-
-    if (uploadData) {
-
-        setImageDims(getMaxImageDims(uploadData.preview.width, uploadData.preview.height, maxDims))
-    } else {
-        setImageDims(null)
-    }
-
-}, [uploadData])
-
-    // const uploadMemoryImage = async (memoryId, data) => {
-    //     setUploading(preview)
-        
-    //     const memory = await addMemoryImage(memoryId, data)
-        
-    //     setUploading(null)
-
-    //     if (memory) {
-
-    //         updateMemory(memory)
-
-    //         // socket.emit('new_memory', memory)
-    //     }
-    // }
+            updateMemory({
+                _id: memory._id,
+                image: { uri, height, width },
+            })
+            
+            handleUpload(payload)
+            
+            setPayload(null)
+            
+            closeModal()
+        }
+    }, [payload])
 
     const handleSubmit = async formData => {
         
@@ -105,27 +65,12 @@ useEffect(() => {
             day,
         }
 
-        // console.log('submitting form data', memoryData)
-
-        let memory = await createMemory(memoryData)
+        let newMemory = await createMemory(memoryData)
         
-        if (memory) {
-        //     // console.log('new or edited memory', memory)
-
-            updateMemory(memory)
-
-        //     if (payload) {
-        //         const { imageData, thumbData } = payload
-                
-        //         const image = { imageData, thumbData }
-
-        //         uploadMemoryImage(memory._id, image)
-        //     }
-            setMemory(memory)
-
+        if (newMemory) {
+            addMemory(newMemory)
+            setMemory(newMemory)
         }
-
-        // closeModal()
     }
 
     const openSelector = async () => {
@@ -161,9 +106,7 @@ useEffect(() => {
         image.onload = async () => {
             const imageResult = await handleImageData(id, image, exif)
             if (imageResult) {
-                console.log('imageResult', imageResult)
                 setPayload(imageResult)
-
             }
             
         }
@@ -171,44 +114,28 @@ useEffect(() => {
         image.src = src
     }
 
-    const handleUpload = async () => {
+    const handleUpload = async imagePayload => {
 
         if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
         
-        const dataToUpload = {
-            memoryId: data._id,
-            preview,
-            ...payload,
-        }
+        const image = await uploadImage(imagePayload)
 
-        console.log('dataToUpload', dataToUpload)
-        setUploadData(dataToUpload)
-        setImageUpload(payload)
+        const { imageData, thumbData } = imagePayload
+
+        if (image) {
+            
+            const memoryWithImage = await addMemoryImage(memory._id, { imageData, thumbData })
+            
+            if (memoryWithImage) {
+                updateMemory(memoryWithImage)
+            }
+        }
         
         closeModal()
     }
 
-    const onLayout = e => {
-        setMaxDims({
-            width: e.nativeEvent.target.clientWidth,
-            height: e.nativeEvent.target.clientHeight,
-        })
-	}
-
-    const skipImage = () => {
-
-        setUploadData(null)
-        clearModals()
-    }
-
     return (
-        <View
-            style={{
-                flex: 1,
-                borderWidth: 1,
-                borderColor: 'red',
-            }}
-        >
+        <View style={{ flex: 1 }}>
 
             <View
                 style={{
@@ -264,60 +191,31 @@ useEffect(() => {
                                 {date?.toDateString() || 'Date unknown'}
                             </Text>
                             <Text variant='bodyMedium'>{memory.body.length > 140 ? `${memory.body.substr(0, 140)}...` : memory.body}</Text>
-                            <View
-                                onLayout={onLayout}
-                                style={{
-                                    flex: 1,
-                                }}
-                            >
-                                {imageDims && (
-                                    <View style={imageDims}>
-                                        <ImagePreview
-                                            preview={preview}
-                                            width={imageDims.width}
-                                            height={imageDims.height}
-                                            uploading={uploading}
-                                        />
-                                    </View>
-                                )}
-                            </View>
                         </View>
 
-                        {!uploadData && (
-                            <View
-                                style={{
-                                    gap: 20,
-                                }}
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-evenly',
+                                gap: 20,
+                            }}
+                        >
+    
+                            <Button
+                                mode='contained'
+                                onPress={openSelector}
                             >
-        
-                                <Button
-                                    mode='outlined'
-                                    onPress={openSelector}
-                                    disabled={uploadData}
-                                >
-                                    {`${!imageDims ? 'Select' : 'Change'} Image`}
-                                </Button>
-        
-                                <Button
-                                    mode='contained-tonal'
-                                    onPress={skipImage}
-                                    disabled={uploadData}
-                                >
-                                    Skip
-                                </Button>
-        
-                                {imageDims && (
-                                    <Button
-                                        mode='contained'
-                                        onPress={handleUpload}
-                                        disabled={uploading}
-                                    >
-                                        Upload Image
-                                    </Button>
-                                )}
-        
-                            </View>
-                        )}
+                                Add Image
+                            </Button>
+    
+                            <Button
+                                mode='text'
+                                onPress={clearModals}
+                            >
+                                Skip
+                            </Button>
+    
+                        </View>
 
                     </View>
                 ) : (

@@ -7,6 +7,7 @@ import DestroyForm from './DestroyForm'
 import FormContainer from './FormContainer'
 import ImageCard from './ImageCard'
 import ImageList from './ImageList'
+import ImageLoader from './ImageLoader'
 import ImagePreview from './ImagePreview'
 import ImageUploadIndicator from './ImageUploadIndicator'
 import MemoryForm from './MemoryForm'
@@ -41,6 +42,7 @@ export {
     FormContainer,
     ImageCard,
     ImageList,
+    ImageLoader,
     ImagePreview,
     ImageUploadIndicator,
     MemoryForm,
