@@ -1,27 +1,55 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator } from 'react-native-paper'
 import { Screen } from './components'
 import { Feed } from '@components'
-import { useFeed } from '@context'
+import { useFeed, useSocket } from '@context'
+import { deletePostWithId, loadPosts } from '@utils/feed'
     
 const FeedScreen = props => {
 
-    const { feedLoaded, feedLoading, initFeed } = useFeed()
+    const {
+        posts,
+        deletePost,
+        setFeedLoading,
+        setPosts,
+        updatePost,
+    } = useFeed()
+    const { socket } = useSocket()
 
     useEffect(() => {
+
+        socket.on('new_post', updatePost)
+        socket.on('deleted_post', deletePost)
+
         initFeed()
     }, [])
 
-    return (
-        <Screen
-            {...props}
-            secure
-            full
-        >
+    const initFeed = async () => {
 
-            {feedLoaded && (
+        setFeedLoading(true)
+        const loadedPosts = await loadPosts()
+        setFeedLoading(false)
+        
+        if (loadedPosts) setPosts(loadedPosts)
+        else console.log('could not load posts')
+    }
+
+    const onDelete = async id => {
+
+        await deletePostWithId(id)
+        
+        socket.emit('post_deleted', id)
+
+        deletePost(id)
+    }
+
+    return (
+        <Screen {...props} secure full>
+
+            {posts && (
                 <Feed
                     {...props}
+                    posts={posts}
+                    onDelete={onDelete}
                 />
             )}
             

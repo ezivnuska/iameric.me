@@ -1,53 +1,31 @@
 import React from'react'
 import { View } from'react-native'
-import { Card, Button, IconButton, Text } from'react-native-paper'
+import { Card, Button } from'react-native-paper'
+import { ModalHeader } from'@components'
 import { useModal } from '@context'
 import { navigate } from '@utils/navigation'
 
 const Settings = () => {
     
-    const { closeModal, addModal } = useModal()
+    const { addModal } = useModal()
     
     return (
-        <View
+         <Card
+            elevation={1}
             style={{
                 flex: 1,
-                gap: 15,
-                backgroundColor: theme.colors.background,
+                width: '100%',
+                gap: 10,
             }}
         >
 
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingVertical: 5,
-                }}
-            >
-                <Text
-                    variant='headlineSmall'
-                    style={{
-                        flex: 1,
-                        paddingHorizontal: 15,
-                    }}
-                >
-                    Settings
-                </Text>
-
-                <IconButton
-                    icon='close-thick'
-                    onPress={closeModal}
-                    style={{
-                        margin: 0,
-                        paddingHorizontal: 10,
-                    }}
-                />
-            </View>
+            <ModalHeader
+                title='Settings'
+            />
             
             <View
                 style={{
                     flex: 1,
-                    paddingHorizontal: 15,
                     justifyContent: 'space-evenly',
                 }}
             >
@@ -98,7 +76,7 @@ const Settings = () => {
 
                 </Card>
             </View>
-        </View>
+        </Card>
     )
 }
 

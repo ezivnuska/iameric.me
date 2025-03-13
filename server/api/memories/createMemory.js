@@ -1,10 +1,5 @@
 const Memory = require('../../models/Memory')
-const User = require('../../models/User')
-const handleFileUpload = require('../upload/handleFileUpload')
-const saveUserImage = require('../upload/saveUserImage')
-const path = require('path')
 
-const uploadDir = process.env.IMAGE_PATH || 'assets'
 
 const createMemory = async (req, res) => {
     
@@ -27,7 +22,7 @@ const createMemory = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    const newMemory = await Memory
+    memory = await Memory
         .populate(memory, [
             {
                 path: 'author',

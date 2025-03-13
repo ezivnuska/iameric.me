@@ -3,7 +3,6 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 const initialState = {
     memories: [],
     error: null,
-    memoriesLoaded: false,
     memoriesLoading: false,
     uploadData: null,
     addMemory: () => {},
@@ -72,12 +71,6 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 memories: [ payload, ...state.memories ],
-            }
-            break
-        case 'SET_MEMORIES_LOADED':
-            return {
-                ...state,
-                memoriesLoaded: true,
             }
             break
         case 'SET_MEMORIES_LOADING':

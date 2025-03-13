@@ -1,3 +1,4 @@
+import AddImageButton from './AddImageButton'
 import BugForm from './BugForm'
 import Bugs from './Bugs'
 import CaptionForm from './CaptionForm'
@@ -27,11 +28,13 @@ import Form from './Form'
 import ImagePicker from './ImagePicker'
 import JobList from './JobList'
 import ModalFactory from './ModalFactory'
+import ModalHeader from './ModalHeader'
 import Notification from './Notification'
 import Play from './Play'
 import Socket from './Socket'
 
 export {
+    AddImageButton,
     AuthForm,
     BugForm,
     Bugs,
@@ -62,6 +65,7 @@ export {
     ImagePicker,
     JobList,
     ModalFactory,
+    ModalHeader,
     Notification,
     Play,
 }

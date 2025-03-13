@@ -29,23 +29,19 @@ const Screen = ({
     if (!authorized) return <View style={{ flex: 1 }} />
 
     return (
-        <View style={{ flex: 1 }}>
 
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                style={{ flex: 1 }}
-                contentContainerStyle={{
-                    flex: 1,
-                    paddingHorizontal: full ? 0 : 15,
-                    marginHorizontal: 'auto',
-                    maxWidth: 600,
-                    // flex: 1,
-                }}
-            >
-                {children}
-            </ScrollView>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ flex: 1 }}
+            contentContainerStyle={{
+                flex: 1,
+                width: '100%',
+                paddingHorizontal: full ? 0 : 15,
+            }}
+        >
+            {children}
+        </ScrollView>
 
-        </View>
     )
 }
 

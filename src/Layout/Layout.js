@@ -21,6 +21,7 @@ const Layout = () => {
                 flex: 1,
                 height: dims.height,
                 width: dims.width,
+                backgroundColor: theme.colors.background,
             }}
         >
 
@@ -50,17 +51,18 @@ const Layout = () => {
                             style={{
                                 flexGrow: 1,
                                 width: '100%',
-                                maxWidth: landscape ? null : 600,
+                                maxWidth: (!landscape && 600),
                                 marginHorizontal: 'auto',
                             }}
                         >
                             <AppNavigator />
-                        </View>
 
-                        <Footer
-                            landscape={landscape}
-                            route={currentRoute}
-                        />
+                            <Footer
+                                landscape={landscape}
+                                route={currentRoute}
+                            />
+
+                        </View>
                         
                         <ImageUploadIndicator style={{ zIndex: 2500 }} />
 

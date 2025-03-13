@@ -108,7 +108,7 @@ const {
 } = require('./api/memories')
 
 const {
-  // addImageToPost,
+  addPostImage,
   createPost,
   deletePostById,
   getPost,
@@ -175,7 +175,7 @@ router.get(    '/memory/thread/:threadId', getMemoryThread)
 router.delete( '/memory/delete/:id',       deleteMemoryById)
 
 // posts
-// router.post(   '/post/image',              addImageToPost)
+router.post(   '/post/image',              addPostImage)
 router.post(   '/post',                    createPost)
 router.get(    '/post/:postId',            getPost)
 router.get(    '/posts',                   getPosts)

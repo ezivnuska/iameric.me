@@ -4,7 +4,14 @@ const getPosts = async (req, res) => {
     
     const posts = await Post
         .find({})
-        .select('_id')
+        .populate({
+            path: 'author',
+            select: 'username',
+        })
+        .populate({
+            path: 'image',
+            select: 'filename width height',
+        })
         .sort({ createdAt: -1 })
     
     if (posts) return res.status(200).json({ posts })

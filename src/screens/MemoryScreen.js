@@ -1,17 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Screen } from './components'
 import { MemoryList } from '@components'
-import { useMemory } from '@context'
-import { loadMemories } from '@utils/memories'
-    
+import { useMemory, useSocket } from '@context'
+import { deleteMemoryWithId, loadMemories } from '@utils/memories'
+
 const MemoryScreen = props => {
 
-    const { memories, setMemories, setMemoriesLoading } = useMemory()
+    const {
+        memories,
+        deleteMemory,
+        setMemories,
+        setMemoriesLoading,
+        updateMemory,
+    } = useMemory()
 
-    const [ids, setIds] = useState(null)
-
+    const { socket } = useSocket()
+    
     useEffect(() => {
+        
+        socket.on('new_memory', memory => {
+            console.log(' socket heard new memory', memory)
+            updateMemory(memory)
+        })
+
+        socket.on('deleted_memory', deleteMemory)
+
         initMemories()
+
     }, [])
     
     const initMemories = async () => {
@@ -20,15 +35,30 @@ const MemoryScreen = props => {
         const loadedMemories = await loadMemories()
         setMemoriesLoading(false)
 
-        if (loadedMemories) {
-            setIds(loadedMemories.map(memory => memory._id))
-        }
+        if (loadedMemories) setMemories(loadedMemories)
+        else console.log('could not load posts')
+    }
+
+    const onDelete = async id => {
+        
+        await deleteMemoryWithId(id)
+
+        socket.emit('memory_deleted', id)
+
+        deleteMemory(id)
+        
     }
 
     return (
         <Screen secure full {...props}>
 
-            {ids && <MemoryList ids={ids} {...props} />}
+            {memories && (
+                <MemoryList
+                    {...props}
+                    memories={memories}
+                    onDelete={onDelete}
+                />
+            )}
             
         </Screen>
     )

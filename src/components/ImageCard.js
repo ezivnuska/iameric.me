@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Image, Pressable, ScrollView, View } from 'react-native'
 import { Card, IconButton, MD3Colors, Text } from 'react-native-paper'
 import { TappableView, SmartAvatar } from '@components'
@@ -67,16 +67,15 @@ const CardHeader = ({ user, close, time = null }) => {
 
 const ImageCard = ({ data }) => {
 
-    const { addNotification } = useNotification()
+    // const { addNotification } = useNotification()
     const { closeModal, addModal } = useModal()
-    const { dims, landscape, theme } = useTheme()
+    const { landscape, theme } = useTheme()
     const { user, setDeletedImage, setProfileImage, updateUser } = useUser()
 
     const [detailsVisible, setDetailsVisible] = useState(true)
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState(null)
     const [currentUser, setCurrentUser] = useState(user)
-    const [zoom, setZoom] = useState(false)
 
     const [imageDims, setImageDims] = useState(null)
     
@@ -113,7 +112,6 @@ const ImageCard = ({ data }) => {
     const animatedStyle = useAnimatedStyle(() => imageDims ? ({
         width: interpolate(anim.value, [0, 1], [imageDims.width, imageDims.width * 2]),
         height: interpolate(anim.value, [0, 1], [imageDims.height, imageDims.height * 2]),
-        // opacity: opacity.value,
     }) : {})
 
     const init = () => {
@@ -269,12 +267,11 @@ const ImageCard = ({ data }) => {
                         top: 0, left: 0, right: 0,
                         zIndex: 30,
                         backgroundColor: theme.colors.background,
-                        // backgroundColor: 'rgba(0, 0, 0, 0.75)',
                     }, opacityStyle]}
                 >
 
                     <CardHeader
-                        user={currentUser}
+                        user={image.user}
                         close={closeModal}
                         time={new Date(image.createdAt)}
                     />

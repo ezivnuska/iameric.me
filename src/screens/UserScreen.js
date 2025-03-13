@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
+import { IconButton, Text } from 'react-native-paper'
 import { Screen } from './components'
 import { SmartAvatar } from '@components'
 import { useModal, useUser, useTheme } from '@context'
@@ -59,14 +60,14 @@ const UserScreen = props => {
 
         setUserLoading(true)
 
-        let user = findUserByUsername(username)
+        let foundUser = findUserByUsername(username)
 
-        if (!user) {
-            user = await loadContact(username)
+        if (!foundUser) {
+            foundUser = await loadContact(username)
         }
             
-        if (user) {
-            setProfile(user)
+        if (foundUser) {
+            setProfile(foundUser)
         }
         
         setUserLoading(false)
@@ -95,6 +96,9 @@ const UserScreen = props => {
     
     //         setUserLoading(false)
     //     }
+    // const isCurrentUser = useMemo(() => props.route.params?.username === user?.username, [props.route])
+
+    // const viewMode = useMemo(() => route.params?.list ? 'list' : 'grid', [route.params])
 
     return (
         <Screen
@@ -102,6 +106,34 @@ const UserScreen = props => {
             full={props.route.name === 'Images' && props.route.params?.list}
             secure
         >
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    paddingLeft: 15,
+                    paddingRight: 5,
+                }}
+            >
+                <Text variant='headlineSmall'>{`${profile?.username || 'User'} : Images`}</Text>
+                
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <IconButton
+                        icon='image-multiple'
+                        onPress={() => props.navigation.navigate('Images', {
+                            username: props.route.params?.username,
+                            // list: false,
+                        })}
+                    />
+                </View>
+            </View>
+            
             <View style={{ flex: 1 }}>
 
                 <UserProfile profile={profile} />
@@ -130,24 +162,24 @@ const UserProfile = ({ profile }) => {
 
     useEffect(() => {
         if (isAuthUser) {
-            if (authUser.profileImage?._id !== currentUser.profileImage?._id) {
+            if (authUser.profileImage?._id !== profile.profileImage?._id) {
                 setCurrentUser(authUser)
             }
         }
     }, [authUser])
 
-    return currentUser && (
+    return profile && (
         <View style={{ flex: 1, gap: 20 }}>
 
             <Pressable
-                key={`profile-${currentUser.username}-${Date.now()}`}
+                key={`profile-${profile.username}-${Date.now()}`}
                 onPress={() => {
                     // console.log('SHOWCASE', profile)
-                    addModal('SHOWCASE', currentUser.profileImage._id)
+                    addModal('SHOWCASE', profile.profileImage._id)
                 }}
-                disabled={!currentUser.profileImage}
+                disabled={!profile.profileImage}
             >
-                <SmartAvatar user={currentUser} size={100} />
+                <SmartAvatar user={profile} size={100} />
 
             </Pressable>
 

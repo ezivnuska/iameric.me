@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
-import { Button, HelperText, TextInput } from 'react-native-paper'
+import { Button, TextInput } from 'react-native-paper'
 import { useForm, useUser } from '@context'
 import { getFields, validateFields } from '@utils/form'
 
@@ -8,7 +8,6 @@ const Form = ({
     fields,
     data = null,
     onSubmit = null,
-    children = null,
 }) => {
 
     const { user } = useUser()
@@ -41,13 +40,11 @@ const Form = ({
         })
         
         const fieldValues = getFields(state, data)
-        // console.log('fieldValues', fieldValues)
+        
         initForm(fieldValues)
     }
     
     useEffect(() => {
-
-        // if (!formReady) initFields()
         
         return () => resetForm()
     }, [])
@@ -117,64 +114,58 @@ const Form = ({
         }
     }
     
-    return (
-        <View style={{ gap: 10 }}>
-
-            {formReady && (
-                <FlatList
-                    data={fields}
-                    keyExtractor={item => `item-${item.name}`}
-                    renderItem={({ item }) => {
-                        const {
-                            label,
-                            multiline,
-                            name,
-                            placeholder,
-                            type,
-                            autoCapitalize,
-                        } = item
-
-                        return (
-                            <View>
-                                <TextInput
-                                    name={name}
-                                    label={label}
-                                    value={formFields[name] || ''}
-                                    onChangeText={value => onChange(name, value)}
-                                    error={getError(name)}
-                                    placeholder={placeholder}
-                                    secureTextEntry={type === 'password'}
-                                    keyboardType='default'
-                                    autoCapitalize={autoCapitalize || 'sentences'}
-                                    autoFocus={getFocus(name)}
-                                    onKeyPress={!multiline && onEnter}
-                                    dirty={getDirty(name)}
-                                    multiline={multiline}
-                                    rows={7}
-                                />
-                                <HelperText type='error' visible={true}>
-                                    {getError(name)}
-                                </HelperText>
-                            </View>
-                        )
-                    }}
-                />
+    return formReady && (
+        <FlatList
+            data={fields}
+            extraData={fields}
+            keyExtractor={item => `item-${item.name}`}
+            style={{ flex: 1, paddingHorizontal: 15 }}
+            ItemSeparatorComponent={({ highlighted }) => (
+                <View style={[{ height: 10 }, highlighted && { marginLeft: 0 }]} />
             )}
-
-            {children && (
-                <View style={{ alignContent: 'flex-start' }}>
-                    {children}
-                </View>
+            ListFooterComponent={() => (
+                <Button
+                    mode='contained'
+                    onPress={onSubmit}
+                    disabled={formError}
+                >
+                    Submit
+                </Button>
             )}
-            
-            <Button
-                mode='contained'
-                onPress={submitFormData}
-                disabled={formError}
-            >
-                Submit
-            </Button>
-        </View>
+            ListFooterComponentStyle={{
+                paddingVertical: 10,
+            }}
+            renderItem={({ item }) => {
+                const {
+                    label,
+                    multiline,
+                    name,
+                    placeholder,
+                    type,
+                    autoCapitalize,
+                } = item
+
+                return (
+                    <TextInput
+                        name={name}
+                        label={label}
+                        value={formFields[name] || ''}
+                        onChangeText={value => onChange(name, value)}
+                        error={getError(name)}
+                        placeholder={placeholder}
+                        secureTextEntry={type === 'password'}
+                        keyboardType='default'
+                        autoCapitalize={autoCapitalize || 'sentences'}
+                        autoFocus={getFocus(name)}
+                        onKeyPress={!multiline && onEnter}
+                        dirty={getDirty(name)}
+                        multiline={multiline}
+                        rows={4}
+                        contentStyle={{ paddingVertical: 5, paddingHorizontal: 10 }}
+                    />
+                )
+            }}
+        />
     )
 }
 

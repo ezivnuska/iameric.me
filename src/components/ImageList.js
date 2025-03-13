@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { FlatList, Image, Pressable, View } from 'react-native'
 import { ActivityIndicator } from 'react-native-paper'
+import { ImageLoader } from '@components'
 import { useTheme, useUser } from '@context'
 import { Paths } from '@constants'
 import { loadImage } from '@utils/images'
@@ -111,7 +112,14 @@ const ListItem = ({ user, imageId, maxDims, list, onPress }) => {
         return dimensions
     }
 
-    const renderItem = () => {
+    const renderItem = image => {
+
+        return (
+            <ImageLoader
+                image={image}
+                user={image.user}
+            />
+        )
         
         const uri = `${Paths.ASSETS}/${user.username}${imageDims.width <= 200 ? `/thumb` : ''}/${item.filename}`
         return (
@@ -144,15 +152,20 @@ const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false 
     const { uploadedImage, setUploadedImage } = useUser()
 
     const [maxDims, setMaxDims] = useState(null)
+    const [items, setItems] = useState(null)
 
     const listRef = useRef()
 
     useEffect(() => {
+        console.log('images.length', images.length)
+        if (images) {
 
-        if (uploadedImage) {
-            setUploadedImage(null)
-            listRef.current.scrollToEnd({ animated: true })
+            setItems(images)
         }
+        // if (uploadedImage) {
+        //     setUploadedImage(null)
+        //     listRef.current.scrollToEnd({ animated: true })
+        // }
     }, [images])
 
     const onLayout = e => {
@@ -186,21 +199,27 @@ const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false 
                     horizontal={landscape}
                     // contentOffset={{ x: 0, y: 0 }}
                     numColumns={getNumColumns()}
-                    data={images}
-                    extraData={images}
+                    data={items}
+                    extraData={items}
                     keyExtractor={item => `image-${item._id}`}
                     onRefresh={onRefresh}
                     refreshing={refreshing}
                     initialNumToRender={6}
-                    renderItem={({ item }) => (
-                        <ListItem
-                            user={user}
-                            imageId={item._id}
-                            maxDims={maxDims}
-                            list={list}
-                            onPress={onPress}
+                    renderItem={({ item }) => {
+                        console.log('item', item)
+                        return (
+                        <ImageLoader
+                            image={item}
+                            user={item.user}
                         />
-                    )}
+                        // <ListItem
+                        //     user={user}
+                        //     imageId={item._id}
+                        //     maxDims={maxDims}
+                        //     list={list}
+                        //     onPress={onPress}
+                        // />
+                    )}}
                     // style={{ paddingVertical: 10 }}
                 />
             )}

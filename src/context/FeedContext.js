@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { loadPosts } from '@utils/feed'
+import React, { createContext, useContext, useMemo, useReducer } from 'react'
 
 const initialState = {
     modals: [],
@@ -31,33 +30,16 @@ export const FeedContextProvider = props => {
     
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const initFeed = async () => {
-
-        dispatch({ type: 'SET_FEED_LOADING', payload: true })
-        const payload = await loadPosts()
-        dispatch({ type: 'SET_FEED_LOADING', payload: false })
-        
-        if (payload) dispatch({ type: 'SET_POSTS', payload })
-        else console.log('could not load posts') 
-
-        dispatch({ type: 'SET_FEED_LOADED' })
-    }
-
-    const findPostById = postId => state.posts.filter(post => post._id === postId)[0]
-    
-    useEffect(() => {
-        // loadFeed()
-    }, [])
-
     const actions = useMemo(() => ({
-        initFeed,
         addPost: async payload => {
             dispatch({ type: 'ADD_POST', payload })
         },
         deletePost: async payload => {
             dispatch({ type: 'DELETE_POST', payload })
         },
-        findPostById,
+        findPostById: postId => {
+            return state.posts.filter(post => post._id === postId)[0]
+        },
         setPosts: async payload => {
             dispatch({ type: 'SET_POSTS', payload })
         },
@@ -79,13 +61,7 @@ export const FeedContextProvider = props => {
     }), [state, dispatch])
 
     return  (
-        <FeedContext.Provider
-            value={{
-                ...state,
-                feedModal: state.modals[state.modals.length - 1],
-                ...actions,
-            }}
-        >
+        <FeedContext.Provider value={{ ...state, ...actions }}>
             {props.children}
         </FeedContext.Provider>
     )

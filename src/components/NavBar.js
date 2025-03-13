@@ -1,19 +1,22 @@
 import React, { useMemo } from 'react'
-import { Appbar } from 'react-native-paper'
+import { View } from 'react-native'
+import { Appbar, IconButton, Text } from 'react-native-paper'
+import { AddImageButton } from '@components'
 import { useBugs, useFeed, useModal, useUser } from '@context'
 
 const NavBar = props => {
     // console.log('NavBar', props.route.name)
     switch (props.route.name) {
-        case 'Feed':    return <FeedNavBar {...props} />; break
-        case 'Users':   return <UsersNavBar {...props} />; break
-        case 'Bugs':    return <BugNavBar {...props} />; break
-        case 'Profile': return <ProfileNavBar {...props} />; break
-        case 'Images':  return <ImagesNavBar {...props} />; break
+        case 'Feed':        return <FeedNavBar {...props} />; break
+        case 'Memories':    return <MemoriesNavBar {...props} />; break
+        case 'Users':       return <UsersNavBar {...props} />; break
+        case 'Bugs':        return <BugNavBar {...props} />; break
+        case 'Profile':     return <ProfileNavBar {...props} />; break
+        case 'Images':      return <ImagesNavBar {...props} />; break
         case 'Home':    
         case 'Work':
         case 'Play':
-        default:        return <DefaultNavBar {...props} />
+        default:            return <DefaultNavBar {...props} />
     }
 }
 
@@ -48,7 +51,7 @@ const ProfileNavBar = ({ navigation, route }) => {
 const ImagesNavBar = ({ navigation, route }) => {
     const { addModal } = useModal()
     const { uploading, user } = useUser()
-    const isCurrentUser = useMemo(() => route.params?.username === user?.username, [user])
+    const isCurrentUser = useMemo(() => route.params?.username === user?.username, [route])
 
     // const viewMode = useMemo(() => route.params?.list ? 'list' : 'grid', [route.params])
 
@@ -62,24 +65,25 @@ const ImagesNavBar = ({ navigation, route }) => {
             <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
             <Appbar.Content title={`${route.params?.username || 'User'} : Images`} />
             {isCurrentUser && (
-                <Appbar.Action
-                    icon="file-image-plus"
-                    onPress={() => addModal('IMAGE_UPLOAD')}
-                    disabled={uploading}
-                />
+                <AddImageButton />
+                // <Appbar.Action
+                //     icon="file-image-plus"
+                //     onPress={() => addModal('IMAGE_UPLOAD')}
+                //     disabled={uploading}
+                // />
             )}
-            {isCurrentUser && (
+            {/* {isCurrentUser && ( */}
                 <Appbar.Action
                     icon="grid"
                     onPress={toggleViewMode}
                 />
-            )}
-            {isCurrentUser && (
+            {/* )}
+            {isCurrentUser && ( */}
                 <Appbar.Action
                     icon="table-column"
                     onPress={toggleViewMode}
                 />
-            )}
+            {/* )} */}
         </Appbar.Header>
     )
 }
@@ -112,11 +116,52 @@ const FeedNavBar = ({ navigation, route }) => {
     const { addModal } = useModal()
 
     return (
-        <Appbar.Header>
-            <Appbar.BackAction onPress={() => navigation.navigate('Home')} />
-            <Appbar.Content title='Feed' />
-            <Appbar.Action icon="message-plus" onPress={() => addModal('FEEDBACK')} />
-        </Appbar.Header>
+        // <Appbar.Header>
+        <View
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingLeft: 15,
+                paddingRight: 5,
+            }}
+        >
+            {/* <Appbar.BackAction onPress={() => navigation.navigate('Home')} /> */}
+            <Text variant='headlineSmall'>Feed</Text>
+            <IconButton
+                size={25}
+                icon='plus-thick'
+                // icon='message-plus'
+                onPress={() => addModal('FEEDBACK')}
+                style={{ margin: 0, padding: 0 }}
+            />
+        </View>
+    )
+}
+
+const MemoriesNavBar = ({ navigation, route }) => {
+
+    const { addModal } = useModal()
+
+    return (
+        <View
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingLeft: 15,
+                paddingRight: 5,
+            }}
+        >
+            <Text variant='headlineSmall'>Memories</Text>
+
+            <IconButton
+                size={25}
+                icon='plus-thick'
+                onPress={() => addModal('MEMORY')}
+                style={{ margin: 0, padding: 0 }}
+            />
+        </View>
     )
 }
 

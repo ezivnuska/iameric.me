@@ -75,14 +75,7 @@ const ImagePickerContainer = ({ data }) => {
     }, [preview])
 
     const openSelector = async () => {
-
-        if (!showActivity) {
-            setShowActivity(true)
-        }
-
         const uri = await openFileSelector()
-        
-        setShowActivity(false)
         
         if (uri) {
             handleSelectedImage(uri)
@@ -112,10 +105,11 @@ const ImagePickerContainer = ({ data }) => {
         const image = new Image()
         
         image.onload = async () => {
-            const data = await handleImageData(id, image, exif)
+            const imageResult = await handleImageData(id, image, exif)
             
-            if (!data) console.log('error loading image')
-            else setPayload(data)
+            if (imageResult) {
+                setPayload(imageResult)
+            }
         }
 
         image.src = src

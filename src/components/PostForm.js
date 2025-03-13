@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Card, IconButton } from 'react-native-paper'
-import { Form, ImagePreview } from '@components'
+import React from 'react'
+import { View } from 'react-native'
+import { Card } from 'react-native-paper'
+import { Form, ModalHeader } from '@components'
 import { useFeed, useForm, useModal, useSocket, useUser } from '@context'
 import { createPost } from '@utils/feed'
-
-import {
-    getMaxImageDims,
-    handleImageData,
-    openFileSelector,
-} from '@utils/images'
-import EXIF from 'exif-js'
 
 const PostForm = ({ data = null }) => {
 
@@ -21,109 +15,20 @@ const PostForm = ({ data = null }) => {
         },
     ]
 
-    const {
-        updatePost,
-    } = useFeed()
-    const {
-        formError,
-    } = useForm()
+    const { updatePost } = useFeed()
+    const { formError, formFields, resetForm, setFormError, setFormLoading } = useForm()
     const { closeModal } = useModal()
     const { socket } = useSocket()
-    const {
-        user,
-        uploading,
-        setUploading,
-    } = useUser()
+    const { user } = useUser()
 
-    const [preview, setPreview] = useState(null)
-    const [payload, setPayload] = useState(null)
-    const [maxWidth, setMaxWidth] = useState(200)
-    const [imageDims, setImageDims] = useState(null)
+    const handleSubmit = async () => {
 
-    useEffect(() => {
-    
-        // if image is loaded and data is available
-        if (payload) {
-
-            // set preview from available data
-            const { uri, height, width } = payload.imageData
-            setPreview({ uri, height, width })
-
-        } else {
-            setPreview(null)
-        }
-    }, [payload])
-
-    useEffect(() => {
-
-        // if image selected and preview available
-        if (preview) {
-
-            // set image dimensions to maximum size
-            setImageDims(getMaxImageDims(preview.width, preview.height, maxWidth))
-
-        } else {
-            setImageDims(null)
-        }
-
-    }, [preview])
-
-    // useEffect(() => {
-    //     if (imageUpload) {
-    //         if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
-    //         setUploading(preview)
-    //         // setImageUpload(null)
-    //     }
-        
-    // }, [imageUpload])
-
-    // useEffect(() => {
-    //     if (uploadedImage) {
-    //         setNewPost({
-    //             ...newPost,
-    //             images: [uploadedImage._id]
-    //             // images: [...newPost.images, uploadedImage._id]
-    //         })
-    //         setUploadedImage(null)
-    //     }
-    // }, [uploadedImage])
-
-    // const initUpload = () => {
-    //     const { imageData, thumbData, userId } = payload
-    //     const data = { imageData, thumbData, userId }
-    //     setImageUpload(data)
-    //     // handleUpload({ imageData, thumbData, userId })
-    // }
-
-    // const handleUpload = async () => {
-
-    //     if (process.env.NODE_ENV === 'development') return alert('can\'t upload in dev')
-
-    //     const { imageData, thumbData, userId } = payload
-    //     const data = { imageData, thumbData, userId }
-
-    //     setImageUpload(data)
-
-    //     setUploading(preview)
-            
-    //     // closeModal()
-    // }
-
-    const handleSubmit = async formData => {
-        
-        let postData = { ...formData }
-        console.log('submitting form data', formData)
-        if (payload) {
-            const { imageData, thumbData } = payload
-            
-            postData.image = { imageData, thumbData }
-
-            setUploading(preview)
-        }
-
-        const post = await createPost(postData)
-        
-        setUploading(null)
+        const post = await createPost({
+            ...formFields,
+            postId: data._id,
+            threadId: data.threadId,
+            author: user._id,
+        })
 
         if (post) {
             socket.emit('new_post', post)
@@ -134,89 +39,49 @@ const PostForm = ({ data = null }) => {
         closeModal()
     }
 
-    const openSelector = async () => {
-        const uri = await openFileSelector()
+    const submitFormData = async () => {
         
-        if (uri) {
-            handleSelectedImage(uri)
-        } else {
-            console.log('no selection made')
+        if (formError) {
+            console.log(`Error in form field ${formError.name}: ${formError.message}`)
+            return
         }
-    }
-
-    const dataURItoBlob = async dataURI =>  await (await fetch(dataURI)).blob()
-
-    const handleSelectedImage = async uri => {
-
-        const blob = await dataURItoBlob(uri)
-        
-        const reader = new FileReader()
-        
-        reader.onload = ({ target }) => {
-            const exif = EXIF.readFromBinaryFile(target.result)
-            loadImage(uri, exif, user._id)
+         
+        setFormLoading(true)
+        const response = await handleSubmit()
+        setFormLoading(false)
+         
+        if (response) {
+            if (response.error) {
+                setFormError(response)
+            } else resetForm()
         }
-
-        reader.readAsArrayBuffer(blob)
-    }
-
-    const loadImage = async (src, exif, id) => {
-        
-        const image = new Image()
-        
-        image.onload = async () => {
-            const data = await handleImageData(id, image, exif)
-            
-            if (data) setPayload(data)
-            else console.log('error loading image')
-        }
-
-        image.src = src
     }
 
     return (
-        <Card>
-
-            <Card.Title
-                title='Create Post'
-                titleVariant='headlineLarge'
-                right={() => <IconButton icon='close-thick' onPress={closeModal} />}
+        <Card
+            elevation={1}
+            style={{
+                marginVertical: '1.0%',
+                marginHorizontal: 15,
+            }}
+        >
+            <ModalHeader
+                title='New Post'
             />
-            
-            <Card>
 
-                <Card.Title
-                    title='Share something.'
-                    titleVariant='headlineSmall'
-                    // subtitle=''
-                    // subtitleVariant='bodyLarge'
+            <View
+                style={{
+                    flex: 1,
+                }}
+            >
+                <Form
+                    data={data}
+                    fields={fields}
+                    onCancel={closeModal}
+                    onSubmit={submitFormData}
                 />
-
-                <Card.Content style={{ marginTop: 10 }}>
-                    <Form
-                        title='Say Something'
-                        fields={fields}
-                        onCancel={closeModal}
-                        onSubmit={handleSubmit}
-                    >
-                        {imageDims ? (
-                            <ImagePreview
-                                preview={preview}
-                                uploading={uploading}
-                            />
-                        ) : (
-                            <Button
-                                icon='file-image-plus'
-                                mode='contained'
-                                onPress={openSelector}
-                                disabled={formError}
-                            >
-                                Add Image
-                            </Button>
-                        )}
-                    </Form>
-                </Card.Content>
-            </Card>
+            </View>
+            
         </Card>
     )
 }

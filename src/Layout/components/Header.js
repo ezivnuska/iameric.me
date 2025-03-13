@@ -18,7 +18,7 @@ const Header = props => {
                 alignItems: 'center',
                 // width: '100%',
                 paddingLeft: 15,
-                // paddingRight: 5,
+                paddingRight: 5,
                 // marginHorizontal: 'auto',
                 paddingVertical: !landscape && 3,
                 // backgroundColor: 'yellow',
@@ -29,7 +29,7 @@ const Header = props => {
                     maxWidth: landscape ? null : 600,
                 }}
             >
-                
+
             </View>
             <Appbar.Content
                 title={`iam${user?.username || 'eric'}`}

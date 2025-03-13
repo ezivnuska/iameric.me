@@ -8,12 +8,13 @@ const saveUserImage = async (userId, filename, height, width, location = null) =
         height,
         width,
     }
+
     if (location) userImage.location = location
     
     const image = new UserImage(userImage)
-    
-    await image.save()
 
+    await image.save()
+    
     const savedImage = await UserImage
         .findOne({ _id: image._id })
         .populate('user', 'username')
