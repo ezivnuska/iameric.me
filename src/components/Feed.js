@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
 import { FlatList, View } from 'react-native'
 import { Divider, IconButton, Text } from 'react-native-paper'
-import { AddImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
+import { AddImageButton, DeleteImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
 import { useFeed, useModal, useTheme, useUser } from '@context'
-import { addPostImage } from '@utils/feed'
+import { addPostImage, removePostImage } from '@utils/feed'
 import { getTime } from '@utils/time'
 
 const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
@@ -19,6 +19,12 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
     const onUploaded = async image => {
         const postWithImage = await addPostImage(post._id, image._id)
         updatePost(postWithImage)
+    }
+
+    const onDeleteImage = async () => {
+        const removedPost = await removePostImage(post._id)
+        console.log('removedPost', removedPost)
+        if (removedPost) updatePost(removedPost)
     }
 
     return post && (
@@ -112,7 +118,11 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                                 onPress={() => addModal('FEEDBACK', post)}
                             />
 
-                            {!post?.image && (
+                            {post?.image ? (
+                                <DeleteImageButton
+                                    onDelete={onDeleteImage}
+                                />
+                            ) : (
                                 <AddImageButton
                                     onSelection={({ uri, height, width }) => updatePost({
                                         ...post,

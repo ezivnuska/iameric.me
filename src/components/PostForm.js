@@ -4,6 +4,7 @@ import { Card } from 'react-native-paper'
 import { Form, ModalHeader } from '@components'
 import { useFeed, useForm, useModal, useSocket, useUser } from '@context'
 import { createPost } from '@utils/feed'
+import ModalContainer from './ModalContainer'
 
 const PostForm = ({ data = null }) => {
 
@@ -21,14 +22,9 @@ const PostForm = ({ data = null }) => {
     const { socket } = useSocket()
     const { user } = useUser()
 
-    const handleSubmit = async () => {
+    const handleSubmit = async formData => {
 
-        const post = await createPost({
-            ...formFields,
-            postId: data._id,
-            threadId: data.threadId,
-            author: user._id,
-        })
+        const post = await createPost(formData)
 
         if (post) {
             socket.emit('new_post', post)
@@ -45,9 +41,22 @@ const PostForm = ({ data = null }) => {
             console.log(`Error in form field ${formError.name}: ${formError.message}`)
             return
         }
+
+        const formData = {
+            author: user._id,
+            ...formFields,
+        }
+
+        if (data) {
+            formData = {
+                ...formData,
+                postId: data._id,
+                threadId: data.threadId,
+            }
+        }
          
         setFormLoading(true)
-        const response = await handleSubmit()
+        const response = await handleSubmit(formData)
         setFormLoading(false)
          
         if (response) {
@@ -58,31 +67,13 @@ const PostForm = ({ data = null }) => {
     }
 
     return (
-        <Card
-            elevation={1}
-            style={{
-                marginVertical: '1.0%',
-                marginHorizontal: 15,
-            }}
-        >
-            <ModalHeader
-                title='New Post'
+        <ModalContainer title='New Post'>
+            <Form
+                fields={fields}
+                data={data}
+                onSubmit={submitFormData}
             />
-
-            <View
-                style={{
-                    flex: 1,
-                }}
-            >
-                <Form
-                    data={data}
-                    fields={fields}
-                    onCancel={closeModal}
-                    onSubmit={submitFormData}
-                />
-            </View>
-            
-        </Card>
+        </ModalContainer>
     )
 }
 

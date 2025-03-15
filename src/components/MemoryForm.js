@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
-import { View } from 'react-native'
-import { Card } from 'react-native-paper'
-import { DateSelector, Form, ModalHeader } from '@components'
+// import { View } from 'react-native'
+// import { Card } from 'react-native-paper'
+import { DateSelector, Form, ModalContainer, ModalHeader } from '@components'
 import { useMemory, useForm, useModal, useUser } from '@context'
 import { createMemory } from '@utils/memories'
 import { getDate, getMonth, getYear } from 'date-fns'
@@ -66,37 +66,40 @@ const MemoryForm = ({ data = null }) => {
     }
 
     return (
-        <Card
-            elevation={1}
-            style={{
-                flex: 1,
-                width: '100%',
-                gap: 10,
-            }}
-        >
+        // <Card
+        //     elevation={1}
+        //     style={{
+        //         flex: 1,
+        //         width: '100%',
+        //         gap: 10,
+        //     }}
+        // >
 
-            <ModalHeader
-                title={`${data ? 'Edit' : 'New'} Memory`}
-            />
+        //     <ModalHeader
+        //         title={`${data ? 'Edit' : 'New'} Memory`}
+        //     />
 
-            <View style={{ flex: 1, gap: 10 }}>
-                <View style={{ paddingHorizontal: 15 }}>
+        //     <View style={{ flex: 1, gap: 10 }}>
+        //         <View style={{ paddingHorizontal: 15 }}>
+                <ModalContainer title={`${data ? 'Edit' : 'New'} Memory`}>
+                    
                     <DateSelector
                         memory={data}
                         onChange={value => setDate(value)}
                     />
-                </View>
 
-                <Form
-                    data={data}
-                    fields={fields}
-                    onCancel={closeModal}
-                    onSubmit={submitFormData}
-                />
+                    <Form
+                        data={data}
+                        fields={fields}
+                        onSubmit={submitFormData}
+                    />
 
-            </View>
+                </ModalContainer>
+        //         </View>
+
+        //     </View>
                 
-        </Card>
+        // </Card>
     )
 }
 

@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
-import { IconButton, Text } from 'react-native-paper'
-import { Form } from '@components'
+import { Form, ModalContainer } from '@components'
 import { useForm, useModal, useTheme, useUser } from '@context'
 import { setCaption } from '@utils/images'
 
@@ -51,53 +49,15 @@ const CaptionForm = ({ data }) => {
     }
 
     return (
-
-        <View
-            style={{
-                flex: 1,
-                gap: 10,
-            }}
-        >
-
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingVertical: 5,
-                    backgroundColor: theme.colors.background,
-                }}
-            >
-                <Text
-                    variant='headlineSmall'
-                    style={{
-                        flex: 1,
-                        paddingHorizontal: 15,
-                    }}
-                >
-                    Caption
-                </Text>
-
-                <IconButton
-                    icon='close-thick'
-                    onPress={closeModal}
-                    style={{
-                        margin: 0,
-                        paddingHorizontal: 5,
-                    }}
-                />
-            </View>
-
-            <View style={{ flex: 1, paddingHorizontal: 15 }}>
+        <ModalContainer title='Caption'>
                 
-                <Form
-                    fields={fields}
-                    data={data}
-                    onSubmit={handleCaption}
-                />
+            <Form
+                fields={fields}
+                data={data}
+                onSubmit={handleCaption}
+            />
 
-            </View>
-
-        </View>
+        </ModalContainer>
     )
 }
 

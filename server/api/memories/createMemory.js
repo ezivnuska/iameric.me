@@ -38,7 +38,7 @@ const createMemory = async (req, res) => {
             }
         ])
 
-    return res.json({ memory: newMemory })
+    return res.json({ memory })
 }
 
 module.exports = createMemory

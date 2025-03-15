@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
-import { Button, TextInput } from 'react-native-paper'
+import { Button, HelperText, TextInput } from 'react-native-paper'
 import { useForm, useUser } from '@context'
 import { getFields, validateFields } from '@utils/form'
 
@@ -58,16 +58,36 @@ const Form = ({
         
     }, [formReady])
 
+    // const validateFormFields = fields => {
+    //     fields.map(field => {
+    //         validateField(field)
+    //     })
+    // }
+
+    // const validateField = field => {
+    //     console.log('field to validate', field)
+    //     if (field.validation !== undefined && field.validation === false) {
+    //         setFormError({ name: field.name, message: 'field is invalid.' })
+    //         // setFocus(index)
+    //     }
+    // }
+
     useEffect(() => {
         
         if (formReady) {
             
             if (formFields) {
-                const requiredFieldNames = fields.map(({ name }) => name)
-                let values = {}
-                requiredFieldNames.map(fieldName => {
-                    values[fieldName] = formFields[fieldName]
+                let values = []
+                // console.log('formFields', formFields)
+                // console.log('fields', fields)
+                fields.map(({ name, requirements }) => {
+                    values.push({
+                        name,
+                        value: formFields[name],
+                        requirements,
+                    })
                 })
+                // validateFormFields(fields)
                 let error = validateFields(values)
                 
                 if (error) {
@@ -81,6 +101,7 @@ const Form = ({
                 }
             }
         }
+
     }, [formFields])
 
     const onChange = (key, value) => {
@@ -92,19 +113,17 @@ const Form = ({
 		if (e.code === 'Enter') submitFormData()
 	}
 
-   const submitFormData = async () => {
-       if (formError) {
-           console.log(`Error in form field ${formError.name}: ${formError.message}`)
-           return
-		}
-        
-        let formData = {
-            ...formFields,
-            author: user?._id,
-        }
+    const submitFormData = async () => {
+
+        if (formError) return console.log(`Error in form field ${formError.name}: ${formError.message}`)
         
         setFormLoading(true)
-        const response = await onSubmit(formData)
+        
+        const response = await onSubmit({
+            author: user?._id,
+            ...formFields,
+        })
+
         setFormLoading(false)
         
         if (response) {
@@ -119,9 +138,14 @@ const Form = ({
             data={fields}
             extraData={fields}
             keyExtractor={item => `item-${item.name}`}
-            style={{ flex: 1, paddingHorizontal: 15 }}
+            style={{ flex: 1 }}
             ItemSeparatorComponent={({ highlighted }) => (
-                <View style={[{ height: 10 }, highlighted && { marginLeft: 0 }]} />
+                <View
+                    style={[
+                        // { height: 10 },
+                        highlighted && { marginLeft: 0 },
+                    ]}
+                />
             )}
             ListFooterComponent={() => (
                 <Button
@@ -133,7 +157,7 @@ const Form = ({
                 </Button>
             )}
             ListFooterComponentStyle={{
-                paddingVertical: 10,
+                paddingTop: 10,
             }}
             renderItem={({ item }) => {
                 const {
@@ -146,23 +170,34 @@ const Form = ({
                 } = item
 
                 return (
-                    <TextInput
-                        name={name}
-                        label={label}
-                        value={formFields[name] || ''}
-                        onChangeText={value => onChange(name, value)}
-                        error={getError(name)}
-                        placeholder={placeholder}
-                        secureTextEntry={type === 'password'}
-                        keyboardType='default'
-                        autoCapitalize={autoCapitalize || 'sentences'}
-                        autoFocus={getFocus(name)}
-                        onKeyPress={!multiline && onEnter}
-                        dirty={getDirty(name)}
-                        multiline={multiline}
-                        rows={4}
-                        contentStyle={{ paddingVertical: 5, paddingHorizontal: 10 }}
-                    />
+                    <View>
+                        <TextInput
+                            name={name}
+                            label={label}
+                            value={formFields[name] || ''}
+                            onChangeText={value => onChange(name, value)}
+                            error={getError(name)}
+                            placeholder={placeholder}
+                            secureTextEntry={type === 'password'}
+                            keyboardType='default'
+                            autoCapitalize={autoCapitalize || 'sentences'}
+                            autoFocus={getFocus(name)}
+                            onKeyPress={!multiline && onEnter}
+                            dirty={getDirty(name)}
+                            multiline={multiline}
+                            rows={4}
+                            // contentStyle={{ paddingHorizontal: 10 }}
+                        />
+
+                        <HelperText
+                            type={getDirty(name) ? 'error' : 'info'}
+                            visible={formError?.name === name}
+                            style={{ paddingHorizontal: 0 }}
+                        >
+                            {formError?.message || ' '}
+                        </HelperText>
+                        
+                    </View>
                 )
             }}
         />

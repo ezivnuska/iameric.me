@@ -35,10 +35,6 @@ const initialState = {
     error: null,
     imageLoading: false,
     imagesLoading: false,
-    imageUpload: null,
-    uploading: null,
-    deletedImage: null,
-    uploadedImage: null,
 
     setUser: () => {},
     setProfileImage: () => {},
@@ -57,10 +53,6 @@ const initialState = {
     setImages: () => {},
     setImageLoading: () => {},
     setImagesLoading: () => {},
-    setImageUpload: () => {},
-    setDeletedImage: () => {},
-    setUploadedImage: () => {},
-    setUploading: () => {},
     updateImage: () => {},
 }
 

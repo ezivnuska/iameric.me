@@ -4,6 +4,7 @@ import Bugs from './Bugs'
 import CaptionForm from './CaptionForm'
 import Checkbox from './Checkbox'
 import DateSelector from './DateSelector'
+import DeleteImageButton from './DeleteImageButton'
 import DestroyForm from './DestroyForm'
 import FormContainer from './FormContainer'
 import ImageCard from './ImageCard'
@@ -27,6 +28,7 @@ import Feed from './Feed'
 import Form from './Form'
 import ImagePicker from './ImagePicker'
 import JobList from './JobList'
+import ModalContainer from './ModalContainer'
 import ModalFactory from './ModalFactory'
 import ModalHeader from './ModalHeader'
 import Notification from './Notification'
@@ -41,6 +43,7 @@ export {
     CaptionForm,
     Checkbox,
     DateSelector,
+    DeleteImageButton,
     DestroyForm,
     FormContainer,
     ImageCard,
@@ -64,6 +67,7 @@ export {
     Form,
     ImagePicker,
     JobList,
+    ModalContainer,
     ModalFactory,
     ModalHeader,
     Notification,

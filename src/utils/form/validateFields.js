@@ -1,8 +1,22 @@
 import { isValidEmail } from '.'
 
-const checkForError = (name, value) => {
+const checkForError = ({ name, value, requirements = undefined }) => {
     const invalid = !value || !value.length
     let error = null
+
+    if (requirements?.length) {
+        // console.log('*', requirements)
+        let index = 0
+        while (index < requirements.length) {
+            const requirement = requirements[index]
+            // console.log('**', requirement.condition())
+            if (!requirement.condition()) {
+                return { name, message: requirement.errorMessage }
+            }
+            index++
+        }
+    }
+
     switch (name) {
         case 'email':
             if (invalid) {
@@ -27,6 +41,10 @@ const checkForError = (name, value) => {
             }
             break
         case 'text':
+            if (invalid) {
+                error = { name, message: 'Field cannot be blank.' }
+            }
+            break
         case 'destroy':
             if (invalid) {
                 error = { name, message: 'Field cannot be blank.' }
@@ -49,27 +67,16 @@ const checkForError = (name, value) => {
 const validateFields = fields => {
     let index = 0
     let validFields = {}
-    const keys = Object.keys(fields)
     let error = null
-
-    while (index < keys.length) {
-        
-        const key = keys[index]
-        
-        // this is dirty. Fix it.
-        if (key === 'confirmPassword' && validFields['password'] !== fields[key]) {
-            error = {
-                name: key,
-                message: 'Passwords do not match.',
-            }
-        } else {
-            error = checkForError(key, fields[key])
-        }
+    
+    while (index < fields.length) {
+        const field = fields[index]
+        error = checkForError(field)
 
         if (error) {
             return { ...error, index }
         } else {
-            validFields[key] = fields[key]
+            validFields[field.name] = fields.value
             index++
         }
     }

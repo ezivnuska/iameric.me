@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Card, IconButton } from 'react-native-paper'
-import { Form } from '@components'
+import { Button } from 'react-native-paper'
+import { Form, ModalContainer } from '@components'
 import { useForm, useModal, useSocket, useUser } from '@context'
 import { signup, signin } from '@utils/auth'
 import { setItem, storeToken } from '@utils/storage'
@@ -33,20 +33,17 @@ const AuthForm = () => {
     }
 
     const handleModalClose = () => {
-        // if (authRoute) setAuthRoute(null)
         resetForm()
         closeModal()
     }
 
     const handleSignin = async ({ email, password }) => {
-        
+        // console.log('email', email)
+        // console.log('password', password)
         const response = await signin(email, password)
-        // const connectedUser = await signin(email, password)
-        
         
         if (response) {
 
-            // console.log('response:', response)
             if (response.error) {
                 console.log('SignIn Error:', response.msg)
                 setFormError({
@@ -74,12 +71,12 @@ const AuthForm = () => {
     }
 
     const handleSignup = async ({ email, username, password, confirmPassword }) => {
-        if (password !== confirmPassword) {
-            setFormError({
-                name: 'confirmPassword',
-                message: 'Passwords do not match.',
-            })
-        } else {
+        // if (password !== confirmPassword) {
+        //     setFormError({
+        //         name: 'confirmPassword',
+        //         message: 'Passwords do not match.',
+        //     })
+        // } else {
             const newUser = await signup(email, password, username)
             if (newUser) {
                 await setItem('email', email)
@@ -94,68 +91,34 @@ const AuthForm = () => {
                     username,
                 })
                 
-                // resetForm()
-                
                 return newUser
             }
-        }
-        return null
+        // }
+        // return null
     }
 
     return (
-        <Card>
+        <ModalContainer title={formType === 'up' ? 'Sign Up' : 'Sign In'}>
 
-            <Card.Title
-                title={formType === 'up' ? 'Sign Up' : 'Sign In'}
-                titleVariant='headlineLarge'
-                right={() => <IconButton icon='close-thick' onPress={closeModal} />}
-            />
+            {formType === 'up'
+                ? <SignUpForm onCancel={handleModalClose} onSubmit={handleSignup} />
+                : <SignInForm onCancel={handleModalClose} onSubmit={handleSignin} />
+            }
 
-            <Card.Content style={{ marginTop: 10 }}>
-                {formType === 'up'
-                    ? <SignUpForm onCancel={handleModalClose} onSubmit={handleSignup} />
-                    : <SignInForm onCancel={handleModalClose} onSubmit={handleSignin} />
-                }
-            </Card.Content>
+            <Button
+                mode='outlined'
+                onPress={toggleFormType}
+            >
+                {formType === 'up' ? 'Sign In' : 'Sign Up'}
+            </Button>
 
-            <Card.Actions style={{ flexDirection: 'column', alignItems: 'stretch', marginVertical: 10 }}>
-                <Button
-                    mode='outlined'
-                    onPress={toggleFormType}
-                >
-                    {formType === 'up' ? 'Sign In' : 'Sign Up'}
-                </Button>    
-            </Card.Actions>
-
-        </Card>
+        </ModalContainer>
     )
-    // return (
-    //     <View
-    //         style={{
-    //             flexGrow: 1,
-    //             paddingHorizontal: 10,
-    //             paddingVertical: 10,
-    //             gap: 10,
-    //         }}
-    //     >
-    
-    //         {formType === 'up'
-    //             ? <SignUpForm onCancel={handleModalClose} onSubmit={handleSignup} />
-    //             : <SignInForm onCancel={handleModalClose} onSubmit={handleSignin} />
-    //         }
-
-    //         <Button
-    //             mode='outlined'
-    //             onPress={toggleFormType}
-    //         >
-    //             {formType === 'up' ? 'Sign In' : 'Sign Up'}
-    //         </Button>
-
-    //     </View>
-    // )
 }
 
-const SignUpForm = ({ onCancel, onSubmit }) => {
+const SignUpForm = ({ onSubmit }) => {
+
+    const { formFields } = useForm()
     
     const fields = [
         {
@@ -184,20 +147,25 @@ const SignUpForm = ({ onCancel, onSubmit }) => {
             placeholder: 'password again...',
             multiline: false,
             type: 'password',
+            requirements: [
+                {
+                    condition: () => formFields.password?.length && formFields.password === formFields.confirmPassword,
+                    errorMessage: 'Passwords do not match.'
+                },
+            ],
+
         },
     ]
 
     return (
         <Form
-            title='Sign Up'
             fields={fields}
-            onCancel={onCancel}
             onSubmit={onSubmit}
         />
     )
 }
 
-const SignInForm = ({ onCancel, onSubmit }) => {
+const SignInForm = ({ onSubmit }) => {
     
     const fields = [
         {
@@ -218,9 +186,7 @@ const SignInForm = ({ onCancel, onSubmit }) => {
 
     return (
         <Form
-            title='Sign In'
             fields={fields}
-            onCancel={onCancel}
             onSubmit={onSubmit}
         />
     )

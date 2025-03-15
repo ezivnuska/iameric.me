@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import { HelperText, IconButton, Text } from'react-native-paper'
 import { useForm, useModal } from '@context'
 
-const ModalHeader = ({ title = '' }) => {
+const ModalHeader = ({ title = null }) => {
 
     const { formError } = useForm()
     const { closeModal } = useModal()
@@ -20,19 +20,22 @@ const ModalHeader = ({ title = '' }) => {
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
+                    gap: 15,
                 }}
             >
-                <Text
-                    variant='headlineSmall'
-                    style={{
-                        flex: 1,
-                        paddingHorizontal: 15,
-                    }}
-                >
-                    {title}
-                </Text>
+                {title && (
+                    <Text
+                        variant='headlineSmall'
+                        style={{ flex: 1 }}
+                    >
+                        {title}
+                    </Text>
+                )}
 
-                <HelperText type='error' visible={true}>
+                <HelperText
+                    type='error'
+                    visible={formError}
+                >
                     {formError?.message || ' '}
                 </HelperText>
             </View>
@@ -40,10 +43,7 @@ const ModalHeader = ({ title = '' }) => {
             <IconButton
                 icon='close-thick'
                 onPress={closeModal}
-                style={{
-                    margin: 0,
-                    paddingHorizontal: 10,
-                }}
+                style={{ margin: 0, padding: 0 }}
             />
         </View>
     )

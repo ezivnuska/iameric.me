@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Image, Pressable, ScrollView, View } from 'react-native'
 import { Card, IconButton, MD3Colors, Text } from 'react-native-paper'
-import { TappableView, SmartAvatar } from '@components'
+import { SmartAvatar, TappableView } from '@components'
 import { Paths } from '@constants'
 import { useNotification, useModal, useTheme, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar } from '@utils/images'
@@ -70,7 +70,7 @@ const ImageCard = ({ data }) => {
     // const { addNotification } = useNotification()
     const { closeModal, addModal } = useModal()
     const { landscape, theme } = useTheme()
-    const { user, setDeletedImage, setProfileImage, updateUser } = useUser()
+    const { user, removeImage, setProfileImage, updateUser } = useUser()
 
     const [detailsVisible, setDetailsVisible] = useState(true)
     const [loading, setLoading] = useState(false)
@@ -225,13 +225,18 @@ const ImageCard = ({ data }) => {
 
         setLoading(true)
 
-        const response = await deleteImage(image, user.profileImage?._id === image._id)
+        const { deletedImage } = await deleteImage(data._id)
         
         setLoading(false)
 
-        if (response.deletedImage) {
+        if (deletedImage) {
             
-            setDeletedImage(response.deletedImage)
+            removeImage(deletedImage.user._id, deletedImage._id)
+
+            updateUser({
+                _id: deletedImage.user._id,
+                images: user.images.filter(img => img._id !== deletedImage._id),
+            })
             
             closeModal()
 

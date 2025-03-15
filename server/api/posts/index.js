@@ -5,6 +5,8 @@ const deletePostById = require('./deletePostById')
 const getPost = require('./getPost')
 const getPosts = require('./getPosts')
 const getPostThread = require('./getPostThread')
+const removePostImage = require('./removePostImage')
+const scrubImageFromPosts = require('./scrubImageFromPosts')
 
 module.exports = {
     addPostImage,
@@ -14,4 +16,6 @@ module.exports = {
     getPost,
     getPosts,
     getPostThread,
+    removePostImage,
+    scrubImageFromPosts,
 }

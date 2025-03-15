@@ -1,4 +1,3 @@
-// const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
 
 const loadImage = async (req, res) => {
@@ -6,7 +5,6 @@ const loadImage = async (req, res) => {
         .findById(req.params.id)
         .populate({
             path: 'user',
-            select: '_id username profileImage',
             populate: {
                 path: 'profileImage',
                 select: '_id filename',
@@ -16,9 +14,10 @@ const loadImage = async (req, res) => {
     if (image) {
         return res.status(200).json({ image })
     }
-    else console.log('Error loading image')
-
-    return nulll
+    
+    console.log('Error loading image')
+    
+    return res.status(200).json(null)
 }
 
 module.exports = loadImage

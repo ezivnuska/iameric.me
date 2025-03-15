@@ -18,7 +18,7 @@ const createPost = async (req, res) => {
 
     if (post) {
         post = await Post
-            .findOne({ _id: postId })
+            .findOne({ _id: post._id })
             .populate({
                 path: 'author',
                 select: 'username profileImage',

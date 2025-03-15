@@ -1,82 +1,66 @@
 import React from'react'
 import { View } from'react-native'
-import { Card, Button } from'react-native-paper'
-import { ModalHeader } from'@components'
+import { Button, Text } from'react-native-paper'
 import { useModal } from '@context'
 import { navigate } from '@utils/navigation'
+import ModalContainer from './ModalContainer'
 
 const Settings = () => {
     
     const { addModal } = useModal()
     
     return (
-         <Card
-            elevation={1}
-            style={{
-                flex: 1,
-                width: '100%',
-                gap: 10,
-            }}
-        >
+        <ModalContainer title='Settings'>
+            <View style={{ gap: 15 }}>
 
-            <ModalHeader
-                title='Settings'
-            />
-            
-            <View
-                style={{
-                    flex: 1,
-                    justifyContent: 'space-evenly',
-                }}
-            >
-            
-                <Card elevation={0}>
+                <View style={{ gap: 15 }}>
 
-                    <Card.Title
-                        title='Sign Out'
-                        titleVariant='headlineSmall'
-                        subtitle='Come back soon!'
-                        subtitleVariant='bodyLarge'
-                    />
+                    <View style={{ gap: 10 }}>
 
-                    <Card.Content>
-
-                        <Button
-                            mode='outlined'
-                            onPress={() => navigate('Home', { signout: true })}
-                            style={{ marginVertical: 10 }}
-                        >
+                        <Text variant='titleLarge'>
                             Sign Out
-                        </Button>
+                        </Text>
 
-                    </Card.Content>
+                        <Text variant='titleMedium'>
+                            Come back soon!
+                        </Text>
 
-                </Card>
+                    </View>
 
-                <Card elevation={0}>
+                    <Button
+                        mode='outlined'
+                        onPress={() => navigate('Home', { signout: true })}
+                    >
+                        Sign Out
+                    </Button>
+
+                </View>
+
+                <View style={{ gap: 15 }}>
                     
-                    <Card.Title
-                        title='Close Account'
-                        titleVariant='headlineSmall'
-                        subtitle='Delete account and data.'
-                        subtitleVariant='bodyLarge'
-                    />
-                    
-                    <Card.Content>
-
-                        <Button
-                            mode='outlined'
-                            onPress={() => addModal('DESTROY')}
-                            style={{ marginVertical: 10 }}
-                        >
+                    <View style={{ gap: 10 }}>
+                        
+                        <Text variant='titleLarge'>
                             Close Account
-                        </Button>
+                        </Text>
 
-                    </Card.Content>
+                        <Text variant='titleMedium'>
+                            Delete account and data.
+                        </Text>
 
-                </Card>
+                    </View>
+
+                    <Button
+                        mode='outlined'
+                        onPress={() => addModal('DESTROY')}
+                    >
+                        Close Account
+                    </Button>
+
+                </View>
+
             </View>
-        </Card>
+        </ModalContainer>
     )
 }
 

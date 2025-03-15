@@ -5,6 +5,7 @@ const deleteMemoryById = require('./deleteMemoryById')
 const getMemory = require('./getMemory')
 const getMemories = require('./getMemories')
 const getMemoryThread = require('./getMemoryThread')
+const scrubImageFromMemories = require('./scrubImageFromMemories')
 
 module.exports = {
     addMemoryImage,
@@ -14,4 +15,5 @@ module.exports = {
     getMemory,
     getMemories,
     getMemoryThread,
+    scrubImageFromMemories,
 }

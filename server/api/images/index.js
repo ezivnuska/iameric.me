@@ -1,4 +1,5 @@
 const clearUserProfileImage = require('./clearUserProfileImage')
+const deleteImage = require('./deleteImage')
 const deleteImageById = require('./deleteImageById')
 const deletePreview = require('./deletePreview')
 const findAndRemoveImageFromProduct = require('./findAndRemoveImageFromProduct')
@@ -11,11 +12,13 @@ const loadImage = require('./loadImage')
 const removeAllBipImagesById = require('./removeAllBipImagesById')
 const removeUserAssetsByUsername = require('./removeUserAssetsByUsername')
 const removeImageAndThumb = require('./removeImageAndThumb')
+const scrubImage = require('./scrubImage')
 const setImageCaption = require('./setImageCaption')
 const updateProfileImage = require('./updateProfileImage')
 
 module.exports = {
     clearUserProfileImage,
+    deleteImage,
     deleteImageById,
     deletePreview,
     findAndRemoveImageFromProduct,
@@ -28,6 +31,7 @@ module.exports = {
     removeAllBipImagesById,
     removeUserAssetsByUsername,
     removeImageAndThumb,
+    scrubImage,
     setImageCaption,
     updateProfileImage,
 }

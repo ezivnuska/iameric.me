@@ -3,6 +3,8 @@ const Bip = require('../../models/Bip')
 const BipImage = require('../../models/BipImage')
 const Entry = require('../../models/Entry')
 const Message = require('../../models/Message')
+const Memory = require('../../models/Memory')
+const Post = require('../../models/Post')
 const User = require('../../models/User')
 const UserImage = require('../../models/UserImage')
 const { removeUserAssetsByUsername } = require('../images')
@@ -50,6 +52,34 @@ const deleteAccount = async (req, res) => {
             console.log('could not delete entries.')
         } else {
             console.log(`deleted ${deletedEntries.deletedCount} entries`)
+        }
+    }
+
+    const posts = await Post.find({ author: id })
+    console.log('deleting posts', posts)
+
+    if (posts && posts.length) {
+
+        const deletedPosts = await Post.deleteMany({ author: id })
+        console.log('deletedPosts', deletedPosts)    
+        if (!deletedPosts) {
+            console.log('could not delete posts.')
+        } else {
+            console.log(`deleted ${deletedPosts.deletedCount} posts`)
+        }
+    }
+
+    const memories = await Memory.find({ author: id })
+    console.log('deleting memories', memories)
+
+    if (memories && memories.length) {
+
+        const deletedMemories = await Memory.deleteMany({ author: id })
+        console.log('deletedMemories', deletedMemories)    
+        if (!deletedMemories) {
+            console.log('could not delete memories.')
+        } else {
+            console.log(`deleted ${deletedMemories.deletedCount} posts`)
         }
     }
 
