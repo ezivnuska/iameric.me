@@ -3,20 +3,12 @@ const User = require('../../models/User')
 
 const createUser = async (email, hashedPassword, username) => {
     
-    let user = await User.findOne({ email })
-    
-    if (user) {
-        console.log('user with that email already exists.')
-        return null
-    } else {
-        user = await User.create({ email, password: hashedPassword, username })
-    }
+    let user = await User.create({ email, password: hashedPassword, username })
 
     if (!user) {
         console.log(`Error creating user: ${username}, ${email}`)
         return null
     }
-    console.log('user exists', user)
     
     const { token, exp } = createToken(user)
     
@@ -26,8 +18,7 @@ const createUser = async (email, hashedPassword, username) => {
             { $set: { token, exp } },
             { new: true },
         )
-        .populate('profileImage', 'filename width height')
-        .populate('address')
+        .select('createdAt email exp role token username')
 
     if (user) return user
     else console.log('Error updating user with token')

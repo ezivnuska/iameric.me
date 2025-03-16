@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Text } from 'react-native-paper'
 import { Form, ModalContainer } from '@components'
 import { useForm, useUser } from '@context'
@@ -9,18 +9,16 @@ const DestroyForm = () => {
     const { formFields } = useForm()
     const { user } = useUser()
 
+    const condition = useMemo(() => formFields && user.username === formFields.destroy, [formFields])
+
     const fields = [
         {
             name: 'destroy',
             placeholder: 'username',
             multiline: false,
             requirements: [
-                // {
-                //     condition: formFields['destroy'] !== '',
-                //     errorMessage: 'Field cannot be blank.'
-                // },
                 {
-                    condition: () => user.username === formFields.destroy,
+                    condition,
                     errorMessage: 'Invalid username.'
                 },
             ],

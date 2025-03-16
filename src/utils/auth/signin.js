@@ -2,21 +2,25 @@ import axios from 'axios'
 import { setItem, storeToken } from '@utils/storage'
 
 const signin = async (email, password) => {
+
     const { data } = await axios.post('/api/signin', { email, password })
-    if (data && data.user) {
+
+    const { error, user, name, message } = data
+
+    if (user) {
 
         await setItem('email', email)
 
-        const { token } = data.user
+        const { token } = user
         
         await storeToken(token)
-
-        return data
         
+    } else if (error) {
+
+        console.log('Error authenticating user.', name, message)
     }
     
-    console.log('Error: No data returned when authenticating user')
-    return null
+    return data
 }
 
 export default signin

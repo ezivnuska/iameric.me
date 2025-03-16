@@ -58,28 +58,14 @@ const Form = ({
         
     }, [formReady])
 
-    // const validateFormFields = fields => {
-    //     fields.map(field => {
-    //         validateField(field)
-    //     })
-    // }
-
-    // const validateField = field => {
-    //     console.log('field to validate', field)
-    //     if (field.validation !== undefined && field.validation === false) {
-    //         setFormError({ name: field.name, message: 'field is invalid.' })
-    //         // setFocus(index)
-    //     }
-    // }
-
     useEffect(() => {
         
         if (formReady) {
             
             if (formFields) {
+
                 let values = []
-                // console.log('formFields', formFields)
-                // console.log('fields', fields)
+                
                 fields.map(({ name, requirements }) => {
                     values.push({
                         name,
@@ -87,7 +73,7 @@ const Form = ({
                         requirements,
                     })
                 })
-                // validateFormFields(fields)
+                
                 let error = validateFields(values)
                 
                 if (error) {
@@ -186,7 +172,7 @@ const Form = ({
                             dirty={getDirty(name)}
                             multiline={multiline}
                             rows={4}
-                            // contentStyle={{ paddingHorizontal: 10 }}
+                            // contentStyle={}
                         />
 
                         <HelperText

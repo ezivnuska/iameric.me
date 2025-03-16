@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button } from 'react-native-paper'
 import { Form, ModalContainer } from '@components'
 import { useForm, useModal, useSocket, useUser } from '@context'
 import { signup, signin } from '@utils/auth'
-import { setItem, storeToken } from '@utils/storage'
 
 const AuthForm = () => {
     
@@ -38,25 +37,24 @@ const AuthForm = () => {
     }
 
     const handleSignin = async ({ email, password }) => {
-        // console.log('email', email)
-        // console.log('password', password)
-        const response = await signin(email, password)
-        
-        if (response) {
 
-            if (response.error) {
-                console.log('SignIn Error:', response.msg)
-                setFormError({
-                    name: response.invalidField,
-                    message: response.msg,
-                })
-            } else if (response.user) {
+        const data = await signin(email, password)
+        
+        if (data) {
+
+            if (data.error) {
+                
+                const { name, message } = data
+                
+                setFormError({ name, message })
+
+            } else if (data.user) {
 
                 if (formError) clearFormError()
     
-                const { _id, username } = response.user
+                const { _id, username } = data.user
                 
-                setUser(response.user)
+                setUser(data.user)
                 
                 notifySocket('user_signed_in', {
                     userId: _id,
@@ -65,44 +63,39 @@ const AuthForm = () => {
     
                 handleModalClose()
             }
-        } else {
-            return null
         }
     }
 
-    const handleSignup = async ({ email, username, password, confirmPassword }) => {
-        // if (password !== confirmPassword) {
-        //     setFormError({
-        //         name: 'confirmPassword',
-        //         message: 'Passwords do not match.',
-        //     })
-        // } else {
-            const newUser = await signup(email, password, username)
-            if (newUser) {
-                await setItem('email', email)
-    
-                const { _id, token, username } = newUser
-                
-                storeToken(token)
-                setUser(newUser)
-                
-                notifySocket('user_signed_in', {
-                    userId: _id,
-                    username,
-                })
-                
-                return newUser
-            }
-        // }
-        // return null
+    const handleSignup = async ({ email, username, password }) => {
+
+        const { error, name, message, user } = await signup(email, password, username)
+        
+        if (error) {
+
+            setFormError({
+                name,
+                message,
+            })
+            
+        } else if (user) {
+
+            const { _id, username } = user
+            
+            setUser(user)
+            
+            notifySocket('user_signed_in', {
+                userId: _id,
+                username,
+            })
+        }
     }
 
     return (
         <ModalContainer title={formType === 'up' ? 'Sign Up' : 'Sign In'}>
 
             {formType === 'up'
-                ? <SignUpForm onCancel={handleModalClose} onSubmit={handleSignup} />
-                : <SignInForm onCancel={handleModalClose} onSubmit={handleSignin} />
+                ? <SignUpForm onSubmit={handleSignup} />
+                : <SignInForm onSubmit={handleSignin} />
             }
 
             <Button
@@ -119,6 +112,8 @@ const AuthForm = () => {
 const SignUpForm = ({ onSubmit }) => {
 
     const { formFields } = useForm()
+
+    const condition = useMemo(() => formFields && formFields.password?.length && (formFields.password === formFields.confirmPassword), [formFields])
     
     const fields = [
         {
@@ -149,7 +144,7 @@ const SignUpForm = ({ onSubmit }) => {
             type: 'password',
             requirements: [
                 {
-                    condition: () => formFields.password?.length && formFields.password === formFields.confirmPassword,
+                    condition,
                     errorMessage: 'Passwords do not match.'
                 },
             ],

@@ -2,10 +2,10 @@ import React, { useEffect, useMemo } from 'react'
 import { FlatList } from 'react-native'
 import { Card, Divider, IconButton, Text } from 'react-native-paper'
 import { useSocket, useModal, useUser } from '@context'
+import { ModalContainer } from '@components'
 
 const Socket = () => {
 
-    const { closeModal } = useModal()
     const { connections, socket } = useSocket()
     const { user } = useUser()
     
@@ -18,19 +18,9 @@ const Socket = () => {
 
     const username = useMemo(() => user ? user.username : getShortId(socket.id), [socket])
 
-    // useEffect(() => {
-    //     console.log('connections...', connections)
-    // }, [])
-
     return (
-        <Card>
+        <ModalContainer title={`Connections (${connections.length})`}>
 
-            <Card.Title
-                title={`Connections (${connections.length})`}
-                titleVariant='headlineLarge'
-                right={() => <IconButton icon='close-thick' onPress={closeModal} />}
-            />
-            
             <Card>
 
                 <Card.Title
@@ -55,7 +45,7 @@ const Socket = () => {
                 </Card.Content>
             </Card>
 
-        </Card>
+        </ModalContainer>
     )
 }
 

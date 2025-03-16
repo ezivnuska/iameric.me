@@ -8,7 +8,6 @@ import {
     DestroyForm,
     ImageCard,
     MemoryForm,
-    MemoryImageSelector,
     PostForm,
     Settings,
     Socket,
@@ -35,30 +34,21 @@ const ModalFactory = ({ modal, onClose }) => {
                 break
             case 'MEMORY':
                 content = <MemoryForm data={data} />
-                // fullscreen = true
-                break
-            case 'MEMORY_IMAGE':
-                content = <MemoryImageSelector data={data} />
-                // fullscreen = true
                 break
             case 'IMAGE_UPLOAD':
                 content = <AddImageButton data={data} />
-                // content = <ImagePicker data={data} />
                 break
             case 'DESTROY':
                 content = <DestroyForm data={data} />
                 break
             case 'CAPTION':
                 content = <CaptionForm data={data} />
-                // fullscreen = true
                 break
             case 'FEEDBACK':
                 content = <PostForm data={data} />
-                // fullscreen = true
                 break
             case 'SETTINGS':
                 content = <Settings />
-                // fullscreen = true
                 break
             case 'SHOWCASE':
                 content = <ImageCard data={data} />

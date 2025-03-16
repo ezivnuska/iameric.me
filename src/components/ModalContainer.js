@@ -15,7 +15,10 @@ const ModalContainer = ({ title, children }) => {
                 paddingTop: 10,
                 paddingBottom: 15,
                 gap: 10,
+                width: '90%',
+                maxWidth: 400,
                 maxHeight: dims.height * 0.9,
+                marginHorizontal: 'auto',
             }}
         >
 
@@ -58,7 +61,10 @@ const ModalHeader = ({ title }) => {
                 paddingRight: 5,
             }}
         >
-            <Text variant='headlineSmall'>
+            <Text
+                variant='headlineSmall'
+                style={{ flex: 1 }}
+            >
                 {title}
             </Text>
 

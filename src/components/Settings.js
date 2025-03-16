@@ -3,7 +3,7 @@ import { View } from'react-native'
 import { Button, Text } from'react-native-paper'
 import { useModal } from '@context'
 import { navigate } from '@utils/navigation'
-import ModalContainer from './ModalContainer'
+import { ModalContainer } from '@components'
 
 const Settings = () => {
     

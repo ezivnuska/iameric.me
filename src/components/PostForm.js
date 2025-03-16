@@ -1,7 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
-import { Card } from 'react-native-paper'
-import { Form, ModalHeader } from '@components'
+import { Form } from '@components'
 import { useFeed, useForm, useModal, useSocket, useUser } from '@context'
 import { createPost } from '@utils/feed'
 import ModalContainer from './ModalContainer'
@@ -44,17 +42,11 @@ const PostForm = ({ data = null }) => {
 
         const formData = {
             author: user._id,
+            postId: data?._id,
+            threadId: data?.threadId,
             ...formFields,
         }
 
-        if (data) {
-            formData = {
-                ...formData,
-                postId: data._id,
-                threadId: data.threadId,
-            }
-        }
-         
         setFormLoading(true)
         const response = await handleSubmit(formData)
         setFormLoading(false)

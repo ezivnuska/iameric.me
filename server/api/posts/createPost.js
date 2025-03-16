@@ -34,10 +34,7 @@ const createPost = async (req, res) => {
 
         return res.status(200).json({ post })
     }
-
-    console.log('Problem creating Post.')
-
-    // upon failure, return null
+    
     return res.status(200).json(null)
     
 }

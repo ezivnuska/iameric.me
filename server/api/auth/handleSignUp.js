@@ -1,29 +1,33 @@
+const User = require('../../models/User')
 const bcrypt = require('bcrypt')
 const createUser = require('./createUser')
 
 const handleSignUp = async (req, res) => {
+
     const { email, password, username } = req.body
-    console.log('password', password)
-    
+
+    let user = await User.findOne({ email })
+
+    if (user) {
+        return res.status(200).json({ error: true, name: 'email', message: 'An account with that email already exists.' })
+    }
+
     return bcrypt.genSalt(10, async (err, salt) => {
-        console.log('salt', salt)
+
         bcrypt.hash(password, salt, async (err, hash) => {
             if (err) {
-                console.log('error with hash', err)
-                return res.status(200).json({ error: true, msg: err })
+                return res.status(200).json({ error: true, message: err })
             }
             
             if (!hash) {
-                console.log('problem with hash')
-                return res.status(200).json({ error: true, msg: 'Problem with hash.' })
+                return res.status(200).json({ error: true, message: 'Problem with hash.' })
             }
-            const user = await createUser(email, hash, username)
+
+            user = await createUser(email, hash, username)
 
             if (!user) {
-                console.log('problem with user')
-                return res.status(200).json({ error: true, msg: 'Could not create new user.' })
+                return res.status(200).json({ error: true, message: 'Could not create new user.' })
             } else {
-                console.log('new user created:', user)
                 return res.status(200).json({ user })
             }
         })

@@ -6,28 +6,29 @@ const authenticate = async (req, res) => {
     
     const { token } = req.body
     
-    console.log('authenticating saved token...')
+    console.log('authenticating token...')
     
     const userFromToken = getDecodedUser(token)
 
     if (!userFromToken) return res.status(200).json(null)
 
-    console.log(`\n${userFromToken.username} was previously connected.\n`)
+    console.log(`\n${userFromToken.username} authenticated.\n`)
     
     const expired = (new Date(userFromToken.exp) - Date.now() > 0)
+    
     if (expired) {
-        console.log('token expired')
+
+        console.log(`\n${userFromToken.username}'s token has expired.\n`)
         return res.status(406).json({ userFromToken, error: 'token expired' })
     }
 
     const user = await User
         .findOne({ _id: userFromToken._id })
-        // .select('_id email username role profileImage')
-        .populate({ path: 'profileImage', select: '_id filename' })
-        // .populate('address')
+        .select('address createdAt email exp profileImage role token username')
+        .populate('profileImage', 'filename width height')
+        .populate('address')
 
     if (!user) {
-        console.log('failed to refresh user token')
         return res.status(200).json(null)
     }
 
@@ -43,7 +44,6 @@ const authenticate = async (req, res) => {
         return res.status(200).json(null)
     }
 
-    // return res.status(200).json({ user: getSanitizedUser(user) })
     return res.status(200).json({ user })
 }
 

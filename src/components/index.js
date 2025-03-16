@@ -13,7 +13,6 @@ import ImageLoader from './ImageLoader'
 import ImagePreview from './ImagePreview'
 import ImageUploadIndicator from './ImageUploadIndicator'
 import MemoryForm from './MemoryForm'
-import MemoryImageSelector from './MemoryImageSelector'
 import MemoryList from './MemoryList'
 import NavBar from './NavBar'
 import PostForm from './PostForm'
@@ -52,7 +51,6 @@ export {
     ImagePreview,
     ImageUploadIndicator,
     MemoryForm,
-    MemoryImageSelector,
     MemoryList,
     NavBar,
     PostForm,
