@@ -27,7 +27,7 @@ const ImageLoader = ({ image, user, maxDims }) => {
 
         if (maxDims) {
 
-            const { width, height } = getMaxImageDims(image.width, image.height, { width: maxDims.width, height: maxDims.height })
+            const { width, height } = getMaxImageDims(image.width, image.height, { width: maxDims.width * 0.9, height: maxDims.height * 0.9 })
             setImageDims({ width, height })
 
         }
@@ -38,19 +38,22 @@ const ImageLoader = ({ image, user, maxDims }) => {
         <Pressable
             onPress={() => addModal('SHOWCASE', image)}
             disabled={image.uri}
-            style={[{
-                width: imageDims.width,
-                height: imageDims.height,
-            }, shadow]}
+            style={{
+                width: maxDims.width,
+                height: maxDims.height,
+                flexDirection: 'row',
+                alignItems: 'center',
+            }}
         >
             <Image
                 source={image?.uri ? { uri: image.uri } : `${Paths.ASSETS}/${user.username}/${image.filename}`}
                 resizeMode='contain'
-                style={{
-                    height: '100%',
-                    width: '100%',
+                style={[{
+                    width: imageDims.width,
+                    height: imageDims.height,
                     opacity: image?.uri ? 0.7 : 1.0,
-                }}
+                    marginHorizontal: 'auto',
+                }, shadow]}
             />
         </Pressable>
     )
