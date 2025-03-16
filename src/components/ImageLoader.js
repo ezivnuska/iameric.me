@@ -4,13 +4,11 @@ import { getMaxImageDims } from '@utils/images'
 import { useModal } from '@context'
 import { Paths } from '@constants'
 
-const ImageLoader = ({ image, user }) => {
+const ImageLoader = ({ image, user, maxDims }) => {
 
     const { addModal } = useModal()
 
     const [imageDims, setImageDims] = useState(null)
-
-    const maxSize = 200
 
     const shadow = {
         shadowColor: '#000',
@@ -21,12 +19,20 @@ const ImageLoader = ({ image, user }) => {
         shadowOpacity: 0.4,
         shadowRadius: 5,
         elevation: 1,
+
+        borderWidth: 1,
     }
 
     useEffect(() => {
-        const { width, height } = getMaxImageDims(image.width, image.height, { width: maxSize, height: maxSize })
-        setImageDims({ width, height })
-    }, [])
+
+        if (maxDims) {
+
+            const { width, height } = getMaxImageDims(image.width, image.height, { width: maxDims.width, height: maxDims.height })
+            setImageDims({ width, height })
+
+        }
+
+    }, [maxDims])
 
     return imageDims && (
         <Pressable

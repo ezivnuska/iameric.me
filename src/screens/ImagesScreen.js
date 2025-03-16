@@ -10,15 +10,13 @@ import { loadContact } from '@utils/contacts'
 const ImagesScreen = props => {
 
     const { landscape } = useTheme()
-    // const { addNotification } = useNotification()
     const { addModal } = useModal()
-    const {
-        user,
-        findUserByUsername,
-    } = useUser()
+    const { user, findUserByUsername, updateUser } = useUser()
 
     const [loading, setLoading] = useState(false)
     const [profile, setProfile] = useState(null)
+    
+    const [images, setImages] = useState(null)
 
     const init = async username => {
         
@@ -35,7 +33,7 @@ const ImagesScreen = props => {
         if (savedUser) {
             setProfile(savedUser)
         } else {
-            console.log('could not load user')
+            console.log('error loading user.')
         }
     }
 
@@ -43,10 +41,24 @@ const ImagesScreen = props => {
         if (profile) {
             if (!profile.images) {
                 initImages(profile._id)
+            } else {
+                setImages(profile.images)
             }
         }
         
     }, [profile])
+
+    useEffect(() => {
+
+        if (images) {
+
+            updateUser({
+                _id: profile._id,
+                images,
+            })
+        }
+
+    }, [images])
 
 
     const reset = username => {
@@ -117,8 +129,12 @@ const ImagesScreen = props => {
                 >
                     {isCurrentUser && (
                         <AddImageButton
-                            onSelection={item => {}}
-                            onUploaded={item => {}}
+                            onSelection={item => {
+                                setImages([...images, item])
+                            }}
+                            onUploaded={item => {
+                                setImages([...images, item])
+                            }}
                         />
                     )}
                     {/* {isCurrentUser && ( */}
@@ -136,10 +152,10 @@ const ImagesScreen = props => {
                 </View>
             </View>
 
-            {profile?.images && (
+            {images && (
                 <ImageList
                     // key={`images-${profile._id}-${Date.now()}`}
-                    images={profile.images}
+                    images={images}
                     user={profile}
                     list={props.route.params?.list || landscape}
                     onPress={image => addModal('SHOWCASE', image)}

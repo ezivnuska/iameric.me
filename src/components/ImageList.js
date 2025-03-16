@@ -1,34 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { ImageLoader } from '@components'
 import { useTheme } from '@context'
 
-const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false }) => {
+const ImageList = ({ images, refreshing, user, onRefresh, list = false }) => {
 
     const { landscape } = useTheme()
 
     const [maxDims, setMaxDims] = useState(null)
-
-    // useEffect(() => {
-    //     console.log('user', user?.images)
-    // }, [user])
-
-    // useEffect(() => {
-    //     console.log('images.length', images.length)
-    // }, [images])
 
     function onLayout(e) {
 
         if (e.nativeEvent.target.offsetParent) {
 
             setMaxDims({
-                width: e.nativeEvent.target.offsetParent.clientWidth,
-                height: e.nativeEvent.target.offsetParent.clientHeight,
+                width: e.nativeEvent.target.clientWidth / numColumns,
+                height: e.nativeEvent.target.clientHeight / numColumns,
             })
         }
     }
 
-    const getNumColumns = () => (!list && !landscape) ? 2 : 1
+    const numColumns = useMemo(() => (!list && !landscape) ? 3 : 1, [list, landscape])
 
     const separation = list ? 50 : 0
     
@@ -40,9 +32,9 @@ const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false 
             {maxDims && (
                 <FlatList
                     ItemSeparatorComponent={() => <View style={{ height: separation, width: separation }} />}
-                    key={`image-list-${user._id}-${getNumColumns()}`}
+                    key={`image-list-${user._id}-${numColumns}`}
                     horizontal={landscape}
-                    numColumns={getNumColumns()}
+                    numColumns={numColumns}
                     data={images}
                     extraData={images}
                     keyExtractor={item => `image-${item._id}`}
@@ -53,6 +45,7 @@ const ImageList = ({ images, refreshing, user, onPress, onRefresh, list = false 
                         <ImageLoader
                             image={item}
                             user={item.user}
+                            maxDims={maxDims}
                         />
                     )}
                 />
