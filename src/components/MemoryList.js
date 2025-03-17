@@ -3,7 +3,7 @@ import { FlatList, View } from 'react-native'
 import { Divider, IconButton, Text } from 'react-native-paper'
 import { AddImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
 import { useMemory, useModal, useTheme, useUser } from '@context'
-import { addMemoryImage } from '@utils/memories'
+import { addMemoryImage, removeMemoryImage } from '@utils/memories'
 import { getTime } from '@utils/time'
 
 const MemoryListItem = ({ memory, onDelete, ...props }) => {
@@ -24,6 +24,19 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
         const memoryWithImage = await addMemoryImage(memory._id, image._id)
         updateMemory(memoryWithImage)
     }
+    
+    const onDeleteImage = async () => {
+        const updatedMemory = await removeMemoryImage(memory._id)
+        if (updatedMemory) updateMemory(updatedMemory)
+    }
+
+    const isPortrait = useMemo(() => memory?.image && memory.image.height >= memory.image.width, [memory])
+    const { width, height } = useMemo(() => {
+        if (landscape && isPortrait) return { width: '40%', height: 240 }
+        if (landscape && !isPortrait) return { width: '40%', height: 200 }
+        if (!landscape && isPortrait) return { width: '100%', height: 280 }
+        if (!landscape && !isPortrait) return { width: '100%', height: 180 }
+    },[landscape])
 
     return memory && (
         <View
@@ -55,10 +68,8 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
                     }}
                 >
                     
-                    <Text
-                        variant='titleMedium'
-                    >
-                        {memory.author?.username}
+                    <Text variant='titleMedium'>
+                        {memory.author.username}
                     </Text>
     
                     <Text
@@ -82,19 +93,22 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
 
             <View
                 style={{
-                    flex: 1,
-                    flexDirection: landscape ? 'row' : 'column',
-                    justifyContent: (landscape && 'space-between'),
-                    paddingVertical: 10,
-                    paddingLeft: 15,
-                    gap: landscape ? 15 : 10,
+                    flexDirection: (memory?.image && landscape) ? 'row' : 'column',
                 }}
             >
-                {memory?.image && (
-                    <ImageLoader
-                        image={memory.image}
-                        user={memory.author}
-                    />
+                {memory.image && (
+                    <View
+                        style={{
+                            height,
+                            width,
+                            marginBottom: 10,
+                        }}
+                    >
+                        <ImageLoader
+                            image={memory.image}
+                            user={memory.author}
+                        />
+                    </View>
                 )}
                     
                 <View
@@ -107,6 +121,8 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
                         style={{
                             flex: 1,
                             gap: 10,
+                            paddingLeft: 15,
+                            paddingBottom: 20,
                         }}
                     >
                         {date && (
@@ -117,7 +133,10 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
 
                         <Text
                             variant='bodyLarge'
-                            style={{ flex: 1, paddingRight: 15 }}
+                            style={{
+                                flex: 1,
+                                paddingRight: 15,
+                            }}
                         >
                             {memory.body}
                         </Text>
@@ -131,7 +150,12 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
                                 onPress={() => addModal('MEMORY', memory)}
                             />
 
-                            {!memory?.image && (
+                            {memory?.image ? (
+                                <IconButton
+                                    icon='file-image-minus'
+                                    onPress={onDeleteImage}
+                                />
+                            ) : (
                                 <AddImageButton
                                     onSelection={({ uri, height, width }) => updateMemory({
                                         ...memory,

@@ -11,27 +11,38 @@ const ImagesScreen = props => {
 
     const { landscape } = useTheme()
     const { addModal } = useModal()
-    const { user, findUserByUsername, updateUser } = useUser()
+    const { user, getUser, getUserImages, findUserByUsername, updateUser } = useUser()
 
     const [loading, setLoading] = useState(false)
     const [profile, setProfile] = useState(null)
     
-    const [images, setImages] = useState(null)
+    // const [images, setImages] = useState(null)
+    const owner = useMemo(() => profile && getUser(profile._id), [profile])
+    const images = useMemo(() => owner && getUserImages(owner._id), [owner])
+
+    const [viewMode, setViewMode] = useState('grid')
 
     const init = async username => {
-        
-        setLoading(true)
 
         let savedUser = findUserByUsername(username)
 
         if (!savedUser) {
+            console.log('user not saved; loading user...')
+        
+            setLoading(true)
+
             savedUser = await loadContact(username)
+
+            setLoading(false)
         }
-
-        setLoading(false)
-
+        
         if (savedUser) {
+            console.log('loaded user', savedUser)
+            if (!savedUser.images) {
+                initImages(savedUser._id)
+            }
             setProfile(savedUser)
+            // updateUser(savedUser)
         } else {
             console.log('error loading user.')
         }
@@ -39,26 +50,32 @@ const ImagesScreen = props => {
 
     useEffect(() => {
         if (profile) {
-            if (!profile.images) {
-                initImages(profile._id)
-            } else {
-                setImages(profile.images)
-            }
+            updateUser(profile)
+            // if (!profile.images) {
+            //     initImages(profile._id)
+            // }
+            // else {
+            //     setImages(profile.images)
+            // }
         }
         
     }, [profile])
 
+    // useEffect(() => {
+    //     console.log('images', images)
+    //     if (images) {
+
+    //         updateUser({
+    //             profile,
+    //             images,
+    //         })
+    //     }
+
+    // }, [images])
     useEffect(() => {
+        console.log('owner', owner)
 
-        if (images) {
-
-            updateUser({
-                _id: profile._id,
-                images,
-            })
-        }
-
-    }, [images])
+    }, [owner])
 
 
     const reset = username => {
@@ -71,12 +88,16 @@ const ImagesScreen = props => {
         const loadedImages = await loadImages(userId)
         
         setLoading(false)
-
+        console.log('loaded images', loadedImages)
         if (loadedImages) {
             setProfile({
                 ...profile,
                 images: loadedImages,
             })
+            // updateUser({
+            //     ...profile,
+            //     images: loadedImages,
+            // })
         }
 
     }
@@ -87,8 +108,12 @@ const ImagesScreen = props => {
 
     useEffect(() => {
         if (profile && props.route.params?.username && profile.username !== props.route.params.username) {
+            console.log('resetting')
             reset(props.route.params.username)
         }
+
+        // setViewMode(props.route.params.list ? 'list' : 'grid')
+
     }, [props.route.params])
 
     useEffect(() => {
@@ -97,10 +122,13 @@ const ImagesScreen = props => {
 
     const isCurrentUser = useMemo(() => props.route.params?.username === user?.username, [props.route])
 
-    const toggleViewMode = () => navigation.navigate('Images', {
-        username: props.route.params?.username,
-        list: !props.route.params?.list,
-    })
+    const toggleViewMode = () => {
+        setViewMode(viewMode === 'list' ? 'grid' : 'list')
+        // navigation.navigate('Images', {
+        //     username: props.route.params?.username,
+        //     list: !props.route.params?.list,
+        // })
+    }
 
     return (
         <Screen
@@ -130,10 +158,16 @@ const ImagesScreen = props => {
                     {isCurrentUser && (
                         <AddImageButton
                             onSelection={item => {
-                                setImages([...images, item])
+                                setProfile({
+                                    ...profile,
+                                    images: [...profile.images, item]
+                                })
                             }}
                             onUploaded={item => {
-                                setImages([...images, item])
+                                setProfile({
+                                    ...profile,
+                                    images: [...profile.images, item]
+                                })
                             }}
                         />
                     )}
@@ -152,12 +186,12 @@ const ImagesScreen = props => {
                 </View>
             </View>
 
-            {images && (
+            {profile?.images && (
                 <ImageList
                     // key={`images-${profile._id}-${Date.now()}`}
-                    images={images}
+                    images={profile.images}
                     user={profile}
-                    list={props.route.params?.list || landscape}
+                    list={viewMode === 'list' || landscape}
                     onPress={image => addModal('SHOWCASE', image)}
                     onRefresh={onRefresh}
                     refreshing={loading}

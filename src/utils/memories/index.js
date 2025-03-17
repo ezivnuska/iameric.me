@@ -3,6 +3,7 @@ import createMemory from './createMemory'
 import deleteMemoryWithId from './deleteMemoryWithId'
 import loadMemory from './loadMemory'
 import loadMemories from './loadMemories'
+import removeMemoryImage from './removeMemoryImage'
 
 export {
     addMemoryImage,
@@ -10,4 +11,5 @@ export {
     deleteMemoryWithId,
     loadMemory,
     loadMemories,
+    removeMemoryImage,
 }

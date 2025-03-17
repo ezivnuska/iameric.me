@@ -1,29 +1,37 @@
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { Divider, IconButton, Text } from 'react-native-paper'
-import { AddImageButton, DeleteImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
+import { AddImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
 import { useFeed, useModal, useTheme, useUser } from '@context'
 import { addPostImage, removePostImage } from '@utils/feed'
 import { getTime } from '@utils/time'
 
 const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
    
-    const { updatePost } = useFeed()
+    const { getPost, updatePost } = useFeed()
     const { addModal } = useModal()
     const { landscape } = useTheme()
     const { user } = useUser()
 
     const owned = useMemo(() => post?.author && user._id === post.author._id, [post])
     const authorized = useMemo(() => (owned || user.role === 'admin'), [post])
+    const currentPost = useMemo(() => post && getPost(post._id), [post])
+
+    const isPortrait = useMemo(() => post?.image && post.image.height >= post.image.width, [post])
+    const { width, height } = useMemo(() => {
+        if (landscape && isPortrait) return { width: '40%', height: 240 }
+        if (landscape && !isPortrait) return { width: '40%', height: 200 }
+        if (!landscape && isPortrait) return { width: '100%', height: 280 }
+        if (!landscape && !isPortrait) return { width: '100%', height: 180 }
+    },[landscape])
     
     const onUploaded = async image => {
-        const postWithImage = await addPostImage(post._id, image._id)
+        const postWithImage = await addPostImage(currentPost._id, image._id)
         updatePost(postWithImage)
     }
 
     const onDeleteImage = async () => {
-        const removedPost = await removePostImage(post._id)
-        console.log('removedPost', removedPost)
+        const removedPost = await removePostImage(currentPost._id)
         if (removedPost) updatePost(removedPost)
     }
 
@@ -56,9 +64,7 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                     }}
                 >
                     
-                    <Text
-                        variant='titleMedium'
-                    >
+                    <Text variant='titleMedium'>
                         {post.author.username}
                     </Text>
     
@@ -83,19 +89,25 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
 
             <View
                 style={{
-                    flex: 1,
-                    flexDirection: landscape ? 'row' : 'column',
-                    justifyContent: (landscape && 'space-between'),
-                    paddingVertical: 10,
-                    paddingLeft: 15,
-                    gap: landscape ? 15 : 10,
+                    // flex: 1,
+                    flexDirection: (memory?.image && landscape) ? 'row' : 'column',
+                    // justifyContent: (landscape && 'space-between'),
+                    // gap: landscape ? 15 : 10,
                 }}
             >
-                {post?.image && (
-                    <ImageLoader
-                        image={post.image}
-                        user={post.author}
-                    />
+                {post.image && (
+                    <View
+                        style={{
+                            height,
+                            width,
+                            marginBottom: 10,
+                        }}
+                    >
+                        <ImageLoader
+                            image={post.image}
+                            user={post.author}
+                        />
+                    </View>
                 )}
                     
                 <View
@@ -104,12 +116,26 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                         flexDirection: 'row',
                     }}
                 >
-                    <Text
-                        variant='bodyLarge'
-                        style={{ flex: 1, paddingRight: 15 }}
+                    <View
+                        style={{
+                            flex: 1,
+                            gap: 10,
+                            paddingLeft: 15,
+                            paddingBottom: 20,
+                        }}
                     >
-                        {post.text}
-                    </Text>
+
+                        <Text
+                            variant='bodyLarge'
+                            style={{
+                                flex: 1,
+                                paddingRight: 15,
+                            }}
+                            >
+                            {post.text}
+                        </Text>
+                        
+                    </View>
 
                     {owned && (
                         <View>
@@ -119,8 +145,9 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                             />
 
                             {post?.image ? (
-                                <DeleteImageButton
-                                    onDelete={onDeleteImage}
+                                <IconButton
+                                    icon='file-image-minus'
+                                    onPress={onDeleteImage}
                                 />
                             ) : (
                                 <AddImageButton
@@ -141,7 +168,9 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
 }
 
 const Feed = ({ posts, onDelete, ...props }) => {
-    
+    useEffect(() => {
+        console.log('posts', posts)
+    }, [posts])
     return (
         <View style={{ flex: 1 }}>
 

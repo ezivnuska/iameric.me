@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { Image, Pressable } from 'react-native'
-import { getMaxImageDims } from '@utils/images'
+import React from 'react'
+import { Image, Pressable, View } from 'react-native'
 import { useModal } from '@context'
 import { Paths } from '@constants'
 
-const ImageLoader = ({ image, user, maxDims }) => {
+const ImageLoader = ({ image, user }) => {
 
     const { addModal } = useModal()
-
-    const [imageDims, setImageDims] = useState(null)
 
     const shadow = {
         shadowColor: '#000',
@@ -19,43 +16,34 @@ const ImageLoader = ({ image, user, maxDims }) => {
         shadowOpacity: 0.4,
         shadowRadius: 5,
         elevation: 1,
-
-        borderWidth: 1,
     }
 
-    useEffect(() => {
+    return (
+        <View style={{ flex: 1, alignItems: 'stretch' }}>
 
-        if (maxDims) {
+            <Pressable
+                onPress={() => addModal('SHOWCASE', image)}
+                disabled={image.uri}
+                style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'stretch',
+                }}
+            >
+            
+                <Image
+                    source={image?.uri ? { uri: image.uri } : `${Paths.ASSETS}/${user.username}/${image.filename}`}
+                    resizeMode='cover'
+                    style={[{
+                        width: '100%',
+                        height: '100%',
+                        opacity: image?.uri ? 0.5 : 1.0,
+                    }, shadow]}
+                />  
+                    
+            </Pressable>
 
-            const { width, height } = getMaxImageDims(image.width, image.height, { width: maxDims.width * 0.9, height: maxDims.height * 0.9 })
-            setImageDims({ width, height })
-
-        }
-
-    }, [maxDims])
-
-    return imageDims && (
-        <Pressable
-            onPress={() => addModal('SHOWCASE', image)}
-            disabled={image.uri}
-            style={{
-                width: maxDims.width,
-                height: maxDims.height,
-                flexDirection: 'row',
-                alignItems: 'center',
-            }}
-        >
-            <Image
-                source={image?.uri ? { uri: image.uri } : `${Paths.ASSETS}/${user.username}/${image.filename}`}
-                resizeMode='contain'
-                style={[{
-                    width: imageDims.width,
-                    height: imageDims.height,
-                    opacity: image?.uri ? 0.7 : 1.0,
-                    marginHorizontal: 'auto',
-                }, shadow]}
-            />
-        </Pressable>
+        </View>
     )
 }
 

@@ -9,6 +9,7 @@ const initialState = {
     addPost: () => {},
     closeFeedModal: () => {},
     deletePost: () => {},
+    getPost: () => {},
     initFeed: () => {},
     setFeedLoading: () => {},
     setFeedModal: () => {},
@@ -31,33 +32,14 @@ export const FeedContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
-        addPost: async payload => {
-            dispatch({ type: 'ADD_POST', payload })
-        },
-        deletePost: async payload => {
-            dispatch({ type: 'DELETE_POST', payload })
-        },
-        findPostById: postId => {
-            return state.posts.filter(post => post._id === postId)[0]
-        },
-        setPosts: async payload => {
-            dispatch({ type: 'SET_POSTS', payload })
-        },
-        setFeedLoading: async payload => {
-            dispatch({ type: 'SET_FEED_LOADING', payload })
-        },
-        updatePost: async payload => {
-            dispatch({ type: 'UPDATE_POST', payload })
-        },
-        setFeedModal: (type, data) => {
-            dispatch({
-                type: 'SET_FEED_MODAL',
-                payload: { data, type },
-            })
-        },
-        closeFeedModal: () => {
-            dispatch({ type: 'CLOSE_FEED_MODAL' })
-        },
+        addPost: async payload => dispatch({ type: 'ADD_POST', payload }),
+        deletePost: async payload => dispatch({ type: 'DELETE_POST', payload }),
+        getPost: postId => state.posts.filter(post => post._id === postId)[0],
+        setPosts: async payload => dispatch({ type: 'SET_POSTS', payload }),
+        setFeedLoading: async payload => dispatch({ type: 'SET_FEED_LOADING', payload }),
+        updatePost: async payload => dispatch({ type: 'UPDATE_POST', payload }),
+        setFeedModal: (type, data) => dispatch({ type: 'SET_FEED_MODAL', payload: { data, type }}),
+        closeFeedModal: () => dispatch({ type: 'CLOSE_FEED_MODAL' }),
     }), [state, dispatch])
 
     return  (

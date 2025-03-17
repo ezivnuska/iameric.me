@@ -22,7 +22,7 @@ const ImageList = ({ images, refreshing, user, onRefresh, list = false }) => {
 
     const numColumns = useMemo(() => (!list && !landscape) ? 3 : 1, [list, landscape])
 
-    const separation = list ? 50 : 0
+    const separation = list ? 20 : 0
     
     return (
         <View

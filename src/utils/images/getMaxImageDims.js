@@ -5,17 +5,37 @@ const getMaxImageDims = (imageWidth, imageHeight, maxDims) => {
     let width = imageWidth
     let height = imageHeight
 
-    if (width > maxDims.width) {
-        scale = maxDims.width / imageWidth
-        width = maxDims.width
-        height *= scale
-    }
+    const isPortrait = height > width
 
-    // if (height > maxDims.height) {
-    //     scale = maxDims.height / imageHeight
-    //     width = maxDims.width
-    //     height *= scale
-    // }
+    if (isPortrait) {
+        
+        if (height > maxDims.height) {
+            scale = maxDims.height / height
+            height = maxDims.height
+            width *= scale
+        }
+        
+        if (width > maxDims.width) {
+            scale = maxDims.width / width
+            width = maxDims.width
+            height *= scale
+        }
+
+    } else {
+        
+        if (width > maxDims.width) {
+            scale = maxDims.width / width
+            width = maxDims.width
+            height *= scale
+        }
+
+        if (height > maxDims.height) {
+            scale = maxDims.height / height
+            height = maxDims.height
+            width *= scale
+        }
+    }
+    
     
     return { width, height }
 }
