@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { ImageLoader } from '@components'
 import { useTheme } from '@context'
@@ -8,25 +8,31 @@ const ImageList = ({ images, refreshing, user, onRefresh, list = false }) => {
     const { landscape } = useTheme()
 
     const [maxDims, setMaxDims] = useState(null)
+    
+    const numColumns = useMemo(() => (!list && !landscape) ? 3 : 1, [list, landscape])
 
-    function onLayout(e) {
+    const containerRef = useRef()
 
-        if (e.nativeEvent.target.offsetParent) {
+    useEffect(() => {
+        if (containerRef.current) {
+            const { clientWidth, clientHeight } = containerRef.current
 
-            setMaxDims({
-                width: e.nativeEvent.target.clientWidth / numColumns,
-                height: e.nativeEvent.target.clientHeight / numColumns,
+            setMaxDims(list ? {
+                width: clientWidth,
+                height: clientHeight,
+            } : {
+                width: clientWidth / numColumns,
+                height: clientWidth / numColumns,
             })
         }
-    }
+    }, [containerRef, numColumns])
 
-    const numColumns = useMemo(() => (!list && !landscape) ? 3 : 1, [list, landscape])
 
     const separation = list ? 20 : 0
     
     return (
         <View
-            onLayout={onLayout}
+            ref={containerRef}
             style={{ flex: 1 }}
         >
             {maxDims && (

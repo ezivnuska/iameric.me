@@ -42,6 +42,7 @@ const initialState = {
     updateUser: () => {},
 
     addImage: () => {},
+    completeUpload: () => {},
     clearImages: () => {},
     getUserImages: () => {},
     fetchUserAndUpdate: () => {},
@@ -215,11 +216,14 @@ export const UserContextProvider = ({ children }) => {
             const user = state.users.filter(user => user._id === id)[0]
             return user?.profileImage
         },
-        addImage: payload => {
-            dispatch({ type: 'ADD_IMAGE', payload })
+        addImage: (userId, image) => {
+            dispatch({ type: 'ADD_IMAGE', payload: { userId, image } })
         },
         clearImages: () => {
             dispatch({ type: 'RESET' })
+        },
+        completeUpload: (userId, image) => {
+            dispatch({ type: 'COMPLETE_UPLOAD', payload: { userId, image } })
         },
         removeImage: (userId, imageId) => {
             dispatch({ type: 'REMOVE_IMAGE', payload: { userId, imageId } })
@@ -390,9 +394,58 @@ const reducer = (state, action) => {
             }
             break
         case 'ADD_IMAGE':
+            updatedUsers = state.users.map((user, index) => {
+                if (user._id === payload.userId) {
+
+                    updatedUser = {
+                        ...user,
+                        images: [...user.images, payload.image],
+                    }
+
+                    return updatedUser
+                } else {
+
+                    return user
+                }
+            })
+
             return {
                 ...state,
-                images: [ ...state.images, payload ],
+                user: state.user._id === payload.userId ? updatedUser : state.user,
+                users: updatedUsers,
+            }
+            // break
+            // return {
+            //     ...state,
+            //     images: [ ...state.images, payload ],
+            // }
+            break
+        case 'COMPLETE_UPLOAD':
+            updatedUsers = state.users.map((user, index) => {
+                if (user._id === payload.userId) {
+
+                    updatedUser = {
+                        ...user,
+                        images: user.images.map(image => {
+                            if (image.uri) {
+                                return payload.image
+                            } else {
+                                return image
+                            }
+                        }),
+                    }
+
+                    return updatedUser
+                } else {
+
+                    return user
+                }
+            })
+
+            return {
+                ...state,
+                user: state.user._id === payload.userId ? updatedUser : state.user,
+                users: updatedUsers,
             }
             break
         case 'SET_UPLOADING':

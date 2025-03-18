@@ -97,16 +97,11 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
                 }}
             >
                 {memory.image && (
-                    <View
-                        style={{
-                            height,
-                            width,
-                            marginBottom: 10,
-                        }}
-                    >
+                    <View style={{ marginBottom: 10 }}>
                         <ImageLoader
                             image={memory.image}
                             user={memory.author}
+                            maxDims={{ width, height }}
                         />
                     </View>
                 )}

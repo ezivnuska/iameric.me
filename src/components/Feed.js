@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { FlatList, View } from 'react-native'
 import { Divider, IconButton, Text } from 'react-native-paper'
 import { AddImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
@@ -38,7 +38,10 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
     return post && (
         <View
             {...props}
-            style={{ flex: 1 }}
+            style={{
+                flex: 1,
+                paddingBottom: 10,
+            }}
         >
             <View
                 style={{
@@ -89,27 +92,19 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
 
             <View
                 style={{
-                    // flex: 1,
-                    flexDirection: (memory?.image && landscape) ? 'row' : 'column',
-                    // justifyContent: (landscape && 'space-between'),
-                    // gap: landscape ? 15 : 10,
+                    flexDirection: (post?.image && landscape) ? 'row' : 'column',
                 }}
             >
                 {post.image && (
-                    <View
-                        style={{
-                            height,
-                            width,
-                            marginBottom: 10,
-                        }}
-                    >
+                    <View style={{ marginBottom: 10 }}>
                         <ImageLoader
                             image={post.image}
                             user={post.author}
+                            maxDims={{ width, height }}
                         />
                     </View>
                 )}
-                    
+                
                 <View
                     style={{
                         flex: 1,
@@ -121,7 +116,6 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                             flex: 1,
                             gap: 10,
                             paddingLeft: 15,
-                            paddingBottom: 20,
                         }}
                     >
 

@@ -3,7 +3,7 @@ import { Image, Pressable, View } from 'react-native'
 import { useModal } from '@context'
 import { Paths } from '@constants'
 
-const ImageLoader = ({ image, user }) => {
+const ImageLoader = ({ image, user, maxDims }) => {
 
     const { addModal } = useModal()
 
@@ -19,7 +19,7 @@ const ImageLoader = ({ image, user }) => {
     }
 
     return (
-        <View style={{ flex: 1, alignItems: 'stretch' }}>
+        <View style={maxDims}>
 
             <Pressable
                 onPress={() => addModal('SHOWCASE', image)}

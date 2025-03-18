@@ -70,19 +70,19 @@ const ImageCard = ({ data }) => {
     // const { addNotification } = useNotification()
     const { closeModal, addModal } = useModal()
     const { landscape, theme } = useTheme()
-    const { user, removeImage, setProfileImage, updateUser } = useUser()
+    const { user, getUser, removeImage, setProfileImage, updateUser } = useUser()
 
     const [detailsVisible, setDetailsVisible] = useState(true)
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState(null)
-    const [currentUser, setCurrentUser] = useState(user)
 
     const [imageDims, setImageDims] = useState(null)
     
+    const currentUser = useMemo(() => image?.user && getUser(image.user._id), [image])
     const isProfileImage = useMemo(() => (currentUser?.profileImage && image) && currentUser.profileImage._id === image._id, [currentUser])
-    const isOwner = useMemo(() => currentUser && image && currentUser._id === image.user._id, [image, currentUser])
-    const hasAuthorization = useMemo(() => currentUser && currentUser.role === 'admin', [currentUser])
-    const source = useMemo(() => image && image.user && `${Paths.ASSETS}/${image.user.username}/${image.filename}`, [image])
+    const isOwner = useMemo(() => image?.user && user._id === image.user._id, [image])
+    const hasAuthorization = useMemo(() => user && user.role === 'admin', [user])
+    const source = useMemo(() => image?.user && `${Paths.ASSETS}/${image.user.username}/${image.filename}`, [image])
 
     const opacity = useSharedValue(1)
     const opacityStyle = useAnimatedStyle(() => ({
@@ -211,10 +211,8 @@ const ImageCard = ({ data }) => {
         
         setLoading(false)
 
-        setCurrentUser({
-            ...currentUser,
-            profileImage,
-        })
+        updateUser({ ...user, profileImage })
+
         setProfileImage(profileImage)
         
     }
@@ -231,12 +229,15 @@ const ImageCard = ({ data }) => {
 
         if (deletedImage) {
             
-            removeImage(deletedImage.user._id, deletedImage._id)
+            removeImage(deletedImage.user, deletedImage._id)
 
-            updateUser({
-                _id: deletedImage.user._id,
-                images: user.images.filter(img => img._id !== deletedImage._id),
-            })
+            // console.log('user', user)
+            // console.log('filteredImages', filteredImages)
+            // const filteredImages = user.images.filter(img => img._id !== deletedImage._id)
+            // updateUser({
+            //     _id: user._id,
+            //     images: filteredImages,
+            // })
             
             closeModal()
 
