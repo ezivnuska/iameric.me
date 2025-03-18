@@ -68,13 +68,9 @@ const AuthForm = () => {
 
     const handleSignup = async ({ email, username, password }) => {
 
-        // console.log('email', email)
-        // console.log('username', username)
-        // console.log('password', password)
         const { error, name, message, user } = await signup(email, password, username)
         
         if (error) {
-
             setFormError({
                 name,
                 message,

@@ -13,9 +13,10 @@ const handleSignUp = async (req, res) => {
     }
 
     return bcrypt.genSalt(10, async (err, salt) => {
-
+        
         bcrypt.hash(password, salt, async (err, hash) => {
             if (err) {
+                console.log('err', err)
                 return res.status(200).json({ error: true, message: err })
             }
             

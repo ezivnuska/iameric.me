@@ -4,7 +4,7 @@ import { setItem, storeToken } from '@utils/storage'
 const signup = async (email, password, username) => {
 
     const { data } = await axios.post('/api/signup', { email, password, username })
-
+    
     if (data.user) {
 
         await setItem('email', email)

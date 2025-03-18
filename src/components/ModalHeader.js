@@ -1,11 +1,10 @@
 import React from 'react'
 import { View } from 'react-native'
-import { HelperText, IconButton, Text } from'react-native-paper'
-import { useForm, useModal } from '@context'
+import { IconButton, Text } from'react-native-paper'
+import { useModal } from '@context'
 
 const ModalHeader = ({ title = null }) => {
-
-    const { formError } = useForm()
+    
     const { closeModal } = useModal()
     
     return (
@@ -31,7 +30,7 @@ const ModalHeader = ({ title = null }) => {
                         {title}
                     </Text>
                 )}
-                
+
             </View>
 
             <IconButton

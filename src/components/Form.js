@@ -104,7 +104,6 @@ const Form = ({
         if (formError) return console.log(`Error in form field ${formError.name}: ${formError.message}`)
         
         setFormLoading(true)
-        
         const response = await onSubmit({
             author: user?._id,
             ...formFields,
@@ -136,7 +135,7 @@ const Form = ({
             ListFooterComponent={() => (
                 <Button
                     mode='contained'
-                    onPress={onSubmit}
+                    onPress={submitFormData}
                     disabled={formError}
                 >
                     Submit

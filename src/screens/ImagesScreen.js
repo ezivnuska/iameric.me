@@ -19,18 +19,6 @@ const ImagesScreen = props => {
     const owner = useMemo(() => profile && getUser(profile._id), [profile, user])
     const images = useMemo(() => owner && getUserImages(owner._id), [owner])
 
-    // useEffect(() => {
-    //     if (images) {
-    //         console.log('owner images', images)
-    //     }
-    // }, [images])
-
-    // useEffect(() => {
-    //     if (owner) {
-    //         console.log('owner', owner)
-    //     }
-    // }, [owner])
-
     const [viewMode, setViewMode] = useState('grid')
 
     const initUser = async username => {
@@ -56,9 +44,9 @@ const ImagesScreen = props => {
 
     useEffect(() => {
         if (profile) {
-            // console.log('profile', profile)
+            
             if (!profile.images) {
-                // updateUser(profile)
+                
                 initImages(profile._id)
             }
         }
@@ -70,9 +58,6 @@ const ImagesScreen = props => {
             
             reset(props.route.params.username)
         }
-
-        // setViewMode(props.route.params.list ? 'list' : 'grid')
-
     }, [props.route.params])
 
     useEffect(() => {
@@ -86,12 +71,6 @@ const ImagesScreen = props => {
         }
     }, [])
 
-    // useEffect(() => {
-    //     console.log('owner', owner)
-
-    // }, [owner])
-
-
     const reset = username => {
         initUser(username)
     }
@@ -102,7 +81,7 @@ const ImagesScreen = props => {
         const loadedImages = await loadImages(userId)
         
         setLoading(false)
-        // console.log('loaded images', loadedImages)
+        
         if (loadedImages) {
             setProfile({
                 ...profile,
@@ -132,7 +111,7 @@ const ImagesScreen = props => {
             full={landscape || props.route.params?.list}
             {...props}
         >
-            {/* <View style={[styles.border, { flex: 1 }]}> */}
+            
             <View
                 style={{
                     flexDirection: 'row',
@@ -195,8 +174,6 @@ const ImagesScreen = props => {
                     refreshing={loading}
                 />
             )}
-
-            {/* </View> */}
 
         </Screen>
     )
