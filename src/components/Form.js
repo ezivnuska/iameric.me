@@ -146,6 +146,7 @@ const Form = ({
                 paddingTop: 10,
             }}
             renderItem={({ item }) => {
+                
                 const {
                     label,
                     multiline,
@@ -177,7 +178,7 @@ const Form = ({
 
                         <HelperText
                             type={getDirty(name) ? 'error' : 'info'}
-                            visible={formError?.name === name}
+                            visible={formError && formError?.name === name}
                             style={{ paddingHorizontal: 0 }}
                         >
                             {formError?.message || ' '}

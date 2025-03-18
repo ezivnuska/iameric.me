@@ -31,13 +31,7 @@ const ModalHeader = ({ title = null }) => {
                         {title}
                     </Text>
                 )}
-
-                <HelperText
-                    type='error'
-                    visible={formError}
-                >
-                    {formError?.message || ' '}
-                </HelperText>
+                
             </View>
 
             <IconButton

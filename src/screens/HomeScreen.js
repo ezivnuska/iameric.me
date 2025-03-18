@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Text } from 'react-native'
 import { Screen } from './components'
 import { useApp, useUser, useModal, useSocket } from '@context'
 import { signin, signout } from '@utils/auth'
@@ -16,30 +15,34 @@ const HomeScreen = props => {
 
     // SUPER UGLY
 
-    const handleSignin = async (email, password) => {
+    const signinWithParams = async (email, password) => {
         const response = await signin(email, password)
         if (response) {
-            setItem('email', response.email)
-            storeToken(response.token)
-            setUser(response)
+            setItem('email', response.user.email)
+            storeToken(response.user.token)
+            setUser(response.user)
             notifySocket('user_signed_in', {
-                userId: response._id,
-                username: response.username,
+                userId: response.user._id,
+                username: response.user.username,
             })
+            
+            if (authRoute) {
+                const routeName = authRoute.name
+                setAuthRoute(null)
+                props.navigation.navigate(routeName, authRoute.params)
+            } else if (params) {
+                props.navigation.navigate('Home')
+            }
         }
         else console.log('could not sign in user with params')
     }
 
-    // useEffect(() => {
-    //     initPonies()
-    // }, [])
-
-
     useEffect(() => {
         if (params) {
+            
             if (!user) {
                 if (params.email && params.password) {
-                    handleSignin(params.email, params.password)
+                    signinWithParams(params.email, params.password)
                 }
             } else if (params.signout) {
                 handleSignout()
@@ -57,15 +60,15 @@ const HomeScreen = props => {
         }
     }, [authRoute])
 
-    useEffect(() => {
-        if (user) {
-            if (authRoute) {
-                const routeName = authRoute.name
-                setAuthRoute(null)
-                props.navigation.navigate(routeName, authRoute.params)
-            }
-        }
-    }, [user])
+    // useEffect(() => {
+    //     if (user) {
+    //         if (authRoute) {
+    //             const routeName = authRoute.name
+    //             setAuthRoute(null)
+    //             props.navigation.navigate(routeName, authRoute.params)
+    //         }
+    //     }
+    // }, [user])
 
     const handleSignout = async () => {
         // console.log('handleSignout', params)
