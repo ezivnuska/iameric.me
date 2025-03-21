@@ -17,6 +17,7 @@ import SmartAvatar from './SmartAvatar'
 import StatusIndicator from './StatusIndicator'
 import TappableView from './TappableView'
 import Time from './Time'
+import Touch from './Touch'
 import UserList from './UserList'
 import AuthForm from './AuthForm'
 import Feed from './Feed'
@@ -51,6 +52,7 @@ export {
     StatusIndicator,
     TappableView,
     Time,
+    Touch,
     UserList,
     Feed,
     Form,
