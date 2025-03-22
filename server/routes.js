@@ -89,7 +89,16 @@ const {
   markOrderReceivedByDriver,
 } = require('./api/orders')
   
-// not currently using entries
+
+const {
+  addBond,
+  cancelBond,
+  confirmBond,
+  declineBond,
+  deleteBond,
+  removeBond,
+} = require('./api/bonds')
+
 const {
   createEntry,
   deleteEntryById,
@@ -161,6 +170,14 @@ router.get(    '/users/online',            getNumberOfOnlineUsers)
 router.get(    '/vendor/:id',              getVendor)
 router.get(    '/vendors',                 getVendors)
 // router.get(    '/vendors',                 getAllVendors)
+
+// bonds
+router.post(   '/bond',                    addBond)
+router.post(   '/bond/cancel',             cancelBond)
+router.post(   '/bond/confirm',            confirmBond)
+router.post(   '/bond/decline',            declineBond)
+router.post(   '/bond/delete',             deleteBond)
+router.post(   '/bond/remove',             removeBond)
 
 // entries
 router.post(   '/entry',                   createEntry)
