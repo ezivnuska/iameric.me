@@ -28,6 +28,7 @@ const initialState = {
     socketLoaded: false,
     socketLoading: false,
     getUserStatus: () => {},
+    getConnectionId: () => {},
     notifySocket: () => {},
 }
 
@@ -49,20 +50,17 @@ export const SocketContextProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const { connections } = state
-
     useEffect(() => {
         if (user) {
             socket.emit('connection_details', user)
             // addNotification(`you are signed in as ${user.username}`)
         }
     }, [user])
-    
-    // fires when socket first connects
 
+    // fires when socket first connects
     const handleConnection = async (message = null) => {
 
-        if (message) console.log(message)
+        // if (message) console.log(message)
 
         if (user) {
 
@@ -145,7 +143,8 @@ export const SocketContextProvider = ({ children }) => {
     }, [])
 
     const actions = useMemo(() => ({
-        getUserStatus: id => connections.filter(c => c.userId).indexOf(id) > -1,
+        getConnectionId: id => state.connections.filter(connection => connection.userId === id)[0],
+        getUserStatus: id => state.connections.filter(c => c.userId).indexOf(id) > -1,
         notifySocket: async (eventName, ...args) => {
             socket.emit(eventName, ...args)
         },
@@ -158,7 +157,6 @@ export const SocketContextProvider = ({ children }) => {
         <SocketContext.Provider
             value={{
                 ...state,
-                connections,
                 socket,
                 ...actions,
             }}

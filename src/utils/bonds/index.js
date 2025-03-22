@@ -4,7 +4,7 @@ import confirmBond from './confirmBond'
 import declineBond from './declineBond'
 import deleteBond from './deleteBond'
 import getBond from './getBond'
-import removeBond from './removeBond'
+import getBonds from './getBonds'
 
 export {
     addBond,
@@ -13,5 +13,5 @@ export {
     declineBond,
     deleteBond,
     getBond,
-    removeBond,
+    getBonds,
 }

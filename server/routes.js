@@ -97,7 +97,7 @@ const {
   declineBond,
   deleteBond,
   getBond,
-  removeBond,
+  getBonds,
 } = require('./api/bonds')
 
 const {
@@ -173,13 +173,13 @@ router.get(    '/vendors',                 getVendors)
 // router.get(    '/vendors',                 getAllVendors)
 
 // bonds
+router.get(    '/bonds/:userId',           getBonds)
 router.post(   '/bond',                    getBond)
 router.post(   '/bond/create',             addBond)
 router.post(   '/bond/cancel',             cancelBond)
 router.post(   '/bond/confirm',            confirmBond)
 router.post(   '/bond/decline',            declineBond)
 router.post(   '/bond/delete',             deleteBond)
-router.post(   '/bond/remove',             removeBond)
 
 // entries
 router.post(   '/entry',                   createEntry)

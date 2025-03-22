@@ -5,8 +5,7 @@ const deleteBond = async (req, res) => {
     const { bondId } = req.body
     
     const bond = await Bond
-        .findOneAndRemove({ _id: bondId })
-        .select('_id sender responder confirmed declined cancelled actionerId')
+        .findByIdAndDelete(bondId)
 
     return res.status(200).json({ bond })
 }

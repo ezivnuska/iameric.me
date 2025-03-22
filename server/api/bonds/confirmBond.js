@@ -5,15 +5,16 @@ const confirmBond = async (req, res) => {
     const { bondId, userId } = req.body
 
     try {
-        const existingBond = await Bond
+        const updatedBond = await Bond
             .findByIdAndUpdate(bondId, {
-                confirmed: true,
-                declined: false,
-                actionerId: userId,
+                $set: {
+                    confirmed: true,
+                    actionerId: userId,
+                },
             })
-
+            
         const bond = await Bond
-            .findOne({ _id: existingBond._id })
+            .findOne({ _id: updatedBond._id })
             .select('_id sender responder confirmed declined cancelled actionerId')
 
         return res.status(200).json({ bond })

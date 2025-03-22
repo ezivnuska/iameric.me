@@ -1,4 +1,5 @@
 import { AppContextProvider, useApp } from './AppContext'
+import { BondContextProvider, useBonds } from './BondContext'
 import { BugContextProvider, useBugs } from './BugContext'
 import { FeedContextProvider, useFeed } from './FeedContext'
 import { FormContextProvider, useForm } from './FormContext'
@@ -12,6 +13,7 @@ import { ThemeContextProvider, useTheme } from './ThemeContext'
 
 export {
     AppContextProvider,
+    BondContextProvider,
     BugContextProvider,
     FeedContextProvider,
     FormContextProvider,
@@ -23,6 +25,7 @@ export {
     SocketContextProvider,
     ThemeContextProvider,
     useApp,
+    useBonds,
     useBugs,
     useFeed,
     useForm,

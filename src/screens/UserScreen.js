@@ -40,37 +40,44 @@ const UserScreen = props => {
     //     //   }
 
     // }
+    // useEffect(() => {
+    //     // scrape()
+    //     if (props.route.params?.username) {
+    //         initUser(props.route.params.username)
+    //     }
+    // }, [])
+
     useEffect(() => {
-        // scrape()
+        // console.log('params', props.route.params)
         if (props.route.params?.username) {
-            initUser(props.route.params.username)
+            
+            if (!profile || profile.username !== props.route.params.username) {
+                // console.log('no profile or username changed', profile?.username, props.route.params.username)
+                // console.log('userLoading', userLoading)
+                if (!userLoading) initUser(props.route.params.username)
+            }
+
         }
-    }, [])
-
-    useEffect(() => {
-
         // console.log('params', props.route.params)
         
-        if (!profile || profile.username !== props.route.params?.username) {
-            if (!userLoading) initUser(props.route.params?.username)
-        }
     }, [props.route.params])
 
     const initUser = async username => {
 
-        setUserLoading(true)
-
         let foundUser = findUserByUsername(username)
 
         if (!foundUser) {
+
+            setUserLoading(true)
             foundUser = await loadContact(username)
+            setUserLoading(false)
+
         }
             
         if (foundUser) {
             setProfile(foundUser)
         }
         
-        setUserLoading(false)
     }
 
     // const loadAvatar = async () => {
@@ -136,7 +143,7 @@ const UserScreen = props => {
             
             <View style={{ flex: 1 }}>
 
-                <UserProfile profile={profile} />
+                {profile && <UserProfile profile={profile} />}
 
             </View>
             
@@ -146,44 +153,22 @@ const UserScreen = props => {
 
 const UserProfile = ({ profile }) => {
 
-    const { theme, toggleTheme } = useTheme()
     const { addModal } = useModal()
-    const { authUser } = useUser()
+    const { user } = useUser()
 
-    const isAuthUser = useMemo(() => profile && authUser._id === profile._id, [profile])
-    const [currentUser, setCurrentUser] = useState(null)
-    
-    useEffect(() => {
-        // console.log('profile', profile)
-        if (profile) {
-            setCurrentUser(isAuthUser ? authUser : profile)
-        }
-    }, [profile])
-
-    useEffect(() => {
-        if (isAuthUser) {
-            if (authUser.profileImage?._id !== profile.profileImage?._id) {
-                setCurrentUser(authUser)
-            }
-        }
-    }, [authUser])
-
-    return profile && (
+    return (
         <View style={{ flex: 1, gap: 20 }}>
 
             <Pressable
                 key={`profile-${profile.username}-${Date.now()}`}
-                onPress={() => {
-                    // console.log('SHOWCASE', profile)
-                    addModal('SHOWCASE', profile.profileImage._id)
-                }}
+                onPress={() => addModal('SHOWCASE', profile.profileImage?._id)}
                 disabled={!profile.profileImage}
             >
                 <SmartAvatar user={profile} size={100} />
 
             </Pressable>
-                
-            <BondIndicator userId={profile._id} />
+            
+            {(user._id !== profile._id) && <BondIndicator userId={profile._id} />}
 
         </View>
     )

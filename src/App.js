@@ -3,6 +3,7 @@ import { View } from 'react-native'
 import Layout from './layout'
 import {
     AppContextProvider,
+    BondContextProvider,
     BugContextProvider,
     FeedContextProvider,
     FormContextProvider,
@@ -34,30 +35,32 @@ const App = () => {
             <ThemeContextProvider>
                 <FormContextProvider>
                     <UserContextProvider>
-                        <NotificationContextProvider>
-                            <SocketContextProvider>
-                                {/* <Container> */}
-                                    {/* <APIProvider
-                                        apiKey={apiKey}
-                                        version='weekly'
-                                        libraries={['marker', 'geocoding']}
-                                        onLoad={() => setMapsLoaded(true)}
-                                    > */}
-                                    {/* {(mapsLoaded === true) ? ( */}
-                                            <ModalContextProvider>
-                                                <FeedContextProvider>
-                                                    <MemoryContextProvider>
-                                                        <BugContextProvider>
-                                                            <Layout />
-                                                        </BugContextProvider>
-                                                    </MemoryContextProvider>
-                                                </FeedContextProvider>
-                                            </ModalContextProvider>
-                                        {/* ) : <ActivityIndicator />} */}
-                                    {/* </APIProvider> */}
-                                {/* </Container> */}
-                            </SocketContextProvider>
-                        </NotificationContextProvider>
+                        <BondContextProvider>
+                            <NotificationContextProvider>
+                                <SocketContextProvider>
+                                    {/* <Container> */}
+                                        {/* <APIProvider
+                                            apiKey={apiKey}
+                                            version='weekly'
+                                            libraries={['marker', 'geocoding']}
+                                            onLoad={() => setMapsLoaded(true)}
+                                        > */}
+                                        {/* {(mapsLoaded === true) ? ( */}
+                                                <ModalContextProvider>
+                                                    <FeedContextProvider>
+                                                        <MemoryContextProvider>
+                                                            <BugContextProvider>
+                                                                    <Layout />
+                                                            </BugContextProvider>
+                                                        </MemoryContextProvider>
+                                                    </FeedContextProvider>
+                                                </ModalContextProvider>
+                                            {/* ) : <ActivityIndicator />} */}
+                                        {/* </APIProvider> */}
+                                    {/* </Container> */}
+                                </SocketContextProvider>
+                            </NotificationContextProvider>
+                        </BondContextProvider>
                     </UserContextProvider>
                 </FormContextProvider>
             </ThemeContextProvider>

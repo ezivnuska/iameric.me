@@ -179,6 +179,10 @@ const socketHandler = io => socket => {
 		io.emit('deleted_post', post)
 	}
 
+	const onBondUpdated = async ({ bond, socketId }) => {
+		socket.to(socketId).emit('updated_bond', bond)
+	}
+
 	const getSocketIdWithUserId = async userId => {
 		
 		const connections = await getDataFromConnections()
@@ -216,6 +220,7 @@ const socketHandler = io => socket => {
 	socket.on('post_deleted', 				onPostDeleted)
 	socket.on('message_deleted', 			onMessageDeleted)
 	socket.on('new_message', 				onNewMessage)
+	socket.on('bond_updated', 				onBondUpdated)
 
 	onConnected()
 }

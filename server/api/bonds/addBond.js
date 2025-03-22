@@ -6,29 +6,45 @@ const addBond = async (req, res) => {
 
     try {
 
-        const existingBond = await Bond.findOne({
-            $or: [
-                { $and: [{ sender: userId }, { responder: responderId }] },
-                { $and: [{ sender: responderId }, { responder: userId }] },
-            ]
-        })
+        let bond = await Bond
+            .findOneAndUpdate({
+                $or: [
+                    { $and: [{ sender: userId }, { responder: responderId }] },
+                    { $and: [{ sender: responderId }, { responder: userId }] },
+                ]
+            }, {
+                $set: {
+                    cancelled: false,
+                    declined: false,
+                },
+            }, { new: true })
 
-        if (!existingBond) {
-            let newBond = new Bond({
+        if (bond) {
+            
+            return res.status(200).json({ bond })
+        } else {
+            bond = await Bond.create({
                 sender: userId,
                 responder: responderId,
                 confirmed: false,
                 declined: false,
+                cancelled: false,
                 actionerId: userId,
             })
             
-            const savedBond = await newBond.save()
+            // const savedBond = await newBond.save()
             
-            const bond = await Bond.findById(savedBond._id)
-                .select('_id sender responder confirmed declined cancelled actionerId')
-        
-            return res.status(200).json({ bond })
+            if (bond) {
+
+                bond = await Bond
+                    .findById(bond._id)
+                    .select('_id sender responder confirmed declined cancelled actionerId')
+            
+                return res.status(200).json({ bond })
+
+            }
         }
+        return res.status(200).json(null)
     } catch (e) {
         console.error('Error adding bond', e)
         return res.status(200).json(null)
