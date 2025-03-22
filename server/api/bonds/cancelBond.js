@@ -1,6 +1,8 @@
 const Bond = require('../../models/Bond')
 
-const cancelBond = async ({ bondId, userId }) => {
+const cancelBond = async (req, res) => {
+
+    const { bondId, userId } = req.body
     
     const bondToCancel = await Bond
         .findByIdAndUpdate(bondId, {

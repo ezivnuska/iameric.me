@@ -1,7 +1,9 @@
 const Bond = require('../../models/Bond')
 
-const confirmBond = async ({ bondId, userId }) => {
+const confirmBond = async (req, res) => {
     
+    const { bondId, userId } = req.body
+
     try {
         const existingBond = await Bond
             .findByIdAndUpdate(bondId, {

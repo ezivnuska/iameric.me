@@ -8,22 +8,11 @@ import { deleteEntryWithId } from '@utils/bugs'
 const Bugs = ({ navigation }) => {
 
     const {
-        // bugModal,
-        bugs,
-        bugsLoading,
-        updateBug,
-        // closeBugModal,
-        deleteBug,
-        setBugsLoading,
+        bugs, bugsLoading,
+        updateBug, deleteBug, setBugsLoading,
     } = useBugs()
-
-    const {
-        closeModal,
-        addModal,
-    } = useModal()
-
+    const { closeModal, addModal } = useModal()
     const { socket } = useSocket()
-    // const { styles } = useTheme()
     const { user } = useUser()
 
     useEffect(() => {
@@ -109,31 +98,6 @@ const Bugs = ({ navigation }) => {
 
         </View>
     )
-    // return (
-    //     <View style={{ flex: 1 }}>
-
-    //         {bugs?.length ? (
-    //             <FlatList
-    //                 data={bugs}
-    //                 extraData={bugs}
-    //                 keyExtractor={item => `bug-item-${item._id}`}
-    //                 renderItem={({ item }) => <BugListItem item={item} onDelete={removeBug} />}
-    //                 ItemSeparatorComponent={({ highlighted }) => <Divider />}
-    //                 style={{ flex: 1 }}
-    //             />
-    //         ) : (
-    //             <Text variant='bodyLarge'>
-    //                 No bugs to squash.
-    //             </Text>
-    //         )}
-
-    //         <BugModal
-    //             modal={bugModal}
-    //             onClose={closeBugModal}
-    //         />
-                
-    //     </View>
-    // )
 }
 
 export default Bugs

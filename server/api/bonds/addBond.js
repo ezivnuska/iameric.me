@@ -1,7 +1,9 @@
 const Bond = require('../../models/Bond')
 
-const addBond = async (responderId, userId) => {
+const addBond = async (req, res) => {
     
+    const { responderId, userId } = req.body
+
     try {
 
         const existingBond = await Bond.findOne({

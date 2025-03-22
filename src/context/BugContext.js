@@ -2,16 +2,13 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 import { loadEntries } from '@utils/bugs'
 
 const initialState = {
-    modals: [],
     bugs: [],
     error: null,
     bugsLoaded: false,
     bugsLoading: false,
     addBug: () => {},
-    closeBugModal: () => {},
     deleteBug: () => {},
     initBugs: () => {},
-    setBugModal: () => {},
     setBugs: () => {},
     setBugsLoading: () => {},
     updateBug: () => {},
@@ -41,10 +38,6 @@ export const BugContextProvider = ({ children }) => {
 
         dispatch({ type: 'SET_BUGS_LOADED' })
     }
-    
-    // useEffect(() => {
-    //     loadBugs()
-    // }, [])
 
     const actions = useMemo(() => ({
         initBugs,
@@ -60,28 +53,13 @@ export const BugContextProvider = ({ children }) => {
         setBugsLoading: payload => {
             dispatch({ type: 'SET_BUGS_LOADING', payload })
         },
-        closeBugModal: () => {
-            dispatch({ type: 'CLOSE_BUG_MODAL' })
-        },
-        setBugModal: (type, data) => {
-            dispatch({
-                type: 'SET_BUG_MODAL',
-                payload: { data, type },
-            })
-        },
         updateBug: payload => {
             dispatch({ type: 'UPDATE_BUG', payload })
         },
     }), [state, dispatch])
 
     return  (
-        <BugContext.Provider
-            value={{
-                ...state,
-                bugModal: state.modals[state.modals.length - 1],
-                ...actions,
-            }}
-        >
+        <BugContext.Provider value={{ ...state, ...actions }}>
             {children}
         </BugContext.Provider>
     )
@@ -112,18 +90,6 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 bugs: payload,
-            }
-            break
-        case 'SET_BUG_MODAL':
-            return {
-                ...state,
-                modals: [...state.modals, payload],
-            }
-            break
-        case 'CLOSE_BUG_MODAL':
-            return {
-                ...state,
-                modals: state.modals.slice(0, state.modals.length - 1),
             }
             break
         case 'UPDATE_BUG':

@@ -1,5 +1,6 @@
 import AddImageButton from './AddImageButton'
 import BondButton from './BondButton'
+import BondIndicator from './BondIndicator'
 import BugForm from './BugForm'
 import Bugs from './Bugs'
 import CaptionForm from './CaptionForm'
@@ -34,6 +35,7 @@ import Socket from './Socket'
 export {
     AddImageButton,
     BondButton,
+    BondIndicator,
     AuthForm,
     BugForm,
     Bugs,

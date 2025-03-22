@@ -1,6 +1,8 @@
 const Bond = require('../../models/Bond')
 
-const deleteBond = async ({ bondId }) => {
+const deleteBond = async (req, res) => {
+
+    const { bondId } = req.body
     
     const bond = await Bond
         .findOneAndRemove({ _id: bondId })

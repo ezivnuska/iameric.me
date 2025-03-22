@@ -1,6 +1,8 @@
 const Bond = require('../../models/Bond')
 
-const declineBond = async ({ bondId, userId }) => {
+const declineBond = async (req, res) => {
+    
+    const { bondId, userId } = req.body
     
     const existingBond = await Bond
         .findById(bondId)

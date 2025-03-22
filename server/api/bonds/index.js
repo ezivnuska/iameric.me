@@ -3,6 +3,7 @@ const cancelBond = require('./cancelBond')
 const confirmBond = require('./confirmBond')
 const declineBond = require('./declineBond')
 const deleteBond = require('./deleteBond')
+const getBond = require('./getBond')
 const removeBond = require('./removeBond')
 
 module.exports = {
@@ -11,5 +12,6 @@ module.exports = {
     confirmBond,
     declineBond,
     deleteBond,
+    getBond,
     removeBond,
 }

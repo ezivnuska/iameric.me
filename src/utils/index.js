@@ -1,4 +1,5 @@
 import * as auth from './auth'
+import * as bonds from './bonds'
 import * as bugs from './bugs'
 import * as contacts from './contacts'
 import * as form from './form'
@@ -19,6 +20,7 @@ import normalize from './normalize'
 
 export {
     auth,
+    bonds,
     bugs,
     compose,
     contacts,

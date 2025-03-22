@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Pressable, View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 import { Screen } from './components'
-import { SmartAvatar } from '@components'
+import { BondIndicator, SmartAvatar } from '@components'
 import { useModal, useUser, useTheme } from '@context'
 import { loadContact } from '@utils/contacts'
 import { create } from '@utils/normalize'
@@ -182,6 +182,8 @@ const UserProfile = ({ profile }) => {
                 <SmartAvatar user={profile} size={100} />
 
             </Pressable>
+                
+            <BondIndicator userId={profile._id} />
 
         </View>
     )
