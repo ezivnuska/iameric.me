@@ -1,16 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
-import { Button } from 'react-native-paper'
-import { useBonds, useUser, useSocket } from '@context'
+import { IconButton } from 'react-native-paper'
+import { useBonds, useNotification, useUser, useSocket } from '@context'
+import isEqual from '@utils/isEqual'
 import { addBond, cancelBond, confirmBond, declineBond, deleteBond } from '@utils/bonds'
 
 const BondIndicator = ({ userId }) => {
     
-    const { socket, getConnectionId, notifySocket } = useSocket()
     const { getBond, removeBond, updateBond } = useBonds()
+    const { socket, getConnectionId, notifySocket } = useSocket()
+    const { addNotification } = useNotification()
     const { user } = useUser()
 
     const [bond, setBond] = useState(null)
+    const [prevBond, setPrevBond] = useState(null)
     const [loading, setLoading] = useState(false)
 
     const status = useMemo(() => {
@@ -25,22 +28,33 @@ const BondIndicator = ({ userId }) => {
     useEffect(() => {
 
         socket.on('updated_bond', updatedBond => {
+            
             if (updatedBond) {
-                
-                if (updatedBond.declined || updatedBond.cancelled) {
+
+                const isBond = updatedBond.sender === userId || updatedBond.responder === userId
+
+                if (isBond) {
                     
-                    removeBond(updatedBond._id)
-    
-                    setBond(null)
-    
-                } else {
-                    setBond(updatedBond)
-                    updateBond(updatedBond)
+                    let notification
+
+                    if (updatedBond.declined) notification = 'request declined'
+                    else if (updatedBond.cancelled) notification = 'request cancelled'
+                    else if (updatedBond.confirmed) notification = 'request accepted'
+                    else notification = 'connection requested'
+
+                    if (notification) addNotification(notification)
+                    
+                    if (updatedBond.declined || updatedBond.cancelled) {
+                        setBond(null)
+                        removeBond(updatedBond._id)
+                    } else {
+                        setBond(updatedBond)
+                        updateBond(updatedBond)
+                    }
+        
                 }
             }
         })
-
-        // loadBond()
     }, [])
 
     useEffect(() => {
@@ -49,12 +63,11 @@ const BondIndicator = ({ userId }) => {
 
     useEffect(() => {
         
+        setPrevBond(bond)
+
         if (bond) {
             if (bond.cancelled || bond.declined) {
-                removeBond(bond._id)
                 handleDelete()
-            } else {
-                updateBond(bond)
             }
         }
     }, [bond])
@@ -63,6 +76,7 @@ const BondIndicator = ({ userId }) => {
         setLoading(true)
         const response = getBond(userId)
         setLoading(false)
+        
         setBond(response)
     }
 
@@ -71,12 +85,8 @@ const BondIndicator = ({ userId }) => {
         const deletedBond = await deleteBond(bond._id)
         setLoading(false)
         if (deletedBond) {
-            const { socketId } = getConnectionId(user._id === deletedBond.sender ? deletedBond.responder : deletedBond.sender)
-            notifySocket('bond_updated', {
-                bond: deletedBond,
-                socketId,
-            })
             setBond(null)
+            removeBond(deletedBond._id)
         }
     }
 
@@ -91,6 +101,7 @@ const BondIndicator = ({ userId }) => {
                 socketId,
             })
             setBond(cancelledBond)
+            updateBond(cancelledBond)
         }
     }
 
@@ -99,12 +110,14 @@ const BondIndicator = ({ userId }) => {
         const newBond = await addBond(userId, user._id)
         setLoading(false)
         if (newBond) {
-            const { socketId } = getConnectionId(user._id === newBond.sender ? newBond.responder : newBond.sender)
+            const connection = getConnectionId(user._id === newBond.sender ? newBond.responder : newBond.sender)
+            const { socketId } = connection
             notifySocket('bond_updated', {
                 bond: newBond,
                 socketId,
             })
             setBond(newBond)
+            updateBond(newBond)
         }
     }
 
@@ -113,12 +126,14 @@ const BondIndicator = ({ userId }) => {
         const disconnectedBond = await cancelBond(bond._id, user._id)
         setLoading(false)
         if (disconnectedBond) {
-            const { socketId } = getConnectionId(user._id === disconnectedBond.sender ? disconnectedBond.responder : disconnectedBond.sender)
+            const connection = getConnectionId(user._id === disconnectedBond.sender ? disconnectedBond.responder : disconnectedBond.sender)
+            const { socketId } = connection
             notifySocket('bond_updated', {
                 bond: disconnectedBond,
                 socketId,
             })
             setBond(disconnectedBond)
+            updateBond(disconnectedBond)
         }
     }
 
@@ -133,6 +148,7 @@ const BondIndicator = ({ userId }) => {
                 socketId,
             })
             setBond(confirmedBond)
+            updateBond(confirmedBond)
         }
     }
 
@@ -147,24 +163,16 @@ const BondIndicator = ({ userId }) => {
                 socketId,
             })
             setBond(declinedBond)
+            updateBond(declinedBond)
         }
     }
 
     const renderOptions = () => {
         switch (status) {
-            case 'confirmed': return <ResponseButton label='Disconnect' loading={loading} onPress={handleDisconnect} />; break
-            case 'pending': return (
-                <View style={{ flexDirection: 'row', gap: 10 }}>
-                        <ResponseButton label='Accept' loading={loading} onPress={handleAccept} />
-                        <ResponseButton label='Decline' loading={loading} onPress={handleDecline} />
-                    </View>
-                )
-                break
-            case 'waiting': return <ResponseButton label='Cancel' loading={loading} onPress={handleCancel} />; break
-            case 'none': 
-            case 'declined':
-            case 'cancelled':
-            default: return <ResponseButton label='Connect' loading={loading} onPress={handleConnect} />
+            case 'confirmed': return <ConfirmedOptions disconnect={handleDisconnect} />; break
+            case 'pending': return <PendingOptions accept={handleAccept} decline={handleDecline} />; break
+            case 'waiting': return <WaitingOptions cancel={handleCancel} />; break
+            default: return <DefaultOptions connect={handleConnect} />
         }
     }
 
@@ -177,12 +185,85 @@ const BondIndicator = ({ userId }) => {
 
 export default BondIndicator
 
-const ResponseButton = ({ label, loading, onPress }) => (
-    <Button
-        mode='contained'
-        onPress={onPress}
-        disabled={loading}
+
+const PendingOptions = ({ accept, decline }) => (
+    <View
+        style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+        }}
     >
-        {label}
-    </Button>
+
+        <IconButton
+            icon='check-circle'
+            onPress={accept}
+            iconColor='green'
+            style={{ margin: 0 }}
+        />
+
+        <IconButton
+            icon='close-circle'
+            onPress={decline}
+            iconColor='red'
+            style={{ margin: 0 }}
+        />
+
+    </View>
+)
+
+const DefaultOptions = ({ connect }) => (
+    <View
+        style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 10,
+        }}
+    >
+        <IconButton
+            icon='account-plus'
+            onPress={connect}
+            style={{ margin: 0 }}
+        />
+
+    </View>
+)
+
+const WaitingOptions = ({ cancel }) => (
+    <View
+        style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 10,
+        }}
+    >
+        <IconButton
+            icon='close-circle'
+            onPress={cancel}
+            iconColor='red'
+            style={{ margin: 0 }}
+        />
+
+    </View>
+)
+
+const ConfirmedOptions = ({ disconnect }) => (
+    <View
+        style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 10,
+        }}
+    >
+        <IconButton
+            icon='account-remove'
+            onPress={disconnect}
+            iconColor='red'
+            style={{ margin: 0 }}
+        />
+
+    </View>
 )

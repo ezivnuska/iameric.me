@@ -13,8 +13,9 @@ import * as time from './time'
 
 // import { initPonies } from './NOT_IN_USE/ponies/ponies'
 import compose from './compose'
-import getModifiedColor from './getModifiedColor'
 import destroy from './destroy'
+import getModifiedColor from './getModifiedColor'
+import isEqual from './isEqual'
 import navigation from './navigation'
 import normalize from './normalize'
 
@@ -29,6 +30,7 @@ export {
     getModifiedColor,
     // forum,
     images,
+    isEqual,
     // initPonies,
     map,
     mail,

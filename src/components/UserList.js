@@ -1,17 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { FlatList, Pressable, StyleSheet, View } from 'react-native'
-import { StatusIndicator, SmartAvatar } from '@components'
-import { loadContactById } from '@utils/contacts'
-import { useTheme, useUser } from '@context'
 import { ActivityIndicator, Divider, Icon, Text } from 'react-native-paper'
+import { BondIndicator, StatusIndicator, SmartAvatar } from '@components'
+import { loadContactById } from '@utils/contacts'
+import { useSocket, useTheme, useUser } from '@context'
 
 const UserListItem = ({ item, onPress }) => {
 
     const { landscape } = useTheme()
-    const { findUserById, updateUser } = useUser()
+    const { authUser, findUserById, updateUser } = useUser()
+    const { connections } = useSocket()
 
     const [loading, setLoading] = useState(false)
     const [user, setUser] = useState(null)
+    
+    const isConnected = useMemo(() => connections.map(c => c.userId).indexOf(item._id) > -1, [connections])
 
     useEffect(() => {
         if (item) {
@@ -43,49 +46,111 @@ const UserListItem = ({ item, onPress }) => {
     return user && (
         <Pressable
             onPress={() => onPress(user.username)}
-            style={{ flex: 1, paddingBottom: 15, paddingTop: 5, paddingHorizontal: 15, flexDirection: 'row', alignItems: 'center' }}
+            style={{ flex: 1, paddingHorizontal: 15, flexDirection: 'row' }}
         >
             {landscape
-                ? <HorizontalListItem item={user} />
-                : <VerticalListItem item={user} />
+                ? <HorizontalListItem item={user} connected={isConnected} />
+                : <VerticalListItem item={user} connected={isConnected} />
             }
         </Pressable>
     )
 }
 
-const VerticalListItem = ({ item }) => (
+const VerticalListItem = ({ item, connected }) => {
 
-    <View style={styles.itemVertical}>
+    const { user } = useUser()
 
-        <View style={[styles.itemHeader, { gap: 15 }]}>
+    return (
 
-            <SmartAvatar user={item} size={30} />
+        <View style={styles.itemVertical}>
 
-            <Text variant='titleLarge'>
-                {item.username}
-            </Text>
+            <View style={[styles.itemHeader, { gap: 15 }]}>
+
+                <SmartAvatar user={item} size={30} />
+
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        backgroundColor: connected && 'green',
+                        gap: 5,
+                        height: 30,
+                        borderRadius: 15,
+                        paddingLeft: 15,
+                        paddingRight: 10,
+                    }}
+                >
+                    <Text
+                        variant='titleMedium'
+                        style={{ color: (connected && '#fff') }}
+                    >
+                        {item.username}
+                    </Text>
+
+                    {connected && (
+                        <Icon
+                            source='lightning-bolt'
+                            size={16}
+                            color='#fff'
+                        />
+                    )}
+
+                </View>
+                
+            </View>
+
+            {/* <StatusIndicator id={item._id} /> */}
+
+            {(user._id !== item._id) && <BondIndicator userId={item._id} />}
 
         </View>
+    )
+}
 
-        <StatusIndicator id={item._id} />
+const HorizontalListItem = ({ item, connected }) => {
 
-    </View>
-)
+    const { user } = useUser()
 
-const HorizontalListItem = ({ item, connected = false }) => (
+    return (
 
-    <View style={styles.itemHorizontal}>
+        <View style={styles.itemHorizontal}>
 
-        <SmartAvatar user={item} size={100} />
-        
-        <Text variant='titleLarge'>
-            {item.username}
-        </Text>
+            <SmartAvatar user={item} size={100} />
+            
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: connected && 'green',
+                    gap: 5,
+                    height: 30,
+                    borderRadius: 15,
+                    paddingLeft: 15,
+                    paddingRight: 10,
+                }}
+            >
+                <Text
+                    variant='titleMedium'
+                    style={{ color: (connected && '#fff') }}
+                >
+                    {item.username}
+                </Text>
 
-        <StatusIndicator id={item._id} />
-        
-    </View>
-)
+                {connected && (
+                    <Icon
+                        source='lightning-bolt'
+                        size={16}
+                        color='#fff'
+                    />
+                )}
+
+            </View>
+
+            {(user._id !== item._id) && <BondIndicator userId={item._id} />}
+            
+        </View>
+    )
+}
 
 const UserList = ({ data, onPress }) => {
 
@@ -109,7 +174,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 10,
+        height: 50,
         gap: 10,
     },
     itemHeader: {
@@ -121,7 +186,7 @@ const styles = StyleSheet.create({
     itemHorizontal: {
         flex: 1,
         alignItems: 'center',
-        paddingHorizontal: 15,
+        padding: 10,
         gap: 10,
     },
     itemUsername: {

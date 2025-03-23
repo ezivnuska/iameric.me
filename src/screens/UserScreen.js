@@ -80,33 +80,6 @@ const UserScreen = props => {
         
     }
 
-    // const loadAvatar = async () => {
-    //         console.log('loading avatar')
-    
-    //         setUserLoading(true)
-    
-    //         let result = findUserImage(profile._id, profileImage)
-    //         console.log('found avatar', result)
-    
-    //         if (!result) {
-    //             result = await loadImage(profileImage)
-    //             console.log('loaded avatar', result)
-    
-    //         }
-    
-    //         if (result) {
-    //             setProfile({
-    //                 ...profile,
-    //                 profileImage: result,
-    //             })
-    //         }
-    
-    //         setUserLoading(false)
-    //     }
-    // const isCurrentUser = useMemo(() => props.route.params?.username === user?.username, [props.route])
-
-    // const viewMode = useMemo(() => route.params?.list ? 'list' : 'grid', [route.params])
-
     return (
         <Screen
             {...props}
