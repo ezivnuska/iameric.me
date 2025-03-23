@@ -65,11 +65,10 @@ const BondIndicator = ({ userId }) => {
         
         setPrevBond(bond)
 
-        if (bond) {
-            if (bond.cancelled || bond.declined) {
-                handleDelete()
-            }
-        }
+        // if (bond) {
+        //     if (bond.cancelled || bond.declined) {
+        //     }
+        // }
     }, [bond])
 
     const loadBond = async () => {
@@ -100,8 +99,10 @@ const BondIndicator = ({ userId }) => {
                 bond: cancelledBond,
                 socketId,
             })
-            setBond(cancelledBond)
-            updateBond(cancelledBond)
+
+            handleDelete()
+            // setBond(cancelledBond)
+            // updateBond(cancelledBond)
         }
     }
 
@@ -132,8 +133,9 @@ const BondIndicator = ({ userId }) => {
                 bond: disconnectedBond,
                 socketId,
             })
-            setBond(disconnectedBond)
-            updateBond(disconnectedBond)
+            handleDelete()
+            // setBond(disconnectedBond)
+            // updateBond(disconnectedBond)
         }
     }
 
@@ -162,8 +164,9 @@ const BondIndicator = ({ userId }) => {
                 bond: declinedBond,
                 socketId,
             })
-            setBond(declinedBond)
-            updateBond(declinedBond)
+            handleDelete()
+            // setBond(declinedBond)
+            // updateBond(declinedBond)
         }
     }
 
