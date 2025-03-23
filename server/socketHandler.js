@@ -141,8 +141,6 @@ const socketHandler = io => socket => {
 				username: null,
 				userId: null,
 			})
-			// socket.data.username = null
-			// socket.data.userId = null
 		}
 		
 	}
@@ -154,11 +152,6 @@ const socketHandler = io => socket => {
 			userId: null,
 		})
 
-		console.log('hello')
-		// socket.data.username = null
-		// socket.data.userId = null
-
-		// refreshConnections()
 	}
 
 	const onNewBip = async bip => {
