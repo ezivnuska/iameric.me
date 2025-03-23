@@ -92,7 +92,7 @@
   },
   "include": [
     "src"
-  ],
+, "server/api/mail/sendMail.js"  ],
   "extends": "@tsconfig/react-native/tsconfig.json"
   // "extends": "expo/tsconfig.base"
 }

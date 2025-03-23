@@ -115,7 +115,7 @@ const socketHandler = io => socket => {
 
 	const onUserConnected = async data => {
 		
-		// await signOutPreviousSocketId(data.userId)
+		await signOutPreviousSocketId(data.userId)
 		
 		setSocketData(data)
 	}
@@ -125,7 +125,7 @@ const socketHandler = io => socket => {
 		const prevId = await getPrevId(user._id)
 
 		if (prevId) {
-			await signOutPreviousSocketId(user._id)
+			await signOutPreviousSocketId(prevId)
 		}
 
 		setSocketData({
@@ -153,6 +153,8 @@ const socketHandler = io => socket => {
 			username: null,
 			userId: null,
 		})
+
+		console.log('hello')
 		// socket.data.username = null
 		// socket.data.userId = null
 

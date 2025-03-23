@@ -37,6 +37,7 @@
     "@vis.gl/react-google-maps": "^1.1.0",
     "axios": "1.6.1",
     "bcrypt": "^5.1.1",
+    "bufferutil": "^4.0.9",
     "canvas": "^2.11.2",
     "cors": "^2.8.5",
     "crypto-browserify": "^3.10.0",
@@ -92,6 +93,7 @@
     "terser-webpack-plugin": "^5.3.10",
     "ts-loader": "^9.5.1",
     "url-metadata": "^4.1.1",
+    "utf-8-validate": "^6.0.5",
     "vm-browserify": "^1.1.2"
   },
   "devDependencies": {
@@ -148,7 +150,8 @@
     "webpack": "^5.75.0",
     "webpack-bundle-analyzer": "^4.9.1",
     "webpack-cli": "^5.0.1",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "webpack-node-externals": "^3.0.0"
   },
   "browser": {
     "fs": false,

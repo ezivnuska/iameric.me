@@ -18,6 +18,7 @@ import getModifiedColor from './getModifiedColor'
 import isEqual from './isEqual'
 import navigation from './navigation'
 import normalize from './normalize'
+import sendMail from './sendMail'
 
 export {
     auth,
@@ -37,6 +38,7 @@ export {
     memories,
     navigation,
     normalize,
+    sendMail,
     storage,
     time,
 }

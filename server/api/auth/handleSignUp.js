@@ -2,23 +2,6 @@ const User = require('../../models/User')
 const bcrypt = require('bcrypt')
 const createUser = require('./createUser')
 
-// const { exec, spawn } = require('node:child_process')
-
-// const body = 'test email'
-// const subject = 'testing'
-// const recipient = 'ezivnuska@gmail.com'
-// const command = `echo "${body}" | s-nail -s "${subject}" "${recipient}"`
-
-// exec(command, (error, stdout, stderr) => {
-//     if (error) {
-//         return console.error(`Error executing s-nail: ${error}`)
-//     }
-//     if (stderr) {
-//          console.error(`stderr: ${stderr}`)
-//     }
-//     console.log(`Email sent successfully: ${stdout}`)
-// })
-
 const handleSignUp = async (req, res) => {
 
     const { email, password, username } = req.body

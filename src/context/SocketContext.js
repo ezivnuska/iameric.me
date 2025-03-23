@@ -115,9 +115,9 @@ export const SocketContextProvider = ({ children }) => {
 
     const onForceSignout = socketId => {
         if (socket.id === socketId) {
-            // reset()
+            reset()
             socket.emit('forced_signout_complete', socketId)
-            // addNotification('Signed out. Signed in on another client.')
+            addNotification('Signed out. Signed in on another client.')
         }
     }
 

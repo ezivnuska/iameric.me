@@ -94,7 +94,8 @@ const BondIndicator = ({ userId }) => {
         const cancelledBond = await cancelBond(bond._id, user._id)
         setLoading(false)
         if (cancelledBond) {
-            const { socketId } = getConnectionId(user._id === cancelledBond.sender ? cancelledBond.responder : cancelledBond.sender)
+            const connection = getConnectionId(user._id === cancelledBond.sender ? cancelledBond.responder : cancelledBond.sender)
+            const { socketId } = connection
             notifySocket('bond_updated', {
                 bond: cancelledBond,
                 socketId,
