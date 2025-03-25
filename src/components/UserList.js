@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { FlatList, Pressable, StyleSheet, View } from 'react-native'
-import { ActivityIndicator, Divider, Icon, Text } from 'react-native-paper'
+import { ActivityIndicator, Button, Divider, Icon, Text } from 'react-native-paper'
 import { BondIndicator, StatusIndicator, SmartAvatar } from '@components'
 import { loadContactById } from '@utils/contacts'
-import { useSocket, useTheme, useUser } from '@context'
+import { useBonds, useSocket, useTheme, useUser } from '@context'
 
 const UserListItem = ({ item, onPress }) => {
 
@@ -23,7 +23,9 @@ const UserListItem = ({ item, onPress }) => {
     }, [])
 
     useEffect(() => {
-        if (user) updateUser(user)
+        if (user) {
+            updateUser(user)
+        }
     }, [user])
     
     const loadUser = async id => {
@@ -34,8 +36,9 @@ const UserListItem = ({ item, onPress }) => {
         
         if (!contact) contact = await loadContactById(id)
         
-        if (contact) setUser(contact)
-        else console.log('could not find or load user data.')
+        if (contact) {
+            setUser(contact)
+        } else console.log('could not find or load user data.')
 
         setLoading(false)
         
@@ -46,7 +49,11 @@ const UserListItem = ({ item, onPress }) => {
     return user && (
         <Pressable
             onPress={() => onPress(user.username)}
-            style={{ flex: 1, paddingHorizontal: 15, flexDirection: 'row' }}
+            style={{
+                flex: 1,
+                paddingLeft: 15,
+                paddingRight: 5,
+            }}
         >
             {landscape
                 ? <HorizontalListItem item={user} connected={isConnected} />
@@ -154,15 +161,45 @@ const HorizontalListItem = ({ item, connected }) => {
 
 const UserList = ({ data, onPress }) => {
 
+    const { getBond } = useBonds()
     const { landscape } = useTheme()
-    return (
-        <FlatList
-            ItemSeparatorComponent={({ highlighted }) => <Divider />}
-            data={data}
-            keyExtractor={item => item._id}
-            renderItem={({ item }) => <UserListItem item={item} onPress={onPress} />}
-            horizontal={landscape}
-        />
+
+    const [filter, setFilter] = useState('all')
+
+    const users = useMemo(() => filter === 'bonded' ? data.filter(user => {
+        const bond = getBond(user._id)
+        return (bond && bond.confirmed)
+    }) : data, [filter])
+
+    return users && (
+        <View style={{ flex: 1 }}>
+            
+            <View
+                style={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    marginHorizontal: 15
+                }}
+            >
+                <Button
+                    mode='contained'
+                    onPress={() => setFilter(filter === 'bonded' ? 'all' : 'bonded')}
+                >
+                    {filter === 'all' ? 'Connections' : 'All'}
+                </Button>
+            </View>
+
+            <FlatList
+                ItemSeparatorComponent={({ highlighted }) => <Divider />}
+                data={users}
+                extraData={users}
+                keyExtractor={item => item._id}
+                renderItem={({ item }) => <UserListItem item={item} onPress={onPress} />}
+                horizontal={landscape}
+                style={{ flex: 1 }}
+                contentContainerStyle={{ flex: 1, alignItems: (landscape && 'center') }}
+            />
+        </View>
     )
 }
 
@@ -181,6 +218,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
+        height: 40,
         gap: 10,
     },
     itemHorizontal: {

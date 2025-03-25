@@ -64,11 +64,6 @@ const BondIndicator = ({ userId }) => {
     useEffect(() => {
         
         setPrevBond(bond)
-
-        // if (bond) {
-        //     if (bond.cancelled || bond.declined) {
-        //     }
-        // }
     }, [bond])
 
     const loadBond = async () => {
@@ -84,7 +79,6 @@ const BondIndicator = ({ userId }) => {
         const deletedBond = await deleteBond(bond._id)
         setLoading(false)
         if (deletedBond) {
-            setBond(null)
             removeBond(deletedBond._id)
         }
     }
@@ -95,15 +89,15 @@ const BondIndicator = ({ userId }) => {
         setLoading(false)
         if (cancelledBond) {
             const connection = getConnectionId(user._id === cancelledBond.sender ? cancelledBond.responder : cancelledBond.sender)
-            const { socketId } = connection
-            notifySocket('bond_updated', {
-                bond: cancelledBond,
-                socketId,
-            })
-
+            if (connection) {
+                const { socketId } = connection
+                notifySocket('bond_updated', {
+                    bond: cancelledBond,
+                    socketId,
+                })
+            }
+            setBond(null)
             handleDelete()
-            // setBond(cancelledBond)
-            // updateBond(cancelledBond)
         }
     }
 
@@ -113,11 +107,13 @@ const BondIndicator = ({ userId }) => {
         setLoading(false)
         if (newBond) {
             const connection = getConnectionId(user._id === newBond.sender ? newBond.responder : newBond.sender)
-            const { socketId } = connection
-            notifySocket('bond_updated', {
-                bond: newBond,
-                socketId,
-            })
+            if (connection) {
+                const { socketId } = connection
+                notifySocket('bond_updated', {
+                    bond: newBond,
+                    socketId,
+                })
+            }
             setBond(newBond)
             updateBond(newBond)
         }
@@ -129,14 +125,15 @@ const BondIndicator = ({ userId }) => {
         setLoading(false)
         if (disconnectedBond) {
             const connection = getConnectionId(user._id === disconnectedBond.sender ? disconnectedBond.responder : disconnectedBond.sender)
-            const { socketId } = connection
-            notifySocket('bond_updated', {
-                bond: disconnectedBond,
-                socketId,
-            })
+            if (connection) {
+                const { socketId } = connection
+                notifySocket('bond_updated', {
+                    bond: disconnectedBond,
+                    socketId,
+                })
+            }
+            setBond(null)
             handleDelete()
-            // setBond(disconnectedBond)
-            // updateBond(disconnectedBond)
         }
     }
 
@@ -145,11 +142,14 @@ const BondIndicator = ({ userId }) => {
         const confirmedBond = await confirmBond(bond._id, user._id)
         setLoading(false)
         if (confirmedBond) {
-            const { socketId } = getConnectionId(user._id === confirmedBond.sender ? confirmedBond.responder : confirmedBond.sender)
-            notifySocket('bond_updated', {
-                bond: confirmedBond,
-                socketId,
-            })
+            const connection = getConnectionId(user._id === confirmedBond.sender ? confirmedBond.responder : confirmedBond.sender)
+            if (connection) {
+                const { socketId } = connection
+                notifySocket('bond_updated', {
+                    bond: confirmedBond,
+                    socketId,
+                })
+            }
             setBond(confirmedBond)
             updateBond(confirmedBond)
         }
@@ -160,14 +160,16 @@ const BondIndicator = ({ userId }) => {
         const declinedBond = await declineBond(bond._id, user._id)
         setLoading(false)
         if (declinedBond) {
-            const { socketId } = getConnectionId(user._id === declinedBond.sender ? declinedBond.responder : declinedBond.sender)
-            notifySocket('bond_updated', {
-                bond: declinedBond,
-                socketId,
-            })
+            const connection = getConnectionId(user._id === declinedBond.sender ? declinedBond.responder : declinedBond.sender)
+            if (connection) {
+                const { socketId } = connection
+                notifySocket('bond_updated', {
+                    bond: declinedBond,
+                    socketId,
+                })
+            }
+            setBond(null)
             handleDelete()
-            // setBond(declinedBond)
-            // updateBond(declinedBond)
         }
     }
 

@@ -24,12 +24,13 @@ const PostSchema = new Schema({
     timestamps: true,
 })
 
-PostSchema.pre('save', function(next) {
-    if (!this.threadId) {
-        this.threadId = this._id
-    }
-    return next()
-})
+// PostSchema.pre('save', function(next) {
+//     if (!this.threadId) {
+//         this.threadId = this._id
+//     }
+//     return next()
+// })
+
 // UserSchema.pre('save', function(next) {
 
 //   if(!this.isModified('password')) {

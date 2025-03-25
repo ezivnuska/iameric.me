@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Image, Pressable, View } from 'react-native'
 import { useModal } from '@context'
 import { Paths } from '@constants'
@@ -6,6 +6,8 @@ import { Paths } from '@constants'
 const ImageLoader = ({ image, user, maxDims }) => {
 
     const { addModal } = useModal()
+
+    const source = useMemo(() => image?.uri ? { uri: image.uri } : `${Paths.ASSETS}/${user.username}/${image.filename}`, [image])
 
     const shadow = {
         shadowColor: '#000',
@@ -32,7 +34,7 @@ const ImageLoader = ({ image, user, maxDims }) => {
             >
             
                 <Image
-                    source={image?.uri ? { uri: image.uri } : `${Paths.ASSETS}/${user.username}/${image.filename}`}
+                    source={source}
                     resizeMode='cover'
                     style={[{
                         width: '100%',

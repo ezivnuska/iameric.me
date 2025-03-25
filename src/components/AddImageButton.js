@@ -71,6 +71,7 @@ const AddImageButton = ({ data, onSelection, onUploaded }) => {
         <IconButton
             icon='file-image-plus'
             onPress={openSelector}
+            style={{ margin: 0 }}
         />
     )
 }

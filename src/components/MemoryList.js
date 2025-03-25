@@ -31,6 +31,7 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
     }
 
     const isPortrait = useMemo(() => memory?.image && memory.image.height >= memory.image.width, [memory])
+
     const { width, height } = useMemo(() => {
         if (landscape && isPortrait) return { width: '40%', height: 240 }
         if (landscape && !isPortrait) return { width: '40%', height: 200 }
@@ -39,10 +40,7 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
     },[landscape])
 
     return memory && (
-        <View
-            {...props}
-            style={{ flex: 1 }}
-        >
+        <View {...props}>
 
             <View
                 style={{
@@ -50,6 +48,7 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
                     alignItems: 'center',
                     gap: 15,
                     paddingLeft: 15,
+                    paddingRight: 5,
                     paddingTop: 7,
                     paddingBottom: 5,
                 }}
@@ -86,6 +85,7 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
                         icon='delete-forever'
                         onPress={() => onDelete(memory._id)}
                         size={25}
+                        style={{ margin: 0 }}
                     />
                 )}
     
@@ -94,16 +94,17 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
             <View
                 style={{
                     flexDirection: (memory?.image && landscape) ? 'row' : 'column',
+                    gap: 15,
+                    marginVertical: 5,
+                    paddingLeft: (landscape && 15),
                 }}
             >
                 {memory.image && (
-                    <View style={{ marginBottom: 10 }}>
-                        <ImageLoader
-                            image={memory.image}
-                            user={memory.author}
-                            maxDims={{ width, height }}
-                        />
-                    </View>
+                    <ImageLoader
+                        image={memory.image}
+                        user={memory.author}
+                        maxDims={{ width, height }}
+                    />
                 )}
                     
                 <View
@@ -115,52 +116,67 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
                     <View
                         style={{
                             flex: 1,
+                            flexDirection: 'row',
                             gap: 10,
-                            paddingLeft: 15,
-                            paddingBottom: 20,
+                            paddingLeft: (!landscape && 15),
+                            paddingRight: 5,
+                            paddingBottom: 6,
                         }}
                     >
-                        {date && (
-                            <Text variant='titleMedium'>
-                                {date.toDateString()}
+
+                        <View style={{ flex: 1, gap: (!landscape && 10) }}>
+                            {date && (
+                                <Text
+                                    variant='titleMedium'
+                                    style={{ lineHeight: (landscape && 40) }}
+                                >
+                                    {date.toDateString()}
+                                </Text>
+                            )}
+
+                            <Text
+                                variant='bodyLarge'
+                                style={{
+                                    flex: 1,
+                                    paddingRight: 15,
+                                }}
+                            >
+                                {memory.body}
                             </Text>
+                        </View>
+
+                        {owned && (
+                            <View
+                                style={{ gap: 10 }}
+                            >
+                                <IconButton
+                                    // mode='contained'
+                                    icon='comment-edit-outline'
+                                    onPress={() => addModal('MEMORY', memory)}
+                                    style={{ margin: 0 }}
+                                />
+
+                                {memory.image ? (
+                                    <IconButton
+                                        // mode='contained'
+                                        icon='file-image-minus'
+                                        onPress={() => onDeleteImage(memory)}
+                                        style={{ margin: 0 }}
+                                    />
+                                ) : (
+                                    <AddImageButton
+                                        onSelection={({ uri, height, width }) => updateMemory({
+                                            ...leadingItem,
+                                            image: { uri, height, width },
+                                        })}
+                                        onUploaded={image => onUploaded(image, memory)}
+                                    />
+                                )}
+                            </View>
                         )}
 
-                        <Text
-                            variant='bodyLarge'
-                            style={{
-                                flex: 1,
-                                paddingRight: 15,
-                            }}
-                        >
-                            {memory.body}
-                        </Text>
-
                     </View>
-
-                    {owned && (
-                        <View>
-                            <IconButton
-                                icon='comment-edit-outline'
-                                onPress={() => addModal('MEMORY', memory)}
-                            />
-
-                            {memory?.image ? (
-                                <IconButton
-                                    icon='file-image-minus'
-                                    onPress={onDeleteImage}
-                                />
-                            ) : (
-                                <AddImageButton
-                                    onSelection={({ uri, height, width }) => updateMemory({
-                                        ...memory,
-                                        image: { uri, height, width },
-                                    })}
-                                    onUploaded={onUploaded}
-                                />
-                            )}
-                        </View>
-                    )}
+                    
                 </View>
 
             </View>
@@ -170,6 +186,10 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
 }
 
 const MemoryList = ({ memories, onDelete, ...props }) => {
+
+    const { addModal } = useModal()
+    const { updateMemory } = useMemory()
+    const { user } = useUser()
     
     return (
         <View style={{ flex: 1 }}>
@@ -187,7 +207,50 @@ const MemoryList = ({ memories, onDelete, ...props }) => {
                             onDelete={() => onDelete(item._id)}
                         />
                     )}
-                    ItemSeparatorComponent={({ highlighted }) => <Divider />}
+                    ItemSeparatorComponent={({ highlighted, leadingItem }) => (
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginBottom: 5,
+                                borderBottomWidth: 1,
+                                borderBottomColor: '#ccc',
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                            }}
+                        >
+
+                            <View>
+                                <IconButton
+                                    // mode='contained'
+                                    icon='comment-plus'
+                                    onPress={() => addModal('MEMORY', leadingItem)}
+                                    style={{ margin: 0 }}
+                                />
+                            </View>
+
+                            {user._id === leadingItem.author._id && (
+                                <View style={{ flexDirection: 'row' }}>
+
+                                    {leadingItem?.image ? (
+                                        <IconButton
+                                            icon='file-image-minus'
+                                            onPress={() => onDeleteImage(leadingItem)}
+                                            style={{ margin: 0 }}
+                                        />
+                                    ) : (
+                                        <AddImageButton
+                                            onSelection={({ uri, height, width }) => updateMemory({
+                                                ...leadingItem,
+                                                image: { uri, height, width },
+                                            })}
+                                            onUploaded={image => onUploaded(image, leadingItem)}
+                                        />
+                                    )}
+                                </View>
+                            )}
+                        </View>
+                    )}
                 />
             )}
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Screen } from './components'
-import { ActivityIndicator } from 'react-native-paper'
 import { UserList } from '@components'
 import { loadContactIds } from '@utils/contacts'
 import { useTheme, useUser } from '@context'
@@ -8,6 +7,7 @@ import { useTheme, useUser } from '@context'
 const UserListScreen = props => {
 
     const { landscape } = useTheme()
+    const { user } = useUser()
     
     const [users, setUsers] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -21,7 +21,7 @@ const UserListScreen = props => {
         setLoading(false)
 
         if (contacts) {
-            setUsers(contacts)
+            setUsers(contacts.filter(contact => contact._id !== user._id))
         } else {
             console.log('could not load contact ids.')
         }

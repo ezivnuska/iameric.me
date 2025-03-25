@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { Divider, IconButton, Text } from 'react-native-paper'
 import { AddImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
@@ -8,16 +8,17 @@ import { getTime } from '@utils/time'
 
 const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
    
-    const { getPost, updatePost } = useFeed()
+    // const { getPost, updatePost } = useFeed()
     const { addModal } = useModal()
     const { landscape } = useTheme()
     const { user } = useUser()
 
     const owned = useMemo(() => post?.author && user._id === post.author._id, [post])
     const authorized = useMemo(() => (owned || user.role === 'admin'), [post])
-    const currentPost = useMemo(() => post && getPost(post._id), [post])
+    // const currentPost = useMemo(() => post && getPost(post._id), [post])
 
     const isPortrait = useMemo(() => post?.image && post.image.height >= post.image.width, [post])
+
     const { width, height } = useMemo(() => {
         if (landscape && isPortrait) return { width: '40%', height: 240 }
         if (landscape && !isPortrait) return { width: '40%', height: 200 }
@@ -25,30 +26,25 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
         if (!landscape && !isPortrait) return { width: '100%', height: 180 }
     },[landscape])
     
-    const onUploaded = async image => {
-        const postWithImage = await addPostImage(currentPost._id, image._id)
-        updatePost(postWithImage)
-    }
+    // const onUploaded = async image => {
+    //     const postWithImage = await addPostImage(currentPost._id, image._id)
+    //     updatePost(postWithImage)
+    // }
 
-    const onDeleteImage = async () => {
-        const removedPost = await removePostImage(currentPost._id)
-        if (removedPost) updatePost(removedPost)
-    }
+    // const onDeleteImage = async () => {
+    //     const removedPost = await removePostImage(currentPost._id)
+    //     if (removedPost) updatePost(removedPost)
+    // }
 
     return post && (
-        <View
-            {...props}
-            style={{
-                flex: 1,
-                paddingBottom: 10,
-            }}
-        >
+        <View {...props}>
             <View
                 style={{
                     flexDirection: 'row',
                     alignItems: 'center',
                     gap: 15,
                     paddingLeft: 15,
+                    paddingRight: 5,
                     paddingTop: 7,
                     paddingBottom: 5,
                 }}
@@ -85,6 +81,7 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                         icon='delete-forever'
                         onPress={() => onDelete(post._id)}
                         size={25}
+                        style={{ margin: 0 }}
                     />
                 )}
     
@@ -93,16 +90,17 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
             <View
                 style={{
                     flexDirection: (post?.image && landscape) ? 'row' : 'column',
+                    gap: 15,
+                    marginVertical: 5,
+                    paddingLeft: (landscape && 15),
                 }}
             >
                 {post.image && (
-                    <View style={{ marginBottom: 10 }}>
-                        <ImageLoader
-                            image={post.image}
-                            user={post.author}
-                            maxDims={{ width, height }}
-                        />
-                    </View>
+                    <ImageLoader
+                        image={post.image}
+                        user={post.author}
+                        maxDims={{ width, height }}
+                    />
                 )}
                 
                 <View
@@ -114,8 +112,11 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                     <View
                         style={{
                             flex: 1,
+                            flexDirection: 'row',
                             gap: 10,
-                            paddingLeft: 15,
+                            paddingLeft: (!landscape && 15),
+                            paddingRight: 5,
+                            paddingVertical: 6,
                         }}
                     >
 
@@ -129,42 +130,42 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                             {post.text}
                         </Text>
                         
+                        {owned && (
+                            <View>
+                                <IconButton
+                                    icon='comment-edit-outline'
+                                    onPress={() => addModal('FEEDBACK', post)}
+                                    style={{ margin: 0 }}
+                                />
+                            </View>
+                        )}
+
                     </View>
 
-                    {owned && (
-                        <View>
-                            <IconButton
-                                icon='comment-edit-outline'
-                                onPress={() => addModal('FEEDBACK', post)}
-                            />
-
-                            {post?.image ? (
-                                <IconButton
-                                    icon='file-image-minus'
-                                    onPress={onDeleteImage}
-                                />
-                            ) : (
-                                <AddImageButton
-                                    onSelection={({ uri, height, width }) => updatePost({
-                                        ...post,
-                                        image: { uri, height, width },
-                                    })}
-                                    onUploaded={onUploaded}
-                                />
-                            )}
-                        </View>
-                    )}
                 </View>
 
             </View>
+
         </View>
     )
 }
 
 const Feed = ({ posts, onDelete, ...props }) => {
-    useEffect(() => {
-        console.log('posts', posts)
-    }, [posts])
+
+    const { addModal } = useModal()
+    const { updatePost } = useFeed()
+    const { user } = useUser()
+
+    const onUploaded = async (image, post) => {
+        const postWithImage = await addPostImage(post._id, image._id)
+        updatePost(postWithImage)
+    }
+
+    const onDeleteImage = async post => {
+        const removedPost = await removePostImage(post._id)
+        if (removedPost) updatePost(removedPost)
+    }
+
     return (
         <View style={{ flex: 1 }}>
 
@@ -181,7 +182,49 @@ const Feed = ({ posts, onDelete, ...props }) => {
                             onDelete={() => onDelete(item._id)}
                         />
                     )}
-                    ItemSeparatorComponent={({ highlighted }) => <Divider style={{ marginBottom: 5 }} />}
+                    ItemSeparatorComponent={({ highlighted, leadingItem }) => (
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                marginBottom: 5,
+                                borderBottomWidth: 1,
+                                borderBottomColor: '#ccc',
+                                paddingLeft: 5,
+                                paddingRight: 5,
+                            }}
+                        >
+
+                            <View>
+                                <IconButton
+                                    icon='comment-plus'
+                                    onPress={() => addModal('FEEDBACK', leadingItem)}
+                                    style={{ margin: 0 }}
+                                />
+                            </View>
+
+                            {user._id === leadingItem.author._id && (
+                                <View style={{ flexDirection: 'row' }}>
+
+                                    {leadingItem?.image ? (
+                                        <IconButton
+                                            icon='file-image-minus'
+                                            onPress={() => onDeleteImage(leadingItem)}
+                                            style={{ margin: 0 }}
+                                        />
+                                    ) : (
+                                        <AddImageButton
+                                            onSelection={({ uri, height, width }) => updatePost({
+                                                ...leadingItem,
+                                                image: { uri, height, width },
+                                            })}
+                                            onUploaded={image => onUploaded(image, leadingItem)}
+                                        />
+                                    )}
+                                </View>
+                            )}
+                        </View>
+                    )}
                 />
             )}
 

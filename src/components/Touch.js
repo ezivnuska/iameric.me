@@ -1,83 +1,108 @@
-import React from 'react';
-import {
-  Directions,
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from 'react-native-gesture-handler';
-import { Dimensions, StyleSheet } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+import { StyleSheet } from 'react-native'
 import Animated, {
-  withTiming,
-  useSharedValue,
-  useAnimatedStyle,
-} from 'react-native-reanimated';
+    Easing,
+	useAnimatedStyle,
+	useSharedValue,
+    withTiming,
+} from 'react-native-reanimated'
+import {
+	Gesture,
+	GestureDetector,
+	GestureHandlerRootView,
+} from 'react-native-gesture-handler'
 
-const { height, width } = Dimensions.get('screen');
+const Touch = () => {
 
-function clamp(val, min, max) {
-  return Math.min(Math.max(val, min), max);
+    const SIZE = 100
+
+    const [dragging, setDragging] = useState(false)
+    const [perimeter, setPerimeter] = useState()
+
+    const { width, height } = useMemo(() => perimeter || { width: 0, height: 0 }, [perimeter])
+
+    // TODO: move to utilities
+    const clamp = (val, min, max) => {
+        return Math.min(Math.max(val, min), max)
+    }
+    
+    const translationX = useSharedValue(0)
+    const translationY = useSharedValue(0)
+    const prevTranslationX = useSharedValue(0)
+    const prevTranslationY = useSharedValue(0)
+
+    const animatedStyles = useAnimatedStyle(() => ({
+        backgroundColor: 'red',
+        transform: [
+            { translateX: translationX.value },
+            { translateY: translationY.value },
+        ],
+    }))
+
+    const pan = Gesture.Pan()
+        .minDistance(1)
+        .onStart(() => {
+            setDragging(true)
+            prevTranslationX.value = translationX.value
+            prevTranslationY.value = translationY.value
+        })
+        .onUpdate((event) => {
+            const maxTranslateX = width / 2 - 50
+            const maxTranslateY = height / 2 - 50
+
+            translationX.value = clamp(
+                prevTranslationX.value + event.translationX,
+                -maxTranslateX,
+                maxTranslateX
+            )
+
+            translationY.value = clamp(
+                prevTranslationY.value + event.translationY,
+                -maxTranslateY,
+                maxTranslateY
+            )
+        })
+        .onEnd(() => {
+            setDragging(false)
+        })
+        .runOnJS(true)
+
+    const onLayout = e => {
+        const { clientWidth, clientHeight } = e.nativeEvent.target
+        setPerimeter({ width: clientWidth, height: clientHeight })
+    }
+    
+    return (
+        <GestureHandlerRootView style={styles.container} onLayout={onLayout}>
+
+            {perimeter && (
+                <GestureDetector gesture={pan}>
+                    <Animated.View
+                        style={[
+                            animatedStyles,
+                            styles.box,
+                            (dragging && { backgroundColor: 'red' }),
+                        ]}
+                    />
+                </GestureDetector>
+            )}
+
+        </GestureHandlerRootView>
+    )
 }
 
-export default function App() {
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
-  const startTranslateX = useSharedValue(0);
-  const startTranslateY = useSharedValue(0);
-
-  const fling = Gesture.Fling()
-    .direction(Directions.LEFT | Directions.RIGHT | Directions.UP | Directions.DOWN)
-    .onBegin((event) => {
-      startTranslateX.value = event.x;
-      startTranslateY.value = event.y;
-    })
-    .onStart((event) => {
-      translateX.value = withTiming(
-        clamp(
-          translateX.value + event.x - startTranslateX.value,
-          width / -2 + 50,
-          width / 2 - 50
-        ),
-        { duration: 1000 }
-      );
-      translateY.value = withTiming(
-        clamp(
-          translateY.value + event.y - startTranslateY.value,
-          height / -2 + 50,
-          height / 2 - 50
-        ),
-        { duration: 1000 }
-      );
-    })
-    .runOnJS(true);
-
-  const boxAnimatedStyles = useAnimatedStyle(() => ({
-    transform: [
-      { translateX: translateX.value },
-      { translateY: translateY.value },
-    ],
-  }));
-
-  return (
-    <GestureHandlerRootView style={styles.container}>
-      <GestureDetector gesture={fling} style={{ borderWidth: 1 }}>
-        <Animated.View style={[styles.box, boxAnimatedStyles]}></Animated.View>
-      </GestureDetector>
-    </GestureHandlerRootView>
-  );
-}
+export default Touch
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1,
-  },
-  box: {
-    width: 100,
-    height: 100,
-    borderRadius: 20,
-    backgroundColor: '#b58df1',
-    cursor: 'grab',
-  },
-});
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    box: {
+        width: 100,
+        height: 100,
+        backgroundColor: 'green',
+        borderRadius: 20,
+    },
+  })

@@ -1,15 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Image, Pressable, ScrollView, View } from 'react-native'
-import { Card, IconButton, MD3Colors, Text } from 'react-native-paper'
+import { Image, ScrollView, View } from 'react-native'
+import { IconButton, MD3Colors, Text } from 'react-native-paper'
 import { SmartAvatar, TappableView } from '@components'
 import { Paths } from '@constants'
-import { useNotification, useModal, useTheme, useUser } from '@context'
+import { useModal, useTheme, useUser } from '@context'
 import { deleteImage, loadImage, setAvatar } from '@utils/images'
 import { getTime } from '@utils/time'
 import Animated, { Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 
 const CardHeader = ({ user, close, time = null }) => {
-    const { landscape, theme } = useTheme()
+    
+    const { landscape } = useTheme()
+    
     return (
         <View
             style={{
@@ -67,7 +69,6 @@ const CardHeader = ({ user, close, time = null }) => {
 
 const ImageCard = ({ data }) => {
 
-    // const { addNotification } = useNotification()
     const { closeModal, addModal } = useModal()
     const { landscape, theme } = useTheme()
     const { user, getUser, removeImage, setProfileImage, updateUser } = useUser()
@@ -78,7 +79,7 @@ const ImageCard = ({ data }) => {
 
     const [imageDims, setImageDims] = useState(null)
     
-    const currentUser = useMemo(() => image?.user && getUser(image.user._id), [image])
+    const currentUser = useMemo(() => image && getUser(image.user._id), [image])
     const isProfileImage = useMemo(() => (currentUser?.profileImage && image) && currentUser.profileImage._id === image._id, [currentUser])
     const isOwner = useMemo(() => image?.user && user._id === image.user._id, [image])
     const hasAuthorization = useMemo(() => user && user.role === 'admin', [user])
@@ -231,14 +232,6 @@ const ImageCard = ({ data }) => {
             
             removeImage(deletedImage.user, deletedImage._id)
 
-            // console.log('user', user)
-            // console.log('filteredImages', filteredImages)
-            // const filteredImages = user.images.filter(img => img._id !== deletedImage._id)
-            // updateUser({
-            //     _id: user._id,
-            //     images: filteredImages,
-            // })
-            
             closeModal()
 
         } else {
@@ -255,7 +248,7 @@ const ImageCard = ({ data }) => {
             height: e.nativeEvent.target.clientHeight,
         })
 	}
-
+    
     return image && (
         <View
             onLayout={onLayout}
@@ -275,7 +268,6 @@ const ImageCard = ({ data }) => {
                         backgroundColor: theme.colors.background,
                     }, opacityStyle]}
                 >
-
                     <CardHeader
                         user={image.user}
                         close={closeModal}
@@ -327,13 +319,12 @@ const ImageCard = ({ data }) => {
                     top: 0, right: 0, left: 0,
                     zIndex: 200,
                     backgroundColor: theme.colors.background,
-                    // backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 }, opacityStyle]}
             >
 
                 {landscape && (
                     <CardHeader
-                        user={currentUser}
+                        user={image.user}
                         close={closeModal}
                         time={image.createdAt}
                     />
@@ -347,7 +338,6 @@ const ImageCard = ({ data }) => {
                     bottom: 0, right: 0, left: 0,
                     zIndex: 300,
                     backgroundColor: theme.colors.background,
-                    // backgroundColor: 'rgba(0, 0, 0, 0.75)',
                 }, opacityStyle]}
             >
                 {image.caption && (
