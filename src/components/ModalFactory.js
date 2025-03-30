@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Pressable } from 'react-native'
+import { View } from 'react-native'
 import {
     AddImageButton,
     AuthForm,
@@ -12,12 +12,13 @@ import {
     Settings,
     Socket,
 } from '@components'
-import { useTheme } from '@context'
+import { useModal, useTheme } from '@context'
 import Modal from 'react-native-modal'
 
-const ModalFactory = ({ modal, onClose }) => {
+const ModalFactory = ({ modal }) => {
 
-    const { dims, landscape, theme } = useTheme()
+    const { clearModals } = useModal()
+    const { dims, theme } = useTheme()
 
     const renderModalContent = () => {
         
@@ -62,43 +63,42 @@ const ModalFactory = ({ modal, onClose }) => {
                 return null
             }
         }
+        const defaultStyles = [{
+            marginVertical: 10,
+            maxHeight: dims.height * 0.9,
+            width: '90%',
+            maxWidth: 375,
+            marginHorizontal: 'auto',
+            borderRadius: 24,
+            backgroundColor: theme.colors.background,
+        }, shadow]
+
+        const fullscreenStyles = {
+            flex: 1,
+            alignItems: 'stretch',
+        }
 
         return (
             <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    alignItems: fullscreen ? 'stretch' : 'center',
-                    width: '100%',
-                    position: 'relative',
-                }}
+                style={fullscreen
+                    ? fullscreenStyles
+                    : defaultStyles
+                }
             >
-                <Pressable
-                    onPress={onClose}
-                    disabled={fullscreen}
-                    style={{
-                        position: 'absolute',
-                        top: 0, right: 0, bottom: 0, left: 0,
-                        zIndex: 10,
-                    }}
-                />
-
-                <View
-                    style={[{
-                        flex: 1,
-                        zIndex: 100,
-                    },
-                    !fullscreen && {
-                        width: '90%',
-                        maxWidth: 375,
-                        marginHorizontal: 'auto',
-                    }]}
-                >
-                    {content}
-                </View>
-                
+                {content}
             </View>
         )
+    }
+
+    const shadow = {
+        shadowColor: theme.colors.onBackground,
+        shadowOffset: {
+            width: 0,
+            height: 0,
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 7,
+        elevation: 1,
     }
 
     return (
@@ -108,12 +108,17 @@ const ModalFactory = ({ modal, onClose }) => {
             deviceHeight={dims.height}
             animationType='fade'
             transparent={true}
-            onRequestClose={onClose}
+            onRequestClose={clearModals}
             style={{ margin: 0 }}
+            onBackdropPress={clearModals}
+            backdropColor={theme.colors.background}
+            backdropOpacity={0.9}
+            avoidKeyboard={true}
         >
-            <View style={{ flex: 1 }}>
-                {modal && renderModalContent()}
-            </View>
+            {modal
+                ? renderModalContent()
+                : <View />
+            }
         </Modal>
     )
 }

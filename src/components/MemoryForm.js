@@ -1,6 +1,9 @@
 import React, { useMemo, useState } from 'react'
-import { DateSelector, Form, ModalContainer } from '@components'
+import { ScrollView } from 'react-native'
+import { IconButton, Text } from 'react-native-paper'
+import { DateSelector, Form, Row, Stack } from '@components'
 import { useMemory, useForm, useModal, useUser } from '@context'
+import { Size } from '@utils/stack'
 import { createMemory } from '@utils/memories'
 import { getDate, getMonth, getYear } from 'date-fns'
 
@@ -64,20 +67,60 @@ const MemoryForm = ({ data = null }) => {
     }
 
     return (
-        <ModalContainer title={`${data ? 'Edit' : 'New'} Memory`}>
+        <Stack
+            flex={1}
+        >
+            <Row
+                padding={[Size.XS, Size.XS, Size.None, Size.M]}
+                align='center'
+            >
+                <Text
+                    variant='headlineSmall'
+                    style={{ flex: 1 }}
+                >
+                    {`${data ? 'Edit' : 'New'} Memory`}
+                </Text>
+
+                <IconButton
+                    icon='close-thick'
+                    onPress={closeModal}
+                    style={{ margin: 0, padding: 0 }}
+                />
+
+            </Row>
+
+            <ScrollView
+                style={{
+                    marginVertical: 0,
+                }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: Size.S,
+                }}
+            >
             
-            <DateSelector
-                memory={data}
-                onChange={value => setDate(value)}
-            />
+                <Stack
+                    flex={1}
+                    spacing={Size.M}
+                    padding={[Size.S, Size.M]}
+                >
+            
+                    <DateSelector
+                        memory={data}
+                        onChange={value => setDate(value)}
+                    />
+        
+                    <Form
+                        data={data}
+                        fields={fields}
+                        onSubmit={submitFormData}
+                    />
 
-            <Form
-                data={data}
-                fields={fields}
-                onSubmit={submitFormData}
-            />
+                </Stack>
 
-        </ModalContainer>
+            </ScrollView>
+
+        </Stack>
     )
 }
 

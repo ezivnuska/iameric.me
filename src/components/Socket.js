@@ -1,11 +1,13 @@
-import React, { useEffect, useMemo } from 'react'
-import { FlatList } from 'react-native'
-import { Card, Divider, IconButton, Text } from 'react-native-paper'
-import { useSocket, useModal, useUser } from '@context'
-import { ModalContainer } from '@components'
+import React, { useMemo } from 'react'
+import { FlatList, ScrollView } from'react-native'
+import { Divider, IconButton, Text } from'react-native-paper'
+import { Row, Stack } from '@components'
+import { useModal, useSocket, useUser } from '@context'
+import { Size } from '@utils/stack'
 
 const Socket = () => {
 
+    const { closeModal } = useModal()
     const { connections, socket } = useSocket()
     const { user } = useUser()
     
@@ -19,16 +21,48 @@ const Socket = () => {
     const username = useMemo(() => user ? user.username : getShortId(socket.id), [socket])
 
     return (
-        <ModalContainer title={`Connections (${connections.length})`}>
+        <Stack
+            flex={1}
+        >
+            <Row
+                padding={[Size.XS, Size.XS, Size.None, Size.M]}
+                align='center'
+            >
+                <Text
+                    variant='headlineSmall'
+                    style={{ flex: 1 }}
+                >
+                    {`Connections (${connections.length})`}
+                </Text>
 
-            <Card>
-
-                <Card.Title
-                    title={`Connected as ${username}`}
-                    titleVariant='headlineSmall'
+                <IconButton
+                    icon='close-thick'
+                    onPress={closeModal}
+                    style={{ margin: 0, padding: 0 }}
                 />
 
-                <Card.Content style={{ marginVertical: 10 }}>
+            </Row>
+
+            <ScrollView
+                style={{
+                    marginVertical: 0,
+                }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: Size.S,
+                }}
+            >
+
+                <Stack
+                    flex={1}
+                    spacing={Size.M}
+                    padding={[Size.S, Size.M]}
+                >
+
+                    <Text variant='titleLarge'>
+                        {`Connected as ${username}`}
+                    </Text>
+
                     {connections && (
                         <FlatList
                             ItemSeparatorComponent={({ highlighted }) => <Divider />}
@@ -42,10 +76,12 @@ const Socket = () => {
                             )}
                         />
                     )}
-                </Card.Content>
-            </Card>
 
-        </ModalContainer>
+                </Stack>
+
+            </ScrollView>
+
+        </Stack>
     )
 }
 

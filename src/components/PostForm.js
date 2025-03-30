@@ -1,8 +1,10 @@
 import React from 'react'
-import { Form } from '@components'
+import { ScrollView } from 'react-native'
+import { IconButton, Text } from 'react-native-paper'
+import { Form, Row, Stack } from '@components'
 import { useFeed, useForm, useModal, useSocket, useUser } from '@context'
+import { Size } from '@utils/stack'
 import { createPost } from '@utils/feed'
-import ModalContainer from './ModalContainer'
 
 const PostForm = ({ data = null }) => {
 
@@ -59,13 +61,51 @@ const PostForm = ({ data = null }) => {
     }
 
     return (
-        <ModalContainer title='New Post'>
-            <Form
-                fields={fields}
-                data={data}
-                onSubmit={submitFormData}
-            />
-        </ModalContainer>
+        <Stack
+            flex={1}
+        >
+            <Row
+                padding={[Size.XS, Size.XS, Size.None, Size.M]}
+                align='center'
+            >
+                <Text
+                    variant='headlineSmall'
+                    style={{ flex: 1 }}
+                >
+                    New Post
+                </Text>
+
+                <IconButton
+                    icon='close-thick'
+                    onPress={closeModal}
+                    style={{ margin: 0, padding: 0 }}
+                />
+
+            </Row>
+
+            <ScrollView
+                style={{
+                    marginVertical: 0,
+                }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: Size.S,
+                }}
+            >
+            
+                <Stack
+                    flex={1}
+                    spacing={Size.M}
+                    padding={[Size.S, Size.M]}
+                >
+                    <Form
+                        fields={fields}
+                        data={data}
+                        onSubmit={submitFormData}
+                    />
+                </Stack>
+            </ScrollView>
+        </Stack>
     )
 }
 

@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { Text } from 'react-native-paper'
-import { Form, ModalContainer } from '@components'
+import { ScrollView } from'react-native'
+import { IconButton, Text } from'react-native-paper'
+import { Form, Row, Stack } from '@components'
 import { useBugs, useForm, useModal, useSocket, useUser } from '@context'
+import { Size } from '@utils/stack'
 import { createEntry } from '@utils/bugs'
 
 const BugForm = () => {
@@ -41,18 +43,57 @@ const BugForm = () => {
     }
 
     return (
-        <ModalContainer title='Report Bug'>
+        <Stack
+            flex={1}
+        >
+            <Row
+                padding={[Size.XS, Size.XS, Size.None, Size.M]}
+                align='center'
+            >
+                <Text
+                    variant='headlineSmall'
+                    style={{ flex: 1 }}
+                >
+                    Report Bug
+                </Text>
 
-            <Text variant='titleLarge'>
-                What's the problem?
-            </Text>
+                <IconButton
+                    icon='close-thick'
+                    onPress={closeModal}
+                    style={{ margin: 0, padding: 0 }}
+                />
 
-            <Form
-                fields={fields}
-                onSubmit={handleSubmit}
-            />
+            </Row>
 
-        </ModalContainer>
+            <ScrollView
+                style={{
+                    marginVertical: 0,
+                }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: Size.S,
+                }}
+            >
+
+                <Stack
+                    flex={1}
+                    spacing={Size.M}
+                    padding={[Size.S, Size.M]}
+                >
+
+                    <Text variant='titleLarge'>
+                        What's the problem?
+                    </Text>
+
+                    <Form
+                        fields={fields}
+                        onSubmit={handleSubmit}
+                    />
+                </Stack>
+
+            </ScrollView>
+
+        </Stack>
     )
 }
 

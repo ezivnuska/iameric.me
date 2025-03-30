@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "declaration": true,
     "paths": {
+      "react": ["./node_modules/@types/react"],
       "@config": [
         "./config/index.js"
       ],

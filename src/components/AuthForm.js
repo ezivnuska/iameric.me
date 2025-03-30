@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Button } from 'react-native-paper'
-import { Form, ModalContainer } from '@components'
+import { ScrollView } from 'react-native'
+import { Button, IconButton, Text } from 'react-native-paper'
+import { Form, Stack, Row } from '@components'
 import { useForm, useModal, useSocket, useUser } from '@context'
 import { signup, signin } from '@utils/auth'
+import { Size } from '@utils/stack'
 
 const AuthForm = () => {
     
@@ -90,21 +92,60 @@ const AuthForm = () => {
     }
 
     return (
-        <ModalContainer title={formType === 'up' ? 'Sign Up' : 'Sign In'}>
-
-            {formType === 'up'
-                ? <SignUpForm onSubmit={handleSignup} />
-                : <SignInForm onSubmit={handleSignin} />
-            }
-
-            <Button
-                mode='outlined'
-                onPress={toggleFormType}
+        <Stack
+            flex={1}
+        >
+            <Row
+                padding={[Size.XS, Size.XS, Size.None, Size.M]}
+                align='center'
             >
-                {formType === 'up' ? 'Sign In' : 'Sign Up'}
-            </Button>
+                <Text
+                    variant='headlineSmall'
+                    style={{ flex: 1 }}
+                >
+                    {formType === 'up' ? 'Sign Up' : 'Sign In'}
+                </Text>
 
-        </ModalContainer>
+                <IconButton
+                    icon='close-thick'
+                    onPress={closeModal}
+                    style={{ margin: 0, padding: 0 }}
+                />
+
+            </Row>
+
+            <ScrollView
+                style={{
+                    marginVertical: 0,
+                }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: Size.S,
+                }}
+            >
+                <Stack
+                    flex={1}
+                    spacing={Size.M}
+                    padding={[Size.S, Size.M]}
+                >
+
+                    {formType === 'up'
+                        ? <SignUpForm onSubmit={handleSignup} />
+                        : <SignInForm onSubmit={handleSignin} />
+                    }
+
+                    <Button
+                        mode='outlined'
+                        onPress={toggleFormType}
+                    >
+                        {formType === 'up' ? 'Sign In' : 'Sign Up'}
+                    </Button>
+
+                </Stack>
+
+            </ScrollView>
+
+        </Stack>
     )
 }
 

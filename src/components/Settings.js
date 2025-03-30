@@ -1,66 +1,102 @@
 import React from'react'
-import { View } from'react-native'
-import { Button, Text } from'react-native-paper'
+import { ScrollView, View } from'react-native'
+import { Button, IconButton, Text } from'react-native-paper'
 import { useModal } from '@context'
 import { navigate } from '@utils/navigation'
-import { ModalContainer } from '@components'
+import { Size } from '@utils/stack'
+import { Row, Stack } from '@components'
 
 const Settings = () => {
     
-    const { addModal } = useModal()
+    const { addModal, closeModal } = useModal()
     
     return (
-        <ModalContainer title='Settings'>
-            <View style={{ gap: 15 }}>
+        <Stack
+            flex={1}
+        >
+            <Row
+                padding={[Size.XS, Size.XS, Size.None, Size.M]}
+                align='center'
+            >
+                <Text
+                    variant='headlineSmall'
+                    style={{ flex: 1 }}
+                >
+                    Settings
+                </Text>
 
-                <View style={{ gap: 15 }}>
+                <IconButton
+                    icon='close-thick'
+                    onPress={closeModal}
+                    style={{ margin: 0, padding: 0 }}
+                />
 
-                    <View style={{ gap: 10 }}>
+            </Row>
 
-                        <Text variant='titleLarge'>
+            <ScrollView
+                style={{
+                    marginVertical: 0,
+                }}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: Size.S,
+                }}
+            >
+
+                <Stack
+                    flex={1}
+                >
+                    <Stack
+                        spacing={Size.M}
+                        padding={[Size.S, Size.M]}
+                    >
+                        <View style={{ gap: Size.XS }}>
+                            <Text variant='titleLarge'>
+                                Sign Out
+                            </Text>
+
+                            <Text variant='titleMedium'>
+                                Come back soon!
+                            </Text>
+                        </View>
+
+                        <Button
+                            mode='outlined'
+                            onPress={() => navigate('Home', { signout: true })}
+                        >
                             Sign Out
-                        </Text>
+                        </Button>
 
-                        <Text variant='titleMedium'>
-                            Come back soon!
-                        </Text>
+                    </Stack>
 
-                    </View>
-
-                    <Button
-                        mode='outlined'
-                        onPress={() => navigate('Home', { signout: true })}
+                    <Stack
+                        spacing={Size.M}
+                        padding={[Size.S, Size.M]}
                     >
-                        Sign Out
-                    </Button>
+                        <View style={{ gap: Size.XS }}>
+                            <Text variant='titleLarge'>
+                                Close Account
+                            </Text>
 
-                </View>
+                            <Text variant='titleMedium'>
+                                Delete account and data.
+                            </Text>
+                        </View>
 
-                <View style={{ gap: 15 }}>
-                    
-                    <View style={{ gap: 10 }}>
-                        
-                        <Text variant='titleLarge'>
+                        <Button
+                            mode='outlined'
+                            onPress={() => addModal('DESTROY')}
+                        >
                             Close Account
-                        </Text>
+                        </Button>
 
-                        <Text variant='titleMedium'>
-                            Delete account and data.
-                        </Text>
+                    </Stack>
+                
+                </Stack>
 
-                    </View>
+            </ScrollView>
 
-                    <Button
-                        mode='outlined'
-                        onPress={() => addModal('DESTROY')}
-                    >
-                        Close Account
-                    </Button>
-
-                </View>
-
-            </View>
-        </ModalContainer>
+        </Stack>
     )
 }
 

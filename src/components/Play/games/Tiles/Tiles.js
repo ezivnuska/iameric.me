@@ -29,10 +29,6 @@ const Tiles = () => {
 
 	const containerRef = useRef(null)
 
-	// useEffect(() => {
-	// 	getSize()
-	// }, [maxDims])
-
 	useEffect(() => {
 		getSize()
 	}, [dims, landscape, maxDims])
