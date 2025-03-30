@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import { SafeAreaView, View } from 'react-native'
+import { View } from 'react-native'
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { AppNavigator } from '../navigators'
 import linking from '../linking'
 import { Footer } from './components'
@@ -16,63 +17,67 @@ const Layout = () => {
     const { dims, landscape, theme } = useTheme()
 
     return (
-        <View
-            style={{
-                flex: 1,
-                height: dims.height,
-                width: dims.width,
-                backgroundColor: theme.colors.background,
-            }}
-        >
-            <PaperProvider theme={theme}>
+        <PaperProvider theme={theme}>
 
-                <ModalFactory modal={modal} />
-
-                <NavigationContainer
-                    ref={navigationRef}
-                    linking={linking}
-                    theme={theme}
-                    onStateChange={state => setCurrentRoute(navigationRef.getCurrentRoute())}
-                    onReady={() => setCurrentRoute(navigationRef.getCurrentRoute())}
-                    // fallback={<FallbackScreen />} // not working or used, necessary as of yet
+            <SafeAreaProvider>
+                <SafeAreaView
+                    style={{
+                        // flex: 1,
+                        height: dims.height,
+                        width: dims.width,
+                        position: 'relative',
+                        backgroundColor: 'green',//theme.colors.background,
+                    }}
                 >
 
-                    <View style={{ flex: 1, position: 'relative' }}>
-                        
-                        <View
-                            style={{
-                                flex: 1,
-                                width: '100%',
-                                maxWidth: (!landscape && 600),
-                                marginHorizontal: 'auto',
-                            }}
-                        >
-                            <AppNavigator />
+                    <ModalFactory modal={modal} />
 
+                    <NavigationContainer
+                        ref={navigationRef}
+                        linking={linking}
+                        theme={theme}
+                        onStateChange={state => setCurrentRoute(navigationRef.getCurrentRoute())}
+                        onReady={() => setCurrentRoute(navigationRef.getCurrentRoute())}
+                        // fallback={<FallbackScreen />} // not working or used, necessary as of yet
+                    >
+
+                        <View style={{ flex: 1, position: 'relative' }}>
+                            
                             <View
                                 style={{
-                                    position: 'absolute',
-                                    bottom: 0,
-                                    right: 0,
-                                    zIndex: 3000,
-                                    overflow: 'visible',
-                                    justifyContent: 'flex-end',
+                                    flex: 1,
+                                    width: '100%',
+                                    maxWidth: (!landscape && 600),
+                                    marginHorizontal: 'auto',
                                 }}
                             >
-                                <Notification />
+                                <AppNavigator />
+
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        bottom: 0,
+                                        right: 0,
+                                        zIndex: 3000,
+                                        overflow: 'visible',
+                                        justifyContent: 'flex-end',
+                                    }}
+                                >
+                                    <Notification />
+                                </View>
                             </View>
+
+                            <Footer
+                                landscape={landscape}
+                                route={currentRoute}
+                            />
+
                         </View>
 
-                        <Footer
-                            landscape={landscape}
-                            route={currentRoute}
-                        />
-
-                    </View>
-
-                </NavigationContainer>
-            </PaperProvider>
-        </View>
+                    </NavigationContainer>
+                </SafeAreaView>
+            </SafeAreaProvider>
+        </PaperProvider>
     )
 }
 

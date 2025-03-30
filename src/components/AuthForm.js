@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { Button, IconButton, Text } from 'react-native-paper'
 import { Form, Stack, Row } from '@components'
-import { useForm, useModal, useSocket, useUser } from '@context'
+import { useForm, useModal, useSocket, useTheme, useUser } from '@context'
 import { signup, signin } from '@utils/auth'
 import { Size } from '@utils/stack'
 
@@ -16,6 +16,9 @@ const AuthForm = () => {
         resetForm,
         setFormError,
     } = useForm()
+    const {
+        dims,
+    } = useTheme()
     const { closeModal } = useModal()
     const { notifySocket } = useSocket()
         
@@ -115,20 +118,15 @@ const AuthForm = () => {
             </Row>
 
             <ScrollView
-                style={{
-                    marginVertical: 0,
-                }}
+                style={{ marginVertical: 0 }}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    paddingBottom: Size.S,
-                }}
+                contentContainerStyle={{ paddingBottom: Size.S }}
             >
                 <Stack
                     flex={1}
                     spacing={Size.M}
                     padding={[Size.S, Size.M]}
                 >
-
                     {formType === 'up'
                         ? <SignUpForm onSubmit={handleSignup} />
                         : <SignInForm onSubmit={handleSignin} />

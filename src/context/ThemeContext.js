@@ -6,7 +6,7 @@ import React, {
     useReducer,
     useState,
 } from 'react'
-import { useWindowDimensions } from 'react-native'
+import { Dimensions, useWindowDimensions } from 'react-native'
 import { getItem, setItem } from '@utils/storage'
 import {
     DarkTheme as NavigationDarkTheme,
@@ -32,6 +32,7 @@ const CombinedDarkTheme = merge(DarkTheme, customDarkTheme)
 
 const initialState = {
     dark: false,
+    dims: null,
     theme: CombinedLightTheme,
     themeLoaded: false,
     setTheme: () => {},
@@ -50,17 +51,32 @@ export const ThemeContextProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    const dims = useWindowDimensions()
+    const windowDimensions = useWindowDimensions()
 
-    const [landscape, setLandscape] = useState(dims && dims.width > dims.height)
+    const [dimensions, setDimensions] = useState(null)
+    const [landscape, setLandscape] = useState(null)
 
     useEffect(() => {
         init()
     }, [])
 
     useEffect(() => {
-        if (dims) setLandscape(dims.width > dims.height)
-    }, [dims])
+        if (windowDimensions) {
+            // setDims(windowDimensions.width > windowDimensions.height)
+            console.log('windowDimensions', windowDimensions)
+            // console.log('dimensions:screen', Dimensions.get('screen'))
+            // console.log('dimensions:window', Dimensions.get('window'))
+            setDimensions(windowDimensions)
+        }
+    }, [windowDimensions])
+
+    useEffect(() => {
+        if (dimensions) {
+            setLandscape(dimensions.width > dimensions.height)
+            dispatch({ type: 'SET_DIMS', payload: dimensions })
+        }
+            
+    }, [dimensions])
     
     const init = async () => {
             
@@ -94,7 +110,7 @@ export const ThemeContextProvider = ({ children }) => {
         <ThemeContext.Provider
             value={{
                 ...state,
-                dims,
+                // dims,
                 landscape,
                 ...actions,
             }}
@@ -118,6 +134,14 @@ const reducer = (state, action) => {
                 ...state,
                 dark: payload.dark,
                 theme: payload,
+            }
+            break
+        case 'SET_DIMS':
+            console.log('PAYLOAD', payload)
+            const { height, width } = payload
+            return {
+                ...state,
+                dims: { height, width },
             }
             break
         default: throw new Error()

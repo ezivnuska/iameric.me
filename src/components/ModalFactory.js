@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { KeyboardAvoidingView, View } from 'react-native'
 import {
     AddImageButton,
     AuthForm,
@@ -71,6 +71,7 @@ const ModalFactory = ({ modal }) => {
             marginHorizontal: 'auto',
             borderRadius: 24,
             backgroundColor: theme.colors.background,
+            // flex: 1,
         }, shadow]
 
         const fullscreenStyles = {
@@ -79,14 +80,15 @@ const ModalFactory = ({ modal }) => {
         }
 
         return (
-            <View
-                style={fullscreen
+            <KeyboardAvoidingView
+                behavior='padding'
+                style={[fullscreen
                     ? fullscreenStyles
-                    : defaultStyles
-                }
+                    : defaultStyles,
+                ]}
             >
                 {content}
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 
