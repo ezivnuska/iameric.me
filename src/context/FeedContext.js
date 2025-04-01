@@ -6,6 +6,7 @@ const initialState = {
     error: null,
     feedLoaded: false,
     feedLoading: false,
+    addComment: () => {},
     addPost: () => {},
     closeFeedModal: () => {},
     deletePost: () => {},
@@ -32,6 +33,7 @@ export const FeedContextProvider = props => {
     const [state, dispatch] = useReducer(reducer, initialState)
 
     const actions = useMemo(() => ({
+        addComment: async payload => dispatch({ type: 'ADD_COMMENT', payload }),
         addPost: async payload => dispatch({ type: 'ADD_POST', payload }),
         deletePost: async payload => dispatch({ type: 'DELETE_POST', payload }),
         getPost: postId => state.posts.filter(post => post._id === postId)[0],
@@ -89,22 +91,40 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_POST':
-            let newPost = true
-            const posts = state.posts.map((post, i) => {
-                if (post._id === payload._id) {
-                    newPost = false
-                    return payload
-                } else return post
-            })
             return {
                 ...state,
-                posts: newPost ? [payload, ...state.posts] : posts,
+                posts: state.posts.map((post, i) => post._id === payload._id ? payload : post),
+            }
+            break
+        case 'ADD_COMMENT':
+            return {
+                ...state,
+                posts: state.posts.map((post, i) => post._id === payload.threadId
+                    ? {
+                        ...post,
+                        comments: [...post.comments, payload]
+                    } : post),
             }
             break
         case 'DELETE_POST':
+            let posts
+            
+            if (payload.threadId) {
+                posts = state.posts.map(post => post._id === payload.threadId
+                    ? {
+                        ...post,
+                        comments: post.comments.filter(comment => comment._id !== payload._id),
+                    }
+                    : post
+                )
+            } else {
+                posts = state.posts.filter(post => post._id !== payload._id)
+            }
+            
             return {
                 ...state,
-                posts: state.posts.filter(post => post._id !== payload)}
+                posts,
+            }
             break
         default:
             throw new Error()

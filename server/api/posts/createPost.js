@@ -1,7 +1,7 @@
 const Post = require('../../models/Post')
 
 const createPost = async (req, res) => {
-    
+    console.log('create post', req.body)
     const { author, text, postId, threadId } = req.body
 
     let post
@@ -12,8 +12,10 @@ const createPost = async (req, res) => {
             { $set: { text } },
             { new: true },
         )
-    } else {
+    } else if (threadId) {
         post = await Post.create({ author, text, threadId })
+    } else {
+        post = await Post.create({ author, text })
     }
 
     if (post) {

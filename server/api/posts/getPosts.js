@@ -3,7 +3,7 @@ const Post = require('../../models/Post')
 const getPosts = async (req, res) => {
     
     const posts = await Post
-        .find({})
+        .find({ threadId: { $eq: null } })
         .populate({
             path: 'author',
             select: 'username',

@@ -6,50 +6,35 @@ import { useFeed, useForm, useModal, useSocket, useUser } from '@context'
 import { Size } from '@utils/stack'
 import { createPost } from '@utils/feed'
 
-const PostForm = ({ data = null }) => {
+const CommentForm = ({ data = null }) => {
 
     const fields = [
         {
             name: 'text',
-            placeholder: 'share something...',
+            placeholder: 'add comment...',
             multiline: true,
         },
     ]
 
-    const { addPost, updatePost } = useFeed()
+    const { addComment } = useFeed()
     const { formError, formFields, resetForm, setFormError, setFormLoading } = useForm()
     const { closeModal } = useModal()
     const { socket } = useSocket()
-    const { user } = useUser()
 
     const handleSubmit = async formData => {
 
-        const post = await createPost(formData)
+        const comment = await createPost(formData)
 
-        if (post) {
-            if (data) {
-                if (!post.threadId) {
-                    socket.emit('edited_post', post)
-                    updatePost(post)
-                } else {
-                    socket.emit('new_comment', post)
-                    updatePost({
-                        ...data,
-                        comments: [...data.comments, post]
-                    })
-                }
-            } else {
-                socket.emit('new_post', post)
-                addPost(post)
-            }
+        if (comment) {
+            socket.emit('new_comment', comment)
+
+            addComment(comment)
         }
 
         closeModal()
     }
 
     const submitFormData = async () => {
-
-        console.log('submit post data', data)
         
         if (formError) {
             console.log(`Error in form field ${formError.name}: ${formError.message}`)
@@ -57,12 +42,10 @@ const PostForm = ({ data = null }) => {
         }
 
         const formData = {
-            author: user._id,
-            postId: data?._id,
-            // threadId: data?.threadId,
             ...formFields,
+            author: data?.author,
+            threadId: data?.threadId,
         }
-        console.log('submit post formData', formData)
 
         setFormLoading(true)
         const response = await handleSubmit(formData)
@@ -87,7 +70,7 @@ const PostForm = ({ data = null }) => {
                     variant='headlineSmall'
                     style={{ flex: 1 }}
                 >
-                    Add Post
+                    Add Comment
                 </Text>
 
                 <IconButton
@@ -124,4 +107,4 @@ const PostForm = ({ data = null }) => {
     )
 }
 
-export default PostForm
+export default CommentForm

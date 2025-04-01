@@ -3,19 +3,18 @@ import { FlatList, View } from 'react-native'
 import { Divider, IconButton, Text } from 'react-native-paper'
 import { AddImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
 import { useFeed, useModal, useTheme, useUser } from '@context'
-import { addPostImage, removePostImage } from '@utils/feed'
+import { addPostImage, loadThread, removePostImage } from '@utils/feed'
 import { getTime } from '@utils/time'
 
-const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
+const FeedItem = ({ post, onDelete, ...props }) => {
    
-    // const { getPost, updatePost } = useFeed()
+    const { updatePost } = useFeed()
     const { addModal } = useModal()
     const { landscape } = useTheme()
     const { user } = useUser()
 
     const owned = useMemo(() => post?.author && user._id === post.author._id, [post])
     const authorized = useMemo(() => (owned || user.role === 'admin'), [post])
-    // const currentPost = useMemo(() => post && getPost(post._id), [post])
 
     const isPortrait = useMemo(() => post?.image && post.image.height >= post.image.width, [post])
 
@@ -25,16 +24,23 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
         if (!landscape && isPortrait) return { width: '100%', height: 280 }
         if (!landscape && !isPortrait) return { width: '100%', height: 180 }
     },[landscape])
-    
-    // const onUploaded = async image => {
-    //     const postWithImage = await addPostImage(currentPost._id, image._id)
-    //     updatePost(postWithImage)
-    // }
 
-    // const onDeleteImage = async () => {
-    //     const removedPost = await removePostImage(currentPost._id)
-    //     if (removedPost) updatePost(removedPost)
-    // }
+    // const [comments, setComments] = useState(null)
+
+    useEffect(() => {
+        fetchThread()
+    }, [])
+
+    const fetchThread = async () => {
+        const comments = await loadThread(post._id)
+        if (comments) {
+            // setComments(thread)
+            updatePost({
+                ...post,
+                comments,
+            })
+        }
+    }
 
     return post && (
         <View {...props}>
@@ -79,7 +85,7 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                 {authorized && (
                     <IconButton
                         icon='delete-forever'
-                        onPress={() => onDelete(post._id)}
+                        onPress={() => onDelete(post)}
                         size={25}
                         style={{ margin: 0 }}
                     />
@@ -106,7 +112,7 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                 <View
                     style={{
                         flex: 1,
-                        flexDirection: 'row',
+                        // flexDirection: 'row',
                     }}
                 >
                     <View
@@ -140,7 +146,24 @@ const FeedItem = ({ post, onDelete, navigation, item, ...props }) => {
                             </View>
                         )}
 
+
                     </View>
+
+                    {(post.comments?.length > 0) && (
+                        <View style={{ paddingLeft: 15, background: 'yellow' }}>
+                            <FlatList
+                                data={post.comments}
+                                extraData={post.comments}
+                                keyExtractor={(item, index) => `comment-${item._id}-${index}`}
+                                renderItem={({ item }) => (
+                                    <FeedItem
+                                        post={item}
+                                        onDelete={() => onDelete(item)}
+                                    />
+                                )}
+                            />
+                        </View>
+                    )}
 
                 </View>
 
@@ -179,7 +202,7 @@ const Feed = ({ posts, onDelete, ...props }) => {
                     renderItem={({ item }) => (
                         <FeedItem
                             post={item}
-                            onDelete={() => onDelete(item._id)}
+                            onDelete={onDelete}
                         />
                     )}
                     ItemSeparatorComponent={({ highlighted, leadingItem }) => (
@@ -198,7 +221,7 @@ const Feed = ({ posts, onDelete, ...props }) => {
                             <View>
                                 <IconButton
                                     icon='comment-plus'
-                                    onPress={() => addModal('FEEDBACK', leadingItem)}
+                                    onPress={() => addModal('COMMENT', { author: user._id, threadId: leadingItem._id })}
                                     style={{ margin: 0 }}
                                 />
                             </View>

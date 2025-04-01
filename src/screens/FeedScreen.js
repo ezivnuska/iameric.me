@@ -33,13 +33,13 @@ const FeedScreen = props => {
         else console.log('could not load posts')
     }
 
-    const onDelete = async id => {
-
-        await deletePostWithId(id)
+    const onDelete = async post => {
         
-        socket.emit('post_deleted', id)
+        await deletePostWithId(post._id)
+        
+        socket.emit('post_deleted', post._id)
 
-        deletePost(id)
+        deletePost(post)
     }
 
     return (

@@ -26,7 +26,7 @@ const Layout = () => {
                         height: dims.height,
                         width: dims.width,
                         position: 'relative',
-                        backgroundColor: 'green',//theme.colors.background,
+                        backgroundColor: theme.colors.background,
                     }}
                 >
 

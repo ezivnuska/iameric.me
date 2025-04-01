@@ -5,6 +5,7 @@ import {
     AuthForm,
     BugForm,
     CaptionForm,
+    CommentForm,
     DestroyForm,
     ImageCard,
     MemoryForm,
@@ -45,6 +46,9 @@ const ModalFactory = ({ modal }) => {
             case 'CAPTION':
                 content = <CaptionForm data={data} />
                 break
+            case 'COMMENT':
+                content = <CommentForm data={data} />
+                break
             case 'FEEDBACK':
                 content = <PostForm data={data} />
                 break
@@ -72,6 +76,7 @@ const ModalFactory = ({ modal }) => {
             borderRadius: 24,
             backgroundColor: theme.colors.background,
             // flex: 1,
+            justifyContent: 'flex-end',
         }, shadow]
 
         const fullscreenStyles = {

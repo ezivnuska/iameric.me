@@ -21,7 +21,7 @@ const deletePostById = async (req, res) => {
         const deleted = await Post
             .deleteMany({ threadId: req.params.id })
         
-        console.log('related posts deleted', deleted.deletedCount)
+        console.log('comments deleted', deleted.deletedCount)
     }
 
     return res.status(200).json({ post })
