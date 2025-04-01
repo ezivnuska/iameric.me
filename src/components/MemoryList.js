@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react'
 import { FlatList, View } from 'react-native'
-import { Divider, IconButton, Text } from 'react-native-paper'
-import { AddImageButton, ImageLoader, NavBar, SmartAvatar } from '@components'
+import { IconButton, Text } from 'react-native-paper'
+import { AddImageButton, ImageLoader, Row, SmartAvatar, Stack } from '@components'
 import { useMemory, useModal, useTheme, useUser } from '@context'
 import { addMemoryImage, removeMemoryImage } from '@utils/memories'
 import { getTime } from '@utils/time'
+import { Size } from '@utils/stack'
 
 const MemoryListItem = ({ memory, onDelete, ...props }) => {
    
@@ -185,16 +186,35 @@ const MemoryListItem = ({ memory, onDelete, ...props }) => {
     )
 }
 
-const MemoryList = ({ memories, onDelete, ...props }) => {
+const MemoryList = ({ memories, onDelete }) => {
 
     const { addModal } = useModal()
     const { updateMemory } = useMemory()
     const { user } = useUser()
     
     return (
-        <View style={{ flex: 1 }}>
+        <Stack
+            spacing={Size.M}
+            style={{ flex: 1 }}
+        >
         
-            <NavBar {...props} />
+            <Row
+                padding={[Size.None, Size.XS, Size.None, Size.M]}
+                align='center'
+            >
+
+                <View style={{ flex: 1 }}>
+                    <Text variant='headlineSmall'>Memories</Text>
+                </View>
+    
+                <IconButton
+                    icon='plus-thick'
+                    onPress={() => addModal('MEMORY')}
+                    size={25}
+                    style={{ margin: 0 }}
+                />
+
+            </Row>
             
             {memories && (
                 <FlatList
@@ -208,53 +228,56 @@ const MemoryList = ({ memories, onDelete, ...props }) => {
                         />
                     )}
                     ItemSeparatorComponent={({ highlighted, leadingItem }) => (
-                        <View
+                        <Stack
+                            spacing={Size.S}
                             style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginBottom: 5,
                                 borderBottomWidth: 1,
                                 borderBottomColor: '#ccc',
-                                paddingLeft: 5,
-                                paddingRight: 5,
+                                paddingBottom: Size.S,
+                                marginBottom: Size.S,
                             }}
                         >
 
-                            <View>
-                                <IconButton
-                                    // mode='contained'
-                                    icon='comment-plus'
-                                    onPress={() => addModal('MEMORY', leadingItem)}
-                                    style={{ margin: 0 }}
-                                />
-                            </View>
+                            <Row
+                                padding={[Size.None, Size.XS, Size.None, Size.S]}
+                            >
 
-                            {user._id === leadingItem.author._id && (
-                                <View style={{ flexDirection: 'row' }}>
-
-                                    {leadingItem?.image ? (
-                                        <IconButton
-                                            icon='file-image-minus'
-                                            onPress={() => onDeleteImage(leadingItem)}
-                                            style={{ margin: 0 }}
-                                        />
-                                    ) : (
-                                        <AddImageButton
-                                            onSelection={({ uri, height, width }) => updateMemory({
-                                                ...leadingItem,
-                                                image: { uri, height, width },
-                                            })}
-                                            onUploaded={image => onUploaded(image, leadingItem)}
-                                        />
-                                    )}
+                                <View style={{ flex: 1 }}>
+                                    <IconButton
+                                        icon='comment-plus'
+                                        onPress={() => addModal('MEMORY', leadingItem)}
+                                        style={{ margin: 0 }}
+                                    />
                                 </View>
-                            )}
-                        </View>
+
+                                {user._id === leadingItem.author._id && (
+                                    <>
+
+                                        {leadingItem?.image ? (
+                                            <IconButton
+                                                icon='file-image-minus'
+                                                onPress={() => onDeleteImage(leadingItem)}
+                                                style={{ margin: 0 }}
+                                            />
+                                        ) : (
+                                            <AddImageButton
+                                                onSelection={({ uri, height, width }) => updateMemory({
+                                                    ...leadingItem,
+                                                    image: { uri, height, width },
+                                                })}
+                                                onUploaded={image => onUploaded(image, leadingItem)}
+                                            />
+                                        )}
+                                    </>
+                                )}
+                            </Row>
+
+                        </Stack>
                     )}
                 />
             )}
 
-        </View>
+        </Stack>
     )
 }
 

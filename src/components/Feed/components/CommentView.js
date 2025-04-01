@@ -38,7 +38,7 @@ const CommentView = ({ post, onDelete }) => {
 
             <Row
                 flex={1}
-                spacing={Size.M}
+                spacing={Size.S}
                 padding={[Size.None, Size.XS, Size.None, Size.M]}
                 align='center'
             >
@@ -72,14 +72,11 @@ const CommentView = ({ post, onDelete }) => {
                 )}
     
             </Row>
-
-            <View
-                style={{
-                    flexDirection: (post?.image && landscape) ? 'row' : 'column',
-                    gap: 15,
-                    // marginVertical: 5,
-                    // paddingLeft: (landscape && 15),
-                }}
+            
+            <Stack
+                spacing={Size.S}
+                padding={[Size.None, Size.XS, Size.None, Size.M]}
+                direction={(post?.image && landscape) ? 'row' : 'column'}
             >
 
                 {post.image && (
@@ -90,50 +87,45 @@ const CommentView = ({ post, onDelete }) => {
                     />
                 )}
                 
-                <Stack>
+                <Row
+                    spacing={Size.S}
+                    align='flex-start'
+                >
 
-                    <Row
-                        spacing={Size.S}
-                        padding={[Size.None, Size.XS, Size.None, Size.M]}
-                        align='flex-start'
+                    <Text
+                        variant='bodyLarge'
+                        style={{ flex: 1, paddingVertical: 7 }}
                     >
+                        {post.text}
+                    </Text>
+                    
+                    {owned && (
+                        <IconButton
+                            icon='comment-edit-outline'
+                            onPress={() => addModal('COMMENT', post)}
+                            style={{ margin: 0 }}
+                        />
+                    )}
 
-                        <Text
-                            variant='bodyLarge'
-                            style={{ flex: 1, paddingVertical: 7 }}
-                        >
-                            {post.text}
-                        </Text>
-                        
-                        {owned && (
-                            <IconButton
-                                icon='comment-edit-outline'
-                                onPress={() => addModal('COMMENT', post)}
-                                style={{ margin: 0 }}
-                            />
-                        )}
+                </Row>
 
-                    </Row>
+                {/* {(post.comments?.length > 0) && (
+                    <View style={{ paddingLeft: 15 }}>
+                        <FlatList
+                            data={post.comments}
+                            extraData={post.comments}
+                            keyExtractor={(item, index) => `comment-${item._id}-${index}`}
+                            renderItem={({ item }) => (
+                                <FeedItem
+                                    post={item}
+                                    onDelete={() => onDelete(item)}
+                                />
+                            )}
+                        />
+                    </View>
+                )} */}
 
-                    {/* {(post.comments?.length > 0) && (
-                        <View style={{ paddingLeft: 15 }}>
-                            <FlatList
-                                data={post.comments}
-                                extraData={post.comments}
-                                keyExtractor={(item, index) => `comment-${item._id}-${index}`}
-                                renderItem={({ item }) => (
-                                    <FeedItem
-                                        post={item}
-                                        onDelete={() => onDelete(item)}
-                                    />
-                                )}
-                            />
-                        </View>
-                    )} */}
-
-                </Stack>
-
-            </View>
+            </Stack>
 
         </Stack>
     )

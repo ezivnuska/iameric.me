@@ -13,7 +13,7 @@ const validateToken = async (req, res) => {
     const user = await User
         .findOne({ _id })
         .select('_id email username role profileImage')
-        .populate({ path: 'profileImage', select: '_id filename' })
+        .populate({ path: 'profileImage', select: '_id filename width height' })
         
     const newDate = new Date(exp) - Date.now()
     const expired = newDate > 0

@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react'
-import { View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 import { ImageLoader, Row, SmartAvatar, Stack } from '@components'
 import { useFeed, useModal, useTheme, useUser } from '@context'
@@ -77,11 +76,10 @@ const FeedItem = ({ post, onDelete }) => {
     
             </Row>
 
-            <View
-                style={{
-                    flexDirection: (post?.image && landscape) ? 'row' : 'column',
-                    gap: Size.M,
-                }}
+            <Stack
+                spacing={Size.S}
+                padding={[Size.None, Size.XS, Size.None, Size.M]}
+                direction={(post?.image && landscape) ? 'row' : 'column'}
             >
 
                 {post.image && (
@@ -92,34 +90,30 @@ const FeedItem = ({ post, onDelete }) => {
                     />
                 )}
                 
-                <Stack>
+                <Row
+                    spacing={Size.S}
+                    padding={[Size.None, Size.None, Size.None, Size.S]}
+                    align='flex-start'
+                >
 
-                    <Row
-                        spacing={Size.S}
-                        padding={[Size.None, Size.XS, Size.None, Size.M]}
-                        align='flex-start'
+                    <Text
+                        variant='bodyLarge'
+                        style={{ flex: 1, paddingVertical: 7 }}
                     >
+                        {post.text}
+                    </Text>
+                    
+                    {owned && (
+                        <IconButton
+                            icon='comment-edit-outline'
+                            onPress={() => addModal('FEEDBACK', post)}
+                            style={{ margin: 0 }}
+                        />
+                    )}
 
-                        <Text
-                            variant='bodyLarge'
-                            style={{ flex: 1, paddingVertical: 7 }}
-                        >
-                            {post.text}
-                        </Text>
-                        
-                        {owned && (
-                            <IconButton
-                                icon='comment-edit-outline'
-                                onPress={() => addModal('FEEDBACK', post)}
-                                style={{ margin: 0 }}
-                            />
-                        )}
+                </Row>
 
-                    </Row>
-
-                </Stack>
-
-            </View>
+            </Stack>
 
         </Stack>
     )

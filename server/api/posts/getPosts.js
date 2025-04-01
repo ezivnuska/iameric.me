@@ -6,7 +6,11 @@ const getPosts = async (req, res) => {
         .find({ threadId: { $eq: null } })
         .populate({
             path: 'author',
-            select: 'username',
+            select: '_id email username role profileImage',
+            populate: {
+                path: 'profileImage',
+                select: '_id filename width height',
+            },
         })
         .populate({
             path: 'image',

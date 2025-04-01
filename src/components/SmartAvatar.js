@@ -4,7 +4,7 @@ import { Avatar } from 'react-native-paper'
 import { Paths } from '@constants'
 
 const SmartAvatar = ({ user, size = 50, onPress = null, ...props }) => {
-
+    
     const source = useMemo(() => user?.profileImage ? `${Paths.ASSETS}/${user.username}/${user.profileImage.filename}` : null, [user])
 
     return (

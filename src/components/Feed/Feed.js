@@ -1,8 +1,8 @@
 import React from 'react'
 import { FlatList, View } from 'react-native'
-import { IconButton } from 'react-native-paper'
+import { IconButton, Text } from 'react-native-paper'
 import { CommentView, FeedItem } from './components'
-import { AddImageButton, Row, NavBar, Stack } from '@components'
+import { AddImageButton, Row, Stack } from '@components'
 import { useFeed, useModal, useUser } from '@context'
 import { addPostImage, removePostImage } from '@utils/feed'
 import { Size } from '@utils/stack'
@@ -24,9 +24,26 @@ const Feed = ({ posts, onDelete, ...props }) => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <Stack
+            spacing={Size.M}
+            style={{ flex: 1 }}
+        >
 
-            <NavBar {...props} />
+            <Row
+                padding={[Size.None, Size.XS, Size.None, Size.M]}
+                align='center'
+            >
+                <View style={{ flex: 1 }}>
+                    <Text variant='headlineSmall'>Feed</Text>
+                </View>
+
+                <IconButton
+                    icon='plus-thick'
+                    onPress={() => addModal('FEEDBACK')}
+                    size={25}
+                    style={{ margin: 0 }}
+                />
+            </Row>
                 
             {posts && (
                 <FlatList
@@ -51,7 +68,7 @@ const Feed = ({ posts, onDelete, ...props }) => {
                         >
 
                             <Row
-                                padding={[Size.None, Size.XS, Size.None, Size.S]}
+                                padding={[Size.None, Size.XS, Size.None, Size.M]}
                             >
 
                                 <View style={{ flex: 1 }}>
@@ -104,7 +121,7 @@ const Feed = ({ posts, onDelete, ...props }) => {
                 />
             )}
 
-        </View>
+        </Stack>
     )
 }
 

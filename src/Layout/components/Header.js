@@ -1,25 +1,19 @@
 import React from 'react'
 import { Pressable, View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
-import { SmartAvatar } from '@components'
-import { useModal, useTheme, useUser } from '@context'
+import { Row, SmartAvatar } from '@components'
+import { useModal, useUser } from '@context'
+import { Size } from '@utils/stack'
 
 const Header = props => {
     
-    const { landscape } = useTheme()
     const { user } = useUser()
     const { addModal } = useModal()
     
     return (
-        <View
-            style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingLeft: 15,
-                paddingRight: 10,
-                paddingVertical: (!landscape && 3),
-            }}
+        <Row
+            align='center'
+            padding={[Size.None, Size.XS, Size.None, Size.M]}
         >
             <View style={{ flex: 1 }}>
                 <Pressable
@@ -34,18 +28,13 @@ const Header = props => {
                 </Pressable>
             </View>
 
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                }}
-            >
+            <Row align='center'>
+
                 {user && (
                     <IconButton
                         icon='bookshelf'
                         onPress={() => props.navigation.navigate('Memories')}
-                        style={{ marginHorizontal: 0, marginBottom: 0 }}
+                        style={{ margin: 0 }}
                     />
                 )}
 
@@ -53,7 +42,7 @@ const Header = props => {
                     <IconButton
                         icon='newspaper-variant-multiple'
                         onPress={() => props.navigation.navigate('Feed')}
-                        style={{ marginHorizontal: 0, marginBottom: 0 }}
+                        style={{ margin: 0 }}
                     />
                 )}
                 
@@ -61,14 +50,14 @@ const Header = props => {
                     <IconButton
                         icon='account-group'
                         onPress={() => props.navigation.navigate('Users')}
-                        style={{ marginHorizontal: 0, marginBottom: 0 }}
+                        style={{ margin: 0 }}
                     />
                 )}
 
                 <IconButton
                     icon='certificate'
                     onPress={() => props.navigation.navigate('Work')}
-                    style={{ marginHorizontal: 0, marginBottom: 0 }}
+                    style={{ margin: 0 }}
                 />
             
                 {user ? (
@@ -82,13 +71,13 @@ const Header = props => {
                     <IconButton
                         icon='power'
                         onPress={() => addModal('AUTH')}
-                        style={{ marginHorizontal: 0, marginBottom: 0 }}
+                        style={{ margin: 0 }}
                     />
                 )}
 
-            </View>
+            </Row>
 
-        </View>
+        </Row>
     )
 }
 
