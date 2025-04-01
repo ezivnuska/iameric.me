@@ -150,7 +150,7 @@ const FeedItem = ({ post, onDelete, ...props }) => {
                     </View>
 
                     {(post.comments?.length > 0) && (
-                        <View style={{ paddingLeft: 15, background: 'yellow' }}>
+                        <View style={{ paddingLeft: 15 }}>
                             <FlatList
                                 data={post.comments}
                                 extraData={post.comments}

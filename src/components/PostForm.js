@@ -48,8 +48,6 @@ const PostForm = ({ data = null }) => {
     }
 
     const submitFormData = async () => {
-
-        console.log('submit post data', data)
         
         if (formError) {
             console.log(`Error in form field ${formError.name}: ${formError.message}`)
@@ -59,10 +57,8 @@ const PostForm = ({ data = null }) => {
         const formData = {
             author: user._id,
             postId: data?._id,
-            // threadId: data?.threadId,
             ...formFields,
         }
-        console.log('submit post formData', formData)
 
         setFormLoading(true)
         const response = await handleSubmit(formData)
