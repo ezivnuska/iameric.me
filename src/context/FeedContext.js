@@ -91,19 +91,43 @@ const reducer = (state, action) => {
             }
             break
         case 'UPDATE_POST':
+            
+            let updatedPosts
+
+            if (payload.threadId) {
+                
+                updatedPosts = state.posts.map((post, i) => {
+                    if (post._id === payload.threadId) {
+                        return {
+                            ...post,
+                            comments: post.comments.map(comment => comment._id === payload._id ? payload : comment),
+                        }
+                    } else return post
+                })
+            } else {
+                
+                updatedPosts = state.posts.map((post, i) => post._id === payload._id ? {
+                    ...post,
+                    ...payload,
+                } : post)
+            }
+            
             return {
                 ...state,
-                posts: state.posts.map((post, i) => post._id === payload._id ? payload : post),
+                posts: updatedPosts,
             }
             break
         case 'ADD_COMMENT':
             return {
                 ...state,
-                posts: state.posts.map((post, i) => post._id === payload.threadId
-                    ? {
-                        ...post,
-                        comments: [...post.comments, payload]
-                    } : post),
+                posts: state.posts.map((post, i) => {
+                    if (post._id === payload.threadId) {
+                        return {
+                            ...post,
+                            comments: post.comments ? [...post.comments, payload] : [payload],
+                        }
+                    } else return post
+                }),
             }
             break
         case 'DELETE_POST':

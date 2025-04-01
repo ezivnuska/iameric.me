@@ -1,10 +1,11 @@
 import React from 'react'
 import { FlatList, View } from 'react-native'
 import { IconButton } from 'react-native-paper'
-import { FeedItem } from './components'
-import { AddImageButton, NavBar } from '@components'
+import { CommentView, FeedItem } from './components'
+import { AddImageButton, Row, NavBar, Stack } from '@components'
 import { useFeed, useModal, useUser } from '@context'
 import { addPostImage, removePostImage } from '@utils/feed'
+import { Size } from '@utils/stack'
 
 const Feed = ({ posts, onDelete, ...props }) => {
 
@@ -39,47 +40,66 @@ const Feed = ({ posts, onDelete, ...props }) => {
                         />
                     )}
                     ItemSeparatorComponent={({ highlighted, leadingItem }) => (
-                        <View
+                        <Stack
+                            spacing={Size.S}
                             style={{
-                                flexDirection: 'row',
-                                justifyContent: 'space-between',
-                                marginBottom: 5,
                                 borderBottomWidth: 1,
                                 borderBottomColor: '#ccc',
-                                paddingLeft: 5,
-                                paddingRight: 5,
+                                paddingBottom: Size.S,
+                                marginBottom: Size.S,
                             }}
                         >
 
-                            <View>
-                                <IconButton
-                                    icon='comment-plus'
-                                    onPress={() => addModal('COMMENT', { author: user._id, threadId: leadingItem._id })}
-                                    style={{ margin: 0 }}
-                                />
-                            </View>
+                            <Row
+                                padding={[Size.None, Size.XS, Size.None, Size.S]}
+                            >
 
-                            {user._id === leadingItem.author._id && (
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={{ flex: 1 }}>
+                                    <IconButton
+                                        icon='comment-plus'
+                                        onPress={() => addModal('COMMENT', { author: user._id, threadId: leadingItem._id })}
+                                        style={{ margin: 0 }}
+                                    />
+                                </View>
 
-                                    {leadingItem?.image ? (
-                                        <IconButton
-                                            icon='file-image-minus'
-                                            onPress={() => onDeleteImage(leadingItem)}
-                                            style={{ margin: 0 }}
-                                        />
-                                    ) : (
-                                        <AddImageButton
-                                            onSelection={({ uri, height, width }) => updatePost({
-                                                ...leadingItem,
-                                                image: { uri, height, width },
-                                            })}
-                                            onUploaded={image => onUploaded(image, leadingItem)}
+                                {user._id === leadingItem.author._id && (
+                                    <>
+
+                                        {leadingItem?.image ? (
+                                            <IconButton
+                                                icon='file-image-minus'
+                                                onPress={() => onDeleteImage(leadingItem)}
+                                                style={{ margin: 0 }}
+                                            />
+                                        ) : (
+                                            <AddImageButton
+                                                onSelection={({ uri, height, width }) => updatePost({
+                                                    ...leadingItem,
+                                                    image: { uri, height, width },
+                                                })}
+                                                onUploaded={image => onUploaded(image, leadingItem)}
+                                            />
+                                        )}
+                                    </>
+                                )}
+
+                            </Row>
+
+                            {(leadingItem.comments?.length > 0) && (
+                                <FlatList
+                                    data={leadingItem.comments}
+                                    extraData={leadingItem.comments}
+                                    style={{ marginLeft: 20 }}
+                                    keyExtractor={(item, index) => `comment-${item._id}-${index}`}
+                                    renderItem={({ item }) => (
+                                        <CommentView
+                                            post={item}
+                                            onDelete={() => onDelete(item)}
                                         />
                                     )}
-                                </View>
+                                />
                             )}
-                        </View>
+                        </Stack>
                     )}
                 />
             )}

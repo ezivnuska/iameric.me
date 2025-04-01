@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
 import { ScrollView, View } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useApp, useModal, useUser } from '@context'
 
 const Screen = ({
@@ -31,17 +30,17 @@ const Screen = ({
 
     return (
 
-        <KeyboardAwareScrollView
+        <ScrollView
             showsVerticalScrollIndicator={false}
-            // style={{ flex: 1 }}
-            // contentContainerStyle={{
-            //     flex: 1,
-            //     width: '100%',
-            //     paddingHorizontal: full ? 0 : 15,
-            // }}
+            style={{ flex: 1 }}
+            contentContainerStyle={{
+                flex: 1,
+                width: '100%',
+                paddingHorizontal: full ? 0 : 15,
+            }}
         >
             {children}
-        </KeyboardAwareScrollView>
+        </ScrollView>
 
     )
 }

@@ -119,9 +119,7 @@ const Tiles = () => {
 				<View
 					onLayout={onLayout}
 					ref={containerRef}
-					style={{
-						flexGrow: 1,
-					}}
+					style={{ flex: 1 }}
 				>
 					{gameSize && (
 						<TileGame

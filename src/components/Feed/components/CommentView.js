@@ -35,10 +35,11 @@ const CommentView = ({ post, onDelete }) => {
 
     return post && (
         <Stack>
+
             <Row
                 flex={1}
                 spacing={Size.M}
-                padding={[Size.XS, Size.XS, Size.XS, Size.M]}
+                padding={[Size.None, Size.XS, Size.None, Size.M]}
                 align='center'
             >
                 <SmartAvatar
@@ -76,8 +77,8 @@ const CommentView = ({ post, onDelete }) => {
                 style={{
                     flexDirection: (post?.image && landscape) ? 'row' : 'column',
                     gap: 15,
-                    marginVertical: 5,
-                    paddingLeft: (landscape && 15),
+                    // marginVertical: 5,
+                    // paddingLeft: (landscape && 15),
                 }}
             >
 
@@ -93,7 +94,7 @@ const CommentView = ({ post, onDelete }) => {
 
                     <Row
                         spacing={Size.S}
-                        padding={[Size.XS, Size.XS, Size.XS, Size.M]}
+                        padding={[Size.None, Size.XS, Size.None, Size.M]}
                         align='flex-start'
                     >
 
@@ -107,7 +108,7 @@ const CommentView = ({ post, onDelete }) => {
                         {owned && (
                             <IconButton
                                 icon='comment-edit-outline'
-                                onPress={() => addModal('FEEDBACK', post)}
+                                onPress={() => addModal('COMMENT', post)}
                                 style={{ margin: 0 }}
                             />
                         )}

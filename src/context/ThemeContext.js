@@ -62,10 +62,6 @@ export const ThemeContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (windowDimensions) {
-            // setDims(windowDimensions.width > windowDimensions.height)
-            console.log('windowDimensions', windowDimensions)
-            // console.log('dimensions:screen', Dimensions.get('screen'))
-            // console.log('dimensions:window', Dimensions.get('window'))
             setDimensions(windowDimensions)
         }
     }, [windowDimensions])
@@ -137,7 +133,6 @@ const reducer = (state, action) => {
             }
             break
         case 'SET_DIMS':
-            console.log('PAYLOAD', payload)
             const { height, width } = payload
             return {
                 ...state,

@@ -7,7 +7,7 @@ import { Size } from '@utils/stack'
 import { createPost } from '@utils/feed'
 
 const PostForm = ({ data = null }) => {
-
+    
     const fields = [
         {
             name: 'text',
@@ -27,17 +27,9 @@ const PostForm = ({ data = null }) => {
         const post = await createPost(formData)
 
         if (post) {
-            if (data) {
-                if (!post.threadId) {
-                    socket.emit('edited_post', post)
-                    updatePost(post)
-                } else {
-                    socket.emit('new_comment', post)
-                    updatePost({
-                        ...data,
-                        comments: [...data.comments, post]
-                    })
-                }
+            if (formData._id) {
+                socket.emit('edited_post', post)
+                updatePost(post)
             } else {
                 socket.emit('new_post', post)
                 addPost(post)
@@ -55,9 +47,9 @@ const PostForm = ({ data = null }) => {
         }
 
         const formData = {
-            author: user._id,
-            postId: data?._id,
             ...formFields,
+            _id: data?._id,
+            author: user._id,
         }
 
         setFormLoading(true)

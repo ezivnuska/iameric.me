@@ -2,7 +2,7 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 import { Form, Row, Stack } from '@components'
-import { useFeed, useForm, useModal, useSocket, useUser } from '@context'
+import { useFeed, useForm, useModal, useSocket } from '@context'
 import { Size } from '@utils/stack'
 import { createPost } from '@utils/feed'
 
@@ -16,7 +16,7 @@ const CommentForm = ({ data = null }) => {
         },
     ]
 
-    const { addComment } = useFeed()
+    const { addComment, updatePost } = useFeed()
     const { formError, formFields, resetForm, setFormError, setFormLoading } = useForm()
     const { closeModal } = useModal()
     const { socket } = useSocket()
@@ -26,9 +26,13 @@ const CommentForm = ({ data = null }) => {
         const comment = await createPost(formData)
 
         if (comment) {
-            socket.emit('new_comment', comment)
-
-            addComment(comment)
+            if (data._id) {
+                socket.emit('edited_comment', comment)
+                updatePost(comment)
+            } else {
+                socket.emit('new_comment', comment)
+                addComment(comment)
+            }
         }
 
         closeModal()
@@ -43,6 +47,7 @@ const CommentForm = ({ data = null }) => {
 
         const formData = {
             ...formFields,
+            _id: data?._id,
             author: data?.author,
             threadId: data?.threadId,
         }

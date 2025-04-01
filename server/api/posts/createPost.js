@@ -1,14 +1,14 @@
 const Post = require('../../models/Post')
 
 const createPost = async (req, res) => {
-    console.log('create post', req.body)
-    const { author, text, postId, threadId } = req.body
+    
+    const { _id, author, text, threadId } = req.body
 
     let post
 
-    if (postId) {
+    if (_id) {
         post = await Post.findOneAndUpdate(
-            { _id: postId },
+            { _id },
             { $set: { text } },
             { new: true },
         )

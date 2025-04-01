@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
-import { FlatList, View } from 'react-native'
+import { View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
-import { CommentView } from './components'
 import { ImageLoader, Row, SmartAvatar, Stack } from '@components'
 import { useFeed, useModal, useTheme, useUser } from '@context'
 import { loadThread } from '@utils/feed'
@@ -42,8 +41,9 @@ const FeedItem = ({ post, onDelete }) => {
             <Row
                 flex={1}
                 spacing={Size.M}
-                padding={[Size.XS, Size.XS, Size.XS, Size.M]}
+                padding={[Size.None, Size.XS, Size.None, Size.M]}
                 align='center'
+                style={{ marginBottom: (post.image && Size.S) }}
             >
 
                 <SmartAvatar
@@ -80,9 +80,7 @@ const FeedItem = ({ post, onDelete }) => {
             <View
                 style={{
                     flexDirection: (post?.image && landscape) ? 'row' : 'column',
-                    gap: 15,
-                    marginVertical: 5,
-                    paddingLeft: (landscape && 15),
+                    gap: Size.M,
                 }}
             >
 
@@ -98,7 +96,7 @@ const FeedItem = ({ post, onDelete }) => {
 
                     <Row
                         spacing={Size.S}
-                        padding={[Size.XS, Size.XS, Size.XS, Size.M]}
+                        padding={[Size.None, Size.XS, Size.None, Size.M]}
                         align='flex-start'
                     >
 
@@ -118,21 +116,6 @@ const FeedItem = ({ post, onDelete }) => {
                         )}
 
                     </Row>
-
-                    {(post.comments?.length > 0) && (
-                        <FlatList
-                            data={post.comments}
-                            extraData={post.comments}
-                            style={{ marginLeft: 20 }}
-                            keyExtractor={(item, index) => `comment-${item._id}-${index}`}
-                            renderItem={({ item }) => (
-                                <CommentView
-                                    post={item}
-                                    onDelete={() => onDelete(item)}
-                                />
-                            )}
-                        />
-                    )}
 
                 </Stack>
 
