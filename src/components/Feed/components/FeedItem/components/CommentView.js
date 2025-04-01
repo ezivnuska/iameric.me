@@ -1,14 +1,13 @@
-import React, { useEffect, useMemo } from 'react'
-import { FlatList, View } from 'react-native'
+import React, { useMemo } from 'react'
+import { View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
-import { ImageLoader, SmartAvatar } from '@components'
-import { useFeed, useModal, useTheme, useUser } from '@context'
-import { loadThread } from '@utils/feed'
+import { ImageLoader, Row, SmartAvatar, Stack } from '@components'
+import { useModal, useTheme, useUser } from '@context'
 import { getTime } from '@utils/time'
+import { Size } from '@utils/stack'
 
-const CommentView = ({ post, onDelete, ...props }) => {
+const CommentView = ({ post, onDelete }) => {
    
-    const { updatePost } = useFeed()
     const { addModal } = useModal()
     const { landscape } = useTheme()
     const { user } = useUser()
@@ -25,41 +24,29 @@ const CommentView = ({ post, onDelete, ...props }) => {
         if (!landscape && !isPortrait) return { width: '100%', height: 180 }
     },[landscape])
 
-    useEffect(() => {
-        fetchThread()
-    }, [])
+    // useEffect(() => {
+    //     fetchThread()
+    // }, [])
 
-    const fetchThread = async () => {
-        const comments = await loadThread(post._id)
-        if (comments) updatePost({ ...post, comments })
-    }
+    // const fetchThread = async () => {
+    //     const comments = await loadThread(post._id)
+    //     if (comments) updatePost({ ...post, comments })
+    // }
 
     return post && (
-        <View {...props}>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 15,
-                    paddingLeft: 15,
-                    paddingRight: 5,
-                    paddingTop: 7,
-                    paddingBottom: 5,
-                }}
+        <Stack>
+            <Row
+                flex={1}
+                spacing={Size.M}
+                padding={[Size.XS, Size.XS, Size.XS, Size.M]}
+                align='center'
             >
                 <SmartAvatar
                     user={post.author}
                     size={landscape ? 30 : 40}
                 />
     
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: landscape && 'row',
-                        alignItems: landscape && 'center',
-                        gap: (landscape && 15),
-                    }}
-                >
+                <Stack flex={1}>
                     
                     <Text variant='titleMedium'>
                         {post.author.username}
@@ -72,7 +59,7 @@ const CommentView = ({ post, onDelete, ...props }) => {
                         {getTime(post.createdAt, 'relative')}
                     </Text>
     
-                </View>
+                </Stack>
     
                 {authorized && (
                     <IconButton
@@ -83,7 +70,7 @@ const CommentView = ({ post, onDelete, ...props }) => {
                     />
                 )}
     
-            </View>
+            </Row>
 
             <View
                 style={{
@@ -93,6 +80,7 @@ const CommentView = ({ post, onDelete, ...props }) => {
                     paddingLeft: (landscape && 15),
                 }}
             >
+
                 {post.image && (
                     <ImageLoader
                         image={post.image}
@@ -101,45 +89,30 @@ const CommentView = ({ post, onDelete, ...props }) => {
                     />
                 )}
                 
-                <View
-                    style={{
-                        flex: 1,
-                        // flexDirection: 'row',
-                    }}
-                >
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            gap: 10,
-                            paddingLeft: (!landscape && 15),
-                            paddingRight: 5,
-                            paddingVertical: 6,
-                        }}
+                <Stack>
+
+                    <Row
+                        spacing={Size.S}
+                        padding={[Size.XS, Size.XS, Size.XS, Size.M]}
+                        align='flex-start'
                     >
 
                         <Text
                             variant='bodyLarge'
-                            style={{
-                                flex: 1,
-                                paddingRight: 15,
-                            }}
-                            >
+                            style={{ flex: 1, paddingVertical: 7 }}
+                        >
                             {post.text}
                         </Text>
                         
                         {owned && (
-                            <View>
-                                <IconButton
-                                    icon='comment-edit-outline'
-                                    onPress={() => addModal('FEEDBACK', post)}
-                                    style={{ margin: 0 }}
-                                />
-                            </View>
+                            <IconButton
+                                icon='comment-edit-outline'
+                                onPress={() => addModal('FEEDBACK', post)}
+                                style={{ margin: 0 }}
+                            />
                         )}
 
-
-                    </View>
+                    </Row>
 
                     {/* {(post.comments?.length > 0) && (
                         <View style={{ paddingLeft: 15 }}>
@@ -157,11 +130,11 @@ const CommentView = ({ post, onDelete, ...props }) => {
                         </View>
                     )} */}
 
-                </View>
+                </Stack>
 
             </View>
 
-        </View>
+        </Stack>
     )
 }
 

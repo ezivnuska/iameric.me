@@ -2,12 +2,13 @@ import React, { useEffect, useMemo } from 'react'
 import { FlatList, View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 import { CommentView } from './components'
-import { ImageLoader, SmartAvatar } from '@components'
+import { ImageLoader, Row, SmartAvatar, Stack } from '@components'
 import { useFeed, useModal, useTheme, useUser } from '@context'
 import { loadThread } from '@utils/feed'
 import { getTime } from '@utils/time'
+import { Size } from '@utils/stack'
 
-const FeedItem = ({ post, onDelete, ...props }) => {
+const FeedItem = ({ post, onDelete }) => {
    
     const { updatePost } = useFeed()
     const { addModal } = useModal()
@@ -36,31 +37,21 @@ const FeedItem = ({ post, onDelete, ...props }) => {
     }
 
     return post && (
-        <View {...props}>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 15,
-                    paddingLeft: 15,
-                    paddingRight: 5,
-                    paddingTop: 7,
-                    paddingBottom: 5,
-                }}
+        <Stack>
+
+            <Row
+                flex={1}
+                spacing={Size.M}
+                padding={[Size.XS, Size.XS, Size.XS, Size.M]}
+                align='center'
             >
+
                 <SmartAvatar
                     user={post.author}
                     size={landscape ? 30 : 40}
                 />
     
-                <View
-                    style={{
-                        flex: 1,
-                        flexDirection: landscape && 'row',
-                        alignItems: landscape && 'center',
-                        gap: (landscape && 15),
-                    }}
-                >
+                <Stack flex={1}>
                     
                     <Text variant='titleMedium'>
                         {post.author.username}
@@ -73,7 +64,7 @@ const FeedItem = ({ post, onDelete, ...props }) => {
                         {getTime(post.createdAt, 'relative')}
                     </Text>
     
-                </View>
+                </Stack>
     
                 {authorized && (
                     <IconButton
@@ -84,7 +75,7 @@ const FeedItem = ({ post, onDelete, ...props }) => {
                     />
                 )}
     
-            </View>
+            </Row>
 
             <View
                 style={{
@@ -94,6 +85,7 @@ const FeedItem = ({ post, onDelete, ...props }) => {
                     paddingLeft: (landscape && 15),
                 }}
             >
+
                 {post.image && (
                     <ImageLoader
                         image={post.image}
@@ -102,67 +94,51 @@ const FeedItem = ({ post, onDelete, ...props }) => {
                     />
                 )}
                 
-                <View
-                    style={{
-                        flex: 1,
-                        // flexDirection: 'row',
-                    }}
-                >
-                    <View
-                        style={{
-                            flex: 1,
-                            flexDirection: 'row',
-                            gap: 10,
-                            paddingLeft: (!landscape && 15),
-                            paddingRight: 5,
-                            paddingVertical: 6,
-                        }}
+                <Stack>
+
+                    <Row
+                        spacing={Size.S}
+                        padding={[Size.XS, Size.XS, Size.XS, Size.M]}
+                        align='flex-start'
                     >
 
                         <Text
                             variant='bodyLarge'
-                            style={{
-                                flex: 1,
-                                paddingRight: 15,
-                            }}
-                            >
+                            style={{ flex: 1, paddingVertical: 7 }}
+                        >
                             {post.text}
                         </Text>
                         
                         {owned && (
-                            <View>
-                                <IconButton
-                                    icon='comment-edit-outline'
-                                    onPress={() => addModal('FEEDBACK', post)}
-                                    style={{ margin: 0 }}
-                                />
-                            </View>
+                            <IconButton
+                                icon='comment-edit-outline'
+                                onPress={() => addModal('FEEDBACK', post)}
+                                style={{ margin: 0 }}
+                            />
                         )}
 
-
-                    </View>
+                    </Row>
 
                     {(post.comments?.length > 0) && (
-                        <View style={{ paddingLeft: 15 }}>
-                            <FlatList
-                                data={post.comments}
-                                extraData={post.comments}
-                                keyExtractor={(item, index) => `comment-${item._id}-${index}`}
-                                renderItem={({ item }) => (
-                                    <CommentView
-                                        post={item}
-                                        onDelete={() => onDelete(item)}
-                                    />
-                                )}
-                            />
-                        </View>
+                        <FlatList
+                            data={post.comments}
+                            extraData={post.comments}
+                            style={{ marginLeft: 20 }}
+                            keyExtractor={(item, index) => `comment-${item._id}-${index}`}
+                            renderItem={({ item }) => (
+                                <CommentView
+                                    post={item}
+                                    onDelete={() => onDelete(item)}
+                                />
+                            )}
+                        />
                     )}
 
-                </View>
+                </Stack>
 
             </View>
 
-        </View>
+        </Stack>
     )
 }
 
