@@ -1,20 +1,12 @@
 import 'react-native-gesture-handler'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { View } from 'react-native'
-import Animated, {
-	useAnimatedStyle,
-	useSharedValue,
-} from 'react-native-reanimated'
-import {
-	Gesture,
-	GestureDetector,
-	GestureHandlerRootView,
-} from 'react-native-gesture-handler'
-import {
-	GameHeader,
-	Tile,
-} from './components'
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
+import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler'
+import { GameHeader, Tile } from './components'
+import { Stack } from '@components'
 import { usePlay, useTheme, useUser } from '@context'
+import { Size } from '@utils/stack'
 
 const Tiles = () => {
 
@@ -116,23 +108,28 @@ const Tiles = () => {
 			/>
 
 			{initialTiles && (
-				<View
-					onLayout={onLayout}
-					ref={containerRef}
-					style={{ flex: 1 }}
+				<Stack
+					flex={1}
+					padding={[Size.None, Size.S]}
 				>
-					{gameSize && (
-						<TileGame
-							initialTiles={initialTiles}
-							// tiles={tiles}
-							onChangeStatus={setGameStatus}
-							status={gameStatus}
-							handleWin={handleWin}
-							gameSize={gameSize}
-							level={level}
-						/>
-					)}
-				</View>
+					<View
+						ref={containerRef}
+						onLayout={onLayout}
+						style={{ flex: 1 }}
+					>
+						{gameSize && (
+							<TileGame
+								initialTiles={initialTiles}
+								// tiles={tiles}
+								onChangeStatus={setGameStatus}
+								status={gameStatus}
+								handleWin={handleWin}
+								gameSize={gameSize}
+								level={level}
+							/>
+						)}
+					</View>
+				</Stack>
 			)}
 
 		</View>

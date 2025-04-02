@@ -13,7 +13,7 @@ const Header = props => {
     return (
         <Row
             align='center'
-            padding={[Size.None, Size.XS, Size.None, Size.M]}
+            padding={[Size.S, Size.S, Size.S, Size.S]}
         >
             <View style={{ flex: 1 }}>
                 <Pressable

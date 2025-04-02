@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
+import { View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
 import { ImageLoader, Row, SmartAvatar, Stack } from '@components'
 import { useFeed, useModal, useTheme, useUser } from '@context'
@@ -40,7 +41,7 @@ const FeedItem = ({ post, onDelete }) => {
             <Row
                 flex={1}
                 spacing={Size.M}
-                padding={[Size.None, Size.XS, Size.None, Size.M]}
+                padding={[Size.None, Size.XS, Size.None, Size.S]}
                 align='center'
                 style={{ marginBottom: (post.image && Size.S) }}
             >
@@ -77,31 +78,37 @@ const FeedItem = ({ post, onDelete }) => {
             </Row>
 
             <Stack
+                direction={(post?.image && landscape && 'row')}
+                padding={[Size.None, Size.S, Size.None, Size.S]}
                 spacing={Size.S}
-                padding={[Size.None, Size.XS, Size.None, Size.M]}
-                direction={(post?.image && landscape) ? 'row' : 'column'}
             >
-
-                {post.image && (
-                    <ImageLoader
-                        image={post.image}
-                        user={post.author}
-                        maxDims={{ width, height }}
-                    />
-                )}
+                {/* <Row
+                    // flex={1}
+                    padding={[Size.None, Size.S, Size.None, Size.S]}
+                > */}
+                    {post.image && (
+                        <ImageLoader
+                            image={post.image}
+                            user={post.author}
+                            maxDims={{ width, height }}
+                        />
+                    )}
+                {/* </Row> */}
                 
                 <Row
+                    flex={1}
                     spacing={Size.S}
-                    padding={[Size.None, Size.None, Size.None, Size.S]}
+                    padding={[Size.None, Size.XS, Size.None, Size.S]}
                     align='flex-start'
                 >
-
-                    <Text
-                        variant='bodyLarge'
-                        style={{ flex: 1, paddingVertical: 7 }}
-                    >
-                        {post.text}
-                    </Text>
+                    <View style={{ flex: 1 }}>
+                        <Text
+                            variant='bodyLarge'
+                            style={{ flex: 1, paddingVertical: 7 }}
+                        >
+                            {post.text}
+                        </Text>
+                    </View>
                     
                     {owned && (
                         <IconButton

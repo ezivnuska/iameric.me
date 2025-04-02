@@ -25,12 +25,12 @@ const Feed = ({ posts, onDelete, ...props }) => {
 
     return (
         <Stack
-            spacing={Size.M}
+            spacing={Size.XS}
             style={{ flex: 1 }}
         >
 
             <Row
-                padding={[Size.None, Size.XS, Size.None, Size.M]}
+                padding={[Size.None, Size.XS, Size.None, Size.S]}
                 align='center'
             >
                 <View style={{ flex: 1 }}>
@@ -50,6 +50,8 @@ const Feed = ({ posts, onDelete, ...props }) => {
                     data={posts}
                     extraData={posts}
                     keyExtractor={(item, index) => `post-${item._id}-${index}`}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
                     renderItem={({ item }) => (
                         <FeedItem
                             post={item}
@@ -67,9 +69,7 @@ const Feed = ({ posts, onDelete, ...props }) => {
                             }}
                         >
 
-                            <Row
-                                padding={[Size.None, Size.XS, Size.None, Size.M]}
-                            >
+                            <Row padding={[Size.None, Size.XS]}>
 
                                 <View style={{ flex: 1 }}>
                                     <IconButton
@@ -108,6 +108,8 @@ const Feed = ({ posts, onDelete, ...props }) => {
                                     extraData={leadingItem.comments}
                                     style={{ marginLeft: 20 }}
                                     keyExtractor={(item, index) => `comment-${item._id}-${index}`}
+                                    showsVerticalScrollIndicator={false}
+                                    showsHorizontalScrollIndicator={false}
                                     renderItem={({ item }) => (
                                         <CommentView
                                             post={item}

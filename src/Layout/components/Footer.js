@@ -32,12 +32,11 @@ const Footer = ({ route }) => {
     const { addModal } = useModal()
     const { connections } = useSocket()
     const { user } = useUser()
-
     
     return (
         <Row
             align='center'
-            padding={[Size.None, Size.XS, Size.None, Size.M]}
+            padding={[Size.S, Size.XS, Size.S, Size.XS]}
             justify='space-between'
         >
             <Connections connections={connections} onPress={() => addModal('SOCKETS')} />

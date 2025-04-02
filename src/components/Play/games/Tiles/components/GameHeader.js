@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Pressable, View } from 'react-native'
+import { Pressable } from 'react-native'
 import { Button, Text } from 'react-native-paper'
+import { Row } from '@components'
 import { usePlay } from '@context'
+import { Size } from '@utils/stack'
 
 const GameHeader = ({ status, onChangeStatus }) => {
     
@@ -27,18 +29,10 @@ const GameHeader = ({ status, onChangeStatus }) => {
     useEffect(() => {
         
         switch (status) {
-            case 'idle':
-                resetTicks()
-                break
-            case 'start':
-                startPlay()
-                break
-            case 'playing':
-                startTicker()
-                break
-            case 'paused':
-                stopTicker()
-                break
+            case 'idle': resetTicks(); break
+            case 'start': startPlay(); break
+            case 'playing': startTicker(); break
+            case 'paused': stopTicker(); break
             case 'resolved':
                 setScore(formattedTime)
                 stopTicker()
@@ -46,83 +40,31 @@ const GameHeader = ({ status, onChangeStatus }) => {
                 break
             default:
         }
+
     }, [status])
 
-    const handleWin = () =>  {
-        // resetTicks()
-        onChangeStatus('resolved')
-    }
-
-    const startPlay = () => {
-        onChangeStatus('start')
-    }
-
-    const unpause = () => {
-        onChangeStatus('playing')
-    }
-
-    const pause = () => {
-        onChangeStatus('paused')
-    }
-
+    const handleWin = () => onChangeStatus('resolved')
+    const startPlay = () =>  onChangeStatus('start')
+    const unpause = () => onChangeStatus('playing')
+    const pause = () =>  onChangeStatus('paused')
     const reset = () => {
         resetTicks()
         setScore(null)
         onChangeStatus('idle')
     }
 
-    const renderPanel = () => {
-        return (
-            <View
-                style={{
-                    flex: 1,
-                    flexDirection: 'row',
-                    gap: 10,
-                }}
-            >
-                {status === 'idle'
-                    ? (
-                        <Button onPress={startPlay}>
-                            Start
-                        </Button>
-                    )
-                    : status === 'paused'
-                        ? (
-                            <Button onPress={unpause}>
-                                Continue
-                            </Button>
-                        )
-                        : status === 'resolved'
-                            ? (
-                                <Button onPress={reset}>
-                                    Finish
-                                </Button>
-                            )
-                            : (
-                                <Button onPress={pause}>
-                                    Pause
-                                </Button>
-                            )
-                }
-
-                {status === 'paused' && (
-                    <Button onPress={reset}>
-                        Give Up
-                    </Button>
-                )}
-
-            </View>
-        )
-    }
-
     return (
-        <View
-            style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-            }}
-        >
-            {renderPanel()}           
+        <Row justify={'space-between'}>
+
+            <Row flex={1} spacing={10}>
+
+                {status === 'idle' && <Button onPress={startPlay}>Start</Button>}
+                {status === 'playing' && <Button onPress={pause}>Pause</Button>}
+                {status === 'resolved' && <Button onPress={reset}>Finish</Button>}
+                {status === 'paused' && <Button onPress={unpause}>Continue</Button>}
+                {status === 'paused' && <Button onPress={reset}>Give Up</Button>}
+
+            </Row>
 
             {score
                 ? (
@@ -143,15 +85,9 @@ const GameHeader = ({ status, onChangeStatus }) => {
                         </Text>
                     </Pressable>
                 )
-                : ticks > 0
-                    ? (
-                        <Text variant='titleLarge'>
-                            Time: {formattedTime}
-                        </Text>
-                    )
-                    : null
+                : ticks > 0 && <Text variant='titleLarge'>Time: {formattedTime}</Text>
             }
-        </View>
+        </Row>
     )
 }
 
