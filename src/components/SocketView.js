@@ -5,7 +5,7 @@ import { Row, Stack } from '@components'
 import { useModal, useSocket, useUser } from '@context'
 import { Size } from '@utils/stack'
 
-const Socket = () => {
+const SocketView = () => {
 
     const { closeModal } = useModal()
     const { connections, socket } = useSocket()
@@ -21,12 +21,11 @@ const Socket = () => {
     const username = useMemo(() => user ? user.username : getShortId(socket.id), [socket])
 
     return (
-        <Stack
-            flex={1}
-        >
+        <Stack flex={1}>
+
             <Row
-                padding={[Size.XS, Size.XS, Size.None, Size.M]}
                 align='center'
+                padding={[Size.XS, Size.XS, Size.None, Size.M]}
             >
                 <Text
                     variant='headlineSmall'
@@ -38,42 +37,32 @@ const Socket = () => {
                 <IconButton
                     icon='close-thick'
                     onPress={closeModal}
-                    style={{ margin: 0, padding: 0 }}
+                    style={{ margin: 0 }}
                 />
 
             </Row>
 
             <ScrollView
-                style={{
-                    marginVertical: 0,
-                }}
+                style={{ marginVertical: 0 }}
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    paddingBottom: Size.S,
-                }}
+                contentContainerStyle={{ paddingBottom: Size.S }}
             >
 
                 <Stack
                     flex={1}
-                    spacing={Size.M}
                     padding={[Size.S, Size.M]}
+                    spacing={Size.M}
                 >
 
-                    <Text variant='titleLarge'>
-                        {`Connected as ${username}`}
-                    </Text>
+                    <Text variant='titleLarge'>{`Connected as ${username}`}</Text>
 
                     {connections && (
                         <FlatList
                             ItemSeparatorComponent={({ highlighted }) => <Divider />}
                             data={connections}
                             keyExtractor={item => `connection-${item.socketId}`}
-                            // horizontal={landscape}
-                            renderItem={({ item }) => (
-                                <Text variant='titleMedium'>
-                                    {item?.username || username}
-                                </Text>
-                            )}
+                            showsVerticalScrollIndicator={false}
+                            renderItem={({ item }) => <Text variant='titleMedium'>{item?.username || username}</Text>}
                         />
                     )}
 
@@ -85,4 +74,4 @@ const Socket = () => {
     )
 }
 
-export default Socket
+export default SocketView

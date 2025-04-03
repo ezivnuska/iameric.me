@@ -11,7 +11,6 @@ import { Size } from '@utils/stack'
 const Tiles = () => {
 
 	const { dims, landscape } = useTheme()
-	const { playModal, closePlayModal, setPlayModal } = usePlay()
 
 	const [maxDims, setMaxDims] = useState(null)
 	const [gameSize, setGameSize] = useState(null)

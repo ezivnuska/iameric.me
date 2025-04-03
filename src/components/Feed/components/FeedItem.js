@@ -77,18 +77,14 @@ const FeedItem = ({ post, onDelete }) => {
                 padding={[Size.None, Size.S, Size.None, Size.S]}
                 spacing={Size.S}
             >
-                {/* <Row
-                    // flex={1}
-                    padding={[Size.None, Size.S, Size.None, Size.S]}
-                > */}
-                    {post.image && (
-                        <ImageLoader
-                            image={post.image}
-                            user={post.author}
-                            maxDims={{ width, height }}
-                        />
-                    )}
-                {/* </Row> */}
+                
+                {post.image && (
+                    <ImageLoader
+                        image={post.image}
+                        user={post.author}
+                        maxDims={{ width, height }}
+                    />
+                )}
                 
                 <Row
                     flex={1}

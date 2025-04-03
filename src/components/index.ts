@@ -28,7 +28,7 @@ export { default as JobList } from './JobList'
 export { default as ModalFactory } from './ModalFactory'
 export { default as Notification } from './Notification'
 export { default as Play } from './Play'
-export { default as Socket } from './Socket'
+export { default as SocketView } from './SocketView'
 
 export { default as Stack, type StackProps } from './Stack'
 export { default as Row } from './Row'

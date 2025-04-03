@@ -11,7 +11,7 @@ import {
     MemoryForm,
     PostForm,
     Settings,
-    Socket,
+    SocketView,
 } from '@components'
 import { useModal, useTheme } from '@context'
 import Modal from 'react-native-modal'
@@ -28,44 +28,21 @@ const ModalFactory = ({ modal }) => {
         let fullscreen = false
         
         switch(type) {
-            case 'AUTH':
-                content = <AuthForm />
-                break
-            case 'BUG':
-                content = <BugForm />
-                break
-            case 'MEMORY':
-                content = <MemoryForm data={data} />
-                break
-            case 'IMAGE_UPLOAD':
-                content = <AddImageButton data={data} />
-                break
-            case 'DESTROY':
-                content = <DestroyForm data={data} />
-                break
-            case 'CAPTION':
-                content = <CaptionForm data={data} />
-                break
-            case 'COMMENT':
-                content = <CommentForm data={data} />
-                break
-            case 'FEEDBACK':
-                content = <PostForm data={data} />
-                break
-            case 'SETTINGS':
-                content = <Settings />
-                break
+            case 'AUTH': content = <AuthForm />; break
+            case 'BUG': content = <BugForm />; break
+            case 'MEMORY': content = <MemoryForm data={data} />; break
+            case 'IMAGE_UPLOAD': content = <AddImageButton data={data} />; break
+            case 'DESTROY': content = <DestroyForm data={data} />; break
+            case 'CAPTION': content = <CaptionForm data={data} />; break
+            case 'COMMENT': content = <CommentForm data={data} />; break
+            case 'FEEDBACK': content = <PostForm data={data} />; break
+            case 'SETTINGS': content = <Settings />; break
+            case 'SOCKETS': content = <SocketView />; break
             case 'SHOWCASE':
                 content = <ImageCard data={data} />
                 fullscreen = true
                 break
-            case 'SOCKETS':
-                content = <Socket />
-                break
-            default: {
-                console.log('Modal not found', type)
-                return null
-            }
+            default: return null
         }
         const defaultStyles = [{
             marginVertical: 10,
@@ -75,7 +52,6 @@ const ModalFactory = ({ modal }) => {
             marginHorizontal: 'auto',
             borderRadius: 24,
             backgroundColor: theme.colors.background,
-            // flex: 1,
             justifyContent: 'flex-end',
         }, shadow]
 
