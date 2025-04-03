@@ -53,14 +53,9 @@ const FeedItem = ({ post, onDelete }) => {
     
                 <Stack flex={1}>
                     
-                    <Text variant='titleMedium'>
-                        {post.author.username}
-                    </Text>
+                    <Text variant='titleMedium'>{post.author.username}</Text>
     
-                    <Text
-                        variant='titleMedium'
-                        style={{ color: '#aaa' }}
-                    >
+                    <Text variant='titleMedium' style={{ color: '#aaa' }}>
                         {getTime(post.createdAt, 'relative')}
                     </Text>
     
@@ -98,7 +93,7 @@ const FeedItem = ({ post, onDelete }) => {
                 <Row
                     flex={1}
                     spacing={Size.S}
-                    padding={[Size.None, Size.XS, Size.None, Size.S]}
+                    padding={[Size.None, Size.None, Size.None, Size.XS]}
                     align='flex-start'
                 >
                     <View style={{ flex: 1 }}>

@@ -1,38 +1,26 @@
 import React from 'react'
 import { FlatList, View } from 'react-native'
 import { NotificationListItem } from './components'
+import { Row, Stack } from '@components'
+import { Size } from '@utils/stack'
 import { useNotification } from '@context'
 
 const Notification = () => {
 
-    const {
-        notifications,
-        removeNotification,
-    } = useNotification()
+    const { notifications, removeNotification } = useNotification()
     
     return (
         <View
             style={{
                 display: notifications.length ? 'block' : 'none',
-                marginHorizontal: 10,
-                marginBottom: 5,
+                marginHorizontal: Size.S,
+                marginBottom: Size.S,
             }}
         >
             <FlatList
                 data={notifications}
                 extraData={notifications}
                 keyExtractor={(item, index) => `note-${index}`}
-                // getItemLayout={(data, index) => (
-                //     {
-                //         length: ITEM_HEIGHT,
-                //         offset: ITEM_HEIGHT * index, index
-                //     }
-                // )}
-                // horizontal={landscape}
-                // numColumns={landscape ? 2 : 1}
-                // onRefresh={onRefresh}
-                // refreshing={refreshing}
-                // initialNumToRender={6}
                 renderItem={({ item, index }) => (
                     <NotificationListItem
                         text={item}

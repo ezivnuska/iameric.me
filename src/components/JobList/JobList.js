@@ -29,19 +29,8 @@ const JobList = () => {
             ref={listRef}
             data={jobs}
             keyExtractor={(item, index) => `job-${index}`}
-            // style={{ marginVertical: 15 }}
+            showsVerticalScrollIndicator={false}
             ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
-            // getItemLayout={(data, index) => (
-            //     {
-            //         length: ITEM_HEIGHT,
-            //         offset: ITEM_HEIGHT * index, index
-            //     }
-            // )}
-            // horizontal={landscape}
-            // numColumns={landscape ? 2 : 1}
-            // onRefresh={onRefresh}
-            // refreshing={refreshing}
-            // initialNumToRender={6}
             renderItem={({ item, index }) => (
                 <Job
                     section={item}
@@ -52,7 +41,6 @@ const JobList = () => {
                     key={`job-${index}`}
                 />
             )}
-            // style={{ paddingVertical: 20 }}
         />
     )
 }

@@ -1,40 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import { Button, Icon, Text } from 'react-native-paper'
-import { useTheme } from '@context'
-// import Icon from 'react-native-vector-icons/Ionicons'
-import Animated, {
-    interpolate,
-	useAnimatedStyle,
-	useSharedValue,
-	withTiming,
-} from 'react-native-reanimated'
-
-
-const BulletListItem = ({ text, ...props }) => (
-    <View
-        key={props.key}
-        style={{ flexDirection: 'row', gap: 5 }}
-    >
-        <Icon
-            source={'chevron-right'}
-            size={18}
-            allowFontScaling={true}
-            // color='tomato'
-            style={{ fontWeight: 700 }}
-        />
-
-        <Text variant='bodyMedium'>
-            {text}
-        </Text>
-        
-    </View>
-)
+import { Row, Stack } from '@components'
+import Animated, { interpolate, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { Size } from '@utils/stack'
 
 const Job = ({ section, onPress, visible = false, ...props }) => {
-    const { company, city, start, end, title } = section
-    
-    // const { styles } = useTheme()
+    const { company, city, start, end } = section
 
     const [containerHeight, setContainerHeight] = useState(null)
     const [backgroundColor, setBackgroundColor] = useState('tomato')
@@ -47,22 +19,18 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
         height: interpolate(anim.value, [0, 1], [0, containerHeight || 300]),
         opacity: interpolate(anim.value, [0, 1], [0, 1]),
     }))
-
-    const backgroundColorAnim = useAnimatedStyle(() => ({ backgroundColor }))
     
     useEffect(() => {
         setBackgroundColor(visible ? withTiming('black') : withTiming('tomato'))
         anim.value = withTiming(visible ? 1 : 0, { duration: 250 })
     }, [visible])
 
-    const onLayout = e => {
-        setContainerHeight(e.nativeEvent.layout.height)
-    }
+    const onLayout = e => setContainerHeight(e.nativeEvent.layout.height)
 
     return (
-        <View
+        <Stack
             key={`job-${props.key}`}
-            style={{ marginHorizontal: 10 }}
+            padding={[Size.None, Size.S]}
         >
             <Button
                 icon={visible ? 'chevron-up' : 'chevron-down'}
@@ -76,70 +44,56 @@ const Job = ({ section, onPress, visible = false, ...props }) => {
                     gap: 10,
                 }}
                 labelStyle={{
-                    fontSize: 25,
-                    marginHorizontal: 20,
-                    marginVertical: 10,
+                    fontSize: 20,
+                    paddingVertical: Size.XS,
+                    marginHorizontal: Size.M,
                 }}
             >
                 {company}
             </Button>
             
             <Animated.View style={animatedStyle}>
+                
                 <View
                     onLayout={onLayout}
-                    style={{
-                        paddingHorizontal: 20,
-                        paddingVertical: 10,
-                        gap: 10,
-                     }}
                 >
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            gap: 10,
-                        }}
+                    <Stack
+                        padding={[Size.S, Size.M]}
+                        spacing={10}
                     >
-                        <Text variant='titleMedium'>
-                            {time}
-                        </Text>
+                        <Row
+                            align='center'
+                            spacing={10}
+                        >
+                            <Text variant='titleMedium'>{time}</Text>
 
-                        <Text variant='titleMedium'>
-                            {city}
-                        </Text>
-
-                    </View>
+                            <Text variant='titleMedium'>{city}</Text>
+                        </Row>
                     
-                    <View style={{ gap: 10 }}>
-
-                        {section.bullets.map((text, index) => (
-                            <BulletListItem
-                                text={text}
-                                key={`${props.key}-${index}`}
-                            />
+                        {section.bullets.map(text => (
+                            <Row key={props.key} spacing={5}>
+                                
+                                <Icon
+                                    source={'chevron-right'}
+                                    size={18}
+                                    allowFontScaling={true}
+                                    style={{ fontWeight: 700 }}
+                                />
+                                <View style={{ flex: 1 }}>
+                                    <Text variant='bodyMedium'>{text}</Text>
+                                </View>
+                                
+                            </Row>
                         ))}
 
-                    </View>
+                    </Stack>
 
                 </View>
 
             </Animated.View>
 
-        </View>
+        </Stack>
     )
 }
 
 export default Job
-
-const styles = StyleSheet.create({
-    buttonLabel: {
-        fontSize: 18,
-        // color: colors.button.text,
-        fontWeight: 700,
-    },
-    city: {
-        fontSize: 18,
-        lineHeight: 23,
-        // color: colors.gray,
-    },
-})
