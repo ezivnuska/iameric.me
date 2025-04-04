@@ -5,7 +5,6 @@
             "components/*": ["./src/components/*"],
             "images/*": ["./images/*"],
             "layout/*": ["./src/layout/*"],
-            "styles/*": ["./src/styles/*"],
             "screens/*": ["./src/screens/*"],
             "utils/*": ["./src/utils/*"]
         }

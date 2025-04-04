@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const { scrapeUrl } = require('./api/scraper')
 const {
   authenticate,
   deleteAccount,
@@ -265,5 +266,7 @@ router.get(    '/bip/images/:id',          getBipImages)
 router.post(   '/bip/delete',              deleteBip)
 router.post(   '/bip',                     createBip)
 router.get(    '/bips',                    getBips)
+
+router.post(    '/scrape',                 scrapeUrl)
 
 module.exports = router

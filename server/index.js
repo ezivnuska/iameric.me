@@ -25,15 +25,18 @@ const corsOptions = {
 	//   },
 	origin: [
 		'*',
-		// 'wss://iameric.me',
 		'http://localhost:3000',
 		'http://localhost:4000',
 		'https://iameric.me',
-		// 'https://maps.googleapis.com',
 	],
 	credentials: true,
 	methods: ['GET', 'POST'],
-	// allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+	allowedHeaders: [
+		'Origin',
+		'X-Requested-With',
+		'Content-Type',
+		'Accept'
+	],
 }
 
 // Enable CORS

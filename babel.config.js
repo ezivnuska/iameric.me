@@ -7,10 +7,10 @@ module.exports = {
         runtime: 'automatic',
       },
     ],
-    '@react-native/babel-preset',
+    // '@react-native/babel-preset',
     'babel-preset-expo',
     '@babel/preset-typescript',
-    // 'module:metro-react-native-babel-preset',
+    'module:metro-react-native-babel-preset',
   ],
   env: {
     production: {
@@ -18,17 +18,21 @@ module.exports = {
     },
   },
   plugins: [
-    // [
-    //   'expo-camera',
-    //   { cameraPermission: 'Allow access your camera.' },
-    // ],
-    // @babel/plugin-transform-class-properties,
-    // @babel/plugin-transform-private-methods,
-    // @babel/plugin-transform-private-property-in-object
+                          // [
+                          //   'expo-camera',
+                          //   { cameraPermission: 'Allow access your camera.' },
+                          // ],
+                          // @babel/plugin-transform-class-properties,
+                          // @babel/plugin-transform-private-methods,
+                          // @babel/plugin-transform-private-property-in-object
     ['@babel/plugin-transform-runtime', { loose: true }],
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-transform-shorthand-properties', { loose: true }],
+    ['@babel/plugin-transform-template-literals', { loose: true }],
+    ['@babel/plugin-transform-class-properties', { loose: true }],
+    ['@babel/plugin-transform-object-rest-spread', { loose: true }],
     ['@babel/plugin-proposal-private-methods', { loose: true }],
-    ['@babel/plugin-proposal-object-rest-spread', { loose: true }],
+    ['@babel/plugin-proposal-nullish-coalescing-operator', { loose: true }],
+    ['@babel/plugin-proposal-optional-chaining', { loose: true }],
     ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
     [
       'module-resolver',
@@ -39,8 +43,8 @@ module.exports = {
           '@app':           './src/context/AppContext',
           // '@bips':          './src/modules/Bipster',
           '@components':    './src/components',
-          '@common':        './src/components/common',
-          '@presentations': './src/components/presentations',
+          // '@common':        './src/components/common',
+          // '@presentations': './src/components/presentations',
           '@context':       './src/context',
           '@constants':     './src/constants',
           '@feed':          './src/context/FeedContext',
@@ -57,7 +61,7 @@ module.exports = {
           '@screens':       './src/screens',
           '@sounds':        './sounds',
           // '@theme':        './src/theme',
-          '@user':          './src/context/UserContext',
+          // '@user':          './src/context/UserContext',
           '@utils':         './src/utils',
         },
       },

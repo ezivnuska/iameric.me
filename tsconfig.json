@@ -16,12 +16,12 @@
       // "@bips": [
       //   "src/modules_old/BipList/index.js"
       // ],
-      "@common": [
-        "./src/components/common/index.js"
-      ],
-      "@smart": [
-        "src/components/presentations/index.js"
-      ],
+      // "@common": [
+      //   "./src/components/common/index.js"
+      // ],
+      // "@smart": [
+      //   "src/components/presentations/index.js"
+      // ],
       "@context": [
         "./src/context/index.js"
       ],
@@ -67,9 +67,9 @@
       // "@theme": [
       //   "src/theme_old/index.js"
       // ],
-      "@user": [
-        "./src/context/UserContext.js"
-      ],
+      // "@user": [
+      //   "./src/context/UserContext.js"
+      // ],
       "@utils": [
         "./src/utils/index.js"
       ]
@@ -92,8 +92,9 @@
     "isolatedModules": true
   },
   "include": [
-    "src"
-, "server/api/mail/sendMail.js"  ],
+    "src",
+    // "server/api/mail/sendMail.js",
+  ],
   "extends": "@tsconfig/react-native/tsconfig.json"
   // "extends": "expo/tsconfig.base"
 }

@@ -6,7 +6,6 @@ import { BondIndicator, Row, SmartAvatar, Stack } from '@components'
 import { useModal, useUser } from '@context'
 import { loadContact } from '@utils/contacts'
 import { Size } from '@utils/stack'
-// import urlMetadata from 'url-metadata'
 
 const UserScreen = props => {
     
@@ -16,36 +15,6 @@ const UserScreen = props => {
         setUserLoading,
     } = useUser()
     const [profile, setProfile] = useState(null)
-
-    // const scrape = async () => {
-
-    //     // try {
-    //         const url = 'https://www.npmjs.com/package/url-metadata'
-    //         const metadata = await urlMetadata(url, {
-    //             requestHeaders: {
-    //                 // 'Access-Control-Allow-Origin': 'https://www.npmjs.com',
-    //                 'User-Agent': 'url-metadata/3.0 (npm module)',
-    //                 // 'From': 'example@example.com'
-    //             },
-    //             mode: 'no-cors',
-
-    //         })
-
-    //         if (metadata) {
-
-    //             console.log(metadata)
-    //         }
-    //     //   } catch (err) {
-    //     //     console.log(err)
-    //     //   }
-
-    // }
-    // useEffect(() => {
-    //     // scrape()
-    //     if (props.route.params?.username) {
-    //         initUser(props.route.params.username)
-    //     }
-    // }, [])
 
     useEffect(() => {
         // console.log('params', props.route.params)

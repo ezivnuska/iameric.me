@@ -18,6 +18,7 @@ import getModifiedColor from './getModifiedColor'
 import isEqual from './isEqual'
 import navigation from './navigation'
 import normalize from './normalize'
+import scrape from './scrape'
 import sendMail from './sendMail'
 
 export {

@@ -1,11 +1,13 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { IconButton, Text } from 'react-native-paper'
+import Autolink from 'react-native-autolink'
 import { ImageLoader, Row, SmartAvatar, Stack } from '@components'
 import { useFeed, useModal, useTheme, useUser } from '@context'
 import { loadThread } from '@utils/feed'
 import { getTime } from '@utils/time'
 import { Size } from '@utils/stack'
+import scrape from '@utils/scrape'
 
 const FeedItem = ({ post, onDelete }) => {
    
@@ -19,6 +21,8 @@ const FeedItem = ({ post, onDelete }) => {
 
     const isPortrait = useMemo(() => post?.image && post.image.height >= post.image.width, [post])
 
+    // const [body, setBody] = useState(null)
+
     const { width, height } = useMemo(() => {
         if (landscape && isPortrait) return { width: '40%', height: 240 }
         if (landscape && !isPortrait) return { width: '40%', height: 200 }
@@ -26,9 +30,39 @@ const FeedItem = ({ post, onDelete }) => {
         if (!landscape && !isPortrait) return { width: '100%', height: 180 }
     },[landscape])
 
+    // var urlRegex = /(https?:\/\/[^\s]+)/g
+    // var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+    // var urlRegex = /((?:(http|https|Http|Https|rtsp|Rtsp):\/\/(?:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,64}(?:\:(?:[a-zA-Z0-9\$\-\_\.\+\!\*\'\(\)\,\;\?\&\=]|(?:\%[a-fA-F0-9]{2})){1,25})?\@)?)?((?:(?:[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}\.)+(?:(?:aero|arpa|asia|a[cdefgilmnoqrstuwxz])|(?:biz|b[abdefghijmnorstvwyz])|(?:cat|com|coop|c[acdfghiklmnoruvxyz])|d[ejkmoz]|(?:edu|e[cegrstu])|f[ijkmor]|(?:gov|g[abdefghilmnpqrstuwy])|h[kmnrtu]|(?:info|int|i[delmnoqrst])|(?:jobs|j[emop])|k[eghimnrwyz]|l[abcikrstuvy]|(?:mil|mobi|museum|m[acdghklmnopqrstuvwxyz])|(?:name|net|n[acefgilopruz])|(?:org|om)|(?:pro|p[aefghklmnrstwy])|qa|r[eouw]|s[abcdeghijklmnortuvyz]|(?:tel|travel|t[cdfghjklmnoprtvwz])|u[agkmsyz]|v[aceginu]|w[fs]|y[etu]|z[amw]))|(?:(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\.(?:25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[0-9])))(?:\:\d{1,5})?)(\/(?:(?:[a-zA-Z0-9\;\/\?\:\@\&\=\#\~\-\.\+\!\*\'\(\)\,\_])|(?:\%[a-fA-F0-9]{2}))*)?(?:\b|$)/gi
+
+    // useEffect(() => {
+    //     const text = urlify(post.text)
+    //     console.log('text', text)
+    //     setBody(text)
+    // }, [post])
+
+    // const renderText = text => (
+    //     <Text
+    //         variant='titleLarge'
+    //         style={{ flex: 1, paddingVertical: 7 }}
+    //     >
+    //         {text.replace(urlRegex, url => {
+    //             return (
+    //                 <ExternalLink url={url}>
+    //                     {url}
+    //                 </ExternalLink>
+    //             )
+    //         })}
+    //     </Text>
+    // )
+
     useEffect(() => {
         fetchThread()
     }, [])
+
+    const scrapeUrl = async url => {
+        const metadata = await scrape(url)
+        console.log('metadata scraped:', metadata)
+    }
 
     const fetchThread = async () => {
         const comments = await loadThread(post._id)
@@ -93,12 +127,12 @@ const FeedItem = ({ post, onDelete }) => {
                     align='flex-start'
                 >
                     <View style={{ flex: 1 }}>
-                        <Text
-                            variant='bodyLarge'
-                            style={{ flex: 1, paddingVertical: 7 }}
-                        >
-                            {post.text}
-                        </Text>
+                        <Autolink
+                            text={post.text}
+                            component={Text}
+                            style={{ paddingVertical: 7, fontSize: 16 }}
+                            // linkStyle={{ color: 'red' }}
+                        />
                     </View>
                     
                     {owned && (
