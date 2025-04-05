@@ -9,12 +9,12 @@ const assetDir = process.env.IMAGE_PATH || 'assets'
 const removeUserAssetsByUsername = async username => {
 
     const userDir = path.join(assetDir, username)
-    console.log('removing user assets at', userDir)
+    console.log('removing user assets at: ', userDir)
 
     return remove(userDir, err => {
         if (err) console.log('error removing asset directory', err)
         else {
-            console.log('removed asset directory successfully')
+            console.log(`successfully removed asset directory for ${username}`)
             return true
         }
         return false
